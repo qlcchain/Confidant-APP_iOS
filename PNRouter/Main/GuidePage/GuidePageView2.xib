@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="GuidePageView2">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xhH-RY-2gU">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" currentPage="1" translatesAutoresizingMaskIntoConstraints="NO" id="UhI-na-2E3">
+                            <rect key="frame" x="10" y="432" width="375" height="37"/>
+                            <color key="pageIndicatorTintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                            <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </pageControl>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_wifis" translatesAutoresizingMaskIntoConstraints="NO" id="Vym-hY-QEz">
+                            <rect key="frame" x="82.5" y="270" width="210" height="127"/>
+                        </imageView>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vG9-bQ-T1l">
+                            <rect key="frame" x="27" y="568" width="321" height="54"/>
+                            <color key="backgroundColor" red="0.2784313725" green="0.2784313725" blue="0.2784313725" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="54" id="SHO-bh-LCe"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                            <state key="normal" title="Next"/>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use PP Messenger in the same WiFi environmnet as PP Router" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W1s-St-Nue">
+                            <rect key="frame" x="27" y="152.5" width="321" height="37.5"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Vym-hY-QEz" firstAttribute="centerY" secondItem="xhH-RY-2gU" secondAttribute="centerY" id="25S-vP-bNV"/>
+                        <constraint firstAttribute="bottom" secondItem="vG9-bQ-T1l" secondAttribute="bottom" constant="45" id="5WM-ak-aIk"/>
+                        <constraint firstAttribute="trailing" secondItem="W1s-St-Nue" secondAttribute="trailing" constant="27" id="B4a-Dk-fNW"/>
+                        <constraint firstItem="Vym-hY-QEz" firstAttribute="centerX" secondItem="xhH-RY-2gU" secondAttribute="centerX" id="Byb-LK-yoX"/>
+                        <constraint firstItem="W1s-St-Nue" firstAttribute="leading" secondItem="xhH-RY-2gU" secondAttribute="leading" constant="27" id="Q8P-3b-1ue"/>
+                        <constraint firstItem="UhI-na-2E3" firstAttribute="top" secondItem="Vym-hY-QEz" secondAttribute="bottom" constant="35" id="Tyr-Wl-ln8"/>
+                        <constraint firstAttribute="trailing" secondItem="UhI-na-2E3" secondAttribute="trailing" constant="-10" id="ZPG-5T-uCi"/>
+                        <constraint firstItem="vG9-bQ-T1l" firstAttribute="leading" secondItem="xhH-RY-2gU" secondAttribute="leading" constant="27" id="dax-tu-rbH"/>
+                        <constraint firstItem="UhI-na-2E3" firstAttribute="leading" secondItem="xhH-RY-2gU" secondAttribute="leading" constant="10" id="fcz-fV-9dA"/>
+                        <constraint firstItem="Vym-hY-QEz" firstAttribute="top" secondItem="W1s-St-Nue" secondAttribute="bottom" constant="80" id="ksR-an-y4c"/>
+                        <constraint firstAttribute="trailing" secondItem="vG9-bQ-T1l" secondAttribute="trailing" constant="27" id="sJ1-WH-KtK"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="xhH-RY-2gU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="JCM-wI-TfX"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="xhH-RY-2gU" secondAttribute="bottom" id="Te4-p8-Wqf"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="xhH-RY-2gU" secondAttribute="trailing" id="m49-Nw-FyO"/>
+                <constraint firstItem="xhH-RY-2gU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="vFv-hv-LOT"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="nextBtn" destination="vG9-bQ-T1l" id="es1-er-06D"/>
+            </connections>
+            <point key="canvasLocation" x="24.5" y="51.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="img_wifis" width="210" height="127"/>
+    </resources>
+</document>

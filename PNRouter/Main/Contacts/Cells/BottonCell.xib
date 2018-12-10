@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="66" id="KGk-i7-Jjw" customClass="BottonCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="65.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qMR-pQ-IbF">
+                        <rect key="frame" x="28" y="8" width="264" height="44"/>
+                        <subviews>
+                            <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zt3-9V-fXw">
+                                <rect key="frame" x="0.0" y="0.0" width="127" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Delete Contact">
+                                    <color key="titleColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="bottonAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="tkq-kI-ih0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LX2-im-iAk">
+                                <rect key="frame" x="137" y="0.0" width="127" height="44"/>
+                                <color key="backgroundColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Send a message">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="bottonAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="4Wg-O0-QkW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="LX2-im-iAk" secondAttribute="bottom" id="7f3-Kz-MB7"/>
+                            <constraint firstItem="LX2-im-iAk" firstAttribute="top" secondItem="qMR-pQ-IbF" secondAttribute="top" id="APn-Ev-g2a"/>
+                            <constraint firstAttribute="bottom" secondItem="Zt3-9V-fXw" secondAttribute="bottom" id="Rnl-0j-4Cb"/>
+                            <constraint firstItem="Zt3-9V-fXw" firstAttribute="top" secondItem="qMR-pQ-IbF" secondAttribute="top" id="dan-kN-ad9"/>
+                            <constraint firstItem="LX2-im-iAk" firstAttribute="leading" secondItem="Zt3-9V-fXw" secondAttribute="trailing" constant="10" id="fO3-m7-Y2O"/>
+                            <constraint firstItem="Zt3-9V-fXw" firstAttribute="leading" secondItem="qMR-pQ-IbF" secondAttribute="leading" id="gmh-F5-6sb"/>
+                            <constraint firstAttribute="height" constant="44" id="mmi-nU-gR2"/>
+                            <constraint firstItem="LX2-im-iAk" firstAttribute="width" secondItem="Zt3-9V-fXw" secondAttribute="width" id="nR7-w7-wqu"/>
+                            <constraint firstAttribute="trailing" secondItem="LX2-im-iAk" secondAttribute="trailing" id="owO-2s-Td6"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="qMR-pQ-IbF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="28" id="Psg-u1-fMa"/>
+                    <constraint firstItem="qMR-pQ-IbF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="nDV-yX-ffc"/>
+                    <constraint firstAttribute="trailing" secondItem="qMR-pQ-IbF" secondAttribute="trailing" constant="28" id="oVz-Il-3g0"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="delegateBtn" destination="Zt3-9V-fXw" id="xKg-AQ-Cwa"/>
+                <outlet property="sendMessageBtn" destination="LX2-im-iAk" id="z8i-99-Fcn"/>
+            </connections>
+            <point key="canvasLocation" x="-155" y="-179"/>
+        </tableViewCell>
+    </objects>
+</document>

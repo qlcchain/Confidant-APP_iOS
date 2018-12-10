@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SocketAlertView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" alpha="0.40000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zzg-lc-ANQ">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                </button>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxt-EO-qMX">
+                    <rect key="frame" x="47" y="233.5" width="280" height="200"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prompt" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qTe-uA-AAb">
+                            <rect key="frame" x="0.0" y="0.0" width="280" height="45"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="giL-dO-A8v"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gdE-bb-cRe">
+                            <rect key="frame" x="0.0" y="156" width="280" height="44"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="K5j-f8-BDb"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <state key="normal" title="Reconnection"/>
+                            <connections>
+                                <action selector="okAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="bM4-x2-QoT"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are currently disconnected from the secure route, click reconnect" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WP-8L-1ih">
+                            <rect key="frame" x="10" y="65" width="260" height="71"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="qTe-uA-AAb" firstAttribute="top" secondItem="gxt-EO-qMX" secondAttribute="top" id="AeK-Ks-N3p"/>
+                        <constraint firstItem="3WP-8L-1ih" firstAttribute="top" secondItem="qTe-uA-AAb" secondAttribute="bottom" constant="20" id="FIV-JM-UdH"/>
+                        <constraint firstAttribute="trailing" secondItem="3WP-8L-1ih" secondAttribute="trailing" constant="10" id="G4X-xb-SrU"/>
+                        <constraint firstItem="gdE-bb-cRe" firstAttribute="top" secondItem="3WP-8L-1ih" secondAttribute="bottom" constant="20" id="IiI-Gx-qPm"/>
+                        <constraint firstItem="3WP-8L-1ih" firstAttribute="leading" secondItem="gxt-EO-qMX" secondAttribute="leading" constant="10" id="Imy-mI-72q"/>
+                        <constraint firstAttribute="bottom" secondItem="gdE-bb-cRe" secondAttribute="bottom" id="JQQ-T5-oS7"/>
+                        <constraint firstItem="qTe-uA-AAb" firstAttribute="leading" secondItem="gxt-EO-qMX" secondAttribute="leading" id="clJ-b5-Bod"/>
+                        <constraint firstItem="gdE-bb-cRe" firstAttribute="leading" secondItem="gxt-EO-qMX" secondAttribute="leading" id="lDn-IB-A2n"/>
+                        <constraint firstAttribute="height" constant="200" id="lQL-uI-McN"/>
+                        <constraint firstAttribute="trailing" secondItem="qTe-uA-AAb" secondAttribute="trailing" id="lRc-W9-98v"/>
+                        <constraint firstAttribute="width" constant="280" id="tPB-7C-311"/>
+                        <constraint firstAttribute="trailing" secondItem="gdE-bb-cRe" secondAttribute="trailing" id="whs-bS-URl"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="gxt-EO-qMX" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2eL-io-rtq"/>
+                <constraint firstItem="zzg-lc-ANQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="GPP-CP-Aew"/>
+                <constraint firstAttribute="bottom" secondItem="zzg-lc-ANQ" secondAttribute="bottom" id="W9f-dO-mbt"/>
+                <constraint firstItem="zzg-lc-ANQ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fA1-Lv-fSF"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="zzg-lc-ANQ" secondAttribute="trailing" id="gLa-rB-xxT"/>
+                <constraint firstItem="gxt-EO-qMX" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="kai-fQ-JtW"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="backView" destination="gxt-EO-qMX" id="8Tu-64-fOa"/>
+                <outlet property="lblContent" destination="3WP-8L-1ih" id="gqZ-8o-Un4"/>
+                <outlet property="lblTtile" destination="qTe-uA-AAb" id="3n7-F3-phf"/>
+                <outlet property="okBtn" destination="gdE-bb-cRe" id="5SZ-CT-Ria"/>
+            </connections>
+            <point key="canvasLocation" x="-126.5" y="-35.5"/>
+        </view>
+    </objects>
+</document>

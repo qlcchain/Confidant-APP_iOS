@@ -1,0 +1,309 @@
+//
+//  CDFileTableViewCell.m
+//  PNRouter
+//
+//  Created by 旷自辉 on 2018/10/17.
+//  Copyright © 2018年 旷自辉. All rights reserved.
+//
+
+#import "CDFileTableViewCell.h"
+#import "SystemUtil.h"
+#import "RequestService.h"
+#import "SocketDataUtil.h"
+#import "SocketManageUtil.h"
+#import "NSString+Base64.h"
+#import "AESCipher.h"
+#import "RSAUtil.h"
+#import "NSData+Base64.h"
+
+@interface CDFileTableViewCell()
+@property (nonatomic ,strong) UIImageView *file_leftImgView;
+@property (nonatomic ,strong) UILabel *file_leftName;
+@property (nonatomic ,strong) UILabel *file_leftSize;
+
+@property (nonatomic ,strong) UIImageView *file_rightImgView;
+@property (nonatomic ,strong) UILabel *file_rightName;
+@property (nonatomic ,strong) UILabel *file_rightSize;
+
+@property(nonatomic, strong) UIGestureRecognizer *longPressRecognizer;
+
+@end
+
+@implementation CDFileTableViewCell
+
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [self.bubbleImage_left addGestureRecognizer:tap];
+    [self.bubbleImage_right addGestureRecognizer:tap2];
+    self.bubbleImage_right.userInteractionEnabled = YES;
+    self.bubbleImage_left.userInteractionEnabled = YES;
+    
+    _longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGes:)];
+    [self addGestureRecognizer:_longPressRecognizer];
+    return self;
+}
+#pragma mark -layz
+- (UIImageView *)file_leftImgView
+{
+    if (!_file_leftImgView) {
+        _file_leftImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+    }
+    return _file_leftImgView;
+}
+
+- (UILabel *) file_leftName
+{
+    if (!_file_leftName) {
+        _file_leftName = [[UILabel alloc] init];
+        _file_leftName.textColor = MAIN_PURPLE_COLOR;
+        _file_leftName.font = [UIFont systemFontOfSize:15];
+        _file_leftName.textAlignment = NSTextAlignmentLeft;
+        _file_leftName.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    }
+    return _file_leftName;
+}
+
+- (UILabel *) file_leftSize
+{
+    if (!_file_leftSize) {
+        _file_leftSize = [[UILabel alloc] init];
+        _file_leftSize.textColor = [UIColor lightGrayColor];
+        _file_leftSize.font = [UIFont systemFontOfSize:12];
+        _file_leftSize.textAlignment = NSTextAlignmentLeft;
+    }
+    return _file_leftSize;
+}
+
+- (UIImageView *)file_rightImgView
+{
+    if (!_file_rightImgView) {
+        
+        _file_rightImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,35, 35)];
+    }
+    return _file_rightImgView;
+}
+
+- (UILabel *) file_rightName
+{
+    if (!_file_rightName) {
+        _file_rightName = [[UILabel alloc] init];
+        _file_rightName.textColor = [UIColor whiteColor];
+        _file_rightName.font = [UIFont systemFontOfSize:15];
+        _file_rightName.textAlignment = NSTextAlignmentLeft;
+        _file_rightName.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    }
+    return _file_rightName;
+}
+
+- (UILabel *) file_rightSize
+{
+    if (!_file_rightSize) {
+        _file_rightSize = [[UILabel alloc] init];
+        _file_rightSize.textColor = [UIColor lightGrayColor];
+        _file_rightSize.font = [UIFont systemFontOfSize:12];
+        _file_rightSize.textAlignment = NSTextAlignmentLeft;
+    }
+    return _file_rightSize;
+}
+
+- (void)configCellByData:(CDChatMessage)data table:(CDChatListView *)table
+{
+    [super configCellByData:data table:table];
+    if (data.isLeft) {
+        // 左侧
+        //     设置消息内容, 并调整UI
+        [self configFile_Left:data];
+    } else {
+        // 右侧
+        //     设置消息内容, 并调整UI
+        [self configFile_Right:data];
+    }
+}
+
+- (void) configFile_Left:(CDChatMessage) data
+{
+    NSString *fileType = [[data.fileName componentsSeparatedByString:@"."] lastObject];
+    UIImage *img = [UIImage imageNamed:[fileType stringByAppendingString:@""]];
+    if (!img) {
+        img = [UIImage imageNamed:@"Other"];
+    }
+    self.file_leftImgView.image = img;
+    CGRect fileRect = self.file_leftImgView.frame;
+    
+    if (!self.file_leftImgView.superview) {
+        [self.bubbleImage_left addSubview:self.file_leftImgView];
+    }
+    NSLog(@"bubbleImage_right_frame = %@",NSStringFromCGRect(self.bubbleImage_left.frame));
+    fileRect.origin = CGPointMake(data.chatConfig.bubbleRoundAnglehorizInset, data.chatConfig.bubbleRoundAnglehorizInset);
+    
+    NSLog(@"fileRect_frame = %@",NSStringFromCGRect(fileRect));
+    self.file_leftImgView.frame = fileRect;
+    
+    if (!self.file_leftName.superview) {
+        [self.bubbleImage_left addSubview:self.file_leftName];
+    }
+    self.file_leftName.text = data.fileName;
+    self.file_leftName.frame = CGRectMake(CGRectGetMaxX(self.file_leftImgView.frame)+10, CGRectGetMinY(self.file_leftImgView.frame), self.bubbleImage_left.frame.size.width-80, 20);
+    
+    if (!self.file_leftSize.superview) {
+        [self.bubbleImage_left addSubview:self.file_leftSize];
+    }
+    self.file_leftSize.text = [SystemUtil transformedValue:data.fileSize];
+    self.file_leftSize.frame = CGRectMake(CGRectGetMinX(self.file_leftName.frame), CGRectGetMaxY(self.file_leftName.frame), CGRectGetWidth(self.file_leftName.frame), 15);
+
+}
+- (void) configFile_Right:(CDChatMessage) data
+{
+    NSString *fileType = [[data.fileName componentsSeparatedByString:@"."] lastObject];
+    UIImage *img = [UIImage imageNamed:[fileType stringByAppendingString:@""]];
+    if (!img) {
+        img = [UIImage imageNamed:@"Other"];
+    }
+    self.file_rightImgView.image = img;
+    CGRect fileRect = self.file_rightImgView.frame;
+
+    if (!self.file_rightImgView.superview) {
+        [self.bubbleImage_right addSubview:self.file_rightImgView];
+    }
+    NSLog(@"bubbleImage_right_frame = %@",NSStringFromCGRect(self.bubbleImage_right.frame));
+    fileRect.origin = CGPointMake(data.chatConfig.bubbleRoundAnglehorizInset, data.chatConfig.bubbleRoundAnglehorizInset);
+
+    NSLog(@"fileRect_frame = %@",NSStringFromCGRect(fileRect));
+    self.file_rightImgView.frame = fileRect;
+    
+    if (!self.file_rightName.superview) {
+        [self.bubbleImage_right addSubview:self.file_rightName];
+    }
+    self.file_rightName.text = data.fileName;
+    self.file_rightName.frame = CGRectMake(CGRectGetMaxX(self.file_rightImgView.frame)+10, CGRectGetMinY(self.file_rightImgView.frame), self.bubbleImage_right.frame.size.width-80, 20);
+    
+    if (!self.file_rightSize.superview) {
+        [self.bubbleImage_right addSubview:self.file_rightSize];
+    }
+    self.file_rightSize.text = [SystemUtil transformedValue:data.fileSize];
+    self.file_rightSize.frame = CGRectMake(CGRectGetMinX(self.file_rightName.frame), CGRectGetMaxY(self.file_rightName.frame), CGRectGetWidth(self.file_rightName.frame), 15);
+}
+
+-(void)longPressGes:(UILongPressGestureRecognizer *)recognizer{
+    
+    CGPoint curPoint = [recognizer locationInView:self];
+    if (!CGRectContainsPoint(self.bounds, curPoint)){
+        return;
+    }
+    
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+        {
+            NSString *friendid = self.msgModal.ToId;
+            if (self.msgModal.isLeft) {
+                friendid = self.msgModal.FromId;
+            }
+            NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:self.msgModal.fileName];
+            if ([SystemUtil filePathisExist:filePath]) {
+                if (self.msgModal.isLeft) {
+                    [self showMenuWithItemX:_file_leftImgView.frame.size.width/2];
+                } else {
+                    [self showMenuWithItemX:_file_rightImgView.frame.size.width/2];
+                }
+            }
+        }
+            break;
+        case UIGestureRecognizerStateChanged:
+        {
+            //            self.magnifierView.touchPoint = curPoint;
+        }
+            break;
+        default:
+        {
+            //            [self.magnifierView removeFromSuperview];
+        }
+            break;
+    }
+}
+
+-(void)tapGesture:(UITapGestureRecognizer *)ges{
+    
+    if (self.msgModal.msgState == CDMessageStateDownloading) {
+        return;
+    }
+    if (self.msgModal.msgState == CDMessageStateSendFaild) {
+        // 重新发送
+        self.msgModal.msgState = CDMessageStateSending;
+        [self.tableView updateMessage:self.msgModal];
+        NSString *filePath = [[SystemUtil getBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:self.msgModal.fileName];
+        NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+        
+        NSString *msgKey = [SystemUtil get16AESKey];
+        fileData = aesEncryptData(fileData, [msgKey dataUsingEncoding:NSUTF8StringEncoding]);
+        NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
+        NSString *dsKey = [RSAUtil publicEncrypt:self.msgModal.publicKey msgValue:msgKey];
+        
+        SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+        [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:5 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey];
+        [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+        return;
+    }
+    NSString *friendid = self.msgModal.ToId;
+    NSString *msgkey = self.msgModal.srckey;
+    if (self.msgModal.isLeft) {
+        friendid = self.msgModal.FromId;
+        msgkey = self.msgModal.dskey;
+    }
+    NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:self.msgModal.fileName];
+    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+    if (fileData) {
+        if (self.tableView.msgDelegate) {
+            [self.tableView.msgDelegate clickFileCellWithMsgMode:self.msgModal withFilePath:filePath];
+        }
+    } else {
+        self.msgModal.msgState = CDMessageStateDownloading;
+        [self.tableView updateMessage:self.msgModal];
+        
+        @weakify_self
+        [RequestService downFileWithBaseURLStr:self.msgModal.filePath friendid:friendid progressBlock:^(CGFloat progress) {
+            
+        } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
+            
+            NSString *path = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:filePath];
+            NSData *data = [NSData dataWithContentsOfFile:path];
+            NSLog(@"下载文件成功! filePath ===== %@",filePath);
+            if (data.length > 0) {
+                if (msgkey) {
+                    NSString *datakey = [RSAUtil privateKeyDecryptValue:msgkey];
+                    data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                    [data writeToFile:path atomically:YES];
+                }
+                weakSelf.msgModal.msgState = CDMessageStateNormal;
+            } else {
+                weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+            }
+            
+            [weakSelf.tableView updateMessage:weakSelf.msgModal];
+            
+        } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
+            weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+            [weakSelf.tableView updateMessage:weakSelf.msgModal];
+#ifdef DEBUG
+            NSLog(@"[CDChatList] 下载文件出现问题%@",error.localizedDescription);
+#endif
+        }];
+        
+    }
+}
+
+#pragma mark 菜单相关方法
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+    
+    if (action == @selector(selectWithdrawItem:) || action == @selector(selectForwardItem:)) {
+        return YES;
+    }
+    return NO;
+}
+-(BOOL) canBecomeFirstResponder{
+    return YES;
+}
+
+@end

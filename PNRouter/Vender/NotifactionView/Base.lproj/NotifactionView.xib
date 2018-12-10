@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIText.ttf">
+            <string>.SFUIText</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="NotifactionView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYc-KJ-fm9">
+                    <rect key="frame" x="10" y="0.0" width="355" height="80"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXj-j4-oNl">
+                            <rect key="frame" x="12" y="31" width="38.5" height="18"/>
+                            <fontDescription key="fontDescription" name=".SFUIText" family=".SF UI Text" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstItem="ZXj-j4-oNl" firstAttribute="centerY" secondItem="cYc-KJ-fm9" secondAttribute="centerY" id="AEG-Eg-kxZ"/>
+                        <constraint firstItem="ZXj-j4-oNl" firstAttribute="leading" secondItem="cYc-KJ-fm9" secondAttribute="leading" constant="12" id="CH0-WU-Ipx"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ZXj-j4-oNl" secondAttribute="trailing" constant="20" symbolic="YES" id="KEj-IL-kTl"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="cYc-KJ-fm9" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="BwM-NB-y0D"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cYc-KJ-fm9" secondAttribute="trailing" constant="10" id="bPT-Ii-5ge"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="cYc-KJ-fm9" secondAttribute="bottom" id="eB1-cm-rtW"/>
+                <constraint firstItem="cYc-KJ-fm9" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="hcg-FZ-yAg"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="backView" destination="cYc-KJ-fm9" id="v6Y-KC-sYR"/>
+                <outlet property="contraintTop" destination="hcg-FZ-yAg" id="yVX-9p-8UA"/>
+                <outlet property="lblTtile" destination="ZXj-j4-oNl" id="AxX-XV-eaq"/>
+            </connections>
+            <point key="canvasLocation" x="-315" y="-289"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="GuidePageView1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fDV-CI-tY0">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <subviews>
+                        <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="kpc-4M-TIN">
+                            <rect key="frame" x="0.0" y="381.5" width="320" height="37"/>
+                            <color key="pageIndicatorTintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                            <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </pageControl>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_logo" translatesAutoresizingMaskIntoConstraints="NO" id="RZO-i6-xgP">
+                            <rect key="frame" x="115" y="226.5" width="90" height="115"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Safeguard your privacy using PP Messenger, via the PP Router secure channel." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOz-BT-KJq">
+                            <rect key="frame" x="27" y="82.5" width="266" height="56"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avx-Mk-9eD">
+                            <rect key="frame" x="27" y="465" width="266" height="54"/>
+                            <color key="backgroundColor" red="0.27843137254901962" green="0.27843137254901962" blue="0.27843137254901962" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="54" id="fkB-eg-XqN"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                            <state key="normal" title="Next"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="avx-Mk-9eD" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" constant="27" id="2bb-Er-ygF"/>
+                        <constraint firstAttribute="bottom" secondItem="avx-Mk-9eD" secondAttribute="bottom" constant="49" id="7cP-Ep-8pc"/>
+                        <constraint firstAttribute="trailing" secondItem="VOz-BT-KJq" secondAttribute="trailing" constant="27" id="A10-FG-imm"/>
+                        <constraint firstItem="VOz-BT-KJq" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" constant="27" id="Esv-0u-g05"/>
+                        <constraint firstItem="RZO-i6-xgP" firstAttribute="centerX" secondItem="fDV-CI-tY0" secondAttribute="centerX" id="Op5-Ch-C46"/>
+                        <constraint firstAttribute="trailing" secondItem="kpc-4M-TIN" secondAttribute="trailing" id="U1o-cw-bao"/>
+                        <constraint firstItem="RZO-i6-xgP" firstAttribute="centerY" secondItem="fDV-CI-tY0" secondAttribute="centerY" id="V4W-e9-pdu"/>
+                        <constraint firstItem="kpc-4M-TIN" firstAttribute="top" secondItem="RZO-i6-xgP" secondAttribute="bottom" constant="40" id="VHB-iz-NqT"/>
+                        <constraint firstItem="RZO-i6-xgP" firstAttribute="top" secondItem="VOz-BT-KJq" secondAttribute="bottom" constant="88" id="W0F-wM-hXc"/>
+                        <constraint firstAttribute="trailing" secondItem="avx-Mk-9eD" secondAttribute="trailing" constant="27" id="kTk-lS-n15"/>
+                        <constraint firstItem="kpc-4M-TIN" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" id="rWj-fe-iaF"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="fDV-CI-tY0" secondAttribute="bottom" id="FBf-yI-tJc"/>
+                <constraint firstItem="fDV-CI-tY0" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="aSo-nB-kRx"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fDV-CI-tY0" secondAttribute="trailing" id="hAB-TC-BOq"/>
+                <constraint firstItem="fDV-CI-tY0" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ojy-PH-cQo"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="nextBtn" destination="avx-Mk-9eD" id="6fk-lJ-uMn"/>
+            </connections>
+            <point key="canvasLocation" x="-377" y="18"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="img_logo" width="90" height="115"/>
+    </resources>
+</document>

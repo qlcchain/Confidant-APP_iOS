@@ -1,0 +1,156 @@
+PODS:
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
+    - AFNetworking/NSURLSession
+  - BGFMDB (2.0.12):
+    - BGFMDB/BG (= 2.0.12)
+    - BGFMDB/FMDB (= 2.0.12)
+  - BGFMDB/BG (2.0.12):
+    - BGFMDB/FMDB
+  - BGFMDB/FMDB (2.0.12)
+  - BlocksKit (2.2.5):
+    - BlocksKit/All (= 2.2.5)
+  - BlocksKit/All (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+    - BlocksKit/MessageUI
+    - BlocksKit/UIKit
+  - BlocksKit/Core (2.2.5)
+  - BlocksKit/DynamicDelegate (2.2.5)
+  - BlocksKit/MessageUI (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - BlocksKit/UIKit (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - Bugly (2.5.0)
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Swift (3.4.2):
+    - CocoaLumberjack/Default
+  - FLAnimatedImage (1.0.12)
+  - GDPerformanceView (1.3.1)
+  - IQKeyboardManager (6.1.1)
+  - KeychainAccess (3.1.1)
+  - libopus-patched-config (1.1):
+    - libopus-patched-config/float (= 1.1)
+  - libopus-patched-config/float (1.1)
+  - libsodium (1.0.12)
+  - Masonry (1.1.0)
+  - MBProgressHUD (1.1.0)
+  - MJExtension (3.0.15.1)
+  - MJRefresh (3.1.15.7)
+  - OpenSSL (1.0.2.14)
+  - Realm (3.1.0):
+    - Realm/Headers (= 3.1.0)
+  - Realm/Headers (3.1.0)
+  - SDWebImage/Core (4.4.2)
+  - SDWebImage/GIF (4.4.2):
+    - FLAnimatedImage (~> 1.0)
+    - SDWebImage/Core
+  - SWTableViewCell (0.3.7)
+  - toxcore (0.2.2):
+    - libopus-patched-config (= 1.1)
+    - libsodium (~> 1.0.1)
+  - TPCircularBuffer (0.0.1)
+  - WZLBadge (1.2.6)
+  - YYImage (1.0.4):
+    - YYImage/Core (= 1.0.4)
+  - YYImage/Core (1.0.4)
+
+DEPENDENCIES:
+  - AFNetworking
+  - BGFMDB
+  - BlocksKit (~> 2.2.5)
+  - Bugly
+  - CocoaLumberjack/Swift
+  - FLAnimatedImage
+  - GDPerformanceView (~> 1.3.1)
+  - IQKeyboardManager
+  - KeychainAccess
+  - Masonry
+  - MBProgressHUD
+  - MJExtension
+  - MJRefresh
+  - OpenSSL (from `https://github.com/isee15/OpenSSL.git`)
+  - Realm (= 3.1.0)
+  - SDWebImage/GIF
+  - SWTableViewCell
+  - toxcore (= 0.2.2)
+  - TPCircularBuffer (~> 0.0.1)
+  - WZLBadge
+  - YYImage
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - BGFMDB
+    - BlocksKit
+    - Bugly
+    - CocoaLumberjack
+    - FLAnimatedImage
+    - GDPerformanceView
+    - IQKeyboardManager
+    - KeychainAccess
+    - libopus-patched-config
+    - libsodium
+    - Masonry
+    - MBProgressHUD
+    - MJExtension
+    - MJRefresh
+    - Realm
+    - SDWebImage
+    - SWTableViewCell
+    - toxcore
+    - TPCircularBuffer
+    - WZLBadge
+    - YYImage
+
+EXTERNAL SOURCES:
+  OpenSSL:
+    :git: https://github.com/isee15/OpenSSL.git
+
+CHECKOUT OPTIONS:
+  OpenSSL:
+    :commit: a411438c429b9f1b76dfc427ced0f6133c1c1ff0
+    :git: https://github.com/isee15/OpenSSL.git
+
+SPEC CHECKSUMS:
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  BGFMDB: cd5e468218d4c7345862d814d313c0888db3a66a
+  BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  GDPerformanceView: d70d646bf7022a3dfd64222e4966f403bfffef19
+  IQKeyboardManager: 79c57795f5c2408d259d37b9da2ed07efcbb5225
+  KeychainAccess: 7bd430028059754a3debab3cfc0bd1fc7fb85df3
+  libopus-patched-config: 12321105eb4b96e869b7957f3122345fd67928c3
+  libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
+  MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
+  OpenSSL: 262f45fa54bb474ef9310f34e63dc6addb4f4b97
+  Realm: 09513d7c054678d65cd02ce09871f805b0d758ac
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  SWTableViewCell: 2a94aadc9d47b2b611fa064566bf57948b95b579
+  toxcore: 57d8ec3bd29bf4fecff84a742579124094ed8b2a
+  TPCircularBuffer: 949e9632b9fb99b7274d7b2296ee22bff5841e35
+  WZLBadge: 9ec779dcfd94c825518b395e8315fccaabff1bfa
+  YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
+
+PODFILE CHECKSUM: 0badca8caec78ed01a32c094481ebcfc0a1071ef
+
+COCOAPODS: 1.5.3

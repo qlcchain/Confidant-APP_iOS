@@ -1,0 +1,43 @@
+ [
+  {
+  "msg":"可以识别：\n 1.表情: [微笑][得意][流泪][发呆][调皮][发怒][白眼][流汗][骷髅][白眼][流汗][骷髅][快哭了][嘴唇]\n 2.链接: wwww.github.com,https://wwww.github.com\n 3.邮箱：1107661983@qq.com\n 4.号码： 15619297898",
+  "userThumImageURL":"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1555162835,2120770057&fm=27&gp=0.jpg"
+  },
+  {
+  "msg":"这是系统消息类型",
+  "msgType":3
+  },
+  {
+  "msg":"https://coding.net/u/chdo/p/CDResource/git/raw/master/wallpaper/down3.jpeg",
+  "msgType":1,
+  "userThumImageURL":"http://img3.imgtn.bdimg.com/it/u=730508988,1060832757&fm=200&gp=0.jpg",
+  "isLeft":1,
+  },
+  
+  {
+  "msg":"https://coding.net/u/chdo/p/CDResource/git/raw/master/wallpaper/down4.jpeg",
+  "msgType":1,
+  "userName":"消息类型默认是文字，图片类型消息需要设定",
+  "userThumImageURL":"http://img4.imgtn.bdimg.com/it/u=3504790867,267919701&fm=200&gp=0.jpg",
+  "isLeft":1,
+  },
+  
+  {
+  "msg":"头像、用户名可自定义设置，不设置则为默认为空",
+  "userName":"用户名。。。",
+  "userThumImageURL":"http://img4.imgtn.bdimg.com/it/u=3504790867,267919701&fm=200&gp=0.jpg",
+  "isLeft":1,
+  },
+  
+  {
+  "msg":"头像、用户名可自定义设置，不设置则为默认为空",
+  "userName":"用户名。。。"
+  },
+  
+  {
+  "msg":"头像、用户名可自定义设置，不设置则为默认为空",
+  "userThumImageURL":"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1555162835,2120770057&fm=27&gp=0.jpg"
+  }
+  
+  ]
+

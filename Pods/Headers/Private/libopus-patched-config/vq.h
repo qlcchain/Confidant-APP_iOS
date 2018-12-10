@@ -1,0 +1,1 @@
+../../../libopus-patched-config/celt/vq.h

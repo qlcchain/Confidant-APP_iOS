@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ShareView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" alpha="0.40000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uWZ-XL-vKV">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <action selector="backAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="nBL-N1-R9G"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UlT-t3-JkT">
+                    <rect key="frame" x="0.0" y="339" width="375" height="180"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zVM-x3-55b">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="130"/>
+                            <subviews>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="tpq-j6-Nx2">
+                                    <rect key="frame" x="0.0" y="29" width="375" height="72"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nxp-n5-jAt">
+                                        <size key="itemSize" width="50" height="50"/>
+                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </collectionViewFlowLayout>
+                                </collectionView>
+                            </subviews>
+                            <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstItem="tpq-j6-Nx2" firstAttribute="leading" secondItem="zVM-x3-55b" secondAttribute="leading" id="HQ7-rE-FgO"/>
+                                <constraint firstItem="tpq-j6-Nx2" firstAttribute="top" secondItem="zVM-x3-55b" secondAttribute="top" constant="29" id="Jjl-w9-ce0"/>
+                                <constraint firstAttribute="trailing" secondItem="tpq-j6-Nx2" secondAttribute="trailing" id="S5E-l3-Pxq"/>
+                                <constraint firstAttribute="bottom" secondItem="tpq-j6-Nx2" secondAttribute="bottom" constant="29" id="hii-Oa-vlt"/>
+                                <constraint firstAttribute="height" constant="130" id="pMu-72-N2M"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JPB-Sz-uOz">
+                            <rect key="frame" x="0.0" y="130" width="375" height="50"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="cancelAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="jPz-ob-qbc"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="JPB-Sz-uOz" secondAttribute="bottom" id="D1m-i6-OSW"/>
+                        <constraint firstAttribute="trailing" secondItem="zVM-x3-55b" secondAttribute="trailing" id="ILm-aQ-h8Z"/>
+                        <constraint firstItem="JPB-Sz-uOz" firstAttribute="top" secondItem="zVM-x3-55b" secondAttribute="bottom" id="P5i-tC-Mhf"/>
+                        <constraint firstAttribute="height" constant="180" id="QNc-5C-855"/>
+                        <constraint firstItem="zVM-x3-55b" firstAttribute="leading" secondItem="UlT-t3-JkT" secondAttribute="leading" id="dDj-LM-WYs"/>
+                        <constraint firstAttribute="trailing" secondItem="JPB-Sz-uOz" secondAttribute="trailing" id="dFb-1O-ctF"/>
+                        <constraint firstItem="zVM-x3-55b" firstAttribute="top" secondItem="UlT-t3-JkT" secondAttribute="top" id="nLS-3f-GDm"/>
+                        <constraint firstItem="JPB-Sz-uOz" firstAttribute="leading" secondItem="UlT-t3-JkT" secondAttribute="leading" id="tQw-As-1jn"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="UlT-t3-JkT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="EAm-22-Fgg"/>
+                <constraint firstAttribute="bottom" secondItem="uWZ-XL-vKV" secondAttribute="bottom" id="FS4-G4-6WF"/>
+                <constraint firstItem="uWZ-XL-vKV" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="FhP-fm-CQx"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="uWZ-XL-vKV" secondAttribute="trailing" id="Lv3-l9-wPn"/>
+                <constraint firstItem="uWZ-XL-vKV" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Sdn-yF-dVY"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="UlT-t3-JkT" secondAttribute="trailing" id="fnJ-18-RHO"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="UlT-t3-JkT" secondAttribute="bottom" id="rUc-7s-e5i"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="collectionV" destination="tpq-j6-Nx2" id="O2z-4k-ogK"/>
+                <outlet property="shareContraintBotton" destination="rUc-7s-e5i" id="1So-r6-ltV"/>
+            </connections>
+            <point key="canvasLocation" x="-494" y="-49"/>
+        </view>
+    </objects>
+</document>

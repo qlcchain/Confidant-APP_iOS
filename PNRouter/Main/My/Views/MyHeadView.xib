@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MyHeadView">
+            <rect key="frame" x="0.0" y="0.0" width="420" height="135"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chen Kai" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPS-wB-xq7">
+                    <rect key="frame" x="16" y="24" width="68.5" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eh2-gt-nxM">
+                    <rect key="frame" x="356" y="24" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="EuL-xY-kWi"/>
+                        <constraint firstAttribute="height" constant="48" id="aeb-wu-0l4"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                    <state key="normal" title="CK" backgroundImage="icon_base"/>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_qr_code" translatesAutoresizingMaskIntoConstraints="NO" id="wXR-bt-DcD">
+                    <rect key="frame" x="16" y="53" width="17" height="17"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AgM-At-5Na">
+                    <rect key="frame" x="17" y="96" width="403" height="0.5"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="0.5" id="TNo-Da-wKA"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ibw-P7-rAA">
+                    <rect key="frame" x="16" y="107.5" width="388" height="15.5"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                    <color key="textColor" red="0.70196078431372544" green="0.70196078431372544" blue="0.70196078431372544" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="wXR-bt-DcD" firstAttribute="top" secondItem="BPS-wB-xq7" secondAttribute="bottom" constant="8" id="5On-Si-pgb"/>
+                <constraint firstItem="BPS-wB-xq7" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="5uU-xP-Nar"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="AgM-At-5Na" secondAttribute="trailing" id="8jb-eK-i7O"/>
+                <constraint firstItem="AgM-At-5Na" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="17" id="Bv6-x2-sDA"/>
+                <constraint firstItem="AgM-At-5Na" firstAttribute="top" secondItem="Eh2-gt-nxM" secondAttribute="bottom" constant="24" id="UAh-aJ-C7m"/>
+                <constraint firstItem="ibw-P7-rAA" firstAttribute="top" secondItem="AgM-At-5Na" secondAttribute="bottom" constant="11" id="bzL-EJ-J7V"/>
+                <constraint firstItem="Eh2-gt-nxM" firstAttribute="top" secondItem="BPS-wB-xq7" secondAttribute="top" id="hU9-bS-TFD"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Eh2-gt-nxM" secondAttribute="trailing" constant="16" id="mPy-cC-e2Z"/>
+                <constraint firstItem="wXR-bt-DcD" firstAttribute="leading" secondItem="BPS-wB-xq7" secondAttribute="leading" id="tZy-nh-drf"/>
+                <constraint firstItem="Eh2-gt-nxM" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="24" id="w4V-so-c4J"/>
+                <constraint firstItem="ibw-P7-rAA" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="wtW-qO-1PG"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ibw-P7-rAA" secondAttribute="trailing" constant="16" id="xxg-uh-oQ3"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="HeanBtn" destination="Eh2-gt-nxM" id="U9A-Aj-mDG"/>
+                <outlet property="lblContent" destination="ibw-P7-rAA" id="vnu-sJ-pfp"/>
+                <outlet property="lblName" destination="BPS-wB-xq7" id="k8j-tA-DSJ"/>
+            </connections>
+            <point key="canvasLocation" x="239" y="-18"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_base" width="140" height="140"/>
+        <image name="icon_qr_code" width="17" height="17"/>
+    </resources>
+</document>

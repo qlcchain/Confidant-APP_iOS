@@ -1,0 +1,1 @@
+../../../libopus-patched-config/celt/entenc.h
