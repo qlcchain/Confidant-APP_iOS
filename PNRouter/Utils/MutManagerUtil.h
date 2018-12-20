@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,assign) NSInteger msgId;
 @property (nonatomic , strong) NSMutableDictionary *mutTempDic;
 
+// filekey
+
 
 + (instancetype) getShareObject;
 

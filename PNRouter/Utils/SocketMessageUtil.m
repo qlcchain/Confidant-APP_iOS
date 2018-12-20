@@ -61,6 +61,10 @@ NSString *Aciont_Register = @"Register";
 NSString *Action_PullUserList = @"PullUserList";
 NSString *Action_CreateNormalUser = @"CreateNormalUser";
 NSString *Action_ReadMsgPush = @"ReadMsgPush";
+NSString *Action_LogOut = @"LogOut";
+NSString *Action_UserInfoUpdate = @"UserInfoUpdate";
+NSString *Action_SendFile = @"SendFile";
+NSString *Action_PullFile = @"PullFile";
 
 @implementation SocketMessageUtil
 
@@ -225,6 +229,7 @@ NSString *Action_ReadMsgPush = @"ReadMsgPush";
             
              [[MutManagerUtil getShareObject].mutTempDic setObject:[NSString stringWithFormat:@"%@%@",[NSString getNotNullValue:[MutManagerUtil getShareObject].mutTempDic[msgId]],params?:@""] forKey:msgId];
             NSString *paramStr = [MutManagerUtil getShareObject].mutTempDic[msgId]?:@"";
+            paramStr = [paramStr stringByReplacingOccurrencesOfString:@"\n" withString:@""];
             [receiveDic setObject:paramStr.mj_JSONObject forKey:@"params"];
         }
         NSLog(@"params = %@",[MutManagerUtil getShareObject].mutString);
@@ -296,6 +301,14 @@ NSString *Action_ReadMsgPush = @"ReadMsgPush";
         [SocketMessageUtil handleCreateNormalUser:receiveDic];
     } else if ([action isEqualToString:Action_ReadMsgPush]) { // 已读消息推送
         [SocketMessageUtil handleRedMsgPush:receiveDic];
+    } else if ([action isEqualToString:Action_LogOut]) { // 登陆退出
+        [SocketMessageUtil handleLogOut:receiveDic];
+    } else if ([action isEqualToString:Action_UserInfoUpdate]) { // 修改昵称
+        [SocketMessageUtil handleUserInfoUpdate:receiveDic];
+    } else if ([action isEqualToString:Action_SendFile]) { // tox sendfile 回调
+        [SocketMessageUtil handleSendFile:receiveDic];
+    } else if ([action isEqualToString:Action_PullFile]) { // tox拉取文件回调
+        [SocketMessageUtil handlePullFile:receiveDic];
     }
 }
 #pragma mark -APP新用户预注册
@@ -376,8 +389,46 @@ NSString *Action_ReadMsgPush = @"ReadMsgPush";
     [SocketMessageUtil sendVersion2RecevieMessageWithParams:parames tempmsgid:tempmsgid];
     
     NSString *fromId = receiveDic[@"params"][@"UserId"];
-    NSString *msgIds = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"MsgId"]];
+    NSString *msgIds = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"ReadMsgs"]];
     [[NSNotificationCenter defaultCenter] postNotificationName:REVER_RED_MSG_NOTI object:@[fromId,msgIds]];
+}
+
+#pragma mark - 退出登陆
++ (void) handleLogOut:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:REVER_LOGOUT_SUCCESS_NOTI object:nil];
+    } else {
+        [AppD.window showHint:@"LogOut Failure."];
+    }
+}
+#pragma mark - 修改昵称
++ (void) handleUserInfoUpdate:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:REVER_UPDATE_NICKNAME_SUCCESS_NOTI object:nil];
+    } else {
+        [AppD.window showHint:@"Update NickName Failure."];
+    }
+}
+#pragma mark -sendfile 回调
++ (void) handleSendFile:(NSDictionary *)receiveDic {
+     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+     NSString *toId = receiveDic[@"params"][@"ToId"];
+     NSString *msgId = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"MsgId"]];
+     NSString *fileId = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"FileId"]];
+    NSString *fileType = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"FileType"]];
+    
+     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(retCode),msgId,toId,fileType,fileId,msgId]];
+}
+
+#pragma mark -tox pull文件
++ (void) handlePullFile:(NSDictionary *)receiveDic {
+    NSDictionary *jsonDic = receiveDic[@"params"];
+    FileModel *fileModel = [FileModel mj_objectWithKeyValues:jsonDic];
+    [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_NOTI object:fileModel];
 }
 
 
@@ -787,7 +838,7 @@ NSString *Action_ReadMsgPush = @"ReadMsgPush";
     NSString *result = type; // 0：同意添加   1：拒绝好友添加
     NSString *friendName = model.username?:@"";
     NSString *friendId = model.userId?:@"";
-    NSDictionary *params = @{@"Action":@"AddFriendDeal",@"Nickname":[userM.username base64EncodedString]?:@"",@"FriendName":friendName,@"UserId":userM.userId?:@"",@"FriendId":friendId,@"UserKey":[RSAModel getCurrentRASModel].publicKey,@"Result":result,@"FriendKey":model.publicKey?:@""};
+    NSDictionary *params = @{@"Action":@"AddFriendDeal",@"Nickname":[userM.username base64EncodedString]?:@"",@"FriendName":[friendName base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId,@"UserKey":[RSAModel getCurrentRASModel].publicKey,@"Result":result,@"FriendKey":model.publicKey?:@""};
     [SocketMessageUtil sendTextWithParams:params];
 }
 

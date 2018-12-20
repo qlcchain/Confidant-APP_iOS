@@ -39,7 +39,7 @@
     if (model.isHD) {
         _lblUnCount.hidden = NO;
     }
-    _lblName.text = [model.friendName base64DecodedString]?:model.friendName;
+    _lblName.text =  model.friendName;
     _lblNameJX.text = [StringUtil getUserNameFirstWithName:_lblName.text];
     _lblContent.text = model.lastMessage?:@"";
     _lblTime.text = [model.chatTime formattedTime];

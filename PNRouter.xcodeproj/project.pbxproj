@@ -58,6 +58,19 @@
 		73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A1E219048AE003D07CC /* DDRSAWrapper.m */; };
 		73001A2321912890003D07CC /* RSAUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A2221912890003D07CC /* RSAUtil.m */; };
 		73001A262191328C003D07CC /* RSAModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A252191328C003D07CC /* RSAModel.m */; };
+		730330DF21C76DEC007C4063 /* libMiPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330DD21C76DEB007C4063 /* libMiPushSDK.a */; };
+		730330E121C76E2F007C4063 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E021C76E2F007C4063 /* UserNotifications.framework */; };
+		730330E321C76E3A007C4063 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E221C76E3A007C4063 /* libresolv.tbd */; };
+		730330E521C76E47007C4063 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E421C76E47007C4063 /* libxml2.tbd */; };
+		730330E721C76E56007C4063 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E621C76E56007C4063 /* libz.tbd */; };
+		730330E921C76E65007C4063 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E821C76E64007C4063 /* SystemConfiguration.framework */; };
+		730330EB21C76E72007C4063 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330EA21C76E72007C4063 /* MobileCoreServices.framework */; };
+		730330ED21C76E7D007C4063 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330EC21C76E7C007C4063 /* CFNetwork.framework */; };
+		730330EF21C76E86007C4063 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330EE21C76E86007C4063 /* CoreTelephony.framework */; };
+		730330F921C7781E007C4063 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 730330F821C7781E007C4063 /* NotificationService.m */; };
+		730330FD21C7781E007C4063 /* PushServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 730330F521C7781E007C4063 /* PushServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7303310B21C7A2FD007C4063 /* mysong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7303310921C7A2FD007C4063 /* mysong.mp3 */; };
+		7303310C21C7A2FD007C4063 /* RunInBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 7303310A21C7A2FD007C4063 /* RunInBackground.m */; };
 		73060528216F3572005A0E13 /* RequestService.m in Sources */ = {isa = PBXBuildFile; fileRef = 73060525216F3572005A0E13 /* RequestService.m */; };
 		73060529216F3572005A0E13 /* AFHTTPClientV2.m in Sources */ = {isa = PBXBuildFile; fileRef = 73060526216F3572005A0E13 /* AFHTTPClientV2.m */; };
 		7306054421748BD5005A0E13 /* VoiceConvert.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7306053A21748BD5005A0E13 /* VoiceConvert.mm */; };
@@ -212,6 +225,7 @@
 		736257B22142149300D7FD6B /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 736257A32142149300D7FD6B /* UIView+Toast.m */; };
 		736257C12142247F00D7FD6B /* SystemUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 736257C02142247F00D7FD6B /* SystemUtil.m */; };
 		736257C5214225FD00D7FD6B /* getgateway.c in Sources */ = {isa = PBXBuildFile; fileRef = 736257C2214225FD00D7FD6B /* getgateway.c */; };
+		73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */; };
 		7378829F21ABF6060033A189 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7378829E21ABF6060033A189 /* Social.framework */; };
 		737882A621ACF05E0033A189 /* SSLClientCertificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737882A121ACF05E0033A189 /* SSLClientCertificate.swift */; };
 		737882A721ACF05E0033A189 /* Compression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737882A321ACF05E0033A189 /* Compression.swift */; };
@@ -327,6 +341,30 @@
 		73F9A11A219973C80011FAA5 /* ReviceRadio.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F9A119219973C80011FAA5 /* ReviceRadio.m */; };
 		815FEEED645E5889A42F8CA0 /* libPods-PNRouter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C33670BA720BB01C8243AF /* libPods-PNRouter.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		730330FB21C7781E007C4063 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 73625730213E8B3200D7FD6B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 730330F421C7781E007C4063;
+			remoteInfo = PushServiceExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7303310121C7781E007C4063 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				730330FD21C7781E007C4063 /* PushServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		49C33670BA720BB01C8243AF /* libPods-PNRouter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PNRouter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -462,6 +500,24 @@
 		73001A2221912890003D07CC /* RSAUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAUtil.m; sourceTree = "<group>"; };
 		73001A242191328C003D07CC /* RSAModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSAModel.h; sourceTree = "<group>"; };
 		73001A252191328C003D07CC /* RSAModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAModel.m; sourceTree = "<group>"; };
+		730330DD21C76DEB007C4063 /* libMiPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMiPushSDK.a; sourceTree = "<group>"; };
+		730330DE21C76DEC007C4063 /* MiPushSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiPushSDK.h; sourceTree = "<group>"; };
+		730330E021C76E2F007C4063 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		730330E221C76E3A007C4063 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		730330E421C76E47007C4063 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		730330E621C76E56007C4063 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		730330E821C76E64007C4063 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		730330EA21C76E72007C4063 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		730330EC21C76E7C007C4063 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		730330EE21C76E86007C4063 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		730330F021C76EAD007C4063 /* PNRouter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PNRouter.entitlements; sourceTree = "<group>"; };
+		730330F521C7781E007C4063 /* PushServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		730330F721C7781E007C4063 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		730330F821C7781E007C4063 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		730330FA21C7781E007C4063 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7303310821C7A2FD007C4063 /* RunInBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunInBackground.h; sourceTree = "<group>"; };
+		7303310921C7A2FD007C4063 /* mysong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mysong.mp3; sourceTree = "<group>"; };
+		7303310A21C7A2FD007C4063 /* RunInBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RunInBackground.m; sourceTree = "<group>"; };
 		73060524216F3572005A0E13 /* AFHTTPClientV2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClientV2.h; sourceTree = "<group>"; };
 		73060525216F3572005A0E13 /* RequestService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestService.m; sourceTree = "<group>"; };
 		73060526216F3572005A0E13 /* AFHTTPClientV2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClientV2.m; sourceTree = "<group>"; };
@@ -755,6 +811,8 @@
 		736257C2214225FD00D7FD6B /* getgateway.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getgateway.c; sourceTree = "<group>"; };
 		736257C3214225FD00D7FD6B /* getgateway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getgateway.h; sourceTree = "<group>"; };
 		736257C4214225FD00D7FD6B /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = route.h; sourceTree = "<group>"; };
+		73682AE821C3D2D700E3E1A0 /* ToxPullFileTimerUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToxPullFileTimerUtil.h; sourceTree = "<group>"; };
+		73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToxPullFileTimerUtil.m; sourceTree = "<group>"; };
 		7378829E21ABF6060033A189 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		737882A121ACF05E0033A189 /* SSLClientCertificate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSLClientCertificate.swift; sourceTree = "<group>"; };
 		737882A221ACF05E0033A189 /* Starscream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Starscream.h; sourceTree = "<group>"; };
@@ -989,10 +1047,26 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		730330F221C7781E007C4063 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		73625735213E8B3200D7FD6B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				730330EF21C76E86007C4063 /* CoreTelephony.framework in Frameworks */,
+				730330ED21C76E7D007C4063 /* CFNetwork.framework in Frameworks */,
+				730330EB21C76E72007C4063 /* MobileCoreServices.framework in Frameworks */,
+				730330E921C76E65007C4063 /* SystemConfiguration.framework in Frameworks */,
+				730330E721C76E56007C4063 /* libz.tbd in Frameworks */,
+				730330E521C76E47007C4063 /* libxml2.tbd in Frameworks */,
+				730330E321C76E3A007C4063 /* libresolv.tbd in Frameworks */,
+				730330E121C76E2F007C4063 /* UserNotifications.framework in Frameworks */,
+				730330DF21C76DEC007C4063 /* libMiPushSDK.a in Frameworks */,
 				7378829F21ABF6060033A189 /* Social.framework in Frameworks */,
 				7306054521748BD5005A0E13 /* libopencore-amrwb.a in Frameworks */,
 				7306054621748BD5005A0E13 /* libopencore-amrnb.a in Frameworks */,
@@ -1006,6 +1080,14 @@
 		55980B67464FF41D9AB2E171 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				730330EE21C76E86007C4063 /* CoreTelephony.framework */,
+				730330EC21C76E7C007C4063 /* CFNetwork.framework */,
+				730330EA21C76E72007C4063 /* MobileCoreServices.framework */,
+				730330E821C76E64007C4063 /* SystemConfiguration.framework */,
+				730330E621C76E56007C4063 /* libz.tbd */,
+				730330E421C76E47007C4063 /* libxml2.tbd */,
+				730330E221C76E3A007C4063 /* libresolv.tbd */,
+				730330E021C76E2F007C4063 /* UserNotifications.framework */,
 				7378829E21ABF6060033A189 /* Social.framework */,
 				49C33670BA720BB01C8243AF /* libPods-PNRouter.a */,
 			);
@@ -1247,6 +1329,8 @@
 		585AEE482140D2280098A070 /* Vender */ = {
 			isa = PBXGroup;
 			children = (
+				7303310221C78E83007C4063 /* BackMode */,
+				730330DC21C76DA9007C4063 /* MIPUSH */,
 				7378836421ACF2960033A189 /* ToxManagers */,
 				737882A021ACF05E0033A189 /* Starscream */,
 				73F9A117219973790011FAA5 /* SocketRadio */,
@@ -1364,6 +1448,35 @@
 				73001A1B21904896003D07CC /* DDRSAWrapper+openssl.m */,
 			);
 			path = Openssl;
+			sourceTree = "<group>";
+		};
+		730330DC21C76DA9007C4063 /* MIPUSH */ = {
+			isa = PBXGroup;
+			children = (
+				730330DD21C76DEB007C4063 /* libMiPushSDK.a */,
+				730330DE21C76DEC007C4063 /* MiPushSDK.h */,
+			);
+			path = MIPUSH;
+			sourceTree = "<group>";
+		};
+		730330F621C7781E007C4063 /* PushServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				730330F721C7781E007C4063 /* NotificationService.h */,
+				730330F821C7781E007C4063 /* NotificationService.m */,
+				730330FA21C7781E007C4063 /* Info.plist */,
+			);
+			path = PushServiceExtension;
+			sourceTree = "<group>";
+		};
+		7303310221C78E83007C4063 /* BackMode */ = {
+			isa = PBXGroup;
+			children = (
+				7303310921C7A2FD007C4063 /* mysong.mp3 */,
+				7303310821C7A2FD007C4063 /* RunInBackground.h */,
+				7303310A21C7A2FD007C4063 /* RunInBackground.m */,
+			);
+			path = BackMode;
 			sourceTree = "<group>";
 		};
 		73060523216F3572005A0E13 /* Request */ = {
@@ -1868,6 +1981,7 @@
 			isa = PBXGroup;
 			children = (
 				7362573A213E8B3200D7FD6B /* PNRouter */,
+				730330F621C7781E007C4063 /* PushServiceExtension */,
 				73625739213E8B3200D7FD6B /* Products */,
 				9011D7AD78A8C7D7BC53265F /* Pods */,
 				55980B67464FF41D9AB2E171 /* Frameworks */,
@@ -1878,6 +1992,7 @@
 			isa = PBXGroup;
 			children = (
 				73625738213E8B3200D7FD6B /* PNRouter.app */,
+				730330F521C7781E007C4063 /* PushServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1885,6 +2000,7 @@
 		7362573A213E8B3200D7FD6B /* PNRouter */ = {
 			isa = PBXGroup;
 			children = (
+				730330F021C76EAD007C4063 /* PNRouter.entitlements */,
 				73060523216F3572005A0E13 /* Request */,
 				585AEE14213F6EFB0098A070 /* Base */,
 				736257552142138D00D7FD6B /* Categorys */,
@@ -1947,6 +2063,8 @@
 				738677A021AFDC24003A8568 /* SendToxRequestUtil.m */,
 				738677A221B168C7003A8568 /* MutManagerUtil.h */,
 				738677A321B168C7003A8568 /* MutManagerUtil.m */,
+				73682AE821C3D2D700E3E1A0 /* ToxPullFileTimerUtil.h */,
+				73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2473,6 +2591,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		730330F421C7781E007C4063 /* PushServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 730330FE21C7781E007C4063 /* Build configuration list for PBXNativeTarget "PushServiceExtension" */;
+			buildPhases = (
+				730330F121C7781E007C4063 /* Sources */,
+				730330F221C7781E007C4063 /* Frameworks */,
+				730330F321C7781E007C4063 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PushServiceExtension;
+			productName = PushServiceExtension;
+			productReference = 730330F521C7781E007C4063 /* PushServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		73625737213E8B3200D7FD6B /* PNRouter */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7362574E213E8B3400D7FD6B /* Build configuration list for PBXNativeTarget "PNRouter" */;
@@ -2482,10 +2617,12 @@
 				73625735213E8B3200D7FD6B /* Frameworks */,
 				73625736213E8B3200D7FD6B /* Resources */,
 				EB8769ED3DB9A8774136A768 /* [CP] Copy Pods Resources */,
+				7303310121C7781E007C4063 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				730330FC21C7781E007C4063 /* PBXTargetDependency */,
 			);
 			name = PNRouter;
 			productName = PNRouter;
@@ -2501,9 +2638,20 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "旷自辉";
 				TargetAttributes = {
+					730330F421C7781E007C4063 = {
+						CreatedOnToolsVersion = 10.1;
+					};
 					73625737213E8B3200D7FD6B = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 0940;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -2525,11 +2673,19 @@
 			projectRoot = "";
 			targets = (
 				73625737213E8B3200D7FD6B /* PNRouter */,
+				730330F421C7781E007C4063 /* PushServiceExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		730330F321C7781E007C4063 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		73625736213E8B3200D7FD6B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2587,6 +2743,7 @@
 				581D7861216B35A5000B70C5 /* FileDynamicsCell.xib in Resources */,
 				7330F39F214666E400FF4EEC /* PersonCodeViewController.xib in Resources */,
 				7330F46D2147AD2B00FF4EEC /* Expression.bundle in Resources */,
+				7303310B21C7A2FD007C4063 /* mysong.mp3 in Resources */,
 				7386910B214CC7D3003CF6A3 /* EditTextViewController.xib in Resources */,
 				7330F4782147B5F800FF4EEC /* FileDetailViewController.xib in Resources */,
 				58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */,
@@ -2646,6 +2803,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		730330F121C7781E007C4063 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				730330F921C7781E007C4063 /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		73625734213E8B3200D7FD6B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2802,6 +2967,7 @@
 				7330F4E92149147200FF4EEC /* CTClickInfo.m in Sources */,
 				73001A2321912890003D07CC /* RSAUtil.m in Sources */,
 				581D785B216B2D98000B70C5 /* FileDynamicsViewController.m in Sources */,
+				7303310C21C7A2FD007C4063 /* RunInBackground.m in Sources */,
 				7330F4F82149147200FF4EEC /* CTInputBoxDrawer.m in Sources */,
 				73625762214213B300D7FD6B /* UILabel+Copy.m in Sources */,
 				73869111214CEAA3003CF6A3 /* ChatListDataUtil.m in Sources */,
@@ -2901,6 +3067,7 @@
 				7378840021ACF2970033A189 /* OCTMessageAbstract.m in Sources */,
 				736257C5214225FD00D7FD6B /* getgateway.c in Sources */,
 				584A447E21460AFE00608122 /* FileViewController.m in Sources */,
+				73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */,
 				73D00E932159DADF0013E20D /* ChooseDownView.m in Sources */,
 				73D31B18217F08480034B2B9 /* TZLocationManager.m in Sources */,
 				734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */,
@@ -2908,6 +3075,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		730330FC21C7781E007C4063 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 730330F421C7781E007C4063 /* PushServiceExtension */;
+			targetProxy = 730330FB21C7781E007C4063 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		73060551217719A5005A0E13 /* VPNFileInputView.xib */ = {
@@ -2949,6 +3124,51 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		730330FF21C7781E007C4063 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 2JK8V69373;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PushServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = RouterPushDevProfile;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		7303310021C7781E007C4063 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 2JK8V69373;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PushServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = RouterPushDevProfile;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		7362574C213E8B3400D7FD6B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3065,13 +3285,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/PNRouter/PNRouterPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = PNRouter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3080,7 +3301,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
 					"$(PROJECT_DIR)/PNRouter/Vender/openssl",
+					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 				);
+				MiSDKRun = debug;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "ba311bcd-9336-4dd1-9fe8-c71c08dfc130";
@@ -3098,13 +3321,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/PNRouter/PNRouterPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = PNRouter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3113,7 +3337,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
 					"$(PROJECT_DIR)/PNRouter/Vender/openssl",
+					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 				);
+				MiSDKRun = online;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "ba311bcd-9336-4dd1-9fe8-c71c08dfc130";
@@ -3127,6 +3353,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		730330FE21C7781E007C4063 /* Build configuration list for PBXNativeTarget "PushServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				730330FF21C7781E007C4063 /* Debug */,
+				7303310021C7781E007C4063 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		73625733213E8B3200D7FD6B /* Build configuration list for PBXProject "PNRouter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

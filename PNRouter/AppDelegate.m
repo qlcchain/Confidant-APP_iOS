@@ -24,10 +24,14 @@
 #import "RouterModel.h"
 #import "RoutherConfig.h"
 #import <Bugly/Bugly.h>
+#import "MiPushSDK.h"
+#import "RunInBackground.h"
 
-
-@interface AppDelegate () <BuglyDelegate>
-
+@interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
+{
+    BOOL isBackendRun;
+}
+@property (nonatomic, assign) NSThread *thread;
 @end
 
 @implementation AppDelegate
@@ -45,7 +49,8 @@
     
     // 配置Bugly
     [self configBugly];
-    
+    // 配置小米推送
+    [self configMiPush];
     // 配置IQKeyboardManager
     [self keyboardManagerConfig];
     // 配置DDLog
@@ -67,6 +72,13 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    // 播放无声音乐
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        self->isBackendRun = YES;
+        [[RunInBackground sharedBg] startRunInbackGround];
+        [[NSRunLoop currentRunLoop] run];
+        self.thread = [NSThread currentThread];
+    });
 }
 
 
@@ -77,7 +89,13 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    
+    // 播放无声音乐
+    if (isBackendRun) {
+        [[RunInBackground sharedBg] stopAudioPlay];
+    }
+    if (![self.thread isMainThread]) {
+        //        [self.thread cancel];
+    }
 }
 
 
@@ -87,7 +105,27 @@
 
 - (void)setRootLogin {
     LoginViewController *vc = [[LoginViewController alloc] init];
-    self.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];
+    CATransition *animation = [CATransition animation];
+    //动画时间
+    animation.duration = 0.4f;
+    //过滤效果
+    animation.type = kCATransitionReveal;
+    //枚举值:
+    // kCATransitionPush 推入效果
+    //  kCATransitionMoveIn 移入效果
+    //  kCATransitionReveal 截开效果
+    //  kCATransitionFade 渐入渐出效果
+    //动画执行完毕时是否被移除
+    animation.removedOnCompletion = YES;
+    //设置方向-该属性从下往上弹出
+    animation.subtype = kCATransitionFromRight;
+    // 枚举值:
+    //  kCATransitionFromRight//右侧弹出
+    //  kCATransitionFromLeft//左侧弹出
+    //kCATransitionFromTop//顶部弹出
+    // kCATransitionFromBottom//底部弹出
+    [AppD.window.layer addAnimation:animation forKey:nil];
+    AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];;
     AppD.inLogin = YES;
 }
 #pragma mark - 是否需要显示引导页
@@ -173,6 +211,11 @@
     //    config.reportLogLevel = BuglyLogLevelWarn;
     config.delegate = self;
     [Bugly startWithAppId:Bugly_AppID config:config];
+}
+- (void) configMiPush
+{
+    // 同时启用APNs跟应用内长连接
+    [MiPushSDK registerMiPush:self type:0 connect:YES];
 }
 
 #pragma mark - 设置IQKeyboardManager
@@ -322,4 +365,64 @@
     
 }
 
+
+
+
+
+
+#pragma mark UIApplicationDelegate
+- (void)application:(UIApplication *)app
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    // 注册APNS成功, 注册deviceToken
+    [MiPushSDK bindDeviceToken:deviceToken];
+    
+}
+
+- (void)application:(UIApplication *)app
+didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
+{
+    // 注册APNS失败
+    // 自行处理
+}
+
+//- ( void )application:( UIApplication *)application didReceiveRemoteNotification:( NSDictionary *)userInfo
+//{
+//    [ MiPushSDK handleReceiveRemoteNotification :userInfo];
+//    // 使用此方法后，所有消息会进行去重，然后通过miPushReceiveNotification:回调返回给App
+//}
+
+#pragma mark MiPushSDKDelegate
+- (void)miPushRequestSuccWithSelector:(NSString *)selector data:(NSDictionary *)data
+{
+    // 请求成功
+    // 可在此获取regId
+    if ([selector isEqualToString:@"bindDeviceToken:"]) {
+        NSLog(@"regid == %@", data[@"regid"]);
+    }
+}
+
+- (void)miPushRequestErrWithSelector:(NSString *)selector error:(int)error data:(NSDictionary *)data
+{
+    // 请求失败
+}
+
+// iOS10新加入的回调方法
+// 应用在前台收到通知
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    NSDictionary * userInfo = notification.request.content.userInfo;
+    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [MiPushSDK handleReceiveRemoteNotification:userInfo];
+    }
+    //completionHandler(UNNotificationPresentationOptionAlert);
+}
+
+// 点击通知进入应用
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+    NSDictionary * userInfo = response.notification.request.content.userInfo;
+    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [MiPushSDK handleReceiveRemoteNotification:userInfo];
+    }
+    completionHandler();
+}
 @end

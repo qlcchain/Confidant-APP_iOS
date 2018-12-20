@@ -11,6 +11,7 @@
 @interface FileModel : BBaseModel
 @property (nonatomic ,strong) NSString *FromId;
 @property (nonatomic ,strong) NSString *ToId;
+@property (nonatomic ,assign) NSInteger RetCode;
 @property (nonatomic ,strong) NSString *FilePath;
 @property (nonatomic ,assign) CGFloat FileSize;
 @property (nonatomic ,strong) NSString *FileName;

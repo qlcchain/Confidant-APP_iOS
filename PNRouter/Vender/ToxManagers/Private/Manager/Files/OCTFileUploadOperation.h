@@ -8,7 +8,8 @@
 
 @interface OCTFileUploadOperation : OCTFileBaseOperation
 
-@property (strong, nonatomic, readonly, nonnull) id<OCTFileInputProtocol> input;
+//@property (strong, nonatomic, readonly, nonnull) id<OCTFileInputProtocol> input;
+@property (strong, nonatomic) id<OCTFileInputProtocol> input;
 
 /**
  * Create operation.

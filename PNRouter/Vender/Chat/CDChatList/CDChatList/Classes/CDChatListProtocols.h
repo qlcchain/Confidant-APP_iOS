@@ -172,6 +172,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString *dskey;
 @property (nonatomic, copy) NSString *publicKey;
 @property (nonatomic , assign) NSInteger messageStatu;
+@property(nonatomic, assign) BOOL isDown;
 /**
  显示选择消息按钮（0：不显示   1：显示未选择   2：显示选择）
  */

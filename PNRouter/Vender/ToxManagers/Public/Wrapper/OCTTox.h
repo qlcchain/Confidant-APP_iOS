@@ -13,6 +13,8 @@
 
 @property (weak, nonatomic) id<OCTToxDelegate> delegate;
 
+
+
 /**
  * Indicates if we are connected to the DHT.   指示我们是否连接到DHT。
  */
@@ -120,6 +122,9 @@
  * Stops the main loop of the Tox. 停止禾Tox的主要循环。
  */
 - (void)stop;
+
+
+- (BOOL) fileSendFaieldWithFileNumber:(int) fileNumber;
 
 #pragma mark -  Methods
 

@@ -14,6 +14,7 @@
 #import "AddFriendCellTableViewCell.h"
 #import "FriendModel.h"
 #import "RSAModel.h"
+#import "SystemUtil.h"
 //#import "NSString+Base64.h"
 
 @interface AddFriendViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
@@ -43,7 +44,13 @@
 - (IBAction)rightAction:(id)sender {
     @weakify_self
     QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
-        if (codeValue != nil && codeValue.length > 0) {
+        if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
+            [AppD.window showHint:@"You cannot add yourself as a friend."];
+        } else if (codeValue.length != 76) {
+            [AppD.window showHint:@"The two-dimensional code format is wrong."];
+        } else if ([SystemUtil isFriendWithFriendid:codeValue]) {
+            [AppD.window showHint:@"The other person is already your best friend."];
+        } else {
             [weakSelf addFriendRequest:codeValue];
         }
     }];

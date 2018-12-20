@@ -72,7 +72,35 @@
 + (void) sendRedMsgWithFriendId:(NSString *) friendId msgid:(NSString *) msgId
 {
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":@"ReadMsg",@"UserId":userM.userId,@"FriendId":friendId,@"MsgId":msgId};
+    NSDictionary *params = @{@"Action":@"ReadMsg",@"UserId":userM.userId,@"FriendId":friendId,@"ReadMsgs":msgId};
     [SocketMessageUtil sendVersion2WithParams:params];
+}
+#pragma mark - 登陆退出
++ (void) sendLogOut
+{
+    [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":@"LogOut",@"UserId":userM.userId,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+#pragma mark -修改昵称
++ (void) sendUpdateWithNickName:(NSString *) nickName
+{
+    [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":@"UserInfoUpdate",@"UserId":userM.userId,@"NickName":[nickName base64EncodedString]};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+#pragma mark -sendfile tox
++ (void) sendToxSendFileWithParames:(NSDictionary *) parames
+{
+    [SocketMessageUtil sendTextWithParams:parames];
+}
+
+#pragma mark tox_拉取文件
++ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName msgId:(NSString *) msgId
+{
+    NSDictionary *params = @{@"Action":@"PullFile",@"FromId":fromId,@"ToId":toId,@"FileName":fileName,@"MsgId":msgId};
+    [SocketMessageUtil sendTextWithParams:params];
 }
 @end

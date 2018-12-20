@@ -20,6 +20,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import "RoutherConfig.h"
 #import "NSDateFormatter+Category.h"
+#import "ChatListDataUtil.h"
+#import "FriendModel.h"
+
 
 @implementation SystemUtil
 + (void) playSystemSound
@@ -130,6 +133,19 @@
     return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
 }
 
++ (NSString *) getTempBaseFilePath:(NSString *) friendid
+{
+    
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"files/%@",friendid];
+    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
+}
+
 + (BOOL) filePathisExist:(NSString *) filePath
 {
      NSFileManager *manage = [NSFileManager defaultManager];
@@ -152,6 +168,12 @@
         [manage removeItemAtPath:filePath error:nil];
     }
    
+}
+
++ (void) removeDocmentFilePath:(NSString *) filePath
+{
+    NSFileManager *manage = [NSFileManager defaultManager];
+    [manage removeItemAtPath:filePath error:nil];
 }
 
 // iOS将文件大小转换文KB\MB\GB
@@ -217,7 +239,7 @@
         while(temp_addr != NULL) {
             if(temp_addr->ifa_addr->sa_family == AF_INET) {
                 // Check if interface is en0 which is the wifi connection on the iPhone
-                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
+                if([[NSString getNotNullValue:[NSString stringWithUTF8String:temp_addr->ifa_name]] isEqualToString:@"en0"]) {
                     // Get NSString from C String
                     address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
                 }
@@ -229,6 +251,102 @@
     freeifaddrs(interfaces);
     return address;
 }
++ (BOOL) isFriendWithFriendid:(NSString *) friendId
+{
+    
+    __block BOOL isEixt = NO;
+    [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if ([model.userId isEqualToString:friendId]) {
+            isEixt = YES;
+            *stop = YES;
+        }
+    }];
+    return isEixt;
+}
+
++ (BOOL) writeDataToFileWithFilePath:(NSString *) filePath withData:(NSData *) data
+{
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if(![fileManager fileExistsAtPath:filePath]) //如果不存在
+        
+    {
+        
+        NSLog(@"-------文件不存在，写入文件----------");
+        
+        [data writeToFile:filePath atomically:YES];
+        
+    }
+    
+    else//追加写入文件，而不是覆盖原来的文件
+        
+    {
+
+        NSFileHandle *fileHandle = [NSFileHandle fileHandleForUpdatingAtPath:filePath];
+        [fileHandle seekToEndOfFile];  //将节点跳到文件的末尾
+        [fileHandle writeData:data]; //追加写入数据
+        [fileHandle closeFile];
+        
+    }
+    
+   
+    return YES;
+}
 
 
++ (BOOL)isVPNOn
+{
+    BOOL flag = NO;
+    NSString *version = [UIDevice currentDevice].systemVersion;
+    // need two ways to judge this.
+    if (version.doubleValue >= 9.0)
+    {
+        NSDictionary *dict = CFBridgingRelease(CFNetworkCopySystemProxySettings());
+        NSArray *keys = [dict[@"__SCOPED__"] allKeys];
+        for (NSString *key in keys) {
+            if ([key rangeOfString:@"tap"].location != NSNotFound ||
+                [key rangeOfString:@"tun"].location != NSNotFound ||
+                [key rangeOfString:@"ipsec"].location != NSNotFound ||
+                [key rangeOfString:@"ppp"].location != NSNotFound){
+                flag = YES;
+                break;
+            }
+        }
+    }
+    else
+    {
+        struct ifaddrs *interfaces = NULL;
+        struct ifaddrs *temp_addr = NULL;
+        int success = 0;
+        
+        // retrieve the current interfaces - returns 0 on success
+        success = getifaddrs(&interfaces);
+        if (success == 0)
+        {
+            // Loop through linked list of interfaces
+            temp_addr = interfaces;
+            while (temp_addr != NULL)
+            {
+                NSString *string = [NSString stringWithFormat:@"%s" , temp_addr->ifa_name];
+                if ([string rangeOfString:@"tap"].location != NSNotFound ||
+                    [string rangeOfString:@"tun"].location != NSNotFound ||
+                    [string rangeOfString:@"ipsec"].location != NSNotFound ||
+                    [string rangeOfString:@"ppp"].location != NSNotFound)
+                {
+                    flag = YES;
+                    break;
+                }
+                temp_addr = temp_addr->ifa_next;
+            }
+        }
+        
+        // Free memory
+        freeifaddrs(interfaces);
+    }
+    
+    
+    return flag;
+}
 @end

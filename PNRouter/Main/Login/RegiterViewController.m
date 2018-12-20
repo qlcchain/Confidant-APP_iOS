@@ -101,7 +101,7 @@
             [SendRequestUtil sendUserRegisterWithUserPass:shaPass username:userName code:_codeTF.text.trim?:@""];
         } else {
             isLogin = YES;
-            [AppD.window showHudInView:AppD.window hint:@"Connect Routher..."];
+            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
             NSString *connectURL = [SystemUtil connectUrl];
             AppD.currentSoketUrl = connectURL;
             [SocketUtil.shareInstance connectWithUrl:connectURL];
@@ -187,7 +187,7 @@
             [[SocketUtil shareInstance] disconnect];
         }    // 连接
         if (isShow) {
-            [AppD.window showHudInView:AppD.window hint:@"Connect Routher..."];
+            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
         }
         
         NSString *connectURL = [SystemUtil connectUrl];

@@ -33,4 +33,5 @@
 - (void) scanSuccessful;
 - (void) toxLoginSuccessWithManager:(id<OCTManager>) manager;
 - (void) loginTox;
+- (void) logOutTox;
 @end

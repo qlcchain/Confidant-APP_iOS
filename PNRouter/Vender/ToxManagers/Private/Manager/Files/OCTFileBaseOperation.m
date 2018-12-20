@@ -5,6 +5,7 @@
 #import "OCTFileBaseOperation.h"
 #import "OCTFileBaseOperation+Private.h"
 #import "OCTLogging.h"
+#import "OCTSubmanagerFiles.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -172,7 +173,9 @@ static const CFTimeInterval kMinUpdateEtaInterval = 1.0;
 
     self.executing = NO;
     self.finished = YES;
-
+    
+    [AppD.manager.files sendCancelFileNumber:_fileNumber error:nil];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.failureBlock) {
             self.failureBlock(self, error);

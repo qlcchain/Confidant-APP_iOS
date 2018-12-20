@@ -7,9 +7,9 @@
 
 @interface OCTFilePathInput ()
 
-@property (strong, nonatomic, readonly) NSString *filePath;
+//@property (strong, nonatomic, readonly) NSString *filePath;
 @property (strong, nonatomic) NSFileHandle *handle;
-
+@property (strong,nonatomic) NSString *path;
 @end
 
 @implementation OCTFilePathInput
@@ -23,8 +23,11 @@
     if (! self) {
         return nil;
     }
-
-    _filePath = filePath;
+    
+    self.dataPath = filePath;
+    self.path = filePath;
+    
+    NSLog(@"filepaht = %@",filePath);
 
     return self;
 }
@@ -33,7 +36,8 @@
 
 - (BOOL)prepareToRead
 {
-    self.handle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
+    self.dataPath = self.path;
+    self.handle = [NSFileHandle fileHandleForReadingAtPath:self.dataPath];
 
     if (! self.handle) {
         return NO;

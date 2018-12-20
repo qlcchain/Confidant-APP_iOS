@@ -281,6 +281,32 @@
         
     }];
 }
+
+#pragma ToxLogin
+- (void) logOutTox
+{
+    AppD.manager = nil;
+   
+    OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
+    configuration.options.udpEnabled = YES;
+    configuration.options.proxyType = OCTToxProxyTypeNone;
+    configuration.options.holePunchingEnabled = YES;
+    configuration.options.localDiscoveryEnabled = YES;
+    configuration.options.ipv6Enabled = YES;
+    
+    [OCTManagerFactory managerWithConfiguration:configuration encryptPassword:TOX_DATA_PASS successBlock:^(id < OCTManager > manager) {
+        
+        [manager.bootstrap addPredefinedNodes];
+        [manager.bootstrap bootstrap];
+        AppD.manager = manager;
+ 
+    } failureBlock:^(NSError * _Nonnull error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+           
+        });
+        
+    }];
+}
 /*
 #pragma mark - Navigation
 

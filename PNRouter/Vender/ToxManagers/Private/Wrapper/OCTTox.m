@@ -277,8 +277,8 @@ void (*_tox_self_get_public_key)(const Tox *tox, uint8_t *public_key);
 
 - (BOOL)addTCPRelayWithHost:(NSString *)host port:(OCTToxPort)port publicKey:(NSString *)publicKey error:(NSError **)error
 {
-    NSParameterAssert(host);
-    NSParameterAssert(publicKey);
+   // NSParameterAssert(host);
+  //  NSParameterAssert(publicKey);
 
     NSLog(@"add TCP relay with host %@ port %d publicKey %@", host, port, publicKey);
 
@@ -631,6 +631,11 @@ void (*_tox_self_get_public_key)(const Tox *tox, uint8_t *public_key);
     return (BOOL)isTyping;
 }
 
+- (BOOL) fileSendFaieldWithFileNumber:(int) fileNumber
+{
+   return  tox_file_control(self.tox, AppD.currentRouterNumber, fileNumber, TOX_FILE_CONTROL_CANCEL, nil);
+}
+
 - (NSUInteger)friendsCount
 {
     return tox_self_get_friend_list_size(self.tox);
@@ -773,7 +778,7 @@ void (*_tox_self_get_public_key)(const Tox *tox, uint8_t *public_key);
     if (fileId.length) {
         cFileId = [fileId bytes];
     }
-
+   
     if (fileName.length) {
         cFileName = (const uint8_t *)[fileName cStringUsingEncoding:NSUTF8StringEncoding];
     }
@@ -791,6 +796,9 @@ void (*_tox_self_get_public_key)(const Tox *tox, uint8_t *public_key);
                               data:(NSData *)data
                              error:(NSError **)error
 {
+    
+   // NSLog(@"---%lldosition = %@,data = %@",position,data);
+    
     TOX_ERR_FILE_SEND_CHUNK cError;
     const uint8_t *cData = [data bytes];
 
@@ -836,7 +844,6 @@ void (*_tox_self_get_public_key)(const Tox *tox, uint8_t *public_key);
     tox_callback_file_chunk_request(_tox, fileChunkRequestCallback);
     
     tox_callback_file_recv(_tox, fileReceiveCallback); // 收到文件发送请求
-
     tox_callback_file_recv_chunk(_tox, fileReceiveChunkCallback); //收到分块发送文件
 }
 
@@ -1734,7 +1741,9 @@ void fileReceiveControlCallback(Tox *cTox, uint32_t friendNumber, OCTToxFileNumb
 void fileChunkRequestCallback(Tox *cTox, uint32_t friendNumber, OCTToxFileNumber fileNumber, uint64_t position, size_t length, void *userData)
 {
     OCTTox *tox = (__bridge OCTTox *)(userData);
-
+    
+   
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([tox.delegate respondsToSelector:@selector(tox:fileChunkRequestForFileNumber:friendNumber:position:length:)]) {
             [tox.delegate tox:tox fileChunkRequestForFileNumber:fileNumber
@@ -1769,11 +1778,10 @@ void fileReceiveCallback(
     }
 
     NSString *fileName = [[NSString alloc] initWithBytes:cFileName length:fileNameLength encoding:NSUTF8StringEncoding];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSLog(@"fileReceiveCallback with friendNumber %d fileNumber %d kind %ld fileSize %llu fileName %@",friendNumber, fileNumber, (long)kind, fileSize, fileName);
-
-        if ([tox.delegate respondsToSelector:@selector(tox:fileReceiveForFileNumber:friendNumber:kind:fileSize:fileName:)]) {
+        
+        if ([tox.delegate respondsToSelector:@selector(tox:fileReceiveForFileNumber:friendNumber:kind:fileSize:fileName:)] && friendNumber == AppD.currentRouterNumber) {
             [tox.delegate tox:tox fileReceiveForFileNumber:fileNumber
                  friendNumber:friendNumber
                          kind:kind
@@ -1799,10 +1807,10 @@ void fileReceiveChunkCallback(
     if (length) {
         chunk = [NSData dataWithBytes:cData length:length];
     }
-    NSLog(@"-----%@",[NSDate date]);
+  
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([tox.delegate respondsToSelector:@selector(tox:fileReceiveChunk:fileNumber:friendNumber:position:)]) {
-            [tox.delegate tox:tox fileReceiveChunk:chunk fileNumber:fileNumber friendNumber:friendNumber position:position];
+        if ([tox.delegate respondsToSelector:@selector(tox:fileReceiveChunk:fileNumber:friendNumber:position:length:)]) {
+            [tox.delegate tox:tox fileReceiveChunk:chunk fileNumber:fileNumber friendNumber:friendNumber position:position length:length];
         }
     });
 }

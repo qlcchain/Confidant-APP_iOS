@@ -10,6 +10,7 @@
 #import "ChatListModel.h"
 #import "FriendModel.h"
 #import "NSString+Base64.h"
+#import "SystemUtil.h"
 
 @implementation ChatListDataUtil
 + (instancetype) getShareObject
@@ -20,6 +21,12 @@
         shareObject = [[self alloc] init];
         shareObject.dataArray = [NSMutableArray array];
         shareObject.friendArray = [NSMutableArray array];
+        if (![SystemUtil isSocketConnect]) {
+            shareObject.fileParames = [NSMutableDictionary dictionary];
+            shareObject.fileNameParames = [NSMutableDictionary dictionary];
+            shareObject.pullTimerDic = [NSMutableDictionary dictionary];
+        }
+       
     });
     return shareObject;
 }

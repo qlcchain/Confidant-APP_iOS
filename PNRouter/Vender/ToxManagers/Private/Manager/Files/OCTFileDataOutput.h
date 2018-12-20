@@ -11,5 +11,6 @@
  * Result data. This property will contain data only after download finishes.
  */
 @property (strong, nonatomic, readonly, nullable) NSData *resultData;
+@property (strong, nonatomic) NSString *filePath;
 
 @end

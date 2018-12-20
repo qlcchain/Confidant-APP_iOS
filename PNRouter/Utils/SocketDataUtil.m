@@ -336,7 +336,7 @@ struct ResultFile {
         if (weakSelf.isComplete) {
             [[SocketManageUtil getShareObject] clearDisConnectSocket];
         } else {
-             [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
+             [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(2),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
         }
     }];
     [_fileUtil setReceiveFileText:^(NSString * fileMsg) {
@@ -357,7 +357,7 @@ struct ResultFile {
     if (tag == 1) { //重发
         if (![_fileUtil isConnected]) { // socket断开连接
             [_fileUtil disconnect];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@""]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(2),self.fileid,self.toid,@(self.fileType),self.messageid?:@""]];
             return;
         }
         NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
@@ -365,12 +365,12 @@ struct ResultFile {
     } else {
         if (sendFile.segmore == 0) { //文件发送完成
             [_fileUtil disconnect];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(1),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
             return;
         }
         if (![_fileUtil isConnected]) { // socket断开连接
             [_fileUtil disconnect];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@""]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(2),self.fileid,self.toid,@(self.fileType),self.messageid?:@""]];
             return;
         }
         

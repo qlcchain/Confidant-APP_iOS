@@ -167,6 +167,6 @@
 - (void)     tox:(OCTTox *)tox fileReceiveChunk:(NSData *)chunk
       fileNumber:(OCTToxFileNumber)fileNumber
     friendNumber:(OCTToxFriendNumber)friendNumber
-        position:(OCTToxFileSize)position;
+        position:(OCTToxFileSize)position length:(size_t) length;
 
 @end

@@ -52,7 +52,7 @@
 
 - (void)receiveChunk:(NSData *)chunk position:(OCTToxFileSize)position
 {
-    if (! chunk) {
+    if (!chunk) {
         if ([self.output finishWriting]) {
             [self finishWithSuccess];
         }

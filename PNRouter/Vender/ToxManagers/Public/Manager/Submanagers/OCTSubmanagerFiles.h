@@ -28,6 +28,8 @@
           toChat:(nonnull OCTChat *)chat
     failureBlock:(nullable void (^)(NSError *__nonnull error))failureBlock;
 
+
+- (BOOL) fileSendFaield;
 /**
  * Send given file to particular chat. After sending OCTMessageAbstract with messageFile will be added to this chat.
  * You can monitor progress using this message.
@@ -40,8 +42,8 @@
  *     See OCTSendFileError for all error codes.
  */
 - (void)sendFileAtPath:(nonnull NSString *)filePath
-         moveToUploads:(BOOL)moveToUploads
-                toChat:(nonnull OCTChat *)chat
+         moveToUploads:(BOOL)moveToUploads parames:(NSDictionary *_Nullable) parames
+                toFriendId:(int) friendNumber
           failureBlock:(nullable void (^)(NSError *__nonnull error))failureBlock;
 
 /**
@@ -62,6 +64,8 @@
  * @param message Message with file transfer. Message should have OCTMessageFile. Otherwise nothing will happen.
  */
 - (BOOL)cancelFileTransfer:(nonnull OCTMessageAbstract *)message error:(NSError *__nullable *__nullable)error;
+
+- (BOOL)sendCancelFileNumber:(int )fileNumber error:(NSError **)error;
 
 /**
  * Retry to send file using same OCTMessageAbstract. This message should have Canceled type, otherwise retry will failure.

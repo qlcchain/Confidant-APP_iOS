@@ -12,6 +12,9 @@
  *
  * @return YES on success, NO on failure.
  */
+
+@property (nonatomic ,strong) NSString * _Nonnull filePath;
+
 - (BOOL)prepareToRead;
 
 /**

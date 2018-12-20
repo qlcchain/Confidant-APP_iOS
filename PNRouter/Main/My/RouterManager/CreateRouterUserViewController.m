@@ -39,6 +39,7 @@
 }
 - (IBAction)createAction:(id)sender {
     
+    [self.view endEditing:YES];
     if ([_nameTF.text.trim isEmptyString]) {
         [self.view showHint:@"The verification Name cannot be empty"];
         return;
@@ -53,7 +54,7 @@
             return;
         }
     }
-    [self.view endEditing:YES];
+   
     [SendRequestUtil createRouterUserWithRouterId:self.rid mnemonic:[_nameTF.text.trim base64EncodedString] code:_codeTF.text.trim?:@""];
 }
 
@@ -98,7 +99,6 @@
     model.NickName = _nameTF.text.trim;
     model.IdentifyCode = _codeTF.text.trim;
     vc.routerUserModel = model;
-    
     [self.navigationController pushViewController:vc animated:YES];
     
 }

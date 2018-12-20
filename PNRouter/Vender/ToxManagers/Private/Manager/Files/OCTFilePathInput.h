@@ -7,6 +7,8 @@
 
 @interface OCTFilePathInput : NSObject <OCTFileInputProtocol>
 
+@property (strong, nonatomic) NSString * _Nullable dataPath;
+
 - (nullable instancetype)initWithFilePath:(nonnull NSString *)filePath;
 
 - (nullable instancetype)init NS_UNAVAILABLE;

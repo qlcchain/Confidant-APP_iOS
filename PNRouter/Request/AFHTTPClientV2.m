@@ -275,6 +275,9 @@
     NSString *path = [SystemUtil getBaseFilePath:friendid];
     NSString *fileName = [Base58Util Base58DecodeWithCodeName:url.lastPathComponent];
     NSString *filePath = [path stringByAppendingPathComponent:fileName];
+    if ([SystemUtil filePathisExist:filePath]) {
+        [SystemUtil removeDocmentFilePath:filePath];
+    }
     downloadTask = [[self getHTTPManager] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
        CGFloat progressCount =  downloadProgress.fractionCompleted * 100;
         if (progressBlock) {

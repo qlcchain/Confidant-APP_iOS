@@ -25,10 +25,12 @@
 #import "TZLocationManager.h"
 #import "TZPhotoPreviewController.h"
 #import "TZPhotoPreviewCell.h"
+#import "PNNavViewController.h"
+
 
 @class TZAlbumCell, TZAssetCell;
 @protocol TZImagePickerControllerDelegate;
-@interface TZImagePickerController : UINavigationController
+@interface TZImagePickerController : PNNavViewController
 
 #pragma mark -
 /// Use this init method / 用这个初始化方法

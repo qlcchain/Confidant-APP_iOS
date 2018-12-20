@@ -18,22 +18,25 @@
 @end
 
 @implementation EditTextViewController
-
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (IBAction)backAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
 }
 
 - (IBAction)okAction:(id)sender {
-    
+    [self.view endEditing:YES];
     switch (self.editType) {
         case EditName:
         {
             if ([_nameTF.text.trim isEmptyString]) {
                 [AppD.window showHint:@"Nickname cannot be empty"];
             } else {
-                UserModel *model = [UserModel getUserModel];
-                model.username = _nameTF.text.trim?:@"";
-                [model saveUserModeToKeyChain];
+                
+                [SendRequestUtil sendUpdateWithNickName:_nameTF.text.trim?:@""];
+                
             }
         }
             break;
@@ -42,6 +45,7 @@
             UserModel *model = [UserModel getUserModel];
             model.commpany = _nameTF.text.trim?:@"";
             [model saveUserModeToKeyChain];
+             [self leftNavBarItemPressedWithPop:YES];
         }
             break;
         case EditPosition:
@@ -49,6 +53,7 @@
             UserModel *model = [UserModel getUserModel];
             model.position = _nameTF.text.trim?:@"";
             [model saveUserModeToKeyChain];
+             [self leftNavBarItemPressedWithPop:YES];
         }
             break;
         case EditLocation:
@@ -56,6 +61,7 @@
             UserModel *model = [UserModel getUserModel];
             model.position = _nameTF.text.trim?:@"";
             [model saveUserModeToKeyChain];
+             [self leftNavBarItemPressedWithPop:YES];
         }
             break;
         case EditAlis:
@@ -63,13 +69,14 @@
             NSString *name = _nameTF.text.trim?:@"";
             _routerM.name = name;
             [RouterModel updateRouterName:name usersn:_routerM.userSn];
+             [self leftNavBarItemPressedWithPop:YES];
         }
             break;
         default:
             break;
     }
     
-    [self leftNavBarItemPressedWithPop:YES];
+   
 }
 
 - (instancetype) initWithType:(EditType) type
@@ -113,11 +120,21 @@
     }
     
     [self performSelector:@selector(beginFirst) withObject:self afterDelay:0.7];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_NICKNAME_SUCCESS_NOTI object:nil];
 }
 
 - (void) beginFirst
 {
     [_nameTF becomeFirstResponder];
+}
+
+#pragma mark -通知回调
+- (void) updateNickSuccess:(NSNotification *) noti
+{
+    UserModel *model = [UserModel getUserModel];
+    model.username = _nameTF.text.trim?:@"";
+    [model saveUserModeToKeyChain];
+    [self leftNavBarItemPressedWithPop:YES];
 }
 
 - (void)didReceiveMemoryWarning {

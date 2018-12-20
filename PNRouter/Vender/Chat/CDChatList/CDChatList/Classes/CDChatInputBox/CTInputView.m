@@ -389,20 +389,11 @@ static UIColor *InputHexColor(int hexColor){
                                          keyBoardEndFrmae.origin.y - self.frame.size.height,
                                          self.frame.size.width, self.frame.size.height);
         
-        BOOL isIphoneX = [UIScreen mainScreen].bounds.size.height >= 812;
-        if (isIphoneX) {
+        if (IS_iPhoneX) {
             
-            
-            if (keyBoardEndFrmae.origin.y == 812) {
+            if (keyBoardEndFrmae.origin.y == SCREEN_HEIGHT) {
                 selfNewFrame.origin.y -= [[UIApplication sharedApplication] statusBarFrame].size.height;
             }
-            
-          /*  // 输入框距离底边距离
-            CGFloat bottomHeight = [UIScreen mainScreen].bounds.size.height - (selfNewFrame.origin.y + selfNewFrame.size.height);
-            // 小于激活区高度，则保持激活区高度
-            if (bottomHeight < [UIScreen mainScreen].bounds.size.height) {
-                selfNewFrame.origin.y = keyBoardEndFrmae.origin.y - self.frame.size.height - [UIScreen mainScreen].bounds.size.height;
-            }*/
         }
         
         originRect.origin.y = selfNewFrame.origin.y - (originRect.size.height - selfNewFrame.size.height);

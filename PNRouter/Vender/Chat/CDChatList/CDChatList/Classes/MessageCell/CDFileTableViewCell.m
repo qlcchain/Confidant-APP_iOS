@@ -15,6 +15,8 @@
 #import "AESCipher.h"
 #import "RSAUtil.h"
 #import "NSData+Base64.h"
+#import "PNRouter-Swift.h"
+#import "MD5Util.h"
 
 @interface CDFileTableViewCell()
 @property (nonatomic ,strong) UIImageView *file_leftImgView;
@@ -240,10 +242,23 @@
         fileData = aesEncryptData(fileData, [msgKey dataUsingEncoding:NSUTF8StringEncoding]);
         NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
         NSString *dsKey = [RSAUtil publicEncrypt:self.msgModal.publicKey msgValue:msgKey];
+        if ([SystemUtil isSocketConnect]) {
+            
+            SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:5 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey];
+            [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+            
+        } else {
+            
+            NSString *dataPath = [[SystemUtil getTempBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName]];
+            
+            if ([fileData writeToFile:dataPath atomically:YES]) {
+                
+                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":self.msgModal.FromId,@"ToId":self.msgModal.ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName],@"FileMD5":[MD5Util md5WithPath:dataPath],@"FileSize":@(fileData.length),@"FileType":@(self.msgModal.msgType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":self.msgModal.messageId};
+                [SendToxRequestUtil sendFileWithFilePath:dataPath parames:parames];
+            }
+        }
         
-        SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-        [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:5 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey];
-        [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
         return;
     }
     NSString *friendid = self.msgModal.ToId;
@@ -263,33 +278,52 @@
         [self.tableView updateMessage:self.msgModal];
         
         @weakify_self
-        [RequestService downFileWithBaseURLStr:self.msgModal.filePath friendid:friendid progressBlock:^(CGFloat progress) {
-            
-        } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
-            
-            NSString *path = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:filePath];
-            NSData *data = [NSData dataWithContentsOfFile:path];
-            NSLog(@"下载文件成功! filePath ===== %@",filePath);
-            if (data.length > 0) {
-                if (msgkey) {
-                    NSString *datakey = [RSAUtil privateKeyDecryptValue:msgkey];
-                    data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                    [data writeToFile:path atomically:YES];
+        if ([SystemUtil isSocketConnect]) {
+            [RequestService downFileWithBaseURLStr:self.msgModal.filePath friendid:friendid progressBlock:^(CGFloat progress) {
+                
+            } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
+                
+                NSString *path = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:filePath];
+                NSData *data = [NSData dataWithContentsOfFile:path];
+                NSLog(@"下载文件成功! filePath ===== %@",filePath);
+                if (data.length > 0) {
+                    if (msgkey) {
+                        NSString *datakey = [RSAUtil privateKeyDecryptValue:msgkey];
+                        if (datakey && ![datakey isEmptyString]) {
+                            data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                            [SystemUtil removeDocmentFilePath:path];
+                            [data writeToFile:path atomically:YES];
+                             weakSelf.msgModal.msgState = CDMessageStateNormal;
+                        } else {
+                            weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+                        }
+                    } else {
+                        weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+                    }
+                   
+                } else {
+                    weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
                 }
-                weakSelf.msgModal.msgState = CDMessageStateNormal;
-            } else {
+                
+                [weakSelf.tableView updateMessage:weakSelf.msgModal];
+                
+            } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
                 weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+                [weakSelf.tableView updateMessage:weakSelf.msgModal];
+#ifdef DEBUG
+                NSLog(@"[CDChatList] 下载文件出现问题%@",error.localizedDescription);
+#endif
+            }];
+            
+        } else {
+            if (self.msgModal.isLeft) {
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.FromId toid:self.msgModal.ToId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId];
+            } else {
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:self.msgModal.FromId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId];
             }
             
-            [weakSelf.tableView updateMessage:weakSelf.msgModal];
-            
-        } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
-            weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
-            [weakSelf.tableView updateMessage:weakSelf.msgModal];
-#ifdef DEBUG
-            NSLog(@"[CDChatList] 下载文件出现问题%@",error.localizedDescription);
-#endif
-        }];
+        }
+        
         
     }
 }

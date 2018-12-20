@@ -21,6 +21,7 @@
 #import "OCTSubmanagerFriends.h"
 #import "ConnectView.h"
 
+
 @interface LoginViewController ()<OCTSubmanagerUserDelegate>
 {
     BOOL isLogin;
@@ -44,37 +45,20 @@
 }
 - (IBAction)loginAction:(id)sender {
     
-    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
-        isLogin = YES;
-        [self connectSocketWithIsShowHud:YES];
-        return;
-    }
+    
     
     if (_passTF.text.trim.length < 6 ) {
         [self.view showHint:@"The password must be greater than or equal to 6 digits"];
         return;
     }
      NSString *shaPass = [_passTF.text.trim SHA256];
-    /*
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) { // 走socket
-         // 判断socket是否连接
-        
-        NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
-        if (connectStatu == socketConnectStatusConnected) {
-            // 发送登陆请求
-             [SendRequestUtil sendUserLoginWithPass:shaPass];
-        } else {
-            isLogin = YES;
-            [AppD.window showHudInView:AppD.window hint:@"Connect Routher..."];
-            NSString *connectURL = [SystemUtil connectUrl];
-            AppD.currentSoketUrl = connectURL;
-            [SocketUtil.shareInstance connectWithUrl:connectURL];
-        }
-        // 连接
-        
-    }  else { // 走tox
-        
-    }*/
+    
+    
+    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+        isLogin = YES;
+        [self connectSocketWithIsShowHud:YES];
+        return;
+    }
     
     NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
     if (connectStatu == socketConnectStatusConnected) {
@@ -82,7 +66,7 @@
         [SendRequestUtil sendUserLoginWithPass:shaPass userid:self.selectRouther.userid];
     } else {
         isLogin = YES;
-        [AppD.window showHudInView:AppD.window hint:@"Connect Routher..."];
+        [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
         NSString *connectURL = [SystemUtil connectUrl];
         AppD.currentSoketUrl = connectURL;
         [SocketUtil.shareInstance connectWithUrl:connectURL];
@@ -129,7 +113,7 @@
             [[SocketUtil shareInstance] disconnect];
         }    // 连接
         if (isShow) {
-            [AppD.window showHudInView:AppD.window hint:@"Connect Routher..."];
+            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
         }
         
         NSString *connectURL = [SystemUtil connectUrl];
@@ -164,7 +148,7 @@
 {
   
     [self addRouterFriend];
-    NSLog(@"toxid = %@",manager.user.userAddress);
+
     
 }
 
@@ -237,8 +221,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
    
-    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString] && !AppD.manager) {
+    
+    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString] && !AppD.manager && !AppD.isLogOut) {
        [self performSelector:@selector(sendGB) withObject:self afterDelay:.1];
+    }
+    if (AppD.isLogOut) {
+        AppD.isLogOut = NO;
     }
     self.selectRouther = [RouterModel getConnectRouter];
     if (self.selectRouther) {

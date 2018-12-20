@@ -59,6 +59,10 @@
         if (codeValue != nil && codeValue.length > 0) {
             if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
                 [AppD.window showHint:@"You cannot add yourself as a friend."];
+            } else if (codeValue.length != 76) {
+                [AppD.window showHint:@"The two-dimensional code format is wrong."];
+            } else if ([SystemUtil isFriendWithFriendid:codeValue]) {
+                [AppD.window showHint:@"The other person is already your best friend."];
             } else {
                 [weakSelf addFriendRequest:codeValue];
             }

@@ -16,6 +16,9 @@
 #import "CreateRouterUserViewController.h"
 #import "RouterUserCodeViewController.h"
 #import "RouterModel.h"
+#import <MJRefresh/MJRefresh.h>
+#import <MJRefresh/MJRefreshStateHeader.h>
+#import <MJRefresh/MJRefreshHeader.h>
 
 @interface UserManagerViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -66,6 +69,12 @@
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _tableV.delegate = self;
     _tableV.dataSource = self;
+    _tableV.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshHeaderAction)];
+    // Hide the time
+    ((MJRefreshStateHeader *)_tableV.mj_header).lastUpdatedTimeLabel.hidden = YES;
+    // Hide the status
+    ((MJRefreshStateHeader *)_tableV.mj_header).stateLabel.hidden = YES;
+    
     [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
     [_tableV registerNib:[UINib nibWithNibName:ContactsCellReuse bundle:nil] forCellReuseIdentifier:ContactsCellReuse];
     //[self.dataArray addObject:@[@"Create user accounts",@"Create temporary accounts"]];
@@ -73,6 +82,9 @@
     [self addObserver];
     // 拉取用户
     [SendRequestUtil sendPullUserList];
+}
+- (void) refreshHeaderAction {
+     [SendRequestUtil sendPullUserList];
 }
 
 #pragma mark -UITableView delegate
@@ -184,6 +196,13 @@
 #pragma mark - noti
 - (void) reverPullUserList:(NSNotification *) noti
 {
+    [_tableV.mj_header endRefreshing];
+    
+    if (self.dataArray.count > 0) {
+        [self.dataArray removeAllObjects];
+        [self.dataArray addObject:@[@"Create user accounts"]];
+    }
+    
     NSArray *playod = noti.object;
     if (!playod || playod.count == 0) {
         [self.view showHint:@"The list of users is empty."];

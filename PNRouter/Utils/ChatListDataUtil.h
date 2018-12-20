@@ -13,6 +13,12 @@
 @property (nonatomic , strong) NSMutableArray *dataArray;
 @property (nonatomic , strong) NSMutableArray *friendArray;
 @property (nonatomic, assign) NSInteger tempMsgId;
+// tox文件发送 filenumber为key
+@property (nonatomic , strong) NSMutableDictionary *fileParames;
+// tox接收文件 filenumber为key
+@property (nonatomic , strong) NSMutableDictionary *fileNameParames;
+// 检测接收失败的定时器类
+@property (nonatomic , strong) NSMutableDictionary *pullTimerDic;
 + (instancetype) getShareObject;
 - (void) addFriendModel:(ChatListModel *) model;
 - (void) removeChatModelWithFriendID:(NSString *) friendID;

@@ -25,6 +25,7 @@
         model = [[RSAModel alloc] init];
         model.publicKey = [DDRSAWrapper base64EncodedStringPublicKey:publicKey];
         model.privateKey = [DDRSAWrapper base64EncodedStringPrivateKey:privateKey];
+        model.publicKey = [model.publicKey stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         NSLog(@"%@",model.publicKey);
         NSLog(@"%@",model.privateKey);
     }

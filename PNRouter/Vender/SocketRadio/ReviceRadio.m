@@ -270,6 +270,11 @@
     
     AppD.isConnect = NO;
     
+    if ([SystemUtil isVPNOn]) {
+        [self sendFailedNoti];
+        return;
+    }
+    
     AFNetworkReachabilityManager  *man=[AFNetworkReachabilityManager sharedManager];
     
     // AFNetworkReachabilityStatusUnknown          = -1,
@@ -327,8 +332,7 @@
 
 - (void) sendRequestWithRid:(NSString *) rid
 {
-    NSString *url = [NSString stringWithFormat:@"http://47.96.76.184:9000/v1/pprmap/Check?rid=%@",rid];
-    
+    NSString *url = [NSString stringWithFormat:@"https://pprouter.online:9001/v1/pprmap/Check?rid=%@",rid];
     @weakify_self
     [AFHTTPClientV2 requestWithBaseURLStr:url params:@{} httpMethod:HttpMethodGet successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
         

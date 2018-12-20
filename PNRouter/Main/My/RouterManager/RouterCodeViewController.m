@@ -31,7 +31,8 @@
 }
 
 - (IBAction)rightShareAction:(id)sender {
-     [self.shareView show];
+    // [self.shareView show];
+    [self shareCode];
 }
 
 - (IBAction)savePhoneAction:(id)sender {
@@ -53,7 +54,8 @@
 }
 
 - (IBAction)shareAction:(id)sender {
-     [self.shareView show];
+    // [self.shareView show];
+    [self shareCode];
 }
 
 #pragma mark layz
@@ -112,6 +114,13 @@
         default:
             break;
     }
+}
+
+- (void) shareCode
+{
+    NSArray *images = @[_codeImgView.image];
+    UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:images applicationActivities:nil];
+    [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

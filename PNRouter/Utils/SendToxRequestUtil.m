@@ -9,6 +9,7 @@
 #import "SendToxRequestUtil.h"
 #import "OCTSubmanagerChats.h"
 #import "SocketMessageUtil.h"
+#import "OCTSubmanagerFiles.h"
 
 @implementation SendToxRequestUtil
 + (void) sendTextMessageWithText:(NSString *) message manager:(id<OCTManager>) manage
@@ -24,6 +25,22 @@
     } failureBlock:^(NSError *error) {
         
     }];
+}
+
++ (void) sendFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames
+{
+    
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [AppD.manager.files sendFileAtPath:filePath moveToUploads:NO parames:parames  toFriendId:AppD.currentRouterNumber failureBlock:^(NSError * _Nonnull error) {
+            
+            NSLog(@"文件发送失败 = %@",error.description);
+            
+           [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_SEND_FAIELD_NOTI object:parames];
+        }];
+    });
 }
 
 @end

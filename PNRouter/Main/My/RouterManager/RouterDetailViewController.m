@@ -27,9 +27,14 @@
 
 @implementation RouterDetailViewController
 
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logOutSuccess:) name:REVER_LOGOUT_SUCCESS_NOTI object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,14 +65,10 @@
 
 - (void)logout {
     
+   
+    
     if ( _routerM.isConnected) {
-        if ([SystemUtil isSocketConnect]) {
-            [[SocketUtil shareInstance] disconnect];
-        } else {
-            AppD.manager = nil;
-        }
-        [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
-        [AppD setRootLogin];
+         [SendRequestUtil sendLogOut];
     } else { //删除router
         [RouterModel deleteRouterWithUsersn:_routerM.userSn];
         [self leftNavBarItemPressedWithPop:YES];
@@ -142,4 +143,17 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+#pragma mark -通知回调
+- (void) logOutSuccess:(NSNotification *) noti
+{
+    if ([SystemUtil isSocketConnect]) {
+        [[SocketUtil shareInstance] disconnect];
+    } else {
+        AppD.isConnect = NO;
+        [self logOutTox];
+    }
+    [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
+    AppD.isLogOut = YES;
+    [AppD setRootLogin];
+}
 @end

@@ -64,6 +64,7 @@
 @synthesize dskey;
 @synthesize publicKey;
 @synthesize messageStatu;
+@synthesize isDown;
 
 
 -(instancetype)init:(NSDictionary *)dic{

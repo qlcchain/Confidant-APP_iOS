@@ -18,6 +18,8 @@
 #import "SocketManageUtil.h"
 #import "NSString+Base64.h"
 #import "RequestService.h"
+#import "PNRouter-Swift.h"
+#import "MD5Util.h"
 
 @interface CDAudioTableViewCell()
 
@@ -178,33 +180,54 @@
         if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
             return;
         }
-        @weakify_self
-        [RequestService downFileWithBaseURLStr:data.filePath friendid:data.FromId progressBlock:^(CGFloat progress) {
-            
-        } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
-            
-            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
-                NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                NSString *datakey = [RSAUtil privateKeyDecryptValue:data.dskey];
-                fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                if ([fileData writeToFile:imgPath atomically:YES]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        data.msgState = CDMessageStateNormal;
-                        [weakSelf.tableView updateMessage:data];
-                        NSLog(@"下载语音成功! filePath = %@",filePath);
-                    });
-                }
-            });
-            
-        } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
-            [SystemUtil removeDocmentFileName:data.fileName friendid:data.FromId];
-            data.msgState = CDMessageStateDownloadFaild;
-            [weakSelf.tableView updateMessage:data];
+        if (data.isDown) {
+            return;
+        }
+        data.isDown = YES;
+        if ([SystemUtil isSocketConnect]) {
+            @weakify_self
+            [RequestService downFileWithBaseURLStr:data.filePath friendid:data.FromId progressBlock:^(CGFloat progress) {
+                
+            } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
+                
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
+                    NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
+                    
+                    NSString *datakey = [RSAUtil privateKeyDecryptValue:data.dskey];
+                    
+                    if (datakey && ![datakey isEmptyString]) {
+                        fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                        [SystemUtil removeDocmentFilePath:imgPath];
+                        if ([fileData writeToFile:imgPath atomically:YES]) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                data.msgState = CDMessageStateNormal;
+                                [weakSelf.tableView updateMessage:data];
+                                NSLog(@"下载语音成功! filePath = %@",filePath);
+                            });
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            data.msgState = CDMessageStateDownloadFaild;
+                            [weakSelf.tableView updateMessage:data];
+                        });
+                    }
+                    
+                });
+                data.isDown = NO;
+                
+            } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
+                data.isDown = NO;
+                [SystemUtil removeDocmentFileName:data.fileName friendid:data.FromId];
+                data.msgState = CDMessageStateDownloadFaild;
+                [weakSelf.tableView updateMessage:data];
 #ifdef DEBUG
-            NSLog(@"[CDChatList] 下载语音出现问题%@",error.localizedDescription);
+                NSLog(@"[CDChatList] 下载语音出现问题%@",error.localizedDescription);
 #endif
-        }];
+            }];
+        } else {
+            [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId];
+        }
     }
 }
 
@@ -253,33 +276,50 @@
         if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
             return;
         }
-        @weakify_self
-        [RequestService downFileWithBaseURLStr:data.filePath friendid:data.ToId progressBlock:^(CGFloat progress) {
-            
-        } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
-            
-            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                NSString *imgPath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:filePath];
-                NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                NSString *datakey = [RSAUtil privateKeyDecryptValue:data.srckey];
-                fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                if ([fileData writeToFile:imgPath atomically:YES]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        data.msgState = CDMessageStateNormal;
-                        [weakSelf.tableView updateMessage:data];
-                        NSLog(@"下载语音成功! filePath = %@",filePath);
-                    });
-                }
-            });
-            
-        } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
-            [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
-            data.msgState = CDMessageStateDownloadFaild;
-            [weakSelf.tableView updateMessage:data];
+        if (data.isDown) {
+            return;
+        }
+        data.isDown = YES;
+        if ([SystemUtil isSocketConnect]) {
+            @weakify_self
+            [RequestService downFileWithBaseURLStr:data.filePath friendid:data.ToId progressBlock:^(CGFloat progress) {
+                
+            } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
+                
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    NSString *imgPath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:filePath];
+                    NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
+                    NSString *datakey = [RSAUtil privateKeyDecryptValue:data.srckey];
+                    if (datakey && ![datakey isEmptyString]) {
+                        fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                        if ([fileData writeToFile:imgPath atomically:YES]) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                data.msgState = CDMessageStateNormal;
+                                [weakSelf.tableView updateMessage:data];
+                                NSLog(@"下载语音成功! filePath = %@",filePath);
+                            });
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            data.msgState = CDMessageStateDownloadFaild;
+                            [weakSelf.tableView updateMessage:data];
+                        });
+                    }
+                    
+                });
+                data.isDown = NO;
+            } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
+                data.isDown = NO;
+                [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
+                data.msgState = CDMessageStateDownloadFaild;
+                [weakSelf.tableView updateMessage:data];
 #ifdef DEBUG
-            NSLog(@"[CDChatList] 下载语音出现问题%@",error.localizedDescription);
+                NSLog(@"[CDChatList] 下载语音出现问题%@",error.localizedDescription);
 #endif
-        }];
+            }];
+        } else {
+            [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId];
+        }
     }
 }
 
@@ -351,6 +391,7 @@
         // 重新发送
         self.msgModal.msgState = CDMessageStateSending;
         [self.tableView updateMessage:self.msgModal];
+        
         NSString *filePath = [[SystemUtil getBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:self.msgModal.fileName];
         NSData *fileData = [NSData dataWithContentsOfFile:filePath];
         
@@ -359,9 +400,22 @@
         NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
         NSString *dsKey = [RSAUtil publicEncrypt:self.msgModal.publicKey msgValue:msgKey];
         
-        SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-        [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:2 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey];
-        [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+        if ([SystemUtil isSocketConnect]) {
+            SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:2 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey];
+            [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+        } else {
+            
+            NSString *dataPath = [[SystemUtil getTempBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName]];
+            
+            if ([fileData writeToFile:dataPath atomically:YES]) {
+                
+                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":self.msgModal.FromId,@"ToId":self.msgModal.ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName],@"FileMD5":[MD5Util md5WithPath:dataPath],@"FileSize":@(fileData.length),@"FileType":@(self.msgModal.msgType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":self.msgModal.messageId};
+                [SendToxRequestUtil sendFileWithFilePath:dataPath parames:parames];
+            }
+        }
+        
+       
         return;
     }
     

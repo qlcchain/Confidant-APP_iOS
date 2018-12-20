@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PNBaseViewController.h"
 
-@interface TZPhotoPreviewController : UIViewController
+@interface TZPhotoPreviewController : PNBaseViewController
 
 @property (nonatomic, strong) NSMutableArray *models;                  ///< All photo models / 所有图片模型数组
 @property (nonatomic, strong) NSMutableArray *photos;                  ///< All photos  / 所有图片数组

@@ -7,6 +7,7 @@
 #import "OCTFileInputProtocol.h"
 #import "OCTLogging.h"
 #import "NSError+OCTFile.h"
+#import "OCTFilePathInput.h"
 
 @interface OCTFileUploadOperation ()
 
@@ -42,8 +43,10 @@
     if (! self) {
         return nil;
     }
-
-    _input = fileInput;
+    OCTFilePathInput *pathInput = (OCTFilePathInput*) fileInput;
+    self.input = fileInput;
+   // self.input.filePath = pathInput.dataPath;
+    NSLog(@"-----%@1------%@2",fileInput,_input);
 
     return self;
 }
@@ -56,9 +59,9 @@
         [self finishWithSuccess];
         return;
     }
-
+    
     NSData *data = [self.input bytesWithPosition:position length:length];
-
+    
     if (! data) {
         [self finishWithError:[NSError sendFileErrorCannotReadFile]];
         return;

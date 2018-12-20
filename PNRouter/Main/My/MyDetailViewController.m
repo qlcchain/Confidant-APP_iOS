@@ -189,6 +189,11 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - layz
 - (NSMutableArray *)dataArray
 {

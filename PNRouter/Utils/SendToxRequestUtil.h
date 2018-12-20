@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SendToxRequestUtil : NSObject
 
 + (void) sendTextMessageWithText:(NSString *) message manager:(id<OCTManager>) manage;
-
++ (void) sendFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -25,6 +25,7 @@ static NSString *rsakey = @"rsakey";
         }
     } else {
         rsaModel = [RSAModel getObjectWithKeyValues:[modeJson mj_keyValues]];
+        rsaModel.publicKey = [rsaModel.publicKey stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         //NSLog(@"%@----%@",rsaModel.publicKey,rsaModel.privateKey);
     }
     return rsaModel;

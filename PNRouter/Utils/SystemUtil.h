@@ -25,8 +25,13 @@
 // 文件路径是否存在
 + (BOOL) filePathisExist:(NSString *) filePath;
 + (void) removeDocmentFileName:(NSString *) fileName friendid:(NSString *) friendid;
++ (void) removeDocmentFilePath:(NSString *) filePath;
 // 32位key
 + (NSString *) get16AESKey;
 + (BOOL) isSocketConnect;
 + (NSString *)getIPAddress;
++ (NSString *) getTempBaseFilePath:(NSString *) friendid;
++ (BOOL) isFriendWithFriendid:(NSString *) friendId;
++ (BOOL) writeDataToFileWithFilePath:(NSString *) filePath withData:(NSData *) data;
++ (BOOL)isVPNOn;
 @end

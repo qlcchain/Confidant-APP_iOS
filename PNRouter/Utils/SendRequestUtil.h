@@ -20,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId;
 + (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic code:(NSString *) code;
 + (void) sendRedMsgWithFriendId:(NSString *) friendId msgid:(NSString *) msgId;
++ (void) sendUpdateWithNickName:(NSString *) nickName;
++ (void) sendLogOut;
++ (void) sendToxSendFileWithParames:(NSDictionary *) parames;
++ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName msgId:(NSString *) msgId;
 @end
 
 NS_ASSUME_NONNULL_END
