@@ -9,6 +9,7 @@
 #import "AddFriendCellTableViewCell.h"
 #import "FriendModel.h"
 #import "NSDate+Category.h"
+#import "NSString+Base64.h"
 
 @implementation AddFriendCellTableViewCell
 
@@ -26,16 +27,24 @@
     if (model.dealStaus == 1) {
         _lblStatus.text = @"Accepted";
     } else if (model.dealStaus == 2) {
-        _lblStatus.text = @"Declined";
+        _lblStatus.text = @"Expired";
+    } else if (model.dealStaus == 3) {
+        _lblStatus.text = @"Pending";
     } else {
-//        NSTimeInterval timeInterval = [model.bg_createTime doubleValue]/1000;
-//        NSDate *createDate = [[NSDate alloc] initWithTimeIntervalSince1970:timeInterval];
-//        [c]
-//        if () {
-//
-//        }
-        _rightBackView.hidden = NO;
+        NSInteger day = labs([model.requestTime daysAfterDate:[NSDate date]]);
+        if (day > 7) {
+            model.dealStaus = 2;
+            _lblStatus.text = @"Expired";
+            [model bg_saveOrUpdate];
+        } else {
+             _rightBackView.hidden = NO;
+        }
     }
     _lblTitle.text = [StringUtil getUserNameFirstWithName:model.username];
+    NSString *msg = model.msg?:@"";
+    if (msg && ![msg isEmptyString]) {
+        msg = [msg base64DecodedString];
+    }
+    _lblMsg.text = msg;
 }
 @end

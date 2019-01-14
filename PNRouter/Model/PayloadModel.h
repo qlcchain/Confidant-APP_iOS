@@ -22,4 +22,5 @@
 @property (nonatomic, assign) CGFloat FileSize;
 @property (nonatomic, assign) NSInteger Sender;
 @property (nonatomic, assign) NSInteger Status;
+@property (nonatomic, assign) NSInteger DbId;
 @end

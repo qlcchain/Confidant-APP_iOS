@@ -5,7 +5,7 @@
 #import "OCTManagerConfiguration.h"
 #import "OCTDefaultFileStorage.h"
 
-static NSString *const kDefaultBaseDirectory = @"me.dvor.ppmTox";
+static NSString *const kDefaultBaseDirectory = @"pp.chatssss.ppmTox";
 
 @implementation OCTManagerConfiguration
 

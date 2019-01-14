@@ -21,9 +21,7 @@
 @property (nonatomic ,assign) BOOL isConnect; // 记录当前是不是已连接。如果是就不用再管第二次udp
 @property (nonatomic ,assign) BOOL isScaner;
 @property (nonatomic ,assign) BOOL isDisConnectLogin;
-@property (nonatomic, strong) NSString *curLoginActionToxid;
-@property (nonatomic, strong) NSString *curLoginActionUsername;
-@property (nonatomic, copy) NSString *currentSoketUrl;
+@property (nonatomic ,copy) NSString *regId;
 
 
 /**

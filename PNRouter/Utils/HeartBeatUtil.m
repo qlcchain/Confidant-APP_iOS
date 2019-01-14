@@ -7,7 +7,7 @@
 //
 
 #import "HeartBeatUtil.h"
-#import "UserModel.h"
+#import "UserConfig.h"
 #import "SocketMessageUtil.h"
 
 
@@ -15,7 +15,7 @@ dispatch_source_t _timer;
 
 @interface HeartBeatUtil ()
 
-@property (nonatomic, strong) NSTimer *timer;
+//@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
@@ -50,17 +50,24 @@ singleton_implementation(HeartBeatUtil)
 //}
 
 + (void)stop {
-    HeartBeatUtil *heartBeatUtil = HeartBeatUtil.sharedHeartBeatUtil;
-    if (heartBeatUtil.timer) {
-        [heartBeatUtil.timer invalidate];
-        heartBeatUtil.timer = nil;
+//    HeartBeatUtil *heartBeatUtil = HeartBeatUtil.sharedHeartBeatUtil;
+//    if (heartBeatUtil.timer) {
+//        [heartBeatUtil.timer invalidate];
+//        heartBeatUtil.timer = nil;
+//    }
+    if (_timer) {
+        dispatch_cancel(_timer);
     }
+    
 }
 
 + (void)heartBeat {
-    UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":@"HeartBeat",@"UserId":userM.userId?:@""};
-    [SocketMessageUtil sendTextWithParams:params];
+    UserConfig *userM = [UserConfig getShareObject];
+    if (userM.userId && userM.userId.length >0) {
+        NSDictionary *params = @{@"Action":@"HeartBeat",@"UserId":userM.userId?:@""};
+        [SocketMessageUtil sendTextWithParams:params];
+    }
+   
 }
 
 @end

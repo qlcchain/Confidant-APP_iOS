@@ -24,7 +24,9 @@
 #import "RouterModel.h"
 #import "WZLBadgeImport.h"
 #import "NSString+SHA256.h"
-
+#import "UserConfig.h"
+#import "HeartBeatUtil.h"
+#import "RoutherConfig.h"
 
 @interface PNTabbarViewController ()<UITabBarControllerDelegate>
 @property (nonatomic ,strong) SocketAlertView *alertView;
@@ -71,7 +73,7 @@
     self.delegate = self;
     
     [self addChildViewController:[[NewsViewController alloc] initWithManager:self.manager] text:@"Chats" imageName:@"btn_news"];
-    [self addChildViewController:[[FileViewController alloc] initWithManager:self.manager] text:@"Files" imageName:@"btn_file"];
+   // [self addChildViewController:[[FileViewController alloc] initWithManager:self.manager] text:@"Files" imageName:@"btn_file"];
     [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"Contacts" imageName:@"btn_contacts"];
     [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"Me" imageName:@"btn_my"];
     
@@ -88,7 +90,13 @@
     // 好友申请红点通知
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactHDShow) name:TABBAR_CONTACT_HD_NOTI object:nil];
     // chats红点通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatsHDShow) name:TABBAR_CHATS_HD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatsHDShow:) name:TABBAR_CHATS_HD_NOTI object:nil];
+    // tox重连成功通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxReConnectSuccessNoti:) name:TOX_RECONNECT_SUCCESS_NOTI object:nil];
+    // app口强制退出通知
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appLogoutNoti:) name:REVER_APP_LOGOUT_NOTI object:nil];
+    
+    
 }
 
 - (void) addChildViewController:(UIViewController *) childController text:(NSString *) text imageName:(NSString *) imageName {
@@ -121,12 +129,39 @@
     
 }
 
+- (void)logout {
+    [SendRequestUtil sendLogOut];
+    [HeartBeatUtil stop];
+    if ([SystemUtil isSocketConnect]) {
+        [RoutherConfig getRoutherConfig].currentRouterIp = @"";
+        [[SocketUtil shareInstance] disconnect];
+    } else {
+        AppD.isConnect = NO;
+    }
+    [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
+    AppD.isLogOut = YES;
+    [AppD setRootLogin];
+}
+
 #pragma mark - noti
+- (void) appLogoutNoti:(NSNotification *) noti
+{
+    [self logout];
+}
+
+- (void) toxReConnectSuccessNoti:(NSNotification *) noti
+{
+    // 重新登录
+    AppD.isDisConnectLogin = YES;
+    UserConfig *userM = [UserConfig getShareObject];
+    [SendRequestUtil sendUserLoginWithPass:[userM.passWord SHA256] userid:userM.userId showHud:NO];
+}
 - (void) socketOnconnectNoti:(NSNotification *) noti
 {
+    [HeartBeatUtil stop];
     AppD.isDisConnectLogin = YES;
-    UserModel *userM = [UserModel getUserModel];
-    [SendRequestUtil sendUserLoginWithPass:[userM.pass SHA256] userid:userM.userId];
+    UserConfig *userM = [UserConfig getShareObject];
+    [SendRequestUtil sendUserLoginWithPass:[userM.passWord SHA256] userid:userM.userId showHud:NO];
     [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"1"];
 }
 - (void) socketDisconnectNoti:(NSNotification *) noti
@@ -147,7 +182,9 @@
 - (void) connectSocket {
     [SocketCountUtil getShareObject].reConnectCount += 1;
     NSString *connectURL = [SystemUtil connectUrl];
-    [SocketUtil.shareInstance connectWithUrl:connectURL];
+    if (connectURL && ![connectURL isEmptyString]) {
+        [SocketUtil.shareInstance connectWithUrl:connectURL];
+    }
 }
 
 
@@ -160,25 +197,24 @@
     
     NSString *jsonModel =(NSString *)noti.object;
     NSArray *modelArr = [jsonModel mj_JSONObject];
+    if ([ChatListDataUtil getShareObject].friendArray.count>0) {
+        [[ChatListDataUtil getShareObject].friendArray removeAllObjects];
+    }
     if (modelArr) {
-        if ([ChatListDataUtil getShareObject].friendArray.count>0) {
-            [[ChatListDataUtil getShareObject].friendArray removeAllObjects];
-        }
-        [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:[FriendModel mj_objectArrayWithKeyValuesArray:modelArr]];
-        [[ChatListDataUtil getShareObject].dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ChatListModel *model = obj;
-            if (!model.friendName || [model.friendName isEmptyString]) {
-                [[ChatListDataUtil getShareObject] addFriendModel:obj];
+        NSArray *friendArr = [FriendModel mj_objectArrayWithKeyValuesArray:modelArr];
+        [friendArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FriendModel *model = obj;
+            if (model.remarks && ![model.remarks isEmptyString]) {
+                model.username = model.remarks;
             }
-            
         }];
-        [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
+        [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
     }
 }
 
 - (void) contactHDShow
 {
-    UITabBarItem *item1 = self.tabBar.items[2];
+    UITabBarItem *item1 = self.tabBar.items[1];
     if (AppD.showHD) {
         item1.badgeBgColor = MAIN_PURPLE_COLOR;
         [item1 showBadge];
@@ -186,24 +222,30 @@
         [item1 clearBadge];
     }
 }
-- (void) chatsHDShow
+- (void) chatsHDShow:(NSNotification *) noti
 {
-    __block BOOL isShow = NO;
-    [[ChatListDataUtil getShareObject].dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        ChatListModel *model = (ChatListModel *)obj;
-        if (model.isHD) {
-            isShow = YES;
-            *stop = YES;
+   
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        NSMutableArray *chats = noti.object;
+        __block BOOL isShow = NO;
+        [chats enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ChatListModel *model = (ChatListModel *)obj;
+            if (model.isHD) {
+                isShow = YES;
+                *stop = YES;
+            }
+        }];
+        
+        UITabBarItem *item1 = [self.tabBar.items firstObject];
+        if (isShow) {
+            item1.badgeBgColor = MAIN_PURPLE_COLOR;
+            [item1 showBadge];
+        } else {
+            [item1 clearBadge];
         }
-    }];
+    });
     
-    UITabBarItem *item1 = [self.tabBar.items firstObject];
-    if (isShow) {
-        item1.badgeBgColor = MAIN_PURPLE_COLOR;
-        [item1 showBadge];
-    } else {
-        [item1 clearBadge];
-    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -84,6 +84,9 @@ static const NSUInteger kNodesPerIteration = 4;
         }
 
         NSString *ipv4 = node[@"ipv4"];
+//        if ([[NSString getNotNullValue:ipv4] isEqualToString:@"tox.novg.net"]) {
+//            continue;
+//        }
         NSString *ipv6 = node[@"ipv6"];
         OCTToxPort udpPort = [node[@"port"] unsignedShortValue];
         NSArray<NSNumber *> *tcpPorts = node[@"tcp_ports"];

@@ -35,6 +35,6 @@
  * @param position The file or stream position from which to continue reading.
  * @param length The number of bytes requested for the current chunk.
  */
-- (void)chunkRequestWithPosition:(OCTToxFileSize)position length:(size_t)length;
+- (void)chunkRequestWithPosition:(OCTToxFileSize)position length:(size_t)length cancel:(BOOL) isCancel;
 
 @end

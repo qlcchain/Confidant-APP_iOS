@@ -15,6 +15,9 @@
     _hdBackView.layer.cornerRadius = 6.0f;
     _hdBackView.backgroundColor = RGB(44, 44, 44);
     _hdBackView.hidden = YES;
+    
+    _detailText.text = @"";
+    _detailText.hidden = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

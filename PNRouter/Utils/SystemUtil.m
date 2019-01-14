@@ -22,7 +22,7 @@
 #import "NSDateFormatter+Category.h"
 #import "ChatListDataUtil.h"
 #import "FriendModel.h"
-
+#import "UserConfig.h"
 
 @implementation SystemUtil
 + (void) playSystemSound
@@ -116,7 +116,7 @@
 {
     NSString *connectURL = @"";
     if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
-        connectURL = [NSString stringWithFormat:@"https://%@:%ld",[RoutherConfig getRoutherConfig].currentRouterIp,[[RoutherConfig getRoutherConfig].currentRouterPort integerValue]+1];
+        connectURL = [NSString stringWithFormat:@"https://%@:%d",[RoutherConfig getRoutherConfig].currentRouterIp,[[RoutherConfig getRoutherConfig].currentRouterPort integerValue]+1];
     }
     return connectURL;
 }
@@ -125,7 +125,7 @@
 {
    NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
-    NSString *filePath = [NSString stringWithFormat:@"%@/files/%@",@"Documents",friendid];
+    NSString *filePath = [NSString stringWithFormat:@"%@/files/%@/%@",@"Documents",[UserConfig getShareObject].userId,friendid];
     BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
     if (!isexit || !isDir) {
         [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];

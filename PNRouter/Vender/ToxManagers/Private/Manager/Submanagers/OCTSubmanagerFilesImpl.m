@@ -545,7 +545,16 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     OCTFileBaseOperation *operation = [self operationWithFileNumber:fileNumber friendNumber:friendNumber];
 
     if ([operation isKindOfClass:[OCTFileUploadOperation class]]) {
-        [(OCTFileUploadOperation *)operation chunkRequestWithPosition:position length:length];
+    
+        BOOL isCancel = NO;
+        NSDictionary *parames = [[ChatListDataUtil getShareObject].fileParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
+        if (parames) {
+            NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:parames[@"FileId"]];
+            if ([[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
+                isCancel = YES;
+            }
+        }
+        [(OCTFileUploadOperation *)operation chunkRequestWithPosition:position length:length cancel:isCancel];
     }
     else {
         NSLog(@"operation not found with fileNumber %d friendNumber %d", fileNumber, friendNumber);
@@ -557,7 +566,10 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
         NSLog(@"file 发送成功-----------%d",fileNumber);
         NSDictionary *parames = [[ChatListDataUtil getShareObject].fileParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
         if (parames) {
-            [SendRequestUtil sendToxSendFileWithParames:parames];
+           NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:parames[@"FileId"]];
+            if (![[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
+                 [SendRequestUtil sendToxSendFileWithParames:parames];
+            } 
         }
     }
 }

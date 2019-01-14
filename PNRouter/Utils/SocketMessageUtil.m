@@ -32,7 +32,7 @@
 #import "NSString+Base64.h"
 #import "RouterUserModel.h"
 #import "MutManagerUtil.h"
-
+#import "UserConfig.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -65,7 +65,9 @@ NSString *Action_LogOut = @"LogOut";
 NSString *Action_UserInfoUpdate = @"UserInfoUpdate";
 NSString *Action_SendFile = @"SendFile";
 NSString *Action_PullFile = @"PullFile";
-
+NSString *Action_ChangeRemarks = @"ChangeRemarks";
+NSString *Action_QueryFriend = @"QueryFriend";
+NSString *Action_PushLogout = @"PushLogout";
 @implementation SocketMessageUtil
 
 /**
@@ -192,6 +194,18 @@ NSString *Action_PullFile = @"PullFile";
         [SocketUtil.shareInstance sendWithText:text];
     }
 }
+/**
+ 发送文本消息
+ */
++ (void)sendText:(NSString *)text
+{
+    NSMutableDictionary *receiveDic = [NSMutableDictionary dictionaryWithDictionary:text.mj_JSONObject];
+    NSString *action = receiveDic[@"params"][@"Action"];
+    if (![Action_HeartBeat isEqualToString:action?:@""]) {
+        DDLogDebug(@"发送消息: %@",text);
+    }
+    
+}
 
 /**
  接收文本消息
@@ -232,14 +246,19 @@ NSString *Action_PullFile = @"PullFile";
             paramStr = [paramStr stringByReplacingOccurrencesOfString:@"\n" withString:@""];
             [receiveDic setObject:paramStr.mj_JSONObject forKey:@"params"];
         }
-        NSLog(@"params = %@",[MutManagerUtil getShareObject].mutString);
        
     }
     
     NSString *action = receiveDic[@"params"][@"Action"];
     
+    if (!([action isEqualToString:Action_login] || [action isEqualToString: Aciont_Register] || [action isEqualToString: Aciont_Recovery])) {
+        if (AppD.isLogOut) {
+            return;
+        }
+    }
+    
     if (![Action_HeartBeat isEqualToString:action]) {
-        NSLog(@"receive text: %@",text);
+        DDLogDebug(@"收到回复: %@",text);
     }
     
     if ([action isEqualToString:Action_login]) {
@@ -309,6 +328,12 @@ NSString *Action_PullFile = @"PullFile";
         [SocketMessageUtil handleSendFile:receiveDic];
     } else if ([action isEqualToString:Action_PullFile]) { // tox拉取文件回调
         [SocketMessageUtil handlePullFile:receiveDic];
+    } else if ([action isEqualToString:Action_ChangeRemarks]) { //修改好友备注
+        [SocketMessageUtil handleChangeRemarks:receiveDic];
+    } else if ([action isEqualToString:Action_QueryFriend]) { //查看好友关系
+        [SocketMessageUtil handleChangeQueryFriend:receiveDic];
+    } else if ([action isEqualToString:Action_PushLogout]) { // app收到登出消息
+        [SocketMessageUtil handlePushLogout:receiveDic];
     }
 }
 #pragma mark -APP新用户预注册
@@ -347,6 +372,7 @@ NSString *Action_PullFile = @"PullFile";
     } else if (retCode == 0) {
         // 开始心跳
         [HeartBeatUtil start];
+        [[NSNotificationCenter defaultCenter] postNotificationName:REGISTER_PUSH_NOTI object:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_REGISTER_RECEVIE_NOTI object:receiveDic];
     }
 }
@@ -385,7 +411,7 @@ NSString *Action_PullFile = @"PullFile";
     
     // 回复router
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
-    NSDictionary *parames = @{@"Action":Action_ReadMsgPush,@"RetCode":@"0",@"Msg":@"",@"ToId":[UserModel getUserModel].userId};
+    NSDictionary *parames = @{@"Action":Action_ReadMsgPush,@"RetCode":@"0",@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
     [SocketMessageUtil sendVersion2RecevieMessageWithParams:parames tempmsgid:tempmsgid];
     
     NSString *fromId = receiveDic[@"params"][@"UserId"];
@@ -409,6 +435,16 @@ NSString *Action_PullFile = @"PullFile";
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:REVER_UPDATE_NICKNAME_SUCCESS_NOTI object:nil];
+    } else {
+        [AppD.window showHint:@"Update NickName Failure."];
+    }
+}
+#pragma mark - 修改好友昵称
++ (void) handleChangeRemarks:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:REVER_UPDATE_FRIEND_NICKNAME_SUCCESS_NOTI object:nil];
     } else {
         [AppD.window showHint:@"Update NickName Failure."];
     }
@@ -438,7 +474,7 @@ NSString *Action_PullFile = @"PullFile";
     NSDictionary *jsonDic = receiveDic[@"params"];
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     FileModel *fileModel = [FileModel mj_objectWithKeyValues:jsonDic];
-    
+    fileModel.timestamp = [receiveDic[@"timestamp"] integerValue];
     NSString *retcode = @"0"; // 0：请求接收到   1：其他错误
     NSDictionary *params = @{@"Action":Action_PushFile,@"Retcode":retcode,@"FromId":fileModel.FromId,@"ToId":fileModel.ToId,@"MsgId":fileModel.MsgId};
     [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
@@ -450,11 +486,13 @@ NSString *Action_PullFile = @"PullFile";
     chatModel.chatTime = [NSDate date];
     chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToID];
     if (fileModel.FileType == 1) {
-        chatModel.lastMessage = @"[图片]";
+        chatModel.lastMessage = @"[photo]";
     } else if (fileModel.FileType == 2) {
-        chatModel.lastMessage = @"[语音]";
+        chatModel.lastMessage = @"[voice]";
     } else if (fileModel.FileType == 5){
-        chatModel.lastMessage = @"[文件]";
+        chatModel.lastMessage = @"[file]";
+    } else if (fileModel.FileType == 4) {
+        chatModel.lastMessage = @"[video]";
     }
     
     // 收到好友消息播放系统声音
@@ -476,10 +514,29 @@ NSString *Action_PullFile = @"PullFile";
         
     }
     [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
-    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIE_FILE_NOTI object:fileModel];
     
 }
+
++ (void) handleChangeQueryFriend:(NSDictionary *)receiveDic {
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 1) {
+         NSString *toId = receiveDic[@"params"][@"FriendId"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:REVER_QUERY_FRIEND_NOTI object:toId?:@""];
+    }
+}
+
++ (void) handlePushLogout:(NSDictionary *)receiveDic {
+    
+   NSString *userId = receiveDic[@"params"][@"UserId"];
+    if ([[NSString getNotNullValue:userId] isEqualToString:[UserConfig getShareObject].userId]) {
+        NSDictionary *params = @{@"Action":Action_PushLogout,@"RetCode":@(0),@"ToId":[UserConfig getShareObject].userId,@"Msg":@""};
+        [SocketMessageUtil sendTextWithParams:params];
+        [[NSNotificationCenter defaultCenter] postNotificationName:REVER_APP_LOGOUT_NOTI object:nil];
+    }
+}
+
+
 
 + (void)handleAddFriendPush:(NSDictionary *)receiveDic {
     FriendModel *model = [[FriendModel alloc] init];
@@ -487,34 +544,58 @@ NSString *Action_PullFile = @"PullFile";
     model.userId = receiveDic[@"params"][@"FriendId"];
     model.username= [receiveDic[@"params"][@"NickName"] base64DecodedString];
     model.publicKey= receiveDic[@"params"][@"UserKey"];
+    model.msg= receiveDic[@"params"][@"Msg"];
+    model.requestTime = [NSDate date];
     model.bg_createTime = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"timestamp"]];
-    model.owerId = [UserModel getUserModel].userId;
+    model.owerId = [UserConfig getShareObject].userId;
     model.bg_tableName = FRIEND_REQUEST_TABNAME;
     
-    NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(model.userId)]];
+    NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(model.userId),bg_sqlKey(@"owerId"),bg_sqlValue(model.owerId)]];
     if (!finfAlls || finfAlls.count == 0) {
-        [model bg_saveOrUpdateAsync:nil];
-        // 弹出对方请求加您为好友的通知
-        NotifactionView *notiView = [NotifactionView loadNotifactionView];
-        notiView.lblTtile.text = [NSString stringWithFormat:@"\"%@\" Request to friend you",model.username];
-        [notiView show];
-        // 播放系统声音
-        [SystemUtil playSystemSound];
-        AppD.showHD = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:REQEUST_ADD_FRIEND_NOTI object:nil];
+        if ([SystemUtil isFriendWithFriendid:model.userId]) {
+            model.dealStaus = 1;
+            [SocketMessageUtil sendAgreedOrRefusedWithFriendMode:model withType:[NSString stringWithFormat:@"%d",0]];
+            [model bg_saveOrUpdate];
+        } else {
+            // 弹出对方请求加您为好友的通知
+            NotifactionView *notiView = [NotifactionView loadNotifactionView];
+            notiView.lblTtile.text = [NSString stringWithFormat:@"\"%@\" Request to friend you",model.username];
+            [notiView show];
+            // 播放系统声音
+            [SystemUtil playSystemSound];
+            AppD.showHD = YES;
+            [model bg_saveOrUpdate];
+            [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:REQEUST_ADD_FRIEND_NOTI object:nil];
+        }
     } else {
         FriendModel *model1 = [finfAlls firstObject];
-       // if (model1.dealStaus == 2) {
+         model1.requestTime = [NSDate date];
+        if (model1.dealStaus == 2) {
             model1.dealStaus = 0;
+            // 弹出对方请求加您为好友的通知
+            NotifactionView *notiView = [NotifactionView loadNotifactionView];
+            notiView.lblTtile.text = [NSString stringWithFormat:@"\"%@\" Request to friend you",model.username];
+            [notiView show];
+            // 播放系统声音
+            [SystemUtil playSystemSound];
+            AppD.showHD = YES;
+            [model1 bg_saveOrUpdate];
+            [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:REQEUST_ADD_FRIEND_NOTI object:nil];
+        } else {
+            model1.dealStaus = 1;
             model1.publicKey= receiveDic[@"params"][@"UserKey"];
             model1.bg_createTime = model.bg_createTime;
-     //   }
-        [model1 bg_saveOrUpdateAsync:nil];
+            [SocketMessageUtil sendAgreedOrRefusedWithFriendMode:model1 withType:[NSString stringWithFormat:@"%d",0]];
+            [model1 bg_saveOrUpdate];
+        }
+        
+        
     }
     
     NSString *retcode = @"0"; // 0：请求接收到   1：其他错误
-    NSDictionary *params = @{@"Action":@"AddFriendPush",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserModel getUserModel].userId};
+    NSDictionary *params = @{@"Action":@"AddFriendPush",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
     
      NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
@@ -544,7 +625,7 @@ NSString *Action_PullFile = @"PullFile";
         
     }
     NSString *retcode = @"0"; // 0：消息接收到  1：其他错误
-    NSDictionary *params = @{@"Action":@"AddFriendReply",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserModel getUserModel].userId};
+    NSDictionary *params = @{@"Action":@"AddFriendReply",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
     
@@ -558,6 +639,15 @@ NSString *Action_PullFile = @"PullFile";
         });
         
     }];
+    
+     NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(UserId),bg_sqlKey(@"owerId"),bg_sqlValue([UserModel getUserModel].userId)]];
+    if (finfAlls && finfAlls.count > 0) {
+        FriendModel *model = finfAlls[0];
+        model.dealStaus = 1;
+        [model bg_saveOrUpdate];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:FRIEND_ACCEPED_NOTI object:UserId];
 }
 
 + (void)handleDelFriendCmd:(NSDictionary *)receiveDic {
@@ -586,8 +676,6 @@ NSString *Action_PullFile = @"PullFile";
     [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:FRIEND_DELETE_MY_NOTI object:nil];
-    // 发送更新chatlist列表通知
-    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
 }
 #pragma mark -消息发送成功
 + (void)handleSendMsg:(NSDictionary *)receiveDic {
@@ -626,6 +714,7 @@ NSString *Action_PullFile = @"PullFile";
     CDMessageModel *model = [[CDMessageModel alloc] init];
     model.FromId = FromId;
     model.ToId = ToId;
+    model.TimeStatmp = [receiveDic[@"timestamp"] integerValue];
     model.messageId = MsgId;
     model.srckey = SrcKey;
     model.dskey = DstKey;
@@ -636,7 +725,7 @@ NSString *Action_PullFile = @"PullFile";
    
     // 添加到chatlist
     ChatListModel *chatModel = [[ChatListModel alloc] init];
-    chatModel.myID = model.ToId;
+    chatModel.myID = [UserConfig getShareObject].userId; //model.ToId;
     chatModel.friendID = model.FromId;
     chatModel.chatTime = [NSDate date];
     chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToID];
@@ -660,9 +749,9 @@ NSString *Action_PullFile = @"PullFile";
        
     }
     [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
-    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:model];
+    [[NSNotificationCenter defaultCenter] postNotificationName:RECEIVE_MESSAGE_NOTI object:model];
     NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
-    NSDictionary *params = @{@"Action":@"PushMsg",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserModel getUserModel].userId};
+    NSDictionary *params = @{@"Action":@"PushMsg",@"Retcode":retcode,@"Msg":@"",@"ToId":model.ToId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
 }
@@ -702,7 +791,7 @@ NSString *Action_PullFile = @"PullFile";
     NSInteger OnlineStatus = [receiveDic[@"params"][@"OnlineStatus"] integerValue];
     
     NSString *retcode = @"0"; // 0：消息删除成功   1：目标不可达   2：其他错误
-    NSDictionary *params = @{@"Action":Action_OnlineStatusPush,@"Retcode":retcode,@"Msg":@"",@"ToId":[UserModel getUserModel].userId};
+    NSDictionary *params = @{@"Action":Action_OnlineStatusPush,@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
     
@@ -757,15 +846,10 @@ NSString *Action_PullFile = @"PullFile";
 }
 
 + (void)handleAddFriendReq:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
-    NSString *msg = receiveDic[@"params"][@"Msg"];
-    if (retCode == 0) { // 发送成功
-        [AppD.window showHint:@"Send Success"];
-    } else if (retCode == 1) { // 添加失败
-        [AppD.window showHint:@"Send Failure"];
-    } else if (retCode == 2) { // 已经是好友关系
-        [AppD.window showHint:@"Already a good friend"];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_FRIEND_NOTI object:@(retCode)];
+    
 }
 
 + (void)handleLogin:(NSDictionary *)receiveDic {
@@ -774,10 +858,19 @@ NSString *Action_PullFile = @"PullFile";
     NSString *userId = receiveDic[@"params"][@"UserId"];
     NSInteger needSynch = [receiveDic[@"params"][@"NeedSynch"] integerValue];
     NSString *userName = receiveDic[@"params"][@"NickName"];
+    NSString *userSn = receiveDic[@"params"][@"UserSn"];
+    NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
+    NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
+    
+    [UserConfig getShareObject].userId = userId;
+    [UserConfig getShareObject].userName = [userName base64DecodedString];
+    [UserConfig getShareObject].usersn = userSn;
+    [UserConfig getShareObject].dataFileVersion = dataFileVersion;
+    [UserConfig getShareObject].dataFilePay = dataFilePay;
     
     if (retCode == 0) { // 成功
         if (userId.length > 0) {
-            [UserModel updateUserLocalWithUserId:userId withUserName:userName];
+            [UserModel updateUserLocalWithUserId:userId withUserName:userName userSn:userSn];
         }
         // 同步data文件
         if (needSynch == 0) { // 不需要 同步
@@ -787,22 +880,12 @@ NSString *Action_PullFile = @"PullFile";
         } else if (needSynch == 2) { // app从router拉取data文件
             
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:SOCKET_LOGIN_SUCCESS_NOTI object:nil];
-        // 开始心跳
+        [[NSNotificationCenter defaultCenter] postNotificationName:REGISTER_PUSH_NOTI object:nil];
+       // 开始心跳
         [HeartBeatUtil start];
-    } else if (retCode == 2) { // routeid不对
-        [AppD.window showHint:@"Routeid wrong."];
-    } else if (retCode == 1) { //需要验证
-        [AppD.window showHint:@"Need to verify"];
-    }else if (retCode == 3) { //uid错误
-        [AppD.window showHint:@"uid wrong."];
-    }else if (retCode == 4) { //登陆密码错误
-        [AppD.window showHint:@"Login password error."];
-    } else if (retCode == 5) { //验证码错误
-        [AppD.window showHint:@"Verification code error."];
-    }else { // 其它错误
-         [AppD.window showHint:@"Login failed Other error."];
-    }
+    } 
+    [[NSNotificationCenter defaultCenter] postNotificationName:SOCKET_LOGIN_SUCCESS_NOTI object:@(retCode)];
+    
 }
 
 + (NSDictionary *)getBaseParams {

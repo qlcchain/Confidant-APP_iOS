@@ -165,6 +165,15 @@ static const CFTimeInterval kMinUpdateEtaInterval = 1.0;
     });
 }
 
+- (void) cancelFileSend
+{
+    self.executing = NO;
+    self.finished = YES;
+    [AppD.manager.files sendCancelFileNumber:_fileNumber error:nil];
+    [self cancel];
+    
+}
+
 - (void)finishWithError:(nonnull NSError *)error
 {
     NSParameterAssert(error);

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyViewController">
             <connections>
+                <outlet property="lblVersion" destination="7E7-vC-C4e" id="tJM-PV-0Zq"/>
                 <outlet property="tableV" destination="Bqe-xs-5Ys" id="spy-YA-DTy"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -49,13 +50,21 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </tableView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7E7-vC-C4e">
+                                    <rect key="frame" x="171.5" y="550.5" width="32" height="15.5"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                    <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="Bqe-xs-5Ys" firstAttribute="leading" secondItem="ZKY-zX-qc0" secondAttribute="leading" id="KCm-Ti-4Fy"/>
+                                <constraint firstAttribute="bottom" secondItem="7E7-vC-C4e" secondAttribute="bottom" constant="17" id="Mhz-a0-gNW"/>
                                 <constraint firstAttribute="bottom" secondItem="Bqe-xs-5Ys" secondAttribute="bottom" id="VoW-Wt-Mb8"/>
                                 <constraint firstItem="Bqe-xs-5Ys" firstAttribute="top" secondItem="ZKY-zX-qc0" secondAttribute="top" id="WwZ-zU-dcg"/>
                                 <constraint firstAttribute="trailing" secondItem="Bqe-xs-5Ys" secondAttribute="trailing" id="fSh-8I-Mwe"/>
+                                <constraint firstItem="7E7-vC-C4e" firstAttribute="centerX" secondItem="ZKY-zX-qc0" secondAttribute="centerX" id="gFn-3n-9lN"/>
                             </constraints>
                         </view>
                     </subviews>

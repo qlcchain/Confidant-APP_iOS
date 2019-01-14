@@ -42,8 +42,7 @@
     _lblName.text =  model.friendName;
     _lblNameJX.text = [StringUtil getUserNameFirstWithName:_lblName.text];
     _lblContent.text = model.lastMessage?:@"";
-    _lblTime.text = [model.chatTime formattedTime];
+    _lblTime.text = [model.chatTime minuteDescription];
 }
-
 
 @end

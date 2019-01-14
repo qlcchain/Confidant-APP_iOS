@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,15 +19,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="46.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wy8-Cg-UUl">
-                        <rect key="frame" x="16" y="15" width="37" height="17.5"/>
-                        <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" id="Re0-Qj-zuu"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                        <color key="textColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrive" translatesAutoresizingMaskIntoConstraints="NO" id="jSf-WQ-HxL">
                         <rect key="frame" x="296" y="16.5" width="8" height="14"/>
                         <constraints>
@@ -36,7 +27,7 @@
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ii-pt-6F3">
-                        <rect key="frame" x="16" y="46.5" width="304" height="0.5"/>
+                        <rect key="frame" x="44" y="46" width="276" height="0.5"/>
                         <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="TuR-jW-Md4"/>
@@ -52,19 +43,33 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDX-ph-KvW">
-                        <rect key="frame" x="63" y="24" width="220" height="0.0"/>
+                        <rect key="frame" x="91" y="23.5" width="192" height="0.0"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <color key="textColor" red="0.52156862745098043" green="0.52156862745098043" blue="0.52156862745098043" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share app" translatesAutoresizingMaskIntoConstraints="NO" id="mUP-XD-PHv">
+                        <rect key="frame" x="16" y="16.5" width="16" height="14"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wy8-Cg-UUl">
+                        <rect key="frame" x="44" y="14.5" width="37" height="17.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" id="Re0-Qj-zuu"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                        <color key="textColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="jSf-WQ-HxL" secondAttribute="trailing" constant="16" id="3II-Ru-CoH"/>
-                    <constraint firstItem="wy8-Cg-UUl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="B2v-YB-u9S"/>
+                    <constraint firstItem="mUP-XD-PHv" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="APg-8n-Q1G"/>
+                    <constraint firstItem="9ii-pt-6F3" firstAttribute="leading" secondItem="wy8-Cg-UUl" secondAttribute="leading" id="Bc2-G3-Wjg"/>
                     <constraint firstItem="a3I-A3-v7C" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Byo-qh-y38"/>
+                    <constraint firstItem="mUP-XD-PHv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="F7G-jj-caz"/>
                     <constraint firstItem="jSf-WQ-HxL" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="KPA-hA-lnG"/>
                     <constraint firstItem="wy8-Cg-UUl" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="MHR-Hj-pGo"/>
-                    <constraint firstItem="9ii-pt-6F3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="NqZ-Ki-ZVj"/>
+                    <constraint firstItem="wy8-Cg-UUl" firstAttribute="leading" secondItem="mUP-XD-PHv" secondAttribute="trailing" constant="12" id="X6k-wu-PQd"/>
                     <constraint firstItem="jSf-WQ-HxL" firstAttribute="leading" secondItem="a3I-A3-v7C" secondAttribute="trailing" constant="13" id="ZO5-wX-nHJ"/>
                     <constraint firstItem="jDX-ph-KvW" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="eKh-Ku-lku"/>
                     <constraint firstItem="jDX-ph-KvW" firstAttribute="leading" secondItem="wy8-Cg-UUl" secondAttribute="trailing" constant="10" id="hNz-xZ-I1c"/>
@@ -75,15 +80,17 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="iconImageView" destination="mUP-XD-PHv" id="ntb-UK-uZa"/>
                 <outlet property="lblContent" destination="wy8-Cg-UUl" id="Q1Y-o4-NWu"/>
                 <outlet property="lblSubContent" destination="jDX-ph-KvW" id="K4D-JQ-53f"/>
                 <outlet property="rightJD" destination="jSf-WQ-HxL" id="9Sb-1z-rfx"/>
                 <outlet property="subBtn" destination="a3I-A3-v7C" id="cp6-Vd-Oq1"/>
             </connections>
-            <point key="canvasLocation" x="-867" y="-98"/>
+            <point key="canvasLocation" x="-867.20000000000005" y="-98.50074962518741"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon_arrive" width="8" height="14"/>
+        <image name="share app" width="16" height="14"/>
     </resources>
 </document>

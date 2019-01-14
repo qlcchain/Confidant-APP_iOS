@@ -15,6 +15,7 @@
 #import "FriendModel.h"
 #import "RSAModel.h"
 #import "SystemUtil.h"
+#import "FriendRequestViewController.h"
 //#import "NSString+Base64.h"
 
 @interface AddFriendViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
@@ -23,8 +24,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (nonatomic ,strong) NSMutableArray *dataArray;
 
-@property (nonatomic ,assign) NSInteger currentRow;
-@property (nonatomic ,assign) NSInteger currentTag;
+@property (nonatomic ,assign)  NSInteger currentRow;
+@property (nonatomic ,assign)  NSInteger currentTag;
 @end
 
 @implementation AddFriendViewController
@@ -44,21 +45,33 @@
 - (IBAction)rightAction:(id)sender {
     @weakify_self
     QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
-        if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
-            [AppD.window showHint:@"You cannot add yourself as a friend."];
-        } else if (codeValue.length != 76) {
-            [AppD.window showHint:@"The two-dimensional code format is wrong."];
-        } else if ([SystemUtil isFriendWithFriendid:codeValue]) {
-            [AppD.window showHint:@"The other person is already your best friend."];
-        } else {
-            [weakSelf addFriendRequest:codeValue];
+        if (codeValue != nil && codeValue.length > 0) {
+            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
+            codeValue = codeValues[0];
+            if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
+                [AppD.window showHint:@"You cannot add yourself as a friend."];
+            } else if (codeValue.length != 76) {
+                [AppD.window showHint:@"The two-dimensional code format is wrong."];
+            }  else {
+                NSString *nickName = @"";
+                if (codeValues.count>1) {
+                    nickName = codeValues[1];
+                }
+                [weakSelf addFriendRequest:codeValue nickName:nickName];
+            }
         }
     }];
     [self presentModalVC:vc animated:YES];
 }
 #pragma mark -Operation-
-- (void)addFriendRequest:(NSString *)friendId {
-    [SendRequestUtil sendAddFriendWithFriendId:friendId];
+- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName{
+    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -75,7 +88,7 @@
     [self checkData];
  
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(realFriendNoti:) name:DEAL_FRIEND_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:REQEUST_ADD_FRIEND_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:FRIEND_ACCEPED_NOTI object:nil];
 }
 
 #pragma mark -查询好友请求数据库
@@ -129,14 +142,18 @@
     [cell setFriendModel:model];
     @weakify_self
     [cell setRightBlcok:^(NSInteger tag, NSInteger row) {
-        [self.view showHudInView:self.view hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
-        weakSelf.currentRow = row;
-        weakSelf.currentTag = tag;
-        FriendModel *models = weakSelf.dataArray[row];
-        [SocketMessageUtil sendAgreedOrRefusedWithFriendMode:models withType:[NSString stringWithFormat:@"%ld",tag-1]];
+        [weakSelf.view showHudInView:weakSelf.view hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [weakSelf sendAgreeFriendWithRow:row];
     }];
     
     return cell;
+}
+
+- (void) sendAgreeFriendWithRow:(NSInteger) row
+{
+    self.currentRow = row;
+    FriendModel *models = self.dataArray[row];
+    [SocketMessageUtil sendAgreedOrRefusedWithFriendMode:models withType:[NSString stringWithFormat:@"%d",0]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -153,38 +170,46 @@
 {
     [self.view hideHud];
     NSString *statu = (NSString *)noti.object;
-    FriendModel *friendModel = (FriendModel *)self.dataArray[_currentRow];
+    FriendModel *friendModel = (FriendModel *)self.dataArray[self.currentRow];
     if ([statu isEqualToString:@"0"]) { // 服务器处理失败
         [AppD.window showHint:@"处理失败"];
     } else {
-        friendModel.dealStaus = _currentTag;
-        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_currentRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        friendModel.dealStaus = 1;
+        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         if (_currentTag == 1) { // 同意
             // 保存到好友列表
-            FriendModel *model = [[FriendModel alloc] init];
-            model.bg_tableName = FRIEND_LIST_TABNAME;
-            model.username = friendModel.username;
-            model.userId = friendModel.userId;
-            [model bg_saveOrUpdateAsync:^(BOOL isSuccess) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FRIEND_LIST_CHANGE_NOTI object:nil];
-                    
-                });
-            }];
+//            FriendModel *model = [[FriendModel alloc] init];
+//            model.bg_tableName = FRIEND_LIST_TABNAME;
+//            model.username = friendModel.username;
+//            model.userId = friendModel.userId;
+//            [model bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:FRIEND_LIST_CHANGE_NOTI object:nil];
+//
+//                });
+//            }];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:FRIEND_LIST_CHANGE_NOTI object:nil];
+            
         } else { // 拒绝
             
         }
-        
-        friendModel.bg_tableName = FRIEND_REQUEST_TABNAME;
-        [friendModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
-            
-        }];
+        [friendModel bg_saveOrUpdateAsync:nil];
     }
 }
 - (void) requestAddFriendNoti:(NSNotification *) noti
 {
-    [self checkData];
+    NSString *userId = noti.object;
+    [self.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *moodel = obj;
+        if ([moodel.userId isEqualToString:userId]) {
+            moodel.dealStaus = 1;
+            *stop = YES;
+        }
+    }];
+    [_tableV reloadData];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

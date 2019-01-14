@@ -226,12 +226,13 @@
 #endif
             }];
         } else {
-            [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId];
+            [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"2"];
         }
     }
 }
 
 -(void)configAudio_Right:(CDChatMessage)data {
+    
     if (!self.wave_right.superview) {
         [self.bubbleImage_right addSubview:self.wave_right];
     }
@@ -318,7 +319,7 @@
 #endif
             }];
         } else {
-            [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId];
+            [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"1"];
         }
     }
 }
@@ -338,6 +339,7 @@
 }
 
 -(void)longPressGes:(UILongPressGestureRecognizer *)recognizer{
+    
     
     CGPoint curPoint = [recognizer locationInView:self];
     if (!CGRectContainsPoint(self.bounds, curPoint)){

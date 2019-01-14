@@ -17,6 +17,11 @@
 #import "FriendModel.h"
 #import "ChatViewController.h"
 #import "ChatListDataUtil.h"
+#import "ChatListModel.h"
+#import "PersonCodeViewController.h"
+#import "EditTextViewController.h"
+#import "UserConfig.h"
+#import "SystemUtil.h"
 
 @interface FriendDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -42,7 +47,7 @@
         _myHeadView = [MyHeadView loadMyHeadView];
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpDetailvc)];
         
-        _myHeadView.lblName.text = self.friendModel.username;
+        _myHeadView.lblName.text = self.friendModel.remarks;
         [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:self.friendModel.username]];
         
         _myHeadView.userInteractionEnabled = YES;
@@ -76,6 +81,13 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    _lblNavTitle.text = self.friendModel.username;
+    [_tableV reloadData];
+    [super viewDidAppear:animated];
+}
+
 #pragma mark - tableviewDataSourceDelegate
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -85,7 +97,7 @@
     if (section == 0) {
         return 2;
     } else if (section == 1) {
-        return 3;
+        return 0;
     } else {
         return 1;
     }
@@ -114,8 +126,12 @@
          GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupCellReuse];
         if (indexPath.row == 0) {
             cell.lblName.text = @"Add Nickname";
+            cell.detailText.hidden = NO;
+            cell.detailText.text = self.friendModel.username;
         } else {
             cell.lblName.text = @"Share Contact";
+            cell.detailText.hidden = YES;
+            cell.detailText.text = @"";
         }
         return cell;
     } else if (indexPath.section == 1) {
@@ -144,6 +160,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 0) {
+        if (indexPath.row == 1) { // share code
+            PersonCodeViewController *vc = [[PersonCodeViewController alloc] initWithUserId:self.friendModel.userId userNaem:self.friendModel.username];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else { // nickname
+            EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditFriendAlis friendModel:self.friendModel];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
 }
 
 #pragma mark - Operation
@@ -166,11 +191,17 @@
     // 删除本地聊天列表
     [[ChatListDataUtil getShareObject] removeChatModelWithFriendID:_friendModel.userId];
     // 删除好友请求表
-    [FriendModel bg_delete:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(_friendModel.userId?:@"")]];
+    [FriendModel bg_delete:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(_friendModel.userId?:@""),bg_sqlKey(@"owerId"),bg_sqlValue([UserConfig getShareObject].userId?:@"")]];
     // 删除好友表
     [FriendModel bg_delete:FRIEND_LIST_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(_friendModel.userId?:@"")]];
+    // 删除聊天文件
+    NSString *filePath = [SystemUtil getBaseFilePath:_friendModel.userId];
+    [SystemUtil removeDocmentFilePath:filePath];
+    
+    // 删除本地聊天记录
+    //[ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(_friendModel.userId?:@"")]];
     // 发送更新chatlist列表通知
-    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
+   // [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
     [self backAction:nil];
     
 }

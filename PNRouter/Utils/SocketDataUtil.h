@@ -11,7 +11,8 @@
 @interface SocketDataUtil : NSObject
 
 @property (nonatomic ,assign) BOOL isComplete;
-
+@property (nonatomic ,assign) BOOL isCancel;
+@property (nonatomic ,strong) NSString *fileid;
 
 //- (void) sendFileWithParames:(NSDictionary *) parames fileData:(NSData *) data;
 

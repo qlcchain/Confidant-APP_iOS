@@ -14,5 +14,6 @@ static NSString *GroupCellReuse = @"GroupCell";
 @interface GroupCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UIView *hdBackView;
+@property (weak, nonatomic) IBOutlet UILabel *detailText;
 
 @end

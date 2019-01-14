@@ -40,7 +40,7 @@ NSString *CTDataConfigIdentity(CTDataConfig config){
     config.clickStrColor = [UIColor blueColor].CGColor;
     config.lineSpace = 2;
     config.textSize = 16;
-    config.lineBreakMode = NSLineBreakByCharWrapping;
+    config.lineBreakMode = NSLineBreakByWordWrapping;
     config.willUpdateFrame = YES;
     config.matchLink = YES;
     config.matchEmail = YES;
@@ -175,7 +175,6 @@ NSString *CTDataConfigIdentity(CTDataConfig config){
      构建CTFrame
      ===========================================================================
      */
-    
     // 创建framesetter
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)attString);
     

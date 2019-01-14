@@ -9,6 +9,7 @@
 #import "MessageListUtil.h"
 #import "CDMessageModel.h"
 #import "UserModel.h"
+#import "UserConfig.h"
 
 @interface MessageListUtil ()
 
@@ -28,7 +29,7 @@ singleton_implementation(MessageListUtil)
 }
 
 - (void)addMessage:(CDMessageModel *)model {
-    NSString *userId = [UserModel getUserModel].userId;
+    NSString *userId = [UserConfig getShareObject].userId;
     NSString *friendId = nil;
     if (![model.ToId isEqualToString:userId]) {
         friendId = model.ToId;

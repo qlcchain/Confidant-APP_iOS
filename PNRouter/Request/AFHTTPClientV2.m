@@ -54,8 +54,11 @@
         //    manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];//不设置会报-1016或者会有编码问题
         
         //    [manager.requestSerializer setValue:@"iOS" forHTTPHeaderField:@"platform"];
-        //    [manager.requestSerializer setValue: @"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-        [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue:@"application/json;charset=utf-8"forHTTPHeaderField:@"Content-Type"];
+        
+        [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue: @"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+     
+       // [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue:@"application/json;charset=utf-8"forHTTPHeaderField:@"Content-Type"];
+        
         [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue:@"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0"forHTTPHeaderField:@"User-Agent"];
         
         AFSecurityPolicy *securityPolicy = [AFSecurityPolicy defaultPolicy];

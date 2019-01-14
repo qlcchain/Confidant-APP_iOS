@@ -160,7 +160,7 @@
 {
    int optval = 1;//这个值一定要设置，否则可能导致sendto()失败
     sendCount++;
-    if (sendCount == 5) {
+    if (sendCount == 4) {
         dispatch_async(dispatch_get_main_queue(), ^{
 //            [AppD.window hideHud];
 //            [[NSNotificationCenter defaultCenter] postNotificationName:GB_FINASH_NOTI object:nil];

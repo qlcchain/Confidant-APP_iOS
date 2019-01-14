@@ -78,13 +78,17 @@
     } else if ([[dateFormatter dateFromString:currentDay] timeIntervalSinceDate:[dateFormatter dateFromString:theDay]] == 86400) {//昨天
         [dateFormatter setDateFormat:@"ah:mm"];
         return [NSString stringWithFormat:@"Yesterday %@", [dateFormatter stringFromDate:self]];
-    } else if ([[dateFormatter dateFromString:currentDay] timeIntervalSinceDate:[dateFormatter dateFromString:theDay]] < 86400 * 7) {//间隔一周内
-        [dateFormatter setDateFormat:@"EEEE ah:mm"];
-        return [dateFormatter stringFromDate:self];
-    } else {//以前
-        [dateFormatter setDateFormat:@"yyyy-MM-dd ah:mm"];
+    } else  {
+        [dateFormatter setDateFormat:@"yyyy/MM/dd"];
         return [dateFormatter stringFromDate:self];
     }
+//    } else if ([[dateFormatter dateFromString:currentDay] timeIntervalSinceDate:[dateFormatter dateFromString:theDay]] < 86400 * 7) {//间隔一周内
+//        [dateFormatter setDateFormat:@"EEE ah:mm"];
+//        return [dateFormatter stringFromDate:self];
+//    } else {//以前
+//        [dateFormatter setDateFormat:@"yyyy-MM-dd ah:mm"];
+//        return [dateFormatter stringFromDate:self];
+//    }
 }
 
 

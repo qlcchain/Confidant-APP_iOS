@@ -57,4 +57,6 @@
  */
 + (nonnull instancetype)defaultConfiguration;
 
+- (nonnull id)copyWithZone:(nullable NSZone *)zone;
+
 @end

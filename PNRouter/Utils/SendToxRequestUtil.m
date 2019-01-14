@@ -19,7 +19,7 @@
         [AppD.window showHint:@"Failed to send message"];
         return;
     }
-    NSLog(@"send text: %@",message);
+    DDLogDebug(@"send text: %@",message);
     [manage.chats sendTextMessageWithfriendNumber:AppD.currentRouterNumber text:message messageType:OCTToxMessageTypeNormal successBlock:^(OCTToxMessageId megid) {
         
     } failureBlock:^(NSError *error) {
@@ -29,9 +29,6 @@
 
 + (void) sendFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames
 {
-    
-    
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [AppD.manager.files sendFileAtPath:filePath moveToUploads:NO parames:parames  toFriendId:AppD.currentRouterNumber failureBlock:^(NSError * _Nonnull error) {

@@ -10,6 +10,7 @@
 #import "HMScanner.h"
 #import "ShareView.h"
 #import "UserModel.h"
+#import "NSString+Base64.h"
 
 @interface PersonCodeViewController ()
 
@@ -17,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *nameBtn;
 @property (weak, nonatomic) IBOutlet UIImageView *codeImgView;
 @property (nonatomic , strong) ShareView *shareView;
+@property (nonatomic , copy) NSString *userId;
+@property (nonatomic , copy) NSString *userName;
 @property (weak, nonatomic) IBOutlet UIButton *saveBtn;
 @property (weak, nonatomic) IBOutlet UIButton *shareBtn;
 
@@ -67,7 +70,14 @@
     }
     return _shareView;
 }
-
+- (instancetype) initWithUserId:(NSString *) userId userNaem:(NSString *)userNaem
+{
+    if (self = [super init]) {
+        self.userId = userId;
+        self.userName = userNaem;
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -76,12 +86,16 @@
     
     _shareBtn.layer.cornerRadius = RADIUS;
     _shareBtn.layer.masksToBounds = YES;
-    
-    _lblNavTitle.text = [UserModel getUserModel].username;
-    _lblName.text = [UserModel getUserModel].username;
-    [_nameBtn setTitle:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] forState:UIControlStateNormal];
+    if (!self.userId || [self.userId isEmptyString]) {
+        self.userName =  [UserModel getUserModel].username;
+        self.userId = [UserModel getUserModel].userId;
+    }
+    _lblNavTitle.text = self.userName;
+    _lblName.text = self.userName;
+    [_nameBtn setTitle:[StringUtil getUserNameFirstWithName:self.userName] forState:UIControlStateNormal];
+    NSString *coderValue = [NSString stringWithFormat:@"%@,%@",self.userId,[self.userName base64EncodedString]];
     @weakify_self
-    [HMScanner qrImageWithString:[UserModel getUserModel].userId avatar:nil completion:^(UIImage *image) {
+    [HMScanner qrImageWithString:coderValue avatar:nil completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;
     }];
 }

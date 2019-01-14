@@ -13,16 +13,18 @@ typedef enum : NSUInteger {
     EditCompany,
     EditPosition,
     EditLocation,
-    EditAlis
+    EditAlis,
+    EditFriendAlis
 } EditType;
 
 @class RouterModel;
-
+@class FriendModel;
 @interface EditTextViewController : PNBaseViewController
 
 @property (nonatomic, strong) RouterModel *routerM;
 @property (nonatomic ,assign) EditType editType;
 
 - (instancetype) initWithType:(EditType) type;
+- (instancetype) initWithType:(EditType) type friendModel:(FriendModel *) friendModel;
 
 @end

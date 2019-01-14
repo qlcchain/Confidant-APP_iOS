@@ -304,14 +304,13 @@
         
         if (msgArr.count == 0) {
             self->_msgArr = msgArr;
-            [self reloadData];
+            //[self reloadData];
             callBack(0);
         } else {
             dispatch_async(dispatch_get_global_queue(0, 0), ^{                
                 [self.caculator caculatorAllCellHeight:msgArr callBackOnMainThread:^(CGFloat totalHeight) {
-                   
                     self->_msgArr = msgArr;
-                    [self reloadData];
+                   /// [self reloadData];
                     callBack(totalHeight);
                 }];
             });
@@ -345,6 +344,7 @@
  @param animated 是否有动画
  */
 -(void)relayoutTable:(BOOL)animated{
+    [self reloadData];
     if (_msgArr.count == 0) {
         return;
     }
@@ -356,11 +356,13 @@
         self.isDelete = NO;
         return;
     }
+    
     // 异步让tableview滚到最底部
     NSInteger cellCount = [self numberOfRowsInSection:0];
     NSInteger num = cellCount - 1 > 0 ? cellCount - 1 : 0;
     NSIndexPath *index = [NSIndexPath indexPathForRow:num  inSection:0];
     
+   // [self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:NSNotFound inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     [self scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 

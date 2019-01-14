@@ -72,9 +72,9 @@
     // 和上一条信息对比判断cell上是否显示时间label
     if (index > 0) {
         CDChatMessage previousData = msgArr[index - 1];
-        NSInteger lastTime = [previousData.createTime integerValue];
-        NSInteger currentTime = [data.createTime integerValue];
-        data.willDisplayTime = ((currentTime - lastTime) > 180000); // 3分钟
+        NSInteger lastTime = previousData.TimeStatmp;
+        NSInteger currentTime = data.TimeStatmp;
+        data.willDisplayTime = (labs(currentTime - lastTime) > 180); // 3分钟
     }
     CGSize res = [self caculateCellHeightAndBubleWidth:data];
     
@@ -265,36 +265,42 @@ CGSize caculateImageSize140By140(UIImage *image, CDChatMessage msgData) {
     if (msgData.isLeft) {
         friendid = msgData.FromId;
     }
-    NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:msgData.fileName];
-    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-    NSData *fileData = [NSData dataWithContentsOfURL:fileURL];
     CGSize defaulutSize = CGSizeMake(140, 140);
-    if (fileData) {
-         UIImage *image = [SystemUtil thumbnailImageForVideo:fileURL];
-        if (image) {
-             msgData.mediaImage = image;
-            return caculateImageSize140By140(image,msgData);
-        } else {
-            return  defaulutSize;
-        }
-    } else {
-        if (msgData.mediaImage) {
-            return caculateImageSize140By140(msgData.mediaImage,msgData);
-        }
-        NSString *requestUrl = [NSString stringWithFormat:@"%@%@",RequestService.getPrefixUrl,msgData.filePath];
-        NSURL *url = [NSURL URLWithString:requestUrl];
-        @weakify_self
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-           UIImage *imgage = [SystemUtil thumbnailImageForVideo:url];
-            if (imgage) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    msgData.mediaImage = imgage;
-                    [weakSelf.list updateMessage:msgData];
-                });
-            }
-        });
-        return defaulutSize;
+    if (msgData.mediaImage) {
+        return caculateImageSize140By140(msgData.mediaImage,msgData);
     }
+    return defaulutSize;
+    
+//    NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:msgData.fileName];
+//    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+//    NSData *fileData = [NSData dataWithContentsOfURL:fileURL];
+//    
+//    if (fileData) {
+//         UIImage *image = [SystemUtil thumbnailImageForVideo:fileURL];
+//        if (image) {
+//             msgData.mediaImage = image;
+//            return caculateImageSize140By140(image,msgData);
+//        } else {
+//            return  defaulutSize;
+//        }
+//    } else {
+//        if (msgData.mediaImage) {
+//            return caculateImageSize140By140(msgData.mediaImage,msgData);
+//        }
+//        NSString *requestUrl = [NSString stringWithFormat:@"%@%@",RequestService.getPrefixUrl,msgData.filePath];
+//        NSURL *url = [NSURL URLWithString:requestUrl];
+//        @weakify_self
+//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//           UIImage *imgage = [SystemUtil thumbnailImageForVideo:url];
+//            if (imgage) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    msgData.mediaImage = imgage;
+//                    [weakSelf.list updateMessage:msgData];
+//                });
+//            }
+//        });
+//        return defaulutSize;
+//    }
 }
 
 #pragma mark ---计算系统消息消息尺寸方法

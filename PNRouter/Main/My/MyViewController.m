@@ -19,7 +19,7 @@
 #import "RouterManagerViewController.h"
 #import "SystemUtil.h"
 #import "OCTSubmanagerUser.h"
-
+#import "PersonCodeViewController.h"
 #import "RMDownloadIndicator.h"
 
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -29,6 +29,7 @@
 
 @property (nonatomic , assign) CGFloat downloadedBytes;
 @property (strong, nonatomic) RMDownloadIndicator *filedIndicator_left;
+@property (weak, nonatomic) IBOutlet UILabel *lblVersion;
 @end
 
 @implementation MyViewController
@@ -47,7 +48,7 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@[@"Router management"],@[@"Collection",@"Share App",@"Help"],@[@"Settings"], nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@[@"Router management"],@[@"Share QRCode"],@[@"Settings"], nil];
     }
     return _dataArray;
 }
@@ -72,7 +73,6 @@
     self.myHeadView.lblName.text = [UserModel getUserModel].username;
     [self.myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
     
-    // 查询自己是否在线
     UserModel *userM = [UserModel getUserModel];
     [SocketMessageUtil sendUserIsOnLine:userM.userId?:@""];
     [self updateOnlineStatus:NO];
@@ -94,6 +94,8 @@
     [super viewDidLoad];
     
     [self observe];
+    
+    _lblVersion.text = [NSString stringWithFormat:@"V:%@ (Build %@)",APP_Version,APP_Build];
     
     _tableV.delegate = self;
     _tableV.dataSource = self;
@@ -151,6 +153,7 @@
     MyCell *cell = [tableView dequeueReusableCellWithIdentifier:MyCellReuse];
      NSArray *rowArray = self.dataArray[indexPath.section];
     cell.lblContent.text = rowArray[indexPath.row];
+    cell.iconImageView.image = [UIImage imageNamed:rowArray[indexPath.row]];
     cell.lblSubContent.hidden = YES;
     if (indexPath.section == self.dataArray.count-1) {
         cell.lblSubContent.hidden = NO;
@@ -182,11 +185,13 @@
         }
     }
     if (indexPath.section == 1) {
-        if (indexPath.row == 1) {
+        if (indexPath.row == 0) {
            // [KeyCUtil deleteAllKey];
           //  [FriendModel bg_drop:FRIEND_LIST_TABNAME];
            // [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
            // exit(0);
+            PersonCodeViewController *vc = [[PersonCodeViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
 }

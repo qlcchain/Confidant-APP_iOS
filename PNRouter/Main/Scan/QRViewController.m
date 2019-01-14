@@ -16,7 +16,9 @@
 
 
 @interface QRViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-
+{
+    NSInteger checkCount;
+}
 @property (weak, nonatomic) IBOutlet UIView *parentView;
 @property (nonatomic ,strong) HMScanner *scanner;
 @property (nonatomic ,strong) HMScannerBorder *scannerBorder;
@@ -59,6 +61,7 @@
 - (instancetype) initWithCodeQRCompleteBlock:(void (^)(NSString *codeValue)) completion
 {
     if (self = [super init]) {
+        checkCount = 0;
         self.completeBlcok = completion;
     }
     return self;
@@ -169,8 +172,12 @@
             NSLog(@"values = %lu",(unsigned long)values.count);
             if (weakSelf.completeBlcok) {
                 if (values.count > 0) {
-                    [weakSelf leftNavBarItemPressedWithPop:NO];
-                    weakSelf.completeBlcok(values.firstObject);
+                    self->checkCount ++;
+                    if (self->checkCount == 1) {
+                        [weakSelf.scanner stopScan];
+                        [weakSelf leftNavBarItemPressedWithPop:NO];
+                        weakSelf.completeBlcok(values.firstObject);
+                    }
                 } else {
                     [AppD.window showHint:@"no_code"];
                 }
@@ -218,14 +225,20 @@
         // 实例化扫描器
         @weakify_self
         _scanner = [HMScanner scanerWithView:_parentView scanFrame:_scannerBorder.frame completion:^(NSString *stringValue) {
-            DDLogDebug(@"codeValue = %@",stringValue);
-            if (weakSelf.completeBlcok) {
-                [weakSelf leftNavBarItemPressedWithPop:NO];
-                weakSelf.completeBlcok(stringValue);
-            } else {
-                // 完成回调
-                [weakSelf.scanner startScan];
+            self->checkCount ++;
+            if (self->checkCount == 1) {
+                DDLogDebug(@"codeValue = %@",stringValue);
+                if (weakSelf.completeBlcok) {
+                    [weakSelf.scanner stopScan];
+                    [weakSelf leftNavBarItemPressedWithPop:NO];
+                    weakSelf.completeBlcok(stringValue);
+                } else {
+                    // 完成回调
+                    self->checkCount = 0;
+                    [weakSelf.scanner startScan];
+                }
             }
+            
             
         }];
     }

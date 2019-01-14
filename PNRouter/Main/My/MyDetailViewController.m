@@ -14,6 +14,7 @@
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
 #import "EditTextViewController.h"
+#import "UserConfig.h"
 
 @interface MyDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {

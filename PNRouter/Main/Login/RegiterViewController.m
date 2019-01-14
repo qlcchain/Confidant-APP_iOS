@@ -21,6 +21,7 @@
 #import "OCTSubmanagerUser.h"
 #import "OCTSubmanagerFriends.h"
 #import "ConnectView.h"
+#import "UserConfig.h"
 
 @interface RegiterViewController ()<UITextFieldDelegate>
 {
@@ -103,13 +104,14 @@
             isLogin = YES;
             [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
             NSString *connectURL = [SystemUtil connectUrl];
-            AppD.currentSoketUrl = connectURL;
             [SocketUtil.shareInstance connectWithUrl:connectURL];
         }
         
     } else {
         isLogin = YES;
         [self connectSocketWithIsShowHud:YES];
+//        [AppD.window showHudInView:AppD.window hint:@"Check Router..."];
+//        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     }
 }
 
@@ -131,6 +133,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gbFinashNoti:) name:GB_FINASH_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
+    
     
 }
 - (void)viewDidLoad {
@@ -191,7 +195,6 @@
         }
         
         NSString *connectURL = [SystemUtil connectUrl];
-        AppD.currentSoketUrl = connectURL;
         [SocketUtil.shareInstance connectWithUrl:connectURL];
         
     } else {
@@ -250,6 +253,11 @@
 #pragma mark - NOTI
 
 #pragma mark - 通知回调
+// 注册推送
+- (void) registerPushNoti:(NSNotification *) noti
+{
+    [SendRequestUtil sendRegidReqeust];
+}
 // 加router好友成功
 - (void) toxAddRoterSuccess:(NSNotification *) noti
 {
@@ -264,6 +272,7 @@
     [AppD.window showHint:@"Registered successfully"];
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     NSString *userid = receiveDic[@"params"][@"UserId"];
+    NSString *userSn = receiveDic[@"params"][@"UserSn"];
     NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
     NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
      NSString *shaPass = _passwordTF.text.trim;
@@ -271,7 +280,15 @@
     [RouterModel addRouterWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn userid:userid];
     [RouterModel updateRouterPassWithSn:[RoutherConfig getRoutherConfig].currentRouterSn pass:shaPass];
     // 保存用户
-    [UserModel createUserLocalWithName:[_userNameTF.text.trim base64EncodedString] userid:userid version:dataFileVersion filePay:dataFilePay userpass:shaPass];
+    [UserModel createUserLocalWithName:[_userNameTF.text.trim base64EncodedString] userid:userid version:dataFileVersion filePay:dataFilePay userpass:shaPass userSn:userSn];
+    
+    [UserConfig getShareObject].userId = userid;
+    [UserConfig getShareObject].userName = _userNameTF.text.trim;
+    [UserConfig getShareObject].usersn = userSn;
+    [UserConfig getShareObject].passWord = shaPass;
+    [UserConfig getShareObject].dataFilePay = dataFilePay;
+    [UserConfig getShareObject].dataFileVersion = dataFileVersion;
+    
     [AppD setRootTabbarWithManager:nil];
 }
 

@@ -16,6 +16,7 @@
 #import "SocketManageUtil.h"
 #import "NSData+CRC16.h"
 #import "PNRouter-Swift.h"
+#import "UserConfig.h"
 
 #define NTOHL(x)    (x) = ntohl((__uint32_t)x) //转换成本地字节流
 #define NTOHS(x)    (x) = ntohs((__uint16_t)x) //转换成本地字节流
@@ -25,10 +26,10 @@
 #define HTONLL(x)   (x) = htonll((__uint64_t)x) //转换网络字节流
 
 
-static CGFloat request_time = 8.0f;
+static CGFloat request_time = 50.0f;
 static NSString *Action_SendFile = @"SendFile";
 static NSString *Action_SendFileEnd = @"SendFileEnd";
-static int sendFileSizeMax = 1024*100;
+static int sendFileSizeMax = 1024*1024*2;
 
 struct SendFile {
     uint32_t magic;
@@ -45,7 +46,7 @@ struct SendFile {
     char toid[77];
     char srcKey[256];
     char dstKey[256];
-    char content[1024*100];
+    char content[1024*1024*2];
 };
 
 struct ResultFile {
@@ -66,16 +67,18 @@ struct ResultFile {
     struct SendFile sendFile;
     struct ResultFile resultFile;
     uint32_t currentSegseq;
+    BOOL sendFinsh;
 }
+
 @property (nonatomic ,strong) SocketFileUtil *fileUtil;
 @property (nonatomic ,strong) NSData *fileData;
 @property (nonatomic ,strong) NSString *fileTextConnent;
 @property (nonatomic ,strong) NSString *toid;
-@property (nonatomic ,strong) NSString *fileid;
 @property (nonatomic ,strong) NSString *fileMessageId;
 @property (nonatomic ,strong) NSString *messageid;
 @property (nonatomic ,strong) NSMutableDictionary *statusDic;
 @property (nonatomic ,assign) uint32_t fileType;
+@property (nonatomic ,assign) NSInteger retCode;
 //@property (nonatomic ,assign) uint32_t currentSegSize; // 当前片段大小
 //@property (nonatomic ,assign) uint32_t currentSegSeq; // 当前片段序号
 //@property (nonatomic ,assign) uint32_t currentFileOffset; // 当前偏移量
@@ -186,24 +189,29 @@ struct ResultFile {
     self.fileMessageId = [NSString stringWithFormat:@"%u",resultFile.logid];
     self.fileid = [NSString stringWithFormat:@"%u",resultFile.fileid];
     self.statusDic[[NSString stringWithFormat:@"%u",currentSegseq]] = @"1";
-    if (resultFile.code == 0) {
-        [self sendFileWithTag:2];
+    _retCode = resultFile.code;
+    if (self.isCancel) {
+        if (sendFile.segmore == 0) { //文件发送完成 调用删除接口
+            NSDictionary *params = @{@"Action":@"DelMsg",@"FriendId":self.toid?:@"",@"UserId":[UserConfig getShareObject].userId?:@"",@"MsgId":self.fileMessageId?:@""};
+            [SocketMessageUtil sendTextWithParams:params];
+        }
+         [_fileUtil disconnect];
     } else {
-       [self sendFileWithTag:1];
-    }
-}
-#pragma mark -如果超过10秒没收到确认消息，则文件传输失败，需要重新发起发送文件流程
-- (void) checkFileIsComplete {
-    if (!_isComplete) {
-        if ([_fileUtil isConnected]) { // 网络正常重发
-            //[_fileUtil sendWithText:self.fileTextConnent];
+        if (resultFile.code == 0) {
+            [self sendFileWithTag:2];
+        } else if (resultFile.code == 5) {
+            [_fileUtil disconnect];
         } else {
-            // 发送失败通知
-            _isComplete = YES;
-             [_fileUtil disconnect];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:nil];
+            [self sendFileWithTag:1];
         }
     }
+    
+   /* 0：成功
+    1：CRC校验错误
+    2：ID错误
+    3：文件打开错误
+    4：文件块超长
+    5：已被好友删除*/
 }
 
 #pragma mark -connectUrl
@@ -305,7 +313,7 @@ struct ResultFile {
 
       memcpy(sendFile.filename, [fileName cStringUsingEncoding:NSASCIIStringEncoding],[fileName length]);
     // NSUTF8StringEncoding  NSASCIIStringEncoding
-    memcpy(sendFile.fromid,[[UserModel getUserModel].userId cStringUsingEncoding:NSASCIIStringEncoding],[[UserModel getUserModel].userId length]);
+    memcpy(sendFile.fromid,[[UserConfig getShareObject].userId cStringUsingEncoding:NSASCIIStringEncoding],[[UserConfig getShareObject].userId length]);
     
     NSData *sendData = nil;
     if (segMoreBlg == 1) {
@@ -333,10 +341,16 @@ struct ResultFile {
     }];
     
     [_fileUtil setOnDisconnect:^(NSError * error, NSString * url) {
-        if (weakSelf.isComplete) {
-            [[SocketManageUtil getShareObject] clearDisConnectSocket];
-        } else {
-             [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(2),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
+        if (!weakSelf.isCancel) {
+            if (self->sendFinsh) {
+                [[SocketManageUtil getShareObject] clearDisConnectSocket];
+            } else {
+                if (weakSelf.retCode == 0) {
+                    weakSelf.retCode = 2;
+                }
+                [[SocketManageUtil getShareObject] clearDisConnectSocket];
+                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
+            }
         }
     }];
     [_fileUtil setReceiveFileText:^(NSString * fileMsg) {
@@ -357,20 +371,19 @@ struct ResultFile {
     if (tag == 1) { //重发
         if (![_fileUtil isConnected]) { // socket断开连接
             [_fileUtil disconnect];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(2),self.fileid,self.toid,@(self.fileType),self.messageid?:@""]];
             return;
         }
         NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
         [self sendFileData:myData];
     } else {
         if (sendFile.segmore == 0) { //文件发送完成
+            sendFinsh = YES;
             [_fileUtil disconnect];
             [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
             return;
         }
         if (![_fileUtil isConnected]) { // socket断开连接
             [_fileUtil disconnect];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(2),self.fileid,self.toid,@(self.fileType),self.messageid?:@""]];
             return;
         }
         
@@ -425,8 +438,13 @@ struct ResultFile {
     [self performSelector:@selector(resendFile) withObject:self afterDelay:request_time];
 }
 - (void) resendFile {
-    if ([self.statusDic[[NSString stringWithFormat:@"%u",currentSegseq]] isEqualToString:@"0"]) {
-        [self sendFileWithTag:1];
+    if (self.isCancel) {
+        [_fileUtil disconnect];
+    } else {
+        if ([self.statusDic[[NSString stringWithFormat:@"%u",currentSegseq]] isEqualToString:@"0"]) {
+            [self sendFileWithTag:1];
+        }
     }
+    
 }
 @end

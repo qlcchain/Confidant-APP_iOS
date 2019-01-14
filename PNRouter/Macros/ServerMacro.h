@@ -13,10 +13,13 @@
 //#define ServerDomain_Test @"http://47.90.50.172"
 //#define ServerDomain_Product @"http://dapp-t.qlink.mobi"
 
+#define PUSH_DEBUG_URL @"http://47.96.76.184:9000/v1/pareg/"
+#define PUSH_ONLINE_URL @"https://pprouter.online:9001/v1/pareg/"
+
+
 #define SOCKET_APIVERSION @"1"
 #define APIVERSION @"2"
 #define SOCKET_USETDATAVERSION @"1"
-
 
 #define Server_Data @"data"
 #define Server_Msg @"msg"

@@ -170,12 +170,36 @@
     self.imageContent_left.image = data.mediaImage;
     
     NSString *filePath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:data.fileName];
-    
+
     if ([SystemUtil filePathisExist:filePath]) {
+        
         [self.media_left setImage:[UIImage imageNamed:@"Video playback"] forState:UIControlStateNormal];
+        if (!data.mediaImage) {
+            @weakify_self
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+                NSData *fileData = [NSData dataWithContentsOfURL:fileURL];
+                if (fileData) {
+                    UIImage *image = [SystemUtil thumbnailImageForVideo:fileURL];
+                    if (image) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            data.mediaImage = image;
+                            [weakSelf.tableView updateMessage:data];
+                        });
+                    }
+                }
+            });
+        }
+        
+        
     } else {
         [self.media_left setImage:[UIImage imageNamed:@"Video download"] forState:UIControlStateNormal];
     }
+    
+   
+    
+    
+    
 }
 
 
@@ -190,6 +214,22 @@
     NSString *filePath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:data.fileName];
     if ([SystemUtil filePathisExist:filePath]) {
         [self.media_right setImage:[UIImage imageNamed:@"Video playback"] forState:UIControlStateNormal];
+        if (!data.mediaImage) {
+            @weakify_self
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+                NSData *fileData = [NSData dataWithContentsOfURL:fileURL];
+                if (fileData) {
+                    UIImage *image = [SystemUtil thumbnailImageForVideo:fileURL];
+                    if (image) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            data.mediaImage = image;
+                            [weakSelf.tableView updateMessage:data];
+                        });
+                    }
+                }
+            });
+        }
     } else {
         [self.media_right setImage:[UIImage imageNamed:@"Video download"] forState:UIControlStateNormal];
     }
@@ -305,9 +345,9 @@
             }];
         } else {
             if (self.msgModal.isLeft) {
-                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.FromId toid:self.msgModal.ToId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId];
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.FromId toid:self.msgModal.ToId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"2"];
             } else {
-                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:self.msgModal.FromId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId];
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:self.msgModal.FromId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"1"];
             }
         }
     }

@@ -14,21 +14,39 @@ static NSString *rsakey = @"rsakey";
 
 @implementation RSAModel
 
++ (void) getRSAModel
+{
+    NSString *modelJson = [KeyCUtil getKeyValueWithKey:rsakey];
+    if (modelJson && ![modelJson isEmptyString]) {
+        RSAModel *rsaModel = [RSAModel getObjectWithKeyValues:[modelJson mj_keyValues]];
+        NSString *publickey = [rsaModel.publicKey stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        [RSAModel getShareObject].publicKey = publickey;
+        [RSAModel getShareObject].privateKey = rsaModel.privateKey;
+    }
+}
+
 + (RSAModel *) getCurrentRASModel
 {
-   NSString *modeJson = [KeyCUtil getKeyValueWithKey:rsakey];
     RSAModel *rsaModel = nil;
-    if (!modeJson || [modeJson isEmptyString]) {
-       rsaModel = [RSAUtil genterRSAPrivateKeyAndPublicKey];
-        if (rsaModel) {
-             [KeyCUtil saveStringToKeyWithString:rsaModel.mj_JSONString key:rsakey];
-        }
+    if ([RSAModel getShareObject].publicKey && ![[RSAModel getShareObject].publicKey isEmptyString]) {
+        rsaModel = [RSAModel getShareObject];
     } else {
-        rsaModel = [RSAModel getObjectWithKeyValues:[modeJson mj_keyValues]];
-        rsaModel.publicKey = [rsaModel.publicKey stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-        //NSLog(@"%@----%@",rsaModel.publicKey,rsaModel.privateKey);
+        rsaModel = [RSAUtil genterRSAPrivateKeyAndPublicKey];
+        if (rsaModel) {
+            [RSAModel getShareObject].publicKey = rsaModel.publicKey;
+            [RSAModel getShareObject].privateKey = rsaModel.privateKey;
+            [KeyCUtil saveStringToKeyWithString:rsaModel.mj_JSONString key:rsakey];
+        }
     }
     return rsaModel;
 }
-
++ (instancetype) getShareObject
+{
+    static RSAModel *shareObject = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shareObject = [[self alloc] init];
+    });
+    return shareObject;
+}
 @end

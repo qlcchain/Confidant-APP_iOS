@@ -53,8 +53,12 @@
 
 #pragma mark -  Public
 
-- (void)chunkRequestWithPosition:(OCTToxFileSize)position length:(size_t)length
+- (void)chunkRequestWithPosition:(OCTToxFileSize)position length:(size_t)length cancel:(BOOL)isCancel
 {
+    if (isCancel) {
+        [self cancelFileSend];
+        return;
+    }
     if (length == 0) {
         [self finishWithSuccess];
         return;

@@ -191,6 +191,8 @@
 
 -(void)longPressGes:(UILongPressGestureRecognizer *)recognizer{
     
+    
+    
     CGPoint curPoint = [recognizer locationInView:self];
     if (!CGRectContainsPoint(self.bounds, curPoint)){
         return;
@@ -317,9 +319,9 @@
             
         } else {
             if (self.msgModal.isLeft) {
-                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.FromId toid:self.msgModal.ToId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId];
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.FromId toid:self.msgModal.ToId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"2"];
             } else {
-                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:self.msgModal.FromId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId];
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:self.msgModal.FromId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"1"];
             }
             
         }

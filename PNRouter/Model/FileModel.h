@@ -20,4 +20,5 @@
 @property (nonatomic ,assign) NSInteger FileType;
 @property (nonatomic ,strong) NSString *SrcKey;
 @property (nonatomic ,strong) NSString *DstKey;
+@property (nonatomic ,assign) NSInteger timestamp;
 @end

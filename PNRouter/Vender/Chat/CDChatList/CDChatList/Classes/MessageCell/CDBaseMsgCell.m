@@ -406,16 +406,18 @@
     
     // 设置顶部时间Label
     NSDate *date;
-    if (data.createTime.length == 10) {
-        date = [NSDate dateWithTimeIntervalSince1970:[data.createTime doubleValue]];
-    } else {
-        date = [NSDate dateWithTimeIntervalSince1970:[data.createTime doubleValue] * 0.001];
-    }
+//    if (data.TimeStatmp.length == 10) {
+//        date = [NSDate dateWithTimeIntervalSince1970:[data.createTime doubleValue]];
+//    } else {
+//        date = [NSDate dateWithTimeIntervalSince1970:[data.createTime doubleValue] * 0.001];
+//    }
+    date = [NSDate dateWithTimeIntervalSince1970:data.TimeStatmp ];
     self.timeLabel.text = [self checkDateDisplay:date msg:data];
     CGSize textSize = [self.timeLabel.text boundingRectWithSize:CGSizeMake(cd_ScreenW(), data.chatConfig.msgTimeH) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: self.timeLabel.font} context:nil].size;
     if (textSize.height < data.chatConfig.msgTimeH) {
         textSize.height = data.chatConfig.msgTimeH;
     }
+    data.chatConfig.alwaysShowMsgTime = YES;
     [_timeLabel setFrame:CGRectMake(0, 0, textSize.width + data.chatConfig.sysInfoPadding * 2, textSize.height)];
     _timeLabel.center = CGPointMake(cd_ScreenW() / 2, data.chatConfig.msgTimeH / 2);
     
@@ -435,7 +437,7 @@
  */
 - (NSString*)checkDateDisplay:(NSDate *)thisDate msg:(CDChatMessage)data{
     
-    if (data.ctDataconfig.matchLink) {
+    if (!data.ctDataconfig.matchLink) {
         NSDateFormatter *formate = [[NSDateFormatter alloc] init];
         formate.dateFormat = @"MM-dd HH:mm";
         return [formate stringFromDate:thisDate];

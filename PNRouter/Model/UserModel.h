@@ -12,6 +12,7 @@
 
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSString *userSn;
 @property (nonatomic, assign) NSInteger dataFileVersion;
 @property (nonatomic, copy) NSString *dataFilePay;
 @property (nonatomic, copy) NSString *pass;
@@ -24,9 +25,9 @@
 + (void)updateUserLocalWithPass:(NSString *) pass;
 + (UserModel *)getUserModel;
 + (void)createUserLocalWithName:(NSString *)name;
-+ (void)createUserLocalWithName:(NSString *)name userid:(NSString *) userid version:(NSInteger) version filePay:(NSString *) filePay userpass:(NSString *) pass;
-+ (void)updateUserLocalWithUserId:(NSString *)userId withUserName:(NSString *) userName;
++ (void)createUserLocalWithName:(NSString *)name userid:(NSString *) userid version:(NSInteger) version filePay:(NSString *) filePay userpass:(NSString *) pass userSn:(NSString *) userSn;
++ (void)updateUserLocalWithUserId:(NSString *)userId withUserName:(NSString *) userName userSn:(NSString *) userSn;
 - (void)saveUserModeToKeyChain;
 + (void)isLogin;
-
++ (instancetype) getShareObject;
 @end

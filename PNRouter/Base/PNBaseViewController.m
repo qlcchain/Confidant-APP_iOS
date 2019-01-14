@@ -102,6 +102,7 @@
 }
 - (void)leftNavBarItemPressedWithPop:(BOOL)isPop
 {
+     [AppD.window hideHud];
     if (!isPop)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -218,6 +219,7 @@
                     [RoutherConfig getRoutherConfig].currentRouterToxid = toxid;
                     [RoutherConfig getRoutherConfig].currentRouterSn = sn;
                     [RoutherConfig getRoutherConfig].currentRouterIp = @"";
+                
                     [weakSelf scanSuccessful];
              //   }
                 
@@ -271,7 +273,6 @@
             [manager.bootstrap bootstrap];
             AppD.manager = manager;
             [weakSelf toxLoginSuccessWithManager:manager];
-       
         
     } failureBlock:^(NSError * _Nonnull error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -286,7 +287,6 @@
 - (void) logOutTox
 {
     AppD.manager = nil;
-   
     OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
     configuration.options.udpEnabled = YES;
     configuration.options.proxyType = OCTToxProxyTypeNone;

@@ -131,6 +131,7 @@ static uint16_t address_checksum(const uint8_t *address, uint32_t len)
 
     memcpy(&check, checksum, sizeof(check));
     return check;
+    //return (check+1);
 }
 
 /* Format: [real_pk (32 bytes)][nospam number (4 bytes)][checksum (2 bytes)]

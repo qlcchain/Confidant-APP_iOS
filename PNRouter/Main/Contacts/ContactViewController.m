@@ -20,14 +20,19 @@
 #import "ChatListDataUtil.h"
 #import "NSString+Base64.h"
 #import "SystemUtil.h"
-
+#import "PersonCodeViewController.h"
+#import "EditTextViewController.h"
+#import "FriendRequestViewController.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate>
-
+{
+    BOOL isSearch;
+}
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (nonatomic ,strong) NSMutableArray *dataArray;
+@property (nonatomic ,strong) NSMutableArray *searchDataArray;
 @property (nonatomic ,strong) NSArray *groupArray;
 @property (nonatomic) NSInteger deleteIndex;
 
@@ -47,14 +52,18 @@
     @weakify_self
     QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
         if (codeValue != nil && codeValue.length > 0) {
+            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
+            codeValue = codeValues[0];
             if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
                 [AppD.window showHint:@"You cannot add yourself as a friend."];
             } else if (codeValue.length != 76) {
                 [AppD.window showHint:@"The two-dimensional code format is wrong."];
-            } else if ([SystemUtil isFriendWithFriendid:codeValue]) {
-                [AppD.window showHint:@"The other person is already your best friend."];
             } else {
-                [weakSelf addFriendRequest:codeValue];
+                NSString *nickName = @"";
+                if (codeValues.count>1) {
+                    nickName = codeValues[1];
+                }
+                [weakSelf addFriendRequest:codeValue nickName:nickName];
             }
         }
     }];
@@ -69,6 +78,13 @@
     }
     return _dataArray;
 }
+- (NSMutableArray *)searchDataArray
+{
+    if (!_searchDataArray) {
+        _searchDataArray = [NSMutableArray array];
+    }
+    return _searchDataArray;
+}
 - (NSArray *)groupArray
 {
     if (!_groupArray) {
@@ -79,6 +95,7 @@
 #pragma textfeild delegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    [textField endEditing:YES];
     NSLog(@"textFieldShouldReturn");
     return YES;
 }
@@ -91,12 +108,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-  // NSString *destr = [RSAUtil privateKeyDecryptValue:@"tcsjsh7tFBKt+dYHbGqWmxx+K+3Sd/Sw5ANEccQ4gQak8psGaZFAxD8qir7uoBlFP3Z/XmIWXFQk+aGvqwWYLa3/ADokXUQnUotAnpMm+KDCoaLRvACSTkA7JcjOsUEbd8RD2EFpNTihoqucbXZb0jt3PTZ3M03kyxpmHWIF5rU="];
-    
     [self observe];
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
     _searchTF.delegate = self;
+    _searchTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
+    _searchTF.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [self addTargetMethod];
     _tableV.delegate = self;
     _tableV.dataSource = self;
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -105,11 +123,35 @@
      [_tableV registerNib:[UINib nibWithNibName:ContactsCellReuse bundle:nil] forCellReuseIdentifier:ContactsCellReuse];
 }
 
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self sendGetFriendNoti];
   
+}
+
+#pragma mark - 直接添加监听方法
+-(void)addTargetMethod{
+    [_searchTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
+}
+- (void) textFieldTextChange:(UITextField *) tf
+{
+    if ([tf.text.trim isEmptyString]) {
+        isSearch = NO;
+    } else {
+        isSearch = YES;
+        [self.searchDataArray removeAllObjects];
+        @weakify_self
+        [self.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FriendModel *model = obj;
+            NSString *userName = [[model.username base64DecodedString] lowercaseString];
+            if ([userName containsString:[tf.text.trim lowercaseString]]) {
+                [weakSelf.searchDataArray addObject:model];
+            }
+        }];
+    }
+    [_tableV reloadData];
 }
 
 - (void) sendGetFriendNoti
@@ -118,8 +160,11 @@
 }
 
 #pragma mark -Operation-
-- (void)addFriendRequest:(NSString *)friendId {
-    [SendRequestUtil sendAddFriendWithFriendId:friendId];
+- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName{
+    
+   FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId];
+    [self.navigationController pushViewController:vc animated:YES];
+   
 }
 
 #pragma mark - tableviewDataSourceDelegate
@@ -129,9 +174,9 @@
 }
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 2;
+        return 1;
     }
-    return self.dataArray.count;
+    return isSearch? self.searchDataArray.count : self.dataArray.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -171,7 +216,7 @@
         return cell;
     }
     ContactsCell *cell = [tableView dequeueReusableCellWithIdentifier:ContactsCellReuse];
-    FriendModel *model = self.dataArray[indexPath.row];
+    FriendModel *model = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
     [cell setModeWithModel:model];
     cell.tag = indexPath.row;
     [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
@@ -184,9 +229,10 @@
     if (!tableView.isEditing) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         if (indexPath.section == 1) {
-            FriendModel *model = self.dataArray[indexPath.row];
+            FriendModel *model = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
             FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
             model.username = [model.username base64DecodedString]?:model.username;
+            model.remarks = [model.remarks base64DecodedString]?:model.remarks;
             vc.friendModel = model;
             [self.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.section == 0) {
@@ -229,19 +275,20 @@
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
 {
     [cell hideUtilityButtonsAnimated:YES];
-    NSInteger friendIndex = [_tableV indexPathForCell:cell].row;
-    FriendModel *model = self.dataArray[friendIndex];
+    FriendModel *model = isSearch? self.searchDataArray[cell.tag] : self.dataArray[cell.tag];
+    model.remarks = [model.remarks base64DecodedString]?:model.remarks;
+    model.username = [model.username base64DecodedString]?:model.username;
     switch (index) {
         case 0:
         {
-            NSLog(@"--------%ld",cell.tag);
-            NSLog(@"More button was pressed  1");
-           
+            PersonCodeViewController *vc = [[PersonCodeViewController alloc] initWithUserId:model.userId userNaem:model.remarks];
+            [self.navigationController pushViewController:vc animated:YES];
             break;
         }
         case 1:
         {
-             NSLog(@"More button was pressed  2");
+            EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditFriendAlis friendModel:model];
+            [self.navigationController pushViewController:vc animated:YES];
             break;
         }
 
@@ -310,14 +357,24 @@
     if (self.dataArray.count > 0) {
         [self.dataArray removeAllObjects];
     }
-    if (modelArr) {
-       [self.dataArray addObjectsFromArray:[FriendModel mj_objectArrayWithKeyValuesArray:modelArr]];
-    }
-    
     if ([ChatListDataUtil getShareObject].friendArray.count>0) {
         [[ChatListDataUtil getShareObject].friendArray removeAllObjects];
     }
-    [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:[FriendModel mj_objectArrayWithKeyValuesArray:modelArr]];
+    if (modelArr) {
+        // 按名字首字母排序.
+       NSArray *friendArr = [FriendModel mj_objectArrayWithKeyValuesArray:modelArr];
+        [friendArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FriendModel *model = obj;
+            NSString *nickName = model.username;
+            if (model.remarks && ![model.remarks isEmptyString]) {
+                model.username = model.remarks;
+            }
+            model.remarks = nickName;
+        }];
+        NSMutableArray *sortArr = [NSMutableArray arrayWithArray:friendArr];
+        [self.dataArray addObjectsFromArray:[self sortWith:sortArr]];
+        [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
+    }
     
     [_tableV reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
 
@@ -330,6 +387,28 @@
 //    }
 //    [_tableV reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
 }
+
+//获取其拼音
+- (NSString *)huoqushouzimuWithString:(NSString *)string{
+    if (!string || [string isEmptyString]) {
+        return @"";
+    }
+    NSMutableString *ms = [[NSMutableString alloc]initWithString:string];
+    CFStringTransform((__bridge CFMutableStringRef)ms, 0,kCFStringTransformStripDiacritics, NO);
+    NSString *bigStr = [ms uppercaseString];
+    NSString *cha = [bigStr substringToIndex:1];
+    return cha;
+}
+//根据拼音的字母排序  ps：排序适用于所有类型
+- (NSMutableArray *) sortWith:(NSMutableArray *)array{
+    [array sortUsingComparator:^NSComparisonResult(FriendModel *node1, FriendModel *node2) {
+        NSString *string1 = [NSString getNotNullValue:[self huoqushouzimuWithString:[node1.username base64DecodedString]?:node1.username]];
+        NSString *string2 = [NSString getNotNullValue:[self huoqushouzimuWithString:[node2.username base64DecodedString]?:node2.username]];
+        return [string1 compare:string2];
+    }];
+    return array;
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

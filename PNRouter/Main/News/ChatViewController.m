@@ -40,7 +40,8 @@
 #import "NSString+UrlEncode.h"
 #import "AESCipher.h"
 #import "RSAUtil.h"
-
+#import "UserConfig.h"
+#import "DebugLogViewController.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (64 + StatusH)
@@ -70,7 +71,26 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 @end
 
 @implementation ChatViewController
-
+- (void) enterFore
+{
+   
+    if (self.listView.msgArr.count > 0) {
+        
+        NSMutableArray *msgArr = [NSMutableArray array];
+        
+        [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            CDMessageModel *model = (id)obj;
+            if (model.isLeft) {
+                [msgArr addObject:model.messageId];
+            }
+        }];
+        if (msgArr.count > 0) {
+            NSString *allMsgid = [msgArr componentsJoinedByString:@","];
+            [self sendRedMsgWithMsgId:allMsgid];
+        }
+    }
+   
+}
 - (UIImagePickerController *)imagePickerVc {
     if (_imagePickerVc == nil) {
         _imagePickerVc = [[UIImagePickerController alloc] init];
@@ -95,7 +115,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
 #pragma mark - Observe
 - (void)observe {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addMessage:) name:ADD_MESSAGE_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addMessage:) name:RECEIVE_MESSAGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addMessageBefore:) name:ADD_MESSAGE_BEFORE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteMessageSuccess:) name:DELET_MESSAGE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveDeleteMessage:) name:RECEIVE_DELET_MESSAGE_NOTI object:nil];
@@ -107,12 +127,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendFaield:) name:REVER_FILE_SEND_FAIELD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filePullSuccess:) name:REVER_FILE_PULL_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileToxPullSuccess:) name:REVER_FILE_PULL_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryFriendSuccess::) name:REVER_QUERY_FRIEND_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterFore) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
 }
 
 - (IBAction)rightAction:(id)sender {
 //    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
 //    vc.friendModel = _friendModel;
 //    [self.navigationController pushViewController:vc animated:YES];
+    
+    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 - (IBAction)leftAction:(id)sender {
@@ -139,7 +165,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     
     // 当前消息置为已读
     [[ChatListDataUtil getShareObject] cancelChatHDWithFriendid:self.friendModel.userId];
-    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
 
 //    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"1539912662170117"ofType:@"mp4"]];
 //    UIImage *img = [SystemUtil thumbnailImageForVideo:url];
@@ -208,6 +233,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 - (void)clickChatMenuItem:(NSString *)itemTitle withMsgMode:(CDChatMessage) msgModel
 {
     self.selectMessageModel = (CDMessageModel *)msgModel;
+    NSString *msgId = [NSString stringWithFormat:@"%@",self.selectMessageModel.messageId];
     NSLog(@"%@",itemTitle);
     if ([itemTitle isEqualToString:@"Save"]) {
         
@@ -215,12 +241,30 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         ChooseContactViewController *vc = [[ChooseContactViewController alloc] init];
         [self presentModalVC:vc animated:YES];
     }  else if ([itemTitle isEqualToString:@"Withdraw"]){ // 删除
-        NSString *msgId = self.selectMessageModel.messageId;
-        _deleteMsgId = msgId;
-        UserModel *userM = [UserModel getUserModel];
-        NSString *msgIdStr = [NSString stringWithFormat:@"%@",((CDMessageModel *)msgModel).messageId];
-        NSDictionary *params = @{@"Action":@"DelMsg",@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgId":msgIdStr};
-        [SocketMessageUtil sendTextWithParams:params];
+        if ((self.selectMessageModel.fileID > 0) && (self.selectMessageModel.msgState != CDMessageStateNormal)) { // 是文件
+            [self deleteMsg:msgId];
+            if ([SystemUtil isSocketConnect]) {
+                @weakify_self
+                [[SocketManageUtil getShareObject].socketArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    SocketDataUtil *dataUtil = (SocketDataUtil *)obj;
+                    if ([dataUtil.fileid isEqualToString:[NSString stringWithFormat:@"%d",weakSelf.selectMessageModel.fileID]]) {
+                        dataUtil.isCancel = YES;
+                        *stop = YES;
+                    }
+                }];
+            } else {
+                [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"1" forKey:msgId];
+                NSLog(@"------------%@",msgId);
+            }
+           
+        } else {
+            _deleteMsgId = msgId;
+            UserModel *userM = [UserModel getUserModel];
+            
+            NSDictionary *params = @{@"Action":@"DelMsg",@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgId":msgId};
+            [SocketMessageUtil sendTextWithParams:params];
+        }
+        
     }
 }
 //cell 的点击事件
@@ -286,7 +330,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         NSLog(@"wav转amr成功");
       //  [SystemUtil removeDocmentAudio];
         NSData *data = [NSData dataWithContentsOfFile:amrPath];
-        NSString *createTtime = [NSString stringWithFormat:@"%ld",(long)[NSDate getTimestampFromDate:[NSDate date]]];
         CDMessageModel *mode = [[CDMessageModel alloc] init];
         mode.msgType = CDMessageTypeAudio;
         mode.msgState = CDMessageStateSending;
@@ -298,7 +341,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         
         NSString *uploadFileName = mode.fileName;
         mode.fileID = msgid;
-        mode.createTime = createTtime;
+        mode.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         mode.publicKey = self.friendModel.publicKey;
         mode.messageId = [NSString stringWithFormat:@"%d",msgid];;
         mode.willDisplayTime = YES;
@@ -313,7 +356,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
         NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
         
-        [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:data fileId:msgid fileType:2 messageId:mode.messageId srcKey:srcKey dsKey:dsKey];
+        [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:data fileId:msgid fileType:2 messageId:mode.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
         
     }else{
         NSLog(@"wav转amr失败");
@@ -353,19 +396,24 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         if (status == PHAuthorizationStatusAuthorized) {
             if (authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied) {
                 // 无相机权限 做一个友好的提示
-                [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
-            } else if (authStatus == AVAuthorizationStatusNotDetermined) {
-                // fix issue 466, 防止用户首次拍照拒绝授权时相机页黑屏
-                [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
-                // 拍照之前还需要检查相册权限
+                dispatch_async(dispatch_get_main_queue(), ^{
+                     [weakSelf.view endEditing:YES];
+                     [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
+                });
+               
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [weakSelf.view endEditing:YES];
                     [weakSelf pushTZImagePickerControllerWithIsSelectImgage:YES];
                 });
                 
             }
         }else{
-            [AppD.window showHint:@"Denied or Restricted"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.view endEditing:YES];
+               [AppD.window showHint:@"Denied or Restricted"];
+            });
+            
         }
     }];
     
@@ -389,7 +437,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         int msgid = [mill intValue];
         CDMessageModel *model = [[CDMessageModel alloc] init];
         model.msgType = CDMessageTypeFile;
-        model.FromId = [UserModel getUserModel].userId;
+        model.FromId = [UserConfig getShareObject].userId;
         model.ToId = self.friendModel.userId;
         model.fileSize = txtData.length;
         model.msgState = CDMessageStateSending;
@@ -401,7 +449,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         model.willDisplayTime = YES;
         model.fileName = @"测试文件.txt";
         NSString *uploadFileName = model.fileName;
-        model.createTime = [NSString stringWithFormat:@"%ld",(long)[NSDate getTimestampFromDate:[NSDate date]]];
+        model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         model.publicKey = self.friendModel.publicKey;
         model.ctDataconfig = config;
         NSString *nkName = [UserModel getUserModel].username;
@@ -416,7 +464,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
         NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
         
-        [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:txtData fileId:msgid fileType:5 messageId:model.messageId srcKey:srcKey dsKey:dsKey];
+        [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:txtData fileId:msgid fileType:5 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
     
         
     } else if ([string isEqualToString:@"Short video"]) { // 视频
@@ -428,12 +476,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
             if (status == PHAuthorizationStatusAuthorized) {
                 if (authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf.view endEditing:YES];
+                         [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
+                    });
                     // 无相机权限 做一个友好的提示
-                    [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
-                } else if (authStatus == AVAuthorizationStatusNotDetermined) {
-                    // fix issue 466, 防止用户首次拍照拒绝授权时相机页黑屏
-                    [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
-                    // 拍照之前还需要检查相册权限
+                   
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [weakSelf pushTZImagePickerControllerWithIsSelectImgage:NO];
@@ -441,7 +489,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
                     
                 }
             }else{
-                [AppD.window showHint:@"Denied or Restricted"];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                     [weakSelf.view endEditing:YES];
+                    [AppD.window showHint:@"Denied or Restricted"];
+                });
+                
             }
         }];
     }
@@ -461,7 +513,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     model.msgType = CDMessageTypeImage;
     model.msg = info[UIImagePickerControllerMediaURL];
     model.fileID = msgid;
-    model.FromId = [UserModel getUserModel].userId;
+    model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+    model.FromId = [UserConfig getShareObject].userId;
     model.ToId = self.friendModel.userId;
     model.msgState = CDMessageStateSending;
     model.messageId = [NSString stringWithFormat:@"%d",msgid];
@@ -471,7 +524,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     model.messageStatu = -1;
     NSString *uploadFileName = mill;
     model.fileName = mill;
-    model.createTime = [NSString stringWithFormat:@"%ld",(long)[NSDate getTimestampFromDate:[NSDate date]]];
+    
+    model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
     model.publicKey = self.friendModel.publicKey;
     model.ctDataconfig = config;
     NSString *nkName = [UserModel getUserModel].username;
@@ -487,7 +541,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
     NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
     
-    [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey];
+    [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
@@ -495,7 +549,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 }
 
 #pragma mark -发送文件
-- (void) sendFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey
+- (void) sendFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey
 {
     if ([SystemUtil isSocketConnect]) {
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
@@ -505,11 +559,30 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         NSString *filePath = [[SystemUtil getTempBaseFilePath:toId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:fileName]];
         
         if ([fileData writeToFile:filePath atomically:YES]) {
-          
-            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserModel getUserModel].userId,@"ToId":self.friendModel.userId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":messageId};
+            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":toId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":messageId};
             [SendToxRequestUtil sendFileWithFilePath:filePath parames:parames];
+            [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
         }
     }
+    
+    // 添加到chatlist
+    ChatListModel *chatModel = [[ChatListModel alloc] init];
+    chatModel.myID = [UserConfig getShareObject].userId;
+    chatModel.friendID = toId;
+    chatModel.publicKey = publicKey;
+    chatModel.chatTime = [NSDate date];
+    chatModel.isHD = NO;
+    NSInteger msgType = fileType;
+    if (msgType == 1) {
+        chatModel.lastMessage = @"[photo]";
+    } else if (msgType == 2) {
+        chatModel.lastMessage = @"[voice]";
+    } else if (msgType == 5){
+        chatModel.lastMessage = @"[file]";
+    } else if (msgType == 4){
+        chatModel.lastMessage = @"[video]";
+    }
+    [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
 }
 
 // 输入框输出文字
@@ -517,17 +590,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     if (string && ![string isEmptyString]) {
         UserModel *userM = [UserModel getUserModel];
         NSString *msgKey = [SystemUtil get16AESKey];
-        NSString *msg =  aesEncryptString(string, msgKey);
+        NSString *msg = aesEncryptString(string, msgKey);
         NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-       // srcKey = [RSAUtil privateKeyDecryptValue:srcKey];
         NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
         NSDictionary *params = @{@"Action":@"SendMsg",@"ToId":_friendModel.userId?:@"",@"FromId":userM.userId?:@"",@"Msg":msg?:@"",@"SrcKey":srcKey?:@"",@"DstKey":dsKey?:@""};
         NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
         
         CDMessageModel *model = [[CDMessageModel alloc] init];
-        model.FromId = [UserModel getUserModel].userId;
+        model.FromId = [UserConfig getShareObject].userId;
         model.ToId = self.friendModel.userId;
         model.publicKey = self.friendModel.publicKey;
+        model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         model.messageId = msgid;
         model.msg = string;
         model.msgState = CDMessageStateNormal;
@@ -545,6 +618,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         chatModel.chatTime = [NSDate date];
         chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToID];
         [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+        
+        if (![SystemUtil isSocketConnect]) {
+            [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
+        }
     }
     
     
@@ -573,6 +650,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 }
 
 #pragma mark - NOTI
+- (void) queryFriendSuccess:(NSNotification *) noti
+{
+    NSString *friendId = noti.object;
+    if ([friendId isEqualToString:self.friendModel.userId]) {
+        CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+        messageModel.msgType = 3;
+        messageModel.msg = @"You are not his (her) friend, please send him (her) friend request.";
+        [self.listView addMessagesToBottom:@[messageModel]];
+    }
+}
+
 - (void) fileToxPullSuccess:(NSNotification *) noti
 {
     NSDictionary *resultDic = noti.object;
@@ -666,6 +754,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 }
 
 - (void) messageForward:(NSNotification *)noti {
+   __block NSData *fileDatas = nil;
     NSArray *modeArray = (NSArray *)noti.object;
     @weakify_self
     [modeArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -684,7 +773,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             
             if ([model.userId isEqualToString:weakSelf.friendModel.userId]) {
                 CDMessageModel *messageModel = [[CDMessageModel alloc] init];
-                messageModel.FromId = [UserModel getUserModel].userId;
+                messageModel.FromId = [UserConfig getShareObject].userId;
                 messageModel.ToId = model.userId;
                 messageModel.publicKey = model.publicKey;
                 messageModel.messageId = msgid;
@@ -695,58 +784,69 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
                 messageModel.messageStatu = -1;
                 [self addMessagesToList:messageModel];
             }
-            
             // 添加到chatlist
             ChatListModel *chatModel = [[ChatListModel alloc] init];
-            chatModel.myID = [UserModel getUserModel].userId;
+            chatModel.myID = [UserConfig getShareObject].userId;
             chatModel.friendID = model.userId;
             chatModel.publicKey = model.publicKey;
             chatModel.lastMessage = weakSelf.selectMessageModel.msg;
             chatModel.chatTime = [NSDate date];
             chatModel.isHD = NO;
             [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+            
         } else { // 转发文件
             
-            NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
-            NSData *txtData = [NSData dataWithContentsOfFile:filePath];
-            NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-            NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
-            int msgid = [mill intValue];
-            
-            CDMessageModel *messageModel = [[CDMessageModel alloc] init];
-           
-            filePath = [[SystemUtil getBaseFilePath:model.userId] stringByAppendingPathComponent:messageModel.fileName];
-            [txtData writeToFile:filePath atomically:YES];
-            
-            if ([model.userId isEqualToString: weakSelf.friendModel.userId]) {
-                messageModel.msgType = weakSelf.selectMessageModel.msgType;
-                messageModel.FromId = [UserModel getUserModel].userId;
-                messageModel.ToId = model.userId;
-                messageModel.fileSize = txtData.length;
-                messageModel.msgState = CDMessageStateSending;
-                messageModel.messageId = [NSString stringWithFormat:@"%d",msgid];
-                messageModel.fileID = msgid;
-                messageModel.messageStatu = -1;
-                CTDataConfig config = [CTData defaultConfig];
-                config.isOwner = YES;
-                messageModel.willDisplayTime = YES;
-                messageModel.fileName = weakSelf.selectMessageModel.fileName;
-                messageModel.createTime = [NSString stringWithFormat:@"%ld",(long)[NSDate getTimestampFromDate:[NSDate date]]];
-                messageModel.publicKey = model.publicKey;
-                messageModel.ctDataconfig = config;
-                NSString *nkName = [UserModel getUserModel].username;
-                messageModel.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
-                [weakSelf.listView addMessagesToBottom:@[messageModel]];
-            }
-            
-            NSData *msgKeyData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-            txtData = aesEncryptData(txtData,msgKeyData);
-            NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-            NSString *dsKey = [RSAUtil publicEncrypt:model.publicKey msgValue:msgKey];
-
-            [self sendFileWithToid:model.userId fileName:weakSelf.selectMessageModel.fileName fileData:txtData fileId:msgid fileType:weakSelf.selectMessageModel.msgType messageId:messageModel.messageId srcKey:srcKey dsKey:dsKey];
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                
+                NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
+                
+                
+                
+                if (!fileDatas) {
+                    fileDatas = [NSData dataWithContentsOfFile:filePath];
+                }
+                NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+                NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+                int msgid = [mill intValue];
+                
+                CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+                
+                filePath = [[SystemUtil getBaseFilePath:model.userId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
+                [fileDatas writeToFile:filePath atomically:YES];
+                
+                
+                if ([model.userId isEqualToString: weakSelf.friendModel.userId]) {
+                    messageModel.msgType = weakSelf.selectMessageModel.msgType;
+                    messageModel.FromId = [UserConfig getShareObject].userId;
+                    messageModel.ToId = model.userId;
+                    messageModel.fileSize = fileDatas.length;
+                    messageModel.msgState = CDMessageStateSending;
+                    messageModel.messageId = [NSString stringWithFormat:@"%d",msgid];
+                    messageModel.fileID = msgid;
+                    messageModel.messageStatu = -1;
+                    CTDataConfig config = [CTData defaultConfig];
+                    config.isOwner = YES;
+                    messageModel.willDisplayTime = YES;
+                    messageModel.fileName = weakSelf.selectMessageModel.fileName;
+                     messageModel.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+                    messageModel.publicKey = model.publicKey;
+                    messageModel.ctDataconfig = config;
+                    NSString *nkName = [UserModel getUserModel].username;
+                    messageModel.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf.listView addMessagesToBottom:@[messageModel]];
+                    });
+                }
+                
+                NSData *msgKeyData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+                NSData *enData = aesEncryptData(fileDatas,msgKeyData);
+                NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
+                NSString *dsKey = [RSAUtil publicEncrypt:model.publicKey msgValue:msgKey];
+                [self sendFileWithToid:model.userId fileName:weakSelf.selectMessageModel.fileName fileData:enData fileId:msgid fileType:weakSelf.selectMessageModel.msgType messageId:[NSString stringWithFormat:@"%d",msgid] srcKey:srcKey dsKey:dsKey publicKey:model.publicKey];
+                
+            });
         }
-        
     }];
 }
 
@@ -768,13 +868,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
 - (void) fileSendSuccess:(NSNotification *) noti
 {
-    
     NSArray *arr = (NSArray *)noti.object;
     if (arr && arr.count > 0) {
+        
         if (![arr[2] isEqualToString:self.friendModel.userId]) {
             return;
         }
-       __block NSUInteger fileIndex = -1;
+       __block NSInteger fileIndex = -1;
+        @weakify_self
         [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             CDMessageModel *model = (id)obj;
             if ([[NSString stringWithFormat:@"%@",model.messageId] isEqualToString:arr[4]]) {
@@ -785,49 +886,55 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         if (fileIndex < 0) {
             return;
         }
-         CDMessageModel *model = (CDMessageModel *)[self.listView.msgArr objectAtIndex:fileIndex];
+         CDMessageModel *model = (CDMessageModel *)[weakSelf.listView.msgArr objectAtIndex:fileIndex];
         if ([arr[0] integerValue] != 0) { // 文件发送失败
             NSLog(@"文件发送失败");
             model.msgState = CDMessageStateSendFaild;
             model.messageStatu = -1;
+            
         } else {
             NSLog(@"文件发送成功");
             // 添加到最后一条消息
             model.msgState = CDMessageStateNormal;
+            if (model.messageStatu == 1) {
+                return;
+            }
             model.messageStatu = 1;
             model.messageId = arr[5];
-            // 添加到chatlist
-            ChatListModel *chatModel = [[ChatListModel alloc] init];
-            chatModel.myID = [UserModel getUserModel].userId;
-            chatModel.friendID = self.friendModel.userId;
-            chatModel.chatTime = [NSDate date];
-            chatModel.isHD = NO;
-            NSInteger msgType = [arr[3] integerValue];
-            if (msgType == 1) {
-                chatModel.lastMessage = @"[图片]";
-            } else if (msgType == 2) {
-                chatModel.lastMessage = @"[语音]";
-            } else if (msgType == 5){
-                chatModel.lastMessage = @"[文件]";
-            } else if (msgType == 3){
-                chatModel.lastMessage = @"[视频]";
-            }
-            [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
-            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
+            
         }
-        [self.listView updateMessage:model];
+        [weakSelf.listView updateMessage:model];
+        
+        if ([arr[0] integerValue] == 5) {
+            CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+            messageModel.msgType = 3;
+            messageModel.msg = @"You are not his (her) friend, please send him (her) friend request.";
+            [weakSelf.listView addMessagesToBottom:@[messageModel]];
+        }
     }
 }
 
 - (void) receiveFileMessage:(NSNotification *) noti
 {
     FileModel *fileModel = (FileModel *)noti.object;
-    NSString *userId = [UserModel getUserModel].userId;
+    NSString *userId = [UserConfig getShareObject].userId;
     if (!(([fileModel.ToId isEqualToString:userId] && [fileModel.FromId isEqualToString:self.friendModel.userId]) || ([fileModel.FromId isEqualToString:userId] && [fileModel.ToId isEqualToString:self.friendModel.userId]))) {
         return;
     }
     
-   
+    // 去重
+    __block BOOL isExist = NO;
+    [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CDMessageModel *model = (id)obj;
+        if ([model.messageId integerValue] == [fileModel.MsgId integerValue]) {
+            isExist = YES;
+            *stop = YES;
+        }
+    }];
+    if (isExist) {
+        return;
+    }
+    
     // 已读
     [self sendRedMsgWithMsgId:[NSString stringWithFormat:@"%@",fileModel.MsgId]];
     
@@ -849,7 +956,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     CTDataConfig config = [CTData defaultConfig];
     config.isOwner = NO;
     model.willDisplayTime = YES;
-    model.createTime = [NSString stringWithFormat:@"%ld",(long)[NSDate getTimestampFromDate:[NSDate date]]];
+    model.TimeStatmp = fileModel.timestamp;
     model.publicKey = self.friendModel.publicKey;
     model.ctDataconfig = config;
     NSString *nkName = self.friendModel.username;
@@ -871,7 +978,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         @weakify_self
         [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             CDMessageModel *model = (id)obj;
-           
             if ([model.messageId integerValue] == [sendMsgid integerValue]) {
                 isExist = YES;
                 if ([array[0] integerValue] == 0) { // 发送成功
@@ -879,6 +985,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
                     model.msgState = CDMessageStateNormal;
                     model.messageStatu = 1;
                     [weakSelf.listView updateMessage:model];
+                } else if ([array[0] integerValue] == 2) {
+                    CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+                    messageModel.msgType = 3;
+                    messageModel.msg = @"You are not his (her) friend, please send him (her) friend request.";
+                    [weakSelf.listView addMessagesToBottom:@[messageModel]];
                 }
                 index = idx;
                 *stop = YES;
@@ -918,7 +1029,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 #pragma mark -得到一条文字消息 并添加到listview
 - (void) addMessagesToList:(CDMessageModel *) model
 {
-    NSString *userId = [UserModel getUserModel].userId;
+    NSString *userId = [UserConfig getShareObject].userId;
     if (!(([model.ToId isEqualToString:userId] && [model.FromId isEqualToString:self.friendModel.userId]) || ([model.FromId isEqualToString:userId] && [model.ToId isEqualToString:self.friendModel.userId]))) {
         return;
     }
@@ -934,7 +1045,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     }
     model.publicKey = self.friendModel.publicKey;
     model.willDisplayTime = YES;
-    model.createTime = [NSString stringWithFormat:@"%ld",(long)[NSDate getTimestampFromDate:[NSDate date]]];
     model.publicKey = self.friendModel.publicKey;
     model.ctDataconfig = config;
     NSString *nkName = [UserModel getUserModel].username;
@@ -952,7 +1062,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         PayloadModel *payloadModel = obj;
         CDMessageModel *model = [[CDMessageModel alloc] init];
-         NSString *userId = [UserModel getUserModel].userId;
+         NSString *userId = [UserConfig getShareObject].userId;
         if (payloadModel.Sender == 0) {
             model.FromId = userId?:@"";
             model.ToId = self.friendModel.userId;
@@ -986,7 +1096,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         
         NSString *msgkey = [RSAUtil privateKeyDecryptValue:payloadModel.UserKey];
         if (![msgkey isEmptyString] && model.msgType == 0) {
-             model.msg = aesDecryptString(payloadModel.Msg,msgkey);
+            model.msg = aesDecryptString(payloadModel.Msg,msgkey);
+            if ([[NSString getNotNullValue:model.msg] isEmptyString]) {
+                model.msg = payloadModel.Msg;
+            }
         }
         CTDataConfig config = [CTData defaultConfig];
         if (!model.isLeft) {
@@ -1024,7 +1137,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 #pragma mark -发送已读
 - (void) sendRedMsgWithMsgId:(NSString *) msgid
 {
-    [SendRequestUtil sendRedMsgWithFriendId:self.friendModel.userId msgid:msgid];
+    UIApplicationState state = [UIApplication sharedApplication].applicationState;
+    BOOL result = (state != UIApplicationStateBackground);
+    if (result) {
+         [SendRequestUtil sendRedMsgWithFriendId:self.friendModel.userId msgid:msgid];
+    }
+   
 }
 
 - (void)deleteMessageSuccess:(NSNotification *)noti {
@@ -1053,25 +1171,28 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 }
 
 - (void)deleteMsg:(NSString *)MsgId {
-    __block BOOL isExist = NO;
-    __block NSInteger index = 0;
-    [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CDMessageModel *model = (id)obj;
-//        if ([model.messageId isEqualToString:MsgId]) {
-        if ([model.messageId integerValue] == [MsgId integerValue]) {
-            isExist = YES;
-            index = idx;
-            *stop = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __block BOOL isExist = NO;
+        __block NSInteger index = 0;
+        [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            CDMessageModel *model = (id)obj;
+            //        if ([model.messageId isEqualToString:MsgId]) {
+            if ([model.messageId integerValue] == [MsgId integerValue]) {
+                isExist = YES;
+                index = idx;
+                *stop = YES;
+            }
+        }];
+        if (isExist) {
+            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:self.listView.msgArr];
+            if (tempArr && tempArr.count > 0) {
+                [tempArr removeObjectAtIndex:index];
+                self.listView.isDelete = YES;
+                self.listView.msgArr = tempArr;
+            }
         }
-    }];
-    if (isExist) {
-        NSMutableArray *tempArr = [NSMutableArray arrayWithArray:self.listView.msgArr];
-        if (tempArr && tempArr.count > 0) {
-            [tempArr removeObjectAtIndex:index];
-            self.listView.isDelete = YES;
-            self.listView.msgArr = tempArr;
-        }
-    }
+    });
+    
 }
 
 - (UIView *) getHeadViewWithName:(NSString *) name
@@ -1091,47 +1212,49 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 }
 
 #pragma mark -视频导出到本地完成 并发送
-- (void)extracted:(PHAsset *)asset {
+- (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
+    
+    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+    int msgid = [mill intValue];
+    CDMessageModel *model = [[CDMessageModel alloc] init];
+    model.msgType = CDMessageTypeMedia;
+    model.messageStatu = -1;
+    model.FromId = [UserConfig getShareObject].userId;
+    model.ToId = self.friendModel.userId;
+    model.msgState = CDMessageStateSending;
+    model.messageId = [NSString stringWithFormat:@"%d",msgid];;
+    model.fileID = msgid;
+    CTDataConfig config = [CTData defaultConfig];
+    config.isOwner = YES;
+    model.willDisplayTime = YES;
+     model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+    model.publicKey = self.friendModel.publicKey;
+    model.ctDataconfig = config;
+    model.mediaImage = evImage;
+    NSString *nkName = [UserModel getUserModel].username;
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+    [self.listView addMessagesToBottom:@[model]];
     
     [TZImageManager manager].friendid = self.friendModel.userId;
     [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPreset640x480 success:^(NSString *outputPath) {
         NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
         //UIImage *img = [SystemUtil thumbnailImageForVideo:url];
        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
-        NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-        NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
-        int msgid = [mill intValue];
-        CDMessageModel *model = [[CDMessageModel alloc] init];
-        model.msgType = CDMessageTypeMedia;
-        model.messageStatu = -1;
-        model.FromId = [UserModel getUserModel].userId;
-        model.ToId = self.friendModel.userId;
-        model.fileSize = mediaData.length;
-        model.msgState = CDMessageStateSending;
-        model.messageId = [NSString stringWithFormat:@"%d",msgid];;
-        model.fileID = msgid;
-        CTDataConfig config = [CTData defaultConfig];
-        config.isOwner = YES;
-        model.willDisplayTime = YES;
-        model.fileName = [[outputPath componentsSeparatedByString:@"/"] lastObject];
-        NSString *uploadFileName = model.fileName;
-        model.createTime = [NSString stringWithFormat:@"%ld",(long)[NSDate getTimestampFromDate:[NSDate date]]];
-        model.publicKey = self.friendModel.publicKey;
-        model.ctDataconfig = config;
-        NSString *nkName = [UserModel getUserModel].username;
-        model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
-        [self.listView addMessagesToBottom:@[model]];
+        
         
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             
+            model.fileSize = mediaData.length;
+            model.fileName = [[outputPath componentsSeparatedByString:@"/"] lastObject];
             NSString *msgKey = [SystemUtil get16AESKey];
             NSData *msgKeyData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
             mediaData = aesEncryptData(mediaData,msgKeyData);
             NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
             NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
-            
-            [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey];
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                 [self sendFileWithToid:self.friendModel.userId fileName:model.fileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
+            });
         });
         
         
@@ -1266,7 +1389,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             model.msgType = CDMessageTypeImage;
             model.msg = @"";
             model.fileID = msgid;
-            model.FromId = [UserModel getUserModel].userId;
+            model.FromId = [UserConfig getShareObject].userId;
             model.ToId = self.friendModel.userId;
             model.msgState = CDMessageStateSending;
             model.messageId = [NSString stringWithFormat:@"%d",msgid];
@@ -1276,7 +1399,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             model.messageStatu = -1;
             NSString *uploadFileName = mill;
             model.fileName = mill;
-            model.createTime = [NSString stringWithFormat:@"%ld",(long)[NSDate getTimestampFromDate:[NSDate date]]];
+             model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
             model.publicKey = self.friendModel.publicKey;
             model.ctDataconfig = config;
             NSString *nkName = [UserModel getUserModel].username;
@@ -1292,13 +1415,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
             NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
             
-            [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey];
+            [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
         }
     }];
      // 你可以通过block或者代理，来得到用户选择的视频.
     @weakify_self
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *asset) {
-        [weakSelf extracted:asset];
+        [weakSelf extracted:asset evImage:coverImage];
     }];
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 }

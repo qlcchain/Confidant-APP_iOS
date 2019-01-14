@@ -9,11 +9,14 @@
 #import "EditTextViewController.h"
 #import "UserModel.h"
 #import "RouterModel.h"
+#import "FriendModel.h"
+#import "UserConfig.h"
 
 @interface EditTextViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (weak, nonatomic) IBOutlet UITextField *nameTF;
+@property (nonatomic ,strong) FriendModel *friendModel;
 
 @end
 
@@ -37,6 +40,15 @@
                 
                 [SendRequestUtil sendUpdateWithNickName:_nameTF.text.trim?:@""];
                 
+            }
+        }
+            break;
+        case EditFriendAlis:
+        {
+            if ([_nameTF.text.trim isEmptyString]) {
+                [AppD.window showHint:@"Nickname cannot be empty"];
+            } else {
+                [SendRequestUtil sendAddFriendNickName:_nameTF.text.trim?:@"" friendId:self.friendModel.userId];
             }
         }
             break;
@@ -86,6 +98,14 @@
     }
     return self;
 }
+- (instancetype)initWithType:(EditType)type friendModel:(FriendModel *)friendModel
+{
+    if (self = [super init]) {
+        self.editType = type;
+        self.friendModel = friendModel;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -115,12 +135,18 @@
             _nameTF.placeholder = @"Edit alias";
             _nameTF.text = _routerM.name;
             break;
+        case EditFriendAlis:
+            _lblNavTitle.text = @"Alias";
+            _nameTF.placeholder = @"Edit alias";
+            _nameTF.text = self.friendModel.username;
+            break;
         default:
             break;
     }
     
     [self performSelector:@selector(beginFirst) withObject:self afterDelay:0.7];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_NICKNAME_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_FRIEND_NICKNAME_SUCCESS_NOTI object:nil];
 }
 
 - (void) beginFirst
@@ -131,9 +157,14 @@
 #pragma mark -通知回调
 - (void) updateNickSuccess:(NSNotification *) noti
 {
-    UserModel *model = [UserModel getUserModel];
-    model.username = _nameTF.text.trim?:@"";
-    [model saveUserModeToKeyChain];
+    if (self.editType == EditFriendAlis) {
+        self.friendModel.username = _nameTF.text.trim?:@"";
+    } else {
+        UserModel *model = [UserModel getUserModel];
+        model.username = _nameTF.text.trim?:@"";
+        [UserConfig getShareObject].userName = _nameTF.text.trim?:@"";
+        [model saveUserModeToKeyChain];
+    }
     [self leftNavBarItemPressedWithPop:YES];
 }
 

@@ -14,6 +14,8 @@
 #import "SystemUtil.h"
 #import "ChatListDataUtil.h"
 #import "UserManagerViewController.h"
+#import "HeartBeatUtil.h"
+#import "RoutherConfig.h"
 
 @interface RouterDetailViewController ()
 
@@ -65,16 +67,14 @@
 
 - (void)logout {
     
-   
-    
     if ( _routerM.isConnected) {
          [SendRequestUtil sendLogOut];
+       
+         [self performSelector:@selector(logOutApp) withObject:self afterDelay:0.5f];
     } else { //删除router
         [RouterModel deleteRouterWithUsersn:_routerM.userSn];
         [self leftNavBarItemPressedWithPop:YES];
     }
-    
-    
 }
 
 #pragma mark - Action
@@ -142,18 +142,23 @@
     vc.routerM = _routerM;
     [self.navigationController pushViewController:vc animated:YES];
 }
-
-#pragma mark -通知回调
-- (void) logOutSuccess:(NSNotification *) noti
+- (void) logOutApp
 {
+    [HeartBeatUtil stop];
     if ([SystemUtil isSocketConnect]) {
+        [RoutherConfig getRoutherConfig].currentRouterIp = @"";
         [[SocketUtil shareInstance] disconnect];
     } else {
         AppD.isConnect = NO;
-        [self logOutTox];
+        //[self logOutTox];
     }
     [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
     AppD.isLogOut = YES;
     [AppD setRootLogin];
+}
+#pragma mark -通知回调
+- (void) logOutSuccess:(NSNotification *) noti
+{
+    
 }
 @end

@@ -26,12 +26,13 @@
 #import <Bugly/Bugly.h>
 #import "MiPushSDK.h"
 #import "RunInBackground.h"
+#import "RSAModel.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
     BOOL isBackendRun;
 }
-@property (nonatomic, assign) NSThread *thread;
+//@property (nonatomic, assign) NSThread *thread;
 @end
 
 @implementation AppDelegate
@@ -58,6 +59,7 @@
     // 配置聊天
     [self configChat];
     [self checkGuidenPage];
+    [RSAModel getRSAModel];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -73,12 +75,14 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     // 播放无声音乐
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        self->isBackendRun = YES;
-        [[RunInBackground sharedBg] startRunInbackGround];
-        [[NSRunLoop currentRunLoop] run];
-        self.thread = [NSThread currentThread];
-    });
+//    if ([SystemUtil isSocketConnect]) {
+//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//            self->isBackendRun = YES;
+//            [[RunInBackground sharedBg] startRunInbackGround];
+//            [[NSRunLoop currentRunLoop] run];
+//        });
+ //   }
+    
 }
 
 
@@ -93,9 +97,9 @@
     if (isBackendRun) {
         [[RunInBackground sharedBg] stopAudioPlay];
     }
-    if (![self.thread isMainThread]) {
-        //        [self.thread cancel];
-    }
+//    if (![self.thread isMainThread]) {
+//        //        [self.thread cancel];
+//    }
 }
 
 
@@ -126,7 +130,6 @@
     // kCATransitionFromBottom//底部弹出
     [AppD.window.layer addAnimation:animation forKey:nil];
     AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];;
-    AppD.inLogin = YES;
 }
 #pragma mark - 是否需要显示引导页
 - (void)checkGuidenPage {
@@ -151,6 +154,10 @@
 }
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager {
     [KeyCUtil saveStringToKeyWithString:@"1" key:LOGIN_KEY];
+    AppD.isLogOut = NO;
+    if ([SystemUtil isSocketConnect]) {
+        AppD.manager = nil;
+    }
     // 设置当前路由
     [RouterModel updateRouterConnectStatusWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
     // 我们要把系统windown的rootViewController替换掉
@@ -176,7 +183,7 @@
     // kCATransitionFromBottom//底部弹出
     [AppD.window.layer addAnimation:animation forKey:nil];
     AppD.window.rootViewController = tabbarC;
-    AppD.inLogin = NO;
+    AppD.inLogin = YES;
 }
 
 #pragma mark - 配置DDLog
@@ -187,12 +194,12 @@
     
     //配置DDLog
     [DDLog addLogger:[DDTTYLogger sharedInstance]]; // TTY = Xcode console
-    //    [DDLog addLogger:[DDASLLogger sharedInstance]]; // ASL = Apple System Logs
+       // [DDLog addLogger:[DDASLLogger sharedInstance]]; // ASL = Apple System Logs
     
-//    DDFileLogger *fileLogger = [[DDFileLogger alloc] init]; // File Logger
-//    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-//    fileLogger.logFileManager.maximumNumberOfLogFiles = 7; // 7
-//    [DDLog addLogger:fileLogger];
+    DDFileLogger *fileLogger = [[DDFileLogger alloc] init]; // File Logger
+    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    fileLogger.logFileManager.maximumNumberOfLogFiles = 7; // 7
+    [DDLog addLogger:fileLogger];
     
     //针对单个文件配置DDLog打印级别，尚未测试
     //    [DDLog setLevel:DDLogLevelAll forClass:nil];
@@ -399,6 +406,7 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     // 可在此获取regId
     if ([selector isEqualToString:@"bindDeviceToken:"]) {
         NSLog(@"regid == %@", data[@"regid"]);
+        self.regId = data[@"regid"];
     }
 }
 

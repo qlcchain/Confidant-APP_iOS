@@ -8,7 +8,7 @@
 
 @class FriendModel;
 static NSString *AddFriendCellReuse = @"AddFriendCellTableViewCell";
-#define AddFriendCellHeight 55
+#define AddFriendCellHeight 58
 
 typedef void(^ClickRightBlock)(NSInteger tag,NSInteger row);
 
@@ -18,6 +18,7 @@ typedef void(^ClickRightBlock)(NSInteger tag,NSInteger row);
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblStatus;
 @property (nonatomic , copy) ClickRightBlock rightBlcok;
+@property (weak, nonatomic) IBOutlet UILabel *lblMsg;
 - (void) setFriendModel:(FriendModel *) model;
 @property (weak, nonatomic) IBOutlet UIView *rightBackView;
 @end

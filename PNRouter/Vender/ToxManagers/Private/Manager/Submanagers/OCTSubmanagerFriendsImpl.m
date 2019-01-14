@@ -253,6 +253,7 @@
         if (AppD.isConnect) {
             return;
         }
+         [[NSNotificationCenter defaultCenter] postNotificationName:TOX_RECONNECT_SUCCESS_NOTI object:nil];
         AppD.isConnect = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
     }

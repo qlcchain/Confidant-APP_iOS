@@ -14,16 +14,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn;
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code;
-+ (void) sendUserLoginWithPass:(NSString *) passWord userid:(NSString *) userid;
++ (void) sendUserLoginWithPass:(NSString *) passWord userid:(NSString *) userid showHud:(BOOL) showHud;
 + (void) sendPullUserList;
-+ (void) sendAddFriendWithFriendId:(NSString *) friendId;
++ (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg;
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId;
 + (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic code:(NSString *) code;
 + (void) sendRedMsgWithFriendId:(NSString *) friendId msgid:(NSString *) msgId;
 + (void) sendUpdateWithNickName:(NSString *) nickName;
 + (void) sendLogOut;
 + (void) sendToxSendFileWithParames:(NSDictionary *) parames;
-+ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName msgId:(NSString *) msgId;
++ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName msgId:(NSString *) msgId fileOwer:(NSString *) fileOwer;
++ (void) sendRegidReqeust;
+#pragma mark -添加好友备注
++ (void) sendAddFriendNickName:(NSString *) nickName friendId:(NSString *) friendId;
++ (void) sendQueryFriendWithFriendId:(NSString *) friendId;
 @end
 
 NS_ASSUME_NONNULL_END

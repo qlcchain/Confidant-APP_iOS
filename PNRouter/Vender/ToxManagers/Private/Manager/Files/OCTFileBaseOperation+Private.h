@@ -39,4 +39,6 @@
  */
 - (void)finishWithError:(nonnull NSError *)error;
 
+- (void) cancelFileSend;
+
 @end

@@ -14,6 +14,7 @@
 + (NSDictionary *)replacedKeyFromPropertyName{
     return @{
              @"username" : @"Name",
+             @"remarks"  : @"Remarks",
               @"userId" : @"Id",
               @"publicKey" : @"UserKey",
               @"onLineStatu" : @"Status"

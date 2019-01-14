@@ -109,6 +109,8 @@ typedef enum NET_PACKET_TYPE {
 
 #define TOX_PORTRANGE_FROM 33445
 #define TOX_PORTRANGE_TO   33545
+//#define TOX_PORTRANGE_FROM 45600
+//#define TOX_PORTRANGE_TO   45700
 #define TOX_PORT_DEFAULT   TOX_PORTRANGE_FROM
 
 /* Redefinitions of variables for safe transfer over wire. */

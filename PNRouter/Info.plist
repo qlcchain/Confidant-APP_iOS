@@ -41,7 +41,7 @@
 	<key>CFBundleSignature</key>
 	<string>???</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>21</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -115,10 +115,6 @@
 		<string>Helvetica Neue CE 35 Thin.ttf</string>
 		<string>Helvetica Neue CE 36 Thin Italic.ttf</string>
 		<string>Helvetica Neue CE 55 Roman.ttfAvenirLTStd-Black.otf</string>
-	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

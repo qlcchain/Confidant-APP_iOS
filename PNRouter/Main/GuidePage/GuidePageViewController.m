@@ -117,7 +117,6 @@
     }    // 连接
     [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
     NSString *connectURL = [SystemUtil connectUrl];
-    AppD.currentSoketUrl = connectURL;
     [SocketUtil.shareInstance connectWithUrl:connectURL];
 }
 
@@ -221,7 +220,7 @@
         
         if (retCode == 0) { //已激活
             [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
-            [UserModel createUserLocalWithName:userName userid:userid version:fileVersion filePay:@"" userpass:@""];
+            [UserModel createUserLocalWithName:userName userid:userid version:fileVersion filePay:@"" userpass:@"" userSn:usesn];
             LoginViewController *vc = [[LoginViewController alloc] init];
             [self setRootVCWithVC:vc];
         } else { // 未激活 或者日临时帐户

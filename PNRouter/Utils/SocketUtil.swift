@@ -43,9 +43,8 @@ class SocketUtil: NSObject {
         socket!.onDisconnect = { (error: Error?) in
             weakSelf?.connectStatus = socketConnectStatusDisconnected
             print("websocket is disconnected: \(String(describing: error?.localizedDescription))")
-            
+           
             NotificationCenter.default.post(name: Notification.Name(rawValue: SOCKET_ON_DISCONNECT_NOTI), object:url)
-            
             NotificationCenter.default.post(name: Notification.Name(rawValue:SOCKET_DISCONNECT_NOTI), object:url)
             
         }
@@ -70,7 +69,8 @@ class SocketUtil: NSObject {
     
     func send(text:String) {
         socket?.write(string: text, completion: {
-            print("send text:\(text)")
+            //print("send text:\(text)")
+            SocketMessageUtil.sendText(text);
         })
     }
     

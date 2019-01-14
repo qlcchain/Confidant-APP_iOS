@@ -20,12 +20,15 @@
 #import "OCTSubmanagerUser.h"
 #import "OCTSubmanagerFriends.h"
 #import "ConnectView.h"
-
+#import "UserConfig.h"
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate>
 {
     BOOL isLogin;
     BOOL isFind;
+    BOOL isConnectSocket;
+    BOOL resultLogin;
+    NSInteger sendCount;
 }
 @property (weak, nonatomic) IBOutlet UIView *loginBackView;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
@@ -45,14 +48,37 @@
 }
 - (IBAction)loginAction:(id)sender {
     
-    
-    
     if (_passTF.text.trim.length < 6 ) {
         [self.view showHint:@"The password must be greater than or equal to 6 digits"];
         return;
     }
-     NSString *shaPass = [_passTF.text.trim SHA256];
+    sendCount = 0;
+    isConnectSocket = YES;
+    resultLogin = NO;
+    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+        
+        NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
+        if (connectStatu == socketConnectStatusConnected) {
+            // 发送登陆请求
+            [self sendLoginRequestWithShowHud:YES];
+        } else {
+            isLogin = YES;
+            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
+            NSString *connectURL = [SystemUtil connectUrl];
+            [SocketUtil.shareInstance connectWithUrl:connectURL];
+        }
+    } else {
+        isLogin = YES;
+        [self sendGB];
+    }
     
+    /*
+    
+    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString] && AppD.manager == nil) {
+        isLogin = YES;
+        [self sendGB];
+        return;
+    }
     
     if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
         isLogin = YES;
@@ -68,9 +94,10 @@
         isLogin = YES;
         [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
         NSString *connectURL = [SystemUtil connectUrl];
-        AppD.currentSoketUrl = connectURL;
         [SocketUtil.shareInstance connectWithUrl:connectURL];
     }
+     
+     */
 }
 - (IBAction)rightAction:(id)sender {
     isLogin = NO;
@@ -91,8 +118,8 @@
         [RoutherConfig getRoutherConfig].currentRouterToxid = routherM.toxid;
         [RoutherConfig getRoutherConfig].currentRouterSn = routherM.userSn;
         
-        [self loadHudView];
-        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+        //[self loadHudView];
+        //[[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
         _lblRoutherName.text = self.selectRouther.name;
         _passTF.text = self.selectRouther.userPass?:@"";
     } else {
@@ -104,6 +131,8 @@
 #pragma mark -连接socket_tox
 - (void) connectSocketWithIsShowHud:(BOOL) isShow
 {
+    isConnectSocket = YES;
+    
     // 当前是在局域网
     if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString])
     {
@@ -117,7 +146,6 @@
         }
         
         NSString *connectURL = [SystemUtil connectUrl];
-        AppD.currentSoketUrl = connectURL;
         [SocketUtil.shareInstance connectWithUrl:connectURL];
         
     } else {
@@ -138,9 +166,19 @@
         
     } else if (isLogin) {
         isLogin = NO;
-        NSString *shaPass = [_passTF.text.trim SHA256];
-        [SendRequestUtil sendUserLoginWithPass:shaPass userid:self.selectRouther.userid];
+        [self sendLoginRequestWithShowHud:YES];
     }
+}
+
+- (void) sendLoginRequestWithShowHud:(BOOL) isShow
+{
+    NSString *shaPass = [_passTF.text.trim SHA256];
+    [SendRequestUtil sendUserLoginWithPass:shaPass userid:self.selectRouther.userid showHud:isShow];
+    sendCount ++;
+    if (sendCount == 4) {
+        return;
+    }
+    [self performSelector:@selector(sendLoginRequestWithShowHud:) withObject:@(0) afterDelay:5];
 }
 
 #pragma mark -tox 登陆成功
@@ -192,10 +230,10 @@
 
 
 - (void)socketOnConnect:(NSNotification *)noti {
+    isConnectSocket = NO;
     [AppD.window hideHud];
     if (isLogin) {  // 登陆
-        NSString *shaPass = [_passTF.text.trim SHA256];
-        [SendRequestUtil sendUserLoginWithPass:shaPass userid:self.selectRouther.userid];
+        [self sendLoginRequestWithShowHud:YES];
         isLogin = NO;
     } else if (isFind) {
         [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
@@ -206,7 +244,10 @@
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
     [AppD.window hideHud];
-    [AppD.window showHint:@"The connection fails"];
+    if (isConnectSocket) {
+        isConnectSocket = NO;
+        [AppD.window showHint:@"The connection fails"];
+    }
 }
 - (void) loadHudView
 {
@@ -215,19 +256,17 @@
 - (void) sendGB
 {
     [self loadHudView];
-    RouterModel *routerModel = [RouterModel getConnectRouter];
-    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:routerModel.toxid];
+   // RouterModel *routerModel = [RouterModel getConnectRouter];
+    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
    
     
-    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString] && !AppD.manager && !AppD.isLogOut) {
-       [self performSelector:@selector(sendGB) withObject:self afterDelay:.1];
-    }
-    if (AppD.isLogOut) {
-        AppD.isLogOut = NO;
-    }
+//    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString] && !AppD.manager && !AppD.isLogOut) {
+//       [self performSelector:@selector(sendGB) withObject:self afterDelay:.1];
+//    }
+   
     self.selectRouther = [RouterModel getConnectRouter];
     if (self.selectRouther) {
         [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
@@ -251,6 +290,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:SOCKET_LOGIN_SUCCESS_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
     
     
 }
@@ -282,6 +322,8 @@
 #pragma mark -切换routher 刷新方法
 - (void)refreshSelectRouter:(RouterModel *)routeM {
     
+    AppD.manager = nil;
+    
     isLogin = NO;
     isFind = NO;
     
@@ -294,8 +336,8 @@
     [RoutherConfig getRoutherConfig].currentRouterToxid = routeM.toxid;
     [RoutherConfig getRoutherConfig].currentRouterSn = routeM.userSn;
     
-    [self loadHudView];
-    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+   // [self loadHudView];
+  //  [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     _lblRoutherName.text = self.selectRouther.name;
     _passTF.text = self.selectRouther.userPass?:@"";
 }
@@ -336,6 +378,11 @@
 }
 
 #pragma mark - 通知回调
+// 注册推送
+- (void) registerPushNoti:(NSNotification *) noti
+{
+    [SendRequestUtil sendRegidReqeust];
+}
 // 加router好友成功
 - (void) toxAddRoterSuccess:(NSNotification *) noti
 {
@@ -358,7 +405,7 @@
         _lblRoutherName.text = self.selectRouther.name;
         _passTF.text = self.selectRouther.userPass;
         _loginBtn.selected = YES;
-        [self connectSocketWithIsShowHud:NO];
+        [self connectSocketWithIsShowHud:YES];
         [self changeLogintStatu];
     } else { // 走find 5
         isFind = YES;
@@ -391,11 +438,31 @@
 }
 - (void) loginSuccess:(NSNotification *) noti
 {
-    [RouterModel updateRouterPassWithSn:[RoutherConfig getRoutherConfig].currentRouterSn pass:_passTF.text.trim];
-    [UserModel updateUserLocalWithPass:_passTF.text.trim];
-    [AppD setRootTabbarWithManager:nil];
-    [AppD.window showHint:@"Login Success"];
-    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(sendLoginRequestWithShowHud:) object:[NSNumber numberWithBool:NO]];
+    if (resultLogin) {
+        return;
+    }
+    resultLogin = YES;
+    NSInteger retCode = [noti.object integerValue];
+    if (retCode == 0) {
+        [RouterModel updateRouterPassWithSn:[RoutherConfig getRoutherConfig].currentRouterSn pass:_passTF.text.trim];
+        [UserModel updateUserLocalWithPass:_passTF.text.trim];
+        [UserConfig getShareObject].passWord = _passTF.text.trim;
+        [AppD setRootTabbarWithManager:nil];
+        [AppD.window showHint:@"Login Success"];
+    } else if (retCode == 2) { // routeid不对
+        [AppD.window showHint:@"Routeid wrong."];
+    } else if (retCode == 1) { //需要验证
+        [AppD.window showHint:@"Need to verify"];
+    }else if (retCode == 3) { //uid错误
+        [AppD.window showHint:@"uid wrong."];
+    }else if (retCode == 4) { //登陆密码错误
+        [AppD.window showHint:@"Login password error."];
+    } else if (retCode == 5) { //验证码错误
+        [AppD.window showHint:@"Verification code error."];
+    }else { // 其它错误
+        [AppD.window showHint:@"Login failed Other error."];
+    }
 }
 
 - (void) recivceUserFind:(NSNotification *) noti
@@ -419,7 +486,7 @@
         if (retCode == 0) { //已激活
             [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
             [RouterModel updateRouterConnectStatusWithSn:usesn];
-            [UserModel createUserLocalWithName:userName userid:userid version:0 filePay:@"" userpass:@""];
+            [UserModel createUserLocalWithName:userName userid:userid version:0 filePay:@"" userpass:@"" userSn:usesn];
             LoginViewController *vc = [[LoginViewController alloc] init];
             [self setRootVCWithVC:vc];
         } else { // 未激活 或者日临时帐户

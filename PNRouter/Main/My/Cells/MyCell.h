@@ -13,6 +13,7 @@ static NSString *MyCellReuse = @"MyCell";
 
 @interface MyCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *rightJD;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
 @property (weak, nonatomic) IBOutlet UIButton *subBtn;

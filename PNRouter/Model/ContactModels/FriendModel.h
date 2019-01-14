@@ -12,12 +12,15 @@
 @interface FriendModel : BBaseModel
 
 @property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy) NSString *remarks;
 @property (nonatomic, copy) NSString *company;
 @property (nonatomic, copy) NSString *publicKey;
 @property (nonatomic, copy) NSString *position;
 @property (nonatomic, copy) NSString *location;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *owerId;
+@property (nonatomic, copy) NSString *msg;
+@property (nonatomic, strong) NSDate *requestTime;
 @property (nonatomic , assign) NSInteger dealStaus;
 @property (nonatomic , assign) NSInteger onLineStatu;
 @property (nonatomic ,assign) BOOL isSelect;

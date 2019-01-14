@@ -17,6 +17,7 @@
 // 回复router
 + (void)sendRecevieMessageWithParams:(NSDictionary *)params tempmsgid:(NSInteger) msgid;
 + (void)receiveText:(NSString *)text;
++ (void)sendText:(NSString *)text;
 // 同意或拒绝好友请求
 + (void) sendAgreedOrRefusedWithFriendMode:(FriendModel *) model withType:(NSString *) type;
 // 查询用户是否在线
