@@ -343,6 +343,7 @@
 		73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806521DF87490047C3DA /* DebugLogViewController.m */; };
 		73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F8806721DF874A0047C3DA /* DebugLogViewController.xib */; };
 		73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806A21DF87AE0047C3DA /* DDLogUtil.m */; };
+		73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */; };
 		73F9A11A219973C80011FAA5 /* ReviceRadio.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F9A119219973C80011FAA5 /* ReviceRadio.m */; };
 		73FD079921D74979001B89CB /* FriendRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73FD079721D74979001B89CB /* FriendRequestViewController.m */; };
 		73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FD079821D74979001B89CB /* FriendRequestViewController.xib */; };
@@ -1055,6 +1056,8 @@
 		73F8806721DF874A0047C3DA /* DebugLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DebugLogViewController.xib; sourceTree = "<group>"; };
 		73F8806A21DF87AE0047C3DA /* DDLogUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLogUtil.m; sourceTree = "<group>"; };
 		73F8806B21DF87AF0047C3DA /* DDLogUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLogUtil.h; sourceTree = "<group>"; };
+		73F8806F21ED7EE00047C3DA /* LibsodiumUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibsodiumUtil.h; sourceTree = "<group>"; };
+		73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibsodiumUtil.m; sourceTree = "<group>"; };
 		73F9A118219973C80011FAA5 /* ReviceRadio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReviceRadio.h; sourceTree = "<group>"; };
 		73F9A119219973C80011FAA5 /* ReviceRadio.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReviceRadio.m; sourceTree = "<group>"; };
 		73FD079621D74979001B89CB /* FriendRequestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendRequestViewController.h; sourceTree = "<group>"; };
@@ -2093,6 +2096,8 @@
 				738677A321B168C7003A8568 /* MutManagerUtil.m */,
 				73682AE821C3D2D700E3E1A0 /* ToxPullFileTimerUtil.h */,
 				73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */,
+				73F8806F21ED7EE00047C3DA /* LibsodiumUtil.h */,
+				73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2997,6 +3002,7 @@
 				7330F4EC2149147200FF4EEC /* CellCaculator.m in Sources */,
 				7303310F21D22422007C4063 /* UserConfig.m in Sources */,
 				7330F3A2214671B600FF4EEC /* ShareView.m in Sources */,
+				73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */,
 				7378840321ACF2970033A189 /* OCTFriendRequest.m in Sources */,
 				7330F4FB2149147200FF4EEC /* CTInputCaculator.m in Sources */,
 				7330F3BE214769DF00FF4EEC /* FriendDetailViewController.m in Sources */,

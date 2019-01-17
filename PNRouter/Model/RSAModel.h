@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *privateKey;
 @property (nonatomic ,strong) NSString *publicKey;
 
+
 + (RSAModel *) getCurrentRASModel;
 + (void) getRSAModel;
 + (instancetype) getShareObject;
