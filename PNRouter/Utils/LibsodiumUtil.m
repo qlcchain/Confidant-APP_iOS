@@ -10,9 +10,11 @@
 #import "RSAModel.h"
 #import <libsodium/crypto_box.h>
 #import "KeyCUtil.h"
-#import <toxcore/crypto_core.h>
+//#import <toxcore/crypto_core.h>
+#import "crypto_core.h"
 #import <libsodium/crypto_box.h>
-#import <toxcore/ccompat.h>
+//#import <toxcore/ccompat.h>
+#import "ccompat.h"
 #define libkey @"libkey"
 
 @implementation LibsodiumUtil

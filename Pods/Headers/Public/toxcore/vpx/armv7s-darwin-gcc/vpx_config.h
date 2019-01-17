@@ -1,1 +1,0 @@
-../../../../../toxcore/ios/vpx.framework/Headers/armv7s-darwin-gcc/vpx_config.h

@@ -3,7 +3,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #import "OCTToxEncryptSave.h"
-#import <toxcore/toxencryptsave/toxencryptsave.h>
+//#import <toxcore/toxencryptsave/toxencryptsave.h>
+#import "toxencryptsave.h"
 #import "OCTToxEncryptSaveConstants.h"
 #import "OCTTox+Private.h"
 

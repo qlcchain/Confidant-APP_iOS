@@ -22,7 +22,8 @@
 #import "PersonCodeViewController.h"
 #import "RMDownloadIndicator.h"
 #import "LibsodiumUtil.h"
-#import <toxcore/crypto_core.h>
+//#import <toxcore/crypto_core.h>
+#import "crypto_core.h"
 #import <libsodium/crypto_box.h>
 
 

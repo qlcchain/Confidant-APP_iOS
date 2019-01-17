@@ -3,7 +3,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #import "OCTToxOptions+Private.h"
-#import <toxcore/tox.h>
+//#import <toxcore/tox.h>
+#import "tox.h"
 
 @interface OCTToxOptions ()
 
