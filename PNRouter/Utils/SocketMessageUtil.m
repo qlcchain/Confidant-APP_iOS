@@ -37,37 +37,7 @@
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
 
-NSString *Action_login = @"Login";
-NSString *Action_Destory = @"Destory";
-NSString *Action_AddFriendReq = @"AddFriendReq";
-NSString *Action_AddFriendPush = @"AddFriendPush";
-NSString *Action_AddFriendDeal = @"AddFriendDeal";
-NSString *Action_AddFriendReply = @"AddFriendReply";
-NSString *Action_DelFriendCmd = @"DelFriendCmd";
-NSString *Action_DelFriendPush = @"DelFriendPush";
-NSString *Action_SendMsg = @"SendMsg";
-NSString *Action_PushMsg = @"PushMsg";
-NSString *Action_DelMsg = @"DelMsg";
-NSString *Action_PushDelMsg = @"PushDelMsg";
-NSString *Action_HeartBeat = @"HeartBeat";
-NSString *Action_OnlineStatusCheck = @"OnlineStatusCheck";
-NSString *Action_OnlineStatusPush = @"OnlineStatusPush";
-NSString *Action_PullMsg = @"PullMsg";
-NSString *Action_PullFriend = @"PullFriend";
-NSString *Action_PushFile = @"PushFile";
-NSString *Action_SynchDataFile = @"SynchDataFile";
-NSString *Aciont_Recovery = @"Recovery";
-NSString *Aciont_Register = @"Register";
-NSString *Action_PullUserList = @"PullUserList";
-NSString *Action_CreateNormalUser = @"CreateNormalUser";
-NSString *Action_ReadMsgPush = @"ReadMsgPush";
-NSString *Action_LogOut = @"LogOut";
-NSString *Action_UserInfoUpdate = @"UserInfoUpdate";
-NSString *Action_SendFile = @"SendFile";
-NSString *Action_PullFile = @"PullFile";
-NSString *Action_ChangeRemarks = @"ChangeRemarks";
-NSString *Action_QueryFriend = @"QueryFriend";
-NSString *Action_PushLogout = @"PushLogout";
+
 @implementation SocketMessageUtil
 
 /**

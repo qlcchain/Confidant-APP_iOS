@@ -141,4 +141,14 @@
     NSDictionary *params = @{@"Action":@"QueryFriend",@"UserId":userM.userId,@"FriendId":friendId};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
+
+#pragma mark - 登录设备
++ (void)sendRouterLoginWithMac:(NSString *)mac loginKey:(NSString *)loginKey showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_RouterLogin,@"Mac":mac?:@"",@"LoginKey":loginKey?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+
 @end

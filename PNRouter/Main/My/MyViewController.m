@@ -187,7 +187,7 @@ struct ResultFile {
     
      [self.view addSubview:self.filedIndicator_left];
     
-    [self entryText];
+//    [self entryText];
     
 }
 

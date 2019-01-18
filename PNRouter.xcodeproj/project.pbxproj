@@ -47,6 +47,14 @@
 		581FDF5621F024170068C120 /* DHT.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF2621F024160068C120 /* DHT.m */; };
 		581FDF5721F024170068C120 /* ping_array.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF2B21F024160068C120 /* ping_array.m */; };
 		581FDF5821F024170068C120 /* toxencryptsave.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF3421F024160068C120 /* toxencryptsave.m */; };
+		581FDF5D21F16D350068C120 /* LoginDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF5B21F16D350068C120 /* LoginDeviceViewController.m */; };
+		581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF5C21F16D350068C120 /* LoginDeviceViewController.xib */; };
+		581FDF6221F172E00068C120 /* ModifyActivateCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF6021F172E00068C120 /* ModifyActivateCodeViewController.m */; };
+		581FDF6321F172E00068C120 /* ModifyActivateCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6121F172E00068C120 /* ModifyActivateCodeViewController.xib */; };
+		581FDF6721F173AC0068C120 /* ModifyRouterPWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF6521F173AC0068C120 /* ModifyRouterPWViewController.m */; };
+		581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6621F173AC0068C120 /* ModifyRouterPWViewController.xib */; };
+		581FDF6C21F19FEA0068C120 /* AccountManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */; };
+		581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		584A447921460AD800608122 /* MyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A447721460AD800608122 /* MyViewController.m */; };
 		584A447A21460AD800608122 /* MyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584A447821460AD800608122 /* MyViewController.xib */; };
@@ -489,6 +497,18 @@
 		581FDF3221F024160068C120 /* toxencryptsave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toxencryptsave.h; sourceTree = "<group>"; };
 		581FDF3321F024160068C120 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
 		581FDF3421F024160068C120 /* toxencryptsave.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = toxencryptsave.m; sourceTree = "<group>"; };
+		581FDF5A21F16D350068C120 /* LoginDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginDeviceViewController.h; sourceTree = "<group>"; };
+		581FDF5B21F16D350068C120 /* LoginDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginDeviceViewController.m; sourceTree = "<group>"; };
+		581FDF5C21F16D350068C120 /* LoginDeviceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginDeviceViewController.xib; sourceTree = "<group>"; };
+		581FDF5F21F172E00068C120 /* ModifyActivateCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyActivateCodeViewController.h; sourceTree = "<group>"; };
+		581FDF6021F172E00068C120 /* ModifyActivateCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyActivateCodeViewController.m; sourceTree = "<group>"; };
+		581FDF6121F172E00068C120 /* ModifyActivateCodeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModifyActivateCodeViewController.xib; sourceTree = "<group>"; };
+		581FDF6421F173AC0068C120 /* ModifyRouterPWViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyRouterPWViewController.h; sourceTree = "<group>"; };
+		581FDF6521F173AC0068C120 /* ModifyRouterPWViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyRouterPWViewController.m; sourceTree = "<group>"; };
+		581FDF6621F173AC0068C120 /* ModifyRouterPWViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModifyRouterPWViewController.xib; sourceTree = "<group>"; };
+		581FDF6921F19FEA0068C120 /* AccountManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountManagementViewController.h; sourceTree = "<group>"; };
+		581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountManagementViewController.m; sourceTree = "<group>"; };
+		581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountManagementViewController.xib; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		584A447621460AD800608122 /* MyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
@@ -1341,6 +1361,25 @@
 			path = toxencryptsave;
 			sourceTree = "<group>";
 		};
+		581FDF5921F16D010068C120 /* Administrator */ = {
+			isa = PBXGroup;
+			children = (
+				581FDF6421F173AC0068C120 /* ModifyRouterPWViewController.h */,
+				581FDF6521F173AC0068C120 /* ModifyRouterPWViewController.m */,
+				581FDF6621F173AC0068C120 /* ModifyRouterPWViewController.xib */,
+				581FDF5F21F172E00068C120 /* ModifyActivateCodeViewController.h */,
+				581FDF6021F172E00068C120 /* ModifyActivateCodeViewController.m */,
+				581FDF6121F172E00068C120 /* ModifyActivateCodeViewController.xib */,
+				581FDF5A21F16D350068C120 /* LoginDeviceViewController.h */,
+				581FDF5B21F16D350068C120 /* LoginDeviceViewController.m */,
+				581FDF5C21F16D350068C120 /* LoginDeviceViewController.xib */,
+				581FDF6921F19FEA0068C120 /* AccountManagementViewController.h */,
+				581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */,
+				581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */,
+			);
+			path = Administrator;
+			sourceTree = "<group>";
+		};
 		5833A51B214F520E00ED69A7 /* UIColor */ = {
 			isa = PBXGroup;
 			children = (
@@ -1497,6 +1536,7 @@
 		585AEE11213F6EB20098A070 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				581FDF5921F16D010068C120 /* Administrator */,
 				587C52D3215CBA6D006787FB /* Scan */,
 				73899CB52152011000962B14 /* GuidePage */,
 				7330F34D21460FCF00FF4EEC /* Tabbar */,
@@ -2955,6 +2995,7 @@
 			files = (
 				587C52B8215C7027006787FB /* RouterManagerViewController.xib in Resources */,
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
+				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
 				7306055D217729AC005A0E13 /* 测试文件.txt in Resources */,
@@ -2968,6 +3009,7 @@
 				73899CC62152011000962B14 /* GuidePageView1.xib in Resources */,
 				584A447F21460AFE00608122 /* FileViewController.xib in Resources */,
 				73899CC42152011000962B14 /* GuidePageView2.xib in Resources */,
+				581FDF6321F172E00068C120 /* ModifyActivateCodeViewController.xib in Resources */,
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
 				73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
@@ -3003,6 +3045,8 @@
 				73E03B4C21DDF88A005DF993 /* DHTnodes.json in Resources */,
 				7330F4732147B5B200FF4EEC /* FileDetailCell.xib in Resources */,
 				585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */,
+				581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */,
+				581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */,
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
 				7330F3C421476E9300FF4EEC /* UserInfoCell.xib in Resources */,
 				73E2FB7421ABE5A800DAED52 /* CreateRouterUserViewController.xib in Resources */,
@@ -3193,6 +3237,7 @@
 				5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */,
 				585AEE22213F71F40098A070 /* BBaseModel.m in Sources */,
 				7378841221ACF2970033A189 /* OCTFileUploadOperation.m in Sources */,
+				581FDF6221F172E00068C120 /* ModifyActivateCodeViewController.m in Sources */,
 				73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */,
 				7330F3D72147ABAE00FF4EEC /* MsgPicViewController.m in Sources */,
 				581FDF4C21F024170068C120 /* ping.m in Sources */,
@@ -3244,6 +3289,7 @@
 				7386910E214CD792003CF6A3 /* SocketCountUtil.m in Sources */,
 				587C52C6215C798E006787FB /* RouterCodeViewController.m in Sources */,
 				737883FB21ACF2970033A189 /* OCTSendMessageOperation.m in Sources */,
+				581FDF5D21F16D350068C120 /* LoginDeviceViewController.m in Sources */,
 				7378840C21ACF2970033A189 /* OCTAudioEngine.m in Sources */,
 				7330F4EC2149147200FF4EEC /* CellCaculator.m in Sources */,
 				7303310F21D22422007C4063 /* UserConfig.m in Sources */,
@@ -3304,6 +3350,7 @@
 				7330F39E214666E400FF4EEC /* PersonCodeViewController.m in Sources */,
 				7330F3B321475A3E00FF4EEC /* ContactsCell.m in Sources */,
 				581FDF3F21F024170068C120 /* group.m in Sources */,
+				581FDF6C21F19FEA0068C120 /* AccountManagementViewController.m in Sources */,
 				738677A121AFDC25003A8568 /* SendToxRequestUtil.m in Sources */,
 				7330F4FE2149147200FF4EEC /* CTEmojiKeyboard.m in Sources */,
 				581FDF4821F024170068C120 /* TCP_client.m in Sources */,
@@ -3397,6 +3444,7 @@
 				7330F3822146120C00FF4EEC /* PNTabbarViewController.m in Sources */,
 				737883F121ACF2970033A189 /* OCTToxOptions.m in Sources */,
 				7330F50D214A74FA00FF4EEC /* AddFriendCellTableViewCell.m in Sources */,
+				581FDF6721F173AC0068C120 /* ModifyRouterPWViewController.m in Sources */,
 				581FDF5121F024170068C120 /* onion_client.m in Sources */,
 				73D31B13217F08480034B2B9 /* TZProgressView.m in Sources */,
 				7362577F2142143F00D7FD6B /* NSString+RegexCategory.m in Sources */,

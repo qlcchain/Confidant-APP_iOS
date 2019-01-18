@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -添加好友备注
 + (void) sendAddFriendNickName:(NSString *) nickName friendId:(NSString *) friendId;
 + (void) sendQueryFriendWithFriendId:(NSString *) friendId;
+
++ (void)sendRouterLoginWithMac:(NSString *)mac loginKey:(NSString *)loginKey showHud:(BOOL)showHud;
+
 @end
 
 NS_ASSUME_NONNULL_END
