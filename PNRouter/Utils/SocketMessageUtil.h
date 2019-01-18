@@ -40,6 +40,8 @@ static NSString *Action_ChangeRemarks = @"ChangeRemarks";
 static NSString *Action_QueryFriend = @"QueryFriend";
 static NSString *Action_PushLogout = @"PushLogout";
 static NSString *Action_RouterLogin = @"RouterLogin";
+static NSString *Action_ResetRouterKey = @"ResetRouterKey";
+static NSString *Action_ResetUserIdcode = @"ResetUserIdcode";
 
 @class FriendModel;
 

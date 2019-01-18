@@ -145,9 +145,27 @@
 #pragma mark - 登录设备
 + (void)sendRouterLoginWithMac:(NSString *)mac loginKey:(NSString *)loginKey showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_RouterLogin,@"Mac":mac?:@"",@"LoginKey":loginKey?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+
+#pragma mark - 路由器修改管理密码
++ (void)sendResetRouterKeyWithRouterId:(NSString *)RouterId OldKey:(NSString *)OldKey NewKey:(NSString *)NewKey showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_RouterLogin,@"RouterId":RouterId?:@"",@"OldKey":OldKey?:@"",@"NewKey":NewKey?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+
+#pragma mark - 路由器修改账户激活码
++ (void)sendResetUserIdcodeWithRouterId:(NSString *)RouterId UserSn:(NSString *)UserSn OldCode:(NSString *)OldCode NewCode:(NSString *)NewCode showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_RouterLogin,@"RouterId":RouterId?:@"",@"OldCode":OldCode?:@"",@"NewCode":NewCode?:@""};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 

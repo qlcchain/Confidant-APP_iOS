@@ -304,6 +304,12 @@
         [SocketMessageUtil handleChangeQueryFriend:receiveDic];
     } else if ([action isEqualToString:Action_PushLogout]) { // app收到登出消息
         [SocketMessageUtil handlePushLogout:receiveDic];
+    } else if ([action isEqualToString:Action_RouterLogin]) { // 路由器管理账户登陆
+        
+    } else if ([action isEqualToString:Action_ResetRouterKey]) { // 路由器修改管理密码
+        
+    } else if ([action isEqualToString:Action_ResetUserIdcode]) { // 路由器修改管理密码
+        
     }
 }
 #pragma mark -APP新用户预注册
