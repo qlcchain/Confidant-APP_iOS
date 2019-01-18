@@ -24,23 +24,18 @@
 #import "LibsodiumUtil.h"
 #import <toxcore/crypto_core.h>
 #import <libsodium/crypto_box.h>
+#import "EntryModel.h"
 
 
-struct ResultFile {
-
-    char sendMsg[100];
-};
 
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
-    NSMutableString *pairKey;
-    NSArray *publicArr;
-    struct ResultFile filemsg;
+    
+   
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (nonatomic , strong) NSMutableArray *dataArray;
 @property (nonatomic , strong) MyHeadView *myHeadView;
-
 @property (nonatomic , assign) CGFloat downloadedBytes;
 @property (strong, nonatomic) RMDownloadIndicator *filedIndicator_left;
 @property (weak, nonatomic) IBOutlet UILabel *lblVersion;
@@ -104,69 +99,9 @@ struct ResultFile {
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     //[self updateView:10.0f];
-   
 
 }
 
-- (void) entryText
-{
-    unsigned char pk[32];
-    unsigned char sk[32];
-    char *seed = "123456";
-    crypto_box_seed_keypair(pk,sk,seed);
-    
-    NSMutableString *pkstr =  [LibsodiumUtil charsToString:pk];
-    
-    NSLog(@"pkstr = %@",pkstr);
-    
-   
-    
-    //dispatch_async(dispatch_get_global_queue(0, 0), ^{
-    
-        [LibsodiumUtil getPrivatekeyAndPublickey];
-        pairKey = [LibsodiumUtil getSymmetricKeyPair];
-    
-        unsigned char parkey[32];
-        unsigned char mCode;
-        publicArr = [pairKey componentsSeparatedByString:@" "];
-        for (int i = 0; i < publicArr.count ; ++i) {
-            sscanf([[publicArr objectAtIndex:i] UTF8String], "%x", &mCode);
-            parkey[i] = mCode;
-        }
-        uint8_t nonce[CRYPTO_NONCE_SIZE];
-        random_nonce(nonce);
-    
-    NSString *TempString = @"sevensoft os good 好的";
-    TempString = [Base58Util Base58EncodeWithCodeName:TempString];
-    char css[1024];
-    
-    memcpy(css, [TempString cStringUsingEncoding:NSASCIIStringEncoding], 2*[TempString length]);
-    
-    NSLog(@"css====%s ",css);
-        
-        //[LibsodiumUtil encrypt_data_symmetric:str chararr:parkey];
-    
-        char enstr[sizeof(css)+crypto_box_BOXZEROBYTES];
-        const int encrypted_length = encrypt_data_symmetric(parkey, nonce, css,sizeof(css), enstr);
-        if (encrypted_length) {
-            NSLog(@"---%s",enstr);
-        }
-
-        char destr[sizeof(enstr)+crypto_box_ZEROBYTES];
-       const int decrypted_length = decrypt_data_symmetric(parkey, nonce, enstr,sizeof(enstr), destr);
-    NSString *destrsss = [NSString stringWithCString:destr encoding:NSUTF8StringEncoding];
-        if (decrypted_length) {
-            NSLog(@"---%@",destrsss);
-        }
-
-        int32_t decrypt_data_symmetric(const uint8_t *shared_key, const uint8_t *nonce, const uint8_t *encrypted, size_t length,
-                                       uint8_t *plain);
-    
-        
- //   });
-    
-    
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -185,8 +120,6 @@ struct ResultFile {
     [_tableV registerNib:[UINib nibWithNibName:MyCellReuse bundle:nil] forCellReuseIdentifier:MyCellReuse];
     
      [self.view addSubview:self.filedIndicator_left];
-    
-    [self entryText];
     
 }
 

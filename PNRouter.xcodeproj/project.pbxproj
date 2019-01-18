@@ -90,6 +90,7 @@
 		73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6E219BF4E900510B48 /* NSString+SHA256.m */; };
 		73121A74219C26E900510B48 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A72219C26E900510B48 /* LoginViewController.m */; };
 		73121A75219C26E900510B48 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73121A73219C26E900510B48 /* LoginViewController.xib */; };
+		7317447421F072110018BA50 /* EntryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7317447321F072110018BA50 /* EntryModel.m */; };
 		7330F3502146102A00FF4EEC /* PNNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F34F2146102A00FF4EEC /* PNNavViewController.m */; };
 		7330F3712146118800FF4EEC /* UIImage+Blur.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F3532146118800FF4EEC /* UIImage+Blur.m */; };
 		7330F3722146118800FF4EEC /* UIImage+FileName.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F35A2146118800FF4EEC /* UIImage+FileName.m */; };
@@ -562,6 +563,8 @@
 		73121A71219C26E900510B48 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		73121A72219C26E900510B48 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		73121A73219C26E900510B48 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		7317447221F072110018BA50 /* EntryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntryModel.h; sourceTree = "<group>"; };
+		7317447321F072110018BA50 /* EntryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EntryModel.m; sourceTree = "<group>"; };
 		7330F34E2146102A00FF4EEC /* PNNavViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNNavViewController.h; sourceTree = "<group>"; };
 		7330F34F2146102A00FF4EEC /* PNNavViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNNavViewController.m; sourceTree = "<group>"; };
 		7330F351214610E700FF4EEC /* CustomMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomMacro.h; sourceTree = "<group>"; };
@@ -1327,6 +1330,8 @@
 				73E2FB6D21A7F3FD00DAED52 /* RouterUserModel.m */,
 				7303310D21D22422007C4063 /* UserConfig.h */,
 				7303310E21D22422007C4063 /* UserConfig.m */,
+				7317447221F072110018BA50 /* EntryModel.h */,
+				7317447321F072110018BA50 /* EntryModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2976,6 +2981,7 @@
 				737883FE21ACF2970033A189 /* OCTManagerImpl.m in Sources */,
 				7330F3C321476E9300FF4EEC /* UserInfoCell.m in Sources */,
 				7330F3752146118800FF4EEC /* UIImage+BetterFace.m in Sources */,
+				7317447421F072110018BA50 /* EntryModel.m in Sources */,
 				73001A262191328C003D07CC /* RSAModel.m in Sources */,
 				73E2FB7821ABEC1300DAED52 /* RouterUserCodeViewController.m in Sources */,
 				7362577E2142143F00D7FD6B /* NSString+Base64.m in Sources */,
