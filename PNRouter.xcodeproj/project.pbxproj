@@ -11,6 +11,50 @@
 		581D785C216B2D98000B70C5 /* FileDynamicsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581D785A216B2D98000B70C5 /* FileDynamicsViewController.xib */; };
 		581D7860216B35A5000B70C5 /* FileDynamicsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 581D785E216B35A5000B70C5 /* FileDynamicsCell.m */; };
 		581D7861216B35A5000B70C5 /* FileDynamicsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581D785F216B35A5000B70C5 /* FileDynamicsCell.xib */; };
+		581FDF3521F024160068C120 /* vpx.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581FDEEA21F024160068C120 /* vpx.framework */; };
+		581FDF3621F024160068C120 /* msi.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEED21F024160068C120 /* msi.m */; };
+		581FDF3721F024160068C120 /* video.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEEE21F024160068C120 /* video.m */; };
+		581FDF3821F024160068C120 /* groupav.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEEF21F024160068C120 /* groupav.m */; };
+		581FDF3921F024160068C120 /* toxav.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEF221F024160068C120 /* toxav.m */; };
+		581FDF3A21F024160068C120 /* bwcontroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEF421F024160068C120 /* bwcontroller.m */; };
+		581FDF3B21F024160068C120 /* ring_buffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEF921F024160068C120 /* ring_buffer.m */; };
+		581FDF3C21F024160068C120 /* rtp.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEFA21F024160068C120 /* rtp.m */; };
+		581FDF3D21F024160068C120 /* toxav_old.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEFB21F024160068C120 /* toxav_old.m */; };
+		581FDF3E21F024160068C120 /* audio.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEFD21F024160068C120 /* audio.m */; };
+		581FDF3F21F024170068C120 /* group.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0121F024160068C120 /* group.m */; };
+		581FDF4021F024170068C120 /* network.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0221F024160068C120 /* network.m */; };
+		581FDF4121F024170068C120 /* mono_time.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0321F024160068C120 /* mono_time.m */; };
+		581FDF4221F024170068C120 /* list.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0421F024160068C120 /* list.m */; };
+		581FDF4321F024170068C120 /* util.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0721F024160068C120 /* util.m */; };
+		581FDF4421F024170068C120 /* crypto_core.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0A21F024160068C120 /* crypto_core.m */; };
+		581FDF4521F024170068C120 /* onion.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0B21F024160068C120 /* onion.m */; };
+		581FDF4621F024170068C120 /* state.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0C21F024160068C120 /* state.m */; };
+		581FDF4721F024170068C120 /* net_crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0D21F024160068C120 /* net_crypto.m */; };
+		581FDF4821F024170068C120 /* TCP_client.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0E21F024160068C120 /* TCP_client.m */; };
+		581FDF4921F024170068C120 /* logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF0F21F024160068C120 /* logger.m */; };
+		581FDF4A21F024170068C120 /* onion_announce.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF1221F024160068C120 /* onion_announce.m */; };
+		581FDF4B21F024170068C120 /* Messenger.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF1321F024160068C120 /* Messenger.m */; };
+		581FDF4C21F024170068C120 /* ping.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF1421F024160068C120 /* ping.m */; };
+		581FDF4D21F024170068C120 /* crypto_core_mem.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF1521F024160068C120 /* crypto_core_mem.m */; };
+		581FDF4E21F024170068C120 /* LAN_discovery.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF1721F024160068C120 /* LAN_discovery.m */; };
+		581FDF4F21F024170068C120 /* TCP_connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF1821F024160068C120 /* TCP_connection.m */; };
+		581FDF5021F024170068C120 /* tox.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF1D21F024160068C120 /* tox.m */; };
+		581FDF5121F024170068C120 /* onion_client.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF1E21F024160068C120 /* onion_client.m */; };
+		581FDF5221F024170068C120 /* friend_requests.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF2121F024160068C120 /* friend_requests.m */; };
+		581FDF5321F024170068C120 /* TCP_server.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF2321F024160068C120 /* TCP_server.m */; };
+		581FDF5421F024170068C120 /* tox_api.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF2421F024160068C120 /* tox_api.m */; };
+		581FDF5521F024170068C120 /* friend_connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF2521F024160068C120 /* friend_connection.m */; };
+		581FDF5621F024170068C120 /* DHT.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF2621F024160068C120 /* DHT.m */; };
+		581FDF5721F024170068C120 /* ping_array.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF2B21F024160068C120 /* ping_array.m */; };
+		581FDF5821F024170068C120 /* toxencryptsave.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF3421F024160068C120 /* toxencryptsave.m */; };
+		581FDF5D21F16D350068C120 /* LoginDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF5B21F16D350068C120 /* LoginDeviceViewController.m */; };
+		581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF5C21F16D350068C120 /* LoginDeviceViewController.xib */; };
+		581FDF6221F172E00068C120 /* ModifyActivateCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF6021F172E00068C120 /* ModifyActivateCodeViewController.m */; };
+		581FDF6321F172E00068C120 /* ModifyActivateCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6121F172E00068C120 /* ModifyActivateCodeViewController.xib */; };
+		581FDF6721F173AC0068C120 /* ModifyRouterPWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF6521F173AC0068C120 /* ModifyRouterPWViewController.m */; };
+		581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6621F173AC0068C120 /* ModifyRouterPWViewController.xib */; };
+		581FDF6C21F19FEA0068C120 /* AccountManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */; };
+		581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		584A447921460AD800608122 /* MyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A447721460AD800608122 /* MyViewController.m */; };
 		584A447A21460AD800608122 /* MyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584A447821460AD800608122 /* MyViewController.xib */; };
@@ -383,6 +427,89 @@
 		581D785D216B35A5000B70C5 /* FileDynamicsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileDynamicsCell.h; sourceTree = "<group>"; };
 		581D785E216B35A5000B70C5 /* FileDynamicsCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileDynamicsCell.m; sourceTree = "<group>"; };
 		581D785F216B35A5000B70C5 /* FileDynamicsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FileDynamicsCell.xib; sourceTree = "<group>"; };
+		581FDEEA21F024160068C120 /* vpx.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = vpx.framework; sourceTree = "<group>"; };
+		581FDEED21F024160068C120 /* msi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = msi.m; sourceTree = "<group>"; };
+		581FDEEE21F024160068C120 /* video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = video.m; sourceTree = "<group>"; };
+		581FDEEF21F024160068C120 /* groupav.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = groupav.m; sourceTree = "<group>"; };
+		581FDEF021F024160068C120 /* rtp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtp.h; sourceTree = "<group>"; };
+		581FDEF121F024160068C120 /* ring_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ring_buffer.h; sourceTree = "<group>"; };
+		581FDEF221F024160068C120 /* toxav.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = toxav.m; sourceTree = "<group>"; };
+		581FDEF321F024160068C120 /* audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = audio.h; sourceTree = "<group>"; };
+		581FDEF421F024160068C120 /* bwcontroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bwcontroller.m; sourceTree = "<group>"; };
+		581FDEF521F024160068C120 /* msi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msi.h; sourceTree = "<group>"; };
+		581FDEF621F024160068C120 /* groupav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = groupav.h; sourceTree = "<group>"; };
+		581FDEF721F024160068C120 /* video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = video.h; sourceTree = "<group>"; };
+		581FDEF821F024160068C120 /* toxav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toxav.h; sourceTree = "<group>"; };
+		581FDEF921F024160068C120 /* ring_buffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ring_buffer.m; sourceTree = "<group>"; };
+		581FDEFA21F024160068C120 /* rtp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rtp.m; sourceTree = "<group>"; };
+		581FDEFB21F024160068C120 /* toxav_old.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = toxav_old.m; sourceTree = "<group>"; };
+		581FDEFC21F024160068C120 /* bwcontroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bwcontroller.h; sourceTree = "<group>"; };
+		581FDEFD21F024160068C120 /* audio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = audio.m; sourceTree = "<group>"; };
+		581FDEFF21F024160068C120 /* onion_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = onion_client.h; sourceTree = "<group>"; };
+		581FDF0021F024160068C120 /* tox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tox.h; sourceTree = "<group>"; };
+		581FDF0121F024160068C120 /* group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = group.m; sourceTree = "<group>"; };
+		581FDF0221F024160068C120 /* network.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = network.m; sourceTree = "<group>"; };
+		581FDF0321F024160068C120 /* mono_time.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = mono_time.m; sourceTree = "<group>"; };
+		581FDF0421F024160068C120 /* list.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = list.m; sourceTree = "<group>"; };
+		581FDF0521F024160068C120 /* TCP_connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCP_connection.h; sourceTree = "<group>"; };
+		581FDF0621F024160068C120 /* TCP_server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCP_server.h; sourceTree = "<group>"; };
+		581FDF0721F024160068C120 /* util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = util.m; sourceTree = "<group>"; };
+		581FDF0821F024160068C120 /* ccompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccompat.h; sourceTree = "<group>"; };
+		581FDF0921F024160068C120 /* friend_requests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = friend_requests.h; sourceTree = "<group>"; };
+		581FDF0A21F024160068C120 /* crypto_core.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = crypto_core.m; sourceTree = "<group>"; };
+		581FDF0B21F024160068C120 /* onion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = onion.m; sourceTree = "<group>"; };
+		581FDF0C21F024160068C120 /* state.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = state.m; sourceTree = "<group>"; };
+		581FDF0D21F024160068C120 /* net_crypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = net_crypto.m; sourceTree = "<group>"; };
+		581FDF0E21F024160068C120 /* TCP_client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCP_client.m; sourceTree = "<group>"; };
+		581FDF0F21F024160068C120 /* logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = logger.m; sourceTree = "<group>"; };
+		581FDF1021F024160068C120 /* DHT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DHT.h; sourceTree = "<group>"; };
+		581FDF1121F024160068C120 /* friend_connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = friend_connection.h; sourceTree = "<group>"; };
+		581FDF1221F024160068C120 /* onion_announce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = onion_announce.m; sourceTree = "<group>"; };
+		581FDF1321F024160068C120 /* Messenger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Messenger.m; sourceTree = "<group>"; };
+		581FDF1421F024160068C120 /* ping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ping.m; sourceTree = "<group>"; };
+		581FDF1521F024160068C120 /* crypto_core_mem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = crypto_core_mem.m; sourceTree = "<group>"; };
+		581FDF1621F024160068C120 /* ping_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ping_array.h; sourceTree = "<group>"; };
+		581FDF1721F024160068C120 /* LAN_discovery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAN_discovery.m; sourceTree = "<group>"; };
+		581FDF1821F024160068C120 /* TCP_connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCP_connection.m; sourceTree = "<group>"; };
+		581FDF1921F024160068C120 /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
+		581FDF1A21F024160068C120 /* mono_time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mono_time.h; sourceTree = "<group>"; };
+		581FDF1B21F024160068C120 /* network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = network.h; sourceTree = "<group>"; };
+		581FDF1C21F024160068C120 /* group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = group.h; sourceTree = "<group>"; };
+		581FDF1D21F024160068C120 /* tox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tox.m; sourceTree = "<group>"; };
+		581FDF1E21F024160068C120 /* onion_client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = onion_client.m; sourceTree = "<group>"; };
+		581FDF1F21F024160068C120 /* onion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = onion.h; sourceTree = "<group>"; };
+		581FDF2021F024160068C120 /* crypto_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_core.h; sourceTree = "<group>"; };
+		581FDF2121F024160068C120 /* friend_requests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = friend_requests.m; sourceTree = "<group>"; };
+		581FDF2221F024160068C120 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
+		581FDF2321F024160068C120 /* TCP_server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCP_server.m; sourceTree = "<group>"; };
+		581FDF2421F024160068C120 /* tox_api.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tox_api.m; sourceTree = "<group>"; };
+		581FDF2521F024160068C120 /* friend_connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = friend_connection.m; sourceTree = "<group>"; };
+		581FDF2621F024160068C120 /* DHT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DHT.m; sourceTree = "<group>"; };
+		581FDF2721F024160068C120 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
+		581FDF2821F024160068C120 /* net_crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = net_crypto.h; sourceTree = "<group>"; };
+		581FDF2921F024160068C120 /* TCP_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCP_client.h; sourceTree = "<group>"; };
+		581FDF2A21F024160068C120 /* state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = state.h; sourceTree = "<group>"; };
+		581FDF2B21F024160068C120 /* ping_array.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ping_array.m; sourceTree = "<group>"; };
+		581FDF2C21F024160068C120 /* LAN_discovery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LAN_discovery.h; sourceTree = "<group>"; };
+		581FDF2D21F024160068C120 /* ping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ping.h; sourceTree = "<group>"; };
+		581FDF2E21F024160068C120 /* Messenger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Messenger.h; sourceTree = "<group>"; };
+		581FDF2F21F024160068C120 /* onion_announce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = onion_announce.h; sourceTree = "<group>"; };
+		581FDF3021F024160068C120 /* tox.api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tox.api.h; sourceTree = "<group>"; };
+		581FDF3221F024160068C120 /* toxencryptsave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toxencryptsave.h; sourceTree = "<group>"; };
+		581FDF3321F024160068C120 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
+		581FDF3421F024160068C120 /* toxencryptsave.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = toxencryptsave.m; sourceTree = "<group>"; };
+		581FDF5A21F16D350068C120 /* LoginDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginDeviceViewController.h; sourceTree = "<group>"; };
+		581FDF5B21F16D350068C120 /* LoginDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginDeviceViewController.m; sourceTree = "<group>"; };
+		581FDF5C21F16D350068C120 /* LoginDeviceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginDeviceViewController.xib; sourceTree = "<group>"; };
+		581FDF5F21F172E00068C120 /* ModifyActivateCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyActivateCodeViewController.h; sourceTree = "<group>"; };
+		581FDF6021F172E00068C120 /* ModifyActivateCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyActivateCodeViewController.m; sourceTree = "<group>"; };
+		581FDF6121F172E00068C120 /* ModifyActivateCodeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModifyActivateCodeViewController.xib; sourceTree = "<group>"; };
+		581FDF6421F173AC0068C120 /* ModifyRouterPWViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyRouterPWViewController.h; sourceTree = "<group>"; };
+		581FDF6521F173AC0068C120 /* ModifyRouterPWViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyRouterPWViewController.m; sourceTree = "<group>"; };
+		581FDF6621F173AC0068C120 /* ModifyRouterPWViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModifyRouterPWViewController.xib; sourceTree = "<group>"; };
+		581FDF6921F19FEA0068C120 /* AccountManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountManagementViewController.h; sourceTree = "<group>"; };
+		581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountManagementViewController.m; sourceTree = "<group>"; };
+		581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountManagementViewController.xib; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		584A447621460AD800608122 /* MyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
@@ -1083,6 +1210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				730330EF21C76E86007C4063 /* CoreTelephony.framework in Frameworks */,
+				581FDF3521F024160068C120 /* vpx.framework in Frameworks */,
 				730330ED21C76E7D007C4063 /* CFNetwork.framework in Frameworks */,
 				730330EB21C76E72007C4063 /* MobileCoreServices.framework in Frameworks */,
 				730330E921C76E65007C4063 /* SystemConfiguration.framework in Frameworks */,
@@ -1116,6 +1244,143 @@
 				49C33670BA720BB01C8243AF /* libPods-PNRouter.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		581FDEE821F024160068C120 /* toxcore */ = {
+			isa = PBXGroup;
+			children = (
+				581FDEE921F024160068C120 /* ios */,
+				581FDEEB21F024160068C120 /* toxcore0.2.8 */,
+			);
+			path = toxcore;
+			sourceTree = "<group>";
+		};
+		581FDEE921F024160068C120 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				581FDEEA21F024160068C120 /* vpx.framework */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
+		581FDEEB21F024160068C120 /* toxcore0.2.8 */ = {
+			isa = PBXGroup;
+			children = (
+				581FDEEC21F024160068C120 /* toxav */,
+				581FDEFE21F024160068C120 /* toxcore */,
+				581FDF3121F024160068C120 /* toxencryptsave */,
+			);
+			path = toxcore0.2.8;
+			sourceTree = "<group>";
+		};
+		581FDEEC21F024160068C120 /* toxav */ = {
+			isa = PBXGroup;
+			children = (
+				581FDEED21F024160068C120 /* msi.m */,
+				581FDEEE21F024160068C120 /* video.m */,
+				581FDEEF21F024160068C120 /* groupav.m */,
+				581FDEF021F024160068C120 /* rtp.h */,
+				581FDEF121F024160068C120 /* ring_buffer.h */,
+				581FDEF221F024160068C120 /* toxav.m */,
+				581FDEF321F024160068C120 /* audio.h */,
+				581FDEF421F024160068C120 /* bwcontroller.m */,
+				581FDEF521F024160068C120 /* msi.h */,
+				581FDEF621F024160068C120 /* groupav.h */,
+				581FDEF721F024160068C120 /* video.h */,
+				581FDEF821F024160068C120 /* toxav.h */,
+				581FDEF921F024160068C120 /* ring_buffer.m */,
+				581FDEFA21F024160068C120 /* rtp.m */,
+				581FDEFB21F024160068C120 /* toxav_old.m */,
+				581FDEFC21F024160068C120 /* bwcontroller.h */,
+				581FDEFD21F024160068C120 /* audio.m */,
+			);
+			path = toxav;
+			sourceTree = "<group>";
+		};
+		581FDEFE21F024160068C120 /* toxcore */ = {
+			isa = PBXGroup;
+			children = (
+				581FDEFF21F024160068C120 /* onion_client.h */,
+				581FDF0021F024160068C120 /* tox.h */,
+				581FDF0121F024160068C120 /* group.m */,
+				581FDF0221F024160068C120 /* network.m */,
+				581FDF0321F024160068C120 /* mono_time.m */,
+				581FDF0421F024160068C120 /* list.m */,
+				581FDF0521F024160068C120 /* TCP_connection.h */,
+				581FDF0621F024160068C120 /* TCP_server.h */,
+				581FDF0721F024160068C120 /* util.m */,
+				581FDF0821F024160068C120 /* ccompat.h */,
+				581FDF0921F024160068C120 /* friend_requests.h */,
+				581FDF0A21F024160068C120 /* crypto_core.m */,
+				581FDF0B21F024160068C120 /* onion.m */,
+				581FDF0C21F024160068C120 /* state.m */,
+				581FDF0D21F024160068C120 /* net_crypto.m */,
+				581FDF0E21F024160068C120 /* TCP_client.m */,
+				581FDF0F21F024160068C120 /* logger.m */,
+				581FDF1021F024160068C120 /* DHT.h */,
+				581FDF1121F024160068C120 /* friend_connection.h */,
+				581FDF1221F024160068C120 /* onion_announce.m */,
+				581FDF1321F024160068C120 /* Messenger.m */,
+				581FDF1421F024160068C120 /* ping.m */,
+				581FDF1521F024160068C120 /* crypto_core_mem.m */,
+				581FDF1621F024160068C120 /* ping_array.h */,
+				581FDF1721F024160068C120 /* LAN_discovery.m */,
+				581FDF1821F024160068C120 /* TCP_connection.m */,
+				581FDF1921F024160068C120 /* list.h */,
+				581FDF1A21F024160068C120 /* mono_time.h */,
+				581FDF1B21F024160068C120 /* network.h */,
+				581FDF1C21F024160068C120 /* group.h */,
+				581FDF1D21F024160068C120 /* tox.m */,
+				581FDF1E21F024160068C120 /* onion_client.m */,
+				581FDF1F21F024160068C120 /* onion.h */,
+				581FDF2021F024160068C120 /* crypto_core.h */,
+				581FDF2121F024160068C120 /* friend_requests.m */,
+				581FDF2221F024160068C120 /* util.h */,
+				581FDF2321F024160068C120 /* TCP_server.m */,
+				581FDF2421F024160068C120 /* tox_api.m */,
+				581FDF2521F024160068C120 /* friend_connection.m */,
+				581FDF2621F024160068C120 /* DHT.m */,
+				581FDF2721F024160068C120 /* logger.h */,
+				581FDF2821F024160068C120 /* net_crypto.h */,
+				581FDF2921F024160068C120 /* TCP_client.h */,
+				581FDF2A21F024160068C120 /* state.h */,
+				581FDF2B21F024160068C120 /* ping_array.m */,
+				581FDF2C21F024160068C120 /* LAN_discovery.h */,
+				581FDF2D21F024160068C120 /* ping.h */,
+				581FDF2E21F024160068C120 /* Messenger.h */,
+				581FDF2F21F024160068C120 /* onion_announce.h */,
+				581FDF3021F024160068C120 /* tox.api.h */,
+			);
+			path = toxcore;
+			sourceTree = "<group>";
+		};
+		581FDF3121F024160068C120 /* toxencryptsave */ = {
+			isa = PBXGroup;
+			children = (
+				581FDF3221F024160068C120 /* toxencryptsave.h */,
+				581FDF3321F024160068C120 /* defines.h */,
+				581FDF3421F024160068C120 /* toxencryptsave.m */,
+			);
+			path = toxencryptsave;
+			sourceTree = "<group>";
+		};
+		581FDF5921F16D010068C120 /* Administrator */ = {
+			isa = PBXGroup;
+			children = (
+				581FDF6421F173AC0068C120 /* ModifyRouterPWViewController.h */,
+				581FDF6521F173AC0068C120 /* ModifyRouterPWViewController.m */,
+				581FDF6621F173AC0068C120 /* ModifyRouterPWViewController.xib */,
+				581FDF5F21F172E00068C120 /* ModifyActivateCodeViewController.h */,
+				581FDF6021F172E00068C120 /* ModifyActivateCodeViewController.m */,
+				581FDF6121F172E00068C120 /* ModifyActivateCodeViewController.xib */,
+				581FDF5A21F16D350068C120 /* LoginDeviceViewController.h */,
+				581FDF5B21F16D350068C120 /* LoginDeviceViewController.m */,
+				581FDF5C21F16D350068C120 /* LoginDeviceViewController.xib */,
+				581FDF6921F19FEA0068C120 /* AccountManagementViewController.h */,
+				581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */,
+				581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */,
+			);
+			path = Administrator;
 			sourceTree = "<group>";
 		};
 		5833A51B214F520E00ED69A7 /* UIColor */ = {
@@ -1274,6 +1539,7 @@
 		585AEE11213F6EB20098A070 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				581FDF5921F16D010068C120 /* Administrator */,
 				587C52D3215CBA6D006787FB /* Scan */,
 				73899CB52152011000962B14 /* GuidePage */,
 				7330F34D21460FCF00FF4EEC /* Tabbar */,
@@ -1363,6 +1629,7 @@
 		585AEE482140D2280098A070 /* Vender */ = {
 			isa = PBXGroup;
 			children = (
+				581FDEE821F024160068C120 /* toxcore */,
 				7303310221C78E83007C4063 /* BackMode */,
 				730330DC21C76DA9007C4063 /* MIPUSH */,
 				7378836421ACF2960033A189 /* ToxManagers */,
@@ -2733,6 +3000,7 @@
 			files = (
 				587C52B8215C7027006787FB /* RouterManagerViewController.xib in Resources */,
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
+				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
 				7306055D217729AC005A0E13 /* 测试文件.txt in Resources */,
@@ -2746,6 +3014,7 @@
 				73899CC62152011000962B14 /* GuidePageView1.xib in Resources */,
 				584A447F21460AFE00608122 /* FileViewController.xib in Resources */,
 				73899CC42152011000962B14 /* GuidePageView2.xib in Resources */,
+				581FDF6321F172E00068C120 /* ModifyActivateCodeViewController.xib in Resources */,
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
 				73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
@@ -2781,6 +3050,8 @@
 				73E03B4C21DDF88A005DF993 /* DHTnodes.json in Resources */,
 				7330F4732147B5B200FF4EEC /* FileDetailCell.xib in Resources */,
 				585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */,
+				581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */,
+				581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */,
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
 				7330F3C421476E9300FF4EEC /* UserInfoCell.xib in Resources */,
 				73E2FB7421ABE5A800DAED52 /* CreateRouterUserViewController.xib in Resources */,
@@ -2905,14 +3176,18 @@
 				736257AB2142149300D7FD6B /* UIView+HUD.m in Sources */,
 				7330F3C8214771D900FF4EEC /* BottonCell.m in Sources */,
 				736257A72142149300D7FD6B /* UIView+Frame.m in Sources */,
+				581FDF5421F024170068C120 /* tox_api.m in Sources */,
 				7330F4F22149147200FF4EEC /* CDBaseMsgCell.m in Sources */,
 				737883F221ACF2970033A189 /* OCTToxAVConstants.m in Sources */,
+				581FDF4521F024170068C120 /* onion.m in Sources */,
 				73D31B11217F08480034B2B9 /* TZPhotoPreviewController.m in Sources */,
 				73D31B10217F08480034B2B9 /* UIView+Layout.m in Sources */,
 				7330F3982146563600FF4EEC /* MyDetailViewController.m in Sources */,
 				73625763214213B300D7FD6B /* UILabel+Block.m in Sources */,
 				73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */,
+				581FDF5721F024170068C120 /* ping_array.m in Sources */,
 				73D31B16217F08480034B2B9 /* TZPhotoPreviewCell.m in Sources */,
+				581FDF4321F024170068C120 /* util.m in Sources */,
 				73625740213E8B3200D7FD6B /* ViewController.m in Sources */,
 				73D00E9D215A1E490013E20D /* ChooseMutAlertView.m in Sources */,
 				58F4430B2149FF6200A94106 /* HeartBeatUtil.m in Sources */,
@@ -2926,6 +3201,7 @@
 				7378841A21ACF2970033A189 /* OCTSubmanagerUserImpl.m in Sources */,
 				584A447921460AD800608122 /* MyViewController.m in Sources */,
 				7362575C214213AA00D7FD6B /* NSDateFormatter+Category.m in Sources */,
+				581FDF5621F024170068C120 /* DHT.m in Sources */,
 				585AEE532140D2280098A070 /* HMScanner.m in Sources */,
 				73001A1D21904897003D07CC /* DDRSAWrapper+openssl.m in Sources */,
 				7330F4F42149147200FF4EEC /* ChatImageDrawer.m in Sources */,
@@ -2933,8 +3209,10 @@
 				7330F3A8214679BF00FF4EEC /* ShareCollectionCell.m in Sources */,
 				7330F3742146118800FF4EEC /* UIImage+Orientation.m in Sources */,
 				585AEE512140D2280098A070 /* HMScannerBorder.m in Sources */,
+				581FDF4E21F024170068C120 /* LAN_discovery.m in Sources */,
 				58664CC72176EA8900EDC696 /* AESCipher.m in Sources */,
 				736257C12142247F00D7FD6B /* SystemUtil.m in Sources */,
+				581FDF4A21F024170068C120 /* onion_announce.m in Sources */,
 				7306054721748BD5005A0E13 /* amrFileCodec.mm in Sources */,
 				7378841B21ACF2970033A189 /* OCTSubmanagerCallsImpl.m in Sources */,
 				585AEE19213F71990098A070 /* PNBaseViewController.m in Sources */,
@@ -2944,24 +3222,30 @@
 				7330F3712146118800FF4EEC /* UIImage+Blur.m in Sources */,
 				7330F47B2147DBB800FF4EEC /* StringUtil.m in Sources */,
 				7330F4EF2149147200FF4EEC /* CDImageTableViewCell.m in Sources */,
+				581FDF5821F024170068C120 /* toxencryptsave.m in Sources */,
 				7330F37E2146118800FF4EEC /* UIImage+RoundedCorner.m in Sources */,
 				7378840A21ACF2970033A189 /* OCTCallTimer.m in Sources */,
 				7330F47E2148A74200FF4EEC /* KeyCUtil.m in Sources */,
 				7378841821ACF2970033A189 /* OCTSubmanagerBootstrapImpl.m in Sources */,
+				581FDF3921F024160068C120 /* toxav.m in Sources */,
 				73D00EB8215F27610013E20D /* MD5Util.m in Sources */,
 				73F9A11A219973C80011FAA5 /* ReviceRadio.m in Sources */,
 				7386910A214CC7D3003CF6A3 /* EditTextViewController.m in Sources */,
 				7378841921ACF2970033A189 /* OCTSubmanagerFilesImpl.m in Sources */,
 				73899CC22152011000962B14 /* GuidePageView1.m in Sources */,
 				738677A421B168C7003A8568 /* MutManagerUtil.m in Sources */,
+				581FDF3721F024160068C120 /* video.m in Sources */,
 				73E2FB7321ABE5A800DAED52 /* CreateRouterUserViewController.m in Sources */,
 				7330F5002149147200FF4EEC /* AATVoiceHudAlert.m in Sources */,
+				581FDF4621F024170068C120 /* state.m in Sources */,
 				73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */,
 				5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */,
 				585AEE22213F71F40098A070 /* BBaseModel.m in Sources */,
 				7378841221ACF2970033A189 /* OCTFileUploadOperation.m in Sources */,
+				581FDF6221F172E00068C120 /* ModifyActivateCodeViewController.m in Sources */,
 				73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */,
 				7330F3D72147ABAE00FF4EEC /* MsgPicViewController.m in Sources */,
+				581FDF4C21F024170068C120 /* ping.m in Sources */,
 				587C52D2215CB6B6006787FB /* SkyRadiusView.m in Sources */,
 				7378840F21ACF2970033A189 /* OCTFileTools.m in Sources */,
 				7330F39321464DCD00FF4EEC /* MyCell.m in Sources */,
@@ -2969,20 +3253,25 @@
 				737882A921ACF05E0033A189 /* WebSocket.swift in Sources */,
 				587C52B7215C7027006787FB /* RouterManagerViewController.m in Sources */,
 				7330F508214A71BC00FF4EEC /* AddFriendViewController.m in Sources */,
+				581FDF3E21F024160068C120 /* audio.m in Sources */,
 				73D00EA3215A24730013E20D /* ChooseCollectionCell.m in Sources */,
 				7378841021ACF2970033A189 /* OCTFileDataInput.m in Sources */,
 				7378840E21ACF2970033A189 /* OCTFilePathInput.m in Sources */,
 				7330F4772147B5F800FF4EEC /* FileDetailViewController.m in Sources */,
 				7362576B2142142D00D7FD6B /* NSData+Base64.m in Sources */,
+				581FDF3621F024160068C120 /* msi.m in Sources */,
 				73D31B19217F08480034B2B9 /* TZGifPhotoPreviewController.m in Sources */,
 				73D31B0E217F08480034B2B9 /* TZAssetModel.m in Sources */,
 				736257802142143F00D7FD6B /* NSString+Localizable.m in Sources */,
 				737883F421ACF2970033A189 /* OCTToxEncryptSave.m in Sources */,
 				737883FE21ACF2970033A189 /* OCTManagerImpl.m in Sources */,
+				581FDF4121F024170068C120 /* mono_time.m in Sources */,
 				7330F3C321476E9300FF4EEC /* UserInfoCell.m in Sources */,
 				7330F3752146118800FF4EEC /* UIImage+BetterFace.m in Sources */,
 				7317447421F072110018BA50 /* EntryModel.m in Sources */,
+				581FDF3D21F024160068C120 /* toxav_old.m in Sources */,
 				73001A262191328C003D07CC /* RSAModel.m in Sources */,
+				581FDF4021F024170068C120 /* network.m in Sources */,
 				73E2FB7821ABEC1300DAED52 /* RouterUserCodeViewController.m in Sources */,
 				7362577E2142143F00D7FD6B /* NSString+Base64.m in Sources */,
 				7378842321AD364E0033A189 /* Base58Util.swift in Sources */,
@@ -2997,13 +3286,16 @@
 				7330F37C2146118800FF4EEC /* UIImage+FX.m in Sources */,
 				73899CC12152011000962B14 /* GuidePageView2.m in Sources */,
 				7330F37D2146118800FF4EEC /* UIImage+Alpha.m in Sources */,
+				581FDF3C21F024160068C120 /* rtp.m in Sources */,
 				7378841121ACF2970033A189 /* OCTFileDataOutput.m in Sources */,
 				7330F4F52149147200FF4EEC /* ChatHelpr.m in Sources */,
 				73D31B0B217F08480034B2B9 /* TZImageCropManager.m in Sources */,
+				581FDF5321F024170068C120 /* TCP_server.m in Sources */,
 				73121A74219C26E900510B48 /* LoginViewController.m in Sources */,
 				7386910E214CD792003CF6A3 /* SocketCountUtil.m in Sources */,
 				587C52C6215C798E006787FB /* RouterCodeViewController.m in Sources */,
 				737883FB21ACF2970033A189 /* OCTSendMessageOperation.m in Sources */,
+				581FDF5D21F16D350068C120 /* LoginDeviceViewController.m in Sources */,
 				7378840C21ACF2970033A189 /* OCTAudioEngine.m in Sources */,
 				7330F4EC2149147200FF4EEC /* CellCaculator.m in Sources */,
 				7303310F21D22422007C4063 /* UserConfig.m in Sources */,
@@ -3018,6 +3310,7 @@
 				73D31B17217F08480034B2B9 /* TZImagePickerController.m in Sources */,
 				730605622179B3C0005A0E13 /* MediaTableViewCell.m in Sources */,
 				7378840721ACF2970033A189 /* OCTMessageCall.m in Sources */,
+				581FDF4B21F024170068C120 /* Messenger.m in Sources */,
 				73D31B14217F08480034B2B9 /* TZImageManager.m in Sources */,
 				7306054421748BD5005A0E13 /* VoiceConvert.mm in Sources */,
 				7330F3792146118800FF4EEC /* UIImage+Merge.m in Sources */,
@@ -3027,6 +3320,7 @@
 				7330F4ED2149147200FF4EEC /* SDImageCache+ChatCaculator.m in Sources */,
 				736257A42142149300D7FD6B /* UIView+Debug.m in Sources */,
 				7330F4F12149147200FF4EEC /* CDSystemTableViewCell.m in Sources */,
+				581FDF4921F024170068C120 /* logger.m in Sources */,
 				73A4867021B94B220062C34F /* ConnectView.m in Sources */,
 				7330F4F02149147200FF4EEC /* CDAudioTableViewCell.m in Sources */,
 				7330F4FF2149147200FF4EEC /* CTTextView.m in Sources */,
@@ -3043,6 +3337,7 @@
 				737883EF21ACF2970033A189 /* OCTToxConstants.m in Sources */,
 				73D31B0F217F08480034B2B9 /* NSBundle+TZImagePicker.m in Sources */,
 				7306054A2176CA51005A0E13 /* CDFileTableViewCell.m in Sources */,
+				581FDF5221F024170068C120 /* friend_requests.m in Sources */,
 				7362574B213E8B3400D7FD6B /* main.m in Sources */,
 				73060528216F3572005A0E13 /* RequestService.m in Sources */,
 				7330F4802148AADA00FF4EEC /* KeyChainUtil.swift in Sources */,
@@ -3060,8 +3355,11 @@
 				584A449E21464D4800608122 /* FingetprintVerificationUtil.m in Sources */,
 				7330F39E214666E400FF4EEC /* PersonCodeViewController.m in Sources */,
 				7330F3B321475A3E00FF4EEC /* ContactsCell.m in Sources */,
+				581FDF3F21F024170068C120 /* group.m in Sources */,
+				581FDF6C21F19FEA0068C120 /* AccountManagementViewController.m in Sources */,
 				738677A121AFDC25003A8568 /* SendToxRequestUtil.m in Sources */,
 				7330F4FE2149147200FF4EEC /* CTEmojiKeyboard.m in Sources */,
+				581FDF4821F024170068C120 /* TCP_client.m in Sources */,
 				7330F4EA2149147200FF4EEC /* MagnifiterView.m in Sources */,
 				73869114214CEC63003CF6A3 /* ChatListModel.m in Sources */,
 				584A448321460B0800608122 /* NewsViewController.m in Sources */,
@@ -3070,6 +3368,7 @@
 				736257AC2142149300D7FD6B /* UIView+Recursion.m in Sources */,
 				737882A621ACF05E0033A189 /* SSLClientCertificate.swift in Sources */,
 				5875E4C4216C8B7000B1A9A6 /* YWFilePreviewController.m in Sources */,
+				581FDF4221F024170068C120 /* list.m in Sources */,
 				7330F37A2146118800FF4EEC /* UIImage+Color.m in Sources */,
 				73D00EAF215F13700013E20D /* SocketFileUtil.swift in Sources */,
 				7378840121ACF2970033A189 /* OCTNode.m in Sources */,
@@ -3082,8 +3381,11 @@
 				73E2FB6E21A7F3FD00DAED52 /* RouterUserModel.m in Sources */,
 				7378841721ACF2970033A189 /* OCTSubmanagerObjectsImpl.m in Sources */,
 				736257A52142149300D7FD6B /* UIView+Nib.m in Sources */,
+				581FDF4D21F024170068C120 /* crypto_core_mem.m in Sources */,
 				736257822142143F00D7FD6B /* NSString+EmptyUtil.m in Sources */,
 				737883F721ACF2970033A189 /* OCTManagerConfiguration.m in Sources */,
+				581FDF4421F024170068C120 /* crypto_core.m in Sources */,
+				581FDF3821F024160068C120 /* groupav.m in Sources */,
 				736257812142143F00D7FD6B /* NSString+HexStr.m in Sources */,
 				73899CC72152011000962B14 /* GuidePageViewController.m in Sources */,
 				73D00EB5215F17670013E20D /* FileModel.m in Sources */,
@@ -3091,6 +3393,7 @@
 				7330F3772146118800FF4EEC /* UIImage+Rotate.m in Sources */,
 				58BD2E722148E3170091A77D /* ToastUtil.m in Sources */,
 				7330F3AE21475A0600FF4EEC /* GroupCell.m in Sources */,
+				581FDF5021F024170068C120 /* tox.m in Sources */,
 				7330F3B821475E2900FF4EEC /* ContactsHeadView.m in Sources */,
 				7378840D21ACF2970033A189 /* OCTAudioQueue.m in Sources */,
 				737883F621ACF2970033A189 /* OCTDefaultFileStorage.m in Sources */,
@@ -3099,6 +3402,7 @@
 				7330F3762146118800FF4EEC /* UIImage+Vector.m in Sources */,
 				7330F4E62149147200FF4EEC /* CDTextParser.m in Sources */,
 				737883F321ACF2970033A189 /* OCTToxAV.m in Sources */,
+				581FDF4721F024170068C120 /* net_crypto.m in Sources */,
 				736257AD2142149300D7FD6B /* UIView+Gradient.m in Sources */,
 				585AEE522140D2280098A070 /* HMScannerMaskView.m in Sources */,
 				58BD2E6E2147B6CF0091A77D /* FileCell.m in Sources */,
@@ -3113,9 +3417,11 @@
 				7378840921ACF2970033A189 /* OCTSettingsStorageObject.m in Sources */,
 				737883FD21ACF2970033A189 /* OCTManagerConstants.m in Sources */,
 				737883F921ACF2970033A189 /* OCTVideoView.m in Sources */,
+				581FDF5521F024170068C120 /* friend_connection.m in Sources */,
 				736257842142143F00D7FD6B /* NSString+Base64Image.m in Sources */,
 				73D31B15217F08480034B2B9 /* TZPhotoPickerController.m in Sources */,
 				7330F37B2146118800FF4EEC /* UIImage+Capture.m in Sources */,
+				581FDF3A21F024160068C120 /* bwcontroller.m in Sources */,
 				736257A62142149300D7FD6B /* UIView+ViewController.m in Sources */,
 				585AEE5921421DD70098A070 /* SocketMessageUtil.m in Sources */,
 				73060529216F3572005A0E13 /* AFHTTPClientV2.m in Sources */,
@@ -3135,6 +3441,7 @@
 				736257832142143F00D7FD6B /* NSString+UrlEncode.m in Sources */,
 				7378841321ACF2970033A189 /* OCTFileBaseOperation.m in Sources */,
 				587C52BC215C7050006787FB /* RouterDetailViewController.m in Sources */,
+				581FDF4F21F024170068C120 /* TCP_connection.m in Sources */,
 				7378840B21ACF2970033A189 /* OCTMessageText.m in Sources */,
 				7330F4F72149147200FF4EEC /* CTinputHelper.m in Sources */,
 				7378841621ACF2970033A189 /* OCTFilePathOutput.m in Sources */,
@@ -3143,6 +3450,8 @@
 				7330F3822146120C00FF4EEC /* PNTabbarViewController.m in Sources */,
 				737883F121ACF2970033A189 /* OCTToxOptions.m in Sources */,
 				7330F50D214A74FA00FF4EEC /* AddFriendCellTableViewCell.m in Sources */,
+				581FDF6721F173AC0068C120 /* ModifyRouterPWViewController.m in Sources */,
+				581FDF5121F024170068C120 /* onion_client.m in Sources */,
 				73D31B13217F08480034B2B9 /* TZProgressView.m in Sources */,
 				7362577F2142143F00D7FD6B /* NSString+RegexCategory.m in Sources */,
 				736257A82142149300D7FD6B /* UIView+BlockGesture.m in Sources */,
@@ -3151,6 +3460,7 @@
 				736257C5214225FD00D7FD6B /* getgateway.c in Sources */,
 				584A447E21460AFE00608122 /* FileViewController.m in Sources */,
 				73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */,
+				581FDF3B21F024160068C120 /* ring_buffer.m in Sources */,
 				73D00E932159DADF0013E20D /* ChooseDownView.m in Sources */,
 				73D31B18217F08480034B2B9 /* TZLocationManager.m in Sources */,
 				73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */,
@@ -3376,6 +3686,10 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PNRouter/Vender/toxcore/ios",
+				);
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/PNRouter/PNRouterPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = PNRouter/Info.plist;
@@ -3413,6 +3727,10 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PNRouter/Vender/toxcore/ios",
+				);
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/PNRouter/PNRouterPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = PNRouter/Info.plist;

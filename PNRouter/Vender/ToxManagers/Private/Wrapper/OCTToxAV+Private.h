@@ -3,7 +3,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #import "OCTToxAV.h"
-#import <toxcore/toxav/toxav.h>
+//#import <toxcore/toxav/toxav.h>
+#import "toxav.h"
 
 /**
  * ToxAV functions

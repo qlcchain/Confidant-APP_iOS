@@ -27,7 +27,7 @@
 
 
 static CGFloat request_time = 50.0f;
-static NSString *Action_SendFile = @"SendFile";
+//static NSString *Action_SendFile = @"SendFile";
 static NSString *Action_SendFileEnd = @"SendFileEnd";
 static int sendFileSizeMax = 1024*1024*2;
 

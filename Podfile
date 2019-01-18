@@ -6,7 +6,10 @@ inhibit_all_warnings!
 
 
 def common_pods
-    pod 'toxcore', '0.2.2'
+    #    pod 'toxcore', '0.2.2'
+    pod 'libsodium'
+    pod 'libopus-patched-config'
+    
     #pod 'CocoaLumberjack', '~> 1.9.2'
     pod 'CocoaLumberjack/Swift'
     pod 'Realm', '3.1.0'

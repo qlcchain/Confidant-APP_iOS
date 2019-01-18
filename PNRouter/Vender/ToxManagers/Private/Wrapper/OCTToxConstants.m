@@ -3,7 +3,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #import "OCTToxConstants.h"
-#import <toxcore/tox.h>
+//#import <toxcore/tox.h>
+#import "tox.h"
 
 const OCTToxFriendNumber kOCTToxFriendNumberFailure = UINT32_MAX;
 const OCTToxFileNumber kOCTToxFileNumberFailure = UINT32_MAX;

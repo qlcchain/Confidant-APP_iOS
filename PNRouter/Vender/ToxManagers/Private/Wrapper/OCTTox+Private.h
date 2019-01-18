@@ -3,7 +3,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #import "OCTTox.h"
-#import <toxcore/tox.h>
+//#import <toxcore/tox.h>
+#import "tox.h"
 
 /**
  * Tox functions

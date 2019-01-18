@@ -22,7 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *) encryMsgPairWithSymmetry:(NSString *) symmetryKey enMsg:(NSString *) enMsg nonce:(NSString *) nonce;
 //  解密消息
 + (NSString *) decryMsgPairWithSymmetry:(NSString *) symmetryKey enMsg:(NSString *) deMsg nonce:(NSString *) nonce;
-+ (NSData *) getPrivateKeyData:(NSString *) privateKey;
 // 签名私钥签名临时公钥
 + (NSString *) getOwenrSignPrivateKeySignOwenrTempPublickKey;
 // 签名验证

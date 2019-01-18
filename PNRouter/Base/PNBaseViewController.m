@@ -16,6 +16,7 @@
 #import "OCTManagerFactory.h"
 #import "OCTManager.h"
 #import "OCTSubmanagerBootstrap.h"
+#import "LoginDeviceViewController.h"
 
 @interface PNBaseViewController ()
 
@@ -246,12 +247,19 @@
 //                    }
 //                }
                 
+            } else if (result && result.length == 12) { // 管理账户 MAC
+                [weakSelf jumpToLoginDevice];
             } else {
                 [weakSelf.view showHint:@"format error!"];
             }
         }
     }];
     [self presentModalVC:vc animated:YES];
+}
+
+- (void)jumpToLoginDevice {
+    LoginDeviceViewController *vc = [[LoginDeviceViewController alloc] init];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 #pragma ToxLogin

@@ -10,13 +10,13 @@
 #import "EntryModel.h"
 #import <libsodium/crypto_box.h>
 #import "KeyCUtil.h"
-#import <toxcore/crypto_core.h>
+//#import <toxcore/crypto_core.h>
+#import "crypto_core.h"
 #import <libsodium/crypto_box.h>
 #import <libsodium/crypto_sign.h>
-#import <toxcore/ccompat.h>
 #import "PNRouter-Swift.h"
 #import "NSString+HexStr.h"
-
+#import "ccompat.h"
 #define libkey @"libkey"
 
 @implementation LibsodiumUtil
