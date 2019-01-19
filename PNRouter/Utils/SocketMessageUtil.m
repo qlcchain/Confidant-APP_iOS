@@ -305,7 +305,7 @@
     } else if ([action isEqualToString:Action_PushLogout]) { // app收到登出消息
         [SocketMessageUtil handlePushLogout:receiveDic];
     } else if ([action isEqualToString:Action_RouterLogin]) { // 路由器管理账户登陆
-        
+        [SocketMessageUtil handleDeviceLogin:receiveDic];
     } else if ([action isEqualToString:Action_ResetRouterKey]) { // 路由器修改管理密码
         
     } else if ([action isEqualToString:Action_ResetUserIdcode]) { // 路由器修改管理密码
@@ -864,6 +864,25 @@
     
 }
 
+- (void)handleDeviceLogin:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    NSString *userId = receiveDic[@"params"][@"UserId"];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:DEVICE_LOGIN_SUCCESS_NOTI object:nil];
+    } else if (retCode == 1) {
+        [AppD.window showHint:@"The device is temporarily unavailable"];
+    } else if (retCode == 2) {
+        [AppD.window showHint:@"Device MAC error"];
+    } else if (retCode == 3) {
+        [AppD.window showHint:@"Password error"];
+    } else if (retCode == 4) {
+        [AppD.window showHint:@"Other error"];
+    }
+}
+
+#pragma mark - Base
 + (NSDictionary *)getBaseParams {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":SOCKET_APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};

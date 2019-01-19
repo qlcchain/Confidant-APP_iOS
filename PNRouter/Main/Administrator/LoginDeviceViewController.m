@@ -7,26 +7,52 @@
 //
 
 #import "LoginDeviceViewController.h"
+#import "SendRequestUtil.h"
+#import "NSString+SHA256.h"
+#import "AccountManagementViewController.h"
 
 @interface LoginDeviceViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextField *devicePWTF;
 
 @end
 
 @implementation LoginDeviceViewController
 
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceLoginSuccessNoti:) name:DEVICE_LOGIN_SUCCESS_NOTI object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - Operation
+- (void)sendLogin {
+    NSString *mac = _mac?:@"";
+    NSString *loginKey = [_devicePWTF.text.trim SHA256];
+    [SendRequestUtil sendRouterLoginWithMac:mac loginKey:loginKey showHud:YES];
 }
-*/
+
+#pragma mark - Action
+
+- (IBAction)loginAction:(id)sender {
+    [self sendLogin];
+}
+
+#pragma mark - Transition
+- (void)jumpToAccountManagement {
+    AccountManagementViewController *vc = [[AccountManagementViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Noti
+- (void)deviceLoginSuccessNoti:(NSNotification *)noti {
+    [self jumpToAccountManagement];
+}
 
 @end
