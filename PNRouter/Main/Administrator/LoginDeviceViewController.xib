@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginDeviceViewController">
             <connections>
+                <outlet property="devicePWTF" destination="G6x-KN-dVc" id="0tG-2w-xDw"/>
+                <outlet property="loginBtn" destination="M6w-do-PFm" id="mDd-Hg-dpU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -26,8 +28,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mIh-KY-RI8">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="登录设备" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fV0-n2-1UN">
-                                    <rect key="frame" x="151.5" y="11.5" width="72" height="21"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fV0-n2-1UN">
+                                    <rect key="frame" x="165" y="11.5" width="45" height="21"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                     <color key="textColor" red="0.16078431372549018" green="0.15686274509803921" blue="0.16470588235294117" alpha="1" colorSpace="deviceRGB"/>
                                     <nil key="highlightedColor"/>
@@ -38,6 +40,9 @@
                                         <constraint firstAttribute="height" constant="44" id="NOx-gF-Kac"/>
                                         <constraint firstAttribute="width" constant="44" id="O1a-Un-hTg"/>
                                     </constraints>
+                                    <connections>
+                                        <action selector="backAction:" destination="-1" eventType="touchUpInside" id="RQ7-eH-7Et"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -52,7 +57,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nt-aK-cW5">
                             <rect key="frame" x="0.0" y="44" width="375" height="603"/>
                             <subviews>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="设备密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="G6x-KN-dVc">
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Router password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="G6x-KN-dVc">
                                     <rect key="frame" x="48" y="32" width="279" height="49"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="49" id="KHv-MP-sqs"/>
@@ -68,22 +73,25 @@
                                         <constraint firstAttribute="height" constant="1" id="Nr4-Rj-9Bp"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*路由器机身贴有默认密码" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vwm-wU-XPr">
-                                    <rect key="frame" x="48" y="94" width="129" height="13.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*Please input your router password as indicated in the user manual book." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vwm-wU-XPr">
+                                    <rect key="frame" x="48" y="94" width="279" height="26.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                     <color key="textColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="deviceRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M6w-do-PFm">
-                                    <rect key="frame" x="48" y="151.5" width="279" height="44"/>
+                                    <rect key="frame" x="48" y="164.5" width="279" height="44"/>
                                     <color key="backgroundColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="deviceRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="T7u-fV-2UF"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" title="登录">
+                                    <state key="normal" title="Login">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
+                                    <connections>
+                                        <action selector="loginAction:" destination="-1" eventType="touchUpInside" id="211-7L-FUS"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -96,6 +104,7 @@
                                 <constraint firstItem="vwm-wU-XPr" firstAttribute="leading" secondItem="G6x-KN-dVc" secondAttribute="leading" id="Z3E-P5-msK"/>
                                 <constraint firstItem="M6w-do-PFm" firstAttribute="leading" secondItem="6nt-aK-cW5" secondAttribute="leading" constant="48" id="bBr-Ck-hQq"/>
                                 <constraint firstItem="3bs-pf-cdl" firstAttribute="leading" secondItem="G6x-KN-dVc" secondAttribute="leading" id="bUR-pf-6M5"/>
+                                <constraint firstItem="vwm-wU-XPr" firstAttribute="trailing" secondItem="G6x-KN-dVc" secondAttribute="trailing" id="hly-LW-vX1"/>
                                 <constraint firstItem="G6x-KN-dVc" firstAttribute="leading" secondItem="6nt-aK-cW5" secondAttribute="leading" constant="48" id="mag-Sg-g3F"/>
                                 <constraint firstItem="3bs-pf-cdl" firstAttribute="trailing" secondItem="G6x-KN-dVc" secondAttribute="trailing" id="wHR-2q-QwI"/>
                                 <constraint firstAttribute="trailing" secondItem="G6x-KN-dVc" secondAttribute="trailing" constant="48" id="x8N-lP-p7I"/>

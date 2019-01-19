@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ModifyActivateCodeViewController : PNBaseViewController
 
+@property (nonatomic, strong) NSString *RouterId;
+@property (nonatomic, strong) NSString *IdentifyCode;
+@property (nonatomic, strong) NSString *UserSn;
+
 @end
 
 NS_ASSUME_NONNULL_END

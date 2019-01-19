@@ -238,7 +238,8 @@
 
 - (void)jumpToLoginDevice {
     LoginDeviceViewController *vc = [[LoginDeviceViewController alloc] init];
-    [self presentViewController:vc animated:YES completion:nil];
+    PNNavViewController *nav = [[PNNavViewController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma ToxLogin

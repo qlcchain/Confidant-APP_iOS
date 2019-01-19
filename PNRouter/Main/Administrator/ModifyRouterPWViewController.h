@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ModifyRouterPWViewController : PNBaseViewController
 
+@property (nonatomic, strong) NSString *RouterId;
+@property (nonatomic, strong) NSString *RouterPW;
+
 @end
 
 NS_ASSUME_NONNULL_END

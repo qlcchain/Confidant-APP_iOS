@@ -22,6 +22,7 @@
 
 //#define MAIN_PURPLE_COLOR RGB(44, 44, 44)
 #define MAIN_PURPLE_COLOR UIColorFromRGB(0x2B2B2B)
+#define MAIN_WHITE_COLOR UIColorFromRGB(0xffffff)
 #define SHADOW_COLOR UIColorFromRGB(0x333333)
 
 #define TABBARTEXT_SELECT_COLOR UIColorFromRGB(0x2c2c2c)
@@ -129,5 +130,11 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define REVER_QUERY_FRIEND_NOTI @"REVER_QUERY_FRIEND_NOTI"
 // app登出通知
 #define REVER_APP_LOGOUT_NOTI @"REVER_APP_LOGOUT_NOTI"
+// 设备登录成功通知
+#define DEVICE_LOGIN_SUCCESS_NOTI @"DEVICE_LOGIN_SUCCESS_NOTI"
+// 修改管理密码成功通知
+#define ResetRouterKey_SUCCESS_NOTI @"ResetRouterKey_SUCCESS_NOTI"
+// 修改账户激活码成功通知
+#define ResetUserIdcode_SUCCESS_NOTI @"ResetUserIdcode_SUCCESS_NOTI"
 
 #endif /* CustomMacro_h */
