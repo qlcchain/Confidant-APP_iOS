@@ -208,7 +208,12 @@
 
     int sendBytes;
     char buff[BUFF_SIZE];
-    NSString *sendMessage = [@"QLC" stringByAppendingString:aesEncryptString(routerid, ROUTER_IP_KEY)];
+    NSString *sendMessage = @"";
+    if (routerid.length == 17) {
+       sendMessage = [@"MAC" stringByAppendingString:aesEncryptString(routerid, ROUTER_IP_KEY)];
+    } else {
+        sendMessage =  [@"QLC" stringByAppendingString:aesEncryptString(routerid, ROUTER_IP_KEY)];
+    }
     memcpy(buff, [sendMessage cStringUsingEncoding:NSASCIIStringEncoding],[sendMessage length]);
     if((sendBytes = sendto(brdcFd, buff, strlen(buff), 0,
                            (struct sockaddr *)&theirAddr, sizeof(struct sockaddr))) == -1){
@@ -240,7 +245,7 @@
                     [[RoutherConfig getRoutherConfig] addRoutherWithArray:resultArr];
                     [RoutherConfig getRoutherConfig].currentRouterIp = resultArr[0];
                     [RoutherConfig getRoutherConfig].currentRouterToxid = resultArr[1];
-                   [RoutherConfig getRoutherConfig].currentRouterPort = @"18006";
+                    [RoutherConfig getRoutherConfig].currentRouterPort = @"18006";
                     NSLog(@"---%@---%@",resultArr[0],resultArr[1]);
                     [AppD.window hideHud];
                     [[NSNotificationCenter defaultCenter] postNotificationName:GB_FINASH_NOTI object:nil];
@@ -313,7 +318,12 @@
 - (void) sendFailedNoti
 {
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
-    [self sendRequestWithRid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
+         [self sendGBFinsh];
+    } else {
+         [self sendRequestWithRid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+    }
+   
    
 }
 

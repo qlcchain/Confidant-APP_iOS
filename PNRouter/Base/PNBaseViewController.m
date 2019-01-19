@@ -197,13 +197,14 @@
     AppD.window.rootViewController = vc;
 }
 
-- (void) scanSuccessful
+- (void) scanSuccessfulWithIsMacd:(BOOL) isMac
 {
     
 }
 
 #pragma mark - Transition
 - (void)jumpToQR {
+    [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
     @weakify_self
     QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
         if (codeValue != nil && codeValue.length > 0) {
@@ -221,34 +222,12 @@
                     [RoutherConfig getRoutherConfig].currentRouterSn = sn;
                     [RoutherConfig getRoutherConfig].currentRouterIp = @"";
                 
-                    [weakSelf scanSuccessful];
-             //   }
+                    [weakSelf scanSuccessfulWithIsMacd:NO];
                 
-                
-//                if (![toxid isEqualToString:[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterToxid]]) {
-//                    [RoutherConfig getRoutherConfig].currentRouterSn = sn;
-//                    [RoutherConfig getRoutherConfig].currentRouterToxid = toxid;
-//                    NSArray *dataArr = [[RoutherConfig getRoutherConfig] getCurrentRoutherWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid];
-//                    
-//                   NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
-//                    if (connectStatu == socketConnectStatusConnected) {
-//                        // 取消连接
-//                        [SocketUtil.shareInstance disconnect];
-//                    }
-//                    
-//                    if (!dataArr) { // 走tox
-//                        
-//                    } else {
-//                        [RoutherConfig getRoutherConfig].currentRouterIp = dataArr[0];
-//                        [AppD.window showHudInView:AppD.window hint:@"Connect..."];
-//                        NSString *connectURL =[NSString stringWithFormat:@"https://%@:18006",[RoutherConfig getRoutherConfig].currentRouterIp];
-//                        AppD.currentSoketUrl = connectURL;
-//                        [SocketUtil.shareInstance connectWithUrl:connectURL];
-//                    }
-//                }
-                
-            } else if (result && result.length == 12) { // 管理账户 MAC
-                [weakSelf jumpToLoginDevice];
+            } else if (result && result.length == 17) { // 管理账户 MAC
+                AppD.isScaner = YES;
+                [RoutherConfig getRoutherConfig].currentRouterMAC = result;
+                [weakSelf scanSuccessfulWithIsMacd:YES];
             } else {
                 [weakSelf.view showHint:@"format error!"];
             }

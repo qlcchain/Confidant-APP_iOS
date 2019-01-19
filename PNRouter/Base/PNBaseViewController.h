@@ -30,8 +30,9 @@
 - (void) moveNavgationBackOneViewController;
 - (void)setRootVCWithVC:(PNBaseViewController *) vc;
 - (void)jumpToQR;
-- (void) scanSuccessful;
+- (void) scanSuccessfulWithIsMacd:(BOOL) isMac;
 - (void) toxLoginSuccessWithManager:(id<OCTManager>) manager;
 - (void) loginTox;
 - (void) logOutTox;
+- (void)jumpToLoginDevice;
 @end

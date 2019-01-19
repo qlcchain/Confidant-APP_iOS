@@ -102,10 +102,15 @@
     }
 }
 
-- (void)scanSuccessful
+- (void)scanSuccessfulWithIsMacd:(BOOL)isMac
 {
     [AppD.window showHudInView:AppD.window hint:@"Check Router..."];
-    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+    if (isMac) {
+         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterMAC];
+    } else {
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+    }
+    
 }
 
 #pragma mark -连接socket
@@ -133,20 +138,28 @@
 
 - (void) gbFinashNoti:(NSNotification *) noti
 {
-    isFind = YES;
-    // 当前是在局域网
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString])
-    {
-         AppD.manager = nil;
-         [self connectSocket];
-
-    } else { // tox
-        if (!AppD.manager) {
-            [self loginTox];
+    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
+        if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+            [self.view showHint:@"Unable to connect to server."];
         } else {
-            [self toxLoginSuccessWithManager:AppD.manager];
+            [self jumpToLoginDevice];
         }
-        
+    } else {
+        isFind = YES;
+        // 当前是在局域网
+        if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString])
+        {
+            AppD.manager = nil;
+            [self connectSocket];
+            
+        } else { // tox
+            if (!AppD.manager) {
+                [self loginTox];
+            } else {
+                [self toxLoginSuccessWithManager:AppD.manager];
+            }
+            
+        }
     }
 }
 

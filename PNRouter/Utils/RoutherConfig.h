@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *currentRouterSn;
 @property (nonatomic, copy) NSString *currentRouterToxid;
 @property (nonatomic, copy) NSString *currentRouterPort;
+@property (nonatomic, copy) NSString *currentRouterMAC;
 
 - (void) addRoutherWithArray:(NSArray *) arr;
 - (NSArray *) getCurrentRoutherWithToxid:(NSString *) toxid;
