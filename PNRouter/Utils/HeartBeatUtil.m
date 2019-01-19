@@ -65,7 +65,7 @@ singleton_implementation(HeartBeatUtil)
     UserConfig *userM = [UserConfig getShareObject];
     if (userM.userId && userM.userId.length >0) {
         NSDictionary *params = @{@"Action":@"HeartBeat",@"UserId":userM.userId?:@""};
-        [SocketMessageUtil sendTextWithParams:params];
+        [SocketMessageUtil sendVersion1WithParams:params];
     }
    
 }

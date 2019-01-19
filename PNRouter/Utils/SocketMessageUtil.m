@@ -43,7 +43,7 @@
 /**
  发送文本消息
  */
-+ (void)sendTextWithParams:(NSDictionary *)params{
++ (void)sendVersion1WithParams:(NSDictionary *)params{
     NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams]];
 //    NSString *paramsJson = params.mj_JSONString;
 //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
@@ -507,7 +507,7 @@
    NSString *userId = receiveDic[@"params"][@"UserId"];
     if ([[NSString getNotNullValue:userId] isEqualToString:[UserConfig getShareObject].userId]) {
         NSDictionary *params = @{@"Action":Action_PushLogout,@"RetCode":@(0),@"ToId":[UserConfig getShareObject].userId,@"Msg":@""};
-        [SocketMessageUtil sendTextWithParams:params];
+        [SocketMessageUtil sendVersion1WithParams:params];
         [[NSNotificationCenter defaultCenter] postNotificationName:REVER_APP_LOGOUT_NOTI object:nil];
     }
 }
@@ -586,7 +586,7 @@
     }
     //        NSString *retcode = @"0"; // 0：消息接收到  1：其他错误
     //        NSDictionary *params = @{@"Action":Action_AddFriendDeal,@"Retcode":retcode,@"Msg":@""};
-    //        [SocketMessageUtil sendTextWithParams:params];
+    //        [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 + (void)handleAddFriendReply:(NSDictionary *)receiveDic {
@@ -800,7 +800,7 @@
     if (retCode == 0) { // 0：消息拉取成功
         if (more == 1) {
              NSInteger offset = [receiveDic[@"offset"] integerValue];
-           // [SocketMessageUtil sendTextWithParams:@{}];
+           // [SocketMessageUtil sendVersion1WithParams:@{}];
         }
         NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
         [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_BEFORE_NOTI object:payloadArr];
@@ -898,7 +898,7 @@
     NSString *friendName = model.username?:@"";
     NSString *friendId = model.userId?:@"";
     NSDictionary *params = @{@"Action":@"AddFriendDeal",@"Nickname":[userM.username base64EncodedString]?:@"",@"FriendName":[friendName base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId,@"UserKey":[RSAModel getCurrentRASModel].publicKey,@"Result":result,@"FriendKey":model.publicKey?:@""};
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 #pragma -mark 查询用户是否在线
@@ -907,21 +907,21 @@
     UserModel *userM = [UserModel getUserModel];
     NSString *friendId =friendUserId?:@"";
     NSDictionary *params = @{@"Action":@"OnlineStatusCheck",@"UserId":userM.userId?:@"",@"TargetUserId":friendId};
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 #pragma -mark 发送拉取好友列表请求
 + (void) sendFriendListRequest
 {
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_PullFriend,@"UserId":userM.userId?:@""};
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 #pragma -mark 发送data文件
 + (void) sendDataFileNeedSynch:(NSInteger) synch
 {
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_SynchDataFile,@"UserId":userM.userId?:@"",@"NeedSynch":@(synch),@"UserDataVersion":@"1.0",@"DataPay":@"database64"};
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 @end

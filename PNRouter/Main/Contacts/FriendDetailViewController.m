@@ -176,7 +176,7 @@
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":@"DelFriendCmd",@"UserId":userM.userId?:@"",@"FriendId":_friendModel.userId?:@""};
     [self.view showHudInView:self.view hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 #pragma mark - Transition

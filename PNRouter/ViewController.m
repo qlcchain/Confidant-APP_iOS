@@ -35,7 +35,7 @@
 - (IBAction)sendMeassge:(id)sender {
 //    NSString *message = _messageTF.text?:@"";
     NSDictionary *params = @{@"Action":@"Login",@"RouteId":@"",@"UserId":@"",@"UserDataVersion":SOCKET_USETDATAVERSION};
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 - (void)didReceiveMemoryWarning {
