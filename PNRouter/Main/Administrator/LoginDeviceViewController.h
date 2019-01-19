@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LoginDeviceViewController : PNBaseViewController
 
+@property (nonatomic, strong) NSString *mac;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -49,7 +49,7 @@ static NSString *Action_ResetUserIdcode = @"ResetUserIdcode";
 
 + (NSDictionary *)getBaseParams;
 + (NSDictionary *)getRegiserBaseParams;
-+ (void)sendTextWithParams:(NSDictionary *)params;
++ (void)sendVersion1WithParams:(NSDictionary *)params;
 + (void)sendVersion2WithParams:(NSDictionary *)params;
 // 回复router
 + (void)sendRecevieMessageWithParams:(NSDictionary *)params tempmsgid:(NSInteger) msgid;

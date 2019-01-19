@@ -193,7 +193,7 @@ struct ResultFile {
     if (self.isCancel) {
         if (sendFile.segmore == 0) { //文件发送完成 调用删除接口
             NSDictionary *params = @{@"Action":@"DelMsg",@"FriendId":self.toid?:@"",@"UserId":[UserConfig getShareObject].userId?:@"",@"MsgId":self.fileMessageId?:@""};
-            [SocketMessageUtil sendTextWithParams:params];
+            [SocketMessageUtil sendVersion1WithParams:params];
         }
          [_fileUtil disconnect];
     } else {

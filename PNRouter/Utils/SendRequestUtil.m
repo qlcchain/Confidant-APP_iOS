@@ -60,7 +60,7 @@
     [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":@"AddFriendReq",@"NickName":[userM.username base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId?:@"",@"UserKey":[RSAModel getCurrentRASModel].publicKey,@"Msg":msg?:@""};
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 #pragma mark -tox pull文件
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId
@@ -68,7 +68,7 @@
 {
     [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     NSDictionary *params = @{};
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 #pragma mark -发送已读
 + (void) sendRedMsgWithFriendId:(NSString *) friendId msgid:(NSString *) msgId
@@ -95,14 +95,14 @@
 #pragma mark -sendfile tox
 + (void) sendToxSendFileWithParames:(NSDictionary *) parames
 {
-    [SocketMessageUtil sendTextWithParams:parames];
+    [SocketMessageUtil sendVersion1WithParams:parames];
 }
 
 #pragma mark tox_拉取文件
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName msgId:(NSString *) msgId fileOwer:(NSString *) fileOwer
 {
     NSDictionary *params = @{@"Action":@"PullFile",@"FromId":fromId,@"ToId":toId,@"FileName":fileName,@"MsgId":msgId,@"FileOwner":fileOwer};
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 #pragma mark -注册小米推送 邦定regid
@@ -148,7 +148,7 @@
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_RouterLogin,@"Mac":mac?:@"",@"LoginKey":loginKey?:@""};
-    [SocketMessageUtil sendVersion2WithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 #pragma mark - 路由器修改管理密码
@@ -157,7 +157,7 @@
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_RouterLogin,@"RouterId":RouterId?:@"",@"OldKey":OldKey?:@"",@"NewKey":NewKey?:@""};
-    [SocketMessageUtil sendVersion2WithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 #pragma mark - 路由器修改账户激活码
@@ -166,7 +166,7 @@
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_RouterLogin,@"RouterId":RouterId?:@"",@"OldCode":OldCode?:@"",@"NewCode":NewCode?:@""};
-    [SocketMessageUtil sendVersion2WithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 @end

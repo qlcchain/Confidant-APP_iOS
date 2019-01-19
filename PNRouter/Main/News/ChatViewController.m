@@ -193,7 +193,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(_msgStartId)]; // 从这个消息号往前（不包含该消息），为0表示默认从最新的消息回溯
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
     NSDictionary *params = @{@"Action":@"PullMsg",@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
-    [SocketMessageUtil sendTextWithParams:params];
+    [SocketMessageUtil sendVersion1WithParams:params];
 }
 
 #pragma mark -初始化聊天界面
@@ -262,7 +262,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             UserModel *userM = [UserModel getUserModel];
             
             NSDictionary *params = @{@"Action":@"DelMsg",@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgId":msgId};
-            [SocketMessageUtil sendTextWithParams:params];
+            [SocketMessageUtil sendVersion1WithParams:params];
         }
         
     }
