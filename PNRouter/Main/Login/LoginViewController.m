@@ -108,24 +108,30 @@
     [self showRouter];
 }
 // 扫码成功重新开启组播
-- (void)scanSuccessful
+- (void)scanSuccessfulWithIsMacd:(BOOL)isMac
 {
-   RouterModel *routherM = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
-    if (routherM) {
-        AppD.isScaner = NO;
-        self.selectRouther = routherM;
-        [RoutherConfig getRoutherConfig].currentRouterIp = @"";
-        [RoutherConfig getRoutherConfig].currentRouterToxid = routherM.toxid;
-        [RoutherConfig getRoutherConfig].currentRouterSn = routherM.userSn;
-        
-        //[self loadHudView];
-        //[[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
-        _lblRoutherName.text = self.selectRouther.name;
-        _passTF.text = self.selectRouther.userPass?:@"";
-    } else {
+    if (isMac) {
         [self loadHudView];
-        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterMAC];
+    } else {
+        RouterModel *routherM = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
+        if (routherM) {
+            AppD.isScaner = NO;
+            self.selectRouther = routherM;
+            [RoutherConfig getRoutherConfig].currentRouterIp = @"";
+            [RoutherConfig getRoutherConfig].currentRouterToxid = routherM.toxid;
+            [RoutherConfig getRoutherConfig].currentRouterSn = routherM.userSn;
+            
+            //[self loadHudView];
+            //[[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+            _lblRoutherName.text = self.selectRouther.name;
+            _passTF.text = self.selectRouther.userPass?:@"";
+        } else {
+            [self loadHudView];
+            [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+        }
     }
+  
     
 }
 #pragma mark -连接socket_tox
@@ -261,8 +267,6 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
-    
 //    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString] && !AppD.manager && !AppD.isLogOut) {
 //       [self performSelector:@selector(sendGB) withObject:self afterDelay:.1];
 //    }
@@ -394,46 +398,28 @@
 }
 - (void) gbFinashNoti:(NSNotification *) noti
 {
-//    if ([[RoutherConfig getRoutherConfig].currentRouterIp isEmptyString])
-//    {
-//        [AppD.window showHint:@"当前不在局域网内."];
-//    }
-    
-    RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
-    if (routerModel) {
-        self.selectRouther = routerModel;
-        _lblRoutherName.text = self.selectRouther.name;
-        _passTF.text = self.selectRouther.userPass;
-        _loginBtn.selected = YES;
-        [self connectSocketWithIsShowHud:YES];
-        [self changeLogintStatu];
-    } else { // 走find 5
-        isFind = YES;
-        [self connectSocketWithIsShowHud:YES];
+    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
+        if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+            [self.view showHint:@"Unable to connect to server."];
+        } else {
+            [self jumpToLoginDevice];
+        }
+        
+    } else {
+        RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
+        if (routerModel) {
+            self.selectRouther = routerModel;
+            _lblRoutherName.text = self.selectRouther.name;
+            _passTF.text = self.selectRouther.userPass;
+            _loginBtn.selected = YES;
+            [self connectSocketWithIsShowHud:YES];
+            [self changeLogintStatu];
+        } else { // 走find 5
+            isFind = YES;
+            [self connectSocketWithIsShowHud:YES];
+        }
     }
     
-//    if (!AppD.isScaner) {
-//        [self checkConnectStyle];
-//    } else {
-//        // 当前是在局域网
-//        if (![[RoutherConfig getRoutherConfig].currentRouterIp isEmptyString])
-//        {
-//            RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
-//            if (routerModel) {
-//                self.selectRouther = routerModel;
-//                _lblRoutherName.text = self.selectRouther.name;
-//                _passTF.text = self.selectRouther.userPass;
-//                _loginBtn.selected = YES;
-//                [self connectSocketWithIsShowHud:NO];
-//                [self changeLogintStatu];
-//            } else { // 走find 5
-//                isFind = YES;
-//                [self connectSocketWithIsShowHud:YES];
-//            }
-//        } else { // 走tox
-//            //[self connectTox];
-//        }
-//    }
     AppD.isScaner = NO;
 }
 - (void) loginSuccess:(NSNotification *) noti

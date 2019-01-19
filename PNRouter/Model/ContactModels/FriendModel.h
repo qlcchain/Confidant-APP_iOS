@@ -15,6 +15,7 @@
 @property (nonatomic, copy) NSString *remarks;
 @property (nonatomic, copy) NSString *company;
 @property (nonatomic, copy) NSString *publicKey;
+@property (nonatomic, copy) NSString *signPublicKey;
 @property (nonatomic, copy) NSString *position;
 @property (nonatomic, copy) NSString *location;
 @property (nonatomic, copy) NSString *userId;

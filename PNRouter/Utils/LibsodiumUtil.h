@@ -12,12 +12,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LibsodiumUtil : NSObject
+// char[] 田转字符串
 + (NSMutableString *) charsToString:(unsigned char[]) chars length:(int) length;
 
 + (EntryModel *) getPrivatekeyAndPublickey;
 // 生成对称密钥
 + (NSString *) getSymmetryWithPrivate:(NSString *) privateKey publicKey:(NSString *) publicKey;
-
 //  加密消息
 + (NSString *) encryMsgPairWithSymmetry:(NSString *) symmetryKey enMsg:(NSString *) enMsg nonce:(NSString *) nonce;
 //  解密消息
@@ -30,6 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *) asymmetricEncryptionWithSymmetry:(NSString *) symmetryKey;
 // 私钥解密对称密钥 -非对称解密
 + (NSString *) asymmetricDecryptionWithSymmetry:(NSString *) symmetryKey;
+// 签名公钥转加密公钥
++ (NSString *) getFriendEnPublickkeyWithFriendSignPublicKey:(NSString *) friendSignPublicKey;
+// 得到生成对称密钥nonce
++ (NSString *) getGenterSysmetryNonce;
+
 @end
 
 

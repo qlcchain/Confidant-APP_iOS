@@ -10,7 +10,6 @@
 #import "EntryModel.h"
 #import <libsodium/crypto_box.h>
 #import "KeyCUtil.h"
-//#import <toxcore/crypto_core.h>
 #import "crypto_core.h"
 #import <libsodium/crypto_box.h>
 #import <libsodium/crypto_sign.h>
@@ -338,4 +337,29 @@
     }
     return @"";
 }
+// 签名公钥转加密公钥
++ (NSString *) getFriendEnPublickkeyWithFriendSignPublicKey:(NSString *) friendSignPublicKey
+{
+    unsigned char signpk[32];
+    NSArray *publicArr = [friendSignPublicKey componentsSeparatedByString:@" "];
+    for (int i = 0; i < publicArr.count ; ++i) {
+        const char *s = [publicArr[i] UTF8String];
+        char ch = strtol(s, NULL, 16);
+        signpk[i] = ch;
+    }
+    unsigned char pk[32];
+    int signResult = crypto_sign_ed25519_pk_to_curve25519(pk,signpk);
+    if (signResult >= 0) {
+        return [LibsodiumUtil charsToString:pk length:32];
+    }
+    return @"";
+}
+// 得到生成对称密钥nonce
++ (NSString *) getGenterSysmetryNonce
+{
+    uint8_t nonceKey[CRYPTO_NONCE_SIZE];
+    random_nonce(nonceKey);
+    return [LibsodiumUtil charsToString:nonceKey length:24];
+}
+
 @end

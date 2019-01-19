@@ -121,10 +121,15 @@
     isFind = NO;
     [self jumpToQR];
 }
-- (void) scanSuccessful
+- (void) scanSuccessfulWithIsMacd:(BOOL)isMac
 {
     [AppD.window showHudInView:AppD.window hint:@"Check Router..."];
-    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+    if (isMac) {
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterMAC];
+    } else {
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+    }
+    
 }
 - (void) addNoti {
    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userRegisterSuccess:) name:USER_REGISTER_RECEVIE_NOTI object:nil];
@@ -342,14 +347,16 @@
 }
 - (void) gbFinashNoti:(NSNotification *) noti
 {
-    
-//    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString])
-//    {
-//        [AppD.window showHint:@"当前不在局域网内."];
-//    }
-    // 当前是在局域网
-    isFind = YES;
-    [self connectSocketWithIsShowHud:YES];
+    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
+        if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+            [self.view showHint:@"Unable to connect to server."];
+        } else {
+            [self jumpToLoginDevice];
+        }
+    } else {
+        isFind = YES;
+        [self connectSocketWithIsShowHud:YES];
+    }
 }
 
 /*
