@@ -47,7 +47,7 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
     [view addSubview:HUD];
     [HUD showAnimated:YES];
 
-    HUD.userInteractionEnabled = isEnabled;
+    HUD.userInteractionEnabled = !isEnabled;
     if (time > 0) {
         [HUD hideAnimated:YES afterDelay:time];
     }

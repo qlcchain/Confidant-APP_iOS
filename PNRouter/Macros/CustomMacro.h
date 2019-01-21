@@ -136,5 +136,7 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define ResetRouterKey_SUCCESS_NOTI @"ResetRouterKey_SUCCESS_NOTI"
 // 修改账户激活码成功通知
 #define ResetUserIdcode_SUCCESS_NOTI @"ResetUserIdcode_SUCCESS_NOTI"
+// 取消登陆mac
+#define CANCEL_LOGINMAC_NOTI @"CANCEL_LOGINMAC_NOTI"
 
 #endif /* CustomMacro_h */

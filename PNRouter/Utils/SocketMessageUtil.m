@@ -61,6 +61,26 @@
 }
 
 /**
+ 发送文本消息 3
+ */
++ (void)sendVersion3WithParams:(NSDictionary *)params{
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams3]];
+    //    NSString *paramsJson = params.mj_JSONString;
+    //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
+    [muDic setObject:params forKey:@"params"];
+    NSString *text = muDic.mj_JSONString;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (AppD.manager) {
+            [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
+        } else {
+            [SocketUtil.shareInstance sendWithText:text];
+        }
+    });
+    
+}
+
+/**
  回复多段文本消息
  */
 + (void)sendMutTextWithParams:(NSDictionary *)params{
@@ -221,7 +241,7 @@
     
     NSString *action = receiveDic[@"params"][@"Action"];
     
-    if (!([action isEqualToString:Action_login] || [action isEqualToString: Aciont_Register] || [action isEqualToString: Aciont_Recovery])) {
+    if (!([action isEqualToString:Action_login] || [action isEqualToString: Aciont_Register] || [action isEqualToString: Aciont_Recovery] || [action isEqualToString: Action_RouterLogin] || [action isEqualToString: Action_ResetRouterKey] || [action isEqualToString: Action_ResetUserIdcode])) {
         if (AppD.isLogOut) {
             return;
         }
@@ -880,7 +900,7 @@
         [AppD.window showHint:@"Device MAC error"];
     } else if (retCode == 3) {
         [AppD.window showHint:@"Password error"];
-    } else if (retCode == 4) {
+    } else {
         [AppD.window showHint:@"Other error"];
     }
 }
@@ -895,7 +915,7 @@
         [AppD.window showHint:@"The target device id is incorrect"];
     } else if (retCode == 2) {
         [AppD.window showHint:@"Password error"];
-    } else if (retCode == 3) {
+    } else {
         [AppD.window showHint:@"Other error"];
     }
 }
@@ -913,7 +933,7 @@
         [AppD.window showHint:@"Input parameter error"];
     } else if (retCode == 3) {
         [AppD.window showHint:@"Original code error"];
-    } else if (retCode == 4) {
+    } else {
         [AppD.window showHint:@"Other error"];
     }
 }
@@ -922,6 +942,10 @@
 + (NSDictionary *)getBaseParams {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":SOCKET_APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+}
++ (NSDictionary *)getBaseParams3 {
+    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION3,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getMutBaseParamsWithMore {

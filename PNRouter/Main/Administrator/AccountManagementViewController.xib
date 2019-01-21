@@ -26,16 +26,16 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aiz-Eh-peQ">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="67"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Administrator’s account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6NG-Fc-Key">
-                                    <rect key="frame" x="92" y="11.5" width="191" height="21"/>
+                                    <rect key="frame" x="92" y="23" width="191" height="21"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                    <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="deviceRGB"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7xb-ir-JHV">
-                                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                    <rect key="frame" x="0.0" y="11.5" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="3iI-DQ-xpa"/>
                                         <constraint firstAttribute="height" constant="44" id="yv0-X5-cjc"/>
@@ -45,17 +45,17 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="6NG-Fc-Key" firstAttribute="centerX" secondItem="Aiz-Eh-peQ" secondAttribute="centerX" id="GIE-oy-Yrh"/>
-                                <constraint firstAttribute="height" constant="44" id="OJg-6z-KnM"/>
+                                <constraint firstAttribute="height" constant="67" id="OJg-6z-KnM"/>
                                 <constraint firstItem="7xb-ir-JHV" firstAttribute="centerY" secondItem="Aiz-Eh-peQ" secondAttribute="centerY" id="SDx-jb-q0Y"/>
                                 <constraint firstItem="7xb-ir-JHV" firstAttribute="leading" secondItem="Aiz-Eh-peQ" secondAttribute="leading" id="pYh-4v-MmB"/>
                                 <constraint firstItem="6NG-Fc-Key" firstAttribute="centerY" secondItem="Aiz-Eh-peQ" secondAttribute="centerY" id="x6q-3z-jnu"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D8c-yB-sPh">
-                            <rect key="frame" x="0.0" y="44" width="375" height="603"/>
+                            <rect key="frame" x="0.0" y="67" width="375" height="580"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="neY-8C-fxA">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="265"/>
@@ -246,7 +246,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="Aiz-Eh-peQ" firstAttribute="top" secondItem="ya4-Hh-tAb" secondAttribute="top" id="22l-0b-UQN"/>
                         <constraint firstAttribute="trailing" secondItem="D8c-yB-sPh" secondAttribute="trailing" id="5Qy-pK-O4Z"/>
@@ -266,6 +266,7 @@
                 <constraint firstItem="ya4-Hh-tAb" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="p7H-Qq-KcD"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="23" y="31"/>
         </view>
     </objects>
     <resources>

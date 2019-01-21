@@ -236,6 +236,11 @@
 
 
 - (void)socketOnConnect:(NSNotification *)noti {
+    
+    if (AppD.isLoginMac) {
+        return;
+    }
+    
     isConnectSocket = NO;
     [AppD.window hideHud];
     if (isLogin) {  // 登陆
@@ -249,6 +254,11 @@
 }
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
+    
+    if (AppD.isLoginMac) {
+        return;
+    }
+    
     [AppD.window hideHud];
     if (isConnectSocket) {
         isConnectSocket = NO;
@@ -265,12 +275,8 @@
    // RouterModel *routerModel = [RouterModel getConnectRouter];
     [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
 }
-- (void)viewDidLoad {
-    [super viewDidLoad];
-//    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString] && !AppD.manager && !AppD.isLogOut) {
-//       [self performSelector:@selector(sendGB) withObject:self afterDelay:.1];
-//    }
-   
+- (void) getCurrentSelectRouter
+{
     self.selectRouther = [RouterModel getConnectRouter];
     if (self.selectRouther) {
         [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
@@ -278,6 +284,10 @@
         _lblRoutherName.text = self.selectRouther.name;
         _passTF.text = self.selectRouther.userPass?:@"";
     }
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self getCurrentSelectRouter];
     _loginBackView.layer.borderWidth = 1.5;
     _loginBackView.layer.cornerRadius = 5;
     [_passTF setValue:RGB(128, 128, 128) forKeyPath:@"_placeholderLabel.textColor"];
@@ -295,6 +305,8 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCurrentSelectRouter) name:CANCEL_LOGINMAC_NOTI object:nil];
+    
     
     
 }
@@ -340,8 +352,6 @@
     [RoutherConfig getRoutherConfig].currentRouterToxid = routeM.toxid;
     [RoutherConfig getRoutherConfig].currentRouterSn = routeM.userSn;
     
-   // [self loadHudView];
-  //  [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     _lblRoutherName.text = self.selectRouther.name;
     _passTF.text = self.selectRouther.userPass?:@"";
 }
@@ -453,6 +463,10 @@
 
 - (void) recivceUserFind:(NSNotification *) noti
 {
+    if (AppD.isLoginMac) {
+        return;
+    }
+    
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     if (receiveDic) {
         NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
@@ -473,6 +487,7 @@
             [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
             [RouterModel updateRouterConnectStatusWithSn:usesn];
             [UserModel createUserLocalWithName:userName userid:userid version:0 filePay:@"" userpass:@"" userSn:usesn];
+            [RouterModel updateRouterConnectStatusWithSn:usesn];
             LoginViewController *vc = [[LoginViewController alloc] init];
             [self setRootVCWithVC:vc];
         } else { // 未激活 或者日临时帐户

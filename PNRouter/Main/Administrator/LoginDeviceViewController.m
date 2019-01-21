@@ -14,8 +14,10 @@
 #import "PNRouter-Swift.h"
 #import "SystemUtil.h"
 
-@interface LoginDeviceViewController ()
-
+@interface LoginDeviceViewController ()<UITextFieldDelegate>
+{
+    BOOL isLoginDeviceViewController;
+}
 @property (weak, nonatomic) IBOutlet UITextField *devicePWTF;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
 
@@ -26,17 +28,30 @@
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceLoginSuccessNoti:) name:DEVICE_LOGIN_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnConnect:) name:SOCKET_ON_CONNECT_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnDisconnect:) name:SOCKET_ON_DISCONNECT_NOTI object:nil];
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    isLoginDeviceViewController = YES;
+    [super viewDidAppear:animated];
+}
+- (void) viewDidDisappear:(BOOL)animated
+{
+    isLoginDeviceViewController = NO;
+    [super viewDidDisappear:animated];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    self.view.backgroundColor = MAIN_WHITE_COLOR;
+    AppD.isLoginMac = YES;
+    _devicePWTF.delegate = self;
     [self addObserve];
     [self renderView];
 }
@@ -55,10 +70,19 @@
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    AppD.isLoginMac = NO;
+    [RoutherConfig getRoutherConfig].currentRouterIp = @"";
+    [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
+    [[NSNotificationCenter defaultCenter] postNotificationName:CANCEL_LOGINMAC_NOTI object:nil];
+   [self leftNavBarItemPressedWithPop:NO];
 }
 
 - (IBAction)loginAction:(id)sender {
+    [self.view endEditing:YES];
+    if ([[NSString getNotNullValue:_devicePWTF.text.trim] isEmptyString] || _devicePWTF.text.trim.length !=8) {
+        [self.view showHint:@"Your password must include 8 charactors."];
+        return;
+    }
     NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
     if (connectStatu == socketConnectStatusConnected) {
         [self sendLogin];
@@ -88,6 +112,22 @@
     [self jumpToAccountManagement:dic];
 }
 
+#pragma mark -codeTF 改变回调
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    if (textField == _devicePWTF) {
+        //这里的if时候为了获取删除操作,如果没有次if会造成当达到字数限制后删除键也不能使用的后果.
+        if (range.length == 1 && string.length == 0) {
+            return YES;
+        }
+        //so easy
+        else if (_devicePWTF.text.length >= 8) {
+            _devicePWTF.text = [textField.text substringToIndex:8];
+            return NO;
+        }
+    }
+    return YES;
+}
 #pragma mark -连接socket
 - (void) connectSocket {
     NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
@@ -101,11 +141,17 @@
 
 #pragma mark -通知回调
 - (void)socketOnConnect:(NSNotification *)noti {
+    if (!isLoginDeviceViewController) {
+        return;
+    }
     [AppD.window hideHud];
     [self sendLogin];
 }
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
+    if (!isLoginDeviceViewController) {
+        return;
+    }
     [AppD.window hideHud];
     [AppD.window showHint:@"The connection fails"];
 }

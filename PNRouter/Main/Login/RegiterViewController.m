@@ -298,6 +298,11 @@
 }
 
 - (void)socketOnConnect:(NSNotification *)noti {
+    
+    if (AppD.isLoginMac) {
+        return;
+    }
+    
     [AppD.window hideHud];
     if (isLogin) {
         isLogin = NO;
@@ -312,12 +317,21 @@
 }
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
+    
+    if (AppD.isLoginMac) {
+        return;
+    }
+    
     [AppD.window hideHud];
     [AppD.window showHint:@"The connection fails"];
 }
 
 - (void) recivceUserFind:(NSNotification *) noti
 {
+    if (AppD.isLoginMac) {
+        return;
+    }
+    
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     if (receiveDic) {
         NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
@@ -337,6 +351,7 @@
         //[RouterModel addRouterWithToxid:routherid usesn:usesn];
         if (retCode == 0) { //已激活
             [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
+            [RouterModel updateRouterConnectStatusWithSn:usesn];
             [RouterModel updateRouterConnectStatusWithSn:usesn];
             LoginViewController *vc = [[LoginViewController alloc] init];
             [self setRootVCWithVC:vc];

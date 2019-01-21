@@ -27,6 +27,7 @@
 #import "MiPushSDK.h"
 #import "RunInBackground.h"
 #import "RSAModel.h"
+#import "LibsodiumUtil.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
@@ -60,6 +61,8 @@
     [self configChat];
     [self checkGuidenPage];
     [RSAModel getRSAModel];
+    // 得到签名，加密 公私钥对
+    [LibsodiumUtil getPrivatekeyAndPublickey];
     [self.window makeKeyAndVisible];
     return YES;
 }

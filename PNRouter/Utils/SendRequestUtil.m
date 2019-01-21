@@ -15,7 +15,7 @@
 #import "HeartBeatUtil.h"
 #import "AFHTTPClientV2.h"
 #import "UserConfig.h"
-
+#import "EntryModel.h"
 @implementation SendRequestUtil
 
 #pragma mark - 用户找回
@@ -59,8 +59,8 @@
 {
     [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":@"AddFriendReq",@"NickName":[userM.username base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId?:@"",@"UserKey":[RSAModel getCurrentRASModel].publicKey,@"Msg":msg?:@""};
-    [SocketMessageUtil sendVersion1WithParams:params];
+    NSDictionary *params = @{@"Action":@"AddFriendReq",@"NickName":[userM.username base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId?:@"",@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"Msg":msg?:@""};
+    [SocketMessageUtil sendVersion3WithParams:params];
 }
 #pragma mark -tox pull文件
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId
@@ -145,10 +145,10 @@
 #pragma mark - 登录设备
 + (void)sendRouterLoginWithMac:(NSString *)mac loginKey:(NSString *)loginKey showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_RouterLogin,@"Mac":mac?:@"",@"LoginKey":loginKey?:@""};
-    [SocketMessageUtil sendVersion1WithParams:params];
+    [SocketMessageUtil sendVersion2WithParams:params];
 }
 
 #pragma mark - 路由器修改管理密码
@@ -156,8 +156,8 @@
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_RouterLogin,@"RouterId":RouterId?:@"",@"OldKey":OldKey?:@"",@"NewKey":NewKey?:@""};
-    [SocketMessageUtil sendVersion1WithParams:params];
+    NSDictionary *params = @{@"Action":Action_ResetRouterKey,@"RouterId":RouterId?:@"",@"OldKey":OldKey?:@"",@"NewKey":NewKey?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
 }
 
 #pragma mark - 路由器修改账户激活码
@@ -165,8 +165,8 @@
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_RouterLogin,@"RouterId":RouterId?:@"",@"OldCode":OldCode?:@"",@"NewCode":NewCode?:@""};
-    [SocketMessageUtil sendVersion1WithParams:params];
+    NSDictionary *params = @{@"Action":Action_ResetUserIdcode,@"RouterId":RouterId?:@"",@"UserSn":UserSn?:@"",@"OldCode":OldCode?:@"",@"NewCode":NewCode?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
 }
 
 @end

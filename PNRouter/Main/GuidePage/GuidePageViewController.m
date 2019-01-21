@@ -127,11 +127,21 @@
 
 #pragma mark -通知回调
 - (void)socketOnConnect:(NSNotification *)noti {
+    
+    if (AppD.isLoginMac) {
+        return;
+    }
+    
     [AppD.window hideHud];
     [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
 }
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
+    
+    if (AppD.isLoginMac) {
+        return;
+    }
+    
     [AppD.window hideHud];
     [AppD.window showHint:@"The connection fails"];
 }
@@ -212,6 +222,9 @@
 
 - (void) recivceUserFind:(NSNotification *) noti
 {
+    if (AppD.isLoginMac) {
+        return;
+    }
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     if (receiveDic) {
         NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
@@ -234,6 +247,7 @@
         if (retCode == 0) { //已激活
             [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
             [UserModel createUserLocalWithName:userName userid:userid version:fileVersion filePay:@"" userpass:@"" userSn:usesn];
+            [RouterModel updateRouterConnectStatusWithSn:usesn];
             LoginViewController *vc = [[LoginViewController alloc] init];
             [self setRootVCWithVC:vc];
         } else { // 未激活 或者日临时帐户

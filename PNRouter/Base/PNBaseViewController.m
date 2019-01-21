@@ -99,7 +99,6 @@
         showRightNavBarItem = NO;
     }
     return self;
-    
 }
 - (void)leftNavBarItemPressedWithPop:(BOOL)isPop
 {
@@ -173,6 +172,8 @@
 }
 
 - (void)setRootVCWithVC:(PNBaseViewController *) vc {
+    [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
+    AppD.isLoginMac = NO;
     // 我们要把系统windown的rootViewController替换掉
     CATransition *animation = [CATransition animation];
     //动画时间
