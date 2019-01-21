@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		581D785B216B2D98000B70C5 /* FileDynamicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581D7859216B2D98000B70C5 /* FileDynamicsViewController.m */; };
-		581D785C216B2D98000B70C5 /* FileDynamicsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581D785A216B2D98000B70C5 /* FileDynamicsViewController.xib */; };
-		581D7860216B35A5000B70C5 /* FileDynamicsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 581D785E216B35A5000B70C5 /* FileDynamicsCell.m */; };
-		581D7861216B35A5000B70C5 /* FileDynamicsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581D785F216B35A5000B70C5 /* FileDynamicsCell.xib */; };
 		581FDF3521F024160068C120 /* vpx.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581FDEEA21F024160068C120 /* vpx.framework */; };
 		581FDF3621F024160068C120 /* msi.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEED21F024160068C120 /* msi.m */; };
 		581FDF3721F024160068C120 /* video.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEEE21F024160068C120 /* video.m */; };
@@ -87,6 +83,8 @@
 		587C52D2215CB6B6006787FB /* SkyRadiusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 587C52D0215CB6B5006787FB /* SkyRadiusView.m */; };
 		587C52D7215CBA9A006787FB /* QRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 587C52D5215CBA99006787FB /* QRViewController.m */; };
 		587C52D8215CBA9A006787FB /* QRViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 587C52D6215CBA99006787FB /* QRViewController.xib */; };
+		5886FB9621F5C22B0052EDD0 /* UploadAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5886FB9521F5C22B0052EDD0 /* UploadAlertView.m */; };
+		5886FB9821F5C2390052EDD0 /* UploadAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5886FB9721F5C2390052EDD0 /* UploadAlertView.xib */; };
 		588B3F24215F81D0008601E0 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 588B3F23215F81D0008601E0 /* ViewController.xib */; };
 		58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58BD2E5421465E0A0091A77D /* Assets.xcassets */; };
 		58BD2E5E21475E020091A77D /* HWUserdefault.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BD2E5D21475E010091A77D /* HWUserdefault.m */; };
@@ -185,10 +183,6 @@
 		7330F3D72147ABAE00FF4EEC /* MsgPicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F3D62147ABAD00FF4EEC /* MsgPicViewController.m */; };
 		7330F46C2147AD2B00FF4EEC /* InputViewBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7330F46A2147AD2A00FF4EEC /* InputViewBundle.bundle */; };
 		7330F46D2147AD2B00FF4EEC /* Expression.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7330F46B2147AD2B00FF4EEC /* Expression.bundle */; };
-		7330F4722147B5B200FF4EEC /* FileDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F4702147B5B200FF4EEC /* FileDetailCell.m */; };
-		7330F4732147B5B200FF4EEC /* FileDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F4712147B5B200FF4EEC /* FileDetailCell.xib */; };
-		7330F4772147B5F800FF4EEC /* FileDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F4752147B5F800FF4EEC /* FileDetailViewController.m */; };
-		7330F4782147B5F800FF4EEC /* FileDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F4762147B5F800FF4EEC /* FileDetailViewController.xib */; };
 		7330F47B2147DBB800FF4EEC /* StringUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F47A2147DBB800FF4EEC /* StringUtil.m */; };
 		7330F47E2148A74200FF4EEC /* KeyCUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F47D2148A74200FF4EEC /* KeyCUtil.m */; };
 		7330F4802148AADA00FF4EEC /* KeyChainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330F47F2148AADA00FF4EEC /* KeyChainUtil.swift */; };
@@ -421,12 +415,6 @@
 
 /* Begin PBXFileReference section */
 		49C33670BA720BB01C8243AF /* libPods-PNRouter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PNRouter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		581D7858216B2D98000B70C5 /* FileDynamicsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileDynamicsViewController.h; sourceTree = "<group>"; };
-		581D7859216B2D98000B70C5 /* FileDynamicsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileDynamicsViewController.m; sourceTree = "<group>"; };
-		581D785A216B2D98000B70C5 /* FileDynamicsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FileDynamicsViewController.xib; sourceTree = "<group>"; };
-		581D785D216B35A5000B70C5 /* FileDynamicsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileDynamicsCell.h; sourceTree = "<group>"; };
-		581D785E216B35A5000B70C5 /* FileDynamicsCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileDynamicsCell.m; sourceTree = "<group>"; };
-		581D785F216B35A5000B70C5 /* FileDynamicsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FileDynamicsCell.xib; sourceTree = "<group>"; };
 		581FDEEA21F024160068C120 /* vpx.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = vpx.framework; sourceTree = "<group>"; };
 		581FDEED21F024160068C120 /* msi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = msi.m; sourceTree = "<group>"; };
 		581FDEEE21F024160068C120 /* video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = video.m; sourceTree = "<group>"; };
@@ -609,6 +597,9 @@
 		587C52D4215CBA99006787FB /* QRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRViewController.h; sourceTree = "<group>"; };
 		587C52D5215CBA99006787FB /* QRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRViewController.m; sourceTree = "<group>"; };
 		587C52D6215CBA99006787FB /* QRViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QRViewController.xib; sourceTree = "<group>"; };
+		5886FB9421F5C22B0052EDD0 /* UploadAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadAlertView.h; sourceTree = "<group>"; };
+		5886FB9521F5C22B0052EDD0 /* UploadAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadAlertView.m; sourceTree = "<group>"; };
+		5886FB9721F5C2390052EDD0 /* UploadAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadAlertView.xib; sourceTree = "<group>"; };
 		588B3F23215F81D0008601E0 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		58BD2E5421465E0A0091A77D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		58BD2E5C21475E010091A77D /* HWUserdefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWUserdefault.h; sourceTree = "<group>"; };
@@ -776,12 +767,6 @@
 		7330F3D62147ABAD00FF4EEC /* MsgPicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgPicViewController.m; sourceTree = "<group>"; };
 		7330F46A2147AD2A00FF4EEC /* InputViewBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InputViewBundle.bundle; sourceTree = "<group>"; };
 		7330F46B2147AD2B00FF4EEC /* Expression.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Expression.bundle; sourceTree = "<group>"; };
-		7330F46F2147B5B200FF4EEC /* FileDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileDetailCell.h; sourceTree = "<group>"; };
-		7330F4702147B5B200FF4EEC /* FileDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileDetailCell.m; sourceTree = "<group>"; };
-		7330F4712147B5B200FF4EEC /* FileDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FileDetailCell.xib; sourceTree = "<group>"; };
-		7330F4742147B5F800FF4EEC /* FileDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileDetailViewController.h; sourceTree = "<group>"; };
-		7330F4752147B5F800FF4EEC /* FileDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileDetailViewController.m; sourceTree = "<group>"; };
-		7330F4762147B5F800FF4EEC /* FileDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FileDetailViewController.xib; sourceTree = "<group>"; };
 		7330F4792147DBB800FF4EEC /* StringUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
 		7330F47A2147DBB800FF4EEC /* StringUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StringUtil.m; sourceTree = "<group>"; };
 		7330F47C2148A74200FF4EEC /* KeyCUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyCUtil.h; sourceTree = "<group>"; };
@@ -1429,16 +1414,11 @@
 		584A4473214609EC00608122 /* File */ = {
 			isa = PBXGroup;
 			children = (
+				5886FB9321F5C1D70052EDD0 /* View */,
 				7330F46E2147B58B00FF4EEC /* Cells */,
 				584A447B21460AFE00608122 /* FileViewController.h */,
 				584A447C21460AFE00608122 /* FileViewController.m */,
 				584A447D21460AFE00608122 /* FileViewController.xib */,
-				7330F4742147B5F800FF4EEC /* FileDetailViewController.h */,
-				7330F4752147B5F800FF4EEC /* FileDetailViewController.m */,
-				7330F4762147B5F800FF4EEC /* FileDetailViewController.xib */,
-				581D7858216B2D98000B70C5 /* FileDynamicsViewController.h */,
-				581D7859216B2D98000B70C5 /* FileDynamicsViewController.m */,
-				581D785A216B2D98000B70C5 /* FileDynamicsViewController.xib */,
 			);
 			path = File;
 			sourceTree = "<group>";
@@ -1740,6 +1720,16 @@
 			path = Scan;
 			sourceTree = "<group>";
 		};
+		5886FB9321F5C1D70052EDD0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5886FB9421F5C22B0052EDD0 /* UploadAlertView.h */,
+				5886FB9521F5C22B0052EDD0 /* UploadAlertView.m */,
+				5886FB9721F5C2390052EDD0 /* UploadAlertView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		73001A1A21904887003D07CC /* Openssl */ = {
 			isa = PBXGroup;
 			children = (
@@ -1986,15 +1976,9 @@
 		7330F46E2147B58B00FF4EEC /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				7330F46F2147B5B200FF4EEC /* FileDetailCell.h */,
-				7330F4702147B5B200FF4EEC /* FileDetailCell.m */,
-				7330F4712147B5B200FF4EEC /* FileDetailCell.xib */,
 				58BD2E6B2147B6CF0091A77D /* FileCell.h */,
 				58BD2E6C2147B6CF0091A77D /* FileCell.m */,
 				58BD2E6D2147B6CF0091A77D /* FileCell.xib */,
-				581D785D216B35A5000B70C5 /* FileDynamicsCell.h */,
-				581D785E216B35A5000B70C5 /* FileDynamicsCell.m */,
-				581D785F216B35A5000B70C5 /* FileDynamicsCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3002,11 +2986,11 @@
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
+				5886FB9821F5C2390052EDD0 /* UploadAlertView.xib in Resources */,
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
 				7306055D217729AC005A0E13 /* 测试文件.txt in Resources */,
 				7330F3BF214769DF00FF4EEC /* FriendDetailViewController.xib in Resources */,
 				587C52C7215C798E006787FB /* RouterCodeViewController.xib in Resources */,
-				581D785C216B2D98000B70C5 /* FileDynamicsViewController.xib in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
 				58BD2E6F2147B6CF0091A77D /* FileCell.xib in Resources */,
@@ -3048,19 +3032,16 @@
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
 				73121A75219C26E900510B48 /* LoginViewController.xib in Resources */,
 				73E03B4C21DDF88A005DF993 /* DHTnodes.json in Resources */,
-				7330F4732147B5B200FF4EEC /* FileDetailCell.xib in Resources */,
 				585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */,
 				581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */,
 				581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */,
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
 				7330F3C421476E9300FF4EEC /* UserInfoCell.xib in Resources */,
 				73E2FB7421ABE5A800DAED52 /* CreateRouterUserViewController.xib in Resources */,
-				581D7861216B35A5000B70C5 /* FileDynamicsCell.xib in Resources */,
 				7330F39F214666E400FF4EEC /* PersonCodeViewController.xib in Resources */,
 				7330F46D2147AD2B00FF4EEC /* Expression.bundle in Resources */,
 				7303310B21C7A2FD007C4063 /* mysong.mp3 in Resources */,
 				7386910B214CC7D3003CF6A3 /* EditTextViewController.xib in Resources */,
-				7330F4782147B5F800FF4EEC /* FileDetailViewController.xib in Resources */,
 				58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */,
 				7330F46C2147AD2B00FF4EEC /* InputViewBundle.bundle in Resources */,
 				73060557217719A5005A0E13 /* VPNFileInputView.xib in Resources */,
@@ -3257,7 +3238,6 @@
 				73D00EA3215A24730013E20D /* ChooseCollectionCell.m in Sources */,
 				7378841021ACF2970033A189 /* OCTFileDataInput.m in Sources */,
 				7378840E21ACF2970033A189 /* OCTFilePathInput.m in Sources */,
-				7330F4772147B5F800FF4EEC /* FileDetailViewController.m in Sources */,
 				7362576B2142142D00D7FD6B /* NSData+Base64.m in Sources */,
 				581FDF3621F024160068C120 /* msi.m in Sources */,
 				73D31B19217F08480034B2B9 /* TZGifPhotoPreviewController.m in Sources */,
@@ -3336,6 +3316,7 @@
 				73D31B0D217F08480034B2B9 /* TZVideoPlayerController.m in Sources */,
 				737883EF21ACF2970033A189 /* OCTToxConstants.m in Sources */,
 				73D31B0F217F08480034B2B9 /* NSBundle+TZImagePicker.m in Sources */,
+				5886FB9621F5C22B0052EDD0 /* UploadAlertView.m in Sources */,
 				7306054A2176CA51005A0E13 /* CDFileTableViewCell.m in Sources */,
 				581FDF5221F024170068C120 /* friend_requests.m in Sources */,
 				7362574B213E8B3400D7FD6B /* main.m in Sources */,
@@ -3344,7 +3325,6 @@
 				736257AE2142149300D7FD6B /* UIView+Visuals.m in Sources */,
 				7330F4E92149147200FF4EEC /* CTClickInfo.m in Sources */,
 				73001A2321912890003D07CC /* RSAUtil.m in Sources */,
-				581D785B216B2D98000B70C5 /* FileDynamicsViewController.m in Sources */,
 				7303310C21C7A2FD007C4063 /* RunInBackground.m in Sources */,
 				7330F4F82149147200FF4EEC /* CTInputBoxDrawer.m in Sources */,
 				73625762214213B300D7FD6B /* UILabel+Copy.m in Sources */,
@@ -3431,7 +3411,6 @@
 				7330F4F92149147200FF4EEC /* CTInputConfiguration.m in Sources */,
 				7330F3D22147A97700FF4EEC /* BaseMsgModel.m in Sources */,
 				7330F5012149147200FF4EEC /* CDMessageModel.m in Sources */,
-				7330F4722147B5B200FF4EEC /* FileDetailCell.m in Sources */,
 				7330F4E82149147200FF4EEC /* CTData.m in Sources */,
 				7330F4E42149147200FF4EEC /* CoreTextUtils.m in Sources */,
 				7330F37F2146118800FF4EEC /* UIImage+Resize.m in Sources */,
@@ -3455,7 +3434,6 @@
 				73D31B13217F08480034B2B9 /* TZProgressView.m in Sources */,
 				7362577F2142143F00D7FD6B /* NSString+RegexCategory.m in Sources */,
 				736257A82142149300D7FD6B /* UIView+BlockGesture.m in Sources */,
-				581D7860216B35A5000B70C5 /* FileDynamicsCell.m in Sources */,
 				7378840021ACF2970033A189 /* OCTMessageAbstract.m in Sources */,
 				736257C5214225FD00D7FD6B /* getgateway.c in Sources */,
 				584A447E21460AFE00608122 /* FileViewController.m in Sources */,

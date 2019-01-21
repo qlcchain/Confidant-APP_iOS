@@ -6,11 +6,13 @@
 //  Copyright © 2018年 旷自辉. All rights reserved.
 //
 
-#import <SWTableViewCell/SWTableViewCell.h>
+//#import <SWTableViewCell/SWTableViewCell.h>
+#import <UIKit/UIKit.h>
 
 static NSString *FileCellReuse = @"FileCell";
-#define FileCellHeight 72
+#define FileCellHeight 64
 
-@interface FileCell : SWTableViewCell
+//@interface FileCell : SWTableViewCell
+@interface FileCell : UITableViewCell
 
 @end
