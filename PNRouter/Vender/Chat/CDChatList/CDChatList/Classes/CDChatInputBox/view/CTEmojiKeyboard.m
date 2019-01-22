@@ -189,13 +189,13 @@
         if (con.tag == 0) {
             [con setHidden:NO];
         } else {
-            [con setHidden:YES];
+           // [con setHidden:YES];
         }
     }
     
     // 发送按钮
     sendButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width -100, self.frame.size.height - 44, 100, 44)];
-    [sendButton setTitle:@"发送" forState:UIControlStateNormal];
+    [sendButton setTitle:@"Send" forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [sendButton addTarget:self action:@selector(emojiButtonTabedSend) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:sendButton];

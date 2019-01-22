@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,21 +23,21 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d3L-2h-RRp">
-                    <rect key="frame" x="0.0" y="20" width="375" height="64"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KKK" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOe-3c-uT2">
-                            <rect key="frame" x="50" y="21.5" width="275.5" height="21"/>
+                            <rect key="frame" x="54" y="11.5" width="267" height="21"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D3y-lq-cXW">
-                            <rect key="frame" x="10" y="14.5" width="35" height="35"/>
+                            <rect key="frame" x="5" y="0.0" width="44" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="35" id="7kZ-qA-reu"/>
-                                <constraint firstAttribute="height" constant="35" id="A6L-Gh-l3K"/>
+                                <constraint firstAttribute="width" constant="44" id="7kZ-qA-reu"/>
+                                <constraint firstAttribute="height" constant="44" id="A6L-Gh-l3K"/>
                             </constraints>
-                            <state key="normal" image="icon_back"/>
+                            <state key="normal" image="arrow-exit-h"/>
                             <connections>
                                 <action selector="backAction:" destination="-1" eventType="touchUpInside" id="bw6-Js-mcB"/>
                             </connections>
@@ -46,18 +46,18 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="vOe-3c-uT2" firstAttribute="centerX" secondItem="d3L-2h-RRp" secondAttribute="centerX" id="34Z-U6-jFJ"/>
-                        <constraint firstItem="D3y-lq-cXW" firstAttribute="leading" secondItem="d3L-2h-RRp" secondAttribute="leading" constant="10" id="54D-ju-uDS"/>
-                        <constraint firstAttribute="height" constant="64" id="Tw6-2g-QTk"/>
+                        <constraint firstItem="D3y-lq-cXW" firstAttribute="leading" secondItem="d3L-2h-RRp" secondAttribute="leading" constant="5" id="54D-ju-uDS"/>
+                        <constraint firstAttribute="height" constant="44" id="Tw6-2g-QTk"/>
                         <constraint firstItem="D3y-lq-cXW" firstAttribute="centerY" secondItem="d3L-2h-RRp" secondAttribute="centerY" id="q30-w3-13q"/>
                         <constraint firstItem="vOe-3c-uT2" firstAttribute="leading" secondItem="D3y-lq-cXW" secondAttribute="trailing" constant="5" id="vcS-ZL-71j"/>
                         <constraint firstItem="vOe-3c-uT2" firstAttribute="centerY" secondItem="d3L-2h-RRp" secondAttribute="centerY" id="wL2-P0-yjW"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y2Q-e9-WPW">
-                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Lc8-sx-q4a">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
@@ -86,6 +86,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_back" width="11" height="20"/>
+        <image name="arrow-exit-h" width="24" height="24"/>
     </resources>
 </document>

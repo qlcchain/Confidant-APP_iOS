@@ -33,6 +33,7 @@
 #import "RouterUserModel.h"
 #import "MutManagerUtil.h"
 #import "UserConfig.h"
+#import "EntryModel.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -156,6 +157,23 @@
  */
 + (void)sendRecevieMessageWithParams:(NSDictionary *)params tempmsgid:(NSInteger) msgid{
     NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRecevieBaseParams:msgid]];
+    //    NSString *paramsJson = params.mj_JSONString;
+    //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
+    [muDic setObject:params forKey:@"params"];
+    NSString *text = muDic.mj_JSONString;
+    
+    if (AppD.manager) {
+        [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
+    } else {
+        [SocketUtil.shareInstance sendWithText:text];
+    }
+}
+
+/**
+ 发送文本消息  app->router
+ */
++ (void)sendRecevieMessageWithParams3:(NSDictionary *)params tempmsgid:(NSInteger) msgid{
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRecevieBaseParams3:msgid]];
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
@@ -594,7 +612,7 @@
     NSDictionary *params = @{@"Action":@"AddFriendPush",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
     
      NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
-    [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
+    [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
 }
 
 + (void)handleAddFriendDeal:(NSDictionary *)receiveDic {
@@ -623,7 +641,7 @@
     NSString *retcode = @"0"; // 0：消息接收到  1：其他错误
     NSDictionary *params = @{@"Action":@"AddFriendReply",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
-    [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
+    [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
     
     FriendModel *model = [[FriendModel alloc] init];
     model.userId = UserId;
@@ -962,6 +980,10 @@
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":SOCKET_APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
++ (NSDictionary *)getRecevieBaseParams3:(NSInteger) tempmsgid {
+    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION3,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+}
 
 + (NSDictionary *)getRecevieBaseVersion2Params:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
@@ -976,8 +998,8 @@
     NSString *result = type; // 0：同意添加   1：拒绝好友添加
     NSString *friendName = model.username?:@"";
     NSString *friendId = model.userId?:@"";
-    NSDictionary *params = @{@"Action":@"AddFriendDeal",@"Nickname":[userM.username base64EncodedString]?:@"",@"FriendName":[friendName base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId,@"UserKey":[RSAModel getCurrentRASModel].publicKey,@"Result":result,@"FriendKey":model.publicKey?:@""};
-    [SocketMessageUtil sendVersion1WithParams:params];
+    NSDictionary *params = @{@"Action":@"AddFriendDeal",@"Nickname":[userM.username base64EncodedString]?:@"",@"FriendName":[friendName base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId,@"UserKey":[EntryModel getShareObject].signPublicKey,@"Result":result,@"FriendKey":model.publicKey?:@""};
+    [SocketMessageUtil sendVersion3WithParams:params];
 }
 
 #pragma -mark 查询用户是否在线
@@ -993,7 +1015,7 @@
 {
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_PullFriend,@"UserId":userM.userId?:@""};
-    [SocketMessageUtil sendVersion1WithParams:params];
+    [SocketMessageUtil sendVersion3WithParams:params];
 }
 #pragma -mark 发送data文件
 + (void) sendDataFileNeedSynch:(NSInteger) synch

@@ -26,10 +26,10 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mcy-x1-9Se">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Igo-3g-9CN">
-                                    <rect key="frame" x="175" y="21.5" width="25" height="21"/>
+                                    <rect key="frame" x="175" y="11.5" width="25.5" height="21"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -37,21 +37,23 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="Igo-3g-9CN" firstAttribute="centerX" secondItem="Mcy-x1-9Se" secondAttribute="centerX" id="NJR-L4-HHV"/>
+                                <constraint firstItem="Igo-3g-9CN" firstAttribute="centerX" secondItem="Mcy-x1-9Se" secondAttribute="centerX" id="WbJ-aR-GGq"/>
                                 <constraint firstItem="Igo-3g-9CN" firstAttribute="centerX" secondItem="Mcy-x1-9Se" secondAttribute="centerX" id="tK3-Nt-doj"/>
-                                <constraint firstAttribute="height" constant="64" id="ulI-NJ-AsD"/>
+                                <constraint firstAttribute="height" constant="44" id="ulI-NJ-AsD"/>
                                 <constraint firstItem="Igo-3g-9CN" firstAttribute="centerY" secondItem="Mcy-x1-9Se" secondAttribute="centerY" id="xk6-EU-4AY"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZKY-zX-qc0">
-                            <rect key="frame" x="0.0" y="64" width="375" height="583"/>
+                            <rect key="frame" x="0.0" y="44" width="375" height="603"/>
                             <subviews>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bqe-xs-5Ys">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </tableView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7E7-vC-C4e">
-                                    <rect key="frame" x="171.5" y="550.5" width="32" height="15.5"/>
+                                    <rect key="frame" x="171.5" y="570.5" width="32" height="15.5"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                     <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -88,7 +90,7 @@
                 <constraint firstItem="41e-ng-T5G" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="n3f-bH-rn3"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="5" y="39"/>
+            <point key="canvasLocation" x="4" y="38.23088455772114"/>
         </view>
     </objects>
 </document>

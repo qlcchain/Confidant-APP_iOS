@@ -24,23 +24,20 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0jt-Hl-jbY">
-                    <rect key="frame" x="0.0" y="20" width="375" height="64"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61u-lH-HJX">
-                            <rect key="frame" x="338" y="22.5" width="21" height="19"/>
-                            <state key="normal" backgroundImage="icon_little_scan"/>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ba8-xK-bZz">
-                            <rect key="frame" x="151" y="21.5" width="73.5" height="21"/>
+                            <rect key="frame" x="151" y="11.5" width="73.5" height="21"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJL-p4-e8T">
-                            <rect key="frame" x="329" y="0.0" width="46" height="64"/>
+                            <rect key="frame" x="325" y="0.0" width="50" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="46" id="Dwo-1V-JHJ"/>
+                                <constraint firstAttribute="width" constant="50" id="Dwo-1V-JHJ"/>
                             </constraints>
+                            <state key="normal" image="scavenging"/>
                             <connections>
                                 <action selector="rightQRAction:" destination="-1" eventType="touchUpInside" id="RAg-fK-PFl"/>
                             </connections>
@@ -52,14 +49,12 @@
                         <constraint firstAttribute="trailing" secondItem="lJL-p4-e8T" secondAttribute="trailing" id="KA8-9o-LBc"/>
                         <constraint firstItem="ba8-xK-bZz" firstAttribute="centerX" secondItem="0jt-Hl-jbY" secondAttribute="centerX" id="Lsr-Xy-3Y3"/>
                         <constraint firstItem="ba8-xK-bZz" firstAttribute="centerY" secondItem="0jt-Hl-jbY" secondAttribute="centerY" id="Q5e-ga-AHd"/>
-                        <constraint firstAttribute="trailing" secondItem="61u-lH-HJX" secondAttribute="trailing" constant="16" id="Ucu-tg-teT"/>
-                        <constraint firstItem="61u-lH-HJX" firstAttribute="centerY" secondItem="0jt-Hl-jbY" secondAttribute="centerY" id="sev-o4-Jlz"/>
-                        <constraint firstAttribute="height" constant="64" id="v73-wj-cN4"/>
+                        <constraint firstAttribute="height" constant="44" id="v73-wj-cN4"/>
                         <constraint firstAttribute="bottom" secondItem="lJL-p4-e8T" secondAttribute="bottom" id="zCn-cP-XYQ"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tg4-qU-Ui2">
-                    <rect key="frame" x="0.0" y="84" width="375" height="56"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="56"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EdI-Hg-WGi">
                             <rect key="frame" x="16" y="8" width="343" height="40"/>
@@ -95,10 +90,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LVD-CV-Ojg">
-                    <rect key="frame" x="0.0" y="140" width="375" height="527"/>
+                    <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OfX-jP-pyf">
-                            <rect key="frame" x="0.0" y="12" width="375" height="515"/>
+                            <rect key="frame" x="0.0" y="12" width="375" height="535"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
                     </subviews>
@@ -129,7 +124,7 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_little_scan" width="21" height="19.5"/>
         <image name="icon_search" width="14" height="13.5"/>
+        <image name="scavenging" width="24" height="24"/>
     </resources>
 </document>

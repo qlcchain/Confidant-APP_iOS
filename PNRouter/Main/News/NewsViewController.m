@@ -115,8 +115,10 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:ADD_MESSAGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecketFaieldNoti:) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
     _switchRoutherBtn.layer.cornerRadius = 5.0f;

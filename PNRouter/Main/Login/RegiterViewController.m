@@ -144,6 +144,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+   self.view.backgroundColor = MAIN_PURPLE_COLOR;
     _registerBtn.layer.cornerRadius = 5.0f;
     _userNameTF.delegate = self;
     _codeTF.delegate = self;

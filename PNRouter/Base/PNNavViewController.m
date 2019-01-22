@@ -54,7 +54,23 @@
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton buttonWithType:UIButtonTypeCustom]];
         [viewController setHidesBottomBarWhenPushed:YES];
     }
+    if (self.viewControllers.count >= 1) {
+       [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    } else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    }
     [super pushViewController:viewController animated:animated];
+}
+
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated
+{
+    NSLog(@"===%lu",(unsigned long)self.viewControllers.count);
+    if (self.viewControllers.count == 2) {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    } else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
+    return [super popViewControllerAnimated:animated];
 }
 
 - (void) handleNavigationTransition:(UIPanGestureRecognizer *) gestureRecognizer
@@ -82,11 +98,12 @@
     return self.viewControllers.count>1;
 }
 
-// 设置状态栏样式
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
+//// 设置状态栏样式
+//- (UIStatusBarStyle)preferredStatusBarStyle
+//{
+//
+//
+//}
 
 - (void)backBarButtonItemAction
 {

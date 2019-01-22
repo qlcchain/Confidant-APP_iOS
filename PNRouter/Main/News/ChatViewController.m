@@ -44,7 +44,7 @@
 #import "DebugLogViewController.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
-#define NaviH (64 + StatusH)
+#define NaviH (44 + StatusH)
 #define ScreenW [UIScreen mainScreen].bounds.size.width
 #define ScreenH [UIScreen mainScreen].bounds.size.height
 
