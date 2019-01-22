@@ -42,10 +42,12 @@
 @end
 
 @implementation LoginViewController
+
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 - (IBAction)loginAction:(id)sender {
     
     if (_passTF.text.trim.length < 6 ) {
