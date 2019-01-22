@@ -77,6 +77,9 @@
     return _myHeadView;
 }
 
+
+
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
@@ -106,7 +109,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     [self observe];
     
     _lblVersion.text = [NSString stringWithFormat:@"V:%@ (Build %@)",APP_Version,APP_Build];

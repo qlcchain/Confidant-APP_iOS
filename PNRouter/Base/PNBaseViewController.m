@@ -52,7 +52,7 @@
     [super viewDidLoad];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.view.backgroundColor = MAIN_PURPLE_COLOR;
+    self.view.backgroundColor = MAIN_WHITE_COLOR;
 //    UIView *tabBackView = [[UIView alloc] initWithFrame:CGRectMake(0,NAVIGATION_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT)];
 //    tabBackView.backgroundColor = RGB(242, 242, 242);
 //    [self.view addSubview:tabBackView];

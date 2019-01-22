@@ -32,12 +32,12 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2FA-gS-cis">
-                                    <rect key="frame" x="10" y="4.5" width="35" height="35"/>
+                                    <rect key="frame" x="5" y="0.0" width="44" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="35" id="cwT-dg-mBr"/>
-                                        <constraint firstAttribute="width" constant="35" id="zUg-Ng-5n7"/>
+                                        <constraint firstAttribute="height" constant="44" id="cwT-dg-mBr"/>
+                                        <constraint firstAttribute="width" constant="44" id="zUg-Ng-5n7"/>
                                     </constraints>
-                                    <state key="normal" image="icon_back"/>
+                                    <state key="normal" image="arrow-exit-h"/>
                                     <connections>
                                         <action selector="backBtnAction:" destination="-1" eventType="touchUpInside" id="nuH-Gq-KWg"/>
                                     </connections>
@@ -47,26 +47,26 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="46" id="olj-JW-tkl"/>
                                     </constraints>
-                                    <state key="normal" image="icon_setting"/>
+                                    <state key="normal" image="share"/>
                                     <connections>
                                         <action selector="rightShareAction:" destination="-1" eventType="touchUpInside" id="iJ9-WQ-yUV"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QR code Business Card" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Cq-cV-5LP">
-                                    <rect key="frame" x="50" y="11.5" width="275" height="21"/>
+                                    <rect key="frame" x="54" y="11.5" width="267" height="21"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="I37-j4-Kny" secondAttribute="trailing" id="461-b7-dO2"/>
+                                <constraint firstItem="2FA-gS-cis" firstAttribute="leading" secondItem="C45-A2-w41" secondAttribute="leading" constant="5" id="9vi-ox-gSJ"/>
                                 <constraint firstItem="6Cq-cV-5LP" firstAttribute="leading" secondItem="2FA-gS-cis" secondAttribute="trailing" constant="5" id="BTP-5a-Q5S"/>
                                 <constraint firstItem="6Cq-cV-5LP" firstAttribute="centerY" secondItem="C45-A2-w41" secondAttribute="centerY" id="Dve-Ud-Idv"/>
                                 <constraint firstAttribute="bottom" secondItem="I37-j4-Kny" secondAttribute="bottom" id="WwA-pS-UCK"/>
                                 <constraint firstItem="2FA-gS-cis" firstAttribute="centerY" secondItem="C45-A2-w41" secondAttribute="centerY" id="bMr-T8-Jso"/>
-                                <constraint firstItem="2FA-gS-cis" firstAttribute="leading" secondItem="C45-A2-w41" secondAttribute="leading" constant="10" id="iWQ-DI-1Fu"/>
                                 <constraint firstItem="I37-j4-Kny" firstAttribute="top" secondItem="C45-A2-w41" secondAttribute="top" id="oDd-jX-on9"/>
                                 <constraint firstItem="6Cq-cV-5LP" firstAttribute="centerX" secondItem="C45-A2-w41" secondAttribute="centerX" id="s4I-w7-MHH"/>
                                 <constraint firstAttribute="height" constant="44" id="vaC-JW-2Em"/>
@@ -235,8 +235,8 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_back" width="11" height="20"/>
-        <image name="icon_setting" width="20" height="20"/>
+        <image name="arrow-exit-h" width="24" height="24"/>
         <image name="img_card_router" width="40" height="40"/>
+        <image name="share" width="24" height="24"/>
     </resources>
 </document>

@@ -287,6 +287,9 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = MAIN_PURPLE_COLOR;
+    
     [self getCurrentSelectRouter];
     _loginBackView.layer.borderWidth = 1.5;
     _loginBackView.layer.cornerRadius = 5;

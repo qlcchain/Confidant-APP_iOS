@@ -24,37 +24,37 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UWq-vX-Uhe">
-                    <rect key="frame" x="0.0" y="20" width="375" height="64"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HDi-fJ-ilz">
-                            <rect key="frame" x="10" y="14.5" width="35" height="35"/>
+                            <rect key="frame" x="5" y="0.0" width="44" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="35" id="6XD-6N-1cN"/>
-                                <constraint firstAttribute="height" constant="35" id="C97-3k-uC3"/>
+                                <constraint firstAttribute="width" constant="44" id="6XD-6N-1cN"/>
+                                <constraint firstAttribute="height" constant="44" id="C97-3k-uC3"/>
                             </constraints>
-                            <state key="normal" image="icon_back"/>
+                            <state key="normal" image="arrow-exit-h"/>
                             <connections>
                                 <action selector="backAction:" destination="-1" eventType="touchUpInside" id="PD5-NE-3ud"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Management" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmT-ow-bFd">
-                            <rect key="frame" x="113.5" y="21.5" width="148.5" height="21"/>
+                            <rect key="frame" x="113.5" y="11.5" width="148.5" height="21"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="64" id="KgN-C7-bOt"/>
+                        <constraint firstAttribute="height" constant="44" id="KgN-C7-bOt"/>
                         <constraint firstItem="DmT-ow-bFd" firstAttribute="centerY" secondItem="UWq-vX-Uhe" secondAttribute="centerY" id="YEv-vX-sUL"/>
                         <constraint firstItem="DmT-ow-bFd" firstAttribute="centerX" secondItem="UWq-vX-Uhe" secondAttribute="centerX" id="huO-Ej-Xuq"/>
-                        <constraint firstItem="HDi-fJ-ilz" firstAttribute="leading" secondItem="UWq-vX-Uhe" secondAttribute="leading" constant="10" id="qln-1m-hnw"/>
+                        <constraint firstItem="HDi-fJ-ilz" firstAttribute="leading" secondItem="UWq-vX-Uhe" secondAttribute="leading" constant="5" id="qln-1m-hnw"/>
                         <constraint firstItem="HDi-fJ-ilz" firstAttribute="centerY" secondItem="UWq-vX-Uhe" secondAttribute="centerY" id="wPK-Ie-LWT"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T77-wX-PJl">
-                    <rect key="frame" x="0.0" y="84" width="375" height="56"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="56"/>
                     <subviews>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aOo-z6-Zt3">
                             <rect key="frame" x="16" y="8" width="343" height="40"/>
@@ -90,10 +90,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="41R-DJ-Ugu">
-                    <rect key="frame" x="0.0" y="140" width="375" height="527"/>
+                    <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SPo-zZ-bVK">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
                     </subviews>
@@ -123,7 +123,7 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_back" width="11" height="20"/>
+        <image name="arrow-exit-h" width="24" height="24"/>
         <image name="icon_search" width="14" height="13.5"/>
     </resources>
 </document>

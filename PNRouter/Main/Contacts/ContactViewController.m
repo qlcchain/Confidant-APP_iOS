@@ -105,9 +105,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     [self observe];
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
