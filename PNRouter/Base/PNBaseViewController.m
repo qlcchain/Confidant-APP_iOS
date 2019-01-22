@@ -20,6 +20,8 @@
 
 @interface PNBaseViewController ()
 
+@property (nonatomic, strong) UIView *emptyView;
+
 @end
 
 @implementation PNBaseViewController
@@ -201,6 +203,47 @@
 - (void) scanSuccessfulWithIsMacd:(BOOL) isMac
 {
     
+}
+
+- (void)showEmptyViewToView:(UIView *)view img:(UIImage *)img title:(NSString *)title {
+    if (!_emptyView) {
+        _emptyView = [[UIView alloc] init];
+        _emptyView.frame = CGRectMake(0, 0, 200, 200);
+        
+        UIImageView *imgV = [[UIImageView alloc] init];
+        imgV.frame = CGRectMake(0, 0, 80, 80);
+        imgV.image = img;
+        [_emptyView addSubview:imgV];
+        @weakify_self
+        [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.mas_equalTo(weakSelf.emptyView.centerX).offset(0);
+            make.centerY.mas_equalTo(weakSelf.emptyView.centerY).offset(0);
+            make.width.mas_equalTo(80);
+            make.height.mas_equalTo(80);
+        }];
+        
+        UILabel *titleLab = [[UILabel alloc] init];
+        titleLab.frame = CGRectMake(0, 0, 100, 44);
+        titleLab.numberOfLines = 2;
+        titleLab.font = [UIFont systemFontOfSize:14];
+        titleLab.textColor = UIColorFromRGB(0x808080);
+        titleLab.text = title;
+        [_emptyView addSubview:titleLab];
+        [titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.mas_equalTo(weakSelf.emptyView.centerX).offset(0);
+            make.top.mas_equalTo(imgV.bottom).offset(24);
+        }];
+    }
+    
+    [view addSubview:_emptyView];
+    [_emptyView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.left.right.mas_equalTo(view).offset(0);
+    }];
+}
+
+- (void)hideEmptyView {
+    [_emptyView removeFromSuperview];
+    _emptyView = nil;
 }
 
 #pragma mark - Transition
