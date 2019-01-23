@@ -8,6 +8,7 @@
 
 #import "DetailInformationViewController.h"
 #import "DetailInformationCell.h"
+#import "SharedSettingsViewController.h"
 
 @interface DetailInformationViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -30,6 +31,12 @@
     _sourceArr = [NSMutableArray array];
     
     [_mainTable registerNib:[UINib nibWithNibName:DetailInformationCellReuse bundle:nil] forCellReuseIdentifier:DetailInformationCellReuse];
+}
+
+#pragma mark - Action
+
+- (IBAction)backAction:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableViewDelegate
@@ -55,6 +62,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+}
+
+#pragma mark - Transition
+- (void)jumpToSharedSettings {
+    SharedSettingsViewController *vc = [[SharedSettingsViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

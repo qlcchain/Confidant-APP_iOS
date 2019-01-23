@@ -205,6 +205,11 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="xVh-Iv-lIx"/>
+            <connections>
+                <outlet property="nameSelect" destination="cVl-Bz-eUI" id="4ev-TR-aBZ"/>
+                <outlet property="sizeSelect" destination="HVS-FT-E3p" id="lgg-gv-VOt"/>
+                <outlet property="timeSelect" destination="PqI-6L-Y7A" id="t3D-cZ-jxX"/>
+            </connections>
             <point key="canvasLocation" x="53.600000000000001" y="41.829085457271368"/>
         </view>
     </objects>

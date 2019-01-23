@@ -30,18 +30,30 @@
 #pragma mark - Action
 
 - (IBAction)uploadPhotosAction:(id)sender {
+    if (_photoB) {
+        _photoB();
+    }
     [self hide];
 }
 
 - (IBAction)uploadVideoAction:(id)sender {
+    if (_videoB) {
+        _videoB();
+    }
     [self hide];
 }
 
 - (IBAction)uploadDocumentAction:(id)sender {
+    if (_documentB) {
+        _documentB();
+    }
     [self hide];
 }
 
 - (IBAction)uploadOtherAction:(id)sender {
+    if (_otherB) {
+        _otherB();
+    }
     [self hide];
 }
 

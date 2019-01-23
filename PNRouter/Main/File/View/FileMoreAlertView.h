@@ -10,9 +10,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^FileMoreClickBlock)(void);
+
 @interface FileMoreAlertView : UIView
 
+@property (nonatomic) FileMoreClickBlock sendB;
+@property (nonatomic) FileMoreClickBlock downloadB;
+@property (nonatomic) FileMoreClickBlock otherApplicationOpenB;
+@property (nonatomic) FileMoreClickBlock detailInformationB;
+@property (nonatomic) FileMoreClickBlock renameB;
+@property (nonatomic) FileMoreClickBlock deleteB;
+
 + (instancetype)getInstance;
+- (void)show;
+- (void)hide;
 
 @end
 

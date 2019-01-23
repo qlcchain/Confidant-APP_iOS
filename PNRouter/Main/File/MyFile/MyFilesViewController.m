@@ -8,11 +8,17 @@
 
 #import "MyFilesViewController.h"
 #import "MyFilesCell.h"
+#import "DetailInformationViewController.h"
+#import "FilePreviewViewController.h"
+#import "ArrangeAlertView.h"
+#import "FileMoreAlertView.h"
 
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
+@property (weak, nonatomic) IBOutlet UILabel *titleLab;
+@property (nonatomic) ArrangeType arrangeType;
 
 @end
 
@@ -27,9 +33,69 @@
 
 #pragma mark - Operation
 - (void)dataInit {
+    if (_filesType == FilesTypeMy) {
+        _titleLab.text = @"My Files";
+    } else if (_filesType == FilesTypeShare) {
+        _titleLab.text = @"Documents I Share";
+    } else if (_filesType == FilesTypeReceived) {
+        _titleLab.text = @"Documents Received";
+    }
+    
     _sourceArr = [NSMutableArray array];
+    _arrangeType = ArrangeTypeByName;
     
     [_mainTable registerNib:[UINib nibWithNibName:MyFilesCellReuse bundle:nil] forCellReuseIdentifier:MyFilesCellReuse];
+}
+
+- (void)showArrangeAlertView {
+    ArrangeAlertView *view = [ArrangeAlertView getInstance];
+    @weakify_self
+    [view setClickB:^(ArrangeType type) {
+        weakSelf.arrangeType = type;
+        if (type == ArrangeTypeByName) {
+            
+        } else if (type == ArrangeTypeByTime) {
+            
+        } else if (type == ArrangeTypeBySize) {
+            
+        }
+    }];
+    [view showWithArrange:_arrangeType];
+}
+
+- (void)showFileMoreAlertView {
+    FileMoreAlertView *view = [[FileMoreAlertView alloc] init];
+    @weakify_self
+    [view setSendB:^{
+        
+    }];
+    [view setDownloadB:^{
+        
+    }];
+    [view setOtherApplicationOpenB:^{
+        
+    }];
+    [view setDetailInformationB:^{
+        [weakSelf jumpToDetailInformation];
+    }];
+    [view setRenameB:^{
+        
+    }];
+    [view setDeleteB:^{
+        
+    }];
+    
+    [view show];
+}
+
+#pragma mark - Action
+
+- (IBAction)backAction:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)multiSelectAction:(id)sender {
+    
 }
 
 #pragma mark - UITableViewDelegate
@@ -56,6 +122,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    [self jumpToFilePreview];
+    
+}
+
+#pragma mark - Transition
+- (void)jumpToDetailInformation {
+    DetailInformationViewController *vc = [[DetailInformationViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToFilePreview {
+    FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

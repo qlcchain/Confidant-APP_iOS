@@ -56,10 +56,6 @@
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
 		583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */; };
 		583BF90721F6B4140078A2A8 /* UploadFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90521F6B4140078A2A8 /* UploadFilesViewController.xib */; };
-		583BF90B21F6B4BC0078A2A8 /* ShareFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90921F6B4BC0078A2A8 /* ShareFilesViewController.m */; };
-		583BF90C21F6B4BC0078A2A8 /* ShareFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90A21F6B4BC0078A2A8 /* ShareFilesViewController.xib */; };
-		583BF91021F6B4C90078A2A8 /* ReceivedFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90E21F6B4C90078A2A8 /* ReceivedFilesViewController.m */; };
-		583BF91121F6B4C90078A2A8 /* ReceivedFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90F21F6B4C90078A2A8 /* ReceivedFilesViewController.xib */; };
 		583BF91521F6B4DF0078A2A8 /* MyFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF91321F6B4DF0078A2A8 /* MyFilesViewController.m */; };
 		583BF91621F6B4DF0078A2A8 /* MyFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF91421F6B4DF0078A2A8 /* MyFilesViewController.xib */; };
 		583BF91A21F6B5AB0078A2A8 /* DetailInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF91821F6B5AB0078A2A8 /* DetailInformationViewController.m */; };
@@ -82,6 +78,8 @@
 		583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF94321F70FAC0078A2A8 /* TaskOngoingCell.xib */; };
 		583BF94921F70FBC0078A2A8 /* TaskCompletedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF94721F70FBC0078A2A8 /* TaskCompletedCell.m */; };
 		583BF94A21F70FBC0078A2A8 /* TaskCompletedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF94821F70FBC0078A2A8 /* TaskCompletedCell.xib */; };
+		583BF94F21F809000078A2A8 /* FilePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF94D21F809000078A2A8 /* FilePreviewViewController.m */; };
+		583BF95021F809000078A2A8 /* FilePreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF94E21F809000078A2A8 /* FilePreviewViewController.xib */; };
 		584A447921460AD800608122 /* MyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A447721460AD800608122 /* MyViewController.m */; };
 		584A447A21460AD800608122 /* MyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584A447821460AD800608122 /* MyViewController.xib */; };
 		584A447E21460AFE00608122 /* FileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A447C21460AFE00608122 /* FileViewController.m */; };
@@ -537,12 +535,6 @@
 		583BF90321F6B4140078A2A8 /* UploadFilesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadFilesViewController.h; sourceTree = "<group>"; };
 		583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFilesViewController.m; sourceTree = "<group>"; };
 		583BF90521F6B4140078A2A8 /* UploadFilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadFilesViewController.xib; sourceTree = "<group>"; };
-		583BF90821F6B4BC0078A2A8 /* ShareFilesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareFilesViewController.h; sourceTree = "<group>"; };
-		583BF90921F6B4BC0078A2A8 /* ShareFilesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareFilesViewController.m; sourceTree = "<group>"; };
-		583BF90A21F6B4BC0078A2A8 /* ShareFilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareFilesViewController.xib; sourceTree = "<group>"; };
-		583BF90D21F6B4C90078A2A8 /* ReceivedFilesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReceivedFilesViewController.h; sourceTree = "<group>"; };
-		583BF90E21F6B4C90078A2A8 /* ReceivedFilesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReceivedFilesViewController.m; sourceTree = "<group>"; };
-		583BF90F21F6B4C90078A2A8 /* ReceivedFilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReceivedFilesViewController.xib; sourceTree = "<group>"; };
 		583BF91221F6B4DF0078A2A8 /* MyFilesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFilesViewController.h; sourceTree = "<group>"; };
 		583BF91321F6B4DF0078A2A8 /* MyFilesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyFilesViewController.m; sourceTree = "<group>"; };
 		583BF91421F6B4DF0078A2A8 /* MyFilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyFilesViewController.xib; sourceTree = "<group>"; };
@@ -576,6 +568,9 @@
 		583BF94621F70FBC0078A2A8 /* TaskCompletedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskCompletedCell.h; sourceTree = "<group>"; };
 		583BF94721F70FBC0078A2A8 /* TaskCompletedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskCompletedCell.m; sourceTree = "<group>"; };
 		583BF94821F70FBC0078A2A8 /* TaskCompletedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskCompletedCell.xib; sourceTree = "<group>"; };
+		583BF94C21F809000078A2A8 /* FilePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilePreviewViewController.h; sourceTree = "<group>"; };
+		583BF94D21F809000078A2A8 /* FilePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FilePreviewViewController.m; sourceTree = "<group>"; };
+		583BF94E21F809000078A2A8 /* FilePreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilePreviewViewController.xib; sourceTree = "<group>"; };
 		584A447621460AD800608122 /* MyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
 		584A447721460AD800608122 /* MyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyViewController.m; sourceTree = "<group>"; };
 		584A447821460AD800608122 /* MyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyViewController.xib; sourceTree = "<group>"; };
@@ -1471,26 +1466,6 @@
 			path = MyFile;
 			sourceTree = "<group>";
 		};
-		583BF8FB21F6AE510078A2A8 /* Share */ = {
-			isa = PBXGroup;
-			children = (
-				583BF90821F6B4BC0078A2A8 /* ShareFilesViewController.h */,
-				583BF90921F6B4BC0078A2A8 /* ShareFilesViewController.m */,
-				583BF90A21F6B4BC0078A2A8 /* ShareFilesViewController.xib */,
-			);
-			path = Share;
-			sourceTree = "<group>";
-		};
-		583BF8FC21F6AE580078A2A8 /* Receive */ = {
-			isa = PBXGroup;
-			children = (
-				583BF90D21F6B4C90078A2A8 /* ReceivedFilesViewController.h */,
-				583BF90E21F6B4C90078A2A8 /* ReceivedFilesViewController.m */,
-				583BF90F21F6B4C90078A2A8 /* ReceivedFilesViewController.xib */,
-			);
-			path = Receive;
-			sourceTree = "<group>";
-		};
 		583BF8FD21F6AE660078A2A8 /* Task */ = {
 			isa = PBXGroup;
 			children = (
@@ -1499,6 +1474,16 @@
 				583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */,
 			);
 			path = Task;
+			sourceTree = "<group>";
+		};
+		583BF94B21F808E90078A2A8 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				583BF94C21F809000078A2A8 /* FilePreviewViewController.h */,
+				583BF94D21F809000078A2A8 /* FilePreviewViewController.m */,
+				583BF94E21F809000078A2A8 /* FilePreviewViewController.xib */,
+			);
+			path = Preview;
 			sourceTree = "<group>";
 		};
 		584A4471214609D300608122 /* Login */ = {
@@ -1538,9 +1523,8 @@
 		584A4473214609EC00608122 /* File */ = {
 			isa = PBXGroup;
 			children = (
+				583BF94B21F808E90078A2A8 /* Preview */,
 				583BF8FD21F6AE660078A2A8 /* Task */,
-				583BF8FC21F6AE580078A2A8 /* Receive */,
-				583BF8FB21F6AE510078A2A8 /* Share */,
 				583BF8FA21F6AE4B0078A2A8 /* MyFile */,
 				5886FB9321F5C1D70052EDD0 /* View */,
 				7330F46E2147B58B00FF4EEC /* Cells */,
@@ -1790,10 +1774,10 @@
 			isa = PBXGroup;
 			children = (
 				5875E4BF216C8B7000B1A9A6 /* YWFilePreviewController.h */,
-				5875E4C0216C8B7000B1A9A6 /* YWFilePreviewView.h */,
 				5875E4C1216C8B7000B1A9A6 /* YWFilePreviewController.m */,
-				5875E4C2216C8B7000B1A9A6 /* YWFilePreviewView.xib */,
+				5875E4C0216C8B7000B1A9A6 /* YWFilePreviewView.h */,
 				5875E4C3216C8B7000B1A9A6 /* YWFilePreviewView.m */,
+				5875E4C2216C8B7000B1A9A6 /* YWFilePreviewView.xib */,
 			);
 			path = YWFilePreview;
 			sourceTree = "<group>";
@@ -3148,12 +3132,12 @@
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
 				7306055D217729AC005A0E13 /* 测试文件.txt in Resources */,
 				7330F3BF214769DF00FF4EEC /* FriendDetailViewController.xib in Resources */,
-				583BF91121F6B4C90078A2A8 /* ReceivedFilesViewController.xib in Resources */,
 				587C52C7215C798E006787FB /* RouterCodeViewController.xib in Resources */,
 				583BF92021F6B5D00078A2A8 /* SharedSettingsViewController.xib in Resources */,
 				583BF91621F6B4DF0078A2A8 /* MyFilesViewController.xib in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
+				583BF95021F809000078A2A8 /* FilePreviewViewController.xib in Resources */,
 				58BD2E6F2147B6CF0091A77D /* FileCell.xib in Resources */,
 				7330F509214A71BC00FF4EEC /* AddFriendViewController.xib in Resources */,
 				73899CC62152011000962B14 /* GuidePageView1.xib in Resources */,
@@ -3214,7 +3198,6 @@
 				583BF93621F6F4B00078A2A8 /* FileMoreAlertView.xib in Resources */,
 				583BF92521F6C3050078A2A8 /* UploadFilesHeaderView.xib in Resources */,
 				58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */,
-				583BF90C21F6B4BC0078A2A8 /* ShareFilesViewController.xib in Resources */,
 				7330F46C2147AD2B00FF4EEC /* InputViewBundle.bundle in Resources */,
 				73060557217719A5005A0E13 /* VPNFileInputView.xib in Resources */,
 				7330F3992146563600FF4EEC /* MyDetailViewController.xib in Resources */,
@@ -3357,6 +3340,7 @@
 				7362575C214213AA00D7FD6B /* NSDateFormatter+Category.m in Sources */,
 				581FDF5621F024170068C120 /* DHT.m in Sources */,
 				585AEE532140D2280098A070 /* HMScanner.m in Sources */,
+				583BF94F21F809000078A2A8 /* FilePreviewViewController.m in Sources */,
 				73001A1D21904897003D07CC /* DDRSAWrapper+openssl.m in Sources */,
 				7330F4F42149147200FF4EEC /* ChatImageDrawer.m in Sources */,
 				737883FC21ACF2970033A189 /* OCTManagerFactory.m in Sources */,
@@ -3384,7 +3368,6 @@
 				7378841821ACF2970033A189 /* OCTSubmanagerBootstrapImpl.m in Sources */,
 				581FDF3921F024160068C120 /* toxav.m in Sources */,
 				73D00EB8215F27610013E20D /* MD5Util.m in Sources */,
-				583BF91021F6B4C90078A2A8 /* ReceivedFilesViewController.m in Sources */,
 				73F9A11A219973C80011FAA5 /* ReviceRadio.m in Sources */,
 				7386910A214CC7D3003CF6A3 /* EditTextViewController.m in Sources */,
 				7378841921ACF2970033A189 /* OCTSubmanagerFilesImpl.m in Sources */,
@@ -3471,7 +3454,6 @@
 				581FDF4B21F024170068C120 /* Messenger.m in Sources */,
 				73D31B14217F08480034B2B9 /* TZImageManager.m in Sources */,
 				7306054421748BD5005A0E13 /* VoiceConvert.mm in Sources */,
-				583BF90B21F6B4BC0078A2A8 /* ShareFilesViewController.m in Sources */,
 				7330F3792146118800FF4EEC /* UIImage+Merge.m in Sources */,
 				73D31B1F218025270034B2B9 /* RMDisplayLabel.m in Sources */,
 				7378840521ACF2970033A189 /* OCTMessageFile.m in Sources */,

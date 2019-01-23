@@ -29,26 +29,44 @@
 
 #pragma mark - Action
 - (IBAction)sendAction:(id)sender {
+    if (_sendB) {
+        _sendB();
+    }
     [self hide];
 }
 
 - (IBAction)downloadAction:(id)sender {
+    if (_downloadB) {
+        _downloadB();
+    }
     [self hide];
 }
 
 - (IBAction)otherApplicationOpenAction:(id)sender {
+    if (_otherApplicationOpenB) {
+        _otherApplicationOpenB();
+    }
     [self hide];
 }
 
 - (IBAction)detailInformationAction:(id)sender {
+    if (_detailInformationB) {
+        _detailInformationB();
+    }
     [self hide];
 }
 
 - (IBAction)renameAction:(id)sender {
+    if (_renameB) {
+        _renameB();
+    }
     [self hide];
 }
 
 - (IBAction)deleteAction:(id)sender {
+    if (_deleteB) {
+        _deleteB();
+    }
     [self hide];
 }
 

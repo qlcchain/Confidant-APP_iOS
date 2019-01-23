@@ -1,8 +1,8 @@
 //
-//  ReceivedFilesViewController.h
+//  FilePreviewViewController.h
 //  PNRouter
 //
-//  Created by Jelly Foo on 2019/1/22.
+//  Created by Jelly Foo on 2019/1/23.
 //  Copyright © 2019 旷自辉. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ReceivedFilesViewController : PNBaseViewController
+@interface FilePreviewViewController : PNBaseViewController
 
 @end
 

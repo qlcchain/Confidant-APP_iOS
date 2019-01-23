@@ -10,9 +10,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef enum : NSUInteger {
+    ArrangeTypeByName,
+    ArrangeTypeByTime,
+    ArrangeTypeBySize,
+} ArrangeType;
+
+typedef void(^ArrangeClickBlock)(ArrangeType type);
+
 @interface ArrangeAlertView : UIView
 
+@property (nonatomic, copy) ArrangeClickBlock clickB;
+
 + (instancetype)getInstance;
+- (void)showWithArrange:(ArrangeType)type;
+- (void)hide;
 
 @end
 
