@@ -27,13 +27,16 @@ NS_ASSUME_NONNULL_BEGIN
 // 签名验证
 + (NSString *) verifySignWithSignPublickey:(NSString *) signPublickey verifyMsg:(NSString *) verifyMsg;
 // 公钥加密对称密钥 -非对称加密方式
-+ (NSString *) asymmetricEncryptionWithSymmetry:(NSString *) symmetryKey;
++ (NSString *) asymmetricEncryptionWithSymmetry:(NSString *) symmetryKey enPK:(NSString *) enpk;
 // 私钥解密对称密钥 -非对称解密
 + (NSString *) asymmetricDecryptionWithSymmetry:(NSString *) symmetryKey;
 // 签名公钥转加密公钥
 + (NSString *) getFriendEnPublickkeyWithFriendSignPublicKey:(NSString *) friendSignPublicKey;
 // 得到生成对称密钥nonce
 + (NSString *) getGenterSysmetryNonce;
+// 加密文件
++ (NSData *) encryMsgPairWithSymmetry:(NSString *) symmetryKey enFileData:(NSData *) fileData;
++ (NSData *) decryMsgPairWithSymmetry:(NSString *) symmetryKey enFileData:(NSData *) fileData;
 
 @end
 

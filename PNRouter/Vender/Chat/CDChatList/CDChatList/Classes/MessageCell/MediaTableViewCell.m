@@ -23,6 +23,8 @@
 #import "NSData+Base64.h"
 #import "PNRouter-Swift.h"
 #import "MD5Util.h"
+#import "LibsodiumUtil.h"
+#import "EntryModel.h"
 
 @interface MediaTableViewCell()
 /**
@@ -261,10 +263,16 @@
         NSString *filePath = [[SystemUtil getBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:self.msgModal.fileName];
         NSData *fileData = [NSData dataWithContentsOfFile:filePath];
         
-        NSString *msgKey = [SystemUtil get16AESKey];
-        fileData = aesEncryptData(fileData, [msgKey dataUsingEncoding:NSUTF8StringEncoding]);
-        NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-        NSString *dsKey = [RSAUtil publicEncrypt:self.msgModal.publicKey msgValue:msgKey];
+        // 生成32位对称密钥
+        NSString *msgKey = [SystemUtil get32AESKey];
+        // 好友公钥加密对称密钥
+        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.msgModal.publicKey];
+        // 自己公钥加密对称密钥
+        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+        
+        NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+        fileData = aesEncryptData(fileData,msgKeyData);
+        
         if ([SystemUtil isSocketConnect]) {
             
             SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
@@ -316,7 +324,7 @@
                 NSLog(@"下载文件成功! filePath ===== %@",filePath);
                 if (data.length > 0) {
                     if (msgkey) {
-                        NSString *datakey = [RSAUtil privateKeyDecryptValue:msgkey];
+                        NSString *datakey = [[LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey] substringToIndex:16];
                         if (datakey && ![datakey isEmptyString]) {
                             data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                             [SystemUtil removeDocmentFilePath:path];

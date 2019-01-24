@@ -36,6 +36,7 @@
 #define ROUTER_IP_KEY @"slph$%*&^@-78231"
 #define LOGIN_KEY @"login_keys"
 #define TOX_DATA_PASS @"123456"
+#define FILE_NONCE @"OmcKJrqehqQwNvdHkRBddXYyAvbGW2A1"
 
 #pragma mark - socket Action
 

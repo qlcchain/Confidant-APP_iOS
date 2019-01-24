@@ -23,6 +23,7 @@
 #import "ChatListDataUtil.h"
 #import "FriendModel.h"
 #import "UserConfig.h"
+#import "NSData+Base64.h"
 
 @implementation SystemUtil
 + (void) playSystemSound
@@ -222,6 +223,21 @@
     return [[NSString alloc] initWithBytes:data length:16 encoding:NSUTF8StringEncoding];
  
 }
+
++ (NSString *) get32AESKey
+{
+    char data[32];
+    
+    for (int x=0;x<32;data[x++] = (char)('A' + (arc4random_uniform(26))));
+    
+    return [[NSString alloc] initWithBytes:data length:32 encoding:NSUTF8StringEncoding];
+    
+   // NSData *enstrData = [NSData dataWithBytesNoCopy:data length:32 freeWhenDone:NO];
+   // return [enstrData base64EncodedString];
+
+    
+}
+
 + (BOOL) isSocketConnect {
     return  ![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString];
 }

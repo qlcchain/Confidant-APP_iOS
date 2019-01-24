@@ -355,12 +355,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         mode.audioSufix = @"amr";
         [self.listView addMessagesToBottom:@[mode]];
         
-        NSString *msgKey = [SystemUtil get16AESKey];
-        NSData *msgKeyData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-        data = aesEncryptData(data,msgKeyData);
-        NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-        NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
         
+        // 生成32位对称密钥
+        NSString *msgKey = [SystemUtil get32AESKey];
+        // 好友公钥加密对称密钥
+        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.friendModel.publicKey];
+        // 自己公钥加密对称密钥
+        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+        
+        NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+        data = aesEncryptData(data,msgKeyData);
+        
+
         [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:data fileId:msgid fileType:2 messageId:mode.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
         
     }else{
@@ -463,11 +469,16 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         [txtData writeToFile:filePath atomically:YES];
         [self.listView addMessagesToBottom:@[model]];
         
-        NSString *msgKey = [SystemUtil get16AESKey];
-        NSData *msgKeyData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+        // 生成32位对称密钥
+        NSString *msgKey = [SystemUtil get32AESKey];
+        // 好友公钥加密对称密钥
+        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.friendModel.publicKey];
+        // 自己公钥加密对称密钥
+        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+        
+        NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
         txtData = aesEncryptData(txtData,msgKeyData);
-        NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-        NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
+     
         
         [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:txtData fileId:msgid fileType:5 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
     
@@ -540,11 +551,15 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     [imgData writeToFile:filePath atomically:YES];
     [self.listView addMessagesToBottom:@[model]];
     
-    NSString *msgKey = [SystemUtil get16AESKey];
-    NSData *msgKeyData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-    imgData = aesEncryptData(imgData, msgKeyData);
-    NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-    NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
+    // 生成32位对称密钥
+    NSString *msgKey = [SystemUtil get32AESKey];
+    // 好友公钥加密对称密钥
+    NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.friendModel.publicKey];
+    // 自己公钥加密对称密钥
+    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+    
+    NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+    imgData = aesEncryptData(imgData,msgKeyData);
     
     [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
 }
@@ -603,7 +618,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         // 加密消息
         NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:string nonce:nonceString];
         // 加密对称密钥
-        NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString];
+        NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
        
         NSDictionary *params = @{@"Action":@"SendMsg",@"To":_friendModel.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
         NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
@@ -702,12 +717,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
                             [SystemUtil removeDocmentFilePath:docPath];
                         }
                         NSData *fileData = [NSData dataWithContentsOfFile:tempPath];
-                        NSString *datakey = @"";
+                        NSString *msgkey = @"";
                         if (obj.isLeft) {
-                             datakey = [RSAUtil privateKeyDecryptValue:obj.dskey];
+                             msgkey = obj.dskey;
                         } else {
-                             datakey = [RSAUtil privateKeyDecryptValue:obj.srckey];
+                             msgkey = obj.srckey;
                         }
+                        NSString *datakey = [[LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey] substringToIndex:16];
                         fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                         [SystemUtil removeDocmentFilePath:tempPath];
                         
@@ -789,11 +805,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         if (weakSelf.selectMessageModel.msgType == CDMessageTypeText) { // 转发文字
             
             // 生成对称密钥
-            NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:self.friendModel.publicKey];
+            NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].tempPrivateKey publicKey:self.friendModel.publicKey];
             // 加密消息
             NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:weakSelf.selectMessageModel.msg nonce:nonceString];
             // 加密对称密钥
-            NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString];
+            NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
             
             
              NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
@@ -869,10 +885,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
                     });
                 }
                 
-                NSData *msgKeyData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+                
+                // 生成32位对称密钥
+                NSString *msgKey = [SystemUtil get32AESKey];
+                // 好友公钥加密对称密钥
+                NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:model.publicKey];
+                // 自己公钥加密对称密钥
+                NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+                
+                NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
                 NSData *enData = aesEncryptData(fileDatas,msgKeyData);
-                NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-                NSString *dsKey = [RSAUtil publicEncrypt:model.publicKey msgValue:msgKey];
+                
                 [self sendFileWithToid:model.userId fileName:weakSelf.selectMessageModel.fileName fileData:enData fileId:msgid fileType:weakSelf.selectMessageModel.msgType messageId:[NSString stringWithFormat:@"%d",msgid] srcKey:srcKey dsKey:dsKey publicKey:model.publicKey];
                 
             });
@@ -1287,11 +1310,16 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             
             model.fileSize = mediaData.length;
             model.fileName = [[outputPath componentsSeparatedByString:@"/"] lastObject];
-            NSString *msgKey = [SystemUtil get16AESKey];
-            NSData *msgKeyData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+            // 生成32位对称密钥
+            NSString *msgKey = [SystemUtil get32AESKey];
+            // 好友公钥加密对称密钥
+            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:model.publicKey];
+            // 自己公钥加密对称密钥
+            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+            
+            NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
             mediaData = aesEncryptData(mediaData,msgKeyData);
-            NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-            NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                  [self sendFileWithToid:self.friendModel.userId fileName:model.fileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
             });
@@ -1418,6 +1446,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     
     // You can get the photos by block, the same as by delegate.
     // 你可以通过block或者代理，来得到用户选择的照片.
+    @weakify_self
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
         if (photos.count > 0) {
             UIImage *img = photos[0];
@@ -1430,7 +1459,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             model.msg = @"";
             model.fileID = msgid;
             model.FromId = [UserConfig getShareObject].userId;
-            model.ToId = self.friendModel.userId;
+            model.ToId = weakSelf.friendModel.userId;
             model.msgState = CDMessageStateSending;
             model.messageId = [NSString stringWithFormat:@"%d",msgid];
             CTDataConfig config = [CTData defaultConfig];
@@ -1440,26 +1469,29 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             NSString *uploadFileName = mill;
             model.fileName = mill;
              model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
-            model.publicKey = self.friendModel.publicKey;
+            model.publicKey = weakSelf.friendModel.publicKey;
             model.ctDataconfig = config;
             NSString *nkName = [UserModel getUserModel].username;
-            model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+            model.userThumImage =  [SystemUtil genterViewToImage:[weakSelf getHeadViewWithName:nkName]];
             //    [[SDImageCache sharedImageCache] storeImage:img forKey:model.messageId completion:nil];
-            NSString *filePath = [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:mill];
+            NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:mill];
             [imgData writeToFile:filePath atomically:YES];
-            [self.listView addMessagesToBottom:@[model]];
+            [weakSelf.listView addMessagesToBottom:@[model]];
             
-            NSString *msgKey = [SystemUtil get16AESKey];
-            NSData *msgKeyData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-            imgData = aesEncryptData(imgData, msgKeyData);
-            NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-            NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
+            // 生成32位对称密钥
+            NSString *msgKey = [SystemUtil get32AESKey];
+            // 好友公钥加密对称密钥
+            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:model.publicKey];
+            // 自己公钥加密对称密钥
+            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+            
+            NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+            imgData = aesEncryptData(imgData,msgKeyData);
             
             [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
         }
     }];
      // 你可以通过block或者代理，来得到用户选择的视频.
-    @weakify_self
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *asset) {
         [weakSelf extracted:asset evImage:coverImage];
     }];

@@ -136,6 +136,67 @@
     }
     return @"";
 }
+// 加密文件
++ (NSData *) encryMsgPairWithSymmetry:(NSString *) symmetryKey enFileData:(NSData *) fileData
+{
+    if ([[NSString getNotNullValue:symmetryKey] isEmptyString]) {
+        return nil;
+    }
+    
+    // 得到对称密钥
+    NSData *gkData = [symmetryKey base64DecodedData];
+    const unsigned char *gk = [gkData bytes];
+    
+    NSData *nonceData = [FILE_NONCE base64DecodedData];
+    const uint8_t *nonceKey = [nonceData bytes];
+    
+    //将加密消息 base58转码
+    char *css = [fileData bytes];
+    int lenght = fileData.length;
+    char enstr[lenght+crypto_box_BOXZEROBYTES];
+    const int encrypted_length = encrypt_data_symmetric(gk,nonceKey, css,lenght, enstr);
+    if (encrypted_length) {
+        // NSLog(@"---%s",enstr);
+        NSLog(@"------加密成功");
+        NSData *enstrData = [NSData dataWithBytesNoCopy:enstr length:lenght+crypto_box_BOXZEROBYTES freeWhenDone:NO];
+        return enstrData;
+    }
+    
+    return nil;
+}
+
+
+
+// 解密文件
++ (NSData *) decryMsgPairWithSymmetry:(NSString *) symmetryKey enFileData:(NSData *) fileData
+{
+    if ([[NSString getNotNullValue:symmetryKey] isEmptyString] ) {
+        return nil;
+    }
+    
+    // 得到对称密钥
+    NSData *gkData = [symmetryKey base64DecodedData];
+    const unsigned char *gk = [gkData bytes];
+    
+    NSData *nonceData = [FILE_NONCE base64DecodedData];
+    const uint8_t *nonceKey = [nonceData bytes];
+    
+    const char *msgKey = [fileData bytes];
+    int length = fileData.length;
+    char destr[length+crypto_box_ZEROBYTES];
+    const int decrypted_length = decrypt_data_symmetric(gk,nonceKey, msgKey,length, destr);
+    if (decrypted_length >= 0) {
+    
+        // NSLog(@"---%@---解密成功",destrsss);
+        NSLog(@"------解密成功");
+        return nil;
+    }
+    return nil;
+}
+
+
+
+
 
 //  加密消息
 + (NSString *) encryMsgPairWithSymmetry:(NSString *) symmetryKey enMsg:(NSString *) enMsg nonce:(NSString *) nonce
@@ -240,13 +301,12 @@
     return @"";
 }
 // 公钥加密对称密钥 -非对称加密方式
-+ (NSString *) asymmetricEncryptionWithSymmetry:(NSString *) symmetryKey
-
++ (NSString *) asymmetricEncryptionWithSymmetry:(NSString *) symmetryKey enPK:(NSString *) enpk
 {
     NSData *gkData = [symmetryKey base64DecodedData];
     const unsigned char *gk = [gkData bytes];
     
-    NSData *pkData = [[EntryModel getShareObject].publicKey base64DecodedData];
+    NSData *pkData = [enpk base64DecodedData];
     const unsigned char *pk = [pkData bytes];
 
      unsigned char m[32+48];

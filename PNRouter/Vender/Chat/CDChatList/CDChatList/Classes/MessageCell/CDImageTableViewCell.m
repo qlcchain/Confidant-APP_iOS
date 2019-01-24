@@ -21,6 +21,8 @@
 #import "NSData+Base64.h"
 #import "PNRouter-Swift.h"
 #import "MD5Util.h"
+#import "LibsodiumUtil.h"
+#import "EntryModel.h"
 
 @interface CDImageTableViewCell()
 
@@ -147,7 +149,7 @@
                     dispatch_async(dispatch_get_global_queue(0, 0), ^{
                         NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
                         NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                        NSString *datakey = [RSAUtil privateKeyDecryptValue:data.dskey];
+                        NSString *datakey = [[LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey] substringToIndex:16];
                         if (datakey && ![datakey isEmptyString]) {
                             fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                             [SystemUtil removeDocmentFilePath:imgPath];
@@ -230,7 +232,7 @@
                     dispatch_async(dispatch_get_global_queue(0, 0), ^{
                         NSString *imgPath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:filePath];
                         NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                        NSString *datakey = [RSAUtil privateKeyDecryptValue:data.srckey];
+                        NSString *datakey = [[LibsodiumUtil asymmetricDecryptionWithSymmetry:data.srckey] substringToIndex:16];
                         if (datakey && ![datakey isEmptyString]) {
                             fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                             [SystemUtil removeDocmentFilePath:imgPath];
@@ -302,10 +304,15 @@
         NSString *filePath = [[SystemUtil getBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:self.msgModal.fileName];
         NSData *fileData = [NSData dataWithContentsOfFile:filePath];
         
-        NSString *msgKey = [SystemUtil get16AESKey];
-        fileData = aesEncryptData(fileData,[msgKey dataUsingEncoding:NSUTF8StringEncoding]);
-        NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-        NSString *dsKey = [RSAUtil publicEncrypt:self.msgModal.publicKey msgValue:msgKey];
+        // 生成32位对称密钥
+        NSString *msgKey = [SystemUtil get32AESKey];
+        // 好友公钥加密对称密钥
+        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.msgModal.publicKey];
+        // 自己公钥加密对称密钥
+        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+        
+        NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+        fileData = aesEncryptData(fileData,msgKeyData);
         
         if ([SystemUtil isSocketConnect]) {
             SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];

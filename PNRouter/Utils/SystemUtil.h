@@ -28,6 +28,7 @@
 + (void) removeDocmentFilePath:(NSString *) filePath;
 // 32位key
 + (NSString *) get16AESKey;
++ (NSString *) get32AESKey;
 + (BOOL) isSocketConnect;
 + (NSString *)getIPAddress;
 + (NSString *) getTempBaseFilePath:(NSString *) friendid;
