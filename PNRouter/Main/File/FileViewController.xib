@@ -42,6 +42,9 @@
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <state key="normal" image="icon_download_white"/>
+                                    <connections>
+                                        <action selector="taskAction:" destination="-1" eventType="touchUpInside" id="mwi-mN-WtI"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6vH-kV-tNE">
                                     <rect key="frame" x="331" y="0.0" width="44" height="44"/>
@@ -49,6 +52,9 @@
                                         <constraint firstAttribute="width" constant="44" id="b8p-lw-RFj"/>
                                     </constraints>
                                     <state key="normal" image="icon_add_white"/>
+                                    <connections>
+                                        <action selector="uploadAction:" destination="-1" eventType="touchUpInside" id="Ure-3c-HJu"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
@@ -156,6 +162,9 @@
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2T-nd-sNa">
                                                     <rect key="frame" x="56" y="0.0" width="319" height="56"/>
+                                                    <connections>
+                                                        <action selector="myFileAction:" destination="-1" eventType="touchUpInside" id="iJr-ek-htH"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -211,6 +220,9 @@
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nXN-f0-swS">
                                                     <rect key="frame" x="56" y="0.0" width="319" height="56"/>
+                                                    <connections>
+                                                        <action selector="shareAction:" destination="-1" eventType="touchUpInside" id="Nh8-rR-yOs"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -263,6 +275,9 @@
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1eT-D7-Pxo">
                                                     <rect key="frame" x="56" y="0.0" width="319" height="56"/>
+                                                    <connections>
+                                                        <action selector="receiveAction:" destination="-1" eventType="touchUpInside" id="Weg-mB-LRp"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

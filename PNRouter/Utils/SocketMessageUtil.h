@@ -42,6 +42,10 @@ static NSString *Action_PushLogout = @"PushLogout";
 static NSString *Action_RouterLogin = @"RouterLogin";
 static NSString *Action_ResetRouterKey = @"ResetRouterKey";
 static NSString *Action_ResetUserIdcode = @"ResetUserIdcode";
+static NSString *Action_PullFileList = @"PullFileList";
+static NSString *Action_UploadFileReq = @"UploadFileReq";
+static NSString *Action_UploadFile = @"UploadFile";
+static NSString *Action_DelFile = @"DelFile";
 
 @class FriendModel;
 

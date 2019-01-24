@@ -8,6 +8,9 @@
 
 #import "FileViewController.h"
 #import "FileCell.h"
+#import "TaskListViewController.h"
+#import "UploadAlertView.h"
+#import "MyFilesViewController.h"
 
 @interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/>
 
@@ -15,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
+
+@property (nonatomic, strong) UploadAlertView *uploadAlertV;
 
 @end
 
@@ -37,9 +42,44 @@
 
 #pragma mark - Operation
 
-
+- (void)showUploadAlertView {
+    _uploadAlertV = [UploadAlertView getInstance];
+    [_uploadAlertV setPhotoB:^{
+        
+    }];
+    [_uploadAlertV setVideoB:^{
+        
+    }];
+    [_uploadAlertV setDocumentB:^{
+        
+    }];
+    [_uploadAlertV setOtherB:^{
+        
+    }];
+    [_uploadAlertV show];
+}
 
 #pragma mark - Action
+
+- (IBAction)taskAction:(id)sender {
+    [self jumpToTaskList];
+}
+
+- (IBAction)uploadAction:(id)sender {
+    [self showUploadAlertView];
+}
+
+- (IBAction)myFileAction:(id)sender {
+    
+}
+
+- (IBAction)shareAction:(id)sender {
+    
+}
+
+- (IBAction)receiveAction:(id)sender {
+    
+}
 
 
 
@@ -152,6 +192,30 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     NSLog(@"textFieldShouldReturn");
     return YES;
+}
+
+#pragma mark - Transition
+- (void)jumpToTaskList {
+    TaskListViewController *vc = [[TaskListViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToMyFile {
+    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
+    vc.filesType = FilesTypeMy;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToDocumentShare {
+    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
+    vc.filesType = FilesTypeShare;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToDocumentReceived {
+    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
+    vc.filesType = FilesTypeReceived;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

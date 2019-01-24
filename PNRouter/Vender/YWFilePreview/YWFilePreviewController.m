@@ -8,8 +8,7 @@
 
 #import "YWFilePreviewController.h"
 
-@interface YWFilePreviewController ()
-<QLPreviewControllerDataSource, QLPreviewControllerDelegate>
+@interface YWFilePreviewController () <QLPreviewControllerDataSource, QLPreviewControllerDelegate>
 
 @property (nonatomic, copy) void(^willDismissBlock)(void);
 @property (nonatomic, copy) void(^didDismissBlock)(void);

@@ -56,16 +56,30 @@
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
 		583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */; };
 		583BF90721F6B4140078A2A8 /* UploadFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90521F6B4140078A2A8 /* UploadFilesViewController.xib */; };
-		583BF90B21F6B4BC0078A2A8 /* ShareFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90921F6B4BC0078A2A8 /* ShareFilesViewController.m */; };
-		583BF90C21F6B4BC0078A2A8 /* ShareFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90A21F6B4BC0078A2A8 /* ShareFilesViewController.xib */; };
-		583BF91021F6B4C90078A2A8 /* ReceivedFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90E21F6B4C90078A2A8 /* ReceivedFilesViewController.m */; };
-		583BF91121F6B4C90078A2A8 /* ReceivedFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90F21F6B4C90078A2A8 /* ReceivedFilesViewController.xib */; };
 		583BF91521F6B4DF0078A2A8 /* MyFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF91321F6B4DF0078A2A8 /* MyFilesViewController.m */; };
 		583BF91621F6B4DF0078A2A8 /* MyFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF91421F6B4DF0078A2A8 /* MyFilesViewController.xib */; };
 		583BF91A21F6B5AB0078A2A8 /* DetailInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF91821F6B5AB0078A2A8 /* DetailInformationViewController.m */; };
 		583BF91B21F6B5AB0078A2A8 /* DetailInformationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF91921F6B5AB0078A2A8 /* DetailInformationViewController.xib */; };
 		583BF91F21F6B5D00078A2A8 /* SharedSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF91D21F6B5D00078A2A8 /* SharedSettingsViewController.m */; };
 		583BF92021F6B5D00078A2A8 /* SharedSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF91E21F6B5D00078A2A8 /* SharedSettingsViewController.xib */; };
+		583BF92321F6C2FB0078A2A8 /* UploadFilesHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF92221F6C2FB0078A2A8 /* UploadFilesHeaderView.m */; };
+		583BF92521F6C3050078A2A8 /* UploadFilesHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF92421F6C3050078A2A8 /* UploadFilesHeaderView.xib */; };
+		583BF92B21F6E4940078A2A8 /* UploadFilesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF92921F6E4940078A2A8 /* UploadFilesCell.m */; };
+		583BF92C21F6E4940078A2A8 /* UploadFilesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF92A21F6E4940078A2A8 /* UploadFilesCell.xib */; };
+		583BF93021F6EDB80078A2A8 /* MyFilesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF92E21F6EDB80078A2A8 /* MyFilesCell.m */; };
+		583BF93121F6EDB80078A2A8 /* MyFilesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF92F21F6EDB80078A2A8 /* MyFilesCell.xib */; };
+		583BF93521F6F4B00078A2A8 /* FileMoreAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF93221F6F4B00078A2A8 /* FileMoreAlertView.m */; };
+		583BF93621F6F4B00078A2A8 /* FileMoreAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF93421F6F4B00078A2A8 /* FileMoreAlertView.xib */; };
+		583BF93A21F6FE4F0078A2A8 /* ArrangeAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF93821F6FE4F0078A2A8 /* ArrangeAlertView.xib */; };
+		583BF93B21F6FE4F0078A2A8 /* ArrangeAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF93921F6FE4F0078A2A8 /* ArrangeAlertView.m */; };
+		583BF93F21F708B30078A2A8 /* DetailInformationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF93D21F708B30078A2A8 /* DetailInformationCell.m */; };
+		583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF93E21F708B30078A2A8 /* DetailInformationCell.xib */; };
+		583BF94421F70FAC0078A2A8 /* TaskOngoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF94221F70FAC0078A2A8 /* TaskOngoingCell.m */; };
+		583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF94321F70FAC0078A2A8 /* TaskOngoingCell.xib */; };
+		583BF94921F70FBC0078A2A8 /* TaskCompletedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF94721F70FBC0078A2A8 /* TaskCompletedCell.m */; };
+		583BF94A21F70FBC0078A2A8 /* TaskCompletedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF94821F70FBC0078A2A8 /* TaskCompletedCell.xib */; };
+		583BF94F21F809000078A2A8 /* FilePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF94D21F809000078A2A8 /* FilePreviewViewController.m */; };
+		583BF95021F809000078A2A8 /* FilePreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF94E21F809000078A2A8 /* FilePreviewViewController.xib */; };
 		584A447921460AD800608122 /* MyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A447721460AD800608122 /* MyViewController.m */; };
 		584A447A21460AD800608122 /* MyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584A447821460AD800608122 /* MyViewController.xib */; };
 		584A447E21460AFE00608122 /* FileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A447C21460AFE00608122 /* FileViewController.m */; };
@@ -523,12 +537,6 @@
 		583BF90321F6B4140078A2A8 /* UploadFilesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadFilesViewController.h; sourceTree = "<group>"; };
 		583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFilesViewController.m; sourceTree = "<group>"; };
 		583BF90521F6B4140078A2A8 /* UploadFilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadFilesViewController.xib; sourceTree = "<group>"; };
-		583BF90821F6B4BC0078A2A8 /* ShareFilesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareFilesViewController.h; sourceTree = "<group>"; };
-		583BF90921F6B4BC0078A2A8 /* ShareFilesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareFilesViewController.m; sourceTree = "<group>"; };
-		583BF90A21F6B4BC0078A2A8 /* ShareFilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareFilesViewController.xib; sourceTree = "<group>"; };
-		583BF90D21F6B4C90078A2A8 /* ReceivedFilesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReceivedFilesViewController.h; sourceTree = "<group>"; };
-		583BF90E21F6B4C90078A2A8 /* ReceivedFilesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReceivedFilesViewController.m; sourceTree = "<group>"; };
-		583BF90F21F6B4C90078A2A8 /* ReceivedFilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReceivedFilesViewController.xib; sourceTree = "<group>"; };
 		583BF91221F6B4DF0078A2A8 /* MyFilesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFilesViewController.h; sourceTree = "<group>"; };
 		583BF91321F6B4DF0078A2A8 /* MyFilesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyFilesViewController.m; sourceTree = "<group>"; };
 		583BF91421F6B4DF0078A2A8 /* MyFilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyFilesViewController.xib; sourceTree = "<group>"; };
@@ -538,6 +546,33 @@
 		583BF91C21F6B5D00078A2A8 /* SharedSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedSettingsViewController.h; sourceTree = "<group>"; };
 		583BF91D21F6B5D00078A2A8 /* SharedSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedSettingsViewController.m; sourceTree = "<group>"; };
 		583BF91E21F6B5D00078A2A8 /* SharedSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SharedSettingsViewController.xib; sourceTree = "<group>"; };
+		583BF92121F6C2FB0078A2A8 /* UploadFilesHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadFilesHeaderView.h; sourceTree = "<group>"; };
+		583BF92221F6C2FB0078A2A8 /* UploadFilesHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFilesHeaderView.m; sourceTree = "<group>"; };
+		583BF92421F6C3050078A2A8 /* UploadFilesHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadFilesHeaderView.xib; sourceTree = "<group>"; };
+		583BF92821F6E4940078A2A8 /* UploadFilesCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadFilesCell.h; sourceTree = "<group>"; };
+		583BF92921F6E4940078A2A8 /* UploadFilesCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFilesCell.m; sourceTree = "<group>"; };
+		583BF92A21F6E4940078A2A8 /* UploadFilesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadFilesCell.xib; sourceTree = "<group>"; };
+		583BF92D21F6EDB80078A2A8 /* MyFilesCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFilesCell.h; sourceTree = "<group>"; };
+		583BF92E21F6EDB80078A2A8 /* MyFilesCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyFilesCell.m; sourceTree = "<group>"; };
+		583BF92F21F6EDB80078A2A8 /* MyFilesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyFilesCell.xib; sourceTree = "<group>"; };
+		583BF93221F6F4B00078A2A8 /* FileMoreAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileMoreAlertView.m; sourceTree = "<group>"; };
+		583BF93321F6F4B00078A2A8 /* FileMoreAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileMoreAlertView.h; sourceTree = "<group>"; };
+		583BF93421F6F4B00078A2A8 /* FileMoreAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileMoreAlertView.xib; sourceTree = "<group>"; };
+		583BF93721F6FE4F0078A2A8 /* ArrangeAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrangeAlertView.h; sourceTree = "<group>"; };
+		583BF93821F6FE4F0078A2A8 /* ArrangeAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArrangeAlertView.xib; sourceTree = "<group>"; };
+		583BF93921F6FE4F0078A2A8 /* ArrangeAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArrangeAlertView.m; sourceTree = "<group>"; };
+		583BF93C21F708B30078A2A8 /* DetailInformationCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailInformationCell.h; sourceTree = "<group>"; };
+		583BF93D21F708B30078A2A8 /* DetailInformationCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailInformationCell.m; sourceTree = "<group>"; };
+		583BF93E21F708B30078A2A8 /* DetailInformationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailInformationCell.xib; sourceTree = "<group>"; };
+		583BF94121F70FAC0078A2A8 /* TaskOngoingCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskOngoingCell.h; sourceTree = "<group>"; };
+		583BF94221F70FAC0078A2A8 /* TaskOngoingCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskOngoingCell.m; sourceTree = "<group>"; };
+		583BF94321F70FAC0078A2A8 /* TaskOngoingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskOngoingCell.xib; sourceTree = "<group>"; };
+		583BF94621F70FBC0078A2A8 /* TaskCompletedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskCompletedCell.h; sourceTree = "<group>"; };
+		583BF94721F70FBC0078A2A8 /* TaskCompletedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskCompletedCell.m; sourceTree = "<group>"; };
+		583BF94821F70FBC0078A2A8 /* TaskCompletedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskCompletedCell.xib; sourceTree = "<group>"; };
+		583BF94C21F809000078A2A8 /* FilePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilePreviewViewController.h; sourceTree = "<group>"; };
+		583BF94D21F809000078A2A8 /* FilePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FilePreviewViewController.m; sourceTree = "<group>"; };
+		583BF94E21F809000078A2A8 /* FilePreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilePreviewViewController.xib; sourceTree = "<group>"; };
 		584A447621460AD800608122 /* MyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
 		584A447721460AD800608122 /* MyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyViewController.m; sourceTree = "<group>"; };
 		584A447821460AD800608122 /* MyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyViewController.xib; sourceTree = "<group>"; };
@@ -1436,26 +1471,6 @@
 			path = MyFile;
 			sourceTree = "<group>";
 		};
-		583BF8FB21F6AE510078A2A8 /* Share */ = {
-			isa = PBXGroup;
-			children = (
-				583BF90821F6B4BC0078A2A8 /* ShareFilesViewController.h */,
-				583BF90921F6B4BC0078A2A8 /* ShareFilesViewController.m */,
-				583BF90A21F6B4BC0078A2A8 /* ShareFilesViewController.xib */,
-			);
-			path = Share;
-			sourceTree = "<group>";
-		};
-		583BF8FC21F6AE580078A2A8 /* Receive */ = {
-			isa = PBXGroup;
-			children = (
-				583BF90D21F6B4C90078A2A8 /* ReceivedFilesViewController.h */,
-				583BF90E21F6B4C90078A2A8 /* ReceivedFilesViewController.m */,
-				583BF90F21F6B4C90078A2A8 /* ReceivedFilesViewController.xib */,
-			);
-			path = Receive;
-			sourceTree = "<group>";
-		};
 		583BF8FD21F6AE660078A2A8 /* Task */ = {
 			isa = PBXGroup;
 			children = (
@@ -1464,6 +1479,16 @@
 				583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */,
 			);
 			path = Task;
+			sourceTree = "<group>";
+		};
+		583BF94B21F808E90078A2A8 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				583BF94C21F809000078A2A8 /* FilePreviewViewController.h */,
+				583BF94D21F809000078A2A8 /* FilePreviewViewController.m */,
+				583BF94E21F809000078A2A8 /* FilePreviewViewController.xib */,
+			);
+			path = Preview;
 			sourceTree = "<group>";
 		};
 		584A4471214609D300608122 /* Login */ = {
@@ -1503,9 +1528,8 @@
 		584A4473214609EC00608122 /* File */ = {
 			isa = PBXGroup;
 			children = (
+				583BF94B21F808E90078A2A8 /* Preview */,
 				583BF8FD21F6AE660078A2A8 /* Task */,
-				583BF8FC21F6AE580078A2A8 /* Receive */,
-				583BF8FB21F6AE510078A2A8 /* Share */,
 				583BF8FA21F6AE4B0078A2A8 /* MyFile */,
 				5886FB9321F5C1D70052EDD0 /* View */,
 				7330F46E2147B58B00FF4EEC /* Cells */,
@@ -1756,10 +1780,10 @@
 			isa = PBXGroup;
 			children = (
 				5875E4BF216C8B7000B1A9A6 /* YWFilePreviewController.h */,
-				5875E4C0216C8B7000B1A9A6 /* YWFilePreviewView.h */,
 				5875E4C1216C8B7000B1A9A6 /* YWFilePreviewController.m */,
-				5875E4C2216C8B7000B1A9A6 /* YWFilePreviewView.xib */,
+				5875E4C0216C8B7000B1A9A6 /* YWFilePreviewView.h */,
 				5875E4C3216C8B7000B1A9A6 /* YWFilePreviewView.m */,
+				5875E4C2216C8B7000B1A9A6 /* YWFilePreviewView.xib */,
 			);
 			path = YWFilePreview;
 			sourceTree = "<group>";
@@ -1822,9 +1846,18 @@
 		5886FB9321F5C1D70052EDD0 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				583BF93721F6FE4F0078A2A8 /* ArrangeAlertView.h */,
+				583BF93921F6FE4F0078A2A8 /* ArrangeAlertView.m */,
+				583BF93821F6FE4F0078A2A8 /* ArrangeAlertView.xib */,
+				583BF93321F6F4B00078A2A8 /* FileMoreAlertView.h */,
+				583BF93221F6F4B00078A2A8 /* FileMoreAlertView.m */,
+				583BF93421F6F4B00078A2A8 /* FileMoreAlertView.xib */,
 				5886FB9421F5C22B0052EDD0 /* UploadAlertView.h */,
 				5886FB9521F5C22B0052EDD0 /* UploadAlertView.m */,
 				5886FB9721F5C2390052EDD0 /* UploadAlertView.xib */,
+				583BF92121F6C2FB0078A2A8 /* UploadFilesHeaderView.h */,
+				583BF92221F6C2FB0078A2A8 /* UploadFilesHeaderView.m */,
+				583BF92421F6C3050078A2A8 /* UploadFilesHeaderView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2078,6 +2111,21 @@
 				58BD2E6B2147B6CF0091A77D /* FileCell.h */,
 				58BD2E6C2147B6CF0091A77D /* FileCell.m */,
 				58BD2E6D2147B6CF0091A77D /* FileCell.xib */,
+				583BF92821F6E4940078A2A8 /* UploadFilesCell.h */,
+				583BF92921F6E4940078A2A8 /* UploadFilesCell.m */,
+				583BF92A21F6E4940078A2A8 /* UploadFilesCell.xib */,
+				583BF92D21F6EDB80078A2A8 /* MyFilesCell.h */,
+				583BF92E21F6EDB80078A2A8 /* MyFilesCell.m */,
+				583BF92F21F6EDB80078A2A8 /* MyFilesCell.xib */,
+				583BF93C21F708B30078A2A8 /* DetailInformationCell.h */,
+				583BF93D21F708B30078A2A8 /* DetailInformationCell.m */,
+				583BF93E21F708B30078A2A8 /* DetailInformationCell.xib */,
+				583BF94121F70FAC0078A2A8 /* TaskOngoingCell.h */,
+				583BF94221F70FAC0078A2A8 /* TaskOngoingCell.m */,
+				583BF94321F70FAC0078A2A8 /* TaskOngoingCell.xib */,
+				583BF94621F70FBC0078A2A8 /* TaskCompletedCell.h */,
+				583BF94721F70FBC0078A2A8 /* TaskCompletedCell.m */,
+				583BF94821F70FBC0078A2A8 /* TaskCompletedCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3100,22 +3148,26 @@
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
 				7306055D217729AC005A0E13 /* 测试文件.txt in Resources */,
 				7330F3BF214769DF00FF4EEC /* FriendDetailViewController.xib in Resources */,
-				583BF91121F6B4C90078A2A8 /* ReceivedFilesViewController.xib in Resources */,
 				587C52C7215C798E006787FB /* RouterCodeViewController.xib in Resources */,
 				583BF92021F6B5D00078A2A8 /* SharedSettingsViewController.xib in Resources */,
 				583BF91621F6B4DF0078A2A8 /* MyFilesViewController.xib in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
+				583BF95021F809000078A2A8 /* FilePreviewViewController.xib in Resources */,
 				58BD2E6F2147B6CF0091A77D /* FileCell.xib in Resources */,
 				7330F509214A71BC00FF4EEC /* AddFriendViewController.xib in Resources */,
 				7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */,
 				73899CC62152011000962B14 /* GuidePageView1.xib in Resources */,
+				583BF92C21F6E4940078A2A8 /* UploadFilesCell.xib in Resources */,
 				584A447F21460AFE00608122 /* FileViewController.xib in Resources */,
 				73899CC42152011000962B14 /* GuidePageView2.xib in Resources */,
 				581FDF6321F172E00068C120 /* ModifyActivateCodeViewController.xib in Resources */,
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
 				73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */,
+				583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
+				583BF93121F6EDB80078A2A8 /* MyFilesCell.xib in Resources */,
+				583BF93A21F6FE4F0078A2A8 /* ArrangeAlertView.xib in Resources */,
 				7330F51E214B460A00FF4EEC /* NotifactionView.strings in Resources */,
 				73625748213E8B3400D7FD6B /* LaunchScreen.storyboard in Resources */,
 				7330F38E214645BA00FF4EEC /* MyHeadView.xib in Resources */,
@@ -3132,6 +3184,7 @@
 				583BF91B21F6B5AB0078A2A8 /* DetailInformationViewController.xib in Resources */,
 				73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */,
 				73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */,
+				583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */,
 				73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */,
 				7330F3A9214679BF00FF4EEC /* ShareCollectionCell.xib in Resources */,
 				73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */,
@@ -3149,6 +3202,7 @@
 				73121A75219C26E900510B48 /* LoginViewController.xib in Resources */,
 				73E03B4C21DDF88A005DF993 /* DHTnodes.json in Resources */,
 				585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */,
+				583BF94A21F70FBC0078A2A8 /* TaskCompletedCell.xib in Resources */,
 				581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */,
 				581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */,
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
@@ -3158,8 +3212,9 @@
 				7330F46D2147AD2B00FF4EEC /* Expression.bundle in Resources */,
 				7303310B21C7A2FD007C4063 /* mysong.mp3 in Resources */,
 				7386910B214CC7D3003CF6A3 /* EditTextViewController.xib in Resources */,
+				583BF93621F6F4B00078A2A8 /* FileMoreAlertView.xib in Resources */,
+				583BF92521F6C3050078A2A8 /* UploadFilesHeaderView.xib in Resources */,
 				58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */,
-				583BF90C21F6B4BC0078A2A8 /* ShareFilesViewController.xib in Resources */,
 				7330F46C2147AD2B00FF4EEC /* InputViewBundle.bundle in Resources */,
 				73060557217719A5005A0E13 /* VPNFileInputView.xib in Resources */,
 				7330F3992146563600FF4EEC /* MyDetailViewController.xib in Resources */,
@@ -3267,6 +3322,7 @@
 				73D00E9A215A05960013E20D /* ChooseRecipientAlertView.m in Sources */,
 				73121A68219AD4FC00510B48 /* RegiterViewController.m in Sources */,
 				737882A821ACF05E0033A189 /* SSLSecurity.swift in Sources */,
+				583BF94421F70FAC0078A2A8 /* TaskOngoingCell.m in Sources */,
 				73121A6C219BB59B00510B48 /* RoutherConfig.m in Sources */,
 				737883FF21ACF2970033A189 /* OCTCall.m in Sources */,
 				7378840821ACF2970033A189 /* OCTObject.m in Sources */,
@@ -3301,6 +3357,7 @@
 				7362575C214213AA00D7FD6B /* NSDateFormatter+Category.m in Sources */,
 				581FDF5621F024170068C120 /* DHT.m in Sources */,
 				585AEE532140D2280098A070 /* HMScanner.m in Sources */,
+				583BF94F21F809000078A2A8 /* FilePreviewViewController.m in Sources */,
 				73001A1D21904897003D07CC /* DDRSAWrapper+openssl.m in Sources */,
 				7330F4F42149147200FF4EEC /* ChatImageDrawer.m in Sources */,
 				737883FC21ACF2970033A189 /* OCTManagerFactory.m in Sources */,
@@ -3328,7 +3385,6 @@
 				7378841821ACF2970033A189 /* OCTSubmanagerBootstrapImpl.m in Sources */,
 				581FDF3921F024160068C120 /* toxav.m in Sources */,
 				73D00EB8215F27610013E20D /* MD5Util.m in Sources */,
-				583BF91021F6B4C90078A2A8 /* ReceivedFilesViewController.m in Sources */,
 				73F9A11A219973C80011FAA5 /* ReviceRadio.m in Sources */,
 				7386910A214CC7D3003CF6A3 /* EditTextViewController.m in Sources */,
 				7378841921ACF2970033A189 /* OCTSubmanagerFilesImpl.m in Sources */,
@@ -3394,6 +3450,7 @@
 				581FDF5321F024170068C120 /* TCP_server.m in Sources */,
 				73121A74219C26E900510B48 /* LoginViewController.m in Sources */,
 				7386910E214CD792003CF6A3 /* SocketCountUtil.m in Sources */,
+				583BF92321F6C2FB0078A2A8 /* UploadFilesHeaderView.m in Sources */,
 				587C52C6215C798E006787FB /* RouterCodeViewController.m in Sources */,
 				737883FB21ACF2970033A189 /* OCTSendMessageOperation.m in Sources */,
 				581FDF5D21F16D350068C120 /* LoginDeviceViewController.m in Sources */,
@@ -3414,7 +3471,6 @@
 				581FDF4B21F024170068C120 /* Messenger.m in Sources */,
 				73D31B14217F08480034B2B9 /* TZImageManager.m in Sources */,
 				7306054421748BD5005A0E13 /* VoiceConvert.mm in Sources */,
-				583BF90B21F6B4BC0078A2A8 /* ShareFilesViewController.m in Sources */,
 				7330F3792146118800FF4EEC /* UIImage+Merge.m in Sources */,
 				73D31B1F218025270034B2B9 /* RMDisplayLabel.m in Sources */,
 				7378840521ACF2970033A189 /* OCTMessageFile.m in Sources */,
@@ -3448,9 +3504,11 @@
 				583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */,
 				7330F4E92149147200FF4EEC /* CTClickInfo.m in Sources */,
 				73001A2321912890003D07CC /* RSAUtil.m in Sources */,
+				583BF93B21F6FE4F0078A2A8 /* ArrangeAlertView.m in Sources */,
 				7303310C21C7A2FD007C4063 /* RunInBackground.m in Sources */,
 				7330F4F82149147200FF4EEC /* CTInputBoxDrawer.m in Sources */,
 				73625762214213B300D7FD6B /* UILabel+Copy.m in Sources */,
+				583BF94921F70FBC0078A2A8 /* TaskCompletedCell.m in Sources */,
 				73869111214CEAA3003CF6A3 /* ChatListDataUtil.m in Sources */,
 				7330F4FA2149147200FF4EEC /* CTInputView.m in Sources */,
 				587C52D7215CBA9A006787FB /* QRViewController.m in Sources */,
@@ -3479,6 +3537,7 @@
 				7330F4E32149147200FF4EEC /* CDLabel.m in Sources */,
 				7330F524214BF4B500FF4EEC /* SocketAlertView.m in Sources */,
 				7378842121AD36040033A189 /* Base58.swift in Sources */,
+				583BF93F21F708B30078A2A8 /* DetailInformationCell.m in Sources */,
 				73D31B0C217F08480034B2B9 /* TZAssetCell.m in Sources */,
 				58BD2E5E21475E020091A77D /* HWUserdefault.m in Sources */,
 				73E2FB6E21A7F3FD00DAED52 /* RouterUserModel.m in Sources */,
@@ -3503,6 +3562,7 @@
 				58C62704214BA7170051AFD0 /* MessageListUtil.m in Sources */,
 				587C52CC215CAF14006787FB /* RouterManagementCell.m in Sources */,
 				7330F3762146118800FF4EEC /* UIImage+Vector.m in Sources */,
+				583BF93521F6F4B00078A2A8 /* FileMoreAlertView.m in Sources */,
 				7330F4E62149147200FF4EEC /* CDTextParser.m in Sources */,
 				737883F321ACF2970033A189 /* OCTToxAV.m in Sources */,
 				581FDF4721F024170068C120 /* net_crypto.m in Sources */,
@@ -3549,6 +3609,7 @@
 				7330F4F72149147200FF4EEC /* CTinputHelper.m in Sources */,
 				7378841621ACF2970033A189 /* OCTFilePathOutput.m in Sources */,
 				7330F38C214645B400FF4EEC /* MyHeadView.m in Sources */,
+				583BF92B21F6E4940078A2A8 /* UploadFilesCell.m in Sources */,
 				7330F4FD2149147200FF4EEC /* CTMoreKeyBoard.m in Sources */,
 				7330F3822146120C00FF4EEC /* PNTabbarViewController.m in Sources */,
 				737883F121ACF2970033A189 /* OCTToxOptions.m in Sources */,
@@ -3563,6 +3624,7 @@
 				7378840021ACF2970033A189 /* OCTMessageAbstract.m in Sources */,
 				736257C5214225FD00D7FD6B /* getgateway.c in Sources */,
 				584A447E21460AFE00608122 /* FileViewController.m in Sources */,
+				583BF93021F6EDB80078A2A8 /* MyFilesCell.m in Sources */,
 				73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */,
 				581FDF3B21F024160068C120 /* ring_buffer.m in Sources */,
 				73D00E932159DADF0013E20D /* ChooseDownView.m in Sources */,

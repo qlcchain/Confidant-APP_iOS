@@ -10,7 +10,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef enum : NSUInteger {
+    FilesTypeMy,
+    FilesTypeShare,
+    FilesTypeReceived,
+} FilesType;
+
 @interface MyFilesViewController : PNBaseViewController
+
+@property (nonatomic) FilesType filesType;
 
 @end
 

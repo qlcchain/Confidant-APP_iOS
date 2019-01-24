@@ -349,8 +349,17 @@
         [SocketMessageUtil handleResetRouterKey:receiveDic];
     } else if ([action isEqualToString:Action_ResetUserIdcode]) { // 路由器修改管理密码
         [SocketMessageUtil handleResetUserIdcode:receiveDic];
+    } else if ([action isEqualToString:Action_PullFileList]) { // 拉取文件列表
+        
+    } else if ([action isEqualToString:Action_UploadFileReq]) { // 上传文件请求
+        
+    } else if ([action isEqualToString:Action_UploadFile]) { // 上传文件
+        
+    } else if ([action isEqualToString:Action_DelFile]) { // 删除文件
+        
     }
 }
+
 #pragma mark -APP新用户预注册
 /*
  0：目标账号已激活

@@ -169,4 +169,40 @@
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 
+#pragma mark - 拉取文件列表
++ (void)sendPullFileListWithUserId:(NSString *)UserId MsgStartId:(NSNumber *)MsgStartId MsgNum:(NSNumber *)MsgNum Category:(NSNumber *)Category FileType:(NSNumber *)FileType showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_PullFileList,@"UserId":UserId?:@"",@"MsgStartId":MsgStartId?:@"",@"MsgNum":MsgNum?:@"",@"Category":Category?:@"",@"FileType":FileType?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+
+#pragma mark - 上传文件请求
++ (void)sendUploadFileReqWithUserId:(NSString *)UserId FileName:(NSString *)FileName FileSize:(NSNumber *)FileSize FileType:(NSNumber *)FileType showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_UploadFileReq,@"UserId":UserId?:@"",@"FileName":FileName?:@"",@"FileSize":FileSize?:@"",@"FileType":FileType?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+
+#pragma mark - 上传文件
++ (void)sendUploadFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName FileMD5:(NSString *)FileMD5 FileSize:(NSNumber *)FileSize FileType:(NSNumber *)FileType UserKey:(NSString *)UserKey showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_UploadFile,@"UserId":UserId?:@"",@"FileName":FileName?:@"",@"FileMD5":FileMD5?:@"",@"FileSize":FileSize?:@"",@"FileType":FileType?:@"",@"UserKey":UserKey?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+
+#pragma mark - 删除文件
++ (void)sendDelFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_DelFile,@"UserId":UserId?:@"",@"FileName":FileName?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+
 @end

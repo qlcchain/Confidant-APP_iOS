@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="64" id="KGk-i7-Jjw" customClass="TaskCompletedCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nAR-Ak-THG">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
+                        <subviews>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_txt_small_gray" translatesAutoresizingMaskIntoConstraints="NO" id="ddR-GQ-uct">
+                                <rect key="frame" x="16" y="20" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="NhV-py-oQH"/>
+                                    <constraint firstAttribute="height" constant="24" id="kRe-Rq-DpV"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Google project ofx…information.zip" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B84-2o-3KZ">
+                                <rect key="frame" x="56" y="14" width="206" height="19.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_download_small_gray" translatesAutoresizingMaskIntoConstraints="NO" id="7GH-BB-YXC">
+                                <rect key="frame" x="56" y="37.5" width="12" height="12"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="12" id="yHO-Ul-luA"/>
+                                    <constraint firstAttribute="width" constant="12" id="yT3-Ph-u9N"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download to: Local" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qp-61-gzY">
+                                <rect key="frame" x="76" y="37" width="100" height="13.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kZr-zx-HFN">
+                                <rect key="frame" x="16" y="63" width="304" height="0.5"/>
+                                <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.5" id="6SH-71-FDu"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="B84-2o-3KZ" firstAttribute="leading" secondItem="ddR-GQ-uct" secondAttribute="trailing" constant="16" id="2as-oh-Sa1"/>
+                            <constraint firstItem="7GH-BB-YXC" firstAttribute="leading" secondItem="B84-2o-3KZ" secondAttribute="leading" id="9do-Md-hCn"/>
+                            <constraint firstItem="kZr-zx-HFN" firstAttribute="leading" secondItem="nAR-Ak-THG" secondAttribute="leading" constant="16" id="BFh-LT-Xob"/>
+                            <constraint firstAttribute="trailing" secondItem="kZr-zx-HFN" secondAttribute="trailing" id="FRd-lh-vwj"/>
+                            <constraint firstItem="ddR-GQ-uct" firstAttribute="leading" secondItem="nAR-Ak-THG" secondAttribute="leading" constant="16" id="G9H-83-6Yf"/>
+                            <constraint firstAttribute="trailing" secondItem="B84-2o-3KZ" secondAttribute="trailing" constant="58" id="MUo-rj-V6v"/>
+                            <constraint firstItem="6qp-61-gzY" firstAttribute="centerY" secondItem="7GH-BB-YXC" secondAttribute="centerY" id="TLq-Jf-O1l"/>
+                            <constraint firstItem="ddR-GQ-uct" firstAttribute="centerY" secondItem="nAR-Ak-THG" secondAttribute="centerY" id="arg-1U-b2r"/>
+                            <constraint firstAttribute="bottom" secondItem="kZr-zx-HFN" secondAttribute="bottom" id="cGC-ue-L9X"/>
+                            <constraint firstItem="B84-2o-3KZ" firstAttribute="top" secondItem="nAR-Ak-THG" secondAttribute="top" constant="14" id="d3G-CV-hCm"/>
+                            <constraint firstItem="7GH-BB-YXC" firstAttribute="top" secondItem="B84-2o-3KZ" secondAttribute="bottom" constant="4" id="dJn-46-14k"/>
+                            <constraint firstItem="6qp-61-gzY" firstAttribute="leading" secondItem="7GH-BB-YXC" secondAttribute="trailing" constant="8" id="fFk-lj-IbC"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="nAR-Ak-THG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="BFA-aX-Du1"/>
+                    <constraint firstItem="nAR-Ak-THG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="isf-bu-8JE"/>
+                    <constraint firstAttribute="bottom" secondItem="nAR-Ak-THG" secondAttribute="bottom" id="uQG-bX-H8e"/>
+                    <constraint firstAttribute="trailing" secondItem="nAR-Ak-THG" secondAttribute="trailing" id="xtV-LS-QGi"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="icon_download_small_gray" width="12" height="12"/>
+        <image name="icon_txt_small_gray" width="24" height="24"/>
+    </resources>
+</document>
