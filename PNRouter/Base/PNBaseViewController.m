@@ -209,6 +209,11 @@
     if (!_emptyView) {
         _emptyView = [[UIView alloc] init];
         _emptyView.frame = CGRectMake(0, 0, 200, 200);
+        _emptyView.backgroundColor = [UIColor whiteColor];
+        [view addSubview:_emptyView];
+        [_emptyView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.left.right.mas_equalTo(view).offset(0);
+        }];
         
         UIImageView *imgV = [[UIImageView alloc] init];
         imgV.frame = CGRectMake(0, 0, 80, 80);
@@ -227,18 +232,16 @@
         titleLab.numberOfLines = 2;
         titleLab.font = [UIFont systemFontOfSize:14];
         titleLab.textColor = UIColorFromRGB(0x808080);
+        titleLab.textAlignment = NSTextAlignmentCenter;
         titleLab.text = title;
         [_emptyView addSubview:titleLab];
         [titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.mas_equalTo(weakSelf.emptyView.centerX).offset(0);
-            make.top.mas_equalTo(imgV.bottom).offset(24);
+            make.top.mas_equalTo(imgV.mas_bottom).offset(24);
+            make.left.mas_equalTo(weakSelf.emptyView).offset(15);
+            make.right.mas_equalTo(weakSelf.emptyView).offset(-15);
         }];
     }
-    
-    [view addSubview:_emptyView];
-    [_emptyView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.left.right.mas_equalTo(view).offset(0);
-    }];
 }
 
 - (void)hideEmptyView {

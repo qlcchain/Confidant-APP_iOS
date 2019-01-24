@@ -15,4 +15,7 @@ static NSString *FileCellReuse = @"FileCell";
 //@interface FileCell : SWTableViewCell
 @interface FileCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *icon;
+
+
 @end

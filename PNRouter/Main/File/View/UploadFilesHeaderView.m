@@ -7,6 +7,13 @@
 //
 
 #import "UploadFilesHeaderView.h"
+#import "UploadFilesViewController.h"
+
+@interface UploadFilesHeaderView ()
+
+
+
+@end
 
 @implementation UploadFilesHeaderView
 
@@ -21,9 +28,27 @@
 - (void)prepareForReuse {
     [super prepareForReuse];
     
-    
 }
 
+- (void)configHeaderWithModel:(UploadFilesShowModel *)model {
+    _titleLab.text = model.title;
+    _detailLab.text = model.detail;
+    _arrowImg.hidden = !model.showArrow;
+    _arrowImg.image = model.showCell?[UIImage imageNamed:@"icon_arrow_down_gray"]:[UIImage imageNamed:@"icon_arrow_up_gray"];
+    _selectBtn.selected = model.isSelect;
+}
+
+- (IBAction)selectAction:(UIButton *)sender {
+    if (_selectB) {
+        _selectB();
+    }
+}
+
+- (IBAction)showCellAction:(UIButton *)sender {
+    if (_showCellB) {
+        _showCellB();
+    }
+}
 
 
 @end

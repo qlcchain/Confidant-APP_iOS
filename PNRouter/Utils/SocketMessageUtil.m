@@ -357,6 +357,10 @@
         [SocketMessageUtil handleUploadFile:receiveDic];
     } else if ([action isEqualToString:Action_DelFile]) { // 删除文件
         [SocketMessageUtil handleDelFile:receiveDic];
+    } else if ([action isEqualToString:Action_PullSharedFriend]) { // 拉取可分享文件好友列表
+        [SocketMessageUtil handlePullSharedFriend:receiveDic];
+    } else if ([action isEqualToString:Action_ShareFile]) { // 分享文件
+        [SocketMessageUtil handleShareFile:receiveDic];
     }
 }
 
@@ -1014,6 +1018,22 @@
 }
 
 + (void)handleDelFile:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+    }
+}
+
++ (void)handlePullSharedFriend:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+    }
+}
+
++ (void)handleShareFile:(NSDictionary *)receiveDic {
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     

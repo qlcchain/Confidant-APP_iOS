@@ -44,7 +44,12 @@
 }
 
 - (void)hide {
-    [self removeFromSuperview];
+    self.alpha = 1;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
 }
 
 #pragma mark - Action

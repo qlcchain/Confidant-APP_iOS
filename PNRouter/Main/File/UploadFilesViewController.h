@@ -7,10 +7,25 @@
 //
 
 #import "PNBaseViewController.h"
+#import "PNDocumentPickerViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface UploadFilesShowModel : NSObject
+
+@property (nonatomic) BOOL isSelect;
+@property (nonatomic) BOOL showArrow;
+@property (nonatomic) BOOL showCell;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *detail;
+@property (nullable, nonatomic, strong) NSMutableArray *cellArr;
+
+@end
+
 @interface UploadFilesViewController : PNBaseViewController
+
+@property (nonatomic, strong) NSArray *urlArr;
+@property (nonatomic) DocumentPickerType documentType;
 
 @end
 

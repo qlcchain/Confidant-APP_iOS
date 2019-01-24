@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyFilesViewController">
             <connections>
+                <outlet property="contentBack" destination="giH-q3-6Z3" id="JQ1-Cu-HHd"/>
                 <outlet property="mainTable" destination="QmY-xo-T67" id="Rdf-bi-hqP"/>
                 <outlet property="titleLab" destination="UVL-6I-XPc" id="O5J-1p-J8x"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

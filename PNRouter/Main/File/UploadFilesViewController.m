@@ -9,17 +9,8 @@
 #import "UploadFilesViewController.h"
 #import "UploadFilesCell.h"
 #import "UploadFilesHeaderView.h"
-
-@interface UploadFilesShowModel : NSObject
-
-@property (nonatomic) BOOL isSelect;
-@property (nonatomic) BOOL showArrow;
-@property (nonatomic) BOOL showCell;
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *detail;
-@property (nonatomic, strong) NSMutableArray *cellArr;
-
-@end
+#import "SendRequestUtil.h"
+#import "UserConfig.h"
 
 @implementation UploadFilesShowModel
 
@@ -29,6 +20,9 @@
 
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
+@property (weak, nonatomic) IBOutlet UIImageView *fileImg;
+@property (weak, nonatomic) IBOutlet UILabel *fileNameLab;
+@property (weak, nonatomic) IBOutlet UILabel *fileSizeLab;
 
 @end
 
@@ -39,6 +33,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self dataInit];
+    [self viewInit];
 }
 
 #pragma mark - Operation
@@ -64,7 +59,7 @@
     
     model = [[UploadFilesShowModel alloc] init];
     model.isSelect = NO;
-    model.showArrow = NO;
+    model.showArrow = YES;
     model.showCell = NO;
     model.title = @"Share to";
     model.detail = @"Selected friends";
@@ -73,7 +68,7 @@
     
     model = [[UploadFilesShowModel alloc] init];
     model.isSelect = NO;
-    model.showArrow = NO;
+    model.showArrow = YES;
     model.showCell = NO;
     model.title = @"Don't share to";
     model.detail = @"Exclude selected friends";
@@ -84,7 +79,57 @@
     [_mainTable registerNib:[UINib nibWithNibName:UploadFilesHeaderViewReuse bundle:nil] forHeaderFooterViewReuseIdentifier:UploadFilesHeaderViewReuse];
 }
 
+- (void)viewInit {
+    NSString *imgStr = @"";
+    NSString *nameStr = @"";
+    if (_documentType == DocumentPickerTypePhoto) {
+        imgStr = @"icon_picture_gray";
+        nameStr = [NSString stringWithFormat:@"Upload Photos (%@)",@(_urlArr.count)];
+    } else if (_documentType == DocumentPickerTypeVideo) {
+        imgStr = @"icon_video_gray";
+        nameStr = [NSString stringWithFormat:@"Upload Videos (%@)",@(_urlArr.count)];
+    } else if (_documentType == DocumentPickerTypeDocument) {
+        imgStr = @"icon_compress_gray";
+        nameStr = [NSString stringWithFormat:@"Upload Documents (%@)",@(_urlArr.count)];
+    } else if (_documentType == DocumentPickerTypeOther) {
+        imgStr = @"icon_compress_gray";
+        nameStr = [NSString stringWithFormat:@"Upload Others (%@)",@(_urlArr.count)];
+    }
+    _fileImg.image = [UIImage imageNamed:imgStr];
+    _fileNameLab.text = nameStr;
+    
+    __block NSInteger size = 0;
+    [_urlArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSURL *fileUrl = obj;
+        size += [self fileSizeAtPath:fileUrl.path];
+    }];
+    _fileSizeLab.text = [NSString stringWithFormat:@"%@KB",@(size/1024)];
+}
+
+//单个文件的大小
+- (NSInteger)fileSizeAtPath:(NSString*)filePath {
+    NSFileManager* manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:filePath]) {
+        return [[manager attributesOfItemAtPath:filePath error:nil] fileSize];
+    } else {
+        NSLog(@"计算文件大小：文件不存在");
+    }
+    return 0;
+}
+
 #pragma mark - Action
+
+- (IBAction)cancelAction:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)uploadAction:(id)sender {
+    NSString *UserId = [UserConfig getShareObject].userId;
+    NSString *FileName = @"";
+    NSNumber *FileSize = @(0);
+    NSNumber *FileType = @(0);
+    [SendRequestUtil sendUploadFileReqWithUserId:UserId FileName:FileName FileSize:FileSize FileType:FileType showHud:YES];
+}
 
 #pragma mark - UITableViewDataSource
 
@@ -126,6 +171,18 @@
     UploadFilesShowModel *model = _sourceArr[section];
     
     UploadFilesHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:UploadFilesHeaderViewReuse];
+    [headerView configHeaderWithModel:model];
+    @weakify_self
+    [headerView setSelectB:^{
+        model.isSelect = !model.isSelect;
+        [weakSelf.mainTable reloadData];
+    }];
+    [headerView setShowCellB:^{
+        if (model.showArrow) {
+            model.showCell = !model.showCell;
+            [weakSelf.mainTable reloadData];
+        }
+    }];
     
     return headerView;
 }

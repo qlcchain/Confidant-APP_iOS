@@ -51,6 +51,8 @@
 		581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6621F173AC0068C120 /* ModifyRouterPWViewController.xib */; };
 		581FDF6C21F19FEA0068C120 /* AccountManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */; };
 		581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */; };
+		5825A23821F9CA9F00E6194B /* FilePreviewDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A23621F9CA9E00E6194B /* FilePreviewDownloadViewController.m */; };
+		5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5825A23721F9CA9E00E6194B /* FilePreviewDownloadViewController.xib */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
@@ -530,6 +532,9 @@
 		581FDF6921F19FEA0068C120 /* AccountManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountManagementViewController.h; sourceTree = "<group>"; };
 		581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountManagementViewController.m; sourceTree = "<group>"; };
 		581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountManagementViewController.xib; sourceTree = "<group>"; };
+		5825A23521F9CA9E00E6194B /* FilePreviewDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePreviewDownloadViewController.h; sourceTree = "<group>"; };
+		5825A23621F9CA9E00E6194B /* FilePreviewDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePreviewDownloadViewController.m; sourceTree = "<group>"; };
+		5825A23721F9CA9E00E6194B /* FilePreviewDownloadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilePreviewDownloadViewController.xib; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
@@ -1487,6 +1492,9 @@
 		583BF94B21F808E90078A2A8 /* Preview */ = {
 			isa = PBXGroup;
 			children = (
+				5825A23521F9CA9E00E6194B /* FilePreviewDownloadViewController.h */,
+				5825A23621F9CA9E00E6194B /* FilePreviewDownloadViewController.m */,
+				5825A23721F9CA9E00E6194B /* FilePreviewDownloadViewController.xib */,
 				583BF94C21F809000078A2A8 /* FilePreviewViewController.h */,
 				583BF94D21F809000078A2A8 /* FilePreviewViewController.m */,
 				583BF94E21F809000078A2A8 /* FilePreviewViewController.xib */,
@@ -3196,6 +3204,7 @@
 				73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */,
 				7330F3A9214679BF00FF4EEC /* ShareCollectionCell.xib in Resources */,
 				73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */,
+				5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */,
 				7330F3CF21479AED00FF4EEC /* NewsCell.xib in Resources */,
 				7330F51F214B460A00FF4EEC /* NotifactionView.xib in Resources */,
 				7330F3A4214671C000FF4EEC /* ShareView.xib in Resources */,
@@ -3428,6 +3437,7 @@
 				7362577E2142143F00D7FD6B /* NSString+Base64.m in Sources */,
 				583BF91F21F6B5D00078A2A8 /* SharedSettingsViewController.m in Sources */,
 				7378842321AD364E0033A189 /* Base58Util.swift in Sources */,
+				5825A23821F9CA9F00E6194B /* FilePreviewDownloadViewController.m in Sources */,
 				7330F4F32149147200FF4EEC /* ChatListInfo.m in Sources */,
 				737882A721ACF05E0033A189 /* Compression.swift in Sources */,
 				737883FA21ACF2970033A189 /* OCTVideoEngine.m in Sources */,

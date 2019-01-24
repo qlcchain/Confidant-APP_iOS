@@ -17,6 +17,7 @@
 
 @interface YWFilePreviewView ()
 <QLPreviewControllerDataSource, QLPreviewControllerDelegate>
+
 @property (nonatomic, assign) BOOL hindNav;
 @property (nonatomic, strong) QLPreviewController *previewController;
 @property (nonatomic, strong) NSArray *filePathArr;
