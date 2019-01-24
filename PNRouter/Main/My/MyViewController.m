@@ -58,7 +58,7 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@[@"Router management",@"Disk Management"],@[@"Share QRCode"],@[@"Settings"], nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@[@"Router management"],@[@"Share QRCode"],@[@"Settings"], nil];
     }
     return _dataArray;
 }
