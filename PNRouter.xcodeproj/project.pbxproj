@@ -115,6 +115,7 @@
 		5886FB9821F5C2390052EDD0 /* UploadAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5886FB9721F5C2390052EDD0 /* UploadAlertView.xib */; };
 		5886FB9C21F5D7AF0052EDD0 /* PNNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5886FB9B21F5D7AF0052EDD0 /* PNNavView.m */; };
 		588B3F24215F81D0008601E0 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 588B3F23215F81D0008601E0 /* ViewController.xib */; };
+		58B41EEA21F98845004676CA /* PNDocumentPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B41EE821F98845004676CA /* PNDocumentPickerViewController.m */; };
 		58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58BD2E5421465E0A0091A77D /* Assets.xcassets */; };
 		58BD2E5E21475E020091A77D /* HWUserdefault.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BD2E5D21475E010091A77D /* HWUserdefault.m */; };
 		58BD2E6121475E960091A77D /* RouterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BD2E6021475E960091A77D /* RouterModel.m */; };
@@ -676,6 +677,8 @@
 		5886FB9A21F5D7AF0052EDD0 /* PNNavView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNNavView.h; sourceTree = "<group>"; };
 		5886FB9B21F5D7AF0052EDD0 /* PNNavView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNNavView.m; sourceTree = "<group>"; };
 		588B3F23215F81D0008601E0 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		58B41EE721F98845004676CA /* PNDocumentPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNDocumentPickerViewController.h; sourceTree = "<group>"; };
+		58B41EE821F98845004676CA /* PNDocumentPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNDocumentPickerViewController.m; sourceTree = "<group>"; };
 		58BD2E5421465E0A0091A77D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		58BD2E5C21475E010091A77D /* HWUserdefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWUserdefault.h; sourceTree = "<group>"; };
 		58BD2E5D21475E010091A77D /* HWUserdefault.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWUserdefault.m; sourceTree = "<group>"; };
@@ -1539,6 +1542,8 @@
 				583BF90321F6B4140078A2A8 /* UploadFilesViewController.h */,
 				583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */,
 				583BF90521F6B4140078A2A8 /* UploadFilesViewController.xib */,
+				58B41EE721F98845004676CA /* PNDocumentPickerViewController.h */,
+				58B41EE821F98845004676CA /* PNDocumentPickerViewController.m */,
 			);
 			path = File;
 			sourceTree = "<group>";
@@ -3100,6 +3105,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 				};
@@ -3445,6 +3453,7 @@
 				7378840C21ACF2970033A189 /* OCTAudioEngine.m in Sources */,
 				7330F4EC2149147200FF4EEC /* CellCaculator.m in Sources */,
 				7303310F21D22422007C4063 /* UserConfig.m in Sources */,
+				58B41EEA21F98845004676CA /* PNDocumentPickerViewController.m in Sources */,
 				7330F3A2214671B600FF4EEC /* ShareView.m in Sources */,
 				73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */,
 				7378840321ACF2970033A189 /* OCTFriendRequest.m in Sources */,

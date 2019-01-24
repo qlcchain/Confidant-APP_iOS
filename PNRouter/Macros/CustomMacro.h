@@ -139,5 +139,7 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define ResetUserIdcode_SUCCESS_NOTI @"ResetUserIdcode_SUCCESS_NOTI"
 // 取消登陆mac
 #define CANCEL_LOGINMAC_NOTI @"CANCEL_LOGINMAC_NOTI"
+// 拉取文件列表完成通知
+#define PullFileList_Complete_Noti @"PullFileList_Complete_Noti"
 
 #endif /* CustomMacro_h */

@@ -350,13 +350,13 @@
     } else if ([action isEqualToString:Action_ResetUserIdcode]) { // 路由器修改管理密码
         [SocketMessageUtil handleResetUserIdcode:receiveDic];
     } else if ([action isEqualToString:Action_PullFileList]) { // 拉取文件列表
-        
+        [SocketMessageUtil handlePullFileList:receiveDic];
     } else if ([action isEqualToString:Action_UploadFileReq]) { // 上传文件请求
-        
+        [SocketMessageUtil handleUploadFileReq:receiveDic];
     } else if ([action isEqualToString:Action_UploadFile]) { // 上传文件
-        
+        [SocketMessageUtil handleUploadFile:receiveDic];
     } else if ([action isEqualToString:Action_DelFile]) { // 删除文件
-        
+        [SocketMessageUtil handleDelFile:receiveDic];
     }
 }
 
@@ -985,6 +985,39 @@
         [AppD.window showHint:@"Original code error"];
     } else {
         [AppD.window showHint:@"Other error"];
+    }
+}
+
++ (void)handlePullFileList:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PullFileList_Complete_Noti object:@[]];
+    }
+}
+
++ (void)handleUploadFileReq:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+    }
+}
+
++ (void)handleUploadFile:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+    }
+}
+
++ (void)handleDelFile:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
     }
 }
 
