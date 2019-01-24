@@ -28,6 +28,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = MAIN_PURPLE_COLOR;
+    
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
     _searchTF.delegate = self;
@@ -70,15 +72,15 @@
 }
 
 - (IBAction)myFileAction:(id)sender {
-    
+    [self jumpToMyFile];
 }
 
 - (IBAction)shareAction:(id)sender {
-    
+    [self jumpToDocumentShare];
 }
 
 - (IBAction)receiveAction:(id)sender {
-    
+    [self jumpToDocumentReceived];
 }
 
 
