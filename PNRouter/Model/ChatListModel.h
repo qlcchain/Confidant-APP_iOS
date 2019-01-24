@@ -12,6 +12,7 @@
 @property (nonatomic ,strong) NSString *friendID;
 @property (nonatomic ,strong) NSString *myID;
 @property (nonatomic ,strong) NSString *publicKey;
+@property (nonatomic ,strong) NSString *signPublicKey;
 @property (nonatomic ,strong) NSString *friendName;
 @property (nonatomic ,strong) NSString *lastMessage;
 @property (nonatomic ,strong) NSDate *chatTime;

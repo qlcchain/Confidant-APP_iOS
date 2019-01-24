@@ -42,6 +42,8 @@
 #import "RSAUtil.h"
 #import "UserConfig.h"
 #import "DebugLogViewController.h"
+#import "LibsodiumUtil.h"
+#import "EntryModel.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -161,10 +163,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     [self loadChatUI];
     _msgStartId = 0;
    // [self.listView startRefresh];
+     [SocketCountUtil getShareObject].chatTohashId = self.friendModel.hashId;
     [self pullMessageRequest];
     
     // 当前消息置为已读
     [[ChatListDataUtil getShareObject] cancelChatHDWithFriendid:self.friendModel.userId];
+    
+
 
 //    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"1539912662170117"ofType:@"mp4"]];
 //    UIImage *img = [SystemUtil thumbnailImageForVideo:url];
@@ -175,13 +180,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [SocketCountUtil getShareObject].chatToID = self.friendModel.userId;
+    [SocketCountUtil getShareObject].chatTohashId = self.friendModel.hashId;
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [SocketCountUtil getShareObject].chatToID = @"";
+    [SocketCountUtil getShareObject].chatTohashId = @"";
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     
 }
@@ -192,8 +197,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     NSString *MsgType = @"1"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
     NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(_msgStartId)]; // 从这个消息号往前（不包含该消息），为0表示默认从最新的消息回溯
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
-    NSDictionary *params = @{@"Action":@"PullMsg",@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
-    [SocketMessageUtil sendVersion1WithParams:params];
+    NSDictionary *params = @{@"Action":@"PullMsg",@"FriendId":_friendModel.hashId?:@"",@"UserId":userM.hashId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
+    [SocketMessageUtil sendVersion3WithParams:params];
 }
 
 #pragma mark -初始化聊天界面
@@ -589,23 +594,31 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 - (void)inputViewPopSttring:(NSString *)string {
     if (string && ![string isEmptyString]) {
         UserModel *userM = [UserModel getUserModel];
-        NSString *msgKey = [SystemUtil get16AESKey];
-        NSString *msg = aesEncryptString(string, msgKey);
-        NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-        NSString *dsKey = [RSAUtil publicEncrypt:self.friendModel.publicKey msgValue:msgKey];
-        NSDictionary *params = @{@"Action":@"SendMsg",@"ToId":_friendModel.userId?:@"",@"FromId":userM.userId?:@"",@"Msg":msg?:@"",@"SrcKey":srcKey?:@"",@"DstKey":dsKey?:@""};
+        // 生成签名
+        NSString *signString = [LibsodiumUtil getOwenrSignPrivateKeySignOwenrTempPublickKey];
+        // 生成nonce
+        NSString *nonceString = [LibsodiumUtil getGenterSysmetryNonce];
+        // 生成对称密钥
+        NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:self.friendModel.publicKey];
+        // 加密消息
+        NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:string nonce:nonceString];
+        // 加密对称密钥
+        NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString];
+       
+        NSDictionary *params = @{@"Action":@"SendMsg",@"To":_friendModel.hashId?:@"",@"From":userM.hashId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
         NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
         
         CDMessageModel *model = [[CDMessageModel alloc] init];
-        model.FromId = [UserConfig getShareObject].userId;
-        model.ToId = self.friendModel.userId;
+        model.FromId = [UserConfig getShareObject].hashId;
+        model.ToId = self.friendModel.hashId;
         model.publicKey = self.friendModel.publicKey;
         model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         model.messageId = msgid;
         model.msg = string;
         model.msgState = CDMessageStateNormal;
-        model.srckey = srcKey;
-        model.dskey = dsKey;
+        model.nonceKey = nonceString;
+        model.signKey = signString;
+        model.symmetKey = enSymmetString;
         model.messageStatu = -1;
         [self addMessagesToList:model];
         
@@ -616,7 +629,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         chatModel.publicKey = self.friendModel.publicKey;
         chatModel.lastMessage = model.msg;
         chatModel.chatTime = [NSDate date];
-        chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToID];
+        chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatTohashId];
+        chatModel.signPublicKey = self.friendModel.signPublicKey;
         [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
         
         if (![SystemUtil isSocketConnect]) {
@@ -763,24 +777,38 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         UserModel *userM = [UserModel getUserModel];
         NSString *msgKey = [SystemUtil get16AESKey];
         
+        // 生成签名
+        NSString *signString = [LibsodiumUtil getOwenrSignPrivateKeySignOwenrTempPublickKey];
+        // 生成nonce
+        NSString *nonceString = [LibsodiumUtil getGenterSysmetryNonce];
+        
+        
+       
+        
         if (weakSelf.selectMessageModel.msgType == CDMessageTypeText) { // 转发文字
             
-            NSString *msg =  aesEncryptString(weakSelf.selectMessageModel.msg, msgKey);
-            NSString *srcKey = [RSAUtil pubcliKeyEncryptValue:msgKey];
-            NSString *dsKey = [RSAUtil publicEncrypt:model.publicKey msgValue:msgKey];
-            NSDictionary *params = @{@"Action":@"SendMsg",@"ToId":model.userId?:@"",@"FromId":userM.userId?:@"",@"Msg":msg?:@"",@"SrcKey":srcKey?:@"",@"DstKey":dsKey?:@""};
-            NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
+            // 生成对称密钥
+            NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:self.friendModel.publicKey];
+            // 加密消息
+            NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:weakSelf.selectMessageModel.msg nonce:nonceString];
+            // 加密对称密钥
+            NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString];
             
-            if ([model.userId isEqualToString:weakSelf.friendModel.userId]) {
+            
+             NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.hashId?:@"",@"From":userM.hashId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
+            NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
+
+            if ([model.hashId isEqualToString:weakSelf.friendModel.hashId]) {
                 CDMessageModel *messageModel = [[CDMessageModel alloc] init];
-                messageModel.FromId = [UserConfig getShareObject].userId;
-                messageModel.ToId = model.userId;
+                messageModel.FromId = [UserConfig getShareObject].hashId;
+                messageModel.ToId = model.hashId;
                 messageModel.publicKey = model.publicKey;
                 messageModel.messageId = msgid;
                 messageModel.msg = weakSelf.selectMessageModel.msg;
                 messageModel.msgState = CDMessageStateNormal;
-                messageModel.srckey = srcKey;
-                messageModel.dskey = dsKey;
+                messageModel.nonceKey = nonceString;
+                messageModel.signKey = signString;
+                messageModel.symmetKey = enSymmetString;
                 messageModel.messageStatu = -1;
                 [self addMessagesToList:messageModel];
             }
@@ -1004,7 +1032,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     if (!revModel) {
         return;
     }
-    if ([revModel.FromId isEqualToString:self.friendModel.userId]) {
+    if ([revModel.FromId isEqualToString:self.friendModel.hashId]) {
         // 已读
         [self sendRedMsgWithMsgId:revModel.messageId];
         
@@ -1029,8 +1057,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 #pragma mark -得到一条文字消息 并添加到listview
 - (void) addMessagesToList:(CDMessageModel *) model
 {
-    NSString *userId = [UserConfig getShareObject].userId;
-    if (!(([model.ToId isEqualToString:userId] && [model.FromId isEqualToString:self.friendModel.userId]) || ([model.FromId isEqualToString:userId] && [model.ToId isEqualToString:self.friendModel.userId]))) {
+    NSString *userId = [UserConfig getShareObject].hashId;
+    if (!(([model.ToId isEqualToString:userId] && [model.FromId isEqualToString:self.friendModel.hashId]) || ([model.FromId isEqualToString:userId] && [model.ToId isEqualToString:self.friendModel.hashId]))) {
         return;
     }
     if ([model.FromId isEqualToString:userId]) {
@@ -1045,7 +1073,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     }
     model.publicKey = self.friendModel.publicKey;
     model.willDisplayTime = YES;
-    model.publicKey = self.friendModel.publicKey;
     model.ctDataconfig = config;
     NSString *nkName = [UserModel getUserModel].username;
     if (model.isLeft) {
@@ -1062,13 +1089,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         PayloadModel *payloadModel = obj;
         CDMessageModel *model = [[CDMessageModel alloc] init];
-         NSString *userId = [UserConfig getShareObject].userId;
+         NSString *userId = [UserConfig getShareObject].hashId;
         if (payloadModel.Sender == 0) {
             model.FromId = userId?:@"";
-            model.ToId = self.friendModel.userId;
+            model.ToId = self.friendModel.hashId;
         } else {
             model.ToId = userId?:@"";
-            model.FromId = self.friendModel.userId;
+            model.FromId = self.friendModel.hashId;
         }
         model.messageStatu = payloadModel.Status;
         model.publicKey = self.friendModel.publicKey;
@@ -1087,20 +1114,31 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
        
         if ([model.FromId isEqualToString:userId]) {
             model.isLeft = NO;
-            model.srckey = payloadModel.UserKey;
         } else {
             model.isLeft = YES;
-            model.dskey = payloadModel.UserKey;
             [msgArr addObject:model.messageId];
         }
+        model.signKey = payloadModel.Sign;
+        model.nonceKey = payloadModel.Nonce;
+        model.symmetKey = payloadModel.PriKey;
         
-        NSString *msgkey = [RSAUtil privateKeyDecryptValue:payloadModel.UserKey];
-        if (![msgkey isEmptyString] && model.msgType == 0) {
-            model.msg = aesDecryptString(payloadModel.Msg,msgkey);
-            if ([[NSString getNotNullValue:model.msg] isEmptyString]) {
-                model.msg = payloadModel.Msg;
+        if (payloadModel.Sender == 0) {
+            NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:payloadModel.PriKey];
+            model.msg = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:payloadModel.Msg nonce:payloadModel.Nonce];
+        } else {
+            // 解签名
+            NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:self.friendModel.signPublicKey verifyMsg:payloadModel.Sign];
+            if (![tempPublickey isEmptyString]) {
+                // 生成对称密钥
+                NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
+                NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:payloadModel.Msg nonce:payloadModel.Nonce];
+                if (![deMsg isEmptyString]) {
+                    model.msg = deMsg;
+                }
             }
+            
         }
+        
         CTDataConfig config = [CTData defaultConfig];
         if (!model.isLeft) {
             config.textColor =[UIColor whiteColor].CGColor;

@@ -31,7 +31,7 @@
                                 <constraint firstAttribute="height" constant="44" id="Rt2-si-KsI"/>
                                 <constraint firstAttribute="width" constant="44" id="dvC-uE-U0M"/>
                             </constraints>
-                            <state key="normal" image="arrow-exit-h"/>
+                            <state key="normal" image="icon_back"/>
                             <connections>
                                 <action selector="clickBack:" destination="-1" eventType="touchUpInside" id="PmT-vo-JUH"/>
                             </connections>
@@ -39,14 +39,14 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBE-Lc-MhV">
                             <rect key="frame" x="167.5" y="11.5" width="40.5" height="21.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                            <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HrR-YQ-rIg">
                             <rect key="frame" x="311" y="0.0" width="46" height="44"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                             <state key="normal" title="Album">
-                                <color key="titleColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>
                                 <action selector="clickHead:" destination="-1" eventType="touchUpInside" id="KTK-gV-xyE"/>
@@ -91,7 +91,7 @@
             <color key="backgroundColor" red="0.90987110140000005" green="0.90972632170000001" blue="0.91764944790000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
                 <constraint firstItem="EUF-0u-h4h" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="AQM-vE-90k"/>
-                <constraint firstItem="EUF-0u-h4h" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="AjY-jx-Ltq"/>
+                <constraint firstItem="EUF-0u-h4h" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="AjY-jx-Ltq"/>
                 <constraint firstItem="dS2-MD-h4D" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="LSZ-ul-9gB"/>
                 <constraint firstItem="dS2-MD-h4D" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="YZn-o2-rrP"/>
                 <constraint firstItem="dS2-MD-h4D" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="aL8-4d-y45"/>
@@ -105,6 +105,6 @@
         </view>
     </objects>
     <resources>
-        <image name="arrow-exit-h" width="24" height="24"/>
+        <image name="icon_back" width="11" height="20"/>
     </resources>
 </document>

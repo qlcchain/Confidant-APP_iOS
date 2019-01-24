@@ -27,6 +27,7 @@
 #import "UserConfig.h"
 #import "HeartBeatUtil.h"
 #import "RoutherConfig.h"
+#import "LibsodiumUtil.h"
 
 @interface PNTabbarViewController ()<UITabBarControllerDelegate>
 @property (nonatomic ,strong) SocketAlertView *alertView;
@@ -207,6 +208,7 @@
             if (model.remarks && ![model.remarks isEmptyString]) {
                 model.username = model.remarks;
             }
+            model.publicKey = [LibsodiumUtil getFriendEnPublickkeyWithFriendSignPublicKey:model.signPublicKey];
         }];
         [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
     }
@@ -214,7 +216,7 @@
 
 - (void) contactHDShow
 {
-    UITabBarItem *item1 = self.tabBar.items[1];
+    UITabBarItem *item1 = self.tabBar.items[2];
     if (AppD.showHD) {
         item1.badgeBgColor = MAIN_PURPLE_COLOR;
         [item1 showBadge];

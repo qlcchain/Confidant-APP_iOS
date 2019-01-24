@@ -62,6 +62,8 @@
         model.signPublicKey = signPublicString;
         model.signPrivateKey = signPrivateString;
         
+    
+        
         [KeyCUtil saveStringToKeyWithString:model.mj_JSONString key:libkey];
     } else {
         if (![[NSString getNotNullValue:[EntryModel getShareObject].publicKey] isEmptyString]) {
@@ -150,14 +152,14 @@
     const uint8_t *nonceKey = [nonceData bytes];
     
     //将加密消息 base58转码
-    enMsg = [Base58Util Base58EncodeWithCodeName:enMsg];
+    enMsg = [enMsg base64EncodedString];
     char css[enMsg.length*2];
     memcpy(css, [enMsg cStringUsingEncoding:NSASCIIStringEncoding], 2*[enMsg length]);
     char enstr[sizeof(css)+crypto_box_BOXZEROBYTES];
     const int encrypted_length = encrypt_data_symmetric(gk,nonceKey, css,sizeof(css), enstr);
     if (encrypted_length) {
         NSLog(@"---%s",enstr);
-         NSData *enstrData = [NSData dataWithBytesNoCopy:enstr length:sizeof(enstr) freeWhenDone:NO];
+         NSData *enstrData = [NSData dataWithBytesNoCopy:enstr length:enMsg.length*2+crypto_box_BOXZEROBYTES freeWhenDone:NO];
         return [enstrData base64EncodedString];
     }
     
@@ -180,12 +182,12 @@
     
     NSData  *msgData = [deMsg base64DecodedData];
     const char *msgKey = [msgData bytes];
-    
-    char destr[sizeof(msgKey)+crypto_box_ZEROBYTES];
-    const int decrypted_length = decrypt_data_symmetric(gk,nonceKey, msgKey,sizeof(msgKey), destr);
+    int length = msgData.length;
+    char destr[length+crypto_box_ZEROBYTES];
+    const int decrypted_length = decrypt_data_symmetric(gk,nonceKey, msgKey,length, destr);
     if (decrypted_length >= 0) {
         NSString *destrsss = [NSString stringWithCString:destr encoding:NSUTF8StringEncoding];
-        destrsss = [Base58Util Base58DecodeWithCodeName:destrsss];
+        destrsss = [destrsss base64DecodedString];
         NSLog(@"---%@---解密成功",destrsss);
         return destrsss;
     }
@@ -204,9 +206,9 @@
         
     unsigned char sm[96];
     unsigned long long smlen_p;
-    int resut = crypto_sign(sm,&smlen_p,tempPK,sizeof(tempPK),singSK);
+    int resut = crypto_sign(sm,&smlen_p,tempPK,tempPKData.length,singSK);
     if (resut >= 0 ) {
-        NSData *enstrData = [NSData dataWithBytesNoCopy:sm length:sizeof(sm) freeWhenDone:NO];
+        NSData *enstrData = [NSData dataWithBytesNoCopy:sm length:96 freeWhenDone:NO];
         NSString *signStr = [enstrData base64EncodedString];
         return signStr;
     } else {
@@ -216,7 +218,7 @@
     
 }
 // 签名验证
-+ (BOOL) verifySignWithSignPublickey:(NSString *) signPublickey tempPublic:(NSString *) tempPublicKey verifyMsg:(NSString *) verifyMsg
++ (NSString *) verifySignWithSignPublickey:(NSString *) signPublickey verifyMsg:(NSString *) verifyMsg
 {
     
     NSLog(@"msgstr = %@",verifyMsg);
@@ -229,14 +231,13 @@
     
     unsigned char m[32];
     unsigned long long mlen_p;
-   int result = crypto_sign_open(m,&mlen_p,msgKey,sizeof(msgKey),signPK);
+   int result = crypto_sign_open(m,&mlen_p,msgKey,msgData.length,signPK);
     if (result >= 0) {
-        NSData *enstrData = [NSData dataWithBytesNoCopy:m length:sizeof(m) freeWhenDone:NO];
+        NSData *enstrData = [NSData dataWithBytesNoCopy:m length:32 freeWhenDone:NO];
         NSString *singPublic = [enstrData base64EncodedString];
-        NSLog(@"pk = %@,singPublic = %@",tempPublicKey,singPublic);
-        return YES;
+        return singPublic;
     }
-    return NO;
+    return @"";
 }
 // 公钥加密对称密钥 -非对称加密方式
 + (NSString *) asymmetricEncryptionWithSymmetry:(NSString *) symmetryKey
@@ -249,9 +250,9 @@
     const unsigned char *pk = [pkData bytes];
 
      unsigned char m[32+48];
-     int result = crypto_box_seal(m,gk,sizeof(gk),pk);
+     int result = crypto_box_seal(m,gk,gkData.length,pk);
     if (result >=0) {
-        NSData *enstrData = [NSData dataWithBytesNoCopy:m length:sizeof(m) freeWhenDone:NO];
+        NSData *enstrData = [NSData dataWithBytesNoCopy:m length:80 freeWhenDone:NO];
         return [enstrData base64EncodedString];
     }
     return @"";
@@ -264,13 +265,13 @@
     
     NSData *gkData = [symmetryKey base64DecodedData];
     const unsigned char *gk = [gkData bytes];
-   
+    
     NSData *pkData = [[EntryModel getShareObject].publicKey base64DecodedData];
     const unsigned char *pk = [pkData bytes];
    unsigned char m[32];
-   int result = crypto_box_seal_open(m,gk,sizeof(gk),pk,sk);
+   int result = crypto_box_seal_open(m,gk,gkData.length,pk,sk);
     if (result >=0) {
-        NSData *enstrData = [NSData dataWithBytesNoCopy:m length:sizeof(m) freeWhenDone:NO];
+        NSData *enstrData = [NSData dataWithBytesNoCopy:m length:32 freeWhenDone:NO];
         return [enstrData base64EncodedString];
     }
     return @"";
@@ -298,13 +299,15 @@
     return [enstrData base64EncodedString];
 }
 
+
+
 /*
  + (EntryModel *) getPrivatekeyAndPublickey
  {
  
  EntryModel *model = nil;
  NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
- if ([[NSString getNotNullValue:modelJson] isEmptyString]) {
+ if (![[NSString getNotNullValue:modelJson] isEmptyString]) {
  
  unsigned char signpk[32];
  unsigned char signsk[64];
@@ -358,22 +361,31 @@
  uint8_t nonceKey[CRYPTO_NONCE_SIZE];
  random_nonce(nonceKey);
  
+ NSData *nonce = [NSData dataWithBytesNoCopy:nonceKey length:24 freeWhenDone:NO];
+     char *nocesss = [nonce bytes];
  
  char gk[32];
  int result = crypto_box_beforenm(gk,sspk,sssk);
+     
+     NSData *gksdata = [NSData dataWithBytesNoCopy:nonceKey length:32 freeWhenDone:NO];
+     char *gksss = [gksdata bytes];
+     
  
  NSString *enMsg = [Base58Util Base58EncodeWithCodeName:@"12345好有"];
  char css[enMsg.length*2];
  memcpy(css, [enMsg cStringUsingEncoding:NSASCIIStringEncoding], 2*[enMsg length]);
  char enstr[sizeof(css)+crypto_box_BOXZEROBYTES];
- const int encrypted_length = encrypt_data_symmetric(gk,nonceKey, css,sizeof(css), enstr);
+ const int encrypted_length = encrypt_data_symmetric(gksss,nocesss, css,sizeof(css), enstr);
  if (encrypted_length) {
  NSLog(@"---%s",enstr);
  }
- 
- 
- char destr[sizeof(enstr)+crypto_box_ZEROBYTES];
- const int decrypted_length = decrypt_data_symmetric(gk,nonceKey, enstr,sizeof(enstr), destr);
+   
+ NSData *msgdata = [NSData dataWithBytesNoCopy:enstr length:enMsg.length*2+crypto_box_BOXZEROBYTES freeWhenDone:NO];
+      int datalen  = msgdata.length;
+   char *msgkey =  [msgdata bytes];
+
+ char destr[msgdata.length+crypto_box_ZEROBYTES];
+ const int decrypted_length = decrypt_data_symmetric(gksss,nocesss, msgkey,datalen, destr);
  if (decrypted_length >= 0) {
  NSString *destrsss = [NSString stringWithCString:destr encoding:NSUTF8StringEncoding];
  destrsss = [Base58Util Base58DecodeWithCodeName:destrsss];
@@ -677,5 +689,5 @@
  random_nonce(nonceKey);
  return [LibsodiumUtil charsToString:nonceKey length:24];
  }
- */
+*/
 @end

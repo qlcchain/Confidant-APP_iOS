@@ -33,6 +33,18 @@
     return shareObject;
 }
 
+- (NSString *) getFriendSignPublickeyWithHashid:(NSString *) hashid
+{
+    __block NSString *signPublicKey = @"";
+    [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *friendModel = (FriendModel *)obj;
+        if ([friendModel.hashId isEqualToString:hashid]) {
+            signPublicKey = friendModel.signPublicKey;
+            *stop = YES;
+        }
+    }];
+    return signPublicKey;
+}
 - (void) addFriendModel:(ChatListModel *) model
 {
     
@@ -40,7 +52,7 @@
         // 加锁操作
         [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *friendModel = (FriendModel *)obj;
-            if ([friendModel.userId isEqualToString:model.friendID]) {
+            if ([friendModel.hashId isEqualToString:model.friendID]) {
                 NSString *nickName = friendModel.username?:@"";
                 nickName = [nickName base64DecodedString];
                 if (nickName && ![nickName isEmptyString]) {
@@ -49,6 +61,7 @@
                     model.friendName = friendModel.username;
                 }
                 model.publicKey = friendModel.publicKey;
+                model.signPublicKey = friendModel.signPublicKey;
                 *stop = YES;
             }
         }];

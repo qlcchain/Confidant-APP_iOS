@@ -25,4 +25,5 @@
 - (void) addFriendModel:(ChatListModel *) model;
 - (void) removeChatModelWithFriendID:(NSString *) friendID;
 - (void) cancelChatHDWithFriendid:(NSString *) friendid;
+- (NSString *) getFriendSignPublickeyWithHashid:(NSString *) hashid;
 @end

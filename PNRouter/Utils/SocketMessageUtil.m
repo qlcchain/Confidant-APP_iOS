@@ -34,6 +34,7 @@
 #import "MutManagerUtil.h"
 #import "UserConfig.h"
 #import "EntryModel.h"
+#import "LibsodiumUtil.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -121,7 +122,7 @@
  发送文本聊天消息 ->msgid
  */
 + (NSString *)sendChatTextWithParams:(NSDictionary *)params{
-    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams]];
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams3]];
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
@@ -507,7 +508,7 @@
     chatModel.myID = fileModel.ToId;
     chatModel.friendID = fileModel.FromId;
     chatModel.chatTime = [NSDate date];
-    chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToID];
+    chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatTohashId];
     if (fileModel.FileType == 1) {
         chatModel.lastMessage = @"[photo]";
     } else if (fileModel.FileType == 2) {
@@ -519,7 +520,7 @@
     }
     
     // 收到好友消息播放系统声音
-    if (!([SocketCountUtil getShareObject].chatToID && [[SocketCountUtil getShareObject].chatToID isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
+    if (!([SocketCountUtil getShareObject].chatTohashId && [[SocketCountUtil getShareObject].chatTohashId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
         // 判断时间 间隔10秒
         NSString *formatDate = [HWUserdefault getObjectWithKey:PLAY_KEY];
         NSDateFormatter *format =[NSDateFormatter defaultDateFormatter];
@@ -619,6 +620,7 @@
     
     NSString *retcode = @"0"; // 0：请求接收到   1：其他错误
     NSDictionary *params = @{@"Action":@"AddFriendPush",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
+    NSLog(@"msgid = %@",[receiveDic objectForKey:@"msgid"]);
     
      NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
@@ -727,34 +729,49 @@
 
 + (void)handlePushMsg:(NSDictionary *)receiveDic {
     
-    NSString *FromId = receiveDic[@"params"][@"FromId"];
-    NSString *ToId = receiveDic[@"params"][@"ToId"];
+    NSString *FromId = receiveDic[@"params"][@"From"];
+    NSString *ToId = receiveDic[@"params"][@"To"];
     NSString *MsgId = receiveDic[@"params"][@"MsgId"];
     NSString *Msg = receiveDic[@"params"][@"Msg"];
-    NSString *SrcKey = receiveDic[@"params"][@"SrcKey"];
-    NSString *DstKey = receiveDic[@"params"][@"DstKey"];
+    NSString *signKey = receiveDic[@"params"][@"Sign"];
+    NSString *nonceKey = receiveDic[@"params"][@"Nonce"];
+    NSString *symmetkey = receiveDic[@"params"][@"PriKey"];
     
     CDMessageModel *model = [[CDMessageModel alloc] init];
     model.FromId = FromId;
     model.ToId = ToId;
     model.TimeStatmp = [receiveDic[@"timestamp"] integerValue];
     model.messageId = MsgId;
-    model.srckey = SrcKey;
-    model.dskey = DstKey;
-    NSString *msgkey = [RSAUtil privateKeyDecryptValue:DstKey];
-    if (![msgkey isEmptyString]) {
-         model.msg = aesDecryptString(Msg,msgkey);
+    model.signKey = signKey;
+    model.nonceKey = nonceKey;
+    model.symmetKey = symmetkey;
+    
+   NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithHashid:FromId];
+    if ([signPublickey isEmptyString]) {
+        return;
+    }
+    // 解签名
+    NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:signPublickey verifyMsg:signKey];
+    if ([tempPublickey isEmptyString]) {
+        return;
+    }
+    // 生成对称密钥
+    NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
+    NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:Msg nonce:nonceKey];
+    if (![deMsg isEmptyString]) {
+        model.msg = deMsg;
     }
    
     // 添加到chatlist
     ChatListModel *chatModel = [[ChatListModel alloc] init];
-    chatModel.myID = [UserConfig getShareObject].userId; //model.ToId;
+    chatModel.myID = model.ToId;
     chatModel.friendID = model.FromId;
     chatModel.chatTime = [NSDate date];
-    chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToID];
+    chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatTohashId];
     chatModel.lastMessage = model.msg;
+    
     // 收到好友消息播放系统声音
-    if (!([SocketCountUtil getShareObject].chatToID && [[SocketCountUtil getShareObject].chatToID isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
+    if (!([SocketCountUtil getShareObject].chatTohashId && [[SocketCountUtil getShareObject].chatTohashId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
         // 判断时间 间隔10秒
        NSString *formatDate = [HWUserdefault getObjectWithKey:PLAY_KEY];
          NSDateFormatter *format =[NSDateFormatter defaultDateFormatter];
@@ -842,6 +859,7 @@
     NSInteger MsgNum = [receiveDic[@"params"][@"MsgNum"] integerValue]; // 拉取的消息条数（默认10条，不能超过20条）
     NSString *Payload = receiveDic[@"params"][@"Payload"];
     
+    NSString *friendHashId = receiveDic[@"params"][@"FriendId"];
     NSInteger more = [receiveDic[@"more"] integerValue];
 
     if (retCode == 0) { // 0：消息拉取成功
@@ -849,8 +867,12 @@
              NSInteger offset = [receiveDic[@"offset"] integerValue];
            // [SocketMessageUtil sendVersion1WithParams:@{}];
         }
-        NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
-        [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_BEFORE_NOTI object:payloadArr];
+        
+        if (([SocketCountUtil getShareObject].chatTohashId && [[SocketCountUtil getShareObject].chatTohashId isEqualToString:friendHashId])) {
+            NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_BEFORE_NOTI object:payloadArr];
+        }
+       
     } else if (retCode == 1) { // 1：用户没权限
         
     } else if (retCode == 2) { // 2：其他错误
@@ -882,10 +904,12 @@
     NSInteger needSynch = [receiveDic[@"params"][@"NeedSynch"] integerValue];
     NSString *userName = receiveDic[@"params"][@"NickName"];
     NSString *userSn = receiveDic[@"params"][@"UserSn"];
+    NSString *hashid = receiveDic[@"params"][@"Index"];
     NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
     NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
     
     [UserConfig getShareObject].userId = userId;
+    [UserConfig getShareObject].hashId = hashid;
     [UserConfig getShareObject].userName = [userName base64DecodedString];
     [UserConfig getShareObject].usersn = userSn;
     [UserConfig getShareObject].dataFileVersion = dataFileVersion;
@@ -893,7 +917,7 @@
     
     if (retCode == 0) { // 成功
         if (userId.length > 0) {
-            [UserModel updateUserLocalWithUserId:userId withUserName:userName userSn:userSn];
+            [UserModel updateUserLocalWithUserId:userId withUserName:userName userSn:userSn hashid:hashid];
         }
         // 同步data文件
         if (needSynch == 0) { // 不需要 同步
@@ -1003,6 +1027,7 @@
 #pragma -mark 同意或拒绝好友请求
 + (void) sendAgreedOrRefusedWithFriendMode:(FriendModel *) model withType:(NSString *)type
 {
+   
     UserModel *userM = [UserModel getUserModel];
     NSString *result = type; // 0：同意添加   1：拒绝好友添加
     NSString *friendName = model.username?:@"";
