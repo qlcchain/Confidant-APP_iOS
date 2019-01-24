@@ -96,13 +96,7 @@
 - (void) nextAction:(UIButton *) sender
 {
     if (sender.tag == 2) {
-//        UIDocumentPickerViewController *vc = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.content",@"public.text",@"public.source-code",@"public.image",@"public.audiovisual-content",@"com.adobe.pdf",@"com.apple.keynote.key",@"com.microsoft.word.doc",@"com.microsoft.excel.xls",@"com.microsoft.powerpoint.ppt"] inMode:UIDocumentPickerModeOpen];
-////        vc.delegate = self;
-//        vc.modalPresentationStyle = UIModalPresentationFullScreen;
-//        //    vc.allowsMultipleSelection = YES;
-//        [self presentViewController:vc animated:YES completion:nil];
-//
-//        return;
+        
         
          [self jumpToQR];
     } else {

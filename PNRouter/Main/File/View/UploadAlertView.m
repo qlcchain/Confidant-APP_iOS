@@ -29,11 +29,18 @@
         make.left.right.top.bottom.mas_equalTo(AppD.window).offset(0);
     }];
     
-    self.bottomViewBottom.constant = -276;
-    [UIView animateWithDuration:2.0 animations:^{
-        self.bottomViewBottom.constant = 0;
-        [self layoutIfNeeded];
+    self.alpha = 0;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.alpha = 1;
+    } completion:^(BOOL finished) {
+        
     }];
+    
+//    self.bottomViewBottom.constant = -276;
+//    [UIView animateWithDuration:0.5 animations:^{
+//        self.bottomViewBottom.constant = 0;
+//        [self layoutIfNeeded];
+//    }];
 }
 
 - (void)hide {

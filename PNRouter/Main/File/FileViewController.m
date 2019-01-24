@@ -11,6 +11,10 @@
 #import "TaskListViewController.h"
 #import "UploadAlertView.h"
 #import "MyFilesViewController.h"
+#import "SendRequestUtil.h"
+#import "UserConfig.h"
+#import "PNNavViewController.h"
+#import "PNDocumentPickerViewController.h"
 
 @interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/>
 
@@ -25,8 +29,19 @@
 
 @implementation FileViewController
 
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self addObserve];
     
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     
@@ -36,6 +51,7 @@
     
     [_mainTable registerNib:[UINib nibWithNibName:FileCellReuse bundle:nil] forCellReuseIdentifier:FileCellReuse];
     
+    [self sendPullFileList];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -46,19 +62,30 @@
 
 - (void)showUploadAlertView {
     _uploadAlertV = [UploadAlertView getInstance];
+    @weakify_self
     [_uploadAlertV setPhotoB:^{
-        
+        [weakSelf jumpToDocumentPicker];
     }];
     [_uploadAlertV setVideoB:^{
-        
+        [weakSelf jumpToDocumentPicker];
     }];
     [_uploadAlertV setDocumentB:^{
-        
+        [weakSelf jumpToDocumentPicker];
     }];
     [_uploadAlertV setOtherB:^{
-        
+        [weakSelf jumpToDocumentPicker];
     }];
     [_uploadAlertV show];
+}
+
+#pragma mark - Request
+- (void)sendPullFileList {
+    NSString *UserId = [UserConfig getShareObject].userId;
+    NSNumber *MsgStartId = @(0);
+    NSNumber *MsgNum = @(15);
+    NSNumber *Category = @(0);
+    NSNumber *FileType = @(0);
+    [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
 }
 
 #pragma mark - Action
@@ -218,6 +245,26 @@
     MyFilesViewController *vc = [[MyFilesViewController alloc] init];
     vc.filesType = FilesTypeReceived;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToDocumentPicker {
+    PNDocumentPickerViewController *vc = [[PNDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.content",@"public.text",@"public.source-code",@"public.image",@"public.audiovisual-content",@"com.adobe.pdf",@"com.apple.keynote.key",@"com.microsoft.word.doc",@"com.microsoft.excel.xls",@"com.microsoft.powerpoint.ppt"] inMode:UIDocumentPickerModeImport];
+    //        vc.delegate = self;
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
+    vc.navigationController.navigationBar.tintColor = MAIN_PURPLE_COLOR;
+//    vc.navigationController.navigationBar.barTintColor = MAIN_PURPLE_COLOR;
+//    vc.allowsMultipleSelection = YES;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+#pragma mark - Noti
+- (void)pullFileListCompleteNoti:(NSNotification *)noti {
+    NSArray *arr = noti.object;
+    if (arr.count <= 0) {
+        
+    } else {
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {
