@@ -12,7 +12,7 @@
 
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *userId;
-@property (nonatomic, copy) NSString *hashId;
+//@property (nonatomic, copy) NSString *hashId;
 @property (nonatomic, copy) NSString *userSn;
 @property (nonatomic, assign) NSInteger dataFileVersion;
 @property (nonatomic, copy) NSString *dataFilePay;

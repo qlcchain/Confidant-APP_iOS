@@ -34,7 +34,7 @@
         userM.username = name;
         userM.pass = pass;
         userM.userId = userid;
-        userM.hashId = hashid;
+       // userM.hashId = hashid;
         userM.dataFileVersion = version;
         userM.dataFilePay = filePay;
         userM.userSn = userSn;
@@ -47,7 +47,7 @@
         userM.username = name;
         userM.pass = pass;
         userM.userId = userid;
-        userM.hashId = hashid;
+       // userM.hashId = hashid;
         userM.dataFileVersion = version;
         userM.dataFilePay = filePay;
         userM.userSn = userSn;
@@ -78,13 +78,13 @@
             model.userSn = [UserConfig getShareObject].usersn;
             model.dataFilePay = [UserConfig getShareObject].dataFilePay;
             model.dataFileVersion = [UserConfig getShareObject].dataFileVersion;
-            model.hashId = [UserConfig getShareObject].hashId;
+           // model.hashId = [UserConfig getShareObject].hashId;
             return model;
         } else {
             userM = [[UserModel alloc] init];
             userM.username = @"";
             userM.userId = @"";
-            userM.hashId = @"";
+           // userM.hashId = @"";
         }
     } else {
         userM = [UserModel getObjectWithKeyValues:[modeJson mj_keyValues]];
@@ -110,7 +110,7 @@
     if (!modeJson || [modeJson isEmptyString]) {
         userM = [[UserModel alloc] init];
         userM.userId = userId;
-        userM.hashId = hashid;
+       // userM.hashId = hashid;
         if (userName) {
             userName = [userName base64DecodedString];
         }
@@ -122,7 +122,7 @@
             [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
         }
         userM.userId = userId;
-        userM.hashId = hashid;
+       // userM.hashId = hashid;
         userM.userSn = userSn;
         if (userName) {
             userName = [userName base64DecodedString];

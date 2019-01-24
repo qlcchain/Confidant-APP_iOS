@@ -290,7 +290,6 @@
     [UserModel createUserLocalWithName:[_userNameTF.text.trim base64EncodedString] userid:userid version:dataFileVersion filePay:dataFilePay userpass:shaPass userSn:userSn hashid:hashid];
     
     [UserConfig getShareObject].userId = userid;
-    [UserConfig getShareObject].hashId = hashid;
     [UserConfig getShareObject].userName = _userNameTF.text.trim;
     [UserConfig getShareObject].usersn = userSn;
     [UserConfig getShareObject].passWord = shaPass;

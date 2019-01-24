@@ -214,8 +214,6 @@
     } else {
         return @"";
     }
-    
-    
 }
 // 签名验证
 + (NSString *) verifySignWithSignPublickey:(NSString *) signPublickey verifyMsg:(NSString *) verifyMsg

@@ -163,7 +163,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     [self loadChatUI];
     _msgStartId = 0;
    // [self.listView startRefresh];
-     [SocketCountUtil getShareObject].chatTohashId = self.friendModel.hashId;
+     [SocketCountUtil getShareObject].chatToId = self.friendModel.userId;
     [self pullMessageRequest];
     
     // 当前消息置为已读
@@ -180,13 +180,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [SocketCountUtil getShareObject].chatTohashId = self.friendModel.hashId;
+    [SocketCountUtil getShareObject].chatToId = self.friendModel.userId;
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [SocketCountUtil getShareObject].chatTohashId = @"";
+    [SocketCountUtil getShareObject].chatToId = @"";
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     
 }
@@ -197,7 +197,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     NSString *MsgType = @"1"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
     NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(_msgStartId)]; // 从这个消息号往前（不包含该消息），为0表示默认从最新的消息回溯
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
-    NSDictionary *params = @{@"Action":@"PullMsg",@"FriendId":_friendModel.hashId?:@"",@"UserId":userM.hashId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
+    NSDictionary *params = @{@"Action":@"PullMsg",@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
     [SocketMessageUtil sendVersion3WithParams:params];
 }
 
@@ -605,12 +605,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         // 加密对称密钥
         NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString];
        
-        NSDictionary *params = @{@"Action":@"SendMsg",@"To":_friendModel.hashId?:@"",@"From":userM.hashId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
+        NSDictionary *params = @{@"Action":@"SendMsg",@"To":_friendModel.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
         NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
         
         CDMessageModel *model = [[CDMessageModel alloc] init];
-        model.FromId = [UserConfig getShareObject].hashId;
-        model.ToId = self.friendModel.hashId;
+        model.FromId = [UserConfig getShareObject].userId;
+        model.ToId = self.friendModel.userId;
         model.publicKey = self.friendModel.publicKey;
         model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         model.messageId = msgid;
@@ -624,12 +624,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
-        chatModel.myID = model.FromId;
-        chatModel.friendID = model.ToId;
+        chatModel.myID = [UserConfig getShareObject].userId;
+        chatModel.friendID = self.friendModel.userId;
+      
         chatModel.publicKey = self.friendModel.publicKey;
         chatModel.lastMessage = model.msg;
         chatModel.chatTime = [NSDate date];
-        chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatTohashId];
+        chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
         chatModel.signPublicKey = self.friendModel.signPublicKey;
         [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
         
@@ -795,13 +796,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString];
             
             
-             NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.hashId?:@"",@"From":userM.hashId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
+             NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
             NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
 
-            if ([model.hashId isEqualToString:weakSelf.friendModel.hashId]) {
+            if ([model.userId isEqualToString:weakSelf.friendModel.userId]) {
                 CDMessageModel *messageModel = [[CDMessageModel alloc] init];
-                messageModel.FromId = [UserConfig getShareObject].hashId;
-                messageModel.ToId = model.hashId;
+                messageModel.FromId = [UserConfig getShareObject].userId;
+                messageModel.ToId = model.userId;
                 messageModel.publicKey = model.publicKey;
                 messageModel.messageId = msgid;
                 messageModel.msg = weakSelf.selectMessageModel.msg;
@@ -817,6 +818,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             chatModel.myID = [UserConfig getShareObject].userId;
             chatModel.friendID = model.userId;
             chatModel.publicKey = model.publicKey;
+            chatModel.signPublicKey = model.signPublicKey;
             chatModel.lastMessage = weakSelf.selectMessageModel.msg;
             chatModel.chatTime = [NSDate date];
             chatModel.isHD = NO;
@@ -1032,7 +1034,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     if (!revModel) {
         return;
     }
-    if ([revModel.FromId isEqualToString:self.friendModel.hashId]) {
+    if ([revModel.FromId isEqualToString:self.friendModel.userId]) {
         // 已读
         [self sendRedMsgWithMsgId:revModel.messageId];
         
@@ -1057,8 +1059,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 #pragma mark -得到一条文字消息 并添加到listview
 - (void) addMessagesToList:(CDMessageModel *) model
 {
-    NSString *userId = [UserConfig getShareObject].hashId;
-    if (!(([model.ToId isEqualToString:userId] && [model.FromId isEqualToString:self.friendModel.hashId]) || ([model.FromId isEqualToString:userId] && [model.ToId isEqualToString:self.friendModel.hashId]))) {
+    NSString *userId = [UserConfig getShareObject].userId;
+    if (!(([model.ToId isEqualToString:userId] && [model.FromId isEqualToString:self.friendModel.userId]) || ([model.FromId isEqualToString:userId] && [model.ToId isEqualToString:self.friendModel.userId]))) {
         return;
     }
     if ([model.FromId isEqualToString:userId]) {
@@ -1089,13 +1091,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         PayloadModel *payloadModel = obj;
         CDMessageModel *model = [[CDMessageModel alloc] init];
-         NSString *userId = [UserConfig getShareObject].hashId;
+         NSString *userId = [UserConfig getShareObject].userId;
         if (payloadModel.Sender == 0) {
             model.FromId = userId?:@"";
-            model.ToId = self.friendModel.hashId;
+            model.ToId = self.friendModel.userId;
         } else {
             model.ToId = userId?:@"";
-            model.FromId = self.friendModel.hashId;
+            model.FromId = self.friendModel.userId;
         }
         model.messageStatu = payloadModel.Status;
         model.publicKey = self.friendModel.publicKey;

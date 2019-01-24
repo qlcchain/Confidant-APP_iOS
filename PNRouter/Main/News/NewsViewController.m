@@ -209,6 +209,7 @@
         FriendModel *model = [[FriendModel alloc] init];
         ChatListModel *chatModel = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
         model.userId = chatModel.friendID;
+        model.owerId = [UserConfig getShareObject].userId;
         model.username = chatModel.friendName;
         model.publicKey = chatModel.publicKey;
         model.signPublicKey = chatModel.signPublicKey;
@@ -320,7 +321,7 @@
         [self.dataArray removeAllObjects];
     }
     
-    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].hashId)]];
+    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].userId)]];
     NSMutableArray *tempArr = [NSMutableArray array];
     if (finfAlls && finfAlls.count > 0) {
         [tempArr addObjectsFromArray:finfAlls];
