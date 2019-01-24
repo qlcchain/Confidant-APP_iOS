@@ -19,7 +19,7 @@
         #import "AppDelegate.h"
 
         // 第三方
-        #import "Masonry.h"
+        #import <Masonry/Masonry.h>
         #import <MJExtension/MJExtension.h>
         #import <CocoaLumberjack/CocoaLumberjack.h>
 

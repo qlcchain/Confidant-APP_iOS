@@ -8,6 +8,13 @@
 
 #import "UploadAlertView.h"
 
+@interface UploadAlertView ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomViewBottom;
+
+
+@end
+
 @implementation UploadAlertView
 
 + (instancetype)getInstance {
@@ -20,6 +27,12 @@
     [AppD.window addSubview:self];
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.bottom.mas_equalTo(AppD.window).offset(0);
+    }];
+    
+    self.bottomViewBottom.constant = -276;
+    [UIView animateWithDuration:2.0 animations:^{
+        self.bottomViewBottom.constant = 0;
+        [self layoutIfNeeded];
     }];
 }
 

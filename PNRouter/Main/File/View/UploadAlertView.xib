@@ -250,6 +250,9 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="xVh-Iv-lIx"/>
+            <connections>
+                <outlet property="bottomViewBottom" destination="NJt-Ez-fIM" id="HVN-GH-k3U"/>
+            </connections>
             <point key="canvasLocation" x="53.600000000000001" y="41.829085457271368"/>
         </view>
     </objects>
