@@ -153,13 +153,14 @@
     
     //将加密消息 base58转码
     enMsg = [enMsg base64EncodedString];
-    char css[enMsg.length*2];
-    memcpy(css, [enMsg cStringUsingEncoding:NSASCIIStringEncoding], 2*[enMsg length]);
+    char css[enMsg.length+1];
+    memcpy(css, [enMsg cStringUsingEncoding:NSASCIIStringEncoding],[enMsg length]+1);
     char enstr[sizeof(css)+crypto_box_BOXZEROBYTES];
     const int encrypted_length = encrypt_data_symmetric(gk,nonceKey, css,sizeof(css), enstr);
     if (encrypted_length) {
-        NSLog(@"---%s",enstr);
-         NSData *enstrData = [NSData dataWithBytesNoCopy:enstr length:enMsg.length*2+crypto_box_BOXZEROBYTES freeWhenDone:NO];
+       // NSLog(@"---%s",enstr);
+        NSLog(@"------加密成功");
+         NSData *enstrData = [NSData dataWithBytesNoCopy:enstr length:enMsg.length+1+crypto_box_BOXZEROBYTES freeWhenDone:NO];
         return [enstrData base64EncodedString];
     }
     
@@ -188,7 +189,8 @@
     if (decrypted_length >= 0) {
         NSString *destrsss = [NSString stringWithCString:destr encoding:NSUTF8StringEncoding];
         destrsss = [destrsss base64DecodedString];
-        NSLog(@"---%@---解密成功",destrsss);
+       // NSLog(@"---%@---解密成功",destrsss);
+        NSLog(@"------解密成功");
         return destrsss;
     }
     return @"";
@@ -214,8 +216,6 @@
     } else {
         return @"";
     }
-    
-    
 }
 // 签名验证
 + (NSString *) verifySignWithSignPublickey:(NSString *) signPublickey verifyMsg:(NSString *) verifyMsg

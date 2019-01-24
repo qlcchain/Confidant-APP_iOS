@@ -508,7 +508,7 @@
     chatModel.myID = fileModel.ToId;
     chatModel.friendID = fileModel.FromId;
     chatModel.chatTime = [NSDate date];
-    chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatTohashId];
+    chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
     if (fileModel.FileType == 1) {
         chatModel.lastMessage = @"[photo]";
     } else if (fileModel.FileType == 2) {
@@ -520,7 +520,7 @@
     }
     
     // 收到好友消息播放系统声音
-    if (!([SocketCountUtil getShareObject].chatTohashId && [[SocketCountUtil getShareObject].chatTohashId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
+    if (!([SocketCountUtil getShareObject].chatToId && [[SocketCountUtil getShareObject].chatToId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
         // 判断时间 间隔10秒
         NSString *formatDate = [HWUserdefault getObjectWithKey:PLAY_KEY];
         NSDateFormatter *format =[NSDateFormatter defaultDateFormatter];
@@ -746,7 +746,7 @@
     model.nonceKey = nonceKey;
     model.symmetKey = symmetkey;
     
-   NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithHashid:FromId];
+   NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:FromId];
     if ([signPublickey isEmptyString]) {
         return;
     }
@@ -767,11 +767,11 @@
     chatModel.myID = model.ToId;
     chatModel.friendID = model.FromId;
     chatModel.chatTime = [NSDate date];
-    chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatTohashId];
+    chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
     chatModel.lastMessage = model.msg;
     
     // 收到好友消息播放系统声音
-    if (!([SocketCountUtil getShareObject].chatTohashId && [[SocketCountUtil getShareObject].chatTohashId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
+    if (!([SocketCountUtil getShareObject].chatToId && [[SocketCountUtil getShareObject].chatToId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
         // 判断时间 间隔10秒
        NSString *formatDate = [HWUserdefault getObjectWithKey:PLAY_KEY];
          NSDateFormatter *format =[NSDateFormatter defaultDateFormatter];
@@ -793,7 +793,7 @@
     NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
     NSDictionary *params = @{@"Action":@"PushMsg",@"Retcode":retcode,@"Msg":@"",@"ToId":model.ToId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
-    [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
+    [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
 }
 
 + (void)handleDelMsg:(NSDictionary *)receiveDic {
@@ -859,7 +859,7 @@
     NSInteger MsgNum = [receiveDic[@"params"][@"MsgNum"] integerValue]; // 拉取的消息条数（默认10条，不能超过20条）
     NSString *Payload = receiveDic[@"params"][@"Payload"];
     
-    NSString *friendHashId = receiveDic[@"params"][@"FriendId"];
+    NSString *friendId = receiveDic[@"params"][@"FriendId"];
     NSInteger more = [receiveDic[@"more"] integerValue];
 
     if (retCode == 0) { // 0：消息拉取成功
@@ -868,7 +868,7 @@
            // [SocketMessageUtil sendVersion1WithParams:@{}];
         }
         
-        if (([SocketCountUtil getShareObject].chatTohashId && [[SocketCountUtil getShareObject].chatTohashId isEqualToString:friendHashId])) {
+        if (([SocketCountUtil getShareObject].chatToId && [[SocketCountUtil getShareObject].chatToId isEqualToString:friendId])) {
             NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_BEFORE_NOTI object:payloadArr];
         }
@@ -909,7 +909,6 @@
     NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
     
     [UserConfig getShareObject].userId = userId;
-    [UserConfig getShareObject].hashId = hashid;
     [UserConfig getShareObject].userName = [userName base64DecodedString];
     [UserConfig getShareObject].usersn = userSn;
     [UserConfig getShareObject].dataFileVersion = dataFileVersion;
