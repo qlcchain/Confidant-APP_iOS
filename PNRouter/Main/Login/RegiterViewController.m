@@ -279,6 +279,7 @@
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     NSString *userid = receiveDic[@"params"][@"UserId"];
     NSString *userSn = receiveDic[@"params"][@"UserSn"];
+     NSString *hashid = receiveDic[@"params"][@"Index"];
     NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
     NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
      NSString *shaPass = _passwordTF.text.trim;
@@ -286,14 +287,16 @@
     [RouterModel addRouterWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn userid:userid];
     [RouterModel updateRouterPassWithSn:[RoutherConfig getRoutherConfig].currentRouterSn pass:shaPass];
     // 保存用户
-    [UserModel createUserLocalWithName:[_userNameTF.text.trim base64EncodedString] userid:userid version:dataFileVersion filePay:dataFilePay userpass:shaPass userSn:userSn];
+    [UserModel createUserLocalWithName:[_userNameTF.text.trim base64EncodedString] userid:userid version:dataFileVersion filePay:dataFilePay userpass:shaPass userSn:userSn hashid:hashid];
     
     [UserConfig getShareObject].userId = userid;
+    [UserConfig getShareObject].hashId = hashid;
     [UserConfig getShareObject].userName = _userNameTF.text.trim;
     [UserConfig getShareObject].usersn = userSn;
     [UserConfig getShareObject].passWord = shaPass;
     [UserConfig getShareObject].dataFilePay = dataFilePay;
     [UserConfig getShareObject].dataFileVersion = dataFileVersion;
+    
     
     [AppD setRootTabbarWithManager:nil];
 }

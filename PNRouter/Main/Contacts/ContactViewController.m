@@ -23,6 +23,7 @@
 #import "PersonCodeViewController.h"
 #import "EditTextViewController.h"
 #import "FriendRequestViewController.h"
+#import "LibsodiumUtil.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate>
 {
@@ -372,6 +373,7 @@
             if (model.remarks && ![model.remarks isEmptyString]) {
                 model.username = model.remarks;
             }
+            model.publicKey = [LibsodiumUtil getFriendEnPublickkeyWithFriendSignPublicKey:model.signPublicKey];
             model.remarks = nickName;
         }];
         NSMutableArray *sortArr = [NSMutableArray arrayWithArray:friendArr];

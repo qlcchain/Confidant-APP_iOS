@@ -65,6 +65,9 @@
 @synthesize publicKey;
 @synthesize messageStatu;
 @synthesize isDown;
+@synthesize signKey;
+@synthesize nonceKey;
+@synthesize symmetKey;
 
 
 -(instancetype)init:(NSDictionary *)dic{

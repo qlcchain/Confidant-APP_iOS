@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UserConfig : NSObject
 
 @property (nonatomic ,strong) NSString *userId;
+@property (nonatomic ,strong) NSString *hashId;
 @property (nonatomic ,strong) NSString *usersn;
 @property (nonatomic ,strong) NSString *userName;
 @property (nonatomic ,strong) NSString *passWord;

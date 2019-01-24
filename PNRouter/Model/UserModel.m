@@ -23,7 +23,7 @@
         [KeyCUtil saveStringToKeyWithString:userM.mj_JSONString key:USER_LOCAL];
     }
 }
-+ (void)createUserLocalWithName:(NSString *)name userid:(NSString *) userid version:(NSInteger)version filePay:(NSString *)filePay userpass:(NSString *)pass userSn:(NSString *) userSn
++ (void)createUserLocalWithName:(NSString *)name userid:(NSString *) userid version:(NSInteger)version filePay:(NSString *)filePay userpass:(NSString *)pass userSn:(NSString *) userSn hashid:(NSString *)hashid
 {
     NSString *modeJson = [KeyCUtil getKeyValueWithKey:USER_LOCAL];
     if (!modeJson || [modeJson isEmptyString]) {
@@ -34,6 +34,7 @@
         userM.username = name;
         userM.pass = pass;
         userM.userId = userid;
+        userM.hashId = hashid;
         userM.dataFileVersion = version;
         userM.dataFilePay = filePay;
         userM.userSn = userSn;
@@ -46,6 +47,7 @@
         userM.username = name;
         userM.pass = pass;
         userM.userId = userid;
+        userM.hashId = hashid;
         userM.dataFileVersion = version;
         userM.dataFilePay = filePay;
         userM.userSn = userSn;
@@ -65,8 +67,6 @@
 
 + (UserModel *)getUserModel {
     
-    
-    
     NSString *modeJson = [KeyCUtil getKeyValueWithKey:USER_LOCAL];
     UserModel *userM = nil;
     if (!modeJson || [modeJson isEmptyString]) {
@@ -78,11 +78,13 @@
             model.userSn = [UserConfig getShareObject].usersn;
             model.dataFilePay = [UserConfig getShareObject].dataFilePay;
             model.dataFileVersion = [UserConfig getShareObject].dataFileVersion;
+            model.hashId = [UserConfig getShareObject].hashId;
             return model;
         } else {
             userM = [[UserModel alloc] init];
             userM.username = @"";
             userM.userId = @"";
+            userM.hashId = @"";
         }
     } else {
         userM = [UserModel getObjectWithKeyValues:[modeJson mj_keyValues]];
@@ -102,12 +104,13 @@
     [KeyCUtil saveStringToKeyWithString:userM.mj_JSONString key:USER_LOCAL];
 }
 
-+ (void)updateUserLocalWithUserId:(NSString *)userId withUserName:(NSString *)userName userSn:(NSString *)userSn {
++ (void)updateUserLocalWithUserId:(NSString *)userId withUserName:(NSString *)userName userSn:(NSString *)userSn hashid:(NSString *)hashid{
    NSString *modeJson = [KeyCUtil getKeyValueWithKey:USER_LOCAL];
     UserModel *userM = nil;
     if (!modeJson || [modeJson isEmptyString]) {
         userM = [[UserModel alloc] init];
         userM.userId = userId;
+        userM.hashId = hashid;
         if (userName) {
             userName = [userName base64DecodedString];
         }
@@ -119,6 +122,7 @@
             [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
         }
         userM.userId = userId;
+        userM.hashId = hashid;
         userM.userSn = userSn;
         if (userName) {
             userName = [userName base64DecodedString];

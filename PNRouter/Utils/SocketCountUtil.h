@@ -11,6 +11,6 @@
 @interface SocketCountUtil : NSObject
 @property (nonatomic , assign) NSInteger reConnectCount;
 // 当前通话好友ID
-@property (nonatomic , strong) NSString *chatToID;
+@property (nonatomic , strong) NSString *chatTohashId;
 + (instancetype) getShareObject;
 @end

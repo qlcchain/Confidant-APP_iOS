@@ -58,7 +58,7 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@[@"Router management"],@[@"Share QRCode"],@[@"Settings"], nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@[@"Router management",@"Disk Management"],@[@"Share QRCode"],@[@"Settings"], nil];
     }
     return _dataArray;
 }
@@ -90,7 +90,6 @@
     [SocketMessageUtil sendUserIsOnLine:userM.userId?:@""];
     [self updateOnlineStatus:NO];
     [_tableV reloadSections:[NSIndexSet indexSetWithIndex:self.dataArray.count-1] withRowAnimation:UITableViewRowAnimationNone];
-    
     
 }
 
@@ -199,6 +198,8 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             [self jumpToRouterManagement];
+        } else if (indexPath.row == 1) {
+            
         }
     }
     if (indexPath.section == 1) {

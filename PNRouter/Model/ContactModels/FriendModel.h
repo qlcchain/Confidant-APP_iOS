@@ -19,6 +19,7 @@
 @property (nonatomic, copy) NSString *position;
 @property (nonatomic, copy) NSString *location;
 @property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSString *hashId;
 @property (nonatomic, copy) NSString *owerId;
 @property (nonatomic, copy) NSString *msg;
 @property (nonatomic, strong) NSDate *requestTime;

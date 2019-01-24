@@ -16,7 +16,8 @@
              @"username" : @"Name",
              @"remarks"  : @"Remarks",
               @"userId" : @"Id",
-              @"publicKey" : @"UserKey",
+             @"hashId" : @"Index",
+              @"signPublicKey" : @"UserKey",
               @"onLineStatu" : @"Status"
              };
 }

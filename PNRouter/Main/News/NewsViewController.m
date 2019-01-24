@@ -211,7 +211,7 @@
         model.userId = chatModel.friendID;
         model.username = chatModel.friendName;
         model.publicKey = chatModel.publicKey;
-        
+        model.signPublicKey = chatModel.signPublicKey;
         if (chatModel.isHD) {
             chatModel.isHD = NO;
             
@@ -320,7 +320,7 @@
         [self.dataArray removeAllObjects];
     }
     
-    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].userId)]];
+    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].hashId)]];
     NSMutableArray *tempArr = [NSMutableArray array];
     if (finfAlls && finfAlls.count > 0) {
         [tempArr addObjectsFromArray:finfAlls];

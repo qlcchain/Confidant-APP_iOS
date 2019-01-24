@@ -491,7 +491,7 @@
         if (retCode == 0) { //已激活
             [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
             [RouterModel updateRouterConnectStatusWithSn:usesn];
-            [UserModel createUserLocalWithName:userName userid:userid version:0 filePay:@"" userpass:@"" userSn:usesn];
+            [UserModel createUserLocalWithName:userName userid:userid version:0 filePay:@"" userpass:@"" userSn:usesn hashid:@""];
             [RouterModel updateRouterConnectStatusWithSn:usesn];
             LoginViewController *vc = [[LoginViewController alloc] init];
             [self setRootVCWithVC:vc];

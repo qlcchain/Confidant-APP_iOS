@@ -13,12 +13,12 @@
 @property (nonatomic, strong) NSString *MsgId;
 @property (nonatomic) NSInteger MsgType;
 @property (nonatomic) NSInteger TimeStatmp;
-@property (nonatomic, copy) NSString *From;
-@property (nonatomic, copy) NSString *To;
 @property (nonatomic, copy) NSString *Msg;
 @property (nonatomic, copy) NSString *FileName;
 @property (nonatomic, copy) NSString *FilePath;
-@property (nonatomic, copy) NSString *UserKey;
+@property (nonatomic, copy) NSString *Sign;
+@property (nonatomic, copy) NSString *PriKey;
+@property (nonatomic, copy) NSString *Nonce;
 @property (nonatomic, assign) CGFloat FileSize;
 @property (nonatomic, assign) NSInteger Sender;
 @property (nonatomic, assign) NSInteger Status;
