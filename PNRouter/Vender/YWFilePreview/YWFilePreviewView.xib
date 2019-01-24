@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,13 +16,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8By-XK-H0h">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="67"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UIX-Qc-vbi">
-                            <rect key="frame" x="0.0" y="20" width="375" height="47"/>
+                            <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AP3-Ii-Bkv">
-                                    <rect key="frame" x="10" y="0.0" width="35" height="47"/>
+                                    <rect key="frame" x="10" y="0.0" width="35" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="35" id="8Vf-gs-74M"/>
                                     </constraints>
@@ -32,7 +32,7 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3gO-T7-e9g">
-                                    <rect key="frame" x="55" y="0.0" width="265" height="47"/>
+                                    <rect key="frame" x="55" y="0.0" width="265" height="44"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -44,7 +44,7 @@
                                 <constraint firstItem="3gO-T7-e9g" firstAttribute="centerX" secondItem="UIX-Qc-vbi" secondAttribute="centerX" id="LVD-Kf-kQn"/>
                                 <constraint firstAttribute="bottom" secondItem="3gO-T7-e9g" secondAttribute="bottom" id="PQ7-Ij-psR"/>
                                 <constraint firstItem="3gO-T7-e9g" firstAttribute="top" secondItem="UIX-Qc-vbi" secondAttribute="top" id="eiQ-fJ-QYD"/>
-                                <constraint firstAttribute="height" constant="47" id="o4t-3c-O7d"/>
+                                <constraint firstAttribute="height" constant="44" id="o4t-3c-O7d"/>
                                 <constraint firstItem="AP3-Ii-Bkv" firstAttribute="leading" secondItem="UIX-Qc-vbi" secondAttribute="leading" constant="10" id="r2f-6a-XKd"/>
                                 <constraint firstAttribute="bottom" secondItem="AP3-Ii-Bkv" secondAttribute="bottom" id="y1Z-me-gxr"/>
                                 <constraint firstItem="AP3-Ii-Bkv" firstAttribute="top" secondItem="UIX-Qc-vbi" secondAttribute="top" id="yi4-X9-CzC"/>
@@ -56,11 +56,11 @@
                         <constraint firstAttribute="trailing" secondItem="UIX-Qc-vbi" secondAttribute="trailing" id="1SG-gR-7D8"/>
                         <constraint firstItem="UIX-Qc-vbi" firstAttribute="leading" secondItem="8By-XK-H0h" secondAttribute="leading" id="98j-px-sBc"/>
                         <constraint firstAttribute="bottom" secondItem="UIX-Qc-vbi" secondAttribute="bottom" id="Yhg-14-sUB"/>
-                        <constraint firstAttribute="height" constant="67" id="oyz-7g-7c0"/>
+                        <constraint firstAttribute="height" constant="64" id="oyz-7g-7c0"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dnf-O1-mf5">
-                    <rect key="frame" x="0.0" y="67" width="375" height="600"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>

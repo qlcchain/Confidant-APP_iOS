@@ -46,6 +46,8 @@ static NSString *Action_PullFileList = @"PullFileList";
 static NSString *Action_UploadFileReq = @"UploadFileReq";
 static NSString *Action_UploadFile = @"UploadFile";
 static NSString *Action_DelFile = @"DelFile";
+static NSString *Action_PullSharedFriend = @"PullSharedFriend";
+static NSString *Action_ShareFile = @"ShareFile";
 
 @class FriendModel;
 

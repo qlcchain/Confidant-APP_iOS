@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FilePreviewViewController : PNBaseViewController
+@interface FilePreviewDownloadViewController : PNBaseViewController
 
 @property (nonatomic, strong) NSString *filePath;
 

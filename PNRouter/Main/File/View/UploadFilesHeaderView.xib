@@ -24,6 +24,10 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="48" id="01t-av-qus"/>
                             </constraints>
+                            <state key="selected" image="icon_hook_black"/>
+                            <connections>
+                                <action selector="selectAction:" destination="-1" eventType="touchUpInside" id="mb1-9e-qYQ"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private Files" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K4h-aY-LAq">
                             <rect key="frame" x="48" y="12" width="87.5" height="19.5"/>
@@ -37,7 +41,7 @@
                             <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kU5-14-I7a">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_down_gray" translatesAutoresizingMaskIntoConstraints="NO" id="kU5-14-I7a">
                             <rect key="frame" x="348" y="25.5" width="10" height="5"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="10" id="KNf-Pm-bYD"/>
@@ -46,6 +50,9 @@
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jh1-7L-5EI">
                             <rect key="frame" x="48" y="0.0" width="327" height="56"/>
+                            <connections>
+                                <action selector="showCellAction:" destination="-1" eventType="touchUpInside" id="wnM-Zi-0G8"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -75,7 +82,18 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="2nm-CF-gPQ"/>
+            <connections>
+                <outlet property="arrowImg" destination="kU5-14-I7a" id="qIX-qX-YTn"/>
+                <outlet property="detailLab" destination="PaW-0t-cjy" id="ZaF-0I-qPb"/>
+                <outlet property="selectBtn" destination="YWK-Uq-CyM" id="xkj-yy-9Ld"/>
+                <outlet property="showCellBtn" destination="Jh1-7L-5EI" id="QAB-D0-0xa"/>
+                <outlet property="titleLab" destination="K4h-aY-LAq" id="4Nj-2e-po8"/>
+            </connections>
             <point key="canvasLocation" x="62" y="231"/>
         </view>
     </objects>
+    <resources>
+        <image name="icon_arrow_down_gray" width="12" height="6"/>
+        <image name="icon_hook_black" width="24" height="24"/>
+    </resources>
 </document>

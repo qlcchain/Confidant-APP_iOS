@@ -12,6 +12,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UploadFilesViewController">
             <connections>
+                <outlet property="fileImg" destination="N9u-Ej-Q9c" id="0Wy-jI-LWl"/>
+                <outlet property="fileNameLab" destination="peN-RZ-iCY" id="jjS-Hx-UE8"/>
+                <outlet property="fileSizeLab" destination="qpB-iW-yjh" id="jvO-Gj-gVI"/>
                 <outlet property="mainTable" destination="kgp-5e-EHC" id="42m-0l-yCX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -43,6 +46,9 @@
                                     <state key="normal" title="Cancel">
                                         <color key="titleColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="deviceRGB"/>
                                     </state>
+                                    <connections>
+                                        <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="MVX-G9-iLd"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rae-Y2-mZu">
                                     <rect key="frame" x="305" y="0.0" width="70" height="44"/>
@@ -54,6 +60,9 @@
                                     <state key="normal" title="Upload">
                                         <color key="titleColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="deviceRGB"/>
                                     </state>
+                                    <connections>
+                                        <action selector="uploadAction:" destination="-1" eventType="touchUpInside" id="rnw-1m-OEm"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

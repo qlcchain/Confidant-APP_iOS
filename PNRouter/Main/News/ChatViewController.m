@@ -619,6 +619,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:string nonce:nonceString];
         // 加密对称密钥
         NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
+        DDLogDebug(@"临时公钥：%@   对称密钥：%@",[EntryModel getShareObject].tempPublicKey,symmetryString);
        
         NSDictionary *params = @{@"Action":@"SendMsg",@"To":_friendModel.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
         NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];

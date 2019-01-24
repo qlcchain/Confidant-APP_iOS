@@ -12,12 +12,14 @@
 #import "FilePreviewViewController.h"
 #import "ArrangeAlertView.h"
 #import "FileMoreAlertView.h"
+#import "FilePreviewDownloadViewController.h"
 
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
+@property (weak, nonatomic) IBOutlet UIView *contentBack;
 @property (nonatomic) ArrangeType arrangeType;
 
 @end
@@ -29,6 +31,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self dataInit];
+    [self viewInit];
 }
 
 #pragma mark - Operation
@@ -45,6 +48,23 @@
     _arrangeType = ArrangeTypeByName;
     
     [_mainTable registerNib:[UINib nibWithNibName:MyFilesCellReuse bundle:nil] forCellReuseIdentifier:MyFilesCellReuse];
+}
+
+- (void)viewInit {
+    NSString *imgStr = @"";
+    NSString *tipStr = @"";
+    if (_filesType == FilesTypeMy) {
+        imgStr = @"icon_documents_my_gray";
+        tipStr = @"No document yet Come and upload it";
+    } else if (_filesType == FilesTypeShare) {
+        imgStr = @"icon_documents_share_gray";
+        tipStr = @"No documents yet Share them";
+    } else if (_filesType == FilesTypeReceived) {
+        imgStr = @"icon_documents_received_gray";
+        tipStr = @"No documents yet Let friends share";
+    }
+    
+    [self showEmptyViewToView:_contentBack img:[UIImage imageNamed:imgStr] title:tipStr];
 }
 
 - (void)showArrangeAlertView {
@@ -123,8 +143,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [self jumpToFilePreview];
-    
+    [self jumpToFilePreviewDownload];
 }
 
 #pragma mark - Transition
@@ -133,8 +152,8 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)jumpToFilePreview {
-    FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
+- (void)jumpToFilePreviewDownload {
+    FilePreviewDownloadViewController *vc = [[FilePreviewDownloadViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -15,8 +15,11 @@
 #import "UserConfig.h"
 #import "PNNavViewController.h"
 #import "PNDocumentPickerViewController.h"
+#import "UploadFilesViewController.h"
+#import "YWFilePreviewView.h"
+#import "FilePreviewViewController.h"
 
-@interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/>
+@interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/, UIDocumentPickerDelegate>
 
 //@property (weak, nonatomic) IBOutlet UILabel *fontLab;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
@@ -64,16 +67,16 @@
     _uploadAlertV = [UploadAlertView getInstance];
     @weakify_self
     [_uploadAlertV setPhotoB:^{
-        [weakSelf jumpToDocumentPicker];
+        [weakSelf jumpToDocumentPicker:DocumentPickerTypePhoto];
     }];
     [_uploadAlertV setVideoB:^{
-        [weakSelf jumpToDocumentPicker];
+        [weakSelf jumpToDocumentPicker:DocumentPickerTypeVideo];
     }];
     [_uploadAlertV setDocumentB:^{
-        [weakSelf jumpToDocumentPicker];
+        [weakSelf jumpToDocumentPicker:DocumentPickerTypeDocument];
     }];
     [_uploadAlertV setOtherB:^{
-        [weakSelf jumpToDocumentPicker];
+        [weakSelf jumpToDocumentPicker:DocumentPickerTypeOther];
     }];
     [_uploadAlertV show];
 }
@@ -247,14 +250,51 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)jumpToDocumentPicker {
-    PNDocumentPickerViewController *vc = [[PNDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.content",@"public.text",@"public.source-code",@"public.image",@"public.audiovisual-content",@"com.adobe.pdf",@"com.apple.keynote.key",@"com.microsoft.word.doc",@"com.microsoft.excel.xls",@"com.microsoft.powerpoint.ppt"] inMode:UIDocumentPickerModeImport];
-    //        vc.delegate = self;
+- (void)jumpToDocumentPicker:(DocumentPickerType)type {
+    NSArray *documentTypes = @[];
+    if (type == DocumentPickerTypePhoto) {
+        documentTypes = @[@"public.image"];
+    } else if (type == DocumentPickerTypeVideo) {
+        documentTypes = @[@"public.video"];
+    } else if (type == DocumentPickerTypeDocument) {
+        documentTypes = @[@"public.content"];
+    } else if (type == DocumentPickerTypeOther) {
+        documentTypes = @[@"public.item"];
+    }
+    PNDocumentPickerViewController *vc = [[PNDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeImport];
+    vc.delegate = self;
     vc.modalPresentationStyle = UIModalPresentationFullScreen;
-    vc.navigationController.navigationBar.tintColor = MAIN_PURPLE_COLOR;
-//    vc.navigationController.navigationBar.barTintColor = MAIN_PURPLE_COLOR;
-//    vc.allowsMultipleSelection = YES;
+    if (@available(iOS 11.0, *)) {
+        vc.allowsMultipleSelection = YES;
+    } else {
+        // Fallback on earlier versions
+    }
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)jumpToUploadFiles:(NSArray *)urlArr {
+    UploadFilesViewController *vc = [[UploadFilesViewController alloc] init];
+    vc.urlArr = urlArr;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - UIDocumentPickerDelegate
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls NS_AVAILABLE_IOS(11_0) {
+    NSLog(@"didPickDocumentsAtURLs:%@",urls);
+    
+//    NSURL *first = urls.firstObject;
+    
+    [self jumpToUploadFiles:urls];
+}
+
+// called if the user dismisses the document picker without selecting a document (using the Cancel button)
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    NSLog(@"documentPickerWasCancelled");
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url NS_DEPRECATED_IOS(8_0, 11_0, "Implement documentPicker:didPickDocumentsAtURLs: instead") {
+    NSLog(@"didPickDocumentAtURL:%@",url);
+    [self jumpToUploadFiles:@[url]];
 }
 
 #pragma mark - Noti

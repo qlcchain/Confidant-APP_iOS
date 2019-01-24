@@ -8,7 +8,9 @@
 
 #import "PNDocumentPickerViewController.h"
 
-@interface PNDocumentPickerViewController ()
+@interface PNDocumentPickerViewController () {
+    UIColor *beforeColor;
+}
 
 @end
 
@@ -24,13 +26,17 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [UIBarButtonItem.appearance setTitleTextAttributes:@{NSForegroundColorAttributeName:MAIN_PURPLE_COLOR} forState:UIControlStateNormal];
-    UIButton.appearance.tintColor = MAIN_PURPLE_COLOR;
+    beforeColor = UINavigationBar.appearance.tintColor;
+    UINavigationBar.appearance.tintColor = MAIN_PURPLE_COLOR;
+//    [UIBarButtonItem.appearance setTitleTextAttributes:@{NSForegroundColorAttributeName:MAIN_PURPLE_COLOR} forState:UIControlStateNormal];
+//    UIButton.appearance.tintColor = MAIN_PURPLE_COLOR;
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
+//    UINavigationBar.appearance.tintColor = beforeColor;
 }
 
 #pragma mark - Operation

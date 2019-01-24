@@ -205,4 +205,22 @@
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 
+#pragma mark - 拉取可分享文件好友列表
++ (void)sendPullSharedFriendWithUserId:(NSString *)UserId showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_PullSharedFriend,@"UserId":UserId?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+
+#pragma mark - 分享文件
++ (void)sendShareFileWithFromId:(NSString *)FromId ToId:(NSString *)ToId FileName:(NSString *)FileName DstKey:(NSString *)DstKey showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_ShareFile,@"FromId":FromId?:@"",@"ToId":ToId?:@"",@"FileName":FileName?:@"",@"DstKey":DstKey?:@""};
+    [SocketMessageUtil sendVersion2WithParams:params];
+}
+
 @end
