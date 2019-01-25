@@ -44,10 +44,10 @@
         
         NSString *fileName = resultArr[1];
         NSData *fileData = resultArr[2];
-       
-       
+        
         // 保存到本地
         fileName = [Base58Util Base58DecodeWithCodeName:fileName];
+        DDLogDebug(@"上传成功:%@",fileName);
         NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
         [fileData writeToFile:uploadDocPath atomically:YES];
         if (![SystemUtil isSocketConnect]) {

@@ -1014,7 +1014,7 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:PullFileList_Complete_Noti object:@[]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PullFileList_Complete_Noti object:receiveDic];
     }
 }
 

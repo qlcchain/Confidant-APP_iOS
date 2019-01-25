@@ -57,6 +57,7 @@
 		5825A24021FAC03700E6194B /* ChooseShareContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5825A23D21FAC03600E6194B /* ChooseShareContactViewController.xib */; };
 		5825A24121FAC03700E6194B /* ChooseShareContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A23E21FAC03600E6194B /* ChooseShareContactViewController.m */; };
 		5825A24421FAE78200E6194B /* SharedFriendModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A24321FAE78200E6194B /* SharedFriendModel.m */; };
+		5825A24721FB0B8E00E6194B /* FileListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A24621FB0B8E00E6194B /* FileListModel.m */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
@@ -547,6 +548,8 @@
 		5825A23F21FAC03600E6194B /* ChooseShareContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseShareContactViewController.h; sourceTree = "<group>"; };
 		5825A24221FAE78200E6194B /* SharedFriendModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedFriendModel.h; sourceTree = "<group>"; };
 		5825A24321FAE78200E6194B /* SharedFriendModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedFriendModel.m; sourceTree = "<group>"; };
+		5825A24521FB0B8E00E6194B /* FileListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileListModel.h; sourceTree = "<group>"; };
+		5825A24621FB0B8E00E6194B /* FileListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileListModel.m; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
@@ -1729,6 +1732,8 @@
 				7303310E21D22422007C4063 /* UserConfig.m */,
 				7317447221F072110018BA50 /* EntryModel.h */,
 				7317447321F072110018BA50 /* EntryModel.m */,
+				5825A24521FB0B8E00E6194B /* FileListModel.h */,
+				5825A24621FB0B8E00E6194B /* FileListModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3355,6 +3360,7 @@
 				73121A6C219BB59B00510B48 /* RoutherConfig.m in Sources */,
 				737883FF21ACF2970033A189 /* OCTCall.m in Sources */,
 				7378840821ACF2970033A189 /* OCTObject.m in Sources */,
+				5825A24721FB0B8E00E6194B /* FileListModel.m in Sources */,
 				73060558217719A5005A0E13 /* VPNFileInputView.m in Sources */,
 				736257AB2142149300D7FD6B /* UIView+HUD.m in Sources */,
 				7330F3C8214771D900FF4EEC /* BottonCell.m in Sources */,

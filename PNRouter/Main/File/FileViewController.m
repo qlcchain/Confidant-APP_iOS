@@ -41,7 +41,7 @@
 
 #pragma mark - Observe
 - (void)addObserve {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
 }
 
 - (void)dealloc {
@@ -535,14 +535,14 @@
 }
 
 #pragma mark - Noti
-- (void)pullFileListCompleteNoti:(NSNotification *)noti {
-    NSArray *arr = noti.object;
-    if (arr.count <= 0) {
-        
-    } else {
-        
-    }
-}
+//- (void)pullFileListCompleteNoti:(NSNotification *)noti {
+//    NSArray *arr = noti.object;
+//    if (arr.count <= 0) {
+//        
+//    } else {
+//        
+//    }
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

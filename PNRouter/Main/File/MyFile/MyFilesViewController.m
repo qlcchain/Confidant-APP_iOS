@@ -14,6 +14,7 @@
 #import "FileMoreAlertView.h"
 #import "FilePreviewDownloadViewController.h"
 #import "UserConfig.h"
+#import "FileListModel.h"
 
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -186,11 +187,15 @@
 
 #pragma mark - Noti
 - (void)pullFileListCompleteNoti:(NSNotification *)noti {
-    NSArray *arr = noti.object;
-    if (arr.count <= 0) {
+    NSDictionary *receiveDic = noti.object;
+    NSString *Payload = receiveDic[@"params"][@"Payload"];
+    NSArray *payloadArr = [FileListModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+    if (payloadArr == nil || payloadArr.count <= 0) {
         
     } else {
-        
+        [_sourceArr removeAllObjects];
+        [_sourceArr addObjectsFromArray:payloadArr];
+        [_mainTable reloadData];
     }
 }
 
