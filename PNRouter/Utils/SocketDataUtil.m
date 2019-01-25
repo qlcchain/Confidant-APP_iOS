@@ -358,7 +358,7 @@ struct ResultFile {
                 [[SocketManageUtil getShareObject] clearDisConnectSocket];
                 
                 if ([self.toid isEmptyString]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),self.fileName,self.fileMd5,@(self.fileSize),@(self.fileType),self.srcKey]];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),self.fileName,self.fileData,@(self.fileType),self.srcKey]];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
                 }
@@ -394,7 +394,7 @@ struct ResultFile {
             sendFinsh = YES;
             [_fileUtil disconnect];
             if ([self.toid isEmptyString]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,self.fileMd5,@(self.fileSize),@(self.fileType),self.srcKey]];
+                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,self.fileData,@(self.fileType),self.srcKey]];
             } else {
                  [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
             }

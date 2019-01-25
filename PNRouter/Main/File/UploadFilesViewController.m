@@ -26,6 +26,7 @@
 #import "MD5Util.h"
 #import "UploadFileManager.h"
 
+
 #define UploadFileURL @"UploadFileURL"
 
 @implementation UploadFilesShowModel
@@ -252,10 +253,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             int fileId = [SocketCountUtil getShareObject].fileIDCount;
             fileId += 1;
             
-            // 保存到本地
-            NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
-            [fileData writeToFile:uploadDocPath atomically:YES];
-            NSInteger fileSize = [NSString fileSizeAtPath:uploadDocPath];
             
             // 生成32位对称密钥
             NSString *msgKey = [SystemUtil get32AESKey];
@@ -269,9 +266,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             
             if ([SystemUtil isSocketConnect]) {
                 SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-                dataUtil.fileSize = fileSize;
                 dataUtil.srcKey = srcKey;
-                dataUtil.fileMd5 = [MD5Util md5WithPath:uploadDocPath];
                 dataUtil.fileid = [NSString stringWithFormat:@"%d",fileId];
                 [dataUtil sendFileId:@"" fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
