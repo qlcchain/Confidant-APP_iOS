@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskListViewController">
             <connections>
+                <outlet property="contentBack" destination="h9c-nP-d2T" id="NGQ-WK-MAN"/>
+                <outlet property="mainTable" destination="V9m-CI-9n8" id="0ve-TB-prd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

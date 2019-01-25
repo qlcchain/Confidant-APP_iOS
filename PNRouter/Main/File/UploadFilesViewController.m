@@ -24,7 +24,7 @@
 #import "AESCipher.h"
 #import "SocketManageUtil.h"
 #import "MD5Util.h"
-
+#import "UploadFileManager.h"
 
 #define UploadFileURL @"UploadFileURL"
 
@@ -142,6 +142,9 @@
 }
 
 - (IBAction)uploadAction:(id)sender {
+    UploadFileManager *uploadFileM = [UploadFileManager getShareObject];
+    //TODO:赋值
+    
     _uploadParams = [NSMutableArray array];
     @weakify_self
     [_urlArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -241,7 +244,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
         NSDictionary *dic = obj;
         NSString *tempMsgId = dic[@"msgid"];
         if ([tempMsgId isEqualToString:msgId]) {
-            //TODO:上传文件
+            // 上传文件
             NSURL *fileUrl = dic[UploadFileURL];
             NSString *fileName = [fileUrl lastPathComponent];
             NSData *fileData = [NSData dataWithContentsOfURL:fileUrl];
