@@ -85,11 +85,27 @@
     [view setClickB:^(ArrangeType type) {
         weakSelf.arrangeType = type;
         if (type == ArrangeTypeByName) {
+            [weakSelf.sourceArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                FileListModel *listM1 = obj1;
+                FileListModel *listM2 = obj2;
+                return [listM1.FileName compare:listM2.FileName];
+            }];
+            [weakSelf.mainTable reloadData];
             
         } else if (type == ArrangeTypeByTime) {
-            
+            [weakSelf.sourceArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                FileListModel *listM1 = obj1;
+                FileListModel *listM2 = obj2;
+                return [listM1.Timestamp compare:listM2.Timestamp];
+            }];
+            [weakSelf.mainTable reloadData];
         } else if (type == ArrangeTypeBySize) {
-            
+            [weakSelf.sourceArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                FileListModel *listM1 = obj1;
+                FileListModel *listM2 = obj2;
+                return [listM1.FileSize compare:listM2.FileSize];
+            }];
+            [weakSelf.mainTable reloadData];
         }
     }];
     [view showWithArrange:_arrangeType];
