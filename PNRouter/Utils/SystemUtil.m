@@ -154,12 +154,14 @@
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
     NSString *filePath = [NSString stringWithFormat:@"uploadFiles/%@_upload/%@",[UserConfig getShareObject].userId,fileName];
-    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+    NSString *filePathDir = [NSString stringWithFormat:@"uploadFiles/%@_upload",[UserConfig getShareObject].userId];
+    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePathDir] isDirectory:&isDir];
     if (!isexit || !isDir) {
-        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePathDir] withIntermediateDirectories:YES attributes:nil error:nil];
     }
     return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
 }
+
 + (NSString *)getTempUploadPhotoBaseFilePath {
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;

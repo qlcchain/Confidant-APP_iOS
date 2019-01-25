@@ -12,6 +12,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FilePreviewDownloadViewController">
             <connections>
+                <outlet property="icon" destination="OIL-eD-n0y" id="NuP-jW-1Yo"/>
+                <outlet property="nameLab" destination="ubp-ri-ZhI" id="U2K-Z1-kxo"/>
+                <outlet property="openTipLab" destination="reI-Km-XxT" id="E8x-8b-PNP"/>
+                <outlet property="previewBtn" destination="Ca1-F1-j3z" id="X40-g8-QnH"/>
+                <outlet property="progressV" destination="Pxa-cp-DAx" id="jgC-ES-Wcr"/>
+                <outlet property="sizeLab" destination="KTC-cZ-aKS" id="RjE-se-A3f"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -89,7 +95,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ryk-HM-5hf">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OIL-eD-n0y">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_doc_gray" translatesAutoresizingMaskIntoConstraints="NO" id="OIL-eD-n0y">
                                             <rect key="frame" x="139.5" y="55" width="96" height="104"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="96" id="Wc7-Fx-mUd"/>
@@ -114,7 +120,7 @@
                                             <color key="trackTintColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ca1-F1-j3z">
-                                            <rect key="frame" x="8" y="280.5" width="345" height="44"/>
+                                            <rect key="frame" x="15" y="280.5" width="345" height="44"/>
                                             <color key="backgroundColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="UoB-n9-C0e"/>
@@ -123,6 +129,9 @@
                                             <state key="normal" title="Preview Download">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </state>
+                                            <connections>
+                                                <action selector="previewAction:" destination="-1" eventType="touchUpInside" id="upt-zi-WYa"/>
+                                            </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This file type cannot be previewed You can open it with other applications" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="reI-Km-XxT">
                                             <rect key="frame" x="15" y="219.5" width="345" height="29"/>
@@ -134,7 +143,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="ubp-ri-ZhI" firstAttribute="centerX" secondItem="Ryk-HM-5hf" secondAttribute="centerX" id="2L6-e7-upa"/>
-                                        <constraint firstItem="Ca1-F1-j3z" firstAttribute="leading" secondItem="Ryk-HM-5hf" secondAttribute="leading" constant="8" id="3tE-N3-SMI"/>
+                                        <constraint firstItem="Ca1-F1-j3z" firstAttribute="leading" secondItem="Ryk-HM-5hf" secondAttribute="leading" constant="15" id="3tE-N3-SMI"/>
                                         <constraint firstItem="Pxa-cp-DAx" firstAttribute="leading" secondItem="Ryk-HM-5hf" secondAttribute="leading" constant="15" id="4gD-Ne-2wo"/>
                                         <constraint firstAttribute="trailing" secondItem="reI-Km-XxT" secondAttribute="trailing" constant="15" id="AVr-WE-8mn"/>
                                         <constraint firstAttribute="trailing" secondItem="ubp-ri-ZhI" secondAttribute="trailing" constant="8" id="Dve-DU-dOS"/>
@@ -144,7 +153,7 @@
                                         <constraint firstItem="reI-Km-XxT" firstAttribute="leading" secondItem="Ryk-HM-5hf" secondAttribute="leading" constant="15" id="Na6-Ww-qp8"/>
                                         <constraint firstItem="ubp-ri-ZhI" firstAttribute="leading" secondItem="Ryk-HM-5hf" secondAttribute="leading" constant="8" id="Ojs-I3-0d9"/>
                                         <constraint firstItem="Pxa-cp-DAx" firstAttribute="top" secondItem="ubp-ri-ZhI" secondAttribute="bottom" constant="10" id="RY5-iS-WrH"/>
-                                        <constraint firstAttribute="trailing" secondItem="Ca1-F1-j3z" secondAttribute="trailing" constant="22" id="Rwi-C2-m41"/>
+                                        <constraint firstAttribute="trailing" secondItem="Ca1-F1-j3z" secondAttribute="trailing" constant="15" id="Rwi-C2-m41"/>
                                         <constraint firstAttribute="trailing" secondItem="Pxa-cp-DAx" secondAttribute="trailing" constant="15" id="U5v-Yx-Snm"/>
                                         <constraint firstItem="ubp-ri-ZhI" firstAttribute="top" secondItem="OIL-eD-n0y" secondAttribute="bottom" constant="15" id="YdG-Td-Guk"/>
                                         <constraint firstItem="OIL-eD-n0y" firstAttribute="top" secondItem="Ryk-HM-5hf" secondAttribute="top" constant="55" id="cHH-Mo-Vms"/>
@@ -182,11 +191,12 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="tck-9k-Yt8" secondAttribute="trailing" id="w0Y-Oc-skg"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="116" y="23"/>
+            <point key="canvasLocation" x="116" y="22.938530734632685"/>
         </view>
     </objects>
     <resources>
         <image name="arrow-exit-h" width="24" height="24"/>
+        <image name="icon_doc_gray" width="96" height="104"/>
         <image name="icon_more_black" width="24" height="24"/>
     </resources>
 </document>
