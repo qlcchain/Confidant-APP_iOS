@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
+@property (nonatomic , assign) DocumentPickerType pickerType;
 
 @property (nonatomic, strong) UploadAlertView *uploadAlertV;
 
@@ -67,15 +68,19 @@
     _uploadAlertV = [UploadAlertView getInstance];
     @weakify_self
     [_uploadAlertV setPhotoB:^{
+        weakSelf.pickerType = DocumentPickerTypePhoto;
         [weakSelf jumpToDocumentPicker:DocumentPickerTypePhoto];
     }];
     [_uploadAlertV setVideoB:^{
+        weakSelf.pickerType = DocumentPickerTypeVideo;
         [weakSelf jumpToDocumentPicker:DocumentPickerTypeVideo];
     }];
     [_uploadAlertV setDocumentB:^{
+        weakSelf.pickerType = DocumentPickerTypeDocument;
         [weakSelf jumpToDocumentPicker:DocumentPickerTypeDocument];
     }];
     [_uploadAlertV setOtherB:^{
+        weakSelf.pickerType = DocumentPickerTypeOther;
         [weakSelf jumpToDocumentPicker:DocumentPickerTypeOther];
     }];
     [_uploadAlertV show];
@@ -274,6 +279,7 @@
 
 - (void)jumpToUploadFiles:(NSArray *)urlArr {
     UploadFilesViewController *vc = [[UploadFilesViewController alloc] init];
+    vc.documentType = self.pickerType;
     vc.urlArr = urlArr;
     [self.navigationController pushViewController:vc animated:YES];
 }

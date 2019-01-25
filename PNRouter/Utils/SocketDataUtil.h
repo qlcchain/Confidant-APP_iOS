@@ -13,6 +13,10 @@
 @property (nonatomic ,assign) BOOL isComplete;
 @property (nonatomic ,assign) BOOL isCancel;
 @property (nonatomic ,strong) NSString *fileid;
+@property (nonatomic ,strong) NSString *srcKey;
+@property (nonatomic ,strong) NSString *fileMd5;
+@property (nonatomic ,assign) NSInteger fileSize;
+
 
 //- (void) sendFileWithParames:(NSDictionary *) parames fileData:(NSData *) data;
 

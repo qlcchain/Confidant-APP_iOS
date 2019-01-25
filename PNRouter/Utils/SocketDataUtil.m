@@ -74,11 +74,14 @@ struct ResultFile {
 @property (nonatomic ,strong) NSData *fileData;
 @property (nonatomic ,strong) NSString *fileTextConnent;
 @property (nonatomic ,strong) NSString *toid;
+@property (nonatomic ,strong) NSString *fileName;
 @property (nonatomic ,strong) NSString *fileMessageId;
 @property (nonatomic ,strong) NSString *messageid;
 @property (nonatomic ,strong) NSMutableDictionary *statusDic;
 @property (nonatomic ,assign) uint32_t fileType;
 @property (nonatomic ,assign) NSInteger retCode;
+
+
 //@property (nonatomic ,assign) uint32_t currentSegSize; // 当前片段大小
 //@property (nonatomic ,assign) uint32_t currentSegSeq; // 当前片段序号
 //@property (nonatomic ,assign) uint32_t currentFileOffset; // 当前偏移量
@@ -158,7 +161,6 @@ struct ResultFile {
                 // 发送失败通知
                  _isComplete = YES;
                  [_fileUtil disconnect];
-                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:text];
             }
         }
     } else if ([action isEqualToString:Action_SendFileEnd]) {
@@ -267,6 +269,7 @@ struct ResultFile {
   
     
     fileName = [Base58Util Base58EncodeWithCodeName:fileName];
+    self.fileName = fileName;
     self.messageid = messageid;
     self.fileType = fileType;
     self.fileData = imgData;
@@ -305,9 +308,13 @@ struct ResultFile {
     sendFile.segmore = segMoreBlg;
     sendFile.cotinue = 0;
     
-    memcpy(sendFile.toid, [toid cStringUsingEncoding:NSASCIIStringEncoding],[toid length]);
+    if (![toid isEmptyString]) {
+        memcpy(sendFile.toid, [toid cStringUsingEncoding:NSASCIIStringEncoding],[toid length]);
+    }
     memcpy(sendFile.srcKey, [srcKey cStringUsingEncoding:NSASCIIStringEncoding],[srcKey length]);
-    memcpy(sendFile.dstKey, [dstKey cStringUsingEncoding:NSASCIIStringEncoding],[dstKey length]);
+    if (![dstKey isEmptyString]) {
+        memcpy(sendFile.dstKey, [dstKey cStringUsingEncoding:NSASCIIStringEncoding],[dstKey length]);
+    }
     
     printf("srckey = %s , dskey = %s",sendFile.srcKey,sendFile.dstKey);
 
@@ -349,7 +356,14 @@ struct ResultFile {
                     weakSelf.retCode = 2;
                 }
                 [[SocketManageUtil getShareObject] clearDisConnectSocket];
-                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
+                
+                if ([self.toid isEmptyString]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),self.fileName,self.fileMd5,@(self.fileSize),@(self.fileType),self.srcKey]];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
+                }
+                
+                
             }
         }
     }];
@@ -379,7 +393,12 @@ struct ResultFile {
         if (sendFile.segmore == 0) { //文件发送完成
             sendFinsh = YES;
             [_fileUtil disconnect];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
+            if ([self.toid isEmptyString]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,self.fileMd5,@(self.fileSize),@(self.fileType),self.srcKey]];
+            } else {
+                 [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
+            }
+           
             return;
         }
         if (![_fileUtil isConnected]) { // socket断开连接

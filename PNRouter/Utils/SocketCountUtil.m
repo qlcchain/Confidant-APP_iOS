@@ -13,7 +13,7 @@
 + (instancetype) getShareObject
 {
     // 重连的菊花hidden
-    [AppD.window hideHud];
+   // [AppD.window hideHud];
     static id shareObject = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

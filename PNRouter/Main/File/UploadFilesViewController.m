@@ -14,6 +14,17 @@
 #import "NSString+File.h"
 #import "PNRouter-Swift.h"
 #import "FriendModel.h"
+#import "SystemUtil.h"
+#import "SocketDataUtil.h"
+#import "SocketCountUtil.h"
+#import "NSString+Base64.h"
+#import "NSData+Base64.h"
+#import "LibsodiumUtil.h"
+#import "EntryModel.h"
+#import "AESCipher.h"
+#import "SocketManageUtil.h"
+#import "MD5Util.h"
+
 
 #define UploadFileURL @"UploadFileURL"
 
@@ -38,6 +49,7 @@
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileReqSuccessNoti:) name:UploadFileReq_Success_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseShareFriendNoti:) name:CHOOSE_Share_FRIEND_NOTI object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileReqSuccessNoti:) name:FILE_SEND_NOTI object:nil];
     
 }
 
@@ -48,7 +60,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+    [self addObserve];
     [self dataInit];
     [self viewInit];
 }
@@ -224,14 +236,43 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 #pragma mark - Noti
 - (void)uploadFileReqSuccessNoti:(NSNotification *)noti {
     NSString *msgId = noti.object;
+    @weakify_self
     [_uploadParams enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSDictionary *dic = obj;
         NSString *tempMsgId = dic[@"msgid"];
         if ([tempMsgId isEqualToString:msgId]) {
             //TODO:上传文件
             NSURL *fileUrl = dic[UploadFileURL];
-            NSString *filePath = fileUrl.path;
+            NSString *fileName = [fileUrl lastPathComponent];
+            NSData *fileData = [NSData dataWithContentsOfURL:fileUrl];
+            int fileType = [@(weakSelf.documentType) intValue];
+            int fileId = [SocketCountUtil getShareObject].fileIDCount;
+            fileId += 1;
             
+            // 保存到本地
+            NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
+            [fileData writeToFile:uploadDocPath atomically:YES];
+            NSInteger fileSize = [NSString fileSizeAtPath:uploadDocPath];
+            
+            // 生成32位对称密钥
+            NSString *msgKey = [SystemUtil get32AESKey];
+            NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *symmetKey = [symmetData base64EncodedString];
+            // 自己公钥加密对称密钥
+            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+            
+            NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+            fileData = aesEncryptData(fileData,msgKeyData);
+            
+            if ([SystemUtil isSocketConnect]) {
+                SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+                dataUtil.fileSize = fileSize;
+                dataUtil.srcKey = srcKey;
+                dataUtil.fileMd5 = [MD5Util md5WithPath:uploadDocPath];
+                dataUtil.fileid = [NSString stringWithFormat:@"%d",fileId];
+                [dataUtil sendFileId:@"" fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
+                [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+            }
             
         }
     }];

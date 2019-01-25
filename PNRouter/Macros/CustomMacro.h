@@ -94,6 +94,8 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define CHOOSE_FRIEND_NOTI @"CHOOSE_FRIEND_NOTI"
 // 文件发送通知
 #define FILE_SEND_NOTI @"FILE_SEND_NOTI"
+// 上传文字文件发送通知
+#define FILE_UPLOAD_NOTI @"FILE_UPLOAD_NOTI"
 // 收到文件发送通知
 #define RECEVIE_FILE_NOTI @"RECEVIE_FILE_NOTI"
 // 用户找回通知

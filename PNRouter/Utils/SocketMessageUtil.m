@@ -1021,7 +1021,7 @@
 + (void)handleUploadFileReq:(NSDictionary *)receiveDic {
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
-    NSString *msgId = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"MsgId"]];
+    NSString *msgId = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:UploadFileReq_Success_Noti object:msgId];
     } else if (retCode == 1) {

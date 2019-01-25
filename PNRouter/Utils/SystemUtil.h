@@ -35,4 +35,6 @@
 + (BOOL) isFriendWithFriendid:(NSString *) friendId;
 + (BOOL) writeDataToFileWithFilePath:(NSString *) filePath withData:(NSData *) data;
 + (BOOL)isVPNOn;
+// 得到自己上传文件的 filepath
++ (NSString *) getOwerUploadFilePathWithFileName:(NSString *) fileName;
 @end

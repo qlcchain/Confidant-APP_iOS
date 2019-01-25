@@ -11,10 +11,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef enum : NSUInteger {
-    DocumentPickerTypePhoto,
-    DocumentPickerTypeVideo,
-    DocumentPickerTypeDocument,
-    DocumentPickerTypeOther,
+    DocumentPickerTypePhoto = 1,
+    DocumentPickerTypeVideo = 4,
+    DocumentPickerTypeDocument = 5,
+    DocumentPickerTypeOther = 6,
 } DocumentPickerType;
 
 @interface PNDocumentPickerViewController : UIDocumentPickerViewController

@@ -372,6 +372,7 @@
 		73899CC72152011000962B14 /* GuidePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73899CC02152011000962B14 /* GuidePageViewController.m */; };
 		7392791121F72203003AAD58 /* DiskManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392790F21F72203003AAD58 /* DiskManagerViewController.m */; };
 		7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7392791021F72203003AAD58 /* DiskManagerViewController.xib */; };
+		7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392791421FAF356003AAD58 /* UploadFileManager.m */; };
 		73A4867021B94B220062C34F /* ConnectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A4866F21B94B220062C34F /* ConnectView.m */; };
 		73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A4867121B94B3A0062C34F /* ConnectView.xib */; };
 		73C4E35A219AC8B400EEFAC1 /* SendRequestUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C4E359219AC8B400EEFAC1 /* SendRequestUtil.m */; };
@@ -1184,6 +1185,8 @@
 		7392790E21F72203003AAD58 /* DiskManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiskManagerViewController.h; sourceTree = "<group>"; };
 		7392790F21F72203003AAD58 /* DiskManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiskManagerViewController.m; sourceTree = "<group>"; };
 		7392791021F72203003AAD58 /* DiskManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskManagerViewController.xib; sourceTree = "<group>"; };
+		7392791321FAF356003AAD58 /* UploadFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadFileManager.h; sourceTree = "<group>"; };
+		7392791421FAF356003AAD58 /* UploadFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFileManager.m; sourceTree = "<group>"; };
 		73A4866E21B94B220062C34F /* ConnectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectView.h; sourceTree = "<group>"; };
 		73A4866F21B94B220062C34F /* ConnectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectView.m; sourceTree = "<group>"; };
 		73A4867121B94B3A0062C34F /* ConnectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectView.xib; sourceTree = "<group>"; };
@@ -2525,6 +2528,8 @@
 				73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */,
 				73F8806F21ED7EE00047C3DA /* LibsodiumUtil.h */,
 				73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */,
+				7392791321FAF356003AAD58 /* UploadFileManager.h */,
+				7392791421FAF356003AAD58 /* UploadFileManager.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3554,6 +3559,7 @@
 				581FDF4221F024170068C120 /* list.m in Sources */,
 				7330F37A2146118800FF4EEC /* UIImage+Color.m in Sources */,
 				73D00EAF215F13700013E20D /* SocketFileUtil.swift in Sources */,
+				7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */,
 				7378840121ACF2970033A189 /* OCTNode.m in Sources */,
 				737883F021ACF2970033A189 /* OCTTox.m in Sources */,
 				7330F4E32149147200FF4EEC /* CDLabel.m in Sources */,

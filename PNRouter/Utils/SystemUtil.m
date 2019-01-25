@@ -147,6 +147,19 @@
     return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
 }
 
+// 得到自己上传文件的 filepath
++ (NSString *) getOwerUploadFilePathWithFileName:(NSString *) fileName
+{
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"uploadFiles/%@_upload/%@",[UserConfig getShareObject].userId,fileName];
+    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
+}
+
 + (BOOL) filePathisExist:(NSString *) filePath
 {
      NSFileManager *manage = [NSFileManager defaultManager];
