@@ -93,7 +93,7 @@
         
     }];
     [view setOtherApplicationOpenB:^{
-        
+        [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:@""]];
     }];
     [view setDetailInformationB:^{
         [weakSelf jumpToDetailInformation];
@@ -106,6 +106,12 @@
     }];
     
     [view show];
+}
+
+- (void)otherApplicationOpen:(NSURL *)fileURL {
+    NSArray *items = @[fileURL];
+    UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
+    [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }
 
 #pragma mark - Action

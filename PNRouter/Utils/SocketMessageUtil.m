@@ -118,6 +118,23 @@
     }
 }
 
++ (void)sendVersion2WithParams:(NSDictionary *)params fetchParam:(void(^)(NSDictionary *dic))paramB {
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRegiserBaseParams]];
+    if (paramB) {
+        paramB(muDic);
+    }
+    //    NSString *paramsJson = params.mj_JSONString;
+    //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
+    [muDic setObject:params forKey:@"params"];
+    NSString *text = muDic.mj_JSONString;
+    if (AppD.manager) {
+        [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
+    } else {
+        [SocketUtil.shareInstance sendWithText:text];
+    }
+}
+
+
 /**
  发送文本聊天消息 ->msgid
  */
@@ -1004,8 +1021,13 @@
 + (void)handleUploadFileReq:(NSDictionary *)receiveDic {
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
-    
+    NSString *msgId = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"MsgId"]];
     if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:UploadFileReq_Success_Noti object:msgId];
+    } else if (retCode == 1) {
+        [AppD.window showHint:@"Existing file with the same name"];
+    } else if (retCode == 2) {
+        [AppD.window showHint:@"Not enough space"];
     }
 }
 

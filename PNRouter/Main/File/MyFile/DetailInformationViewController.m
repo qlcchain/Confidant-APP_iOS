@@ -18,6 +18,10 @@
 
 @end
 
+@implementation DetailInformationShowModel
+
+@end
+
 @interface DetailInformationViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *sourceArr;
