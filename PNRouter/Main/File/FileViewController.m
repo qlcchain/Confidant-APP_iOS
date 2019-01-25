@@ -61,7 +61,7 @@
     
     [_mainTable registerNib:[UINib nibWithNibName:FileCellReuse bundle:nil] forCellReuseIdentifier:FileCellReuse];
     
-    [self sendPullFileList];
+//    [self sendPullFileList];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -307,14 +307,14 @@
 }
 
 #pragma mark - Request
-- (void)sendPullFileList {
-    NSString *UserId = [UserConfig getShareObject].userId;
-    NSNumber *MsgStartId = @(0);
-    NSNumber *MsgNum = @(15);
-    NSNumber *Category = @(0);
-    NSNumber *FileType = @(0);
-    [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
-}
+//- (void)sendPullFileList {
+//    NSString *UserId = [UserConfig getShareObject].userId;
+//    NSNumber *MsgStartId = @(0);
+//    NSNumber *MsgNum = @(15);
+//    NSNumber *Category = @(0);
+//    NSNumber *FileType = @(0);
+//    [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
+//}
 
 #pragma mark - Action
 

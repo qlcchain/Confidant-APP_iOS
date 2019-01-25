@@ -13,6 +13,7 @@
 #import "ArrangeAlertView.h"
 #import "FileMoreAlertView.h"
 #import "FilePreviewDownloadViewController.h"
+#import "UserConfig.h"
 
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -26,12 +27,22 @@
 
 @implementation MyFilesViewController
 
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
     [self dataInit];
     [self viewInit];
+    [self sendPullFileList];
 }
 
 #pragma mark - Operation
@@ -114,6 +125,16 @@
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }
 
+#pragma mark - Request
+- (void)sendPullFileList {
+    NSString *UserId = [UserConfig getShareObject].userId;
+    NSNumber *MsgStartId = @(0);
+    NSNumber *MsgNum = @(15);
+    NSNumber *Category = @(0);
+    NSNumber *FileType = @(0);
+    [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
+}
+
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
@@ -161,6 +182,16 @@
 - (void)jumpToFilePreviewDownload {
     FilePreviewDownloadViewController *vc = [[FilePreviewDownloadViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Noti
+- (void)pullFileListCompleteNoti:(NSNotification *)noti {
+    NSArray *arr = noti.object;
+    if (arr.count <= 0) {
+        
+    } else {
+        
+    }
 }
 
 @end
