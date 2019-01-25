@@ -8,6 +8,7 @@
 
 #import "MyFilesCell.h"
 #import "FileListModel.h"
+#import "PNRouter-Swift.h"
 
 @implementation MyFilesCell
 
@@ -25,8 +26,8 @@
 - (void)configCellWithModel:(FileListModel *)model {
     _selectLeftWidth.constant = model.showSelect?40:0;
     _selectBtn.selected = model.isSelect;
-    _icon.image = [UIImage imageNamed:@""];
-    _titleLab.text = model.FileName;
+    _icon.image = [UIImage imageNamed:@"icon_document_small_gray"];
+    _titleLab.text = [Base58Util Base58DecodeWithCodeName:model.FileName];
     _detailLab.text = [NSString stringWithFormat:@"%@ %@",model.FileSize,model.Timestamp];
 }
 
