@@ -575,10 +575,7 @@ static dispatch_once_t onceToken;
     if ([presets containsObject:presetName]) {
         AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:videoAsset presetName:presetName];
         
-        NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-        NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
-        outputPath =  [[SystemUtil getBaseFilePath:self.friendid] stringByAppendingPathComponent:outputPath];
-        session.outputURL = [NSURL fileURLWithPath:outputPath];
+        session.outputURL = [NSURL fileURLWithPath:_outputPath?:@""];
         // Optimize for network use.
         session.shouldOptimizeForNetworkUse = true;
         
@@ -619,7 +616,7 @@ static dispatch_once_t onceToken;
                     case AVAssetExportSessionStatusCompleted: {
                         NSLog(@"AVAssetExportSessionStatusCompleted");
                         if (success) {
-                            success(outputPath);
+                            success(_outputPath);
                         }
                     }  break;
                     case AVAssetExportSessionStatusFailed: {

@@ -15,6 +15,14 @@ static NSString *MyFilesCellReuse = @"MyFilesCell";
 
 @interface MyFilesCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *selectLeftWidth;
+@property (weak, nonatomic) IBOutlet UIButton *selectBtn;
+@property (weak, nonatomic) IBOutlet UIImageView *icon;
+@property (weak, nonatomic) IBOutlet UILabel *titleLab;
+@property (weak, nonatomic) IBOutlet UILabel *detailLab;
+@property (weak, nonatomic) IBOutlet UIButton *moreBtn;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

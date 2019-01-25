@@ -145,5 +145,7 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define UploadFileReq_Success_Noti @"UploadFileReq_Success_Noti"
 // 选择分享好友列表完成通知
 #define CHOOSE_Share_FRIEND_NOTI @"CHOOSE_Share_FRIEND_NOTI"
+// 拉取可分享文件好友列表成功通知
+#define PullSharedFriend_Noti @"PullSharedFriend_Noti"
 
 #endif /* CustomMacro_h */

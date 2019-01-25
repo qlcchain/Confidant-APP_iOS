@@ -17,7 +17,8 @@
 @interface TZImageManager : NSObject
 
 @property (nonatomic, strong) PHCachingImageManager *cachingImageManager;
-@property (nonatomic, strong) NSString *friendid;
+//@property (nonatomic, strong) NSString *friendid;
+@property (nonatomic, strong) NSString *outputPath;
 
 + (instancetype)manager NS_SWIFT_NAME(default());
 + (void)deallocManager;

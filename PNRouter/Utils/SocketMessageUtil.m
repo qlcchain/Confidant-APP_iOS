@@ -1052,6 +1052,7 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PullSharedFriend_Noti object:receiveDic];
     }
 }
 
