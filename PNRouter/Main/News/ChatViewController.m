@@ -358,11 +358,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         
         // 生成32位对称密钥
         NSString *msgKey = [SystemUtil get32AESKey];
+        NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *symmetKey = [symmetData base64EncodedString];
         // 好友公钥加密对称密钥
-        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.friendModel.publicKey];
+        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:self.friendModel.publicKey];
         // 自己公钥加密对称密钥
-        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
-        
+        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+      
         NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
         data = aesEncryptData(data,msgKeyData);
         
@@ -471,10 +473,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         
         // 生成32位对称密钥
         NSString *msgKey = [SystemUtil get32AESKey];
+        NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *symmetKey = [symmetData base64EncodedString];
         // 好友公钥加密对称密钥
-        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.friendModel.publicKey];
+        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:self.friendModel.publicKey];
         // 自己公钥加密对称密钥
-        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
         
         NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
         txtData = aesEncryptData(txtData,msgKeyData);
@@ -553,10 +557,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     
     // 生成32位对称密钥
     NSString *msgKey = [SystemUtil get32AESKey];
+    NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *symmetKey = [symmetData base64EncodedString];
     // 好友公钥加密对称密钥
-    NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.friendModel.publicKey];
+    NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:self.friendModel.publicKey];
     // 自己公钥加密对称密钥
-    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
     
     NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
     imgData = aesEncryptData(imgData,msgKeyData);
@@ -724,7 +730,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
                         } else {
                              msgkey = obj.srckey;
                         }
-                        NSString *datakey = [[LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey] substringToIndex:16];
+                        
+                        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
+                        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                        
                         fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                         [SystemUtil removeDocmentFilePath:tempPath];
                         
@@ -889,10 +898,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
                 
                 // 生成32位对称密钥
                 NSString *msgKey = [SystemUtil get32AESKey];
+                NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+                NSString *symmetKey = [symmetData base64EncodedString];
                 // 好友公钥加密对称密钥
-                NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:model.publicKey];
+                NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
                 // 自己公钥加密对称密钥
-                NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+                NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
                 
                 NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
                 NSData *enData = aesEncryptData(fileDatas,msgKeyData);
@@ -1313,10 +1324,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             model.fileName = [[outputPath componentsSeparatedByString:@"/"] lastObject];
             // 生成32位对称密钥
             NSString *msgKey = [SystemUtil get32AESKey];
+            NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *symmetKey = [symmetData base64EncodedString];
             // 好友公钥加密对称密钥
-            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:model.publicKey];
+            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
             // 自己公钥加密对称密钥
-            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
             
             NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
             mediaData = aesEncryptData(mediaData,msgKeyData);
@@ -1481,10 +1494,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             
             // 生成32位对称密钥
             NSString *msgKey = [SystemUtil get32AESKey];
+            NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *symmetKey = [symmetData base64EncodedString];
             // 好友公钥加密对称密钥
-            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:model.publicKey];
+            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
             // 自己公钥加密对称密钥
-            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
             
             NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
             imgData = aesEncryptData(imgData,msgKeyData);

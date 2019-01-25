@@ -265,10 +265,12 @@
         
         // 生成32位对称密钥
         NSString *msgKey = [SystemUtil get32AESKey];
+        NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *symmetKey = [symmetData base64EncodedString];
         // 好友公钥加密对称密钥
-        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.msgModal.publicKey];
+        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:self.msgModal.publicKey];
         // 自己公钥加密对称密钥
-        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
         
         NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
         fileData = aesEncryptData(fileData,msgKeyData);
@@ -324,7 +326,8 @@
                 NSLog(@"下载文件成功! filePath ===== %@",filePath);
                 if (data.length > 0) {
                     if (msgkey) {
-                        NSString *datakey = [[LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey] substringToIndex:16];
+                        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
+                        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                         if (datakey && ![datakey isEmptyString]) {
                             data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                             [SystemUtil removeDocmentFilePath:path];
