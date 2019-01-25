@@ -41,6 +41,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self addObserve];
     [self dataInit];
     [self viewInit];
     [self sendPullFileList];
@@ -63,6 +64,11 @@
 }
 
 - (void)viewInit {
+    [self showEmptyView];
+    
+}
+
+- (void)showEmptyView {
     NSString *imgStr = @"";
     NSString *tipStr = @"";
     if (_filesType == FilesTypeMy) {
@@ -207,8 +213,9 @@
     NSString *Payload = receiveDic[@"params"][@"Payload"];
     NSArray *payloadArr = [FileListModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
     if (payloadArr == nil || payloadArr.count <= 0) {
-        
+        [self showEmptyView];
     } else {
+        [self hideEmptyView];
         [_sourceArr removeAllObjects];
         [_sourceArr addObjectsFromArray:payloadArr];
         [_mainTable reloadData];
