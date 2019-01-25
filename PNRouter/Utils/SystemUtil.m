@@ -140,12 +140,13 @@
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
     NSString *filePath = [NSString stringWithFormat:@"files/%@",friendid];
-    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+    BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
     if (!isexit || !isDir) {
         [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
     }
     return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
 }
+
 
 // 得到自己上传文件的 filepath
 + (NSString *) getOwerUploadFilePathWithFileName:(NSString *) fileName
@@ -154,6 +155,27 @@
     BOOL isDir = NO;
     NSString *filePath = [NSString stringWithFormat:@"uploadFiles/%@_upload/%@",[UserConfig getShareObject].userId,fileName];
     BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+}
++ (NSString *)getTempUploadPhotoBaseFilePath {
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = @"upload_photo";
+    BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
+}
+
++ (NSString *)getTempUploadVideoBaseFilePath {
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = @"upload_video";
+    BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
     if (!isexit || !isDir) {
         [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
     }

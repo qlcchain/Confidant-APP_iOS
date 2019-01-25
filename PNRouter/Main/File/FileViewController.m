@@ -18,8 +18,14 @@
 #import "UploadFilesViewController.h"
 #import "YWFilePreviewView.h"
 #import "FilePreviewViewController.h"
+#import "ChooseShareContactViewController.h"
+#import <AVFoundation/AVFoundation.h>
+#import <AudioToolbox/AudioToolbox.h>
+#import "TZImagePickerController.h"
+#import "NSDate+Category.h"
+#import "SystemUtil.h"
 
-@interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/, UIDocumentPickerDelegate>
+@interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/, UIDocumentPickerDelegate, UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
 //@property (weak, nonatomic) IBOutlet UILabel *fontLab;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
@@ -69,11 +75,13 @@
     @weakify_self
     [_uploadAlertV setPhotoB:^{
         weakSelf.pickerType = DocumentPickerTypePhoto;
-        [weakSelf jumpToDocumentPicker:DocumentPickerTypePhoto];
+        [weakSelf showPhotoLib];
+//        [weakSelf jumpToDocumentPicker:DocumentPickerTypePhoto];
     }];
     [_uploadAlertV setVideoB:^{
         weakSelf.pickerType = DocumentPickerTypeVideo;
-        [weakSelf jumpToDocumentPicker:DocumentPickerTypeVideo];
+        [weakSelf showVideoLib];
+//        [weakSelf jumpToDocumentPicker:DocumentPickerTypeVideo];
     }];
     [_uploadAlertV setDocumentB:^{
         weakSelf.pickerType = DocumentPickerTypeDocument;
@@ -84,6 +92,218 @@
         [weakSelf jumpToDocumentPicker:DocumentPickerTypeOther];
     }];
     [_uploadAlertV show];
+}
+
+- (void)showPhotoLib {
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    @weakify_self
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        if (status == PHAuthorizationStatusAuthorized) {
+            if (authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied) {
+                // 无相机权限 做一个友好的提示
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.view endEditing:YES];
+                    [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
+                });
+                
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.view endEditing:YES];
+                    [weakSelf pushTZImagePickerControllerWithIsSelectImgage:YES];
+                });
+            }
+        }else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.view endEditing:YES];
+                [AppD.window showHint:@"Denied or Restricted"];
+            });
+        }
+    }];
+}
+
+- (void)showVideoLib {
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    @weakify_self
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        if (status == PHAuthorizationStatusAuthorized) {
+            if (authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.view endEditing:YES];
+                    [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
+                });
+                // 无相机权限 做一个友好的提示
+                
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf pushTZImagePickerControllerWithIsSelectImgage:NO];
+                });
+                
+            }
+        }else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.view endEditing:YES];
+                [AppD.window showHint:@"Denied or Restricted"];
+            });
+            
+        }
+    }];
+}
+
+- (void)pushTZImagePickerControllerWithIsSelectImgage:(BOOL) isImage {
+    
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 columnNumber:3 delegate:self pushPhotoPickerVc:YES];
+    // imagePickerVc.navigationBar.translucent = NO;
+    
+#pragma mark - 五类个性化设置，这些参数都可以不传，此时会走默认设置
+    imagePickerVc.isSelectOriginalPhoto = NO;
+    imagePickerVc.allowTakePicture = isImage; // 在内部显示拍照按钮
+    imagePickerVc.allowTakeVideo = !isImage;   // 在内部显示拍视频按
+    imagePickerVc.videoMaximumDuration = 15; // 视频最大拍摄时间
+    [imagePickerVc setUiImagePickerControllerSettingBlock:^(UIImagePickerController *imagePickerController) {
+        imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
+    }];
+    
+    // imagePickerVc.photoWidth = 1000;
+    
+    // 2. Set the appearance
+    // 2. 在这里设置imagePickerVc的外观
+    // imagePickerVc.navigationBar.barTintColor = [UIColor greenColor];
+    // imagePickerVc.oKButtonTitleColorDisabled = [UIColor lightGrayColor];
+    // imagePickerVc.oKButtonTitleColorNormal = [UIColor greenColor];
+    // imagePickerVc.navigationBar.translucent = NO;
+    imagePickerVc.iconThemeColor = [UIColor colorWithRed:31 / 255.0 green:185 / 255.0 blue:34 / 255.0 alpha:1.0];
+    imagePickerVc.showPhotoCannotSelectLayer = YES;
+    imagePickerVc.cannotSelectLayerColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
+    [imagePickerVc setPhotoPickerPageUIConfigBlock:^(UICollectionView *collectionView, UIView *bottomToolBar, UIButton *previewButton, UIButton *originalPhotoButton, UILabel *originalPhotoLabel, UIButton *doneButton, UIImageView *numberImageView, UILabel *numberLabel, UIView *divideLine) {
+        [doneButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    }];
+    /*
+     [imagePickerVc setAssetCellDidSetModelBlock:^(TZAssetCell *cell, UIImageView *imageView, UIImageView *selectImageView, UILabel *indexLabel, UIView *bottomView, UILabel *timeLength, UIImageView *videoImgView) {
+     cell.contentView.clipsToBounds = YES;
+     cell.contentView.layer.cornerRadius = cell.contentView.tz_width * 0.5;
+     }];
+     */
+    
+    // 3. Set allow picking video & photo & originalPhoto or not
+    // 3. 设置是否可以选择视频/图片/原图
+    imagePickerVc.allowPickingVideo = !isImage;
+    imagePickerVc.allowPickingImage = isImage;
+    imagePickerVc.allowPickingOriginalPhoto = isImage;
+    imagePickerVc.allowPickingGif = NO;
+    imagePickerVc.allowPickingMultipleVideo = NO; // 是否可以多选视频
+    
+    
+    // 4. 照片排列按修改时间升序
+    imagePickerVc.sortAscendingByModificationDate = YES;
+    
+    // imagePickerVc.minImagesCount = 3;
+    imagePickerVc.alwaysEnableDoneBtn = YES;
+    
+    // imagePickerVc.minPhotoWidthSelectable = 3000;
+    // imagePickerVc.minPhotoHeightSelectable = 2000;
+    
+    /// 5. Single selection mode, valid when maxImagesCount = 1
+    /// 5. 单选模式,maxImagesCount为1时才生效
+    imagePickerVc.showSelectBtn = NO;
+    imagePickerVc.allowCrop = NO;
+    imagePickerVc.needCircleCrop = NO;
+    // 设置竖屏下的裁剪尺寸
+    //    NSInteger left = 30;
+    //    NSInteger widthHeight = self.view.tz_width - 2 * left;
+    //    NSInteger top = (self.view.tz_height - widthHeight) / 2;
+    //    imagePickerVc.cropRect = CGRectMake(left, top, widthHeight, widthHeight);
+    // 设置横屏下的裁剪尺寸
+    // imagePickerVc.cropRectLandscape = CGRectMake((self.view.tz_height - widthHeight) / 2, left, widthHeight, widthHeight);
+    /*
+     [imagePickerVc setCropViewSettingBlock:^(UIView *cropView) {
+     cropView.layer.borderColor = [UIColor redColor].CGColor;
+     cropView.layer.borderWidth = 2.0;
+     }];*/
+    
+    //imagePickerVc.allowPreview = NO;
+    // 自定义导航栏上的返回按钮
+    /*
+     [imagePickerVc setNavLeftBarButtonSettingBlock:^(UIButton *leftButton){
+     [leftButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+     [leftButton setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 20)];
+     }];
+     imagePickerVc.delegate = self;
+     */
+    
+    // Deprecated, Use statusBarStyle
+    // imagePickerVc.isStatusBarDefault = NO;
+    imagePickerVc.statusBarStyle = UIStatusBarStyleLightContent;
+    // 设置是否显示图片序号
+    imagePickerVc.showSelectedIndex = NO;
+    // 自定义gif播放方案
+    //    [[TZImagePickerConfig sharedInstance] setGifImagePlayBlock:^(TZPhotoPreviewView *view, UIImageView *imageView, NSData *gifData, NSDictionary *info) {
+    //        FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:gifData];
+    //        FLAnimatedImageView *animatedImageView;
+    //        for (UIView *subview in imageView.subviews) {
+    //            if ([subview isKindOfClass:[FLAnimatedImageView class]]) {
+    //                animatedImageView = (FLAnimatedImageView *)subview;
+    //                animatedImageView.frame = imageView.bounds;
+    //                animatedImageView.animatedImage = nil;
+    //            }
+    //        }
+    //        if (!animatedImageView) {
+    //            animatedImageView = [[FLAnimatedImageView alloc] initWithFrame:imageView.bounds];
+    //            animatedImageView.runLoopMode = NSDefaultRunLoopMode;
+    //            [imageView addSubview:animatedImageView];
+    //        }
+    //        animatedImageView.animatedImage = animatedImage;
+    //    }];
+    
+    // 设置首选语言 / Set preferred language
+    // imagePickerVc.preferredLanguage = @"zh-Hans";
+    
+    // 设置languageBundle以使用其它语言 / Set languageBundle to use other language
+    // imagePickerVc.languageBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"tz-ru" ofType:@"lproj"]];
+    
+#pragma mark - 到这里为止
+    
+    // You can get the photos by block, the same as by delegate.
+    // 你可以通过block或者代理，来得到用户选择的照片.
+    @weakify_self
+    [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+        if (photos.count > 0) {
+            UIImage *img = photos[0];
+            NSData *imgData = UIImageJPEGRepresentation(img,1.0);
+            NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+            NSString *outputPath = [NSString stringWithFormat:@"%@.jpg",mills];
+            outputPath =  [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:outputPath];
+            NSURL *url = [NSURL fileURLWithPath:outputPath];
+            BOOL success = [imgData writeToURL:url atomically:YES];
+            if (success) {
+                [weakSelf jumpToUploadFiles:@[url]];
+            }
+        }
+    }];
+    // 你可以通过block或者代理，来得到用户选择的视频.
+    [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *asset) {
+        [weakSelf extracted:asset evImage:coverImage];
+    }];
+    [self presentViewController:imagePickerVc animated:YES completion:nil];
+}
+
+#pragma mark -视频导出到本地
+- (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
+    [AppD.window showHudInView:AppD.window hint:@""];
+    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
+    outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
+    @weakify_self
+    [TZImageManager manager].outputPath = outputPath;
+    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPreset640x480 success:^(NSString *outputPath) {
+         [AppD.window hideHud];
+        NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
+//        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
+        NSURL *url = [NSURL fileURLWithPath:outputPath];
+        [weakSelf jumpToUploadFiles:@[url]];
+    } failure:^(NSString *errorMessage, NSError *error) {
+        [AppD.window hideHud];
+        [self.view showHint:@"不支持当前视频格式"];
+    }];
 }
 
 #pragma mark - Request
@@ -117,8 +337,6 @@
 - (IBAction)receiveAction:(id)sender {
     [self jumpToDocumentReceived];
 }
-
-
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -224,6 +442,19 @@
 //
 //    return rightUtilityButtons;
 //}
+
+#pragma mark -
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    UIImage *img = info[UIImagePickerControllerOriginalImage];
+    NSData *imgData = UIImageJPEGRepresentation(img,1.0);
+    
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

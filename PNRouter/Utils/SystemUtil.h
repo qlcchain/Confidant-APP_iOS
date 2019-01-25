@@ -17,6 +17,10 @@
 + (NSString *) connectUrl;
 + (NSString *) connectFileUrl;
 + (NSString *) getBaseFilePath:(NSString *) friendid;
+
++ (NSString *)getTempUploadPhotoBaseFilePath;
++ (NSString *)getTempUploadVideoBaseFilePath;
+
 + (void) removeDocmentAudio;
 // iOS将文件大小转换文KB\MB\GB
 + (NSString *)transformedValue:(CGFloat) convertedValue;

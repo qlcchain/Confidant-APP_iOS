@@ -1311,12 +1311,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
     [self.listView addMessagesToBottom:@[model]];
     
-    [TZImageManager manager].friendid = self.friendModel.userId;
+//    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
+    outputPath =  [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:outputPath];
+    [TZImageManager manager].outputPath = outputPath;
     [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPreset640x480 success:^(NSString *outputPath) {
         NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
         //UIImage *img = [SystemUtil thumbnailImageForVideo:url];
        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
-        
         
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             

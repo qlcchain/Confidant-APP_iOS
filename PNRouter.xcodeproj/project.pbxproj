@@ -56,6 +56,7 @@
 		5825A23C21FAAE5D00E6194B /* NSString+File.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A23B21FAAE5D00E6194B /* NSString+File.m */; };
 		5825A24021FAC03700E6194B /* ChooseShareContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5825A23D21FAC03600E6194B /* ChooseShareContactViewController.xib */; };
 		5825A24121FAC03700E6194B /* ChooseShareContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A23E21FAC03600E6194B /* ChooseShareContactViewController.m */; };
+		5825A24421FAE78200E6194B /* SharedFriendModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A24321FAE78200E6194B /* SharedFriendModel.m */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
@@ -544,6 +545,8 @@
 		5825A23D21FAC03600E6194B /* ChooseShareContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseShareContactViewController.xib; sourceTree = "<group>"; };
 		5825A23E21FAC03600E6194B /* ChooseShareContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseShareContactViewController.m; sourceTree = "<group>"; };
 		5825A23F21FAC03600E6194B /* ChooseShareContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseShareContactViewController.h; sourceTree = "<group>"; };
+		5825A24221FAE78200E6194B /* SharedFriendModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedFriendModel.h; sourceTree = "<group>"; };
+		5825A24321FAE78200E6194B /* SharedFriendModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedFriendModel.m; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
@@ -2411,6 +2414,8 @@
 			children = (
 				7330F510214A790400FF4EEC /* FriendModel.h */,
 				7330F511214A790400FF4EEC /* FriendModel.m */,
+				5825A24221FAE78200E6194B /* SharedFriendModel.h */,
+				5825A24321FAE78200E6194B /* SharedFriendModel.m */,
 			);
 			path = ContactModels;
 			sourceTree = "<group>";
@@ -3624,6 +3629,7 @@
 				7330F3D22147A97700FF4EEC /* BaseMsgModel.m in Sources */,
 				7330F5012149147200FF4EEC /* CDMessageModel.m in Sources */,
 				7330F4E82149147200FF4EEC /* CTData.m in Sources */,
+				5825A24421FAE78200E6194B /* SharedFriendModel.m in Sources */,
 				7330F4E42149147200FF4EEC /* CoreTextUtils.m in Sources */,
 				7330F37F2146118800FF4EEC /* UIImage+Resize.m in Sources */,
 				58BD2E6421475ED10091A77D /* UserModel.m in Sources */,

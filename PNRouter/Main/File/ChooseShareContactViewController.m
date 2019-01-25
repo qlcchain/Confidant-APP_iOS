@@ -12,7 +12,9 @@
 #import "ContactsHeadView.h"
 #import "ChooseDownView.h"
 #import "ChatListDataUtil.h"
-
+#import "SendRequestUtil.h"
+#import "UserConfig.h"
+#import "SharedFriendModel.h"
 
 @interface ChooseShareContactViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 {
@@ -33,6 +35,48 @@
 
 @implementation ChooseShareContactViewController
 
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullSharedFriendNoti:) name:PullSharedFriend_Noti object:nil];
+}
+
+#pragma mark - Cycle
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    _searchBackView.layer.cornerRadius = 3.0f;
+    _searchBackView.layer.masksToBounds = YES;
+    _searchTF.delegate = self;
+    _tableV.delegate = self;
+    _tableV.dataSource = self;
+    _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
+    [_tableV registerNib:[UINib nibWithNibName:ChooseContactCellReuse bundle:nil] forCellReuseIdentifier:ChooseContactCellReuse];
+    [self.view addSubview:self.downView];
+    
+    [self sendPullSharedFriend];
+}
+
+#pragma mark - Operation
+- (void)sendPullSharedFriend {
+    NSString *UserId = [UserConfig getShareObject].userId;
+    [SendRequestUtil sendPullSharedFriendWithUserId:UserId showHud:YES];
+}
+
+- (void) backVC {
+    [self.selectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        model.isSelect = NO;
+    }];
+    [self leftNavBarItemPressedWithPop:NO];
+}
+
+#pragma mark - Action
 - (IBAction)backAction:(id)sender {
     if (isMutable) {
         isMutable = NO;
@@ -44,17 +88,10 @@
             }];
         }
     } else {
-         [self backVC];
+        [self backVC];
     }
 }
-- (void) backVC
-{
-    [self.selectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        FriendModel *model = obj;
-        model.isSelect = NO;
-    }];
-    [self leftNavBarItemPressedWithPop:NO];
-}
+
 - (IBAction)rightAction:(id)sender {
     isMutable = !isMutable;
     if (isMutable) {
@@ -66,51 +103,6 @@
         }
     }
     [_tableV reloadData];
-}
-#pragma mark -layz
-- (NSMutableArray *)dataArray
-{
-    if (!_dataArray) {
-        _dataArray = [[ChatListDataUtil getShareObject].friendArray mutableCopy];
-    }
-    return _dataArray;
-}
-
-- (NSMutableArray *)selectArray
-{
-    if (!_selectArray) {
-        _selectArray = [NSMutableArray array];
-    }
-    return _selectArray;
-}
-- (ChooseDownView *)downView
-{
-    if (!_downView) {
-        _downView = [ChooseDownView loadChooseDownView];
-        _downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
-        [_downView.comfirmBtn addTarget:self action:@selector(comfirmBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _downView;
-}
-#pragma textfeild delegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    NSLog(@"textFieldShouldReturn");
-    return YES;
-}
-#pragma mark -viewDidLoad
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    _searchBackView.layer.cornerRadius = 3.0f;
-    _searchBackView.layer.masksToBounds = YES;
-    _searchTF.delegate = self;
-    _tableV.delegate = self;
-    _tableV.dataSource = self;
-    _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
-    [_tableV registerNib:[UINib nibWithNibName:ChooseContactCellReuse bundle:nil] forCellReuseIdentifier:ChooseContactCellReuse];
-    [self.view addSubview:self.downView];
 }
 
 
@@ -193,10 +185,52 @@
     
 }
 
-#pragma mark -uibutton_tag
+#pragma mark - uibutton_tag
 - (void) comfirmBtnAction {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_Share_FRIEND_NOTI object:self.selectArray];
     [self backVC];
+}
+
+#pragma mark - textfeild delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    NSLog(@"textFieldShouldReturn");
+    return YES;
+}
+
+#pragma mark - Noti
+- (void)pullSharedFriendNoti:(NSNotification *)noti {
+    NSDictionary *receiveDic = noti.object;
+    NSInteger FriendNum = [receiveDic[@"params"][@"FriendNum"] integerValue];
+    NSString *Payload = receiveDic[@"params"][@"Payload"];
+    NSArray *payloadArr = [SharedFriendModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+    [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:payloadArr];
+    [_tableV reloadData];
+}
+
+#pragma mark - Layz
+- (NSMutableArray *)dataArray {
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
+
+- (NSMutableArray *)selectArray
+{
+    if (!_selectArray) {
+        _selectArray = [NSMutableArray array];
+    }
+    return _selectArray;
+}
+- (ChooseDownView *)downView
+{
+    if (!_downView) {
+        _downView = [ChooseDownView loadChooseDownView];
+        _downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+        [_downView.comfirmBtn addTarget:self action:@selector(comfirmBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _downView;
 }
 
 - (void)didReceiveMemoryWarning {
