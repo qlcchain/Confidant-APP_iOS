@@ -213,15 +213,22 @@
     const uint8_t *nonceKey = [nonceData bytes];
     
     //将加密消息 base58转码
-    enMsg = [enMsg base64EncodedString];
-    char css[enMsg.length+1];
-    memcpy(css, [enMsg cStringUsingEncoding:NSASCIIStringEncoding],[enMsg length]+1);
-    char enstr[sizeof(css)+crypto_box_BOXZEROBYTES];
-    const int encrypted_length = encrypt_data_symmetric(gk,nonceKey, css,sizeof(css), enstr);
+    NSData *msgtData =[enMsg dataUsingEncoding:NSUTF8StringEncoding];
+    char *msgKey = [msgtData bytes];
+    
+    //enMsg = [enMsg base64EncodedString];
+    //char css[enMsg.length+1];
+    //memcpy(css, [enMsg cStringUsingEncoding:NSASCIIStringEncoding],[enMsg length]+1);
+   // char enstr[sizeof(css)+crypto_box_BOXZEROBYTES];
+//    char enstr[sizeof(css)+crypto_box_BOXZEROBYTES];
+//    const int encrypted_length = encrypt_data_symmetric(gk,nonceKey, css,sizeof(css), enstr);
+    int length = msgtData.length;
+    char enstr[length+crypto_box_MACBYTES];
+    const int encrypted_length = encrypt_data_symmetric(gk,nonceKey,msgKey,length, enstr);
     if (encrypted_length) {
        // NSLog(@"---%s",enstr);
         NSLog(@"------加密成功");
-         NSData *enstrData = [NSData dataWithBytesNoCopy:enstr length:enMsg.length+1+crypto_box_BOXZEROBYTES freeWhenDone:NO];
+         NSData *enstrData = [NSData dataWithBytesNoCopy:enstr length:length+crypto_box_MACBYTES freeWhenDone:NO];
         return [enstrData base64EncodedString];
     }
     
@@ -245,12 +252,16 @@
     NSData  *msgData = [deMsg base64DecodedData];
     const char *msgKey = [msgData bytes];
     int length = msgData.length;
-    char destr[length+crypto_box_ZEROBYTES];
+    //char destr[length+crypto_box_ZEROBYTES];
+    char destr[length-crypto_box_MACBYTES];
+    
     const int decrypted_length = decrypt_data_symmetric(gk,nonceKey, msgKey,length, destr);
     if (decrypted_length >= 0) {
-        NSString *destrsss = [NSString stringWithCString:destr encoding:NSUTF8StringEncoding];
-        destrsss = [destrsss base64DecodedString];
+        //NSString *destrsss = [NSString stringWithCString:destr encoding:NSUTF8StringEncoding];
+      //  destrsss = [destrsss base64DecodedString];
        // NSLog(@"---%@---解密成功",destrsss);
+        NSData *data = [NSData dataWithBytes:destr length:length-crypto_box_MACBYTES];
+        NSString* destrsss = [[NSString alloc] initWithData:data  encoding:NSUTF8StringEncoding];
         NSLog(@"------解密成功");
         return destrsss;
     }

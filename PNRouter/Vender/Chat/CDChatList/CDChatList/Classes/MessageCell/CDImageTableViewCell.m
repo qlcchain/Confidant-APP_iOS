@@ -149,7 +149,10 @@
                     dispatch_async(dispatch_get_global_queue(0, 0), ^{
                         NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
                         NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                        NSString *datakey = [[LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey] substringToIndex:16];
+                        
+                        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey];
+                        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                        
                         if (datakey && ![datakey isEmptyString]) {
                             fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                             [SystemUtil removeDocmentFilePath:imgPath];
@@ -232,7 +235,10 @@
                     dispatch_async(dispatch_get_global_queue(0, 0), ^{
                         NSString *imgPath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:filePath];
                         NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                        NSString *datakey = [[LibsodiumUtil asymmetricDecryptionWithSymmetry:data.srckey] substringToIndex:16];
+                        
+                        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.srckey];
+                        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                        
                         if (datakey && ![datakey isEmptyString]) {
                             fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                             [SystemUtil removeDocmentFilePath:imgPath];
@@ -306,10 +312,12 @@
         
         // 生成32位对称密钥
         NSString *msgKey = [SystemUtil get32AESKey];
+        NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *symmetKey = [symmetData base64EncodedString];
         // 好友公钥加密对称密钥
-        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:self.msgModal.publicKey];
+        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:self.msgModal.publicKey];
         // 自己公钥加密对称密钥
-        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:msgKey enPK:[EntryModel getShareObject].publicKey];
+        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
         
         NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
         fileData = aesEncryptData(fileData,msgKeyData);
