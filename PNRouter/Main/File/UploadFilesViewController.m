@@ -13,6 +13,7 @@
 #import "UserConfig.h"
 #import "NSString+File.h"
 #import "PNRouter-Swift.h"
+#import "FriendModel.h"
 
 #define UploadFileURL @"UploadFileURL"
 
@@ -36,6 +37,12 @@
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileReqSuccessNoti:) name:UploadFileReq_Success_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseShareFriendNoti:) name:CHOOSE_Share_FRIEND_NOTI object:nil];
+    
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -225,8 +232,18 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             NSURL *fileUrl = dic[UploadFileURL];
             NSString *filePath = fileUrl.path;
             
-            *stop = YES;
+            
         }
+    }];
+}
+
+- (void)chooseShareFriendNoti:(NSNotification *)noti {
+    NSArray *modeArray = noti.object;
+    @weakify_self
+    [modeArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *friendM = obj;
+        
+        
     }];
 }
 

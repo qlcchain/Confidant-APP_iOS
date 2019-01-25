@@ -25,7 +25,6 @@
 @property (nonatomic, strong) ChooseDownView *downView;
 
 @property (nonatomic ,strong) NSMutableArray *dataArray;
-@property (nonatomic ,strong) NSArray *groupArray;
 @property (nonatomic ,strong) NSMutableArray *selectArray;
 @property (weak, nonatomic) IBOutlet UIButton *leftBtn;
 @property (weak, nonatomic) IBOutlet UIButton *rightBtn;
@@ -76,13 +75,7 @@
     }
     return _dataArray;
 }
-- (NSArray *)groupArray
-{
-    if (!_groupArray) {
-        _groupArray = @[@"New Chat"];
-    }
-    return _groupArray;
-}
+
 - (NSMutableArray *)selectArray
 {
     if (!_selectArray) {
@@ -124,52 +117,32 @@
 #pragma mark - tableviewDataSourceDelegate
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-        return self.groupArray.count;
-    }
     return self.dataArray.count;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0) {
-        return GroupCellHeight;
-    }
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return ChooseContactCellHeight;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 1) {
-        return 64;
-    }
-    return 0;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 64;
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
     backView.backgroundColor = [UIColor clearColor];
     ContactsHeadView *view = [ContactsHeadView loadContactsHeadView];
-    view.lblTitle.text = @"Recent Chat";
+    view.lblTitle.text = @"Share Contact";
     view.frame = backView.bounds;
     [backView addSubview:view];
     return backView;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupCellReuse];
-        cell.lblName.text = self.groupArray[indexPath.row];
-        cell.hdBackView.hidden = YES;
-        if (indexPath.row == 0) {
-            if (AppD.showHD) {
-                cell.hdBackView.hidden = NO;
-            }
-        }
-        return cell;
-    }
+    
     ChooseContactCell *cell = [tableView dequeueReusableCellWithIdentifier:ChooseContactCellReuse];
     FriendModel *model = self.dataArray[indexPath.row];
     CGFloat leftV = 0;
@@ -185,41 +158,36 @@
 {
     if (!tableView.isEditing) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        if (indexPath.section == 1) {
-            FriendModel *model = self.dataArray[indexPath.row];
-            if (isMutable) {
-                if (model.isSelect) {
-                    [self.selectArray removeObject:model];
-                } else {
-                     [self.selectArray addObject:model];
+        FriendModel *model = self.dataArray[indexPath.row];
+        if (isMutable) {
+            if (model.isSelect) {
+                [self.selectArray removeObject:model];
+            } else {
+                 [self.selectArray addObject:model];
+            }
+            model.isSelect = !model.isSelect;
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            if (self.selectArray.count > 0) {
+                if (!_downView) {
+                    self.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                    [self.view addSubview:_downView];
                 }
-                model.isSelect = !model.isSelect;
-                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                if (self.selectArray.count > 0) {
-                    if (!_downView) {
-                        self.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
-                        [self.view addSubview:_downView];
-                    }
-                    if (self.downView.frame.origin.y == SCREEN_HEIGHT) {
-                        [UIView animateWithDuration:0.3f animations:^{
-                            self.downView.frame = CGRectMake(0, SCREEN_HEIGHT-Tab_BAR_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
-                        }];
-                    }
-                    self.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %d groups",(unsigned long)self.selectArray.count,0];
- 
-                } else {
+                if (self.downView.frame.origin.y == SCREEN_HEIGHT) {
                     [UIView animateWithDuration:0.3f animations:^{
-                        self.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                        self.downView.frame = CGRectMake(0, SCREEN_HEIGHT-Tab_BAR_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
                     }];
                 }
+                self.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %d groups",(unsigned long)self.selectArray.count,0];
+
             } else {
-                [self.selectArray addObject:model];
-                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
-                [self backVC];
+                [UIView animateWithDuration:0.3f animations:^{
+                    self.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                }];
             }
-           
-        } else if (indexPath.section == 0) {
-           
+        } else {
+            [self.selectArray addObject:model];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_Share_FRIEND_NOTI object:self.selectArray];
+            [self backVC];
         }
     }
     
@@ -227,7 +195,7 @@
 
 #pragma mark -uibutton_tag
 - (void) comfirmBtnAction {
-    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_Share_FRIEND_NOTI object:self.selectArray];
     [self backVC];
 }
 
@@ -235,15 +203,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
