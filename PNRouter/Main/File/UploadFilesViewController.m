@@ -11,6 +11,10 @@
 #import "UploadFilesHeaderView.h"
 #import "SendRequestUtil.h"
 #import "UserConfig.h"
+#import "NSString+File.h"
+#import "PNRouter-Swift.h"
+
+#define UploadFileURL @"UploadFileURL"
 
 @implementation UploadFilesShowModel
 
@@ -23,10 +27,16 @@
 @property (weak, nonatomic) IBOutlet UIImageView *fileImg;
 @property (weak, nonatomic) IBOutlet UILabel *fileNameLab;
 @property (weak, nonatomic) IBOutlet UILabel *fileSizeLab;
+@property (nonatomic, strong) NSMutableArray *uploadParams;
 
 @end
 
 @implementation UploadFilesViewController
+
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileReqSuccessNoti:) name:UploadFileReq_Success_Noti object:nil];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -101,20 +111,9 @@
     __block NSInteger size = 0;
     [_urlArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSURL *fileUrl = obj;
-        size += [self fileSizeAtPath:fileUrl.path];
+        size += [NSString fileSizeAtPath:fileUrl.path];
     }];
     _fileSizeLab.text = [NSString stringWithFormat:@"%@KB",@(size/1024)];
-}
-
-//单个文件的大小
-- (NSInteger)fileSizeAtPath:(NSString*)filePath {
-    NSFileManager* manager = [NSFileManager defaultManager];
-    if ([manager fileExistsAtPath:filePath]) {
-        return [[manager attributesOfItemAtPath:filePath error:nil] fileSize];
-    } else {
-        NSLog(@"计算文件大小：文件不存在");
-    }
-    return 0;
 }
 
 #pragma mark - Action
@@ -124,11 +123,29 @@
 }
 
 - (IBAction)uploadAction:(id)sender {
-    NSString *UserId = [UserConfig getShareObject].userId;
-    NSString *FileName = @"";
-    NSNumber *FileSize = @(0);
-    NSNumber *FileType = @(0);
-    [SendRequestUtil sendUploadFileReqWithUserId:UserId FileName:FileName FileSize:FileSize FileType:FileType showHud:YES];
+    _uploadParams = [NSMutableArray array];
+    @weakify_self
+    [_urlArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSURL *url = obj;
+        NSString *UserId = [UserConfig getShareObject].userId;
+        NSString *FileName = [Base58Util Base58EncodeWithCodeName:url.pathExtension];
+        NSNumber *FileSize = @([NSString fileSizeAtPath:url.path]);
+        NSNumber *FileType = @(0);
+        if (weakSelf.documentType == DocumentPickerTypePhoto) {
+            FileType = @(1);
+        } else if (weakSelf.documentType == DocumentPickerTypeVideo) {
+            FileType = @(4);
+        } else if (weakSelf.documentType == DocumentPickerTypeDocument) {
+            FileType = @(5);
+        } else if (weakSelf.documentType == DocumentPickerTypeOther) {
+            FileType = @(6);
+        }
+        [SendRequestUtil sendUploadFileReqWithUserId:UserId FileName:FileName FileSize:FileSize FileType:FileType showHud:YES fetchParam:^(NSDictionary * _Nonnull dic) {
+            NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+            [muDic setObject:url forKey:UploadFileURL];
+            [weakSelf.uploadParams addObject:muDic];
+        }];
+    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -195,6 +212,22 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     UploadFilesShowModel *model = _sourceArr[indexPath.section];
+}
+
+#pragma mark - Noti
+- (void)uploadFileReqSuccessNoti:(NSNotification *)noti {
+    NSString *msgId = noti.object;
+    [_uploadParams enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary *dic = obj;
+        NSString *tempMsgId = dic[@"msgid"];
+        if ([tempMsgId isEqualToString:msgId]) {
+            //TODO:上传文件
+            NSURL *fileUrl = dic[UploadFileURL];
+            NSString *filePath = fileUrl.path;
+            
+            *stop = YES;
+        }
+    }];
 }
 
 @end

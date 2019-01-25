@@ -57,6 +57,7 @@ static NSString *Action_ShareFile = @"ShareFile";
 + (NSDictionary *)getRegiserBaseParams;
 + (void)sendVersion1WithParams:(NSDictionary *)params;
 + (void)sendVersion2WithParams:(NSDictionary *)params;
++ (void)sendVersion2WithParams:(NSDictionary *)params fetchParam:(void(^)(NSDictionary *dic))paramB;
 + (void)sendVersion3WithParams:(NSDictionary *)params;
 // 回复router
 + (void)sendRecevieMessageWithParams:(NSDictionary *)params tempmsgid:(NSInteger) msgid;
