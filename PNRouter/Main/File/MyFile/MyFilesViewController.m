@@ -117,8 +117,8 @@
     [view showWithArrange:_arrangeType];
 }
 
-- (void)showFileMoreAlertView {
-    FileMoreAlertView *view = [[FileMoreAlertView alloc] init];
+- (void)showFileMoreAlertView:(FileListModel *)model {
+    FileMoreAlertView *view = [FileMoreAlertView getInstance];
     @weakify_self
     [view setSendB:^{
         
@@ -130,7 +130,7 @@
         [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:@""]];
     }];
     [view setDetailInformationB:^{
-        [weakSelf jumpToDetailInformation];
+        [weakSelf jumpToDetailInformation:model];
     }];
     [view setRenameB:^{
         
@@ -184,8 +184,12 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     MyFilesCell *cell = [tableView dequeueReusableCellWithIdentifier:MyFilesCellReuse];
     
-    //    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
-    //    cell.delegate = (id)self;
+    FileListModel *model = _sourceArr[indexPath.row];
+    [cell configCellWithModel:model];
+    @weakify_self
+    [cell setMoreB:^{
+        [weakSelf showFileMoreAlertView:model];
+    }];
     
     return cell;
 }
@@ -197,8 +201,9 @@
 }
 
 #pragma mark - Transition
-- (void)jumpToDetailInformation {
+- (void)jumpToDetailInformation:(FileListModel *)model  {
     DetailInformationViewController *vc = [[DetailInformationViewController alloc] init];
+    vc.fileListM = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -216,8 +221,17 @@
         [self showEmptyView];
     } else {
         [self hideEmptyView];
+        
+        NSMutableArray *tempArr = [NSMutableArray array];
+        [payloadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FileListModel *model = obj;
+            model.showSelect = NO;
+            model.isSelect = NO;
+            [tempArr addObject:model];
+        }];
+        
         [_sourceArr removeAllObjects];
-        [_sourceArr addObjectsFromArray:payloadArr];
+        [_sourceArr addObjectsFromArray:tempArr];
         [_mainTable reloadData];
     }
 }

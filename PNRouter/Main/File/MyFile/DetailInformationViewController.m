@@ -9,6 +9,7 @@
 #import "DetailInformationViewController.h"
 #import "DetailInformationCell.h"
 #import "SharedSettingsViewController.h"
+#import "FileListModel.h"
 
 @interface DetailInformationShowModel : NSObject
 

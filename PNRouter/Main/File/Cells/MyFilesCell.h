@@ -10,8 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class FileListModel;
+
 static NSString *MyFilesCellReuse = @"MyFilesCell";
 #define MyFilesCellHeight 64
+
+typedef void(^MyFilesMoreBlock)(void);
 
 @interface MyFilesCell : UITableViewCell
 
@@ -21,7 +25,9 @@ static NSString *MyFilesCellReuse = @"MyFilesCell";
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
 @property (weak, nonatomic) IBOutlet UILabel *detailLab;
 @property (weak, nonatomic) IBOutlet UIButton *moreBtn;
+@property (nonatomic, copy) MyFilesMoreBlock moreB;
 
+- (void)configCellWithModel:(FileListModel *)model;
 
 @end
 

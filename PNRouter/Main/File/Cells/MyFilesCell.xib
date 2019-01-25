@@ -63,12 +63,15 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VuL-3q-dfp">
-                                        <rect key="frame" x="240" y="17" width="40" height="30"/>
+                                        <rect key="frame" x="240" y="12" width="40" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="ZWm-JH-Gmk"/>
+                                            <constraint firstAttribute="height" constant="40" id="ZWm-JH-Gmk"/>
                                             <constraint firstAttribute="width" constant="40" id="sPY-p9-f9U"/>
                                         </constraints>
                                         <state key="normal" image="icon_more_gray"/>
+                                        <connections>
+                                            <action selector="moreAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="8hR-xA-fjy"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

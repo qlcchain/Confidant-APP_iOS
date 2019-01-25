@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class FileListModel;
+
 @interface DetailInformationViewController : PNBaseViewController
+
+@property (nonatomic, strong) FileListModel *fileListM;
 
 @end
 

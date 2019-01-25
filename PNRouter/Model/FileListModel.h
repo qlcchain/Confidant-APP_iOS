@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *UserKey;
 @property (nonatomic ,strong) NSString *Sender;
 
+@property (nonatomic) BOOL showSelect;
+@property (nonatomic) BOOL isSelect;
+
 @end
 
 NS_ASSUME_NONNULL_END

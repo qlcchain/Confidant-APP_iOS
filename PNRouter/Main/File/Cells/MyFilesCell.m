@@ -7,6 +7,7 @@
 //
 
 #import "MyFilesCell.h"
+#import "FileListModel.h"
 
 @implementation MyFilesCell
 
@@ -21,6 +22,27 @@
     // Configure the view for the selected state
 }
 
+- (void)configCellWithModel:(FileListModel *)model {
+    _selectLeftWidth.constant = model.showSelect?40:0;
+    _selectBtn.selected = model.isSelect;
+    _icon.image = [UIImage imageNamed:@""];
+    _titleLab.text = model.FileName;
+    _detailLab.text = [NSString stringWithFormat:@"%@ %@",model.FileSize,model.Timestamp];
+}
 
+- (IBAction)moreAction:(id)sender {
+    if (_moreB) {
+        _moreB();
+    }
+}
+
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
+    _icon.image = nil;
+    _titleLab.text = nil;
+    _detailLab.text = nil;
+}
 
 @end
