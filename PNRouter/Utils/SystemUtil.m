@@ -155,11 +155,15 @@
     BOOL isDir = NO;
     NSString *filePath = [NSString stringWithFormat:@"uploadFiles/%@_upload/%@",[UserConfig getShareObject].userId,fileName];
     NSString *filePathDir = [NSString stringWithFormat:@"uploadFiles/%@_upload",[UserConfig getShareObject].userId];
-    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePathDir] isDirectory:&isDir];
+    NSString *documentPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    BOOL isexit = [manage fileExistsAtPath:[documentPath stringByAppendingPathComponent:filePathDir] isDirectory:&isDir];
+    
     if (!isexit || !isDir) {
-        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePathDir] withIntermediateDirectories:YES attributes:nil error:nil];
+        [manage createDirectoryAtPath:[documentPath stringByAppendingPathComponent:filePathDir] withIntermediateDirectories:YES attributes:nil error:nil];
     }
-    return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    NSString *path = [documentPath stringByAppendingPathComponent:filePath];
+    NSLog(@"8888888888888-----%@",path);
+    return path;
 }
 
 + (NSString *)getTempUploadPhotoBaseFilePath {
