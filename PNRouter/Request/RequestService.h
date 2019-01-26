@@ -31,7 +31,7 @@
                         success:(void (^)(NSURLSessionDownloadTask *dataTask,NSString *filePath)) success
                         failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
 
-+ (void)downFileWithBaseURLStr:(NSString *)url
++ (NSURLSessionDownloadTask *)downFileWithBaseURLStr:(NSString *)url
                       filePath:(NSString *)filePath
                  progressBlock:(void(^)(CGFloat progress)) progressBlock
                        success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success

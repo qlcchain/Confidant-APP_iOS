@@ -305,7 +305,7 @@
     [downloadTask resume];
 }
 
-+ (void)downFileWithBaseURLStr:(NSString *)ULRString
++ (NSURLSessionDownloadTask *)downFileWithBaseURLStr:(NSString *)ULRString
                        filePath:(NSString *)filePath
                   progressBlock:(void(^)(CGFloat progress)) progressBlock
                         success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
@@ -334,6 +334,7 @@
         }
     }];
     [downloadTask resume];
+    return downloadTask;
 }
 
 + (NSURLSessionDataTask *)requestWithBaseURLStr:(NSString *)URLString

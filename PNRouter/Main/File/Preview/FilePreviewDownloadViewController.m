@@ -17,6 +17,10 @@
 //#import <JCDownloader/JCDownloader.h>
 //#import <JCDownloader/JCDownloadOperation.h>
 #import "RequestService.h"
+#import "NSDate+Category.h"
+#import "PNRouter-Swift.h"
+#import "OperationRecordModel.h"
+#import "UserConfig.h"
 
 typedef enum : NSUInteger {
     FileExistTypeNone,
@@ -114,7 +118,7 @@ typedef enum : NSUInteger {
     @weakify_self
     [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.progressV.progress = progress/100.00;
+            weakSelf.progressV.progress = progress/100.000;
 //            NSLog(@"progress = %@",@(progress));
         });
     } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
@@ -127,6 +131,12 @@ typedef enum : NSUInteger {
             [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
             [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
             weakSelf.downloadFilePath = downloadFilePath;
+            
+            // 下载成功-保存操作记录
+            NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
+            NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
+            NSString *fileName = [Base58Util Base58DecodeWithCodeName:weakSelf.fileListM.FileName.lastPathComponent];
+            [OperationRecordModel saveOrUpdateWithFileType:weakSelf.fileListM.FileType operationType:@(1) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:weakSelf.fileListM.FileName?:@"" localPath:@""];
         });
         
     } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {

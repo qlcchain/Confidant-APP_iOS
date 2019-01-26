@@ -8,6 +8,9 @@
 
 #import "FilePreviewViewController.h"
 #import <QuickLook/QuickLook.h>
+#import "FileMoreAlertView.h"
+#import "FileListModel.h"
+#import "DetailInformationViewController.h"
 
 @interface FilePreviewViewController () <QLPreviewControllerDataSource, QLPreviewControllerDelegate>
 
@@ -52,6 +55,37 @@
 //    }
 }
 
+- (void)showFileMoreAlertView:(FileListModel *)model {
+    FileMoreAlertView *view = [FileMoreAlertView getInstance];
+    @weakify_self
+    [view setSendB:^{
+        
+    }];
+    [view setDownloadB:^{
+        
+    }];
+    [view setOtherApplicationOpenB:^{
+        [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:@""]];
+    }];
+    [view setDetailInformationB:^{
+        [weakSelf jumpToDetailInformation:model];
+    }];
+    [view setRenameB:^{
+        
+    }];
+    [view setDeleteB:^{
+        
+    }];
+    
+    [view show];
+}
+
+- (void)otherApplicationOpen:(NSURL *)fileURL {
+    NSArray *items = @[fileURL];
+    UIActivityViewController *activityController=[[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    [self.navigationController presentViewController:activityController animated:YES completion:nil];
+}
+
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
@@ -77,6 +111,13 @@
 
 - (CGRect)previewController:(QLPreviewController *)controller frameForPreviewItem:(id<QLPreviewItem>)item inSourceView:(UIView *__autoreleasing  _Nullable *)view{
     return _contentView.bounds;
+}
+
+#pragma mark - Transition
+- (void)jumpToDetailInformation:(FileListModel *)model  {
+    DetailInformationViewController *vc = [[DetailInformationViewController alloc] init];
+    vc.fileListM = model;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
