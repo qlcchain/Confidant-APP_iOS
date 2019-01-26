@@ -132,7 +132,7 @@
 }
 
 - (IBAction)moreAction:(id)sender {
-    
+    [self showFileMoreAlertView:_fileListM];
 }
 
 

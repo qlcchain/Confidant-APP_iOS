@@ -120,8 +120,7 @@ typedef enum : NSUInteger {
     @weakify_self
     [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.progressV.progress = progress/100.000;
-//            NSLog(@"progress = %@",@(progress));
+            weakSelf.progressV.progress = progress;
         });
     } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -223,6 +222,7 @@ typedef enum : NSUInteger {
     FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
     vc.filePath = filePath;
     vc.userKey = _fileListM.UserKey;
+    vc.fileListM = _fileListM;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -314,7 +314,7 @@
     NSURL *url = [NSURL URLWithString:ULRString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     downloadTask = [[self getHTTPManager] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-        CGFloat progressCount =  downloadProgress.fractionCompleted * 100;
+        CGFloat progressCount =  downloadProgress.fractionCompleted;
         if (progressBlock) {
             progressBlock(progressCount);
         }
