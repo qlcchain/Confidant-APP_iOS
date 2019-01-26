@@ -139,7 +139,7 @@
     
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
-    NSString *filePath = [NSString stringWithFormat:@"files/%@",friendid];
+    NSString *filePath = [NSString stringWithFormat:@"Documents/files/%@",friendid];
     BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
     if (!isexit || !isDir) {
         [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
@@ -154,18 +154,19 @@
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
     NSString *filePath = [NSString stringWithFormat:@"uploadFiles/%@_upload/%@",[UserConfig getShareObject].userId,fileName];
+
+    NSString *filePathDir = [NSString stringWithFormat:@"uploadFiles/%@_upload",[UserConfig getShareObject].userId];
+    NSString *documentPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    BOOL isexit = [manage fileExistsAtPath:[documentPath stringByAppendingPathComponent:filePathDir] isDirectory:&isDir];
     
-    NSString *filePathDoc = [NSString stringWithFormat:@"uploadFiles/%@upload",[UserConfig getShareObject].userId];
-    
-    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePathDoc] isDirectory:&isDir];
     if (!isexit || !isDir) {
-       BOOL issuccess = [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePathDoc] withIntermediateDirectories:YES attributes:nil error:nil];
-        if (issuccess) {
-            NSLog(@"issuccess");
-        }
+        [manage createDirectoryAtPath:[documentPath stringByAppendingPathComponent:filePathDir] withIntermediateDirectories:YES attributes:nil error:nil];
     }
-    return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    NSString *path = [documentPath stringByAppendingPathComponent:filePath];
+    NSLog(@"8888888888888-----%@",path);
+    return path;
 }
+
 + (NSString *)getTempUploadPhotoBaseFilePath {
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;

@@ -10,9 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class FileListModel;
+
 @interface FilePreviewDownloadViewController : PNBaseViewController
 
-@property (nonatomic, strong) NSString *filePath;
+@property (nonatomic, strong) FileListModel *fileListM;
 
 @end
 

@@ -197,7 +197,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [self jumpToFilePreviewDownload];
+    FileListModel *model = _sourceArr[indexPath.row];
+    [self jumpToFilePreviewDownload:model];
 }
 
 #pragma mark - Transition
@@ -207,8 +208,9 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)jumpToFilePreviewDownload {
+- (void)jumpToFilePreviewDownload:(FileListModel *)model {
     FilePreviewDownloadViewController *vc = [[FilePreviewDownloadViewController alloc] init];
+    vc.fileListM = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
