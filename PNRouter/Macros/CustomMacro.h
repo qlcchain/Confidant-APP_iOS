@@ -11,6 +11,8 @@
 
 // 数据库表名
 #define FRIEND_REQUEST_TABNAME  @"friend_requet_tableName"
+// 文件记录表
+#define FILE_STATUS_TABNAME     @"file_status_tableName"
 #define FRIEND_LIST_TABNAME  @"friend_list_tableName"
 // 好友聊天记录表
 #define FRIEND_CHAT_TABNAME  @"FRIEND_CHAT_TABNAME"

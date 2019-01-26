@@ -39,6 +39,11 @@
 
 @implementation FileViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [super viewWillAppear:animated];
+}
 #pragma mark - Observe
 - (void)addObserve {
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
@@ -64,9 +69,7 @@
 //    [self sendPullFileList];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
+
 
 #pragma mark - Operation
 
@@ -284,6 +287,7 @@
         [weakSelf extracted:asset evImage:coverImage];
     }];
     [self presentViewController:imagePickerVc animated:YES completion:nil];
+    
 }
 
 #pragma mark -视频导出到本地

@@ -267,6 +267,7 @@
 		7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F525214BF4C000FF4EEC /* SocketAlertView.xib */; };
 		734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734B793721A7EAAF0068AA2C /* UserManagerViewController.m */; };
 		734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */; };
+		7360B85221FC3269008FB181 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85121FC3269008FB181 /* FileData.m */; };
 		7362573D213E8B3200D7FD6B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362573C213E8B3200D7FD6B /* AppDelegate.m */; };
 		73625740213E8B3200D7FD6B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362573F213E8B3200D7FD6B /* ViewController.m */; };
 		73625748213E8B3400D7FD6B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73625746213E8B3400D7FD6B /* LaunchScreen.storyboard */; };
@@ -962,6 +963,8 @@
 		734B793621A7EAAF0068AA2C /* UserManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManagerViewController.h; sourceTree = "<group>"; };
 		734B793721A7EAAF0068AA2C /* UserManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManagerViewController.m; sourceTree = "<group>"; };
 		734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserManagerViewController.xib; sourceTree = "<group>"; };
+		7360B85021FC3269008FB181 /* FileData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
+		7360B85121FC3269008FB181 /* FileData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileData.m; sourceTree = "<group>"; };
 		73625738213E8B3200D7FD6B /* PNRouter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PNRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7362573B213E8B3200D7FD6B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7362573C213E8B3200D7FD6B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1734,6 +1737,8 @@
 				7317447321F072110018BA50 /* EntryModel.m */,
 				5825A24521FB0B8E00E6194B /* FileListModel.h */,
 				5825A24621FB0B8E00E6194B /* FileListModel.m */,
+				7360B85021FC3269008FB181 /* FileData.h */,
+				7360B85121FC3269008FB181 /* FileData.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3524,6 +3529,7 @@
 				7362575B214213AA00D7FD6B /* NSDate+Category.m in Sources */,
 				73D00EBB215F792F0013E20D /* SocketManageUtil.m in Sources */,
 				7330F3CE21479AED00FF4EEC /* NewsCell.m in Sources */,
+				7360B85221FC3269008FB181 /* FileData.m in Sources */,
 				7378841C21ACF2970033A189 /* OCTSubmanagerFriendsImpl.m in Sources */,
 				736257B22142149300D7FD6B /* UIView+Toast.m in Sources */,
 				7378840621ACF2970033A189 /* OCTCall+Utilities.m in Sources */,

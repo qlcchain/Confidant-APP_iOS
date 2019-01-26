@@ -60,7 +60,7 @@
     // 配置聊天
     [self configChat];
     [self checkGuidenPage];
-    [RSAModel getRSAModel];
+  //  [RSAModel getRSAModel];
     // 得到签名，加密 公私钥对
     [LibsodiumUtil getPrivatekeyAndPublickey];
     [self.window makeKeyAndVisible];

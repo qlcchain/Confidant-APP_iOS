@@ -9,6 +9,7 @@
 #import "PNNavViewController.h"
 #import "ChatViewController.h"
 
+
 @interface PNNavViewController ()
 
 @end
@@ -40,7 +41,7 @@
     //    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
     [[UINavigationBar appearance] setBarTintColor:MAIN_PURPLE_COLOR];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTintColor:MAIN_PURPLE_COLOR];
     
     [self.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:18.0],NSFontAttributeName,[UIColor whiteColor],NSForegroundColorAttributeName, nil]];
 }
@@ -54,22 +55,18 @@
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton buttonWithType:UIButtonTypeCustom]];
         [viewController setHidesBottomBarWhenPushed:YES];
     }
+   
     if (self.viewControllers.count >= 1) {
-       [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    } else {
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
+    
+    
     [super pushViewController:viewController animated:animated];
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated
 {
     NSLog(@"===%lu",(unsigned long)self.viewControllers.count);
-    if (self.viewControllers.count == 2) {
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    } else {
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    }
     return [super popViewControllerAnimated:animated];
 }
 
@@ -99,11 +96,10 @@
 }
 
 //// 设置状态栏样式
-//- (UIStatusBarStyle)preferredStatusBarStyle
-//{
-//
-//
-//}
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 - (void)backBarButtonItemAction
 {

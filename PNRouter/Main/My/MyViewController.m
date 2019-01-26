@@ -44,6 +44,25 @@
 
 @implementation MyViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    
+    self.myHeadView.lblName.text = [UserModel getUserModel].username;
+    [self.myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
+    
+    UserModel *userM = [UserModel getUserModel];
+    [SocketMessageUtil sendUserIsOnLine:userM.userId?:@""];
+    [self updateOnlineStatus:NO];
+    [_tableV reloadSections:[NSIndexSet indexSetWithIndex:self.dataArray.count-1] withRowAnimation:UITableViewRowAnimationNone];
+    [super viewDidAppear:animated];
+}
+
 #pragma mark - Observe
 - (void)observe {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadChangeNoti:) name:USER_HEAD_CHANGE_NOTI object:nil];
@@ -79,19 +98,6 @@
 
 
 
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:YES];
-    self.myHeadView.lblName.text = [UserModel getUserModel].username;
-    [self.myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
-    
-    UserModel *userM = [UserModel getUserModel];
-    [SocketMessageUtil sendUserIsOnLine:userM.userId?:@""];
-    [self updateOnlineStatus:NO];
-    [_tableV reloadSections:[NSIndexSet indexSetWithIndex:self.dataArray.count-1] withRowAnimation:UITableViewRowAnimationNone];
-    
-}
 
 
 - (void)updateView:(CGFloat)val

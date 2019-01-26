@@ -9,6 +9,8 @@
 #import "TaskListViewController.h"
 #import "TaskOngoingCell.h"
 #import "TaskCompletedCell.h"
+#import "FileData.h"
+#import "UserConfig.h"
 
 @interface TaskListViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -24,8 +26,35 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self getAllTaskList];
     [self dataInit];
-    [self viewInit];
+   
+    
+}
+
+- (void) getAllTaskList
+{
+    // 得到已完成的
+    NSArray *finshTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+    
+    // 正在上传或下载的
+     NSArray *uploadTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+    
+    NSMutableArray *arr1 = [NSMutableArray array];
+    if (finshTasks && uploadTasks.count>0) {
+        [arr1 addObjectsFromArray:uploadTasks];
+    }
+    [_sourceArr addObject:arr1];
+    
+    NSMutableArray *arr2 = [NSMutableArray array];
+    if (finshTasks && finshTasks.count>0) {
+        [arr2 addObjectsFromArray:finshTasks];
+    }
+    [_sourceArr addObject:arr2];
+    
+    if ((!finshTasks || finshTasks.count == 0) && (!uploadTasks || uploadTasks.count == 0)) {
+        [self viewInit];
+    }
 }
 
 #pragma mark - Operation
@@ -38,9 +67,9 @@
 }
 
 - (void)viewInit {
+    
     NSString *imgStr = @"icon_task_list_empty_gray";
     NSString *tipStr = @"No Task Record";
-    
     [self showEmptyViewToView:_contentBack img:[UIImage imageNamed:imgStr] title:tipStr];
 }
 
@@ -56,7 +85,7 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return _sourceArr.count;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
