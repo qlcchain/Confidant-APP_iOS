@@ -8,11 +8,15 @@
 
 #import "FilePreviewViewController.h"
 #import <QuickLook/QuickLook.h>
+#import "FileMoreAlertView.h"
+#import "FileListModel.h"
+#import "DetailInformationViewController.h"
 #import "LibsodiumUtil.h"
 #import "EntryModel.h"
 #import "NSString+Base64.h"
 #import "AESCipher.h"
 #import "SystemUtil.h"
+#import "PNRouter-Swift.h"
 
 @interface FilePreviewViewController () <QLPreviewControllerDataSource, QLPreviewControllerDelegate>
 
@@ -88,6 +92,39 @@
 //    }
 }
 
+- (void)showFileMoreAlertView:(FileListModel *)model {
+    FileMoreAlertView *view = [FileMoreAlertView getInstance];
+    @weakify_self
+    [view setSendB:^{
+        
+    }];
+    [view setDownloadB:^{
+        
+    }];
+    [view setOtherApplicationOpenB:^{
+        [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:@""]];
+    }];
+    [view setDetailInformationB:^{
+        [weakSelf jumpToDetailInformation:model];
+    }];
+    [view setRenameB:^{
+        
+    }];
+    [view setDeleteB:^{
+        
+    }];
+    
+    NSString *fileNameBase58 = model.FileName.lastPathComponent;
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    [view showWithFileName:fileName];
+}
+
+- (void)otherApplicationOpen:(NSURL *)fileURL {
+    NSArray *items = @[fileURL];
+    UIActivityViewController *activityController=[[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    [self.navigationController presentViewController:activityController animated:YES completion:nil];
+}
+
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
@@ -95,7 +132,7 @@
 }
 
 - (IBAction)moreAction:(id)sender {
-    
+    [self showFileMoreAlertView:_fileListM];
 }
 
 
@@ -113,6 +150,13 @@
 
 - (CGRect)previewController:(QLPreviewController *)controller frameForPreviewItem:(id<QLPreviewItem>)item inSourceView:(UIView *__autoreleasing  _Nullable *)view{
     return _contentView.bounds;
+}
+
+#pragma mark - Transition
+- (void)jumpToDetailInformation:(FileListModel *)model  {
+    DetailInformationViewController *vc = [[DetailInformationViewController alloc] init];
+    vc.fileListM = model;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

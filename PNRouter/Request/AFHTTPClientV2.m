@@ -305,7 +305,7 @@
     [downloadTask resume];
 }
 
-+ (void)downFileWithBaseURLStr:(NSString *)ULRString
++ (NSURLSessionDownloadTask *)downFileWithBaseURLStr:(NSString *)ULRString
                        filePath:(NSString *)filePath
                   progressBlock:(void(^)(CGFloat progress)) progressBlock
                         success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
@@ -314,7 +314,7 @@
     NSURL *url = [NSURL URLWithString:ULRString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     downloadTask = [[self getHTTPManager] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-        CGFloat progressCount =  downloadProgress.fractionCompleted * 100;
+        CGFloat progressCount =  downloadProgress.fractionCompleted;
         if (progressBlock) {
             progressBlock(progressCount);
         }
@@ -334,6 +334,7 @@
         }
     }];
     [downloadTask resume];
+    return downloadTask;
 }
 
 + (NSURLSessionDataTask *)requestWithBaseURLStr:(NSString *)URLString

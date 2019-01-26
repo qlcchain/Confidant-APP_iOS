@@ -12,6 +12,9 @@
 #import "AFHTTPClientV2.h"
 #import "SystemUtil.h"
 
+@implementation URLSessionDownloadTaskModel
+
+@end
 
 @interface RequestService ()
 
@@ -101,13 +104,13 @@
     }];
 }
 
-+ (void)downFileWithBaseURLStr:(NSString *)url
++ (URLSessionDownloadTaskModel *)downFileWithBaseURLStr:(NSString *)url
                       filePath:(NSString *)filePath
                   progressBlock:(void(^)(CGFloat progress)) progressBlock
                         success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
                         failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure {
     NSString *requestUrl = [NSString stringWithFormat:@"%@%@",[RequestService getInstance].prefix_Url,url];
-    [AFHTTPClientV2 downFileWithBaseURLStr:requestUrl filePath:filePath progressBlock:^(CGFloat progress) {
+    NSURLSessionDownloadTask *downloadTask = [AFHTTPClientV2 downFileWithBaseURLStr:requestUrl filePath:filePath progressBlock:^(CGFloat progress) {
         if (progressBlock) {
             progressBlock(progress);
         }
@@ -120,6 +123,9 @@
             failure(dataTask,error);
         }
     }];
+    URLSessionDownloadTaskModel *model = [URLSessionDownloadTaskModel new];
+    model.task = downloadTask;
+    return model;
 }
 
 @end

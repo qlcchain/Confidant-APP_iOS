@@ -349,7 +349,8 @@
 //        [weakSelf deleteFileWithModel:model];
     }];
     
-    [view show];
+    NSString *fileName = @"";
+    [view showWithFileName:fileName];
 }
 
 #pragma mark -删除文件

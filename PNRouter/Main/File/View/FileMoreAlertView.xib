@@ -380,6 +380,9 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="xVh-Iv-lIx"/>
+            <connections>
+                <outlet property="fileNameLab" destination="CTy-Ih-870" id="6wX-Oa-gsy"/>
+            </connections>
             <point key="canvasLocation" x="53.600000000000001" y="41.829085457271368"/>
         </view>
     </objects>

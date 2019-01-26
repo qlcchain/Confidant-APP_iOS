@@ -8,6 +8,12 @@
 
 #import "FileMoreAlertView.h"
 
+@interface FileMoreAlertView ()
+
+@property (weak, nonatomic) IBOutlet UILabel *fileNameLab;
+
+@end
+
 @implementation FileMoreAlertView
 
 + (instancetype)getInstance {
@@ -16,7 +22,9 @@
 }
 
 #pragma mark - Operation
-- (void)show {
+- (void)showWithFileName:(NSString *)fileName {
+    self.fileNameLab.text = fileName;
+    
     [AppD.window addSubview:self];
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.bottom.mas_equalTo(AppD.window).offset(0);

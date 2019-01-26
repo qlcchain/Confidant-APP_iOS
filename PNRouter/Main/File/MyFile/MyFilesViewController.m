@@ -147,7 +147,9 @@
         [weakSelf deleteFileWithModel:model];
     }];
     
-    [view show];
+    NSString *fileNameBase58 = model.FileName.lastPathComponent;
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    [view showWithFileName:fileName];
 }
 
 #pragma mark -删除文件
@@ -157,6 +159,9 @@
 }
 
 - (void)otherApplicationOpen:(NSURL *)fileURL {
+    if (!fileURL) {
+        return;
+    }
     NSArray *items = @[fileURL];
     UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
