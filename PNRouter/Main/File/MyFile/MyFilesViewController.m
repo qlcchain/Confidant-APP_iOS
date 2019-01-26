@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
 @property (weak, nonatomic) IBOutlet UIView *contentBack;
 @property (nonatomic) ArrangeType arrangeType;
+@property (nonatomic ,strong) FileListModel *selectModel;
 
 @end
 
@@ -31,6 +32,7 @@
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(delegateFileCompleteNoti:) name:Delegate_File_Noti object:nil];
 }
 
 - (void)dealloc {
@@ -120,6 +122,7 @@
 }
 
 - (void)showFileMoreAlertView:(FileListModel *)model {
+    self.selectModel = model;
     FileMoreAlertView *view = [FileMoreAlertView getInstance];
     @weakify_self
     [view setSendB:^{
@@ -256,6 +259,18 @@
         [_sourceArr addObjectsFromArray:tempArr];
         [_mainTable reloadData];
     }
+}
+- (void) delegateFileCompleteNoti:(NSNotification *) noti
+{
+    @weakify_self
+    [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FileListModel *model = obj;
+        if ([model.MsgId integerValue] == [weakSelf.selectModel.MsgId integerValue]) {
+            [weakSelf.sourceArr removeObject:model];
+            [weakSelf.mainTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            *stop = YES;
+        }
+    }];
 }
 
 @end
