@@ -37,6 +37,8 @@
 #define LOGIN_KEY @"login_keys"
 #define TOX_DATA_PASS @"123456"
 #define FILE_NONCE @"OmcKJrqehqQwNvdHkRBddXYyAvbGW2A1"
+#define File_Download_GroupId @"File_Download_GroupId" // 文件下载groupid
+#define File_Download_Task_List @"File_Download_Task_List" // 文件下载目录
 
 #pragma mark - socket Action
 
