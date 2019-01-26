@@ -100,7 +100,9 @@ typedef enum : NSUInteger {
         
     }];
     
-    [view show];
+    NSString *fileNameBase58 = model.FileName.lastPathComponent;
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    [view showWithFileName:fileName];
 }
 
 - (void)otherApplicationOpen:(NSURL *)fileURL {
