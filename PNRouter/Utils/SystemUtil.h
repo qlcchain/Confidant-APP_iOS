@@ -20,6 +20,7 @@
 
 + (NSString *)getTempUploadPhotoBaseFilePath;
 + (NSString *)getTempUploadVideoBaseFilePath;
++ (NSString *)getTempDownloadFilePath:(NSString *)fileName;
 
 + (void) removeDocmentAudio;
 // iOS将文件大小转换文KB\MB\GB

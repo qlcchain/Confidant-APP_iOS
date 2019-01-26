@@ -15,6 +15,9 @@
 #import "FilePreviewDownloadViewController.h"
 #import "UserConfig.h"
 #import "FileListModel.h"
+#import "NSDate+Category.h"
+#import "OperationRecordModel.h"
+#import "PNRouter-Swift.h"
 
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -268,6 +271,13 @@
         if ([model.MsgId integerValue] == [weakSelf.selectModel.MsgId integerValue]) {
             [weakSelf.sourceArr removeObject:model];
             [weakSelf.mainTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            
+            // 删除成功-保存操作记录
+            NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
+            NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
+            NSString *fileName = [Base58Util Base58DecodeWithCodeName:model.FileName.lastPathComponent];
+            [OperationRecordModel saveOrUpdateWithFileType:model.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:model.FileName?:@"" localPath:@""];
+            
             *stop = YES;
         }
     }];

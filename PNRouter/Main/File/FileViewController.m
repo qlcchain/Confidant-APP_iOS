@@ -25,6 +25,9 @@
 #import "NSDate+Category.h"
 #import "SystemUtil.h"
 #import "OperationRecordModel.h"
+#import "FileMoreAlertView.h"
+#import "FileListModel.h"
+#import "DetailInformationViewController.h"
 
 @interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/, UIDocumentPickerDelegate, UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
@@ -317,6 +320,44 @@
     }];
 }
 
+- (void)showFileMoreAlertView:(OperationRecordModel *)model {
+//    self.selectModel = model;
+    FileMoreAlertView *view = [FileMoreAlertView getInstance];
+    @weakify_self
+    [view setSendB:^{
+        
+    }];
+    [view setDownloadB:^{
+        
+    }];
+    [view setOtherApplicationOpenB:^{
+        [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:@""]];
+    }];
+    [view setDetailInformationB:^{
+        [weakSelf jumpToDetailInformation:model];
+    }];
+    [view setRenameB:^{
+        
+    }];
+    [view setDeleteB:^{
+//        [weakSelf deleteFileWithModel:model];
+    }];
+    
+    [view show];
+}
+
+#pragma mark -删除文件
+- (void) deleteFileWithModel:(FileListModel *) model
+{
+    [SendRequestUtil sendDelFileWithUserId:[UserConfig getShareObject].userId FileName:model.FileName showHud:YES];
+}
+
+- (void)otherApplicationOpen:(NSURL *)fileURL {
+    NSArray *items = @[fileURL];
+    UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
+    [self.navigationController presentViewController:activityController animated:YES completion:nil];
+}
+
 #pragma mark - Request
 //- (void)sendPullFileList {
 //    NSString *UserId = [UserConfig getShareObject].userId;
@@ -367,6 +408,10 @@
     
     OperationRecordModel *model = _sourceArr[indexPath.row];
     [cell configCellWithModel:model];
+    @weakify_self
+    [cell setFileMoreB:^{
+//        [weakSelf showFileMoreAlertView:<#(FileListModel *)#>];
+    }];
     
 //    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
 //    cell.delegate = (id)self;
@@ -526,6 +571,12 @@
     UploadFilesViewController *vc = [[UploadFilesViewController alloc] init];
     vc.documentType = self.pickerType;
     vc.urlArr = urlArr;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToDetailInformation:(FileListModel *)model  {
+    DetailInformationViewController *vc = [[DetailInformationViewController alloc] init];
+    vc.fileListM = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
