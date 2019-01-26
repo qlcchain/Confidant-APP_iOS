@@ -101,7 +101,7 @@ typedef enum : NSUInteger {
 
 - (void)otherApplicationOpen:(NSURL *)fileURL {
     NSArray *items = @[fileURL];
-    UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
+    UIActivityViewController *activityController=[[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }
 
@@ -122,7 +122,9 @@ typedef enum : NSUInteger {
     item.downloadFilePath = [JCDownloadUtilities filePathWithFileName:[item.downloadUrl lastPathComponent] folderName:File_Download_Task_List];
     JCDownloadOperation *operation = [JCDownloadOperation operationWithItem:item];
 //    [downloadList addObject:operation];
-    [[JCDownloadQueue sharedQueue] startDownload:operation];
+    [[JCDownloadAgent sharedAgent] setSecurityPolicyWithSSLPinningMode:JCDownloadSSLPinningModeNone pinnedCertificates:nil allowInvalidCertificates:YES validatesDomainName:NO];
+    [[JCDownloadAgent sharedAgent] startDownload:operation];
+//    [[JCDownloadQueue sharedQueue] startDownload:operation];
     
 }
 
@@ -191,18 +193,30 @@ typedef enum : NSUInteger {
     NSDictionary *dic = noti.userInfo;
     //    @{JCDownloadIdKey:operation.item.downloadId, JCDownloadProgressKey:progress}
     NSString *md5key = dic[JCDownloadIdKey];
+    NSError *erro = dic[JCDownloadCompletionErrorKey];
     NSURL *fileUrl = dic[JCDownloadCompletionFilePathKey];
     _downloadFilePath = fileUrl.path;
     NSString *md5Url = [JCDownloadUtilities md5WithString:_requestUrl];
-    if ([md5Url isEqualToString:md5key]) {
-        _progressV.progress = 1;
-        
+    if (erro) {
+        NSLog(@"download error********* %@",erro);
+        [AppD.window showHint:@"Download Fail"];
         _progressV.hidden = YES;
         _sizeLab.hidden = NO;
-        _fileExistType = FileExistTypeExistOrDownloaded;
-        [_previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
+        _fileExistType = FileExistTypeNone;
+        [_previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
         [_previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
         [_previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+    } else {
+        if ([md5Url isEqualToString:md5key]) {
+            _progressV.progress = 1;
+            
+            _progressV.hidden = YES;
+            _sizeLab.hidden = NO;
+            _fileExistType = FileExistTypeExistOrDownloaded;
+            [_previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
+            [_previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+            [_previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+        }
     }
     
 }

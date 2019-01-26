@@ -24,6 +24,7 @@
 #import "TZImagePickerController.h"
 #import "NSDate+Category.h"
 #import "SystemUtil.h"
+#import "OperationRecordModel.h"
 
 @interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/, UIDocumentPickerDelegate, UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
@@ -34,6 +35,7 @@
 @property (nonatomic , assign) DocumentPickerType pickerType;
 
 @property (nonatomic, strong) UploadAlertView *uploadAlertV;
+@property (nonatomic, strong) NSMutableArray *sourceArr;
 
 @end
 
@@ -59,6 +61,7 @@
     _searchBackView.layer.masksToBounds = YES;
     _searchTF.delegate = self;
     
+    _sourceArr = [NSMutableArray array];
     [_mainTable registerNib:[UINib nibWithNibName:FileCellReuse bundle:nil] forCellReuseIdentifier:FileCellReuse];
     
 //    [self sendPullFileList];
@@ -66,9 +69,17 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    [self refreshTable];
 }
 
 #pragma mark - Operation
+
+- (void)refreshTable {
+    [_sourceArr removeAllObjects];
+    [_sourceArr addObjectsFromArray:[OperationRecordModel getAllOperationRecord]];
+    [_mainTable reloadData];
+}
 
 - (void)showUploadAlertView {
     _uploadAlertV = [UploadAlertView getInstance];
@@ -344,7 +355,7 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return _sourceArr.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -353,6 +364,9 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     FileCell *cell = [tableView dequeueReusableCellWithIdentifier:FileCellReuse];
+    
+    OperationRecordModel *model = _sourceArr[indexPath.row];
+    [cell configCellWithModel:model];
     
 //    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
 //    cell.delegate = (id)self;
@@ -470,13 +484,13 @@
 
 - (void)jumpToMyFile {
     MyFilesViewController *vc = [[MyFilesViewController alloc] init];
-    vc.filesType = FilesTypeMy;
+    vc.filesType = FilesTypeAll;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)jumpToDocumentShare {
     MyFilesViewController *vc = [[MyFilesViewController alloc] init];
-    vc.filesType = FilesTypeShare;
+    vc.filesType = FilesTypeSent;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

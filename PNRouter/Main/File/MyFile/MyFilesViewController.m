@@ -49,12 +49,12 @@
 
 #pragma mark - Operation
 - (void)dataInit {
-    if (_filesType == FilesTypeMy) {
-        _titleLab.text = @"My Files";
-    } else if (_filesType == FilesTypeShare) {
-        _titleLab.text = @"Documents I Share";
+    if (_filesType == FilesTypeAll) {
+        _titleLab.text = @"All Files";
+    } else if (_filesType == FilesTypeSent) {
+        _titleLab.text = @"Files Sent";
     } else if (_filesType == FilesTypeReceived) {
-        _titleLab.text = @"Documents Received";
+        _titleLab.text = @"Files Received";
     }
     
     _sourceArr = [NSMutableArray array];
@@ -71,10 +71,10 @@
 - (void)showEmptyView {
     NSString *imgStr = @"";
     NSString *tipStr = @"";
-    if (_filesType == FilesTypeMy) {
+    if (_filesType == FilesTypeAll) {
         imgStr = @"icon_documents_my_gray";
         tipStr = @"No document yet Come and upload it";
-    } else if (_filesType == FilesTypeShare) {
+    } else if (_filesType == FilesTypeSent) {
         imgStr = @"icon_documents_share_gray";
         tipStr = @"No documents yet Share them";
     } else if (_filesType == FilesTypeReceived) {
@@ -163,6 +163,14 @@
     NSNumber *MsgNum = @(15);
     NSNumber *Category = @(3);
     NSNumber *FileType = @(0);
+    if (_filesType == FilesTypeAll) {
+        FileType = @(0);
+    } else if (_filesType == FilesTypeSent) {
+        FileType = @(1);
+    } else if (_filesType == FilesTypeReceived) {
+        FileType = @(2);
+    }
+    
     [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
 }
 
