@@ -136,10 +136,16 @@
         
     }];
     [view setDeleteB:^{
-        
+        [weakSelf deleteFileWithModel:model];
     }];
     
     [view show];
+}
+
+#pragma mark -删除文件
+- (void) deleteFileWithModel:(FileListModel *) model
+{
+    [SendRequestUtil sendDelFileWithUserId:[UserConfig getShareObject].userId FileName:model.FileName showHud:YES];
 }
 
 - (void)otherApplicationOpen:(NSURL *)fileURL {

@@ -25,9 +25,32 @@
 }
 
 - (void)configCellWithModel:(FileListModel *)model {
+    // icon_picture_small_gray 图片
+    // icon_video_small_gray 视频
+    // icon_document_small_gray 文档
+    // icon_other_small_gray 其它
+    NSString *fileTypeImgName = @"";
+    switch ([model.FileType intValue]) {
+        case 1:
+            fileTypeImgName = @"icon_picture_small_gray";
+            break;
+        case 2:
+            fileTypeImgName = @"icon_video_small_gray";
+            break;
+        case 4:
+            fileTypeImgName = @"icon_video_small_gray";
+            break;
+        case 5:
+            fileTypeImgName = @"icon_document_small_gray";
+            break;
+            
+        default:
+            fileTypeImgName = @"icon_other_small_gray";
+            break;
+    }
     _selectLeftWidth.constant = model.showSelect?40:0;
     _selectBtn.selected = model.isSelect;
-    _icon.image = [UIImage imageNamed:@"icon_document_small_gray"];
+    _icon.image = [UIImage imageNamed:fileTypeImgName];
     _titleLab.text = [Base58Util Base58DecodeWithCodeName:model.FileName];
     int fileSize = [model.FileSize intValue]/1024;
     NSString *desTime = [NSDate formattedUploadFileTimeFromTimeInterval:[model.Timestamp  intValue]];
