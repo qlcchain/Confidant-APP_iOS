@@ -17,6 +17,7 @@
 #import "NSData+CRC16.h"
 #import "PNRouter-Swift.h"
 #import "UserConfig.h"
+#import "FileData.h"
 
 #define NTOHL(x)    (x) = ntohl((__uint32_t)x) //转换成本地字节流
 #define NTOHS(x)    (x) = ntohs((__uint16_t)x) //转换成本地字节流
@@ -239,36 +240,8 @@ struct ResultFile {
 - (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(int)fileid fileType:(uint32_t) fileType messageid:(NSString *)messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey
 {
     
-//    char crcbytes[] = {
-//        0x1a, 0x2b, 0x3c, 0x4d, 0x5e, 0x6f, 0x7f, 0x8f
-//    };
-//    NSData *myData1 = [NSData dataWithBytes:crcbytes length:sizeof(crcbytes)];
-//    uint16_t crc161 = [myData1 hexadecimalUint16];
-//    HTONS(crc161);
-    
-//    sendFile.action = 1;
-//    sendFile.segsize = 1024;
-//    sendFile.segseq = 1;
-//    sendFile.offset = 0;
-//    sendFile.fileid = 1234;
-//    sendFile.crc = 0;
-//    sendFile.segmore = 0;
-//    sendFile.cotinue = 0;
-//
-//
-//
-//    memcpy(sendFile.filename, [@"img1" cStringUsingEncoding:NSASCIIStringEncoding],[@"img1" length]);
-//    memcpy(sendFile.fromid, [@"12345" cStringUsingEncoding:NSASCIIStringEncoding],[@"12345" length]);
-//    memcpy(sendFile.toid, [@"12345" cStringUsingEncoding:NSASCIIStringEncoding],[@"12345" length]);
-//
-//    NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
-//    NSLog(@"%@",myData);
-    
-    // filename 做url编码
-    //stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet
-  
-    
     fileName = [Base58Util Base58EncodeWithCodeName:fileName];
+    self.srcKey = srcKey;
     self.fileName = fileName;
     self.messageid = messageid;
     self.fileType = fileType;
@@ -307,6 +280,29 @@ struct ResultFile {
     sendFile.crc = crc;
     sendFile.segmore = segMoreBlg;
     sendFile.cotinue = 0;
+    
+    if ([toid isEmptyString]) // 上传文件
+    {
+         NSArray *finfAlls = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srcKey)]];
+        if (finfAlls && finfAlls.count > 0) {
+            FileData *fileModel = finfAlls[0];
+            fileModel.status = 2;
+            [fileModel bg_saveOrUpdateAsync:nil];
+        } else {
+            FileData *fileModel = [[FileData alloc] init];
+            fileModel.bg_tableName = FILE_STATUS_TABNAME;
+            fileModel.fileId = fileid;
+            fileModel.fileData = imgData;
+            fileModel.fileType = fileType;
+            fileModel.fileName = [Base58Util Base58DecodeWithCodeName:fileName];
+            fileModel.fileOptionType = 1;
+            fileModel.status = 2;
+            fileModel.userId = [UserConfig getShareObject].userId;
+            fileModel.srcKey = srcKey;
+            fileModel.fileOptionType = 1;
+            [fileModel bg_saveAsync:nil];
+        }
+    }
     
     if (![toid isEmptyString]) {
         memcpy(sendFile.toid, [toid cStringUsingEncoding:NSASCIIStringEncoding],[toid length]);
@@ -358,6 +354,7 @@ struct ResultFile {
                 [[SocketManageUtil getShareObject] clearDisConnectSocket];
                 
                 if ([self.toid isEmptyString]) {
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),self.fileName,self.fileData,@(self.fileType),self.srcKey]];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
@@ -394,6 +391,7 @@ struct ResultFile {
             sendFinsh = YES;
             [_fileUtil disconnect];
             if ([self.toid isEmptyString]) {
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,self.fileData,@(self.fileType),self.srcKey]];
             } else {
                  [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];

@@ -12,6 +12,7 @@
 #import "MD5Util.h"
 #import "PNRouter-Swift.h"
 #import "NSString+File.h"
+#import "FileData.h"
 #import "OperationRecordModel.h"
 #import "NSDate+Category.h"
 //#import "NSDateFormatter+Category.h"
@@ -45,6 +46,15 @@
     NSArray *resultArr = noti.object;
     if (resultArr && resultArr.count>0 && [resultArr[0] integerValue] == 0) { // 成功
         
+        NSString *srckey = resultArr[4];
+        NSArray *finfAlls = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)]];
+        if (finfAlls && finfAlls.count > 0) {
+            FileData *fileModel = finfAlls[0];
+            fileModel.status = 1;
+            fileModel.fileData = nil;
+            [fileModel bg_saveOrUpdateAsync:nil];
+        }
+        
         NSString *fileName = resultArr[1];
         NSData *fileData = resultArr[2];
         
@@ -68,7 +78,14 @@
         NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
         [OperationRecordModel saveOrUpdateWithFileType:fileType operationType:@(0) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:@"" localPath:@""];
     } else { // 上传失败
-        
+        NSString *srckey = resultArr[4];
+        NSArray *finfAlls = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)]];
+        if (finfAlls && finfAlls.count > 0) {
+            FileData *fileModel = finfAlls[0];
+            fileModel.status = 3;
+            fileModel.fileData = nil;
+            [fileModel bg_saveOrUpdateAsync:nil];
+        }
     }
 }
 @end

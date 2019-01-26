@@ -42,4 +42,6 @@
 + (BOOL)isVPNOn;
 // 得到自己上传文件的 filepath
 + (NSString *) getOwerUploadFilePathWithFileName:(NSString *) fileName;
+// 解密后文件的临时目录
++ (NSString *)getTempDeFilePath:(NSString *)fileName ;
 @end

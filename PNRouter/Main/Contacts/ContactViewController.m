@@ -40,6 +40,17 @@
 @end
 
 @implementation ContactViewController
+- (void)viewDidAppear:(BOOL)animated
+{
+    
+     [self sendGetFriendNoti];
+    [super viewWillAppear:animated];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [super viewWillAppear:animated];
+}
 
 #pragma mark - Observe
 - (void)observe {
@@ -128,12 +139,6 @@
 }
 
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    [self sendGetFriendNoti];
-  
-}
 
 #pragma mark - 直接添加监听方法
 -(void)addTargetMethod{

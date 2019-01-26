@@ -26,7 +26,7 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="35" id="8Vf-gs-74M"/>
                                     </constraints>
-                                    <state key="normal" image="icon_back"/>
+                                    <state key="normal" image="arrow-exit-h"/>
                                     <connections>
                                         <action selector="backButtonClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="e7n-92-HjW"/>
                                     </connections>
@@ -34,24 +34,34 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3gO-T7-e9g">
                                     <rect key="frame" x="55" y="0.0" width="265" height="44"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ekv-AD-pg7">
+                                    <rect key="frame" x="0.0" y="43.5" width="375" height="0.5"/>
+                                    <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="0.5" id="QSs-vX-6Qn"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="3gO-T7-e9g" firstAttribute="leading" secondItem="AP3-Ii-Bkv" secondAttribute="trailing" constant="10" id="Ayj-aw-qw0"/>
                                 <constraint firstItem="3gO-T7-e9g" firstAttribute="centerX" secondItem="UIX-Qc-vbi" secondAttribute="centerX" id="LVD-Kf-kQn"/>
+                                <constraint firstAttribute="bottom" secondItem="ekv-AD-pg7" secondAttribute="bottom" id="P4V-Qw-bb3"/>
                                 <constraint firstAttribute="bottom" secondItem="3gO-T7-e9g" secondAttribute="bottom" id="PQ7-Ij-psR"/>
                                 <constraint firstItem="3gO-T7-e9g" firstAttribute="top" secondItem="UIX-Qc-vbi" secondAttribute="top" id="eiQ-fJ-QYD"/>
                                 <constraint firstAttribute="height" constant="44" id="o4t-3c-O7d"/>
+                                <constraint firstAttribute="trailing" secondItem="ekv-AD-pg7" secondAttribute="trailing" id="qdx-xO-xn5"/>
                                 <constraint firstItem="AP3-Ii-Bkv" firstAttribute="leading" secondItem="UIX-Qc-vbi" secondAttribute="leading" constant="10" id="r2f-6a-XKd"/>
+                                <constraint firstItem="ekv-AD-pg7" firstAttribute="leading" secondItem="UIX-Qc-vbi" secondAttribute="leading" id="vVz-qj-i3d"/>
                                 <constraint firstAttribute="bottom" secondItem="AP3-Ii-Bkv" secondAttribute="bottom" id="y1Z-me-gxr"/>
                                 <constraint firstItem="AP3-Ii-Bkv" firstAttribute="top" secondItem="UIX-Qc-vbi" secondAttribute="top" id="yi4-X9-CzC"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="UIX-Qc-vbi" secondAttribute="trailing" id="1SG-gR-7D8"/>
                         <constraint firstItem="UIX-Qc-vbi" firstAttribute="leading" secondItem="8By-XK-H0h" secondAttribute="leading" id="98j-px-sBc"/>
@@ -79,10 +89,10 @@
                 <outlet property="lblTitle" destination="3gO-T7-e9g" id="DUR-rh-4TU"/>
                 <outlet property="navContraintH" destination="oyz-7g-7c0" id="Bz6-1B-i76"/>
             </connections>
-            <point key="canvasLocation" x="-195" y="48"/>
+            <point key="canvasLocation" x="-196" y="47.226386806596707"/>
         </view>
     </objects>
     <resources>
-        <image name="icon_back" width="11" height="20"/>
+        <image name="arrow-exit-h" width="24" height="24"/>
     </resources>
 </document>

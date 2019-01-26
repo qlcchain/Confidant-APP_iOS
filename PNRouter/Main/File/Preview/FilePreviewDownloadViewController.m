@@ -217,9 +217,10 @@ typedef enum : NSUInteger {
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)jumpToFilePreview:(NSString *)filePath {
+- (void)jumpToFilePreview:(NSString *)filePath{
     FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
     vc.filePath = filePath;
+    vc.userKey = _fileListM.UserKey;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

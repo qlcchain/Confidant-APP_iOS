@@ -138,10 +138,10 @@
     UIImagePickerController *pickerController = [[UIImagePickerController alloc]init];
     //    更改titieview的字体颜色
     NSMutableDictionary *attrs = [NSMutableDictionary dictionary];
-    attrs[NSForegroundColorAttributeName] = [UIColor whiteColor];
+    attrs[NSForegroundColorAttributeName] = MAIN_PURPLE_COLOR;
     [pickerController.navigationBar setTitleTextAttributes:attrs];
     pickerController.navigationBar.translucent = NO;
-    pickerController.navigationBar.barTintColor = MAIN_PURPLE_COLOR;
+    pickerController.navigationBar.barTintColor = MAIN_WHITE_COLOR;
     //设置选取的照片是否可编辑
     pickerController.allowsEditing = YES;
     //设置相册呈现的样式

@@ -199,6 +199,18 @@
     }
     return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
 }
+// 解密后文件的临时目录
++ (NSString *)getTempDeFilePath:(NSString *)fileName {
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"Defiles/%@",fileName];
+    NSString *filePathDir = @"Defiles";
+    BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePathDir] isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePathDir] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
+}
 
 + (BOOL) filePathisExist:(NSString *) filePath
 {

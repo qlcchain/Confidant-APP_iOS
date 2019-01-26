@@ -38,6 +38,11 @@
 @end
 
 @implementation NewsViewController
+- (void)viewWillAppear:(BOOL)animated
+{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [super viewWillAppear:animated];
+}
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

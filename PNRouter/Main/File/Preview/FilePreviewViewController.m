@@ -11,6 +11,11 @@
 #import "FileMoreAlertView.h"
 #import "FileListModel.h"
 #import "DetailInformationViewController.h"
+#import "LibsodiumUtil.h"
+#import "EntryModel.h"
+#import "NSString+Base64.h"
+#import "AESCipher.h"
+#import "SystemUtil.h"
 
 @interface FilePreviewViewController () <QLPreviewControllerDataSource, QLPreviewControllerDelegate>
 
@@ -31,14 +36,45 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self previewFile];
+    [self.view showHudInView:self.view hint:@""];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSData *fileData = [NSData dataWithContentsOfFile:self.filePath];
+        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.userKey];
+        if (datakey && datakey.length>0) {
+            datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+            if (datakey && ![datakey isEmptyString]) {
+                fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                if (fileData) {
+                   NSString *deFilePath = [SystemUtil getTempDeFilePath:[self.filePath lastPathComponent]];
+                   BOOL isWriteFinsh = [fileData writeToFile:deFilePath atomically:YES];
+                    if (isWriteFinsh) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.view hideHud];
+                            [self previewFilePath:deFilePath];
+                        });
+                    }
+                    
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.view hideHud];
+                        [self.view showHint:@"Decryption failure."];
+                    });
+                }
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.view hideHud];
+                [self.view showHint:@"Decryption failure."];
+            });
+        }
+        
+    });
 }
 
 #pragma mark - Operation
-- (void)previewFile {
+- (void)previewFilePath:(NSString *) filePath {
     _sourceArr = [NSMutableArray array];
-    [_sourceArr addObject:_filePath];
+    [_sourceArr addObject:filePath];
     
     _previewController = [[QLPreviewController alloc] init];
     _previewController.dataSource = self;
