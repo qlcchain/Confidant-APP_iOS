@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FilePreviewViewController : PNBaseViewController
 
 @property (nonatomic, strong) NSString *filePath;
+@property (nonatomic, strong) NSString *userKey;
 
 @end
 

@@ -143,10 +143,11 @@
         [view addSubview:titleLab];
     }
     
+    NSMutableArray *ongoingArr = _sourceArr[section];
     if (section == 0) {
-        titleLab.text = [NSString stringWithFormat:@"Ongoing (%@)",@(1)];
+        titleLab.text = [NSString stringWithFormat:@"Ongoing (%lu)",(unsigned long)ongoingArr.count];
     } else if (section == 1) {
-        titleLab.text = [NSString stringWithFormat:@"Completed (%@)",@(1)];
+        titleLab.text = [NSString stringWithFormat:@"Completed (%lu)",(unsigned long)ongoingArr.count];
     }
     
     return headerView;
