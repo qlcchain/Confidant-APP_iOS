@@ -266,6 +266,7 @@
 
     return dataTask;
 }
+
 + (void) downFileWithBaseURLStr:(NSString *) ULRString friendid:(NSString *) friendid
                   progressBlock:(void(^)(CGFloat progress)) progressBlock
                         success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
@@ -303,6 +304,38 @@
     }];
     [downloadTask resume];
 }
+
++ (void)downFileWithBaseURLStr:(NSString *)ULRString
+                       filePath:(NSString *)filePath
+                  progressBlock:(void(^)(CGFloat progress)) progressBlock
+                        success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
+                        failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure {
+    NSURLSessionDownloadTask *downloadTask;
+    NSURL *url = [NSURL URLWithString:ULRString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    downloadTask = [[self getHTTPManager] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        CGFloat progressCount =  downloadProgress.fractionCompleted * 100;
+        if (progressBlock) {
+            progressBlock(progressCount);
+        }
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+        /* 设定下载到的位置 */
+        return [NSURL fileURLWithPath:filePath];
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+        if (!error) {
+            if (success) {
+                success(downloadTask,filePath.lastPathComponent);
+            }
+        } else {
+            if (failure) {
+                failure(downloadTask, error);
+            }
+            DDLogDebug(@"error = %@",error.description);
+        }
+    }];
+    [downloadTask resume];
+}
+
 + (NSURLSessionDataTask *)requestWithBaseURLStr:(NSString *)URLString
                                parameters:(id)parameters
                                  userInfo:(NSDictionary*)userInfo

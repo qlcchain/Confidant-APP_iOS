@@ -100,4 +100,26 @@
         }
     }];
 }
+
++ (void)downFileWithBaseURLStr:(NSString *)url
+                      filePath:(NSString *)filePath
+                  progressBlock:(void(^)(CGFloat progress)) progressBlock
+                        success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
+                        failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure {
+    NSString *requestUrl = [NSString stringWithFormat:@"%@%@",[RequestService getInstance].prefix_Url,url];
+    [AFHTTPClientV2 downFileWithBaseURLStr:requestUrl filePath:filePath progressBlock:^(CGFloat progress) {
+        if (progressBlock) {
+            progressBlock(progress);
+        }
+    } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
+        if (success) {
+            success(dataTask,filePath);
+        }
+    } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
+        if (failure) {
+            failure(dataTask,error);
+        }
+    }];
+}
+
 @end
