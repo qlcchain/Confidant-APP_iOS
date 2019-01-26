@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *toId;
 @property (nonatomic ,strong) NSString *fileName;
 @property (nonatomic ,strong) NSString *filePath;
+@property (nonatomic ,assign) CGFloat progess;
 @property (nonatomic ,strong) NSString *srcKey;
 @property (nonatomic ,strong ,nullable) NSData *fileData;
 @property (nonatomic ,assign) int fileSize;

@@ -25,9 +25,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+     [self dataInit];
     [self getAllTaskList];
-    [self dataInit];
+   
    
     
 }
@@ -51,6 +51,8 @@
         [arr2 addObjectsFromArray:finshTasks];
     }
     [_sourceArr addObject:arr2];
+    
+    [_mainTable reloadData];
     
     if ((!finshTasks || finshTasks.count == 0) && (!uploadTasks || uploadTasks.count == 0)) {
         [self viewInit];
@@ -89,7 +91,7 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _sourceArr.count;
+    return [_sourceArr[section] count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -102,13 +104,15 @@
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    NSMutableArray *modelArr = _sourceArr[indexPath.section];
+    FileData *model = modelArr[indexPath.row];
     if (indexPath.section == 0) {
         TaskOngoingCell *cell = [tableView dequeueReusableCellWithIdentifier:TaskOngoingCellReuse];
-        
+        [cell setFileModel:model];
         return cell;
     } else if (indexPath.section == 1) {
         TaskCompletedCell *cell = [tableView dequeueReusableCellWithIdentifier:TaskCompletedCellReuse];
-        
+        [cell setFileModel:model];
         return cell;
     }
     return [UITableViewCell new];
@@ -122,6 +126,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 40;
+}
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 10;
+    }
+    return 0;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

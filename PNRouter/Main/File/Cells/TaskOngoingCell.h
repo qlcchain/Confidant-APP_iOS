@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class FileData;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,6 +15,15 @@ static NSString *TaskOngoingCellReuse = @"TaskOngoingCell";
 #define TaskOngoingCellHeight 64
 
 @interface TaskOngoingCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *fileImgView;
+@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblProgess;
+@property (weak, nonatomic) IBOutlet UILabel *lblSize;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImgView;
+@property (weak, nonatomic) IBOutlet UIProgressView *progess;
+
+
+- (void) setFileModel:(FileData *) model;
 
 @end
 

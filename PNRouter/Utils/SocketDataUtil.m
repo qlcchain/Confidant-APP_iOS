@@ -294,6 +294,7 @@ struct ResultFile {
             fileModel.fileId = fileid;
             fileModel.fileData = imgData;
             fileModel.fileType = fileType;
+            fileModel.progess = 0.0f;
             fileModel.fileName = [Base58Util Base58DecodeWithCodeName:fileName];
             fileModel.fileOptionType = 1;
             fileModel.status = 2;
@@ -403,6 +404,17 @@ struct ResultFile {
             [_fileUtil disconnect];
             return;
         }
+        
+        if ([self.toid isEmptyString]) {
+            CGFloat progess = (sendFileSizeMax*resultFile.segseq)/self.fileData.length;
+            NSArray *finfAlls = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.srcKey)]];
+            if (finfAlls && finfAlls.count > 0) {
+                FileData *fileModel = finfAlls[0];
+                fileModel.progess = progess;
+                [fileModel bg_saveOrUpdateAsync:nil];
+            }
+        }
+        
         
         uint32_t sendFileSize = self.fileData.length>(sendFileSizeMax*(resultFile.segseq+1))?sendFileSizeMax:(uint32_t)self.fileData.length-(sendFileSizeMax*resultFile.segseq);
         uint8_t segMoreBlg = 0;

@@ -51,6 +51,7 @@
         if (finfAlls && finfAlls.count > 0) {
             FileData *fileModel = finfAlls[0];
             fileModel.status = 1;
+            fileModel.progess = 1;
             fileModel.fileData = nil;
             [fileModel bg_saveOrUpdateAsync:nil];
         }
@@ -83,9 +84,11 @@
         if (finfAlls && finfAlls.count > 0) {
             FileData *fileModel = finfAlls[0];
             fileModel.status = 3;
+            fileModel.progess = 0.0;
             fileModel.fileData = nil;
             [fileModel bg_saveOrUpdateAsync:nil];
         }
     }
 }
+
 @end

@@ -269,6 +269,7 @@
 		734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734B793721A7EAAF0068AA2C /* UserManagerViewController.m */; };
 		734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */; };
 		7360B85221FC3269008FB181 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85121FC3269008FB181 /* FileData.m */; };
+		7360B85521FC632A008FB181 /* FileDownUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85421FC632A008FB181 /* FileDownUtil.m */; };
 		7362573D213E8B3200D7FD6B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362573C213E8B3200D7FD6B /* AppDelegate.m */; };
 		73625740213E8B3200D7FD6B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362573F213E8B3200D7FD6B /* ViewController.m */; };
 		73625748213E8B3400D7FD6B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73625746213E8B3400D7FD6B /* LaunchScreen.storyboard */; };
@@ -968,6 +969,8 @@
 		734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserManagerViewController.xib; sourceTree = "<group>"; };
 		7360B85021FC3269008FB181 /* FileData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
 		7360B85121FC3269008FB181 /* FileData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileData.m; sourceTree = "<group>"; };
+		7360B85321FC632A008FB181 /* FileDownUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileDownUtil.h; sourceTree = "<group>"; };
+		7360B85421FC632A008FB181 /* FileDownUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileDownUtil.m; sourceTree = "<group>"; };
 		73625738213E8B3200D7FD6B /* PNRouter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PNRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7362573B213E8B3200D7FD6B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7362573C213E8B3200D7FD6B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -2550,6 +2553,8 @@
 				73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */,
 				7392791321FAF356003AAD58 /* UploadFileManager.h */,
 				7392791421FAF356003AAD58 /* UploadFileManager.m */,
+				7360B85321FC632A008FB181 /* FileDownUtil.h */,
+				7360B85421FC632A008FB181 /* FileDownUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3372,6 +3377,7 @@
 				7378840821ACF2970033A189 /* OCTObject.m in Sources */,
 				5825A24721FB0B8E00E6194B /* FileListModel.m in Sources */,
 				73060558217719A5005A0E13 /* VPNFileInputView.m in Sources */,
+				7360B85521FC632A008FB181 /* FileDownUtil.m in Sources */,
 				736257AB2142149300D7FD6B /* UIView+HUD.m in Sources */,
 				7330F3C8214771D900FF4EEC /* BottonCell.m in Sources */,
 				736257A72142149300D7FD6B /* UIView+Frame.m in Sources */,

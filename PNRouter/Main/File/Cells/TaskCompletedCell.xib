@@ -81,6 +81,13 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="fileImgView" destination="ddR-GQ-uct" id="r1b-eD-1Cl"/>
+                <outlet property="iconImgView" destination="7GH-BB-YXC" id="bem-Kd-QqH"/>
+                <outlet property="lblDesc" destination="6qp-61-gzY" id="Sn5-4o-Svc"/>
+                <outlet property="lblTitle" destination="B84-2o-3KZ" id="cTa-0z-iZJ"/>
+            </connections>
+            <point key="canvasLocation" x="136" y="7"/>
         </tableViewCell>
     </objects>
     <resources>

@@ -107,6 +107,14 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="fileImgView" destination="PuC-jG-9UJ" id="U8i-dF-iQo"/>
+                <outlet property="iconImgView" destination="Vuo-2F-lad" id="EdI-Lr-ChG"/>
+                <outlet property="lblProgess" destination="9vm-Ew-WXc" id="luZ-fy-qgd"/>
+                <outlet property="lblSize" destination="ysK-Jw-bFA" id="UsZ-fV-EjG"/>
+                <outlet property="lblTitle" destination="HnA-cN-O8o" id="JvB-Ob-2NT"/>
+                <outlet property="progess" destination="tXO-xY-vEn" id="SCi-fZ-BSd"/>
+            </connections>
         </tableViewCell>
     </objects>
     <resources>
