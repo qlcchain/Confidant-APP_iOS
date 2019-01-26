@@ -10,6 +10,9 @@
 #import "DetailInformationCell.h"
 #import "SharedSettingsViewController.h"
 #import "FileListModel.h"
+#import "PNRouter-Swift.h"
+#import "NSDate+Category.h"
+#import "NSString+Base64.h"
 
 @interface DetailInformationShowModel : NSObject
 
@@ -44,40 +47,51 @@
     _sourceArr = [NSMutableArray array];
     
     DetailInformationShowModel *model = [[DetailInformationShowModel alloc] init];
-    model.key = @"File Source";
-    model.val = @"AUTODESK 3DSMAX MAGNiTUDE";
+    model.key = @"File name";
+    model.val = [Base58Util Base58DecodeWithCodeName:self.fileListM.FileName];
     model.showArrow = YES;
     [_sourceArr addObject:model];
     model = [[DetailInformationShowModel alloc] init];
     model.key = @"File Type";
-    model.val = @"ZIP";
+    switch ([self.fileListM.FileType integerValue]) {
+        case 1:
+             model.val = @"JPG";
+            break;
+        case 2:
+            model.val = @"AMR";
+            break;
+        case 4:
+            model.val = @"MP4";
+            break;
+        case 5:
+            model.val = @"DOC";
+            break;
+        case 6:
+            model.val = @"OTHER";
+            break;
+            
+        default:
+            break;
+    }
+   
     model.showArrow = NO;
     [_sourceArr addObject:model];
     model = [[DetailInformationShowModel alloc] init];
-    model.key = @"Modification time";
-    model.val = @"2018/08/09 13:00";
+    model.key = @"Time created";
+    model.val = [NSDate formattedUploadFileTimeFromTimeInterval:[self.fileListM.Timestamp  intValue]];
     model.showArrow = NO;
     [_sourceArr addObject:model];
     model = [[DetailInformationShowModel alloc] init];
     model.key = @"File Size";
-    model.val = @"21 K";
+    model.val = [NSString stringWithFormat:@"%@KB",self.fileListM.FileSize];
     model.showArrow = NO;
     [_sourceArr addObject:model];
     model = [[DetailInformationShowModel alloc] init];
     model.key = @"File Source";
-    model.val = @"ChenKai Upload";
+    model.val = [self.fileListM.Sender base64DecodedString];
     model.showArrow = NO;
     [_sourceArr addObject:model];
-    model = [[DetailInformationShowModel alloc] init];
-    model.key = @"File Assignment";
-    model.val = @"ChenKai";
-    model.showArrow = NO;
-    [_sourceArr addObject:model];
-    model = [[DetailInformationShowModel alloc] init];
-    model.key = @"Shared Settings";
-    model.val = @"Private files";
-    model.showArrow = YES;
-    [_sourceArr addObject:model];
+   
     
     [_mainTable registerNib:[UINib nibWithNibName:DetailInformationCellReuse bundle:nil] forCellReuseIdentifier:DetailInformationCellReuse];
 }
@@ -103,8 +117,9 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     DetailInformationCell *cell = [tableView dequeueReusableCellWithIdentifier:DetailInformationCellReuse];
-    
-    
+    DetailInformationShowModel *model = [_sourceArr objectAtIndex:indexPath.row];
+    cell.lblTitle.text = model.key;
+    cell.lblDesc.text = model.val;
     return cell;
 }
 

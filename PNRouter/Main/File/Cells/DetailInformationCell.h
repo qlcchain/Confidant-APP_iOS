@@ -14,6 +14,8 @@ static NSString *DetailInformationCellReuse = @"DetailInformationCell";
 #define DetailInformationCellHeight 56
 
 @interface DetailInformationCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblDesc;
 
 @end
 

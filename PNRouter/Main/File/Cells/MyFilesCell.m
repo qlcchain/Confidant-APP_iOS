@@ -9,6 +9,7 @@
 #import "MyFilesCell.h"
 #import "FileListModel.h"
 #import "PNRouter-Swift.h"
+#import "NSDate+Category.h"
 
 @implementation MyFilesCell
 
@@ -28,7 +29,9 @@
     _selectBtn.selected = model.isSelect;
     _icon.image = [UIImage imageNamed:@"icon_document_small_gray"];
     _titleLab.text = [Base58Util Base58DecodeWithCodeName:model.FileName];
-    _detailLab.text = [NSString stringWithFormat:@"%@ %@",model.FileSize,model.Timestamp];
+    int fileSize = [model.FileSize intValue]/1024;
+    NSString *desTime = [NSDate formattedUploadFileTimeFromTimeInterval:[model.Timestamp  intValue]];
+    _detailLab.text = [NSString stringWithFormat:@"%d KB %@",fileSize,desTime];
 }
 
 - (IBAction)moreAction:(id)sender {

@@ -49,7 +49,7 @@
         fileName = [Base58Util Base58DecodeWithCodeName:fileName];
         DDLogDebug(@"上传成功:%@",fileName);
         NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
-        [fileData writeToFile:uploadDocPath atomically:YES];
+      //  [fileData writeToFile:uploadDocPath atomically:YES];
         if (![SystemUtil isSocketConnect]) {
             NSNumber *fileType = resultArr[3];
             NSString *srckey = resultArr[4];

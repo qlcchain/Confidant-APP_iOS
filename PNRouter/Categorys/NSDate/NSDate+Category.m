@@ -209,6 +209,13 @@
     }
 }
 
+- (NSString *)formattedSystemNewsDateUploadFileDescription
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm"];
+    NSString *theDay = [dateFormatter stringFromDate:self];//日期的年月日
+    return theDay;
+}
 
 /*格式化商家系统消息日期描述*/
 - (NSString *)formattedSystemNewsDateDescription
@@ -261,6 +268,10 @@
 
 + (NSString *)formattedTimeFromTimeInterval:(long long)time{
     return [[NSDate dateWithTimeIntervalInMilliSecondSince1970:time] formattedSystemNewsDateDescription];
+}
+
++ (NSString *)formattedUploadFileTimeFromTimeInterval:(long long)time{
+    return [[NSDate dateWithTimeIntervalInMilliSecondSince1970:time] formattedSystemNewsDateUploadFileDescription];
 }
 
 #pragma mark Relative Dates

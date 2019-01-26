@@ -153,7 +153,7 @@
     NSString *UserId = [UserConfig getShareObject].userId;
     NSNumber *MsgStartId = @(0);
     NSNumber *MsgNum = @(15);
-    NSNumber *Category = @(0);
+    NSNumber *Category = @(3);
     NSNumber *FileType = @(0);
     [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
 }

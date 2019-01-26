@@ -154,9 +154,15 @@
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
     NSString *filePath = [NSString stringWithFormat:@"uploadFiles/%@_upload/%@",[UserConfig getShareObject].userId,fileName];
-    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+    
+    NSString *filePathDoc = [NSString stringWithFormat:@"uploadFiles/%@upload",[UserConfig getShareObject].userId];
+    
+    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePathDoc] isDirectory:&isDir];
     if (!isexit || !isDir) {
-        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+       BOOL issuccess = [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePathDoc] withIntermediateDirectories:YES attributes:nil error:nil];
+        if (issuccess) {
+            NSLog(@"issuccess");
+        }
     }
     return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
 }
