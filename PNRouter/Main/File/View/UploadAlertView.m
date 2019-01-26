@@ -21,6 +21,9 @@
     UploadAlertView *view = [[[NSBundle mainBundle] loadNibNamed:@"UploadAlertView" owner:self options:nil] lastObject];
     return view;
 }
+- (IBAction)backBtnAction:(id)sender {
+    [self hide];
+}
 
 #pragma mark - Operation
 - (void)show {

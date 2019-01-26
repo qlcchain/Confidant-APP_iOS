@@ -1482,15 +1482,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             config.isOwner = YES;
             model.willDisplayTime = YES;
             model.messageStatu = -1;
-            NSString *uploadFileName = mill;
-            model.fileName = mill;
+            NSString *uploadFileName = [mill stringByAppendingString:@".jpg"];
+            model.fileName = [mill stringByAppendingString:@".jpg"];
              model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
             model.publicKey = weakSelf.friendModel.publicKey;
             model.ctDataconfig = config;
             NSString *nkName = [UserModel getUserModel].username;
             model.userThumImage =  [SystemUtil genterViewToImage:[weakSelf getHeadViewWithName:nkName]];
-            //    [[SDImageCache sharedImageCache] storeImage:img forKey:model.messageId completion:nil];
-            NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:mill];
+            NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:model.fileName];
             [imgData writeToFile:filePath atomically:YES];
             [weakSelf.listView addMessagesToBottom:@[model]];
             
