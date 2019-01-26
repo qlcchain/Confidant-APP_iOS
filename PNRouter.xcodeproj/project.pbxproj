@@ -58,6 +58,7 @@
 		5825A24121FAC03700E6194B /* ChooseShareContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A23E21FAC03600E6194B /* ChooseShareContactViewController.m */; };
 		5825A24421FAE78200E6194B /* SharedFriendModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A24321FAE78200E6194B /* SharedFriendModel.m */; };
 		5825A24721FB0B8E00E6194B /* FileListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A24621FB0B8E00E6194B /* FileListModel.m */; };
+		5825A24A21FC3ACB00E6194B /* OperationRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A24921FC3ACB00E6194B /* OperationRecordModel.m */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
@@ -551,6 +552,8 @@
 		5825A24321FAE78200E6194B /* SharedFriendModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedFriendModel.m; sourceTree = "<group>"; };
 		5825A24521FB0B8E00E6194B /* FileListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileListModel.h; sourceTree = "<group>"; };
 		5825A24621FB0B8E00E6194B /* FileListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileListModel.m; sourceTree = "<group>"; };
+		5825A24821FC3ACB00E6194B /* OperationRecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OperationRecordModel.h; sourceTree = "<group>"; };
+		5825A24921FC3ACB00E6194B /* OperationRecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OperationRecordModel.m; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
@@ -1739,6 +1742,8 @@
 				5825A24621FB0B8E00E6194B /* FileListModel.m */,
 				7360B85021FC3269008FB181 /* FileData.h */,
 				7360B85121FC3269008FB181 /* FileData.m */,
+				5825A24821FC3ACB00E6194B /* OperationRecordModel.h */,
+				5825A24921FC3ACB00E6194B /* OperationRecordModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3508,6 +3513,7 @@
 				73D00EB2215F160B0013E20D /* SocketDataUtil.m in Sources */,
 				7330F4E52149147200FF4EEC /* CTHelper.m in Sources */,
 				7378840221ACF2970033A189 /* OCTFriend.m in Sources */,
+				5825A24A21FC3ACB00E6194B /* OperationRecordModel.m in Sources */,
 				73D31B17217F08480034B2B9 /* TZImagePickerController.m in Sources */,
 				730605622179B3C0005A0E13 /* MediaTableViewCell.m in Sources */,
 				7378840721ACF2970033A189 /* OCTMessageCall.m in Sources */,

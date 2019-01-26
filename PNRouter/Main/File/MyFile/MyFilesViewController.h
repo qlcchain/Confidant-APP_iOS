@@ -11,8 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef enum : NSUInteger {
-    FilesTypeMy,
-    FilesTypeShare,
+    FilesTypeAll,
+    FilesTypeSent,
     FilesTypeReceived,
 } FilesType;
 

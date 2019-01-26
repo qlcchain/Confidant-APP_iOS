@@ -54,13 +54,16 @@
                                 <color key="textColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjy-1z-2w7">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjy-1z-2w7">
                                 <rect key="frame" x="276" y="0.0" width="36" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="36" id="idf-uz-JKP"/>
                                     <constraint firstAttribute="height" constant="34" id="lWV-19-r01"/>
                                 </constraints>
                                 <state key="normal" image="icon_more_gray"/>
+                                <connections>
+                                    <action selector="moreAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="sKb-YD-Pfb"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nal-pt-Wz4">
                                 <rect key="frame" x="16" y="63" width="304" height="0.5"/>
@@ -100,7 +103,12 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="fileNameLab" destination="bpD-Bw-UNe" id="CYm-hh-2DZ"/>
                 <outlet property="icon" destination="kZc-N0-tOW" id="lRx-9j-x23"/>
+                <outlet property="moreBtn" destination="fjy-1z-2w7" id="qxd-zT-D5H"/>
+                <outlet property="nameLab" destination="SUO-HQ-KiC" id="kW4-is-bjH"/>
+                <outlet property="operationIcon" destination="WZR-fq-rqK" id="Fxa-FZ-iJd"/>
+                <outlet property="timeLab" destination="zqU-sa-aw7" id="g4p-q6-UPt"/>
             </connections>
             <point key="canvasLocation" x="129.59999999999999" y="48.575712143928037"/>
         </tableViewCell>

@@ -163,7 +163,6 @@
         [manage createDirectoryAtPath:[documentPath stringByAppendingPathComponent:filePathDir] withIntermediateDirectories:YES attributes:nil error:nil];
     }
     NSString *path = [documentPath stringByAppendingPathComponent:filePath];
-    NSLog(@"8888888888888-----%@",path);
     return path;
 }
 
@@ -185,6 +184,18 @@
     BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
     if (!isexit || !isDir) {
         [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
+}
+
++ (NSString *)getTempDownloadFilePath:(NSString *)fileName {
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"Download/%@",fileName];
+    NSString *filePathDir = @"Download";
+    BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePathDir] isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePathDir] withIntermediateDirectories:YES attributes:nil error:nil];
     }
     return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
 }

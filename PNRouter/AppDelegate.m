@@ -28,6 +28,7 @@
 #import "RunInBackground.h"
 #import "RSAModel.h"
 #import "LibsodiumUtil.h"
+#import "OperationRecordModel.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
@@ -44,6 +45,7 @@
 //    [KeyCUtil deleteAllKey];
 //    [FriendModel bg_drop:FRIEND_LIST_TABNAME];
 //    [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
+//    [OperationRecordModel bg_drop:OperationRecord_Table];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];

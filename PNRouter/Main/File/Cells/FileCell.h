@@ -9,13 +9,24 @@
 //#import <SWTableViewCell/SWTableViewCell.h>
 #import <UIKit/UIKit.h>
 
+@class OperationRecordModel;
+
 static NSString *FileCellReuse = @"FileCell";
 #define FileCellHeight 64
+
+typedef void(^FileMoreBlock)(void);
 
 //@interface FileCell : SWTableViewCell
 @interface FileCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
+@property (weak, nonatomic) IBOutlet UILabel *timeLab;
+@property (weak, nonatomic) IBOutlet UIImageView *operationIcon;
+@property (weak, nonatomic) IBOutlet UILabel *nameLab;
+@property (weak, nonatomic) IBOutlet UILabel *fileNameLab;
+@property (weak, nonatomic) IBOutlet UIButton *moreBtn;
+@property (nonatomic, copy) FileMoreBlock fileMoreB;
 
+- (void)configCellWithModel:(OperationRecordModel *)model;
 
 @end

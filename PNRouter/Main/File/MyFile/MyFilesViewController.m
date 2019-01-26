@@ -15,6 +15,9 @@
 #import "FilePreviewDownloadViewController.h"
 #import "UserConfig.h"
 #import "FileListModel.h"
+#import "NSDate+Category.h"
+#import "OperationRecordModel.h"
+#import "PNRouter-Swift.h"
 
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -51,12 +54,12 @@
 
 #pragma mark - Operation
 - (void)dataInit {
-    if (_filesType == FilesTypeMy) {
-        _titleLab.text = @"My Files";
-    } else if (_filesType == FilesTypeShare) {
-        _titleLab.text = @"Documents I Share";
+    if (_filesType == FilesTypeAll) {
+        _titleLab.text = @"All Files";
+    } else if (_filesType == FilesTypeSent) {
+        _titleLab.text = @"Files Sent";
     } else if (_filesType == FilesTypeReceived) {
-        _titleLab.text = @"Documents Received";
+        _titleLab.text = @"Files Received";
     }
     
     _sourceArr = [NSMutableArray array];
@@ -73,10 +76,10 @@
 - (void)showEmptyView {
     NSString *imgStr = @"";
     NSString *tipStr = @"";
-    if (_filesType == FilesTypeMy) {
+    if (_filesType == FilesTypeAll) {
         imgStr = @"icon_documents_my_gray";
         tipStr = @"No document yet Come and upload it";
-    } else if (_filesType == FilesTypeShare) {
+    } else if (_filesType == FilesTypeSent) {
         imgStr = @"icon_documents_share_gray";
         tipStr = @"No documents yet Share them";
     } else if (_filesType == FilesTypeReceived) {
@@ -166,6 +169,14 @@
     NSNumber *MsgNum = @(15);
     NSNumber *Category = @(3);
     NSNumber *FileType = @(0);
+    if (_filesType == FilesTypeAll) {
+        FileType = @(0);
+    } else if (_filesType == FilesTypeSent) {
+        FileType = @(1);
+    } else if (_filesType == FilesTypeReceived) {
+        FileType = @(2);
+    }
+    
     [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
 }
 
@@ -260,6 +271,13 @@
         if ([model.MsgId integerValue] == [weakSelf.selectModel.MsgId integerValue]) {
             [weakSelf.sourceArr removeObject:model];
             [weakSelf.mainTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            
+            // 删除成功-保存操作记录
+            NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
+            NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
+            NSString *fileName = [Base58Util Base58DecodeWithCodeName:model.FileName.lastPathComponent];
+            [OperationRecordModel saveOrUpdateWithFileType:model.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:model.FileName?:@"" localPath:@""];
+            
             *stop = YES;
         }
     }];

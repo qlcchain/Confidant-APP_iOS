@@ -15,7 +15,6 @@
 @property (nonatomic, strong) QLPreviewController *previewController;
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 
-
 @end
 
 @implementation FilePreviewViewController

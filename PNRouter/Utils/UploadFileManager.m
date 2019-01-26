@@ -13,6 +13,9 @@
 #import "PNRouter-Swift.h"
 #import "NSString+File.h"
 #import "FileData.h"
+#import "OperationRecordModel.h"
+#import "NSDate+Category.h"
+//#import "NSDateFormatter+Category.h"
 
 @implementation UploadFileManager
 + (instancetype) getShareObject
@@ -60,8 +63,9 @@
         DDLogDebug(@"上传成功:%@",fileName);
         NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
       //  [fileData writeToFile:uploadDocPath atomically:YES];
+        
+        NSNumber *fileType = resultArr[3];
         if (![SystemUtil isSocketConnect]) {
-            NSNumber *fileType = resultArr[3];
             NSString *srckey = resultArr[4];
             NSInteger fileSize = [NSString fileSizeAtPath:uploadDocPath];
             NSString *fileMd5 =  [MD5Util md5WithPath:uploadDocPath];
@@ -69,6 +73,10 @@
             [SendRequestUtil sendUploadFileWithUserId:[UserConfig getShareObject].userId FileName:fileName FileMD5:fileMd5 FileSize:@(fileSize) FileType:fileType UserKey:srckey showHud:NO];
         }
         
+        // 上传成功-保存操作记录
+        NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
+        NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
+        [OperationRecordModel saveOrUpdateWithFileType:fileType operationType:@(0) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:@"" localPath:@""];
     } else { // 上传失败
         NSString *srckey = resultArr[4];
         NSArray *finfAlls = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)]];

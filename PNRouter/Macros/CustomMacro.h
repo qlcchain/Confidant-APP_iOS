@@ -16,6 +16,9 @@
 #define FRIEND_LIST_TABNAME  @"friend_list_tableName"
 // 好友聊天记录表
 #define FRIEND_CHAT_TABNAME  @"FRIEND_CHAT_TABNAME"
+
+#define OperationRecord_Table @"OperationRecord_Table"
+
 // 请求超时时间
 #define REQEUST_TIME  20
 #define RADIUS 3.0f
