@@ -51,7 +51,8 @@
     _selectLeftWidth.constant = model.showSelect?40:0;
     _selectBtn.selected = model.isSelect;
     _icon.image = [UIImage imageNamed:fileTypeImgName];
-    _titleLab.text = [Base58Util Base58DecodeWithCodeName:model.FileName];
+    NSString *fileName = model.FileName.lastPathComponent;
+    _titleLab.text = [Base58Util Base58DecodeWithCodeName:fileName];
     int fileSize = [model.FileSize intValue]/1024;
     NSString *desTime = [NSDate formattedUploadFileTimeFromTimeInterval:[model.Timestamp  intValue]];
     _detailLab.text = [NSString stringWithFormat:@"%d KB %@",fileSize,desTime];

@@ -93,8 +93,10 @@
         if (type == ArrangeTypeByName) {
             [weakSelf.sourceArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
                 FileListModel *listM1 = obj1;
+                NSString *fileName1 = listM1.FileName.lastPathComponent;
                 FileListModel *listM2 = obj2;
-                return [listM1.FileName compare:listM2.FileName];
+                NSString *fileName2 = listM2.FileName.lastPathComponent;
+                return [fileName1 compare:fileName2];
             }];
             [weakSelf.mainTable reloadData];
             
@@ -172,6 +174,10 @@
 
 - (IBAction)multiSelectAction:(id)sender {
     
+}
+
+- (IBAction)arrangeAction:(id)sender {
+    [self showArrangeAlertView];
 }
 
 #pragma mark - UITableViewDelegate

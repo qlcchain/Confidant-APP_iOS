@@ -17,6 +17,7 @@
 + (NSURLSessionDataTask *)requestWithJsonUrl:(NSString *)url params:(id)params httpMethod:(HttpMethod)httpMethod successBlock:(HTTPRequestV2SuccessBlock)successReqBlock failedBlock:(HTTPRequestV2FailedBlock)failedReqBlock;
 
 + (NSURLSessionDataTask *)requestWithUrl:(NSString *)url params:(id)params httpMethod:(HttpMethod)httpMethod isSign:(BOOL)isSign successBlock:(HTTPRequestV2SuccessBlock)successReqBlock failedBlock:(HTTPRequestV2FailedBlock)failedReqBlock;
+
 + (NSURLSessionDataTask *)requestWithUrl:(NSString *)url params:(id)params httpMethod:(HttpMethod)httpMethod successBlock:(HTTPRequestV2SuccessBlock)successReqBlock failedBlock:(HTTPRequestV2FailedBlock)failedReqBlock;
 
 + (NSURLSessionDataTask *)postImage:(NSString *)url
@@ -24,8 +25,16 @@
     constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))bodyBlock
                       success:(HTTPRequestV2SuccessBlock)successReqBlock
                       failure:(HTTPRequestV2FailedBlock)failedReqBlock;
+
 + (void) downFileWithBaseURLStr:(NSString *) url friendid:(NSString *) friendid
                   progressBlock:(void(^)(CGFloat progress)) progressBlock
                         success:(void (^)(NSURLSessionDownloadTask *dataTask,NSString *filePath)) success
                         failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
+
++ (void)downFileWithBaseURLStr:(NSString *)url
+                      filePath:(NSString *)filePath
+                 progressBlock:(void(^)(CGFloat progress)) progressBlock
+                       success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
+                       failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
+
 @end

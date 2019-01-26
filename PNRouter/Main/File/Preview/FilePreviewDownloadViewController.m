@@ -13,6 +13,7 @@
 #import "DetailInformationViewController.h"
 #import "PNRouter-Swift.h"
 #import "SystemUtil.h"
+#import "RequestService.h"
 
 typedef enum : NSUInteger {
     FileExistTypeNone,
@@ -46,20 +47,21 @@ typedef enum : NSUInteger {
 #pragma mark - Operation
 - (void)dataInit {
     _icon.image = [UIImage imageNamed:@"icon_doc_gray"];
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:_fileListM.FileName]?:@"";
+    NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
     _nameLab.text = fileName;
     _sizeLab.text = [NSString stringWithFormat:@"%@ KB",@([_fileListM.FileSize integerValue]/1024)];
     _progressV.hidden = YES;
     _openTipLab.text = nil;
     NSString *btnTitle = @"";
-    NSString *filePath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
-    if ([SystemUtil filePathisExist:filePath]) {
-        _fileExistType = FileExistTypeExistOrDownloaded;
-        btnTitle = @"File Preview";
-    } else {
+//    NSString *filePath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
+//    if ([SystemUtil filePathisExist:filePath]) {
+//        _fileExistType = FileExistTypeExistOrDownloaded;
+//        btnTitle = @"File Preview";
+//    } else {
         _fileExistType = FileExistTypeNone;
         btnTitle = @"Preview Download";
-    }
+//    }
     [_previewBtn setTitle:btnTitle forState:UIControlStateNormal];
 }
 
@@ -94,6 +96,10 @@ typedef enum : NSUInteger {
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }
 
+- (void)downloadFile {
+//    [RequestService downFileWithBaseURLStr:<#(NSString *)#> filePath:<#(NSString *)#> progressBlock:<#^(CGFloat progress)progressBlock#> success:<#^(NSURLSessionDownloadTask *dataTask, NSString *filePath)success#> failure:<#^(NSURLSessionDownloadTask *dataTask, NSError *error)failure#>]
+}
+
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
@@ -107,11 +113,24 @@ typedef enum : NSUInteger {
 - (IBAction)previewAction:(UIButton *)sender {
     if (_fileExistType == FileExistTypeNone) {
         // 下载操作
+        [sender setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+        [sender setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+        [sender setTitle:@"Cancel Download" forState:UIControlStateNormal];
+        _sizeLab.hidden = YES;
+        _progressV.hidden = NO;
+        _progressV.progress = 0;
+        [self downloadFile];
     } else if (_fileExistType == FileExistTypeDownloading) {
         // 取消下载
+        [sender setBackgroundColor:UIColorFromRGB(0xffffff)];
+        [sender setTitleColor:UIColorFromRGB(0x2c2c2c) forState:UIControlStateNormal];
+        
     } else if (_fileExistType == FileExistTypeExistOrDownloaded) {
         // 预览
-        NSString *fileName = [Base58Util Base58DecodeWithCodeName:_fileListM.FileName]?:@"";
+        [sender setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+        [sender setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+        NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
+        NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
         NSString *filePath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
         [self jumpToFilePreview:filePath];
     }

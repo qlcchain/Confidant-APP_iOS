@@ -48,7 +48,8 @@
     
     DetailInformationShowModel *model = [[DetailInformationShowModel alloc] init];
     model.key = @"File name";
-    model.val = [Base58Util Base58DecodeWithCodeName:self.fileListM.FileName];
+    NSString *fileName = self.fileListM.FileName.lastPathComponent;
+    model.val = [Base58Util Base58DecodeWithCodeName:fileName];
     model.showArrow = YES;
     [_sourceArr addObject:model];
     model = [[DetailInformationShowModel alloc] init];
