@@ -89,69 +89,7 @@
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ryk-HM-5hf">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OIL-eD-n0y">
-                                            <rect key="frame" x="139.5" y="55" width="96" height="104"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="96" id="Wc7-Fx-mUd"/>
-                                                <constraint firstAttribute="height" constant="104" id="a68-TK-86m"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Google project development.doc" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ubp-ri-ZhI">
-                                            <rect key="frame" x="8" y="174" width="359" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <color key="textColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="233 KB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KTC-cZ-aKS">
-                                            <rect key="frame" x="167" y="196" width="41.5" height="14.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="deviceRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Pxa-cp-DAx">
-                                            <rect key="frame" x="15" y="202" width="345" height="2"/>
-                                            <color key="progressTintColor" red="0.4941176471" green="0.82745098039999998" blue="0.12941176469999999" alpha="1" colorSpace="deviceRGB"/>
-                                            <color key="trackTintColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </progressView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ca1-F1-j3z">
-                                            <rect key="frame" x="8" y="280.5" width="345" height="44"/>
-                                            <color key="backgroundColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="44" id="UoB-n9-C0e"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <state key="normal" title="Preview Download">
-                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </state>
-                                        </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This file type cannot be previewed You can open it with other applications" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="reI-Km-XxT">
-                                            <rect key="frame" x="15" y="219.5" width="345" height="29"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstItem="ubp-ri-ZhI" firstAttribute="centerX" secondItem="Ryk-HM-5hf" secondAttribute="centerX" id="2L6-e7-upa"/>
-                                        <constraint firstItem="Ca1-F1-j3z" firstAttribute="leading" secondItem="Ryk-HM-5hf" secondAttribute="leading" constant="8" id="3tE-N3-SMI"/>
-                                        <constraint firstItem="Pxa-cp-DAx" firstAttribute="leading" secondItem="Ryk-HM-5hf" secondAttribute="leading" constant="15" id="4gD-Ne-2wo"/>
-                                        <constraint firstAttribute="trailing" secondItem="reI-Km-XxT" secondAttribute="trailing" constant="15" id="AVr-WE-8mn"/>
-                                        <constraint firstAttribute="trailing" secondItem="ubp-ri-ZhI" secondAttribute="trailing" constant="8" id="Dve-DU-dOS"/>
-                                        <constraint firstItem="KTC-cZ-aKS" firstAttribute="centerX" secondItem="Ryk-HM-5hf" secondAttribute="centerX" id="GPm-Tr-0Pm"/>
-                                        <constraint firstItem="KTC-cZ-aKS" firstAttribute="top" secondItem="ubp-ri-ZhI" secondAttribute="bottom" constant="4" id="JQW-zo-dWn"/>
-                                        <constraint firstItem="OIL-eD-n0y" firstAttribute="centerX" secondItem="Ryk-HM-5hf" secondAttribute="centerX" id="N4L-Wu-IPH"/>
-                                        <constraint firstItem="reI-Km-XxT" firstAttribute="leading" secondItem="Ryk-HM-5hf" secondAttribute="leading" constant="15" id="Na6-Ww-qp8"/>
-                                        <constraint firstItem="ubp-ri-ZhI" firstAttribute="leading" secondItem="Ryk-HM-5hf" secondAttribute="leading" constant="8" id="Ojs-I3-0d9"/>
-                                        <constraint firstItem="Pxa-cp-DAx" firstAttribute="top" secondItem="ubp-ri-ZhI" secondAttribute="bottom" constant="10" id="RY5-iS-WrH"/>
-                                        <constraint firstAttribute="trailing" secondItem="Ca1-F1-j3z" secondAttribute="trailing" constant="22" id="Rwi-C2-m41"/>
-                                        <constraint firstAttribute="trailing" secondItem="Pxa-cp-DAx" secondAttribute="trailing" constant="15" id="U5v-Yx-Snm"/>
-                                        <constraint firstItem="ubp-ri-ZhI" firstAttribute="top" secondItem="OIL-eD-n0y" secondAttribute="bottom" constant="15" id="YdG-Td-Guk"/>
-                                        <constraint firstItem="OIL-eD-n0y" firstAttribute="top" secondItem="Ryk-HM-5hf" secondAttribute="top" constant="55" id="cHH-Mo-Vms"/>
-                                        <constraint firstItem="Ca1-F1-j3z" firstAttribute="top" secondItem="reI-Km-XxT" secondAttribute="bottom" constant="32" id="fnz-4F-YEX"/>
-                                        <constraint firstItem="reI-Km-XxT" firstAttribute="top" secondItem="KTC-cZ-aKS" secondAttribute="bottom" constant="9" id="tip-MX-v1y"/>
-                                    </constraints>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

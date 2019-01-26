@@ -42,6 +42,8 @@ PODS:
   - FLAnimatedImage (1.0.12)
   - GDPerformanceView (1.3.1)
   - IQKeyboardManager (6.2.0)
+  - JCDownloader (1.1.0):
+    - AFNetworking (~> 3.2.0)
   - KeychainAccess (3.1.2)
   - libopus-patched-config (1.1):
     - libopus-patched-config/float (= 1.1)
@@ -75,6 +77,7 @@ DEPENDENCIES:
   - FLAnimatedImage
   - GDPerformanceView (~> 1.3.1)
   - IQKeyboardManager
+  - JCDownloader
   - KeychainAccess
   - libopus-patched-config
   - libsodium
@@ -100,6 +103,7 @@ SPEC REPOS:
     - FLAnimatedImage
     - GDPerformanceView
     - IQKeyboardManager
+    - JCDownloader
     - KeychainAccess
     - libopus-patched-config
     - libsodium
@@ -132,6 +136,7 @@ SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   GDPerformanceView: d70d646bf7022a3dfd64222e4966f403bfffef19
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
+  JCDownloader: 32994a979494729834b8c22ba2ae1785aef6e52e
   KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
   libopus-patched-config: 12321105eb4b96e869b7957f3122345fd67928c3
   libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
@@ -147,6 +152,6 @@ SPEC CHECKSUMS:
   WZLBadge: 9ec779dcfd94c825518b395e8315fccaabff1bfa
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
 
-PODFILE CHECKSUM: 8d195ab19287d5ecfe4210fa74fd49066fd5f839
+PODFILE CHECKSUM: 4a16c22d03f2f3d55f44da4f20fe4593bd24976a
 
 COCOAPODS: 1.5.3

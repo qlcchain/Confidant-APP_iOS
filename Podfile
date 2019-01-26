@@ -38,6 +38,7 @@ def demo_pods
     pod 'WZLBadge'
     pod 'OpenSSL', :git => 'https://github.com/isee15/OpenSSL.git'
     pod 'Bugly'
+    pod 'JCDownloader'
 end
 
 
