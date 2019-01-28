@@ -13,7 +13,9 @@
 #import "UserConfig.h"
 
 @interface TaskListViewController () <UITableViewDelegate, UITableViewDataSource>
-
+{
+    BOOL isRegiterNoti;
+}
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (weak, nonatomic) IBOutlet UIView *contentBack;
@@ -23,13 +25,19 @@
 @implementation TaskListViewController
 - (void) addObserver
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadFinshNoti:) name:File_Upload_Finsh_Noti object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileProgessNoti:) name:File_Progess_Noti object:nil];
+    if (!isRegiterNoti) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadFinshNoti:) name:File_Upload_Finsh_Noti object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileProgessNoti:) name:File_Progess_Noti object:nil];
+    }
+   
+}
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self addObserver];
+    
      [self dataInit];
     [self.view showHudInView:self.view hint:@""];
     [self getAllTaskList];
@@ -44,39 +52,38 @@
     if (_sourceArr.count > 0) {
         [_sourceArr removeAllObjects];
     }
+    
+    
     @weakify_self
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        // 得到已完成的
-        NSArray *finshTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+    [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))] complete:^(NSArray * _Nullable array) {
         
-        // 正在上传或下载的
-        NSArray *uploadTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
-        
-        NSMutableArray *arr1 = [NSMutableArray array];
-        if (finshTasks && uploadTasks.count>0) {
-            [arr1 addObjectsFromArray:uploadTasks];
-        }
-        [weakSelf.sourceArr addObject:arr1];
-        
-        NSMutableArray *arr2 = [NSMutableArray array];
-        if (finshTasks && finshTasks.count>0) {
-            [arr2 addObjectsFromArray:finshTasks];
-        }
-        [weakSelf.sourceArr addObject:arr2];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.view hideHud];
-            [weakSelf.mainTable reloadData];
-            if ((!finshTasks || finshTasks.count == 0) && (!uploadTasks || uploadTasks.count == 0)) {
-                [weakSelf viewInit];
-            }
-        });
-    });
-    
-    
-    
-    
-    
+         dispatch_async(dispatch_get_main_queue(), ^{
+             NSMutableArray *arr1 = [NSMutableArray array];
+             if (array && array.count>0) {
+                 [arr1 addObjectsFromArray:array];
+             }
+             [weakSelf.sourceArr addObject:arr1];
+             
+             [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))] complete:^(NSArray * _Nullable array) {
+                 
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     NSMutableArray *arr2 = [NSMutableArray array];
+                     if (array && array.count>0) {
+                         [arr2 addObjectsFromArray:array];
+                     }
+                     [weakSelf.sourceArr addObject:arr2];
+                     [weakSelf addObserver];
+                     [weakSelf.view hideHud];
+                     [weakSelf.mainTable reloadData];
+                     if ([weakSelf.sourceArr[0] count] == 0 && [weakSelf.sourceArr[1] count] == 0) {
+                         [weakSelf viewInit];
+                     }
+                 });
+                 
+             }];
+             
+         });
+    }];
 }
 
 #pragma mark - Operation

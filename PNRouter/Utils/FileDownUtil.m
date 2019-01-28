@@ -36,54 +36,57 @@
     NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
     NSString *downloadFilePath = [SystemUtil getTempDownloadFilePath:fileName];
     
+   __block FileData *fileDataModel = nil;
+    
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.UserKey)] complete:^(NSArray * _Nullable array) {
+        
+        NSLog(@"写入数据库");
         if (array && array.count > 0) {
-            FileData *fileData = array[0];
-            fileData.status = 2;
-            [fileData bg_saveOrUpdateAsync:nil];
+            fileDataModel = array[0];
         } else {
-            FileData *fileData = [[FileData alloc] init];
-            fileModel.bg_tableName = FILE_STATUS_TABNAME;
-            NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-            NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
-            fileData.fileId = [mill intValue];
-            fileData.fileSize = [fileModel.FileSize intValue];
-            fileData.fileType = [fileModel.FileType intValue];
-            fileData.progess = 0.0f;
-            fileData.fileName = fileName;
-            fileData.filePath = filePath;
-            fileData.fileOptionType = 2;
-            fileData.status = 2;
-            fileData.userId = [UserConfig getShareObject].userId;
-            fileData.srcKey = fileModel.UserKey;
-            [fileModel bg_saveAsync:nil];
+            fileDataModel = [[FileData alloc] init];
+            fileDataModel.bg_tableName = FILE_STATUS_TABNAME;
         }
+        NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+        NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+        fileDataModel.fileId = [mill intValue];
+        fileDataModel.fileSize = [fileModel.FileSize intValue];
+        fileDataModel.fileType = [fileModel.FileType intValue];
+        fileDataModel.progess = 0.0f;
+        fileDataModel.fileName = fileName;
+        fileDataModel.filePath = filePath;
+        fileDataModel.fileOptionType = 2;
+        fileDataModel.status = 2;
+        fileDataModel.userId = [UserConfig getShareObject].userId;
+        fileDataModel.srcKey = fileModel.UserKey;
+        [fileDataModel bg_saveOrUpdateAsync:nil];
     }];
     
     [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             progressBlock(progress);
-            
-            [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.UserKey)] complete:^(NSArray * _Nullable array) {
-                if (array && array.count > 0) {
-                    FileData *fileData = array[0];
-                    fileData.progess = progress;
-                    [fileData bg_saveOrUpdateAsync:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileData];
-                }
-            }];
+            NSLog(@"progress**********************");
+            if (fileDataModel) {
+                fileDataModel.progess = progress;
+                [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
+            }
             
         });
     } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
         dispatch_async(dispatch_get_main_queue(), ^{
+             success(dataTask,filePath);
             // 保存下载完成记录
             [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.UserKey)] complete:^(NSArray * _Nullable array) {
+                NSLog(@"下载完成保存数据库**********************");
                 if (array && array.count > 0) {
-                    FileData *fileData = array[0];
-                    fileData.status = 1;
-                    fileData.progess = 1.0f;
-                    [fileData bg_saveOrUpdateAsync:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileData];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        FileData *fileData = array[0];
+                        fileData.status = 1;
+                        fileData.progess = 1.0f;
+                        [fileData bg_saveOrUpdateAsync:nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileData];
+                    });
+                    
                 }
             }];
             // 下载成功-保存操作记录
@@ -97,14 +100,17 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"download error********* %@",error);
+            failure(dataTask,error);
             // 保存下载完成记录
             [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.UserKey)] complete:^(NSArray * _Nullable array) {
                 if (array && array.count > 0) {
-                    FileData *fileData = array[0];
-                    fileData.status = 3;
-                    fileData.progess = 0.0f;
-                    [fileData bg_saveOrUpdateAsync:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileData];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        FileData *fileData = array[0];
+                        fileData.status = 3;
+                        fileData.progess = 0.0f;
+                        [fileData bg_saveOrUpdateAsync:nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileData];
+                    });
                 }
             }];
         });

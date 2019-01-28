@@ -12,10 +12,14 @@
 #import "SocketDataUtil.h"
 #import "SocketManageUtil.h"
 #import "FileDownUtil.h"
+#import "UploadFileManager.h"
 
 @implementation TaskOngoingCell
 
 - (IBAction)optionAction:(id)sender {
+    
+    [UploadFileManager getShareObject];
+    
     [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
     _optionBtn.userInteractionEnabled = NO;
     if (self.fileModel.fileOptionType == 1) { // 上传
@@ -48,7 +52,7 @@
 
 - (void) setFileModel:(FileData *) model
 {
-    self.fileModel = model;
+    _fileModel = model;
     if (model.status == 2) {
         [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
         _optionBtn.userInteractionEnabled = NO;

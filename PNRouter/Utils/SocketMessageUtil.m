@@ -1019,15 +1019,19 @@
 }
 
 + (void)handleUploadFileReq:(NSDictionary *)receiveDic {
-    [AppD.window hideHud];
+    
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     NSString *msgId = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:UploadFileReq_Success_Noti object:msgId];
     } else if (retCode == 1) {
+        [AppD.window hideHud];
         [AppD.window showHint:@"Existing file with the same name"];
     } else if (retCode == 2) {
+        [AppD.window hideHud];
         [AppD.window showHint:@"Not enough space"];
+    } else {
+        [AppD.window hideHud];
     }
 }
 
