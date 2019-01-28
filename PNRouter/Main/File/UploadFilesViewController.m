@@ -175,7 +175,8 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return _sourceArr.count;
+   // return _sourceArr.count;
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView

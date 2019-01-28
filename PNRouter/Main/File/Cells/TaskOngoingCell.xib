@@ -42,6 +42,9 @@
                                     <constraint firstAttribute="height" constant="44" id="BT7-Ea-fB1"/>
                                 </constraints>
                                 <state key="normal" image="icon_suspend_gray"/>
+                                <connections>
+                                    <action selector="optionAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="bXF-eN-UoW"/>
+                                </connections>
                             </button>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="tXO-xY-vEn">
                                 <rect key="frame" x="56" y="30.5" width="206" height="2"/>
@@ -113,8 +116,10 @@
                 <outlet property="lblProgess" destination="9vm-Ew-WXc" id="luZ-fy-qgd"/>
                 <outlet property="lblSize" destination="ysK-Jw-bFA" id="UsZ-fV-EjG"/>
                 <outlet property="lblTitle" destination="HnA-cN-O8o" id="JvB-Ob-2NT"/>
+                <outlet property="optionBtn" destination="y7y-LC-KEJ" id="FHh-la-9bo"/>
                 <outlet property="progess" destination="tXO-xY-vEn" id="SCi-fZ-BSd"/>
             </connections>
+            <point key="canvasLocation" x="-909" y="59"/>
         </tableViewCell>
     </objects>
     <resources>

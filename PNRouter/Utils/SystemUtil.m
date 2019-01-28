@@ -24,6 +24,7 @@
 #import "FriendModel.h"
 #import "UserConfig.h"
 #import "NSData+Base64.h"
+#import "FileData.h"
 
 @implementation SystemUtil
 + (void) playSystemSound
@@ -438,6 +439,13 @@
  */
 + (void) configureAPPTerminate {
     
+    NSArray *uploadTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId)]];
+    [uploadTasks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FileData *model = obj;
+        model.progess = 0.0f;
+        model.status = 3;
+        [model bg_saveOrUpdateAsync:nil];
+    }];
 }
 
 @end

@@ -301,7 +301,6 @@ struct ResultFile {
                 fileModel.status = 2;
                 fileModel.userId = [UserConfig getShareObject].userId;
                 fileModel.srcKey = srcKey;
-                fileModel.fileOptionType = 1;
                 [fileModel bg_saveAsync:nil];
             }
         }];
