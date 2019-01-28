@@ -95,6 +95,8 @@
 		584A448321460B0800608122 /* NewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A448121460B0800608122 /* NewsViewController.m */; };
 		584A448421460B0800608122 /* NewsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584A448221460B0800608122 /* NewsViewController.xib */; };
 		584A449E21464D4800608122 /* FingetprintVerificationUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A449D21464D4800608122 /* FingetprintVerificationUtil.m */; };
+		584B438F21FEE11D00D1F21A /* DiskManagementCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B438D21FEE11D00D1F21A /* DiskManagementCell.m */; };
+		584B439021FEE11D00D1F21A /* DiskManagementCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B438E21FEE11D00D1F21A /* DiskManagementCell.xib */; };
 		585AEE19213F71990098A070 /* PNBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE17213F71990098A070 /* PNBaseViewController.m */; };
 		585AEE1E213F71E00098A070 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE1C213F71E00098A070 /* ChatViewController.m */; };
 		585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 585AEE1D213F71E00098A070 /* ChatViewController.xib */; };
@@ -654,6 +656,9 @@
 		584A44BE214654D900608122 /* AvenirNextLTPro-MediumCn.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirNextLTPro-MediumCn.otf"; sourceTree = "<group>"; };
 		584A44BF214654D900608122 /* AvenirLTStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Book.otf"; sourceTree = "<group>"; };
 		584A44C0214654D900608122 /* AvenirNextLTPro-BoldCnIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirNextLTPro-BoldCnIt.otf"; sourceTree = "<group>"; };
+		584B438C21FEE11D00D1F21A /* DiskManagementCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiskManagementCell.h; sourceTree = "<group>"; };
+		584B438D21FEE11D00D1F21A /* DiskManagementCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiskManagementCell.m; sourceTree = "<group>"; };
+		584B438E21FEE11D00D1F21A /* DiskManagementCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskManagementCell.xib; sourceTree = "<group>"; };
 		585AEE16213F6F330098A070 /* PNRouter-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PNRouter-Bridging-Header.h"; sourceTree = "<group>"; };
 		585AEE17213F71990098A070 /* PNBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNBaseViewController.m; sourceTree = "<group>"; };
 		585AEE18213F71990098A070 /* PNBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNBaseViewController.h; sourceTree = "<group>"; };
@@ -1677,6 +1682,16 @@
 				584A4499214643E500608122 /* Helvetica Neue CE 55 Roman.ttf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		584B438B21FEE10000D1F21A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				584B438C21FEE11D00D1F21A /* DiskManagementCell.h */,
+				584B438D21FEE11D00D1F21A /* DiskManagementCell.m */,
+				584B438E21FEE11D00D1F21A /* DiskManagementCell.xib */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		585AEE11213F6EB20098A070 /* Main */ = {
@@ -2978,6 +2993,7 @@
 		7392790D21F721CF003AAD58 /* DisManager */ = {
 			isa = PBXGroup;
 			children = (
+				584B438B21FEE10000D1F21A /* Cells */,
 				7392790E21F72203003AAD58 /* DiskManagerViewController.h */,
 				7392790F21F72203003AAD58 /* DiskManagerViewController.m */,
 				7392791021F72203003AAD58 /* DiskManagerViewController.xib */,
@@ -3249,6 +3265,7 @@
 				73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */,
 				5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */,
 				7330F3CF21479AED00FF4EEC /* NewsCell.xib in Resources */,
+				584B439021FEE11D00D1F21A /* DiskManagementCell.xib in Resources */,
 				7330F51F214B460A00FF4EEC /* NotifactionView.xib in Resources */,
 				7330F3A4214671C000FF4EEC /* ShareView.xib in Resources */,
 				587C52BD215C7050006787FB /* RouterDetailViewController.xib in Resources */,
@@ -3526,6 +3543,7 @@
 				581FDF4B21F024170068C120 /* Messenger.m in Sources */,
 				73D31B14217F08480034B2B9 /* TZImageManager.m in Sources */,
 				7306054421748BD5005A0E13 /* VoiceConvert.mm in Sources */,
+				584B438F21FEE11D00D1F21A /* DiskManagementCell.m in Sources */,
 				7330F3792146118800FF4EEC /* UIImage+Merge.m in Sources */,
 				73D31B1F218025270034B2B9 /* RMDisplayLabel.m in Sources */,
 				7378840521ACF2970033A189 /* OCTMessageFile.m in Sources */,

@@ -16,6 +16,7 @@
 #import "UserManagerViewController.h"
 #import "HeartBeatUtil.h"
 #import "RoutherConfig.h"
+#import "DiskManagerViewController.h"
 
 @interface RouterDetailViewController ()
 
@@ -130,6 +131,11 @@
     [self presentViewController:alertC animated:YES completion:nil];
 }
 
+- (IBAction)diskManagementAction:(id)sender {
+    [self jumpToDiskManagement];
+}
+
+
 #pragma mark - Transition
 - (void)jumpToAlias {
     EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditAlis];
@@ -142,6 +148,12 @@
     vc.routerM = _routerM;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (void)jumpToDiskManagement {
+    DiskManagerViewController *vc = [DiskManagerViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void) logOutApp
 {
     [HeartBeatUtil stop];
