@@ -47,8 +47,12 @@
     NSString *fileImgStr = @"";
     if ([model.fileType integerValue] == 1) { // 图片
         fileImgStr = @"icon_picture_small_gray";
-    } else if ([model.fileType integerValue] == 2) {
+    } else if ([model.fileType integerValue] == 4) { // 视频
         fileImgStr = @"icon_video_small_gray";
+    } else if ([model.fileType integerValue] == 5) { // 文档
+        fileImgStr = @"icon_document_small_gray";
+    } else if ([model.fileType integerValue] == 6) { // 其他
+        fileImgStr = @"icon_other_small_gray";
     }
     _icon.image = [UIImage imageNamed:fileImgStr];
 }
