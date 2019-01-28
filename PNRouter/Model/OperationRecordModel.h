@@ -20,9 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *fileName;
 @property (nonatomic, strong) NSString *routerPath;
 @property (nonatomic, strong) NSString *localPath;
+@property (nonatomic, strong) NSString *userId;
 
 + (NSArray *)getAllOperationRecord;
-+ (void)saveOrUpdateWithFileType:(NSNumber *)fileType operationType:(NSNumber *)operationType operationTime:(NSString *)operationTime operationFrom:(NSString *)operationFrom operationTo:(NSString *)operationTo fileName:(NSString *)fileName routerPath:(NSString *)routerPath localPath:(NSString *)localPath;
++ (void)saveOrUpdateWithFileType:(NSNumber *)fileType operationType:(NSNumber *)operationType operationTime:(NSString *)operationTime operationFrom:(NSString *)operationFrom operationTo:(NSString *)operationTo fileName:(NSString *)fileName routerPath:(NSString *)routerPath localPath:(NSString *)localPath userId:(NSString *)userId;
 //+ (void)saveOrUpdate:(OperationRecordModel *)model;
 
 @end

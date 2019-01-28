@@ -97,6 +97,16 @@
 		584A449E21464D4800608122 /* FingetprintVerificationUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A449D21464D4800608122 /* FingetprintVerificationUtil.m */; };
 		584B438F21FEE11D00D1F21A /* DiskManagementCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B438D21FEE11D00D1F21A /* DiskManagementCell.m */; };
 		584B439021FEE11D00D1F21A /* DiskManagementCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B438E21FEE11D00D1F21A /* DiskManagementCell.xib */; };
+		584B439421FEEF8C00D1F21A /* DiskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B439221FEEF8C00D1F21A /* DiskDetailViewController.m */; };
+		584B439521FEEF8C00D1F21A /* DiskDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B439321FEEF8C00D1F21A /* DiskDetailViewController.xib */; };
+		584B439921FEF79300D1F21A /* DiskDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B439721FEF79300D1F21A /* DiskDetailCell.m */; };
+		584B439A21FEF79300D1F21A /* DiskDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B439821FEF79300D1F21A /* DiskDetailCell.xib */; };
+		584B439E21FEFF1A00D1F21A /* ConfigDiskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B439C21FEFF1A00D1F21A /* ConfigDiskViewController.m */; };
+		584B439F21FEFF1A00D1F21A /* ConfigDiskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B439D21FEFF1A00D1F21A /* ConfigDiskViewController.xib */; };
+		584B43A421FF0AE700D1F21A /* ConfigDiskHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B43A121FF0AE700D1F21A /* ConfigDiskHeaderView.xib */; };
+		584B43A521FF0AE700D1F21A /* ConfigDiskHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B43A321FF0AE700D1F21A /* ConfigDiskHeaderView.m */; };
+		584B43A921FF0B9800D1F21A /* ConfigDiskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B43A721FF0B9800D1F21A /* ConfigDiskCell.m */; };
+		584B43AA21FF0B9800D1F21A /* ConfigDiskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B43A821FF0B9800D1F21A /* ConfigDiskCell.xib */; };
 		585AEE19213F71990098A070 /* PNBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE17213F71990098A070 /* PNBaseViewController.m */; };
 		585AEE1E213F71E00098A070 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE1C213F71E00098A070 /* ChatViewController.m */; };
 		585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 585AEE1D213F71E00098A070 /* ChatViewController.xib */; };
@@ -659,6 +669,21 @@
 		584B438C21FEE11D00D1F21A /* DiskManagementCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiskManagementCell.h; sourceTree = "<group>"; };
 		584B438D21FEE11D00D1F21A /* DiskManagementCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiskManagementCell.m; sourceTree = "<group>"; };
 		584B438E21FEE11D00D1F21A /* DiskManagementCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskManagementCell.xib; sourceTree = "<group>"; };
+		584B439121FEEF8C00D1F21A /* DiskDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiskDetailViewController.h; sourceTree = "<group>"; };
+		584B439221FEEF8C00D1F21A /* DiskDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiskDetailViewController.m; sourceTree = "<group>"; };
+		584B439321FEEF8C00D1F21A /* DiskDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskDetailViewController.xib; sourceTree = "<group>"; };
+		584B439621FEF79300D1F21A /* DiskDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiskDetailCell.h; sourceTree = "<group>"; };
+		584B439721FEF79300D1F21A /* DiskDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiskDetailCell.m; sourceTree = "<group>"; };
+		584B439821FEF79300D1F21A /* DiskDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskDetailCell.xib; sourceTree = "<group>"; };
+		584B439B21FEFF1A00D1F21A /* ConfigDiskViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfigDiskViewController.h; sourceTree = "<group>"; };
+		584B439C21FEFF1A00D1F21A /* ConfigDiskViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfigDiskViewController.m; sourceTree = "<group>"; };
+		584B439D21FEFF1A00D1F21A /* ConfigDiskViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfigDiskViewController.xib; sourceTree = "<group>"; };
+		584B43A121FF0AE700D1F21A /* ConfigDiskHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfigDiskHeaderView.xib; sourceTree = "<group>"; };
+		584B43A221FF0AE700D1F21A /* ConfigDiskHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigDiskHeaderView.h; sourceTree = "<group>"; };
+		584B43A321FF0AE700D1F21A /* ConfigDiskHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigDiskHeaderView.m; sourceTree = "<group>"; };
+		584B43A621FF0B9800D1F21A /* ConfigDiskCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfigDiskCell.h; sourceTree = "<group>"; };
+		584B43A721FF0B9800D1F21A /* ConfigDiskCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfigDiskCell.m; sourceTree = "<group>"; };
+		584B43A821FF0B9800D1F21A /* ConfigDiskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfigDiskCell.xib; sourceTree = "<group>"; };
 		585AEE16213F6F330098A070 /* PNRouter-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PNRouter-Bridging-Header.h"; sourceTree = "<group>"; };
 		585AEE17213F71990098A070 /* PNBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNBaseViewController.m; sourceTree = "<group>"; };
 		585AEE18213F71990098A070 /* PNBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNBaseViewController.h; sourceTree = "<group>"; };
@@ -1690,8 +1715,24 @@
 				584B438C21FEE11D00D1F21A /* DiskManagementCell.h */,
 				584B438D21FEE11D00D1F21A /* DiskManagementCell.m */,
 				584B438E21FEE11D00D1F21A /* DiskManagementCell.xib */,
+				584B439621FEF79300D1F21A /* DiskDetailCell.h */,
+				584B439721FEF79300D1F21A /* DiskDetailCell.m */,
+				584B439821FEF79300D1F21A /* DiskDetailCell.xib */,
+				584B43A621FF0B9800D1F21A /* ConfigDiskCell.h */,
+				584B43A721FF0B9800D1F21A /* ConfigDiskCell.m */,
+				584B43A821FF0B9800D1F21A /* ConfigDiskCell.xib */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		584B43A021FF099700D1F21A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				584B43A221FF0AE700D1F21A /* ConfigDiskHeaderView.h */,
+				584B43A321FF0AE700D1F21A /* ConfigDiskHeaderView.m */,
+				584B43A121FF0AE700D1F21A /* ConfigDiskHeaderView.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		585AEE11213F6EB20098A070 /* Main */ = {
@@ -2993,10 +3034,17 @@
 		7392790D21F721CF003AAD58 /* DisManager */ = {
 			isa = PBXGroup;
 			children = (
+				584B43A021FF099700D1F21A /* Views */,
 				584B438B21FEE10000D1F21A /* Cells */,
 				7392790E21F72203003AAD58 /* DiskManagerViewController.h */,
 				7392790F21F72203003AAD58 /* DiskManagerViewController.m */,
 				7392791021F72203003AAD58 /* DiskManagerViewController.xib */,
+				584B439121FEEF8C00D1F21A /* DiskDetailViewController.h */,
+				584B439221FEEF8C00D1F21A /* DiskDetailViewController.m */,
+				584B439321FEEF8C00D1F21A /* DiskDetailViewController.xib */,
+				584B439B21FEFF1A00D1F21A /* ConfigDiskViewController.h */,
+				584B439C21FEFF1A00D1F21A /* ConfigDiskViewController.m */,
+				584B439D21FEFF1A00D1F21A /* ConfigDiskViewController.xib */,
 			);
 			path = DisManager;
 			sourceTree = "<group>";
@@ -3228,9 +3276,12 @@
 				583BF91621F6B4DF0078A2A8 /* MyFilesViewController.xib in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
+				584B43A421FF0AE700D1F21A /* ConfigDiskHeaderView.xib in Resources */,
 				583BF95021F809000078A2A8 /* FilePreviewViewController.xib in Resources */,
 				58BD2E6F2147B6CF0091A77D /* FileCell.xib in Resources */,
+				584B439521FEEF8C00D1F21A /* DiskDetailViewController.xib in Resources */,
 				7330F509214A71BC00FF4EEC /* AddFriendViewController.xib in Resources */,
+				584B43AA21FF0B9800D1F21A /* ConfigDiskCell.xib in Resources */,
 				7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */,
 				73899CC62152011000962B14 /* GuidePageView1.xib in Resources */,
 				583BF92C21F6E4940078A2A8 /* UploadFilesCell.xib in Resources */,
@@ -3270,10 +3321,12 @@
 				7330F3A4214671C000FF4EEC /* ShareView.xib in Resources */,
 				587C52BD215C7050006787FB /* RouterDetailViewController.xib in Resources */,
 				7330F3D42147A98D00FF4EEC /* messageHistory.json in Resources */,
+				584B439A21FEF79300D1F21A /* DiskDetailCell.xib in Resources */,
 				584A447A21460AD800608122 /* MyViewController.xib in Resources */,
 				7330F50E214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib in Resources */,
 				7330F3BA21475E3500FF4EEC /* ContactsHeadView.xib in Resources */,
 				73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */,
+				584B439F21FEFF1A00D1F21A /* ConfigDiskViewController.xib in Resources */,
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
 				73121A75219C26E900510B48 /* LoginViewController.xib in Resources */,
@@ -3396,8 +3449,10 @@
 				73060558217719A5005A0E13 /* VPNFileInputView.m in Sources */,
 				7360B85521FC632A008FB181 /* FileDownUtil.m in Sources */,
 				736257AB2142149300D7FD6B /* UIView+HUD.m in Sources */,
+				584B439E21FEFF1A00D1F21A /* ConfigDiskViewController.m in Sources */,
 				7330F3C8214771D900FF4EEC /* BottonCell.m in Sources */,
 				736257A72142149300D7FD6B /* UIView+Frame.m in Sources */,
+				584B439921FEF79300D1F21A /* DiskDetailCell.m in Sources */,
 				581FDF5421F024170068C120 /* tox_api.m in Sources */,
 				7330F4F22149147200FF4EEC /* CDBaseMsgCell.m in Sources */,
 				737883F221ACF2970033A189 /* OCTToxAVConstants.m in Sources */,
@@ -3504,6 +3559,7 @@
 				5825A23821F9CA9F00E6194B /* FilePreviewDownloadViewController.m in Sources */,
 				7330F4F32149147200FF4EEC /* ChatListInfo.m in Sources */,
 				737882A721ACF05E0033A189 /* Compression.swift in Sources */,
+				584B43A521FF0AE700D1F21A /* ConfigDiskHeaderView.m in Sources */,
 				737883FA21ACF2970033A189 /* OCTVideoEngine.m in Sources */,
 				585AEE1E213F71E00098A070 /* ChatViewController.m in Sources */,
 				7362577D2142143F00D7FD6B /* NSString+Hash.m in Sources */,
@@ -3635,8 +3691,10 @@
 				7378840D21ACF2970033A189 /* OCTAudioQueue.m in Sources */,
 				737883F621ACF2970033A189 /* OCTDefaultFileStorage.m in Sources */,
 				58C62704214BA7170051AFD0 /* MessageListUtil.m in Sources */,
+				584B439421FEEF8C00D1F21A /* DiskDetailViewController.m in Sources */,
 				587C52CC215CAF14006787FB /* RouterManagementCell.m in Sources */,
 				7330F3762146118800FF4EEC /* UIImage+Vector.m in Sources */,
+				584B43A921FF0B9800D1F21A /* ConfigDiskCell.m in Sources */,
 				583BF93521F6F4B00078A2A8 /* FileMoreAlertView.m in Sources */,
 				7330F4E62149147200FF4EEC /* CDTextParser.m in Sources */,
 				737883F321ACF2970033A189 /* OCTToxAV.m in Sources */,
