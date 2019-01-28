@@ -275,7 +275,12 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             
         }
     }];
-    
+    [self performSelector:@selector(jumpTaskListVC) withObject:self afterDelay:2.0];
+   
+}
+- (void) jumpTaskListVC
+{
+    [AppD.window hideHud];
     TaskListViewController *vc = [[TaskListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }

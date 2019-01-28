@@ -44,7 +44,7 @@
 + (NSString *) getOwerUploadFilePathWithFileName:(NSString *) fileName;
 // 解密后文件的临时目录
 + (NSString *)getTempDeFilePath:(NSString *)fileName ;
-
++ (void) appFirstOpen;
 /**
  app退出时。配置
  */

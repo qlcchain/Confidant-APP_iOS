@@ -61,6 +61,8 @@
     [self configDDLog];
     // 配置聊天
     [self configChat];
+    // 打开时改变文件上传下载状态
+    [SystemUtil appFirstOpen];
     [self checkGuidenPage];
   //  [RSAModel getRSAModel];
     // 得到签名，加密 公私钥对
