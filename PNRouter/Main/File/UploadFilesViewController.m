@@ -25,6 +25,7 @@
 #import "SocketManageUtil.h"
 #import "MD5Util.h"
 #import "UploadFileManager.h"
+#import "TaskListViewController.h"
 
 
 #define UploadFileURL @"UploadFileURL"
@@ -253,7 +254,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             int fileId = [SocketCountUtil getShareObject].fileIDCount;
             fileId += 1;
             
-            
             // 生成32位对称密钥
             NSString *msgKey = [SystemUtil get32AESKey];
             NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
@@ -274,6 +274,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             
         }
     }];
+    
+    TaskListViewController *vc = [[TaskListViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)chooseShareFriendNoti:(NSNotification *)noti {

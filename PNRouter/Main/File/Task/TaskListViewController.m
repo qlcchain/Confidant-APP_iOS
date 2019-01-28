@@ -21,11 +21,17 @@
 @end
 
 @implementation TaskListViewController
-
+- (void) addObserver
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadFinshNoti:) name:File_Upload_Finsh_Noti object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileProgessNoti:) name:File_Progess_Noti object:nil];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self addObserver];
      [self dataInit];
+    [self.view showHudInView:self.view hint:@""];
     [self getAllTaskList];
    
    
@@ -34,29 +40,43 @@
 
 - (void) getAllTaskList
 {
-    // 得到已完成的
-    NSArray *finshTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
-    
-    // 正在上传或下载的
-     NSArray *uploadTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
-    
-    NSMutableArray *arr1 = [NSMutableArray array];
-    if (finshTasks && uploadTasks.count>0) {
-        [arr1 addObjectsFromArray:uploadTasks];
+  //  [FileData bg_drop:FILE_STATUS_TABNAME];
+    if (_sourceArr.count > 0) {
+        [_sourceArr removeAllObjects];
     }
-    [_sourceArr addObject:arr1];
+    @weakify_self
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // 得到已完成的
+        NSArray *finshTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+        
+        // 正在上传或下载的
+        NSArray *uploadTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+        
+        NSMutableArray *arr1 = [NSMutableArray array];
+        if (finshTasks && uploadTasks.count>0) {
+            [arr1 addObjectsFromArray:uploadTasks];
+        }
+        [weakSelf.sourceArr addObject:arr1];
+        
+        NSMutableArray *arr2 = [NSMutableArray array];
+        if (finshTasks && finshTasks.count>0) {
+            [arr2 addObjectsFromArray:finshTasks];
+        }
+        [weakSelf.sourceArr addObject:arr2];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.view hideHud];
+            [weakSelf.mainTable reloadData];
+            if ((!finshTasks || finshTasks.count == 0) && (!uploadTasks || uploadTasks.count == 0)) {
+                [weakSelf viewInit];
+            }
+        });
+    });
     
-    NSMutableArray *arr2 = [NSMutableArray array];
-    if (finshTasks && finshTasks.count>0) {
-        [arr2 addObjectsFromArray:finshTasks];
-    }
-    [_sourceArr addObject:arr2];
     
-    [_mainTable reloadData];
     
-    if ((!finshTasks || finshTasks.count == 0) && (!uploadTasks || uploadTasks.count == 0)) {
-        [self viewInit];
-    }
+    
+    
 }
 
 #pragma mark - Operation
@@ -136,23 +156,23 @@
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    NSString *headerReuse = @"headerReuse";
-    UITableViewHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerReuse];
+//    NSString *headerReuse = @"headerReuse";
+//    UITableViewHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerReuse];
     UILabel *titleLab = nil;
-    if (nil == headerView) {
-        headerView = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:headerReuse];
-        
+//    if (nil == headerView) {
+//        headerView = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:headerReuse];
+    
         UIView *view = [UIView new];
         view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 40);
         view.backgroundColor = [UIColor whiteColor];
-        [headerView.contentView addSubview:view];
+       // [headerView.contentView addSubview:view];
         
         titleLab = [UILabel new];
         titleLab.frame = CGRectMake(16, 10, 200, 20);
         titleLab.font = [UIFont systemFontOfSize:14];
         titleLab.textColor = UIColorFromRGB(0x2c2c2c);
         [view addSubview:titleLab];
-    }
+  //  }
     
     NSMutableArray *ongoingArr = _sourceArr[section];
     if (section == 0) {
@@ -161,7 +181,33 @@
         titleLab.text = [NSString stringWithFormat:@"Completed (%lu)",(unsigned long)ongoingArr.count];
     }
     
-    return headerView;
+    return view;
 }
 
+#pragma mark -noti
+- (void) fileProgessNoti:(NSNotification *) noti
+{
+    
+    FileData *resultModel = noti.object;
+    if (_sourceArr.count == 0) {
+        return;
+    }
+        NSMutableArray *uploadArr = _sourceArr[0];
+        @weakify_self
+        [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FileData *model = obj;
+            if ([model.srcKey isEqualToString:resultModel.srcKey]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    model.progess = resultModel.progess;
+                    [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                    *stop = YES;
+                });
+            }
+        }];
+    
+}
+- (void) fileUploadFinshNoti:(NSNotification *) noti
+{
+    [self getAllTaskList];
+}
 @end

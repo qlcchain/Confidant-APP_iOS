@@ -158,5 +158,9 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define PullSharedFriend_Noti @"PullSharedFriend_Noti"
 // 删除文件成功通知
 #define Delegate_File_Noti @"Delegate_File_Noti"
+// 文件上传进度通知
+#define File_Progess_Noti @"File_Progess_Noti"
+// 文件上传成功和失败通知
+#define File_Upload_Finsh_Noti @"File_Upload_Finsh_Noti"
 
 #endif /* CustomMacro_h */
