@@ -98,9 +98,9 @@
         if (type == ArrangeTypeByName) {
             [weakSelf.sourceArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
                 FileListModel *listM1 = obj1;
-                NSString *fileName1 = listM1.FileName.lastPathComponent;
+                NSString *fileName1 = [Base58Util Base58DecodeWithCodeName:listM1.FileName.lastPathComponent];
                 FileListModel *listM2 = obj2;
-                NSString *fileName2 = listM2.FileName.lastPathComponent;
+                NSString *fileName2 = [Base58Util Base58DecodeWithCodeName:listM2.FileName.lastPathComponent];
                 return [fileName1 compare:fileName2];
             }];
             [weakSelf.mainTable reloadData];
