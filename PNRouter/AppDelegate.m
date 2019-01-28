@@ -110,6 +110,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [SystemUtil configureAPPTerminate];
 }
 
 - (void)setRootLogin {
@@ -228,6 +229,19 @@
 {
     // 同时启用APNs跟应用内长连接
     [MiPushSDK registerMiPush:self type:0 connect:YES];
+}
+
+#pragma mark - BuglyDelegate
+/**
+ *  发生异常时回调
+ *
+ *  @param exception 异常信息
+ *
+ *  @return 返回需上报记录，随异常上报一起上报
+ */
+- (NSString *)attachmentForException:(NSException *)exception  {
+    [SystemUtil configureAPPTerminate];
+    return nil;
 }
 
 #pragma mark - 设置IQKeyboardManager

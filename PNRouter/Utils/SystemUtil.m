@@ -430,4 +430,14 @@
     
     return flag;
 }
+
+
+
+/**
+ app退出时。配置
+ */
++ (void) configureAPPTerminate {
+    
+}
+
 @end
