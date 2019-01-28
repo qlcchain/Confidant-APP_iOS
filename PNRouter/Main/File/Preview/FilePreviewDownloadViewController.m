@@ -21,6 +21,7 @@
 #import "PNRouter-Swift.h"
 #import "OperationRecordModel.h"
 #import "UserConfig.h"
+#import "FileDownUtil.h"
 
 typedef enum : NSUInteger {
     FileExistTypeNone,
@@ -112,17 +113,16 @@ typedef enum : NSUInteger {
 }
 
 - (void)downloadFile {
-    NSString *filePath = self.fileListM.FileName;
-    NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
-//    _requestUrl = [NSString stringWithFormat:@"%@%@",[RequestService getPrefixUrl],filePath];
-    NSString *downloadFilePath = [SystemUtil getTempDownloadFilePath:fileName];
+    
     @weakify_self
-    [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
+    [[FileDownUtil getShareObject] downFileWithFileModel:self.fileListM progressBlock:^(CGFloat progress) {
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.progressV.progress = progress;
         });
-    } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
+        
+    } success:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSString * _Nonnull filePath) {
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.progressV.progress = 1;
             weakSelf.progressV.hidden = YES;
@@ -131,18 +131,12 @@ typedef enum : NSUInteger {
             [weakSelf.previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
             [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
             [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
-            weakSelf.downloadFilePath = downloadFilePath;
-            
-            // 下载成功-保存操作记录
-            NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
-            NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
-            NSString *fileName = [Base58Util Base58DecodeWithCodeName:weakSelf.fileListM.FileName.lastPathComponent];
-            [OperationRecordModel saveOrUpdateWithFileType:weakSelf.fileListM.FileType operationType:@(1) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:weakSelf.fileListM.FileName?:@"" localPath:@""];
+            weakSelf.downloadFilePath = filePath;
         });
         
-    } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
+    } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"download error********* %@",error);
             [AppD.window showHint:@"Download Fail"];
             weakSelf.progressV.hidden = YES;
             weakSelf.sizeLab.hidden = NO;
@@ -151,28 +145,11 @@ typedef enum : NSUInteger {
             [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
             [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
         });
+        
     }];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadProgress:) name:JCDownloadProgressNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:JCDownloadCompletionNotification object:nil];
-//
-////    NSMutableArray *downloadList = [NSMutableArray array];
-//    JCDownloadItem *item = [[JCDownloadItem alloc] init];
-//    item.groupId = File_Download_GroupId;
-//    NSString *filePath = self.fileListM.FileName;
-////    NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
-////    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
-////    NSString *filePath = [self.fileListM.FileName stringByReplacingOccurrencesOfString:fileNameBase58 withString:fileName];
-//    _requestUrl = [NSString stringWithFormat:@"%@%@",[RequestService getPrefixUrl],filePath];
-////    _requestUrl = @"http://img0.imgtn.bdimg.com/it/u=195646865,784966603&fm=11&gp=0.jpg";
-//    item.downloadUrl = _requestUrl;
-//    item.downloadFilePath = [JCDownloadUtilities filePathWithFileName:[item.downloadUrl lastPathComponent] folderName:File_Download_Task_List];
-//    JCDownloadOperation *operation = [JCDownloadOperation operationWithItem:item];
-////    [downloadList addObject:operation];
-//    [[JCDownloadAgent sharedAgent] setSecurityPolicyWithSSLPinningMode:JCDownloadSSLPinningModeNone pinnedCertificates:nil allowInvalidCertificates:YES validatesDomainName:NO];
-//    [[JCDownloadAgent sharedAgent] startDownload:operation];
-////    [[JCDownloadQueue sharedQueue] startDownload:operation];
-//
+
+
 }
 
 #pragma mark - Action

@@ -324,7 +324,7 @@
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         if (!error) {
             if (success) {
-                success(downloadTask,filePath.lastPathComponent);
+                success(downloadTask,[filePath absoluteString]);
             }
         } else {
             if (failure) {

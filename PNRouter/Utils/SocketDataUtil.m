@@ -283,26 +283,27 @@ struct ResultFile {
     
     if ([toid isEmptyString]) // 上传文件
     {
-         NSArray *finfAlls = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srcKey)]];
-        if (finfAlls && finfAlls.count > 0) {
-            FileData *fileModel = finfAlls[0];
-            fileModel.status = 2;
-            [fileModel bg_saveOrUpdateAsync:nil];
-        } else {
-            FileData *fileModel = [[FileData alloc] init];
-            fileModel.bg_tableName = FILE_STATUS_TABNAME;
-            fileModel.fileId = fileid;
-            fileModel.fileData = imgData;
-            fileModel.fileType = fileType;
-            fileModel.progess = 0.0f;
-            fileModel.fileName = [Base58Util Base58DecodeWithCodeName:fileName];
-            fileModel.fileOptionType = 1;
-            fileModel.status = 2;
-            fileModel.userId = [UserConfig getShareObject].userId;
-            fileModel.srcKey = srcKey;
-            fileModel.fileOptionType = 1;
-            [fileModel bg_saveAsync:nil];
-        }
+        [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srcKey)] complete:^(NSArray * _Nullable array) {
+            if (array && array.count > 0) {
+                FileData *fileModel = array[0];
+                fileModel.status = 2;
+                [fileModel bg_saveOrUpdateAsync:nil];
+            } else {
+                FileData *fileModel = [[FileData alloc] init];
+                fileModel.bg_tableName = FILE_STATUS_TABNAME;
+                fileModel.fileId = fileid;
+                fileModel.fileSize = imgData.length;
+                fileModel.fileData = imgData;
+                fileModel.fileType = fileType;
+                fileModel.progess = 0.0f;
+                fileModel.fileName = [Base58Util Base58DecodeWithCodeName:fileName];
+                fileModel.fileOptionType = 1;
+                fileModel.status = 2;
+                fileModel.userId = [UserConfig getShareObject].userId;
+                fileModel.srcKey = srcKey;
+                [fileModel bg_saveAsync:nil];
+            }
+        }];
     }
     
     if (![toid isEmptyString]) {
@@ -406,54 +407,59 @@ struct ResultFile {
         }
         
         if ([self.toid isEmptyString]) {
-            CGFloat progess = (sendFileSizeMax*resultFile.segseq)/self.fileData.length;
-            NSArray *finfAlls = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.srcKey)]];
-            if (finfAlls && finfAlls.count > 0) {
-                FileData *fileModel = finfAlls[0];
-                fileModel.progess = progess;
-                [fileModel bg_saveOrUpdateAsync:nil];
+            CGFloat progess = (sendFileSizeMax*resultFile.segseq*1.0)/self.fileData.length;
+          
+            [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.srcKey)] complete:^(NSArray * _Nullable array) {
+                if (array && array.count > 0) {
+                    FileData *fileModel = array[0];
+                    fileModel.progess = progess;
+                    [fileModel bg_saveOrUpdateAsync:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileModel];
+                }
+            }];
+        }
+        
+      //  dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            uint32_t sendFileSize = self.fileData.length>(sendFileSizeMax*(resultFile.segseq+1))?sendFileSizeMax:(uint32_t)self.fileData.length-(sendFileSizeMax*resultFile.segseq);
+            uint8_t segMoreBlg = 0;
+            if (self.fileData.length>(sendFileSizeMax*(resultFile.segseq+1))) {
+                segMoreBlg = 1;
             }
-        }
+            uint32_t offset = resultFile.segseq*sendFileSizeMax;
+            uint32_t segseq = resultFile.segseq+1;
+            uint16_t crc = 0;
+            currentSegseq = segseq;
+            
+            NSData *sendData = nil;
+            if (segMoreBlg == 1) {
+                sendData = [self.fileData subdataWithRange:NSMakeRange(offset, sendFileSizeMax)];
+            } else {
+                sendData = [self.fileData subdataWithRange:NSMakeRange(offset, self.fileData.length-offset)];
+            }
+            
+            memcpy(sendFile.content,[sendData bytes],[sendData length]);
+            
+            
+            HTONL(sendFileSize);
+            HTONL(segseq);
+            HTONL(offset);
+            HTONS(crc);
+            sendFile.segsize = sendFileSize;
+            sendFile.segseq = segseq;
+            sendFile.offset = offset;
+            sendFile.crc = crc;
+            sendFile.segmore = segMoreBlg;
+            
+            // 结构体转data
+            NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
+            uint16_t crc16 = [myData hexadecimalUint16];
+            HTONS(crc16);
+            sendFile.crc = crc16;
+            
+            myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
+            [self sendFileData:myData];
+    //    });
         
-        
-        uint32_t sendFileSize = self.fileData.length>(sendFileSizeMax*(resultFile.segseq+1))?sendFileSizeMax:(uint32_t)self.fileData.length-(sendFileSizeMax*resultFile.segseq);
-        uint8_t segMoreBlg = 0;
-        if (self.fileData.length>(sendFileSizeMax*(resultFile.segseq+1))) {
-            segMoreBlg = 1;
-        }
-        uint32_t offset = resultFile.segseq*sendFileSizeMax;
-        uint32_t segseq = resultFile.segseq+1;
-        uint16_t crc = 0;
-        currentSegseq = segseq;
-        
-        NSData *sendData = nil;
-        if (segMoreBlg == 1) {
-            sendData = [self.fileData subdataWithRange:NSMakeRange(offset, sendFileSizeMax)];
-        } else {
-            sendData = [self.fileData subdataWithRange:NSMakeRange(offset, self.fileData.length-offset)];
-        }
-        
-        memcpy(sendFile.content,[sendData bytes],[sendData length]);
-        
-        
-        HTONL(sendFileSize);
-        HTONL(segseq);
-        HTONL(offset);
-        HTONS(crc);
-        sendFile.segsize = sendFileSize;
-        sendFile.segseq = segseq;
-        sendFile.offset = offset;
-        sendFile.crc = crc;
-        sendFile.segmore = segMoreBlg;
-        
-        // 结构体转data
-        NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
-        uint16_t crc16 = [myData hexadecimalUint16];
-        HTONS(crc16);
-        sendFile.crc = crc16;
-        
-        myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
-        [self sendFileData:myData];
         
     }
 }
@@ -474,6 +480,5 @@ struct ResultFile {
             [self sendFileWithTag:1];
         }
     }
-    
 }
 @end

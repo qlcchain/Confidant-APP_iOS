@@ -124,7 +124,7 @@
         }
     }];
     URLSessionDownloadTaskModel *model = [URLSessionDownloadTaskModel new];
-    model.task = downloadTask;
+   // model.task = downloadTask;
     return model;
 }
 

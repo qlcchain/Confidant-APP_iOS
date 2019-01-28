@@ -47,27 +47,33 @@
     if (resultArr && resultArr.count>0 && [resultArr[0] integerValue] == 0) { // 成功
         
         NSString *srckey = resultArr[4];
-        NSArray *finfAlls = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)]];
-        if (finfAlls && finfAlls.count > 0) {
-            FileData *fileModel = finfAlls[0];
-            fileModel.status = 1;
-            fileModel.progess = 1;
-            fileModel.fileData = nil;
-            [fileModel bg_saveOrUpdateAsync:nil];
-        }
-        
-        NSString *fileName = resultArr[1];
-        NSData *fileData = resultArr[2];
-        
-        // 保存到本地
-        fileName = [Base58Util Base58DecodeWithCodeName:fileName];
-        DDLogDebug(@"上传成功:%@",fileName);
-        NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
-      //  [fileData writeToFile:uploadDocPath atomically:YES];
+        [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)] complete:^(NSArray * _Nullable array) {
+            if (array && array.count > 0) {
+                FileData *fileModel = array[0];
+                fileModel.status = 1;
+                fileModel.progess = 1;
+                fileModel.fileData = nil;
+                [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
+                }];
+            }
+        }];
+       
+
+       
+         NSString *fileName = resultArr[1];
+         fileName = [Base58Util Base58DecodeWithCodeName:fileName];
         
         NSNumber *fileType = resultArr[3];
         if (![SystemUtil isSocketConnect]) {
+           
+           // NSData *fileData = resultArr[2];
             NSString *srckey = resultArr[4];
+            // 保存到本地
+           
+            DDLogDebug(@"上传成功:%@",fileName);
+            NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
+            //  [fileData writeToFile:uploadDocPath atomically:YES];
             NSInteger fileSize = [NSString fileSizeAtPath:uploadDocPath];
             NSString *fileMd5 =  [MD5Util md5WithPath:uploadDocPath];
             
@@ -80,14 +86,17 @@
         [OperationRecordModel saveOrUpdateWithFileType:fileType operationType:@(0) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:@"" localPath:@""];
     } else { // 上传失败
         NSString *srckey = resultArr[4];
-        NSArray *finfAlls = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)]];
-        if (finfAlls && finfAlls.count > 0) {
-            FileData *fileModel = finfAlls[0];
-            fileModel.status = 3;
-            fileModel.progess = 0.0;
-            fileModel.fileData = nil;
-            [fileModel bg_saveOrUpdateAsync:nil];
-        }
+        [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)] complete:^(NSArray * _Nullable array) {
+            if (array && array.count > 0) {
+                FileData *fileModel = array[0];
+                fileModel.status = 3;
+                fileModel.progess = 0.0;
+                fileModel.fileData = nil;
+                [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
+                }];
+            }
+        }];
     }
 }
 

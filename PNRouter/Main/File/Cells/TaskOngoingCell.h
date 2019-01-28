@@ -21,7 +21,8 @@ static NSString *TaskOngoingCellReuse = @"TaskOngoingCell";
 @property (weak, nonatomic) IBOutlet UILabel *lblSize;
 @property (weak, nonatomic) IBOutlet UIImageView *iconImgView;
 @property (weak, nonatomic) IBOutlet UIProgressView *progess;
-
+@property (nonatomic , strong) FileData *fileModel;
+@property (weak, nonatomic) IBOutlet UIButton *optionBtn;
 
 - (void) setFileModel:(FileData *) model;
 
