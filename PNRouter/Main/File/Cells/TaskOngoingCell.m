@@ -20,7 +20,7 @@
     
     [UploadFileManager getShareObject];
     
-    [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
+    [_optionBtn setImage:[UIImage imageNamed:@"icon_suspend_gray"] forState:UIControlStateNormal];
     _optionBtn.userInteractionEnabled = NO;
     if (self.fileModel.fileOptionType == 1) { // 上传
         if ([SystemUtil isSocketConnect]) { // 是socket
@@ -54,10 +54,10 @@
 {
     _fileModel = model;
     if (model.status == 2) {
-        [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
+        [_optionBtn setImage:[UIImage imageNamed:@"icon_suspend_gray"] forState:UIControlStateNormal];
         _optionBtn.userInteractionEnabled = NO;
     } else {
-        [_optionBtn setImage:[UIImage imageNamed:@"icon_suspend_gray"] forState:UIControlStateNormal];
+        [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
         _optionBtn.userInteractionEnabled = YES;
     }
     _lblTitle.text = model.fileName;

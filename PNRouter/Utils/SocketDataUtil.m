@@ -409,14 +409,20 @@ struct ResultFile {
         if ([self.toid isEmptyString]) {
             CGFloat progess = (sendFileSizeMax*resultFile.segseq*1.0)/self.fileData.length;
           
-            [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.srcKey)] complete:^(NSArray * _Nullable array) {
-                if (array && array.count > 0) {
-                    FileData *fileModel = array[0];
-                    fileModel.progess = progess;
-                    [fileModel bg_saveOrUpdateAsync:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileModel];
-                }
-            }];
+            FileData *fileDataModel = [[FileData alloc] init];
+            fileDataModel.progess = progess;
+            fileDataModel.srcKey = self.srcKey;
+            fileDataModel.status = 2;
+            [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
+            
+//            [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.srcKey)] complete:^(NSArray * _Nullable array) {
+//                if (array && array.count > 0) {
+//                    FileData *fileModel = array[0];
+//                    fileModel.progess = progess;
+//                    [fileModel bg_saveOrUpdateAsync:nil];
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileModel];
+//                }
+//            }];
         }
         
       //  dispatch_async(dispatch_get_global_queue(0, 0), ^{
