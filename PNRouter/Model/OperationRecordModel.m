@@ -40,9 +40,14 @@
 }
 
 + (NSArray *)getAllOperationRecordOrderByDesc {
-    //    NSArray* finfAlls = [OperationRecordModel bg_findAll:OperationRecord_Table];
-    NSArray *finfAlls = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@ order by %@ desc",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId), bg_sqlValue(@"operationTime")]];
-    return finfAlls?:@[];
+//    NSArray *finfAlls = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@ order by %@ asc",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId), bg_sqlValue(@"operationTime")]];
+    NSArray *findAll = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId)]];
+    findAll = [findAll sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        OperationRecordModel *model1 = obj1;
+        OperationRecordModel *model2 = obj2;
+        return [model2.operationTime compare:model1.operationTime];
+    }];
+    return findAll?:@[];
 }
 
 + (void)saveOrUpdate:(OperationRecordModel *)model {
