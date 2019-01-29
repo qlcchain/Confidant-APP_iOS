@@ -11,6 +11,7 @@
 @interface FileMoreAlertView ()
 
 @property (weak, nonatomic) IBOutlet UILabel *fileNameLab;
+@property (weak, nonatomic) IBOutlet UIImageView *icon;
 
 @end
 
@@ -22,8 +23,19 @@
 }
 
 #pragma mark - Operation
-- (void)showWithFileName:(NSString *)fileName {
+- (void)showWithFileName:(NSString *)fileName fileType:(NSNumber *)fileType {
     self.fileNameLab.text = fileName;
+    NSString *fileImgStr = @"";
+    if ([fileType integerValue] == 1) { // 图片
+        fileImgStr = @"icon_picture_small_gray";
+    } else if ([fileType integerValue] == 4) { // 视频
+        fileImgStr = @"icon_video_small_gray";
+    } else if ([fileType integerValue] == 5) { // 文档
+        fileImgStr = @"icon_document_small_gray";
+    } else if ([fileType integerValue] == 6) { // 其他
+        fileImgStr = @"icon_other_small_gray";
+    }
+    _icon.image = [UIImage imageNamed:fileImgStr];
     
     [AppD.window addSubview:self];
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
