@@ -157,7 +157,7 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 // 拉取可分享文件好友列表成功通知
 #define PullSharedFriend_Noti @"PullSharedFriend_Noti"
 // 删除文件成功通知
-#define Delegate_File_Noti @"Delegate_File_Noti"
+#define Delete_File_Noti @"Delete_File_Noti"
 // 文件上传进度通知
 #define File_Progess_Noti @"File_Progess_Noti"
 // 文件上传成功和失败通知

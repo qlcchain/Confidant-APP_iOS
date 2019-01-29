@@ -14,6 +14,8 @@
             <connections>
                 <outlet property="contentBack" destination="giH-q3-6Z3" id="JQ1-Cu-HHd"/>
                 <outlet property="mainTable" destination="QmY-xo-T67" id="Rdf-bi-hqP"/>
+                <outlet property="searchBackView" destination="2vM-k0-mzw" id="1aP-h4-bM7"/>
+                <outlet property="searchTF" destination="aMM-oq-d4E" id="8Th-di-gP4"/>
                 <outlet property="titleLab" destination="UVL-6I-XPc" id="O5J-1p-J8x"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -98,7 +100,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_search" translatesAutoresizingMaskIntoConstraints="NO" id="JII-Be-tdU">
                                                     <rect key="frame" x="8" y="11.5" width="14" height="13"/>
                                                 </imageView>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aMM-oq-d4E">
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aMM-oq-d4E">
                                                     <rect key="frame" x="30" y="0.0" width="265" height="36"/>
                                                     <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>

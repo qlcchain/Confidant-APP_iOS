@@ -19,12 +19,23 @@
 #import "OperationRecordModel.h"
 #import "PNRouter-Swift.h"
 
+typedef enum : NSUInteger {
+    MyFilesTableTypeNormal,
+    MyFilesTableTypeSearch,
+} MyFilesTableType;
+
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *sourceArr;
+@property (nonatomic, strong) NSMutableArray *searchArr;
+@property (nonatomic, strong) NSMutableArray *showArr;
+@property (nonatomic) MyFilesTableType myFilesTableType;
+
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
 @property (weak, nonatomic) IBOutlet UIView *contentBack;
+@property (weak, nonatomic) IBOutlet UIView *searchBackView;
+@property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (nonatomic) ArrangeType arrangeType;
 @property (nonatomic ,strong) FileListModel *selectModel;
 
@@ -35,7 +46,7 @@
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(delegateFileCompleteNoti:) name:Delegate_File_Noti object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFileCompleteNoti:) name:Delete_File_Noti object:nil];
 }
 
 - (void)dealloc {
@@ -54,6 +65,11 @@
 
 #pragma mark - Operation
 - (void)dataInit {
+    _myFilesTableType = MyFilesTableTypeNormal;
+    _searchBackView.layer.cornerRadius = 3.0f;
+    _searchBackView.layer.masksToBounds = YES;
+    [self addTFTarget];
+    
     if (_filesType == FilesTypeAll) {
         _titleLab.text = @"All Files";
     } else if (_filesType == FilesTypeSent) {
@@ -63,6 +79,7 @@
     }
     
     _sourceArr = [NSMutableArray array];
+    _searchArr = [NSMutableArray array];
     _arrangeType = ArrangeTypeByName;
     
     [_mainTable registerNib:[UINib nibWithNibName:MyFilesCellReuse bundle:nil] forCellReuseIdentifier:MyFilesCellReuse];
@@ -71,6 +88,16 @@
 - (void)viewInit {
     [self showEmptyView];
     
+}
+
+- (void)refreshTable {
+    if (_myFilesTableType == MyFilesTableTypeNormal) {
+        _showArr = _sourceArr;
+    } else if (_myFilesTableType == MyFilesTableTypeSearch) {
+        _showArr = _searchArr;
+    }
+    
+    [_mainTable reloadData];
 }
 
 - (void)showEmptyView {
@@ -96,29 +123,29 @@
     [view setClickB:^(ArrangeType type) {
         weakSelf.arrangeType = type;
         if (type == ArrangeTypeByName) {
-            [weakSelf.sourceArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
                 FileListModel *listM1 = obj1;
                 NSString *fileName1 = [Base58Util Base58DecodeWithCodeName:listM1.FileName.lastPathComponent];
                 FileListModel *listM2 = obj2;
                 NSString *fileName2 = [Base58Util Base58DecodeWithCodeName:listM2.FileName.lastPathComponent];
                 return [fileName1 compare:fileName2];
             }];
-            [weakSelf.mainTable reloadData];
+            [weakSelf refreshTable];
             
         } else if (type == ArrangeTypeByTime) {
-            [weakSelf.sourceArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
                 FileListModel *listM1 = obj1;
                 FileListModel *listM2 = obj2;
                 return [listM1.Timestamp compare:listM2.Timestamp];
             }];
-            [weakSelf.mainTable reloadData];
+            [weakSelf refreshTable];
         } else if (type == ArrangeTypeBySize) {
-            [weakSelf.sourceArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
                 FileListModel *listM1 = obj1;
                 FileListModel *listM2 = obj2;
                 return [listM1.FileSize compare:listM2.FileSize];
             }];
-            [weakSelf.mainTable reloadData];
+            [weakSelf refreshTable];
         }
     }];
     [view showWithArrange:_arrangeType];
@@ -205,7 +232,7 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _sourceArr.count;
+    return _showArr.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -215,7 +242,7 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     MyFilesCell *cell = [tableView dequeueReusableCellWithIdentifier:MyFilesCellReuse];
     
-    FileListModel *model = _sourceArr[indexPath.row];
+    FileListModel *model = _showArr[indexPath.row];
     [cell configCellWithModel:model];
     @weakify_self
     [cell setMoreB:^{
@@ -228,8 +255,38 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    FileListModel *model = _sourceArr[indexPath.row];
+    FileListModel *model = _showArr[indexPath.row];
     [self jumpToFilePreviewDownload:model];
+}
+
+#pragma mark - UITextField Add Target
+- (void)addTFTarget {
+    [_searchTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
+}
+
+- (void)textFieldTextChange:(UITextField *)tf {
+    if (tf == _searchTF) {
+        [self refreshTableByTF:tf];
+    }
+}
+
+- (void)refreshTableByTF:(UITextField *)tf {
+    if ([tf.text.trim isEmptyString]) {
+        _myFilesTableType = MyFilesTableTypeNormal;
+    } else {
+        _myFilesTableType = MyFilesTableTypeSearch;
+        [_searchArr removeAllObjects];
+        @weakify_self
+        [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FileListModel *model = obj;
+            NSString *fileNameBase58 = model.FileName.lastPathComponent;
+            NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58];
+            if ([fileName containsString:tf.text.trim]) {
+                [weakSelf.searchArr addObject:model];
+            }
+        }];
+    }
+    [self refreshTable];
 }
 
 #pragma mark - Transition
@@ -265,17 +322,23 @@
         
         [_sourceArr removeAllObjects];
         [_sourceArr addObjectsFromArray:tempArr];
-        [_mainTable reloadData];
+        
+        [self refreshTable];
     }
 }
-- (void) delegateFileCompleteNoti:(NSNotification *) noti
-{
+
+- (void)deleteFileCompleteNoti:(NSNotification *) noti {
     @weakify_self
     [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FileListModel *model = obj;
         if ([model.MsgId integerValue] == [weakSelf.selectModel.MsgId integerValue]) {
             [weakSelf.sourceArr removeObject:model];
-            [weakSelf.mainTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            if (weakSelf.myFilesTableType == MyFilesTableTypeNormal) {
+                [weakSelf.mainTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            } else if (weakSelf.myFilesTableType == MyFilesTableTypeSearch) {
+                [weakSelf refreshTableByTF:weakSelf.searchTF];
+            }
+            
             
             // 删除成功-保存操作记录
             NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];

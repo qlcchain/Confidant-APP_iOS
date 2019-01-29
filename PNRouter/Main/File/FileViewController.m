@@ -29,6 +29,11 @@
 #import "FileListModel.h"
 #import "DetailInformationViewController.h"
 
+typedef enum : NSUInteger {
+    FileTableTypeNormal,
+    FileTableTypeSearch,
+} FileTableType;
+
 @interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/, UIDocumentPickerDelegate, UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
 //@property (weak, nonatomic) IBOutlet UILabel *fontLab;
@@ -39,6 +44,9 @@
 
 @property (nonatomic, strong) UploadAlertView *uploadAlertV;
 @property (nonatomic, strong) NSMutableArray *sourceArr;
+@property (nonatomic, strong) NSMutableArray *searchArr;
+@property (nonatomic, strong) NSArray *showArr;
+@property (nonatomic) FileTableType fileTableType;
 
 @end
 
@@ -68,8 +76,11 @@
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
     _searchTF.delegate = self;
+    [self addTFTarget];
     
+    _fileTableType = FileTableTypeNormal;
     _sourceArr = [NSMutableArray array];
+    _searchArr = [NSMutableArray array];
     [_mainTable registerNib:[UINib nibWithNibName:FileCellReuse bundle:nil] forCellReuseIdentifier:FileCellReuse];
     
 //    [self sendPullFileList];
@@ -84,8 +95,15 @@
 #pragma mark - Operation
 
 - (void)refreshTable {
-    [_sourceArr removeAllObjects];
-    [_sourceArr addObjectsFromArray:[OperationRecordModel getAllOperationRecordOrderByDesc]];
+    if (_fileTableType == FileTableTypeNormal) {
+        [_sourceArr removeAllObjects];
+        [_sourceArr addObjectsFromArray:[OperationRecordModel getAllOperationRecordOrderByDesc]];
+        
+        _showArr = _sourceArr;
+    } else if (_fileTableType == FileTableTypeSearch) {
+        _showArr = _searchArr;
+    }
+    
     [_mainTable reloadData];
 }
 
@@ -403,7 +421,7 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _sourceArr.count;
+    return _showArr.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -413,7 +431,7 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     FileCell *cell = [tableView dequeueReusableCellWithIdentifier:FileCellReuse];
     
-    OperationRecordModel *model = _sourceArr[indexPath.row];
+    OperationRecordModel *model = _showArr[indexPath.row];
     [cell configCellWithModel:model];
     @weakify_self
     [cell setFileMoreB:^{
@@ -520,6 +538,30 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - UITextField Add Target
+- (void)addTFTarget {
+    [_searchTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
+}
+
+- (void)textFieldTextChange:(UITextField *)tf {
+    if (tf == _searchTF) {
+        if ([tf.text.trim isEmptyString]) {
+            _fileTableType = FileTableTypeNormal;
+        } else {
+            _fileTableType = FileTableTypeSearch;
+            [_searchArr removeAllObjects];
+            @weakify_self
+            [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                OperationRecordModel *model = obj;
+                if ([model.fileName containsString:tf.text.trim]) {
+                    [weakSelf.searchArr addObject:model];
+                }
+            }];
+        }
+        [self refreshTable];
+    }
 }
 
 #pragma mark - UITextFieldDelegate

@@ -1047,7 +1047,7 @@
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:Delegate_File_Noti object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:Delete_File_Noti object:nil];
     } else if (retCode == 1) {
         [AppD.window showHint:@"File does not exist."];
     } else {
