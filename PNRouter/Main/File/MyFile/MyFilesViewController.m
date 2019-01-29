@@ -149,7 +149,7 @@
     
     NSString *fileNameBase58 = model.FileName.lastPathComponent;
     NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
-    [view showWithFileName:fileName];
+    [view showWithFileName:fileName fileType:model.FileType];
 }
 
 #pragma mark -删除文件

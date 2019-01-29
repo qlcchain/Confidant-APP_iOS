@@ -22,7 +22,7 @@ typedef void(^FileMoreClickBlock)(void);
 @property (nonatomic) FileMoreClickBlock deleteB;
 
 + (instancetype)getInstance;
-- (void)showWithFileName:(NSString *)fileName;
+- (void)showWithFileName:(NSString *)fileName fileType:(NSNumber *)fileType;
 - (void)hide;
 
 @end

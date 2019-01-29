@@ -350,7 +350,7 @@
     }];
     
     NSString *fileName = @"";
-    [view showWithFileName:fileName];
+    [view showWithFileName:fileName fileType:@(1)];
 }
 
 #pragma mark -删除文件
