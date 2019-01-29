@@ -40,7 +40,7 @@
 }
 
 + (NSArray *)getAllOperationRecordOrderByDesc {
-//    NSArray *finfAlls = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@ order by %@ asc",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId), bg_sqlValue(@"operationTime")]];
+//    NSArray *finfAlls = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@ order by %@ desc",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId), bg_sqlValue(@"operationTime")]];
     NSArray *findAll = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId)]];
     findAll = [findAll sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         OperationRecordModel *model1 = obj1;

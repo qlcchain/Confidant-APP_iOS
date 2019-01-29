@@ -283,6 +283,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [AppD.window hideHud];
     TaskListViewController *vc = [[TaskListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+    
+    [self moveNavgationBackOneViewController];
 }
 
 - (void)chooseShareFriendNoti:(NSNotification *)noti {

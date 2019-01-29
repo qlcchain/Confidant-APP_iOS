@@ -52,8 +52,6 @@
     if (_sourceArr.count > 0) {
         [_sourceArr removeAllObjects];
     }
-    
-    
     @weakify_self
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))] complete:^(NSArray * _Nullable array) {
         
@@ -69,7 +67,14 @@
                  dispatch_async(dispatch_get_main_queue(), ^{
                      NSMutableArray *arr2 = [NSMutableArray array];
                      if (array && array.count>0) {
-                         [arr2 addObjectsFromArray:array];
+                         
+                         NSArray *sortArr = [array sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                             FileData *model1 = obj1;
+                             FileData *model2 = obj2;
+                             return [model2.bg_updateTime compare:model1.bg_updateTime];
+                         }];
+                         
+                         [arr2 addObjectsFromArray:sortArr];
                      }
                      [weakSelf.sourceArr addObject:arr2];
                      [weakSelf addObserver];
