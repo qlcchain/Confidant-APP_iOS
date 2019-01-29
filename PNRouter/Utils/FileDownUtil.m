@@ -16,6 +16,7 @@
 #import "UserConfig.h"
 #import "FileData.h"
 
+
 @implementation FileDownUtil
 + (instancetype) getShareObject
 {
@@ -131,7 +132,7 @@
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.srcKey)] complete:^(NSArray * _Nullable array) {
         if (array && array.count > 0) {
             
-            FileData *fileDataModel = array[0];
+            fileDataModel = array[0];
             fileDataModel.status = 2;
             [fileDataModel bg_saveOrUpdateAsync:nil];
             
@@ -172,5 +173,23 @@
             }];
         }
     }];
+}
+
+- (void) toxDownFileModel:(FileListModel *) fileModel
+{
+     NSArray *pathArr = [fileModel.FileName componentsSeparatedByString:@"/"];
+    if (pathArr && pathArr.count >2) {
+        NSString *result = pathArr[2];
+        NSString *fileOwer = @"";
+        // /u/表示是上传的   如果是/s/是发送的，/r/是接收的
+        if ([result isEqualToString:@"s"]) {
+            fileOwer = @"1";
+        } else if ([result isEqualToString:@"r"]) {
+            fileOwer = @"2";
+        } else {
+            fileOwer = @"3";
+        }
+        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileModel.FileName.lastPathComponent msgId:[NSString stringWithFormat:@"%@",fileModel.MsgId ] fileOwer:fileOwer];
+    }
 }
 @end

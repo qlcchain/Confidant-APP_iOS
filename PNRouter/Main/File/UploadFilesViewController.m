@@ -152,7 +152,7 @@
     [_urlArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSURL *url = obj;
         NSString *UserId = [UserConfig getShareObject].userId;
-        NSString *FileName = [Base58Util Base58EncodeWithCodeName:url.pathExtension];
+        NSString *FileName = [Base58Util Base58EncodeWithCodeName:url.path.lastPathComponent];
         NSNumber *FileSize = @([NSString fileSizeAtPath:url.path]);
         NSNumber *FileType = @(0);
         if (weakSelf.documentType == DocumentPickerTypePhoto) {
@@ -265,18 +265,19 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
             fileData = aesEncryptData(fileData,msgKeyData);
             
-            if ([SystemUtil isSocketConnect]) {
+            if ([SystemUtil isSocketConnect]) { // socket
                 SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
                 dataUtil.srcKey = srcKey;
                 dataUtil.fileid = [NSString stringWithFormat:@"%d",fileId];
                 [dataUtil sendFileId:@"" fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+            } else { // tox
+                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:fileUrl.path],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
+                [SendToxRequestUtil uploadFileWithFilePath:fileUrl.path parames:parames fileData:fileData];
             }
-            
         }
     }];
-    [self performSelector:@selector(jumpTaskListVC) withObject:self afterDelay:2.0];
-   
+    [self performSelector:@selector(jumpTaskListVC) withObject:self afterDelay:1.5];
 }
 - (void) jumpTaskListVC
 {
@@ -292,7 +293,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     @weakify_self
     [modeArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *friendM = obj;
-        
         
     }];
 }

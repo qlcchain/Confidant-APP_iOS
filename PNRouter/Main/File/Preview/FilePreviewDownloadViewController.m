@@ -114,42 +114,43 @@ typedef enum : NSUInteger {
 
 - (void)downloadFile {
     
-    @weakify_self
-    [[FileDownUtil getShareObject] downFileWithFileModel:self.fileListM progressBlock:^(CGFloat progress) {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.progressV.progress = progress;
-        });
-        
-    } success:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSString * _Nonnull filePath) {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.progressV.progress = 1;
-            weakSelf.progressV.hidden = YES;
-            weakSelf.sizeLab.hidden = NO;
-            weakSelf.fileExistType = FileExistTypeExistOrDownloaded;
-            [weakSelf.previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
-            [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
-            [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
-            weakSelf.downloadFilePath = filePath;
-        });
-        
-    } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [AppD.window showHint:@"Download Fail"];
-            weakSelf.progressV.hidden = YES;
-            weakSelf.sizeLab.hidden = NO;
-            weakSelf.fileExistType = FileExistTypeNone;
-            [weakSelf.previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
-            [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
-            [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
-        });
-        
-    }];
-    
-
-
+    if ([SystemUtil isSocketConnect]) {
+        @weakify_self
+        [[FileDownUtil getShareObject] downFileWithFileModel:self.fileListM progressBlock:^(CGFloat progress) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.progressV.progress = progress;
+            });
+            
+        } success:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSString * _Nonnull filePath) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.progressV.progress = 1;
+                weakSelf.progressV.hidden = YES;
+                weakSelf.sizeLab.hidden = NO;
+                weakSelf.fileExistType = FileExistTypeExistOrDownloaded;
+                [weakSelf.previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
+                [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+                [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+                weakSelf.downloadFilePath = filePath;
+            });
+            
+        } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [AppD.window showHint:@"Download Fail"];
+                weakSelf.progressV.hidden = YES;
+                weakSelf.sizeLab.hidden = NO;
+                weakSelf.fileExistType = FileExistTypeNone;
+                [weakSelf.previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
+                [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+                [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+            });
+            
+        }];
+    } else {
+        [[FileDownUtil getShareObject] toxDownFileModel:self.fileListM];
+    }
 }
 
 #pragma mark - Action

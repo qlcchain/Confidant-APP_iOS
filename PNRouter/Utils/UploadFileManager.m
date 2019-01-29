@@ -66,24 +66,23 @@
         
         NSNumber *fileType = resultArr[3];
         if (![SystemUtil isSocketConnect]) {
-           
-           // NSData *fileData = resultArr[2];
             NSString *srckey = resultArr[4];
             // 保存到本地
            
             DDLogDebug(@"上传成功:%@",fileName);
-            NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
+           // NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
             //  [fileData writeToFile:uploadDocPath atomically:YES];
-            NSInteger fileSize = [NSString fileSizeAtPath:uploadDocPath];
-            NSString *fileMd5 =  [MD5Util md5WithPath:uploadDocPath];
             
-            [SendRequestUtil sendUploadFileWithUserId:[UserConfig getShareObject].userId FileName:fileName FileMD5:fileMd5 FileSize:@(fileSize) FileType:fileType UserKey:srckey showHud:NO];
+            NSString *fileMd5 =  resultArr[5];
+            NSNumber *fileSize = resultArr[6];
+            [SendRequestUtil sendUploadFileWithUserId:[UserConfig getShareObject].userId FileName:[Base58Util Base58EncodeWithCodeName:fileName] FileMD5:fileMd5 FileSize:fileSize FileType:fileType UserKey:srckey showHud:NO];
         }
         
         // 上传成功-保存操作记录
         NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
         NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
         [OperationRecordModel saveOrUpdateWithFileType:fileType operationType:@(0) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
+        
     } else { // 上传失败
         NSString *srckey = resultArr[4];
         [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)] complete:^(NSArray * _Nullable array) {

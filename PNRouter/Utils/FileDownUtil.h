@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) deDownFileWithFileModel:(FileData *) fileModel  progressBlock:(void(^)(CGFloat progress)) progressBlock
                        success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
                        failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
+
+- (void) toxDownFileModel:(FileListModel *) fileModel;
 @end
 
 NS_ASSUME_NONNULL_END

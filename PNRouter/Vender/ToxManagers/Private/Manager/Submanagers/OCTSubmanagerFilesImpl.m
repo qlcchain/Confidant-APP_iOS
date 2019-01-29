@@ -25,6 +25,7 @@
 #import "ChatListDataUtil.h"
 #import "SystemUtil.h"
 #import "ToxPullFileTimerUtil.h"
+#import "FileData.h"
 
 #if TARGET_OS_IPHONE
 @import MobileCoreServices;
@@ -140,6 +141,10 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
    // NSParameterAssert(friendNumber);
 
     NSString *fileName = [filePath lastPathComponent];
+    NSString *toid = parames[@"ToId"];
+    if ([toid isEmptyString]) { // 上传文件
+        fileName = [NSString stringWithFormat:@"u:%@",parames[@"FileName"]];
+    }
     NSError *error;
     
     if (moveToUploads) {
@@ -562,15 +567,44 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     }
     
     NSLog(@"length = %zu",length);
+     NSDictionary *parames = [[ChatListDataUtil getShareObject].fileParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
+    
     if (length == 0) {
         NSLog(@"file 发送成功-----------%d",fileNumber);
-        NSDictionary *parames = [[ChatListDataUtil getShareObject].fileParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
         if (parames) {
-           NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:parames[@"FileId"]];
-            if (![[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
-                 [SendRequestUtil sendToxSendFileWithParames:parames];
-            } 
+            NSString *toid = parames[@"ToId"];
+            if ([toid isEmptyString]) { // 上传
+                int fileType = [parames[@"FileType"] intValue];
+                NSString *fileName = parames[@"FileName"];
+                NSString *srcKey = parames[@"SrcKey"];
+                NSString *FileMD5 = parames[@"FileMD5"];
+                NSNumber *FileSize = parames[@"FileSize"];
+            
+                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize]];
+            } else { // 发送
+                NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:parames[@"FileId"]];
+                if (![[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
+                    [SendRequestUtil sendToxSendFileWithParames:parames];
+                }
+            }
         }
+    } else { // 上传时更新进度
+        if (parames) {
+            
+            NSString *toid = parames[@"ToId"];
+            if ([toid isEmptyString]) {
+                int fileSize = [parames[@"FileSize"] intValue];
+                NSString *srcKey = parames[@"SrcKey"];
+                CGFloat progess = (position*1.0)/fileSize;
+                
+                FileData *fileDataModel = [[FileData alloc] init];
+                fileDataModel.progess = progess;
+                fileDataModel.srcKey = srcKey;
+                fileDataModel.status = 2;
+                [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
+            }
+        }
+        
     }
 }
 
