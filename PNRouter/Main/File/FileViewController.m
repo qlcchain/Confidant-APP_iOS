@@ -85,7 +85,7 @@
 
 - (void)refreshTable {
     [_sourceArr removeAllObjects];
-    [_sourceArr addObjectsFromArray:[OperationRecordModel getAllOperationRecord]];
+    [_sourceArr addObjectsFromArray:[OperationRecordModel getAllOperationRecordOrderByDesc]];
     [_mainTable reloadData];
 }
 

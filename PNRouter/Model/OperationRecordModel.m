@@ -8,6 +8,7 @@
 
 #import "OperationRecordModel.h"
 #import <BGFMDB/BGFMDB.h>
+#import "UserModel.h"
 
 @implementation OperationRecordModel
 
@@ -33,9 +34,20 @@
 }
 
 + (NSArray *)getAllOperationRecord {
-    NSArray* finfAlls = [OperationRecordModel bg_findAll:OperationRecord_Table];
-    
+//    NSArray* finfAlls = [OperationRecordModel bg_findAll:OperationRecord_Table];
+    NSArray *finfAlls = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId)]];
     return finfAlls?:@[];
+}
+
++ (NSArray *)getAllOperationRecordOrderByDesc {
+//    NSArray *finfAlls = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@ order by %@ asc",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId), bg_sqlValue(@"operationTime")]];
+    NSArray *findAll = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId)]];
+    findAll = [findAll sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        OperationRecordModel *model1 = obj1;
+        OperationRecordModel *model2 = obj2;
+        return [model2.operationTime compare:model1.operationTime];
+    }];
+    return findAll?:@[];
 }
 
 + (void)saveOrUpdate:(OperationRecordModel *)model {
@@ -47,7 +59,7 @@
     }];
 }
 
-+ (void)saveOrUpdateWithFileType:(NSNumber *)fileType operationType:(NSNumber *)operationType operationTime:(NSString *)operationTime operationFrom:(NSString *)operationFrom operationTo:(NSString *)operationTo fileName:(NSString *)fileName routerPath:(NSString *)routerPath localPath:(NSString *)localPath {
++ (void)saveOrUpdateWithFileType:(NSNumber *)fileType operationType:(NSNumber *)operationType operationTime:(NSString *)operationTime operationFrom:(NSString *)operationFrom operationTo:(NSString *)operationTo fileName:(NSString *)fileName routerPath:(NSString *)routerPath localPath:(NSString *)localPath userId:(NSString *)userId {
     OperationRecordModel *model = [OperationRecordModel new];
     model.fileType = fileType;
     model.operationType = operationType;
@@ -57,6 +69,7 @@
     model.fileName = fileName;
     model.routerPath = routerPath;
     model.localPath = localPath;
+    model.userId = userId;
     [OperationRecordModel saveOrUpdate:model];
 }
 

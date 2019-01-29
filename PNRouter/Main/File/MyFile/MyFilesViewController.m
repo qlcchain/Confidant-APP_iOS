@@ -281,7 +281,7 @@
             NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
             NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
             NSString *fileName = [Base58Util Base58DecodeWithCodeName:model.FileName.lastPathComponent];
-            [OperationRecordModel saveOrUpdateWithFileType:model.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:model.FileName?:@"" localPath:@""];
+            [OperationRecordModel saveOrUpdateWithFileType:model.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:model.FileName?:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
             
             *stop = YES;
         }
