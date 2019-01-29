@@ -206,6 +206,7 @@
             if ([model.srcKey isEqualToString:resultModel.srcKey]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     model.progess = resultModel.progess;
+                    model.status = 2;
                     [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                     *stop = YES;
                 });

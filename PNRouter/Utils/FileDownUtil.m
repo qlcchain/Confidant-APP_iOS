@@ -68,6 +68,7 @@
             NSLog(@"progress**********************");
             if (fileDataModel) {
                 fileDataModel.progess = progress;
+                fileDataModel.status = 2;
                 [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
             }
             
@@ -126,29 +127,31 @@
     NSString *filePath = fileModel.filePath;
     NSString *downloadFilePath = [SystemUtil getTempDownloadFilePath:fileModel.fileName];
     
+    __block FileData *fileDataModel = nil;
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.srcKey)] complete:^(NSArray * _Nullable array) {
         if (array && array.count > 0) {
             
-            FileData *fileData = array[0];
-            fileData.status = 2;
-            [fileData bg_saveOrUpdateAsync:nil];
+            FileData *fileDataModel = array[0];
+            fileDataModel.status = 2;
+            [fileDataModel bg_saveOrUpdateAsync:nil];
             
             // 下载
             [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     progressBlock(progress);
                     
-                    fileData.progess = progress;
-                    [fileData bg_saveOrUpdateAsync:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileData];
+                    fileDataModel.progess = progress;
+                    fileDataModel.status = 2;
+                  //  [fileData bg_saveOrUpdateAsync:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
                 });
             } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // 保存下载完成记录
-                    fileData.status = 1;
-                    fileData.progess = 1.0f;
-                    [fileData bg_saveOrUpdateAsync:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileData];
+                    fileDataModel.status = 1;
+                    fileDataModel.progess = 1.0f;
+                    [fileDataModel bg_saveOrUpdateAsync:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileDataModel];
                     // 下载成功-保存操作记录
                     NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
                     NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
@@ -161,15 +164,13 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSLog(@"download error********* %@",error);
                     // 保存下载完成记录
-                    fileData.status = 3;
-                    fileData.progess = 0.0f;
-                    [fileData bg_saveOrUpdateAsync:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileData];
+                    fileDataModel.status = 3;
+                    fileDataModel.progess = 0.0f;
+                    [fileDataModel bg_saveOrUpdateAsync:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileDataModel];
                 });
             }];
         }
     }];
-    
-    
 }
 @end

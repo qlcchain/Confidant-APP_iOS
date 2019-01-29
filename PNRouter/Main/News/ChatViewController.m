@@ -1158,22 +1158,29 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         model.signKey = payloadModel.Sign;
         model.nonceKey = payloadModel.Nonce;
         model.symmetKey = payloadModel.PriKey;
-        
-        if (payloadModel.Sender == 0) {
-            NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:payloadModel.PriKey];
-            model.msg = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:payloadModel.Msg nonce:payloadModel.Nonce];
-        } else {
-            // 解签名
-            NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:self.friendModel.signPublicKey verifyMsg:payloadModel.Sign];
-            if (![tempPublickey isEmptyString]) {
-                // 生成对称密钥
-                NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
-                NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:payloadModel.Msg nonce:payloadModel.Nonce];
-                if (![deMsg isEmptyString]) {
-                    model.msg = deMsg;
-                }
+        if (model.msgType != CDMessageTypeText) {
+            if (payloadModel.Sender == 0) {
+                model.srckey = payloadModel.Sign;
+            } else {
+                model.dskey = payloadModel.PriKey;
             }
-            
+        } else {
+            if (payloadModel.Sender == 0) {
+                NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:payloadModel.PriKey];
+                model.msg = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:payloadModel.Msg nonce:payloadModel.Nonce];
+            } else {
+                // 解签名
+                NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:self.friendModel.signPublicKey verifyMsg:payloadModel.Sign];
+                if (![tempPublickey isEmptyString]) {
+                    // 生成对称密钥
+                    NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
+                    NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:payloadModel.Msg nonce:payloadModel.Nonce];
+                    if (![deMsg isEmptyString]) {
+                        model.msg = deMsg;
+                    }
+                }
+                
+            }
         }
         
         CTDataConfig config = [CTData defaultConfig];
