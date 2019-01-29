@@ -39,6 +39,12 @@
     return finfAlls?:@[];
 }
 
++ (NSArray *)getAllOperationRecordOrderByDesc {
+    //    NSArray* finfAlls = [OperationRecordModel bg_findAll:OperationRecord_Table];
+    NSArray *finfAlls = [OperationRecordModel bg_find:OperationRecord_Table where:[NSString stringWithFormat:@"where %@=%@ order by %@ desc",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId), bg_sqlValue(@"operationTime")]];
+    return finfAlls?:@[];
+}
+
 + (void)saveOrUpdate:(OperationRecordModel *)model {
     if (model.bg_tableName == nil) {
         model.bg_tableName = OperationRecord_Table;

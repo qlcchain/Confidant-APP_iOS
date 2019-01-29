@@ -107,6 +107,8 @@
 		584B43A521FF0AE700D1F21A /* ConfigDiskHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B43A321FF0AE700D1F21A /* ConfigDiskHeaderView.m */; };
 		584B43A921FF0B9800D1F21A /* ConfigDiskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B43A721FF0B9800D1F21A /* ConfigDiskCell.m */; };
 		584B43AA21FF0B9800D1F21A /* ConfigDiskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B43A821FF0B9800D1F21A /* ConfigDiskCell.xib */; };
+		584B43AE21FFEE0600D1F21A /* ReconfigDiskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B43AC21FFEE0600D1F21A /* ReconfigDiskViewController.m */; };
+		584B43AF21FFEE0600D1F21A /* ReconfigDiskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B43AD21FFEE0600D1F21A /* ReconfigDiskViewController.xib */; };
 		585AEE19213F71990098A070 /* PNBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE17213F71990098A070 /* PNBaseViewController.m */; };
 		585AEE1E213F71E00098A070 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE1C213F71E00098A070 /* ChatViewController.m */; };
 		585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 585AEE1D213F71E00098A070 /* ChatViewController.xib */; };
@@ -684,6 +686,9 @@
 		584B43A621FF0B9800D1F21A /* ConfigDiskCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfigDiskCell.h; sourceTree = "<group>"; };
 		584B43A721FF0B9800D1F21A /* ConfigDiskCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfigDiskCell.m; sourceTree = "<group>"; };
 		584B43A821FF0B9800D1F21A /* ConfigDiskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfigDiskCell.xib; sourceTree = "<group>"; };
+		584B43AB21FFEE0600D1F21A /* ReconfigDiskViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReconfigDiskViewController.h; sourceTree = "<group>"; };
+		584B43AC21FFEE0600D1F21A /* ReconfigDiskViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReconfigDiskViewController.m; sourceTree = "<group>"; };
+		584B43AD21FFEE0600D1F21A /* ReconfigDiskViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReconfigDiskViewController.xib; sourceTree = "<group>"; };
 		585AEE16213F6F330098A070 /* PNRouter-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PNRouter-Bridging-Header.h"; sourceTree = "<group>"; };
 		585AEE17213F71990098A070 /* PNBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNBaseViewController.m; sourceTree = "<group>"; };
 		585AEE18213F71990098A070 /* PNBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNBaseViewController.h; sourceTree = "<group>"; };
@@ -3045,6 +3050,9 @@
 				584B439B21FEFF1A00D1F21A /* ConfigDiskViewController.h */,
 				584B439C21FEFF1A00D1F21A /* ConfigDiskViewController.m */,
 				584B439D21FEFF1A00D1F21A /* ConfigDiskViewController.xib */,
+				584B43AB21FFEE0600D1F21A /* ReconfigDiskViewController.h */,
+				584B43AC21FFEE0600D1F21A /* ReconfigDiskViewController.m */,
+				584B43AD21FFEE0600D1F21A /* ReconfigDiskViewController.xib */,
 			);
 			path = DisManager;
 			sourceTree = "<group>";
@@ -3338,6 +3346,7 @@
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
 				7330F3C421476E9300FF4EEC /* UserInfoCell.xib in Resources */,
 				73E2FB7421ABE5A800DAED52 /* CreateRouterUserViewController.xib in Resources */,
+				584B43AF21FFEE0600D1F21A /* ReconfigDiskViewController.xib in Resources */,
 				7330F39F214666E400FF4EEC /* PersonCodeViewController.xib in Resources */,
 				7330F46D2147AD2B00FF4EEC /* Expression.bundle in Resources */,
 				7303310B21C7A2FD007C4063 /* mysong.mp3 in Resources */,
@@ -3436,6 +3445,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				584B43AE21FFEE0600D1F21A /* ReconfigDiskViewController.m in Sources */,
 				736257B02142149300D7FD6B /* UIView+Constraints.m in Sources */,
 				7306055B21771CEA005A0E13 /* VPNFileUtil.m in Sources */,
 				73D00E9A215A05960013E20D /* ChooseRecipientAlertView.m in Sources */,

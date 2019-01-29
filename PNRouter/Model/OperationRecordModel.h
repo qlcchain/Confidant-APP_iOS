@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *userId;
 
 + (NSArray *)getAllOperationRecord;
++ (NSArray *)getAllOperationRecordOrderByDesc;
 + (void)saveOrUpdateWithFileType:(NSNumber *)fileType operationType:(NSNumber *)operationType operationTime:(NSString *)operationTime operationFrom:(NSString *)operationFrom operationTo:(NSString *)operationTo fileName:(NSString *)fileName routerPath:(NSString *)routerPath localPath:(NSString *)localPath userId:(NSString *)userId;
 //+ (void)saveOrUpdate:(OperationRecordModel *)model;
 
