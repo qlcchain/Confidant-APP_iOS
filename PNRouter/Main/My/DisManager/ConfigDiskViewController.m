@@ -17,7 +17,7 @@
 @property (nonatomic) BOOL showCell;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *detail;
-@property (nullable, nonatomic, strong) NSMutableArray *cellArr;
+@property (nullable, nonatomic, strong) NSArray *cellArr;
 
 @end
 
@@ -46,10 +46,46 @@
     _sourceArr = [NSMutableArray array];
     ConfigDiskShowModel *model = [[ConfigDiskShowModel alloc] init];
     model.isSelect = NO;
+    model.showArrow = YES;
+    model.showCell = NO;
+    model.title = @"RAID 1";
+    model.detail = @"Erase data and format";
+    model.cellArr = @[@"The two hard disks are automatically mirrored. When any of the disks is damaged, it can be simply replaced by a new disk. It is the recommended ultimate mode for data security - Recommended."];
+    [_sourceArr addObject:model];
+    
+    model = [[ConfigDiskShowModel alloc] init];
+    model.isSelect = NO;
+    model.showArrow = YES;
+    model.showCell = NO;
+    model.title = @"BASIC";
+    model.detail = @"Erase data and format";
+    model.cellArr = @[@"Master-slave mode, the slave disk is mounted to the public directory - Recommended. "];
+    [_sourceArr addObject:model];
+    
+    model = [[ConfigDiskShowModel alloc] init];
+    model.isSelect = NO;
+    model.showArrow = YES;
+    model.showCell = NO;
+    model.title = @"RAID 0";
+    model.detail = @"Erase data and format";
+    model.cellArr = @[@"The two hard disks are virtually merged into one, the overall capacity doubles with fast access speed. BUT, if any of the disks is damaged, the data of the other disk will be lost. "];
+    [_sourceArr addObject:model];
+    
+    model = [[ConfigDiskShowModel alloc] init];
+    model.isSelect = NO;
+    model.showArrow = YES;
+    model.showCell = NO;
+    model.title = @"LVM";
+    model.detail = @"Erase data and format";
+    model.cellArr = @[@"All hard disks are merged into one virtual disk, the overall capacity is the sum of that of the two disks. This way enables adding in a new disk without any changes to the directory structure. "];
+    [_sourceArr addObject:model];
+    
+    model = [[ConfigDiskShowModel alloc] init];
+    model.isSelect = NO;
     model.showArrow = NO;
     model.showCell = NO;
-    model.title = @"Private Files";
-    model.detail = @"Just me";
+    model.title = @"Add to RAID 1";
+    model.detail = @"Erase data and format";
     model.cellArr = nil;
     [_sourceArr addObject:model];
     
@@ -57,27 +93,9 @@
     model.isSelect = NO;
     model.showArrow = NO;
     model.showCell = NO;
-    model.title = @"Public Files";
-    model.detail = @"Share with all friends";
+    model.title = @"Add to LVM";
+    model.detail = @"Erase data and format";
     model.cellArr = nil;
-    [_sourceArr addObject:model];
-    
-    model = [[ConfigDiskShowModel alloc] init];
-    model.isSelect = NO;
-    model.showArrow = YES;
-    model.showCell = NO;
-    model.title = @"Share to";
-    model.detail = @"Selected friends";
-    model.cellArr = [NSMutableArray array];
-    [_sourceArr addObject:model];
-    
-    model = [[ConfigDiskShowModel alloc] init];
-    model.isSelect = NO;
-    model.showArrow = YES;
-    model.showCell = NO;
-    model.title = @"Don't share to";
-    model.detail = @"Exclude selected friends";
-    model.cellArr = [NSMutableArray array];
     [_sourceArr addObject:model];
     
     [_mainTable registerNib:[UINib nibWithNibName:ConfigDiskCellReuse bundle:nil] forCellReuseIdentifier:ConfigDiskCellReuse];

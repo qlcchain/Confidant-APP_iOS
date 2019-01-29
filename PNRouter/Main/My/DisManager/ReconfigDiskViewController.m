@@ -21,4 +21,21 @@
     
 }
 
+#pragma mark - Operation
+
+
+#pragma mark - Action
+
+- (IBAction)closeAction:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)tipAction:(UIButton *)sender {
+    sender.selected = !sender.selected;
+}
+
+- (IBAction)confirmAction:(id)sender {
+    
+}
+
 @end
