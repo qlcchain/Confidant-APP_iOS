@@ -68,7 +68,19 @@ typedef enum : NSUInteger {
 
 #pragma mark - Operation
 - (void)dataInit {
-    _icon.image = [UIImage imageNamed:@"icon_doc_gray"];
+//    _icon.image = [UIImage imageNamed:@"icon_doc_gray"];
+    NSString *fileImgStr = @"";
+    if ([_fileListM.FileType integerValue] == 1) { // 图片
+        fileImgStr = @"icon_picture_gray";
+    } else if ([_fileListM.FileType integerValue] == 4) { // 视频
+        fileImgStr = @"icon_video_gray";
+    } else if ([_fileListM.FileType integerValue] == 5) { // 文档
+        fileImgStr = @"icon_document_gray";
+    } else if ([_fileListM.FileType integerValue] == 6) { // 其他
+        fileImgStr = @"icon_other_gray";
+    }
+    _icon.image = [UIImage imageNamed:fileImgStr];
+    
     NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
     NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
     _nameLab.text = fileName;
