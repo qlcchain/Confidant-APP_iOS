@@ -10,13 +10,6 @@
 #import "AFHTTPClientV2.h"
 #import "BBaseModel.h"
 
-@interface URLSessionDownloadTaskModel : BBaseModel
-
-@property (nonatomic, strong) NSURLSessionDownloadTask *task;
-@property (nonatomic ,strong) NSString *srcKey;
-
-@end
-
 @interface RequestService : NSObject
 
 + (NSString *)getPrefixUrl;
@@ -39,7 +32,7 @@
                         success:(void (^)(NSURLSessionDownloadTask *dataTask,NSString *filePath)) success
                         failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
 
-+ (URLSessionDownloadTaskModel *)downFileWithBaseURLStr:(NSString *)url
++ (NSURLSessionDownloadTask *)downFileWithBaseURLStr:(NSString *)url
                       filePath:(NSString *)filePath
                  progressBlock:(void(^)(CGFloat progress)) progressBlock
                        success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success

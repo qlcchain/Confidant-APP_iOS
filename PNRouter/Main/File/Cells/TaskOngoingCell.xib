@@ -41,7 +41,7 @@
                                     <constraint firstAttribute="width" constant="44" id="8gT-MA-Pib"/>
                                     <constraint firstAttribute="height" constant="44" id="BT7-Ea-fB1"/>
                                 </constraints>
-                                <state key="normal" image="icon_suspend_gray"/>
+                                <state key="normal" image="icon_stop_gray"/>
                                 <connections>
                                     <action selector="optionAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="bXF-eN-UoW"/>
                                 </connections>
@@ -124,7 +124,7 @@
     </objects>
     <resources>
         <image name="icon_download_small_gray" width="12" height="12"/>
-        <image name="icon_suspend_gray" width="12" height="17"/>
+        <image name="icon_stop_gray" width="16" height="16"/>
         <image name="icon_txt_small_gray" width="24" height="24"/>
     </resources>
 </document>

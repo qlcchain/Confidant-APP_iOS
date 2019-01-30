@@ -42,6 +42,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) FileExistType fileExistType;
 //@property (nonatomic, strong) NSString *requestUrl;
 @property (nonatomic, strong) NSString *downloadFilePath;
+@property (nonatomic, strong) NSURLSessionDownloadTask *downloadTask;
 
 @end
 
@@ -154,20 +155,32 @@ typedef enum : NSUInteger {
                 [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
                 weakSelf.downloadFilePath = filePath;
                 weakSelf.fileListM.localPath = weakSelf.downloadFilePath;
+                weakSelf.downloadTask = nil;
             });
             
         } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [AppD.window showHint:@"Download Fail"];
+                NSLog(@"%@     %@   %@",error.localizedDescription, error.domain,@(error.code));
+                if (error.code == -999) {
+                    [AppD.window showHint:@"Download Cancel"];
+                } else {
+                    [AppD.window showHint:@"Download Fail"];
+                }
                 weakSelf.progressV.hidden = YES;
                 weakSelf.sizeLab.hidden = NO;
                 weakSelf.fileExistType = FileExistTypeNone;
                 [weakSelf.previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
                 [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
                 [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+                weakSelf.downloadTask = nil;
+    
             });
             
+        } downloadTaskB:^(NSURLSessionDownloadTask * _Nonnull downloadTask) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.downloadTask = downloadTask;
+            });
         }];
     } else {
         [[FileDownUtil getShareObject] toxDownFileModel:self.fileListM];
@@ -193,19 +206,15 @@ typedef enum : NSUInteger {
         _sizeLab.hidden = YES;
         _progressV.hidden = NO;
         _progressV.progress = 0;
+        _fileExistType = FileExistTypeDownloading;
         [self downloadFile];
     } else if (_fileExistType == FileExistTypeDownloading) {
         // 取消下载
-        [sender setBackgroundColor:UIColorFromRGB(0xffffff)];
-        [sender setTitleColor:UIColorFromRGB(0x2c2c2c) forState:UIControlStateNormal];
-        
+        if (_downloadTask) {
+            [_downloadTask cancel];
+        }
     } else if (_fileExistType == FileExistTypeExistOrDownloaded) {
         // 预览
-//        [sender setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
-//        [sender setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
-//        NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
-//        NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
-//        NSString *filePath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
         [self jumpToFilePreview:_downloadFilePath];
     }
 }

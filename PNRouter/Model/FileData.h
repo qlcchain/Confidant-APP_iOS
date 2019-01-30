@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,assign) int fileType;
 @property (nonatomic ,assign) int fileOptionType; // 1:上传 2:下载
 
+@property (nonatomic, strong) NSURLSessionDownloadTask *downloadTask;
+
 @end
 
 NS_ASSUME_NONNULL_END
