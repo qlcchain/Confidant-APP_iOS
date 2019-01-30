@@ -18,6 +18,7 @@
 #import "NSDate+Category.h"
 #import "OperationRecordModel.h"
 #import "PNRouter-Swift.h"
+#import "UploadFileHelper.h"
 
 typedef enum : NSUInteger {
     MyFilesTableTypeNormal,
@@ -156,13 +157,21 @@ typedef enum : NSUInteger {
     FileMoreAlertView *view = [FileMoreAlertView getInstance];
     @weakify_self
     [view setSendB:^{
-        
+        if (model.localPath == nil) {
+            [AppD.window showHint:@"Please download first"];
+        } else {
+            
+        }
     }];
     [view setDownloadB:^{
         
     }];
     [view setOtherApplicationOpenB:^{
-        [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:@""]];
+        if (model.localPath == nil) {
+            [AppD.window showHint:@"Please download first"];
+        } else {
+            [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:model.localPath]];
+        }
     }];
     [view setDetailInformationB:^{
         [weakSelf jumpToDetailInformation:model];
@@ -218,8 +227,9 @@ typedef enum : NSUInteger {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)multiSelectAction:(id)sender {
-    
+- (IBAction)uploadAction:(id)sender {
+    UploadFileHelper *helper = [UploadFileHelper shareObject];
+    [helper showUploadAlertView:self];
 }
 
 - (IBAction)arrangeAction:(id)sender {

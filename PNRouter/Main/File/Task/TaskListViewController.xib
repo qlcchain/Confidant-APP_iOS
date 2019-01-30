@@ -48,7 +48,7 @@
                                         <action selector="backAction:" destination="-1" eventType="touchUpInside" id="ehY-sp-Uep"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X23-dk-db6">
+                                <button hidden="YES" opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X23-dk-db6">
                                     <rect key="frame" x="331" y="0.0" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="7lv-gt-WIN"/>

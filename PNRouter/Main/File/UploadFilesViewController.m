@@ -42,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *fileNameLab;
 @property (weak, nonatomic) IBOutlet UILabel *fileSizeLab;
 @property (nonatomic, strong) NSMutableArray *uploadParams;
+@property (weak, nonatomic) IBOutlet UITextField *nameTF;
 
 @end
 
@@ -135,6 +136,8 @@
         size += [NSString fileSizeAtPath:fileUrl.path];
     }];
     _fileSizeLab.text = [NSString stringWithFormat:@"%@KB",@(size/1024)];
+    _nameTF.hidden = _urlArr.count == 1?NO:YES;
+
 }
 
 #pragma mark - Action
@@ -151,6 +154,29 @@
     @weakify_self
     [_urlArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSURL *url = obj;
+        
+        // 只有一个文件时重命名
+        if (weakSelf.nameTF.hidden == NO && weakSelf.nameTF.text != nil && weakSelf.nameTF.text.length > 0) {
+            NSMutableArray *pathArr = [NSMutableArray arrayWithArray:url.pathComponents];
+            NSString *lastPath = weakSelf.nameTF.text;
+            [pathArr replaceObjectAtIndex:pathArr.count-1 withObject:lastPath];
+            __block NSString *newPath = @"";
+            [pathArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                newPath = [newPath stringByAppendingPathComponent:obj];
+            }];
+            newPath = [newPath stringByAppendingPathExtension:url.pathExtension];
+            NSURL *newUrl = [NSURL fileURLWithPath:newPath];
+            NSFileManager *fm = [NSFileManager defaultManager];
+            if ([fm fileExistsAtPath:newUrl.path]) { // 去重
+                [AppD.window showHint:@"Name is Exist"];
+                return;
+            }
+            BOOL isMove = [fm moveItemAtURL:url toURL:newUrl error:nil];
+            if (isMove) {
+                url = newUrl;
+            }
+        }
+        
         NSString *UserId = [UserConfig getShareObject].userId;
         NSString *FileName = [Base58Util Base58EncodeWithCodeName:url.path.lastPathComponent];
         NSNumber *FileSize = @([NSString fileSizeAtPath:url.path]);
