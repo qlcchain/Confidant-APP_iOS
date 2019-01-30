@@ -32,7 +32,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -92,39 +91,6 @@
 //    }
 }
 
-- (void)showFileMoreAlertView:(FileListModel *)model {
-    FileMoreAlertView *view = [FileMoreAlertView getInstance];
-    @weakify_self
-    [view setSendB:^{
-        
-    }];
-    [view setDownloadB:^{
-        
-    }];
-    [view setOtherApplicationOpenB:^{
-        [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:@""]];
-    }];
-    [view setDetailInformationB:^{
-        [weakSelf jumpToDetailInformation:model];
-    }];
-    [view setRenameB:^{
-        
-    }];
-    [view setDeleteB:^{
-        
-    }];
-    
-    NSString *fileNameBase58 = model.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
-    [view showWithFileName:fileName fileType:model.FileType];
-}
-
-- (void)otherApplicationOpen:(NSURL *)fileURL {
-    NSArray *items = @[fileURL];
-    UIActivityViewController *activityController=[[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
-    [self.navigationController presentViewController:activityController animated:YES completion:nil];
-}
-
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
@@ -132,9 +98,8 @@
 }
 
 - (IBAction)moreAction:(id)sender {
-    [self showFileMoreAlertView:_fileListM];
+//    [self showFileMoreAlertView:_fileListM];
 }
-
 
 #pragma mark - request methods
 
@@ -153,10 +118,11 @@
 }
 
 #pragma mark - Transition
-- (void)jumpToDetailInformation:(FileListModel *)model  {
-    DetailInformationViewController *vc = [[DetailInformationViewController alloc] init];
-    vc.fileListM = model;
-    [self.navigationController pushViewController:vc animated:YES];
-}
+//- (void)jumpToDetailInformation:(FileListModel *)model  {
+//    DetailInformationViewController *vc = [[DetailInformationViewController alloc] init];
+//    vc.fileListM = model;
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
+
 
 @end

@@ -66,7 +66,7 @@
     [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             progressBlock(progress);
-            NSLog(@"progress**********************");
+//            NSLog(@"progress**********************");
             if (fileDataModel) {
                 fileDataModel.progess = progress;
                 fileDataModel.status = 2;
@@ -76,7 +76,7 @@
         });
     } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
         dispatch_async(dispatch_get_main_queue(), ^{
-             success(dataTask,filePath);
+             success(dataTask, filePath);
             // 保存下载完成记录
             [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.UserKey)] complete:^(NSArray * _Nullable array) {
                 NSLog(@"下载完成保存数据库**********************");

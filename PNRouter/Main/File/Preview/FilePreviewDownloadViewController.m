@@ -47,6 +47,11 @@ typedef enum : NSUInteger {
 
 @implementation FilePreviewDownloadViewController
 
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFileCompleteNoti:) name:Delete_File_Noti object:nil];
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -55,6 +60,7 @@ typedef enum : NSUInteger {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self addObserve];
     [self dataInit];
 }
 
@@ -83,13 +89,21 @@ typedef enum : NSUInteger {
     FileMoreAlertView *view = [FileMoreAlertView getInstance];
     @weakify_self
     [view setSendB:^{
-        
+        if (model.localPath == nil) {
+            [AppD.window showHint:@"Please download first"];
+        } else {
+            
+        }
     }];
     [view setDownloadB:^{
         
     }];
     [view setOtherApplicationOpenB:^{
-        [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:@""]];
+        if (model.localPath == nil) {
+            [AppD.window showHint:@"Please download first"];
+        } else {
+            [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:model.localPath]];
+        }
     }];
     [view setDetailInformationB:^{
         [weakSelf jumpToDetailInformation:model];
@@ -98,12 +112,17 @@ typedef enum : NSUInteger {
         
     }];
     [view setDeleteB:^{
-        
+        [weakSelf deleteFileWithModel:model];
     }];
     
     NSString *fileNameBase58 = model.FileName.lastPathComponent;
     NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
     [view showWithFileName:fileName fileType:model.FileType];
+}
+
+#pragma mark -删除文件
+- (void)deleteFileWithModel:(FileListModel *)model {
+    [SendRequestUtil sendDelFileWithUserId:[UserConfig getShareObject].userId FileName:model.FileName showHud:YES];
 }
 
 - (void)otherApplicationOpen:(NSURL *)fileURL {
@@ -133,6 +152,7 @@ typedef enum : NSUInteger {
                 [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
                 [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
                 weakSelf.downloadFilePath = filePath;
+                weakSelf.fileListM.localPath = weakSelf.downloadFilePath;
             });
             
         } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
@@ -205,47 +225,15 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark - Noti
-//- (void)downloadProgress:(NSNotification *)noti {
-//    NSDictionary *dic = noti.userInfo;
-////    @{JCDownloadIdKey:operation.item.downloadId, JCDownloadProgressKey:progress}
-//    NSString *md5key = dic[JCDownloadIdKey];
-//    NSString *progress = dic[JCDownloadProgressKey];
-//    NSString *md5Url = [JCDownloadUtilities md5WithString:_requestUrl];
-//    if ([md5Url isEqualToString:md5key]) {
-//        _progressV.progress = [progress floatValue];
-//    }
-//}
-//
-//- (void)downloadComplete:(NSNotification *)noti {
-//    NSDictionary *dic = noti.userInfo;
-//    //    @{JCDownloadIdKey:operation.item.downloadId, JCDownloadProgressKey:progress}
-//    NSString *md5key = dic[JCDownloadIdKey];
-//    NSError *erro = dic[JCDownloadCompletionErrorKey];
-//    NSURL *fileUrl = dic[JCDownloadCompletionFilePathKey];
-//    _downloadFilePath = fileUrl.path;
-//    NSString *md5Url = [JCDownloadUtilities md5WithString:_requestUrl];
-//    if (erro) {
-//        NSLog(@"download error********* %@",erro);
-//        [AppD.window showHint:@"Download Fail"];
-//        _progressV.hidden = YES;
-//        _sizeLab.hidden = NO;
-//        _fileExistType = FileExistTypeNone;
-//        [_previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
-//        [_previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
-//        [_previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
-//    } else {
-//        if ([md5Url isEqualToString:md5key]) {
-//            _progressV.progress = 1;
-//
-//            _progressV.hidden = YES;
-//            _sizeLab.hidden = NO;
-//            _fileExistType = FileExistTypeExistOrDownloaded;
-//            [_previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
-//            [_previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
-//            [_previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
-//        }
-//    }
-//
-//}
+- (void)deleteFileCompleteNoti:(NSNotification *) noti {
+    // 删除成功-保存操作记录
+    NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
+    NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:_fileListM.FileName.lastPathComponent];
+    [OperationRecordModel saveOrUpdateWithFileType:_fileListM.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:_fileListM.FileName?:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
+    
+    [self backAction:nil];
+}
+
 
 @end

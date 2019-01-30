@@ -16,6 +16,7 @@
                 <outlet property="fileNameLab" destination="peN-RZ-iCY" id="jjS-Hx-UE8"/>
                 <outlet property="fileSizeLab" destination="qpB-iW-yjh" id="jvO-Gj-gVI"/>
                 <outlet property="mainTable" destination="kgp-5e-EHC" id="42m-0l-yCX"/>
+                <outlet property="nameTF" destination="4lA-2f-2x7" id="6ET-iy-FuZ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -81,7 +82,7 @@
                             <rect key="frame" x="0.0" y="44" width="375" height="603"/>
                             <subviews>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kgp-5e-EHC">
-                                    <rect key="frame" x="0.0" y="242" width="375" height="361"/>
+                                    <rect key="frame" x="0.0" y="260" width="375" height="343"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <connections>
@@ -90,7 +91,7 @@
                                     </connections>
                                 </tableView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3T8-QM-jYp">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="242"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="260"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N9u-Ej-Q9c">
                                             <rect key="frame" x="139.5" y="55" width="96" height="104"/>
@@ -111,13 +112,26 @@
                                             <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="deviceRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter the name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4lA-2f-2x7">
+                                            <rect key="frame" x="67.5" y="214.5" width="240" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="240" id="SgC-Lo-12P"/>
+                                                <constraint firstAttribute="height" constant="40" id="xuO-I9-nEp"/>
+                                            </constraints>
+                                            <nil key="textColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
+                                        <constraint firstItem="4lA-2f-2x7" firstAttribute="top" secondItem="qpB-iW-yjh" secondAttribute="bottom" constant="4" id="02d-yz-A5p"/>
                                         <constraint firstItem="peN-RZ-iCY" firstAttribute="centerX" secondItem="3T8-QM-jYp" secondAttribute="centerX" id="8A2-0Y-oAG"/>
                                         <constraint firstItem="peN-RZ-iCY" firstAttribute="top" secondItem="N9u-Ej-Q9c" secondAttribute="bottom" constant="15" id="9a6-3v-M8S"/>
+                                        <constraint firstAttribute="height" constant="260" id="B5Y-3s-CDn"/>
                                         <constraint firstItem="qpB-iW-yjh" firstAttribute="centerX" secondItem="3T8-QM-jYp" secondAttribute="centerX" id="HUp-vA-D0S"/>
                                         <constraint firstItem="N9u-Ej-Q9c" firstAttribute="centerX" secondItem="3T8-QM-jYp" secondAttribute="centerX" id="Nxb-2H-Jql"/>
+                                        <constraint firstItem="4lA-2f-2x7" firstAttribute="centerX" secondItem="3T8-QM-jYp" secondAttribute="centerX" id="ZGG-jD-WUf"/>
                                         <constraint firstItem="N9u-Ej-Q9c" firstAttribute="top" secondItem="3T8-QM-jYp" secondAttribute="top" constant="55" id="gcs-vq-9Kt"/>
                                         <constraint firstItem="qpB-iW-yjh" firstAttribute="top" secondItem="peN-RZ-iCY" secondAttribute="bottom" constant="4" id="pZx-Di-G5s"/>
                                     </constraints>
@@ -130,7 +144,6 @@
                                 <constraint firstAttribute="trailing" secondItem="kgp-5e-EHC" secondAttribute="trailing" id="bjv-LY-wmF"/>
                                 <constraint firstItem="kgp-5e-EHC" firstAttribute="leading" secondItem="Lvs-6e-03y" secondAttribute="leading" id="eqt-MI-uZB"/>
                                 <constraint firstAttribute="bottom" secondItem="kgp-5e-EHC" secondAttribute="bottom" id="oxL-eT-iyO"/>
-                                <constraint firstItem="kgp-5e-EHC" firstAttribute="top" secondItem="Lvs-6e-03y" secondAttribute="top" constant="242" id="rbH-3L-6BG"/>
                                 <constraint firstItem="3T8-QM-jYp" firstAttribute="top" secondItem="Lvs-6e-03y" secondAttribute="top" id="uE6-eF-20r"/>
                                 <constraint firstItem="kgp-5e-EHC" firstAttribute="top" secondItem="3T8-QM-jYp" secondAttribute="bottom" id="wpt-WX-2AP"/>
                             </constraints>

@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) BOOL showSelect;
 @property (nonatomic) BOOL isSelect;
+@property (nonatomic, strong) NSString *localPath;
 
 @end
 
