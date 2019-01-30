@@ -17,10 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype) getShareObject;
 - (void) downFileWithFileModel:(FileListModel *) fileModel  progressBlock:(void(^)(CGFloat progress)) progressBlock
                 success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
-                       failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
+                       failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure
+                downloadTaskB:(void (^)(NSURLSessionDownloadTask *downloadTask))downloadTaskB;
 - (void) deDownFileWithFileModel:(FileData *) fileModel  progressBlock:(void(^)(CGFloat progress)) progressBlock
                        success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
-                       failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
+                       failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure
+                   downloadTaskB:(void (^)(NSURLSessionDownloadTask *downloadTask))downloadTaskB;
+
+- (NSURLSessionDownloadTask *)getDownloadTask:(FileData *)fileDataM;
 
 - (void) toxDownFileModel:(FileListModel *) fileModel;
 - (BOOL) isTaskFileOption;

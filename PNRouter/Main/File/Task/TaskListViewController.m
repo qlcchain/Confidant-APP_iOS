@@ -42,9 +42,6 @@
      [self dataInit];
     [self.view showHudInView:self.view hint:@""];
     [self getAllTaskList];
-   
-   
-    
 }
 
 - (void) getAllTaskList

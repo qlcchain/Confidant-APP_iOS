@@ -209,14 +209,14 @@ typedef enum : NSUInteger {
     NSNumber *MsgStartId = @(0);
     NSNumber *MsgNum = @(15);
     NSNumber *Category = @(3);
-    NSNumber *FileType = @(0);
     if (_filesType == FilesTypeAll) {
-        FileType = @(0);
+        Category = @(3);
     } else if (_filesType == FilesTypeSent) {
-        FileType = @(1);
+        Category = @(1);
     } else if (_filesType == FilesTypeReceived) {
-        FileType = @(2);
+        Category = @(2);
     }
+    NSNumber *FileType = @(0);
     
     [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
 }
