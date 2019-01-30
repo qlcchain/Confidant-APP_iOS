@@ -667,14 +667,17 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
         NSLog(@"---接受到的文件 length = %zu",length);
         if (length == 0) {
             NSLog(@"---接受到的文件完成");
-            NSDictionary *resultDic = @{[NSString stringWithFormat:@"%d",fileNumber]:array};
             [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_SUCCESS_NOTI object:resultDic];
+            if ([array[3] intValue] == 2) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:TOX_PULL_FILE_SUCCESS_NOTI object:array];
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_SUCCESS_NOTI object:array];
+            }
         } else {
             if (array && array.count > 0) {
                 // 异步写入文件
                 NSString *filePath = [[SystemUtil getTempBaseFilePath:array[0]] stringByAppendingPathComponent:array[1]];
-                filePath = [filePath stringByAppendingString:[NSString stringWithFormat:@"%d",fileNumber]];
+                filePath = [filePath stringByAppendingString:[NSString stringWithFormat:@"%d",[array[2] intValue]]];
                 NSLog(@"-----filePath = %@",filePath);
                 if (position == 0) {
                     NSLog(@"position == 0");
@@ -682,6 +685,16 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                         [SystemUtil removeDocmentFilePath:filePath];
                     }
                 }
+                
+                CGFloat progess = (position*1.0);
+                
+                FileData *fileDataModel = [[FileData alloc] init];
+                fileDataModel.progess = progess;
+                fileDataModel.fileName = array[1];
+                fileDataModel.msgId = [array[2] intValue];
+                fileDataModel.status = 2;
+                [[NSNotificationCenter defaultCenter] postNotificationName:Tox_Down_File_Progess_Noti object:fileDataModel];
+                
                 [SystemUtil writeDataToFileWithFilePath:filePath withData:chunk];
             }
         }

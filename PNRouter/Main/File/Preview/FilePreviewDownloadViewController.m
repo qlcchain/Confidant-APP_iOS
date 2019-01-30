@@ -14,6 +14,7 @@
 #import "PNRouter-Swift.h"
 #import "SystemUtil.h"
 #import "RequestService.h"
+#import "FileData.h"
 //#import <JCDownloader/JCDownloader.h>
 //#import <JCDownloader/JCDownloadOperation.h>
 #import "RequestService.h"
@@ -52,6 +53,8 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFileCompleteNoti:) name:Delete_File_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileFaieldNoti:) name:TOX_PULL_FILE_FAIELD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileSuccessNoti:) name:TOX_PULL_FILE_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileProgessNoti:) name:Tox_Down_File_Progess_Noti object:nil];
+    
 }
 
 - (void)dealloc {
@@ -220,6 +223,9 @@ typedef enum : NSUInteger {
 - (void)jumpToFilePreview:(NSString *)filePath{
     FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
     vc.filePath = filePath;
+    NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    vc.fileName = fileName;
     vc.userKey = _fileListM.UserKey;
     vc.fileListM = _fileListM;
     [self.navigationController pushViewController:vc animated:YES];
@@ -227,8 +233,8 @@ typedef enum : NSUInteger {
 
 #pragma mark - Noti
 - (void) downFileFaieldNoti:(NSNotification *)noti {
-    NSString *fileName = noti.object;
-    if ([fileName isEqualToString:self.fileListM.FileName]) {
+    int msgid = [noti.object intValue];
+    if (msgid == [self.fileListM.MsgId intValue]) {
         @weakify_self
         dispatch_async(dispatch_get_main_queue(), ^{
             [AppD.window showHint:@"Download Fail"];
@@ -242,19 +248,37 @@ typedef enum : NSUInteger {
     }
 }
 - (void) downFileSuccessNoti:(NSNotification *)noti {
-    NSString *fileName = noti.object;
-    if ([fileName isEqualToString:self.fileListM.FileName]) {
-        @weakify_self
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.progressV.progress = 1;
-            weakSelf.progressV.hidden = YES;
-            weakSelf.sizeLab.hidden = NO;
-            weakSelf.fileExistType = FileExistTypeExistOrDownloaded;
-            [weakSelf.previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
-            [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
-            [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
-          //  weakSelf.downloadFilePath = filePath;
-        });
+    NSArray *arr = noti.object;
+    NSString *filePath = [[SystemUtil getTempBaseFilePath:arr[0]] stringByAppendingPathComponent:arr[1]];
+    filePath = [filePath stringByAppendingString:[NSString stringWithFormat:@"%d",[arr[2] intValue]]];
+    NSData *filedata = [NSData dataWithContentsOfFile:filePath];
+    if (arr && arr.count > 0) {
+        if ([arr[2] intValue] == [self.fileListM.MsgId intValue]) {
+            @weakify_self
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.progressV.progress = 1;
+                weakSelf.progressV.hidden = YES;
+                weakSelf.sizeLab.hidden = NO;
+                weakSelf.fileExistType = FileExistTypeExistOrDownloaded;
+                [weakSelf.previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
+                [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+                [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+                weakSelf.downloadFilePath = filePath;
+            });
+        }
+    }
+    
+}
+
+- (void) downFileProgessNoti:(NSNotification *) noti
+{
+    FileData *fileModel = noti.object;
+    if (fileModel.msgId == [self.fileListM.MsgId intValue]) {
+        if (fileModel.progess > 1) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.progressV.progress = fileModel.progess/[self.fileListM.FileSize intValue];
+            });
+        }
     }
 }
 

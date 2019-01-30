@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendUpdateWithNickName:(NSString *) nickName;
 + (void) sendLogOut;
 + (void) sendToxSendFileWithParames:(NSDictionary *) parames;
-+ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName msgId:(NSString *) msgId fileOwer:(NSString *) fileOwer;
++ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName msgId:(NSString *) msgId fileOwer:(NSString *) fileOwer fileFrom:(NSString *) fileFrom;
 + (void) sendRegidReqeust;
 #pragma mark -添加好友备注
 + (void) sendAddFriendNickName:(NSString *) nickName friendId:(NSString *) friendId;

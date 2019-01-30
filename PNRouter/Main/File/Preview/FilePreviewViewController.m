@@ -45,7 +45,7 @@
             if (datakey && ![datakey isEmptyString]) {
                 fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                 if (fileData) {
-                   NSString *deFilePath = [SystemUtil getTempDeFilePath:[self.filePath lastPathComponent]];
+                   NSString *deFilePath = [SystemUtil getTempDeFilePath:self.fileName];
                    BOOL isWriteFinsh = [fileData writeToFile:deFilePath atomically:YES];
                     if (isWriteFinsh) {
                         dispatch_async(dispatch_get_main_queue(), ^{

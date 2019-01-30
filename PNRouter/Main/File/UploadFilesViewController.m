@@ -291,6 +291,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
             fileData = aesEncryptData(fileData,msgKeyData);
             
+            
             if ([SystemUtil isSocketConnect]) { // socket
                 SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
                 dataUtil.srcKey = srcKey;
@@ -298,8 +299,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
                 [dataUtil sendFileId:@"" fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
             } else { // tox
-                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:fileUrl.path],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
-                [SendToxRequestUtil uploadFileWithFilePath:fileUrl.path parames:parames fileData:fileData];
+               BOOL isSuccess = [fileData writeToFile:fileUrl.path atomically:YES];
+                if (isSuccess) {
+                    NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:fileUrl.path],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
+                    [SendToxRequestUtil uploadFileWithFilePath:fileUrl.path parames:parames fileData:fileData];
+                }
             }
         }
     }];

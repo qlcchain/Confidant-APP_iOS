@@ -24,12 +24,24 @@
 @end
 
 @implementation FileDownUtil
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (void) addObserver
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileFaieldNoti:) name:TOX_PULL_FILE_FAIELD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileSuccessNoti:) name:TOX_PULL_FILE_SUCCESS_NOTI object:nil];
+}
+
 + (instancetype) getShareObject
 {
     static FileDownUtil *shareObject = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         shareObject = [[self alloc] init];
+        [shareObject addObserver];
     });
     return shareObject;
 }
@@ -226,7 +238,55 @@
             fileOwer = @"3";
         }
         isTaskFile = YES;
-        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileModel.FileName.lastPathComponent msgId:[NSString stringWithFormat:@"%@",fileModel.MsgId ] fileOwer:fileOwer];
+        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileModel.FileName.lastPathComponent msgId:[NSString stringWithFormat:@"%@",fileModel.MsgId ] fileOwer:fileOwer fileFrom:@"2"];
+    }
+}
+
+- (void) deToxDownFileModel:(FileData *) fileModel
+{
+    NSString *filePath = fileModel.filePath;
+    NSString *fileName = fileModel.fileName;
+    
+    [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.srcKey)] complete:^(NSArray * _Nullable array) {
+        
+        NSLog(@"写入数据库");
+        FileData *fileDataModel = nil;
+        if (array && array.count > 0) {
+            fileDataModel = array[0];
+        } else {
+            fileDataModel = [[FileData alloc] init];
+            fileDataModel.bg_tableName = FILE_STATUS_TABNAME;
+        }
+        NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+        NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+        fileDataModel.fileId = [mill intValue];
+        fileDataModel.fileSize = fileModel.fileSize;
+        fileDataModel.fileType = fileModel.fileType;
+        fileDataModel.msgId = fileModel.msgId;
+        fileDataModel.progess = 0.0f;
+        fileDataModel.fileName = fileName;
+        fileDataModel.filePath = filePath;
+        fileDataModel.fileOptionType = 2;
+        fileDataModel.status = 2;
+        fileDataModel.userId = [UserConfig getShareObject].userId;
+        fileDataModel.srcKey = fileModel.srcKey;
+        [fileDataModel bg_saveOrUpdateAsync:nil];
+    }];
+    
+    NSArray *pathArr = [fileModel.filePath componentsSeparatedByString:@"/"];
+    if (pathArr && pathArr.count >2) {
+        NSString *result = pathArr[2];
+        NSString *fileOwer = @"";
+        // /u/表示是上传的   如果是/s/是发送的，/r/是接收的
+        if ([result isEqualToString:@"s"]) {
+            fileOwer = @"1";
+        } else if ([result isEqualToString:@"r"]) {
+            fileOwer = @"2";
+        } else {
+            fileOwer = @"3";
+        }
+        isTaskFile = YES;
+        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:fileName] msgId:[NSString stringWithFormat:@"%d",fileModel.msgId ] fileOwer:fileOwer fileFrom:@"2"];
     }
 }
 
@@ -252,7 +312,47 @@
                  }];
              }
          }];
-         [[NSNotificationCenter defaultCenter] postNotificationName:TOX_PULL_FILE_FAIELD_NOTI object:fileModel.FileName];
+         [[NSNotificationCenter defaultCenter] postNotificationName:TOX_PULL_FILE_FAIELD_NOTI object:fileModel.MsgId];
     }
 }
+
+
+
+
+
+
+
+
+#pragma mark -  tox下载通知
+- (void) downFileFaieldNoti:(NSNotification *)noti {
+    int msgid = [noti.object intValue];
+    
+    [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(@(msgid))] complete:^(NSArray * _Nullable array) {
+        if (array && array.count > 0) {
+            FileData *fileModel = array[0];
+            fileModel.status = 3;
+            fileModel.progess = 0.0;
+            fileModel.fileData = nil;
+            [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
+            }];
+        }
+    }];
+}
+- (void) downFileSuccessNoti:(NSNotification *)noti {
+    NSArray *arr = noti.object;
+    int msgid = [arr[2] intValue];
+    [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(@(msgid))] complete:^(NSArray * _Nullable array) {
+        if (array && array.count > 0) {
+            FileData *fileModel = array[0];
+            fileModel.status = 1;
+            fileModel.progess = 1;
+            fileModel.fileData = nil;
+            [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
+            }];
+        }
+    }];
+}
+
 @end

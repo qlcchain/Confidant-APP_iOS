@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL) isTaskFileOption;
 - (void) setTaskFile:(BOOL) isFile;
 - (void) updateFileDataBaseWithFileModel:(FileModel *) fileModel;
+- (void) deToxDownFileModel:(FileData *) fileModel;
 @end
 
 NS_ASSUME_NONNULL_END

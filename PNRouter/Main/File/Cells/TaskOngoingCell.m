@@ -63,7 +63,7 @@
              } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
              }];
          } else { // tox
-             
+              [[FileDownUtil getShareObject] deToxDownFileModel:self.fileModel];
          }
         
     }

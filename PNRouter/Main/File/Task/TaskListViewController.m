@@ -28,6 +28,7 @@
     if (!isRegiterNoti) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadFinshNoti:) name:File_Upload_Finsh_Noti object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileProgessNoti:) name:File_Progess_Noti object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileProgessNoti:) name:Tox_Down_File_Progess_Noti object:nil];
     }
    
 }
@@ -218,6 +219,29 @@
             }
         }];
     
+}
+- (void) downFileProgessNoti:(NSNotification *) noti
+{
+    FileData *resultModel = noti.object;
+    if (_sourceArr.count == 0) {
+        return;
+    }
+    NSMutableArray *uploadArr = _sourceArr[0];
+    @weakify_self
+    [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FileData *model = obj;
+        if (model.msgId == resultModel.msgId) {
+            if (resultModel.progess > 1) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    model.progess = resultModel.progess/model.fileSize;
+                    model.status = 2;
+                    [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                    *stop = YES;
+                });
+            }
+            
+        }
+    }];
 }
 - (void) fileUploadFinshNoti:(NSNotification *) noti
 {

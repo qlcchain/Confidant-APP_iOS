@@ -129,7 +129,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendFaield:) name:REVER_FILE_SEND_FAIELD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filePullSuccess:) name:REVER_FILE_PULL_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileToxPullSuccess:) name:REVER_FILE_PULL_SUCCESS_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryFriendSuccess::) name:REVER_QUERY_FRIEND_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryFriendSuccess:) name:REVER_QUERY_FRIEND_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterFore) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
 }
 
@@ -700,9 +700,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
 - (void) fileToxPullSuccess:(NSNotification *) noti
 {
-    NSDictionary *resultDic = noti.object;
-    __block NSString *fileNumber = [resultDic allKeys][0];
-    __block NSArray *array = resultDic[fileNumber];
+    NSArray *array = noti.object;
     if (array && array.count>0) {
       __block NSString *fileName = [Base58Util Base58DecodeWithCodeName:array[1]];
         @weakify_self
@@ -718,7 +716,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
                         NSLog(@"下载文件失败! ");
                     } else {
                         NSString *tempPath = [[SystemUtil getTempBaseFilePath:array[0]] stringByAppendingPathComponent:array[1]];
-                        tempPath = [tempPath stringByAppendingString:fileNumber];
+                         tempPath = [tempPath stringByAppendingString:[NSString stringWithFormat:@"%d",[array[2] intValue]]];
                         NSString *docPath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:fileName];
                         if ([SystemUtil filePathisExist:docPath]) {
                             [SystemUtil removeDocmentFilePath:docPath];

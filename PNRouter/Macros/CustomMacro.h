@@ -160,6 +160,8 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define Delete_File_Noti @"Delete_File_Noti"
 // 文件上传进度通知
 #define File_Progess_Noti @"File_Progess_Noti"
+// tox下载进度通知
+#define Tox_Down_File_Progess_Noti @"Tox_Down_File_Progess_Noti"
 // 文件上传成功和失败通知
 #define File_Upload_Finsh_Noti @"File_Upload_Finsh_Noti"
 // 任务列表tox拉取文件

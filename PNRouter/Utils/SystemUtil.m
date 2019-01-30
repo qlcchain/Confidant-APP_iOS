@@ -141,7 +141,7 @@
     
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
-    NSString *filePath = [NSString stringWithFormat:@"Documents/files/%@",friendid];
+    NSString *filePath = [NSString stringWithFormat:@"tempFiles/%@",friendid];
     BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
     if (!isexit || !isDir) {
         [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
