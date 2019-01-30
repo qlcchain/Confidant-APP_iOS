@@ -50,11 +50,15 @@ typedef enum : NSUInteger {
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
+- (void) addObserver{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileFaieldNoti:) name:TOX_PULL_FILE_FAIELD_NOTI object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileSuccessNoti:) name:TOX_PULL_FILE_SUCCESS_NOTI object:nil];
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+    [self addObserver];
     [self dataInit];
 }
 
@@ -205,6 +209,37 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark - Noti
+- (void) downFileFaieldNoti:(NSNotification *)noti {
+    NSString *fileName = noti.object;
+    if ([fileName isEqualToString:self.fileListM.FileName]) {
+        @weakify_self
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [AppD.window showHint:@"Download Fail"];
+            weakSelf.progressV.hidden = YES;
+            weakSelf.sizeLab.hidden = NO;
+            weakSelf.fileExistType = FileExistTypeNone;
+            [weakSelf.previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
+            [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+            [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+        });
+    }
+}
+- (void) downFileSuccessNoti:(NSNotification *)noti {
+    NSString *fileName = noti.object;
+    if ([fileName isEqualToString:self.fileListM.FileName]) {
+        @weakify_self
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.progressV.progress = 1;
+            weakSelf.progressV.hidden = YES;
+            weakSelf.sizeLab.hidden = NO;
+            weakSelf.fileExistType = FileExistTypeExistOrDownloaded;
+            [weakSelf.previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
+            [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+            [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+          //  weakSelf.downloadFilePath = filePath;
+        });
+    }
+}
 //- (void)downloadProgress:(NSNotification *)noti {
 //    NSDictionary *dic = noti.userInfo;
 ////    @{JCDownloadIdKey:operation.item.downloadId, JCDownloadProgressKey:progress}

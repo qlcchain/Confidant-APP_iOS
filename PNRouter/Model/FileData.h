@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FileData : BBaseModel
 
+@property (nonatomic ,assign) int msgId;
 @property (nonatomic ,assign) int fileId;
 @property (nonatomic ,strong) NSString *userId;
 @property (nonatomic ,strong) NSString *toId;

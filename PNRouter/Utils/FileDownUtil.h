@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 @class FileListModel;
 @class FileData;
+@class FileModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
                        failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
 
 - (void) toxDownFileModel:(FileListModel *) fileModel;
+- (BOOL) isTaskFileOption;
+- (void) setTaskFile:(BOOL) isFile;
+- (void) updateFileDataBaseWithFileModel:(FileModel *) fileModel;
 @end
 
 NS_ASSUME_NONNULL_END

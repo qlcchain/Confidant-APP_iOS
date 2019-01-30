@@ -37,6 +37,12 @@
             NSString *filePath = self.fileModel.filePath;
             if ([SystemUtil filePathisExist:self.fileModel.filePath]) {
                 fileMd5 = [MD5Util md5WithPath:self.fileModel.filePath];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:self.fileModel.fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(self.fileModel.fileSize),@"FileType":@(self.fileModel.fileType),@"SrcKey":self.fileModel.srcKey,@"DstKey":@"",@"FileId":@(self.fileModel.fileId)};
+                    [SendToxRequestUtil uploadFileWithFilePath:filePath parames:parames fileData:self.fileModel.fileData];
+                });
+                
             } else {
                filePath = [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:self.fileModel.fileName];
                 dispatch_async(dispatch_get_global_queue(0, 0), ^{

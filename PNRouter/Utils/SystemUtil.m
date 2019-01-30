@@ -350,7 +350,6 @@
 
 + (BOOL) writeDataToFileWithFilePath:(NSString *) filePath withData:(NSData *) data
 {
-    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     if(![fileManager fileExistsAtPath:filePath]) //如果不存在

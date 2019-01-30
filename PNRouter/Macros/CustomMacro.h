@@ -162,5 +162,7 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define File_Progess_Noti @"File_Progess_Noti"
 // 文件上传成功和失败通知
 #define File_Upload_Finsh_Noti @"File_Upload_Finsh_Noti"
-
+// 任务列表tox拉取文件
+#define TOX_PULL_FILE_FAIELD_NOTI @"TOX_PULL_FILE_FAIELD_NOTI"
+#define TOX_PULL_FILE_SUCCESS_NOTI @"TOX_PULL_FILE_SUCCESS_NOTI"
 #endif /* CustomMacro_h */

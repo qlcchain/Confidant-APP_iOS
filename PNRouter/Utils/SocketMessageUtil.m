@@ -35,6 +35,7 @@
 #import "UserConfig.h"
 #import "EntryModel.h"
 #import "LibsodiumUtil.h"
+#import "FileDownUtil.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -509,7 +510,13 @@
 + (void) handlePullFile:(NSDictionary *)receiveDic {
     NSDictionary *jsonDic = receiveDic[@"params"];
     FileModel *fileModel = [FileModel mj_objectWithKeyValues:jsonDic];
-    [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_NOTI object:fileModel];
+    if ([[FileDownUtil getShareObject] isTaskFileOption]) {
+        [[FileDownUtil getShareObject] setTaskFile:NO];
+        [[FileDownUtil getShareObject] updateFileDataBaseWithFileModel:fileModel];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_NOTI object:fileModel];
+    }
+   
 }
 
 

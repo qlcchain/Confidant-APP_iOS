@@ -202,10 +202,10 @@
     _objects = [self createSubmanagerWithClass:[OCTSubmanagerObjectsImpl class]];
     _user = [self createSubmanagerWithClass:[OCTSubmanagerUserImpl class]];
 
-    OCTSubmanagerCallsImpl *calls = [[OCTSubmanagerCallsImpl alloc] initWithTox:_tox];
-    calls.dataSource = self;
-    _calls = calls;
-    [_calls setupAndReturnError:nil];
+//    OCTSubmanagerCallsImpl *calls = [[OCTSubmanagerCallsImpl alloc] initWithTox:_tox];
+//    calls.dataSource = self;
+//    _calls = calls;
+//    [_calls setupAndReturnError:nil];
 }
 
 - (void)killSubmanagers

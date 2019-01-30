@@ -18,7 +18,7 @@ end
 
 def demo_pods
     #pod 'Masonry', '~> 0.6.1'
-    pod 'BlocksKit', '~> 2.2.5'
+    # pod 'BlocksKit', '~> 2.2.5'
     pod 'IQKeyboardManager'
     pod 'MJExtension'
     pod 'MBProgressHUD'

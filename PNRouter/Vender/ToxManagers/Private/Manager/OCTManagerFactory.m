@@ -39,6 +39,7 @@ static const NSUInteger kEncryptedKeyLength = 64;
                                                                  error:&decryptRealmError];
     });
 
+  
 
     // Decrypting Tox save.
     __block NSError *decryptToxError = nil;
@@ -65,6 +66,7 @@ static const NSUInteger kEncryptedKeyLength = 64;
 
         toxSave = savedData;
     });
+    
 
     dispatch_async(queue, ^{
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
@@ -88,8 +90,11 @@ static const NSUInteger kEncryptedKeyLength = 64;
                 return;
             }
 
+            
             NSURL *databaseFileURL = [NSURL fileURLWithPath:configuration.fileStorage.pathForDatabase];
             OCTRealmManager *realmManager = [[OCTRealmManager alloc] initWithDatabaseFileURL:databaseFileURL encryptionKey:realmEncryptionKey];
+            
+            
 
             OCTManagerImpl *manager = [[OCTManagerImpl alloc] initWithConfiguration:configuration
                                                                                 tox:tox
