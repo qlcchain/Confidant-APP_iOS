@@ -241,7 +241,7 @@
             if (resultArr && resultArr.count == 2) {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    
+                    AppD.isWifiConnect = YES;
                     [[RoutherConfig getRoutherConfig] addRoutherWithArray:resultArr];
                     [RoutherConfig getRoutherConfig].currentRouterIp = resultArr[0];
                     [RoutherConfig getRoutherConfig].currentRouterToxid = resultArr[1];
@@ -312,7 +312,6 @@
                 break;
                 
         }
-        
     }];
 }
 - (void) sendFailedNoti

@@ -243,7 +243,7 @@
         NSData *fileData = [NSData dataWithContentsOfFile:filePath];
         
         // 生成32位对称密钥
-        NSString *msgKey = [SystemUtil get32AESKey];
+        NSString *msgKey = [SystemUtil getDoc32AESKey];
         NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
         NSString *symmetKey = [symmetData base64EncodedString];
         // 好友公钥加密对称密钥

@@ -16,6 +16,7 @@
 #import "UserConfig.h"
 #import "PNRouter-Swift.h"
 #import "MD5Util.h"
+#import "NSDateFormatter+Category.h"
 
 @interface TaskOngoingCell ()
 
@@ -25,8 +26,16 @@
 
 - (IBAction)optionAction:(id)sender {
     
-    [UploadFileManager getShareObject];
-
+   
+    // 更新下载时间
+    NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+    self.fileModel.optionTime = [formatter stringFromDate:[NSDate date]];
+    
+    
+    [_optionBtn setImage:[UIImage imageNamed:@"icon_stop_gray"] forState:UIControlStateNormal];
+    self.fileModel.status = 2;
+    _optionBtn.userInteractionEnabled = NO;
+    
     if (self.fileModel.fileOptionType == 1) { // 上传
         if ([SystemUtil isSocketConnect]) { // 是socket
             SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
@@ -61,7 +70,7 @@
     } else { // 下载
          if ([SystemUtil isSocketConnect]) { // 是socket
              
-             if (_fileModel.status == 2) { // 如果下载中 停止下载
+             if (_fileModel.status == 5) { // 如果下载中 停止下载
                  NSURLSessionDownloadTask *downloadTask = [[FileDownUtil getShareObject] getDownloadTask:_fileModel];
                  if (downloadTask) {
                      [downloadTask cancel];
@@ -95,10 +104,12 @@
     _fileModel = model;
     if (model.status == 2) {
         [_optionBtn setImage:[UIImage imageNamed:@"icon_stop_gray"] forState:UIControlStateNormal];
-//        _optionBtn.userInteractionEnabled = NO;
+       _lblProgess.text = [[SystemUtil transformedZSValue:model.speedSize] stringByAppendingString:@"/s"];
+        _optionBtn.userInteractionEnabled = NO;
     } else {
         [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
-//        _optionBtn.userInteractionEnabled = YES;
+        _lblProgess.text = @"0 KB/s";
+        _optionBtn.userInteractionEnabled = YES;
     }
     _lblTitle.text = model.fileName;
     _lblSize.text = [SystemUtil transformedValue:model.fileSize];//[NSString stringWithFormat:@"%d kb",model.fileSize/1024];
@@ -106,7 +117,6 @@
       
         _iconImgView.image = [UIImage imageNamed:@"icon_upload_small_gray"];
     } else {
-      
         _iconImgView.image = [UIImage imageNamed:@"icon_download_small_gray"];
     }
     NSString *fileTypeImgName = @"";

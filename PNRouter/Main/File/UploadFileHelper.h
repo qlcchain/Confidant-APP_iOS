@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)shareObject;
 - (void)showUploadAlertView:(UIViewController *)vc;
 
+
 @end
 
 NS_ASSUME_NONNULL_END

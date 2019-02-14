@@ -97,6 +97,9 @@
     NSString *Qrcode = receiveDic[@"params"][@"Qrcode"];
     NSString *IdentifyCode = receiveDic[@"params"][@"IdentifyCode"];
     NSString *UserSn = receiveDic[@"params"][@"UserSn"];
+    
+    [RoutherConfig getRoutherConfig].currentRouterSn = UserSn;
+    
     AccountManagementViewController *vc = [[AccountManagementViewController alloc] init];
     vc.RouterId = RouterId;
     vc.Qrcode = Qrcode;

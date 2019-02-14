@@ -24,6 +24,8 @@ typedef void(^MyFilesMoreBlock)(void);
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
 @property (weak, nonatomic) IBOutlet UILabel *detailLab;
+@property (weak, nonatomic) IBOutlet UIImageView *iocn_imgV;
+@property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UIButton *moreBtn;
 @property (nonatomic, copy) MyFilesMoreBlock moreB;
 

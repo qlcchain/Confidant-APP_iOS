@@ -28,8 +28,8 @@
      
      [self.view addGestureRecognizer:pan];
      */
-    self.interactivePopGestureRecognizer.delegate = self;
-    self.interactivePopGestureRecognizer.enabled = YES;
+   // self.interactivePopGestureRecognizer.delegate = self;
+   // self.interactivePopGestureRecognizer.enabled = YES;
     self.navigationBar.translucent = NO;
     
     [self.navigationBar setBackgroundImage:[UIImage imageWithColor:MAIN_PURPLE_COLOR]

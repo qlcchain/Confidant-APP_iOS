@@ -44,6 +44,7 @@
 #import "DebugLogViewController.h"
 #import "LibsodiumUtil.h"
 #import "EntryModel.h"
+#import "PNDocumentPickerViewController.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -55,7 +56,7 @@ typedef void(^PullMoreBlock)(NSArray *arr);
 @interface ChatViewController ()<ChatListProtocol,
 CTInputViewProtocol,
 UINavigationControllerDelegate,
-UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
+UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate>
 
 
 
@@ -443,7 +444,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         [self selectImage];
         
     } else if ([string isEqualToString:@"Private\ndocument"]) {
-       NSString *txtPath = [[NSBundle mainBundle] pathForResource:@"测试文件" ofType:@"txt"];
+        
+        NSArray *documentTypes = @[@"public.content"];
+       
+        PNDocumentPickerViewController *vc = [[PNDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeImport];
+        vc.delegate = self;
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
+        if (@available(iOS 11.0, *)) {
+            vc.allowsMultipleSelection = NO;
+        } else {
+            // Fallback on earlier versions
+        }
+        [self presentViewController:vc animated:YES completion:nil];
+        
+        /*
+       NSString *txtPath = [[NSBundle mainBundle] pathForResource:@"测试文件1" ofType:@"txt"];
         NSData *txtData = [NSData dataWithContentsOfFile:txtPath];
         NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
         NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
@@ -460,7 +475,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
         CTDataConfig config = [CTData defaultConfig];
         config.isOwner = YES;
         model.willDisplayTime = YES;
-        model.fileName = @"测试文件.txt";
+        model.fileName = @"测试文件1.txt";
         NSString *uploadFileName = model.fileName;
         model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         model.publicKey = self.friendModel.publicKey;
@@ -485,7 +500,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
      
         
         [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:txtData fileId:msgid fileType:5 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
-    
+    */
         
     } else if ([string isEqualToString:@"Short video"]) { // 视频
         
@@ -853,9 +868,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 
                 NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
-                
-                
-                
                 if (!fileDatas) {
                     fileDatas = [NSData dataWithContentsOfFile:filePath];
                 }
@@ -895,7 +907,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
                 
                 
                 // 生成32位对称密钥
-                NSString *msgKey = [SystemUtil get32AESKey];
+                 NSString *msgKey = [SystemUtil get32AESKey];
+                if (weakSelf.selectMessageModel.msgType == 5) {
+                     msgKey = [SystemUtil getDoc32AESKey];
+                }
                 NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
                 NSString *symmetKey = [symmetData base64EncodedString];
                 // 好友公钥加密对称密钥
@@ -1523,6 +1538,73 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - UIDocumentPickerDelegate
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls NS_AVAILABLE_IOS(11_0) {
+    NSLog(@"didPickDocumentsAtURLs:%@",urls);
+    
+    //    NSURL *first = urls.firstObject;
+    
+    [self sendDocFileWithFileUrls:urls];
+}
+
+// called if the user dismisses the document picker without selecting a document (using the Cancel button)
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    NSLog(@"documentPickerWasCancelled");
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url NS_DEPRECATED_IOS(8_0, 11_0, "Implement documentPicker:didPickDocumentsAtURLs: instead") {
+    NSLog(@"didPickDocumentAtURL:%@",url);
+   [self sendDocFileWithFileUrls:@[url]];
+}
+- (void) sendDocFileWithFileUrls:(NSArray *) urls
+{
+    if (urls && urls.count > 0) {
+        NSURL *fileUrl = urls[0];
+        NSData *txtData = [NSData dataWithContentsOfURL:fileUrl];
+        NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+        NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+        int msgid = [mill intValue];
+        CDMessageModel *model = [[CDMessageModel alloc] init];
+        model.msgType = CDMessageTypeFile;
+        model.FromId = [UserConfig getShareObject].userId;
+        model.ToId = self.friendModel.userId;
+        model.fileSize = txtData.length;
+        model.msgState = CDMessageStateSending;
+        model.messageId = [NSString stringWithFormat:@"%d",msgid];;
+        model.fileID = msgid;
+        model.messageStatu = -1;
+        CTDataConfig config = [CTData defaultConfig];
+        config.isOwner = YES;
+        model.willDisplayTime = YES;
+        model.fileName = fileUrl.lastPathComponent;
+        NSString *uploadFileName = model.fileName;
+        model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+        model.publicKey = self.friendModel.publicKey;
+        model.ctDataconfig = config;
+        NSString *nkName = [UserModel getUserModel].username;
+        model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+        NSString *filePath = [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:model.fileName];
+        [txtData writeToFile:filePath atomically:YES];
+        [self.listView addMessagesToBottom:@[model]];
+        
+        // 生成32位对称密钥
+        NSString *msgKey = [SystemUtil getDoc32AESKey];
+        NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *symmetKey = [symmetData base64EncodedString];
+        // 好友公钥加密对称密钥
+        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:self.friendModel.publicKey];
+        // 自己公钥加密对称密钥
+        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+        
+        NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+        txtData = aesEncryptData(txtData,msgKeyData);
+        
+        
+        [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:txtData fileId:msgid fileType:5 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey];
+    }
 }
 
 @end

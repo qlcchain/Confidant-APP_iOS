@@ -21,10 +21,11 @@
 + (NSString *)getTempUploadPhotoBaseFilePath;
 + (NSString *)getTempUploadVideoBaseFilePath;
 + (NSString *)getTempDownloadFilePath:(NSString *)fileName;
-
++ (NSString *) getDoc32AESKey;
 + (void) removeDocmentAudio;
 // iOS将文件大小转换文KB\MB\GB
 + (NSString *)transformedValue:(CGFloat) convertedValue;
++ (NSString *)transformedZSValue:(int) convertedValue;
 //获取视频封面，本地视频，网络视频都可以用
 + (UIImage*) thumbnailImageForVideo:(NSURL *)videoURL;
 // 文件路径是否存在

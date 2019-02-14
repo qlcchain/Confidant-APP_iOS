@@ -16,6 +16,7 @@
 #import "UserConfig.h"
 #import "FileData.h"
 #import "FileModel.h"
+#import "NSDateFormatter+Category.h"
 
 @interface FileDownUtil()
 {
@@ -77,19 +78,23 @@
         fileDataModel.fileSize = [fileModel.FileSize intValue];
         fileDataModel.fileType = [fileModel.FileType intValue];
         fileDataModel.progess = 0.0f;
+        fileDataModel.msgId = [fileModel.MsgId intValue];
         fileDataModel.fileName = fileName;
         fileDataModel.filePath = filePath;
         fileDataModel.fileOptionType = 2;
+        NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+        fileDataModel.optionTime = [formatter stringFromDate:[NSDate date]];
         fileDataModel.status = 2;
         fileDataModel.userId = [UserConfig getShareObject].userId;
         fileDataModel.srcKey = fileModel.UserKey;
-        [fileDataModel bg_saveOrUpdateAsync:nil];
+        [fileDataModel bg_saveOrUpdate];
     }];
     
     @weakify_self
     NSURLSessionDownloadTask *task = [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             progressBlock(progress);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Http_Down_File_Progess_Noti" object:fileDataModel];
             if (fileDataModel) {
                 fileDataModel.progess = progress;
                 fileDataModel.status = 2;
@@ -100,6 +105,8 @@
     } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
         dispatch_async(dispatch_get_main_queue(), ^{
              success(dataTask, filePath);
+            fileDataModel.downSavePath = filePath;
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"HTTP_PULL_FILE_SUCCESS_NOTI" object:fileDataModel];
             // 保存下载完成记录
             [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.UserKey)] complete:^(NSArray * _Nullable array) {
                 NSLog(@"下载完成保存数据库**********************");
@@ -108,10 +115,11 @@
                         FileData *fileData = array[0];
                         fileData.status = 1;
                         fileData.progess = 1.0f;
-                        [fileData bg_saveOrUpdateAsync:nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileData];
+                        [fileData bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileData];
+                        }];
+                        
                     });
-                    
                 }
             }];
             // 下载成功-保存操作记录
@@ -128,7 +136,9 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"download error********* %@",error);
+            
             failure(dataTask,error);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HTTP_PULL_FILE_FAIELD_NOTI" object:fileDataModel];
 //            if (error.code == -999) { // 取消
 //                [FileData bg_deleteAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.UserKey)] complete:^(BOOL isSuccess) {
 //                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
@@ -141,7 +151,7 @@
                             fileData.status = 3;
                             fileData.progess = 0.0f;
                             [fileData bg_saveOrUpdateAsync:nil];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileData];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileData];
                         });
                     }
                 }];
@@ -150,8 +160,13 @@
             NSLog(@"下载列表：%@",weakSelf.taskArr);
         });
     }];
-    fileDataModel.downloadTask = task;
-    [self.taskArr addObject:fileDataModel];
+    
+    
+    if (fileDataModel) {
+        fileDataModel.downloadTask = task;
+         [self.taskArr addObject:fileDataModel];
+    }
+   
     NSLog(@"下载列表：%@",self.taskArr);
     if (downloadTaskB) {
         downloadTaskB(task);
@@ -173,8 +188,10 @@
         if (array && array.count > 0) {
             
             fileDataModel = array[0];
+            NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+            fileModel.optionTime = [formatter stringFromDate:[NSDate date]];
             fileDataModel.status = 2;
-            [fileDataModel bg_saveOrUpdateAsync:nil];
+            [fileDataModel bg_saveOrUpdate];
             
             @weakify_self
             // 下载
@@ -194,8 +211,11 @@
                     // 保存下载完成记录
                     fileDataModel.status = 1;
                     fileDataModel.progess = 1.0f;
-                    [fileDataModel bg_saveOrUpdateAsync:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileDataModel];
+                    
+                    [fileDataModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileDataModel];
+                    }];
+                    
                     // 下载成功-保存操作记录
                     NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
                     NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
@@ -209,23 +229,40 @@
             } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    NSLog(@"download error********* %@",error);
-                    // 保存下载失败记录
-                    fileDataModel.status = 3;
-                    fileDataModel.progess = 0.0f;
-                    [fileDataModel bg_saveOrUpdateAsync:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:fileDataModel];
-                    
+                    NSLog(@"download errorcode********* %ld",(long)error.code);
+                   
+                    if (error.code == -1011) { // url不存在
+                         [AppD.window showHint:@"File does not exist."];
+                        [FileData bg_deleteAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.srcKey)] complete:^(BOOL isSuccess) {
+                             [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
+                        }];
+                    } else {
+                        // 保存下载失败记录
+                        fileDataModel.status = 3;
+                        fileDataModel.progess = 0.0f;
+                        [fileDataModel bg_saveOrUpdateAsync:nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileDataModel];
+                    }
                     [weakSelf.taskArr removeObject:fileDataModel];
                     NSLog(@"下载列表：%@",weakSelf.taskArr);
                 });
             }];
+            
             fileDataModel.downloadTask = task;
             [self.taskArr addObject:fileDataModel];
             NSLog(@"下载列表：%@",self.taskArr);
             if (downloadTaskB) {
                 downloadTaskB(task);
             }
+        }
+    }];
+}
+- (void) removeAllTask
+{
+    [self.taskArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FileData *fileModel = obj;
+        if (fileModel.downloadTask) {
+            [fileModel.downloadTask cancel];
         }
     }];
 }
@@ -268,28 +305,20 @@
         fileDataModel.progess = 0.0f;
         fileDataModel.fileName = fileName;
         fileDataModel.filePath = filePath;
+        fileDataModel.fileFrom = fileModel.FileFrom;
         fileDataModel.fileOptionType = 2;
         fileDataModel.status = 2;
+        NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+        fileDataModel.optionTime = [formatter stringFromDate:[NSDate date]];
         fileDataModel.userId = [UserConfig getShareObject].userId;
         fileDataModel.srcKey = fileModel.UserKey;
         [fileDataModel bg_saveOrUpdateAsync:nil];
     }];
     
-     NSArray *pathArr = [fileModel.FileName componentsSeparatedByString:@"/"];
-    if (pathArr && pathArr.count >2) {
-        NSString *result = pathArr[2];
-        NSString *fileOwer = @"";
-        // /u/表示是上传的   如果是/s/是发送的，/r/是接收的
-        if ([result isEqualToString:@"s"]) {
-            fileOwer = @"1";
-        } else if ([result isEqualToString:@"r"]) {
-            fileOwer = @"2";
-        } else {
-            fileOwer = @"3";
-        }
-        isTaskFile = YES;
-        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileModel.FileName.lastPathComponent msgId:[NSString stringWithFormat:@"%@",fileModel.MsgId ] fileOwer:fileOwer fileFrom:@"2"];
-    }
+    NSString *fileOwer = [NSString stringWithFormat:@"%d",fileModel.FileFrom];
+    isTaskFile = YES;
+    [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileModel.FileName.lastPathComponent msgId:[NSString stringWithFormat:@"%@",fileModel.MsgId ] fileOwer:fileOwer fileFrom:@"2"];
+    
 }
 
 - (void) deToxDownFileModel:(FileData *) fileModel
@@ -318,26 +347,17 @@
         fileDataModel.filePath = filePath;
         fileDataModel.fileOptionType = 2;
         fileDataModel.status = 2;
+        NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+        fileDataModel.optionTime = [formatter stringFromDate:[NSDate date]];
         fileDataModel.userId = [UserConfig getShareObject].userId;
         fileDataModel.srcKey = fileModel.srcKey;
         [fileDataModel bg_saveOrUpdateAsync:nil];
     }];
-    
-    NSArray *pathArr = [fileModel.filePath componentsSeparatedByString:@"/"];
-    if (pathArr && pathArr.count >2) {
-        NSString *result = pathArr[2];
-        NSString *fileOwer = @"";
-        // /u/表示是上传的   如果是/s/是发送的，/r/是接收的
-        if ([result isEqualToString:@"s"]) {
-            fileOwer = @"1";
-        } else if ([result isEqualToString:@"r"]) {
-            fileOwer = @"2";
-        } else {
-            fileOwer = @"3";
-        }
+
+        NSString *fileOwer = [NSString stringWithFormat:@"%d",fileModel.fileFrom];
         isTaskFile = YES;
         [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:fileName] msgId:[NSString stringWithFormat:@"%d",fileModel.msgId ] fileOwer:fileOwer fileFrom:@"2"];
-    }
+    
 }
 
 - (BOOL) isTaskFileOption
@@ -350,18 +370,25 @@
 }
 - (void) updateFileDataBaseWithFileModel:(FileModel *) fileModel
 {
-    if (fileModel.RetCode != 0) { // 下载失败
+    if (fileModel.RetCode != 0) { // 下载失败 删除文件
         // 保存下载失败记录
-         [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(fileModel.MsgId)] complete:^(NSArray * _Nullable array) {
-             if (array && array.count > 0) {
-                 FileData *fileDataModel = array[0];
-                 fileDataModel.status = 3;
-                 fileDataModel.progess = 0.0f;
-                 [fileDataModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
-                     [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
-                 }];
-             }
-         }];
+        [AppD.window showHint:@"File does not exist."];
+        [FileData bg_deleteAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(fileModel.MsgId)] complete:^(BOOL isSuccess) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
+        }];
+        
+//         [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(fileModel.MsgId)] complete:^(NSArray * _Nullable array) {
+//             if (array && array.count > 0) {
+//                 FileData *fileDataModel = array[0];
+//                 fileDataModel.status = 3;
+//                 fileDataModel.progess = 0.0f;
+//                 [fileDataModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+//
+//                 }];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileDataModel];
+//             }
+//         }];
+        
          [[NSNotificationCenter defaultCenter] postNotificationName:TOX_PULL_FILE_FAIELD_NOTI object:fileModel.MsgId];
     }
 }
@@ -384,8 +411,9 @@
             fileModel.progess = 0.0;
             fileModel.fileData = nil;
             [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
+               
             }];
+             [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileModel];
         }
     }];
 }

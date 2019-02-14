@@ -10,6 +10,7 @@
 //#import "AFNetworking.h"
 #import <AFNetworking/AFNetworking.h>
 #define TimeOut_Request 60
+#define TimeOut_GetRequest 3
 
 typedef enum HttpMethod {
     HttpMethodGet      = 0,

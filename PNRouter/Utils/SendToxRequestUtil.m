@@ -13,6 +13,7 @@
 #import "FileData.h"
 #import "UserConfig.h"
 #import "PNRouter-Swift.h"
+#import "NSDateFormatter+Category.h"
 
 @implementation SendToxRequestUtil
 + (void) sendTextMessageWithText:(NSString *) message manager:(id<OCTManager>) manage
@@ -58,6 +59,8 @@
             FileData *fileModel = array[0];
             fileModel.status = 2;
             fileModel.filePath = filePath;
+            NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+            fileModel.optionTime = [formatter stringFromDate:[NSDate date]];
             [fileModel bg_saveOrUpdateAsync:nil];
         } else {
             FileData *fileModel = [[FileData alloc] init];
@@ -67,6 +70,8 @@
             fileModel.fileData = fileData;
             fileModel.fileType = fileType;
             fileModel.filePath = filePath;
+            NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+            fileModel.optionTime = [formatter stringFromDate:[NSDate date]];
             fileModel.progess = 0.0f;
             fileModel.fileName = [Base58Util Base58DecodeWithCodeName:fileName];
             fileModel.fileOptionType = 1;

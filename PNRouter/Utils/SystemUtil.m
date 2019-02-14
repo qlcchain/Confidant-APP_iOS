@@ -254,7 +254,19 @@
         convertedValue /= 1024;
         multiplyFactor++;
     }
-    return [NSString stringWithFormat:@"%4.2f %@",convertedValue, [tokens objectAtIndex:multiplyFactor]];
+    return [NSString stringWithFormat:@"%4.1f %@",convertedValue, [tokens objectAtIndex:multiplyFactor]];
+}
+
++ (NSString *)transformedZSValue:(int) convertedValue
+{
+    int multiplyFactor = 0;
+    NSArray *tokens = [NSArray arrayWithObjects:@"bytes",@"KB",@"MB",@"GB",@"TB",nil];
+    
+    while (convertedValue > 1024) {
+        convertedValue /= 1024;
+        multiplyFactor++;
+    }
+    return [NSString stringWithFormat:@"%d %@",convertedValue, [tokens objectAtIndex:multiplyFactor]];
 }
 
 //获取视频封面，本地视频，网络视频都可以用
@@ -305,6 +317,19 @@
     
 }
 
++ (NSString *) getDoc32AESKey
+{
+    char data[32];
+    
+    for (int x=0;x<32;data[x++] = (char)('A' + (arc4random_uniform(1))));
+    
+    return [[NSString alloc] initWithBytes:data length:32 encoding:NSUTF8StringEncoding];
+    
+    // NSData *enstrData = [NSData dataWithBytesNoCopy:data length:32 freeWhenDone:NO];
+    // return [enstrData base64EncodedString];
+    
+    
+}
 + (BOOL) isSocketConnect {
     return  ![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString];
 }

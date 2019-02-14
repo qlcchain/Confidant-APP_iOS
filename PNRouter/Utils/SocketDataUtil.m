@@ -18,6 +18,7 @@
 #import "PNRouter-Swift.h"
 #import "UserConfig.h"
 #import "FileData.h"
+#import "NSDateFormatter+Category.h"
 
 #define NTOHL(x)    (x) = ntohl((__uint32_t)x) //转换成本地字节流
 #define NTOHS(x)    (x) = ntohs((__uint16_t)x) //转换成本地字节流
@@ -91,6 +92,10 @@ struct ResultFile {
 
 @implementation SocketDataUtil
 
+- (void) disSocketConnect
+{
+    [_fileUtil disconnect];
+}
 - (NSMutableDictionary *)statusDic
 {
     if (!_statusDic) {
@@ -287,12 +292,16 @@ struct ResultFile {
             if (array && array.count > 0) {
                 FileData *fileModel = array[0];
                 fileModel.status = 2;
+                NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+                fileModel.optionTime = [formatter stringFromDate:[NSDate date]];
                 [fileModel bg_saveOrUpdateAsync:nil];
             } else {
                 FileData *fileModel = [[FileData alloc] init];
                 fileModel.bg_tableName = FILE_STATUS_TABNAME;
                 fileModel.fileId = fileid;
                 fileModel.fileSize = imgData.length;
+                NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+                fileModel.optionTime = [formatter stringFromDate:[NSDate date]];
                 fileModel.fileData = imgData;
                 fileModel.fileType = fileType;
                 fileModel.progess = 0.0f;

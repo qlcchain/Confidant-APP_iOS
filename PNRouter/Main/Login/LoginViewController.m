@@ -165,13 +165,11 @@
         }
     }
 }
-
 - (void) findOrLogin
 {
     if (isFind) {
         isFind = NO;
         [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
-        
     } else if (isLogin) {
         isLogin = NO;
         [self sendLoginRequestWithShowHud:YES];

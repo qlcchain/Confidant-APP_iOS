@@ -1577,7 +1577,9 @@ void connectionStatusCallback(Tox *cTox, TOX_CONNECTION cStatus, void *userData)
     dispatch_async(dispatch_get_main_queue(), ^{
         
         NSLog(@"自己连接大状态 = %lu", (unsigned long)status);
-
+        if (status == 0) { // tox断线 文件设为发送失败
+            [[NSNotificationCenter defaultCenter] postNotificationName:TOX_CONNECT_STATUS_NOTI object:nil];
+        }
         if ([tox.delegate respondsToSelector:@selector(tox:connectionStatus:)]) {
             [tox.delegate tox:tox connectionStatus:status];
         }
@@ -1644,10 +1646,13 @@ void friendConnectionStatusCallback(Tox *cTox, uint32_t friendNumber, TOX_CONNEC
     dispatch_async(dispatch_get_main_queue(), ^{
         
         if (friendNumber == AppD.currentRouterNumber) {
-            if (status > 0) {
-                [AppD.window hideHud];
-            } else {
-                [AppD.window showHudInView:AppD.window hint:@"Connect Server..."];
+            if (AppD.manager) {
+                if (status > 0) {
+                    [AppD.window hideHud];
+                } else {
+                    [AppD.window showHudInView:AppD.window hint:@"Connect Server..."];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:TOX_CONNECT_STATUS_NOTI object:nil];
+                }
             }
         }
         

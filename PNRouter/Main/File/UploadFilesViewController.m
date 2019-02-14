@@ -283,6 +283,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             
             // 生成32位对称密钥
             NSString *msgKey = [SystemUtil get32AESKey];
+            if (weakSelf.isDoc) {
+                msgKey = [SystemUtil getDoc32AESKey];
+            }
             NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
             NSString *symmetKey = [symmetData base64EncodedString];
             // 自己公钥加密对称密钥

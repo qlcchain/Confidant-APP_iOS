@@ -162,9 +162,13 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define File_Progess_Noti @"File_Progess_Noti"
 // tox下载进度通知
 #define Tox_Down_File_Progess_Noti @"Tox_Down_File_Progess_Noti"
-// 文件上传成功和失败通知
+// 文件上传成功通知
 #define File_Upload_Finsh_Noti @"File_Upload_Finsh_Noti"
+// 文件上传失败通知
+#define File_Upload_Faield_Noti @"File_Upload_Faield_Noti"
 // 任务列表tox拉取文件
 #define TOX_PULL_FILE_FAIELD_NOTI @"TOX_PULL_FILE_FAIELD_NOTI"
 #define TOX_PULL_FILE_SUCCESS_NOTI @"TOX_PULL_FILE_SUCCESS_NOTI"
+// tox 断线状态通知
+#define TOX_CONNECT_STATUS_NOTI  @"TOX_CONNECT_STATUS_NOTI"
 #endif /* CustomMacro_h */

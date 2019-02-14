@@ -18,6 +18,7 @@
 @property (nonatomic ,strong) id<OCTManager> manager;
 @property (nonatomic ,assign) BOOL showHD;
 @property (nonatomic ,assign) BOOL isLogOut;
+@property (nonatomic ,assign) BOOL isWifiConnect;
 @property (nonatomic ,assign) BOOL isConnect; // 记录当前是不是已连接。如果是就不用再管第二次udp
 @property (nonatomic ,assign) BOOL isScaner;
 @property (nonatomic ,assign) BOOL isDisConnectLogin;

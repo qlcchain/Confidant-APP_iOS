@@ -62,12 +62,24 @@ singleton_implementation(HeartBeatUtil)
 }
 
 + (void)heartBeat {
-    UserConfig *userM = [UserConfig getShareObject];
-    if (userM.userId && userM.userId.length >0) {
-        NSDictionary *params = @{@"Action":@"HeartBeat",@"UserId":userM.userId?:@""};
-        [SocketMessageUtil sendVersion1WithParams:params];
-    }
-   
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        UserConfig *userM = [UserConfig getShareObject];
+        NSString *appState = @"";
+        UIApplicationState state = [UIApplication sharedApplication].applicationState;
+        if(state == UIApplicationStateBackground){
+            appState = @"1";
+        }else if (state == UIApplicationStateActive){
+            appState = @"0";
+        }
+        
+        if (userM.userId && userM.userId.length >0) {
+            NSDictionary *params = @{@"Action":@"HeartBeat",@"UserId":userM.userId?:@"",@"Active":appState};
+            [SocketMessageUtil sendVersion1WithParams:params];
+        }
+        
+    });
 }
 
 @end

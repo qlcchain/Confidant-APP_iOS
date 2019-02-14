@@ -22,6 +22,8 @@
 #import "NSString+Base64.h"
 #import "UserConfig.h"
 #import "FriendRequestViewController.h"
+#import "UploadFileManager.h"
+#import "FileDownUtil.h"
 
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate>
 {
@@ -123,6 +125,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+     [UploadFileManager getShareObject];
+     [FileDownUtil getShareObject];
+    
      self.view.backgroundColor = MAIN_PURPLE_COLOR;
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;

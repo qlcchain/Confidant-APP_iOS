@@ -15,12 +15,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,assign) int msgId;
 @property (nonatomic ,assign) int fileId;
+@property (nonatomic ,assign) int fileFrom;
+@property (nonatomic ,assign) int backSeconds;
 @property (nonatomic ,strong) NSString *userId;
 @property (nonatomic ,strong) NSString *toId;
 @property (nonatomic ,strong) NSString *fileName;
 @property (nonatomic ,strong) NSString *filePath;
 @property (nonatomic ,assign) CGFloat progess;
+@property (nonatomic ,assign) int speedSize;
 @property (nonatomic ,strong) NSString *srcKey;
+@property (nonatomic ,strong) NSString *optionTime;
 @property (nonatomic ,strong ,nullable) NSData *fileData;
 @property (nonatomic ,assign) int fileSize;
 @property (nonatomic ,assign) int status; // 1:完成 2:正在上传 3:上传失败
@@ -28,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,assign) int fileOptionType; // 1:上传 2:下载
 
 @property (nonatomic, strong) NSURLSessionDownloadTask *downloadTask;
+@property (nonatomic, strong) NSString *downSavePath;
 
 @end
 

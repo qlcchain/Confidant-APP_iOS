@@ -55,7 +55,12 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileFaieldNoti:) name:TOX_PULL_FILE_FAIELD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileSuccessNoti:) name:TOX_PULL_FILE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileProgessNoti:) name:Tox_Down_File_Progess_Noti object:nil];
-    
+}
+- (void) addSocketDownObserve
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(httpDownFileFaieldNoti:) name:@"HTTP_PULL_FILE_FAIELD_NOTI" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(httpDownFileSuccessNoti:) name:@"HTTP_PULL_FILE_SUCCESS_NOTI" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(httpDownFileProgessNoti:) name:@"Http_Down_File_Progess_Noti" object:nil];
 }
 
 - (void)dealloc {
@@ -78,7 +83,7 @@ typedef enum : NSUInteger {
     } else if ([_fileListM.FileType integerValue] == 4) { // 视频
         fileImgStr = @"icon_video_gray";
     } else if ([_fileListM.FileType integerValue] == 5) { // 文档
-        fileImgStr = @"icon_document_gray";
+        fileImgStr = @"icon_doc_gray";
     } else if ([_fileListM.FileType integerValue] == 6) { // 其他
         fileImgStr = @"icon_other_gray";
     }
@@ -87,19 +92,45 @@ typedef enum : NSUInteger {
     NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
     NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
     _nameLab.text = fileName;
-    _sizeLab.text = [NSString stringWithFormat:@"%@ KB",@([_fileListM.FileSize integerValue]/1024)];
+    _sizeLab.text =[SystemUtil transformedValue:[self.fileListM.FileSize intValue]];
     _progressV.hidden = YES;
     _openTipLab.text = nil;
+    
     NSString *btnTitle = @"";
+   NSArray *findArr = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.fileListM.UserKey)]];
+    if (findArr && findArr.count > 0) {
+        FileData *fileDataMoel = [findArr objectAtIndex:0];
+        if (fileDataMoel.status == 2) {
+            [self addSocketDownObserve];
+            [_previewBtn setBackgroundColor:UIColorFromRGB(0xffffff)];
+            [_previewBtn setTitleColor:UIColorFromRGB(0x2C2C2C) forState:UIControlStateNormal];
+            [_previewBtn setTitle:@"Cancel Download" forState:UIControlStateNormal];
+            _sizeLab.hidden = YES;
+            _progressV.hidden = NO;
+            _progressV.progress = fileDataMoel.progess;
+            _fileExistType = FileExistTypeDownloading;
+        } else {
+            _fileExistType = FileExistTypeNone;
+            btnTitle = @"Preview Download";
+             [_previewBtn setTitle:btnTitle forState:UIControlStateNormal];
+        }
+    } else {
+        _fileExistType = FileExistTypeNone;
+        btnTitle = @"Preview Download";
+         [_previewBtn setTitle:btnTitle forState:UIControlStateNormal];
+    }
+   
+
+    
 //    NSString *filePath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
 //    if ([SystemUtil filePathisExist:filePath]) {
 //        _fileExistType = FileExistTypeExistOrDownloaded;
 //        btnTitle = @"File Preview";
 //    } else {
-        _fileExistType = FileExistTypeNone;
-        btnTitle = @"Preview Download";
+    //    _fileExistType = FileExistTypeNone;
+     //   btnTitle = @"Preview Download";
 //    }
-    [_previewBtn setTitle:btnTitle forState:UIControlStateNormal];
+  //  [_previewBtn setTitle:btnTitle forState:UIControlStateNormal];
 }
 
 - (void)showFileMoreAlertView:(FileListModel *)model {
@@ -153,7 +184,7 @@ typedef enum : NSUInteger {
     if ([SystemUtil isSocketConnect]) {
         @weakify_self
         [[FileDownUtil getShareObject] downFileWithFileModel:self.fileListM progressBlock:^(CGFloat progress) {
-            
+
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.progressV.progress = progress;
             });
@@ -179,6 +210,8 @@ typedef enum : NSUInteger {
                 NSLog(@"%@     %@   %@",error.localizedDescription, error.domain,@(error.code));
                 if (error.code == -999) {
                     [AppD.window showHint:@"Download Cancel"];
+                } else if (error.code == -1011) { // url不存在
+                    [AppD.window showHint:@"File does not exist."];
                 } else {
                     [AppD.window showHint:@"Download Fail"];
                 }
@@ -272,7 +305,7 @@ typedef enum : NSUInteger {
     NSArray *arr = noti.object;
     NSString *filePath = [[SystemUtil getTempBaseFilePath:arr[0]] stringByAppendingPathComponent:arr[1]];
     filePath = [filePath stringByAppendingString:[NSString stringWithFormat:@"%d",[arr[2] intValue]]];
-    NSData *filedata = [NSData dataWithContentsOfFile:filePath];
+ //   NSData *filedata = [NSData dataWithContentsOfFile:filePath];
     if (arr && arr.count > 0) {
         if ([arr[2] intValue] == [self.fileListM.MsgId intValue]) {
             @weakify_self
@@ -298,6 +331,58 @@ typedef enum : NSUInteger {
         if (fileModel.progess > 1) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.progressV.progress = fileModel.progess/[self.fileListM.FileSize intValue];
+            });
+        }
+    }
+}
+
+- (void) httpDownFileFaieldNoti:(NSNotification *) noti
+{
+    FileData *fileDataModel = noti.object;
+    if (fileDataModel) {
+        if (fileDataModel.msgId == [self.fileListM.MsgId intValue]) {
+            @weakify_self
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [AppD.window showHint:@"Download Fail"];
+                weakSelf.progressV.hidden = YES;
+                weakSelf.sizeLab.hidden = NO;
+                weakSelf.fileExistType = FileExistTypeNone;
+                [weakSelf.previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
+                [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+                [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+            });
+        }
+    }
+}
+- (void) httpDownFileSuccessNoti:(NSNotification *) noti
+{
+    FileData *fileDataModel = noti.object;
+    if (fileDataModel) {
+        if (fileDataModel.msgId == [self.fileListM.MsgId intValue]) {
+            @weakify_self
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.progressV.progress = 1;
+                weakSelf.progressV.hidden = YES;
+                weakSelf.sizeLab.hidden = NO;
+                weakSelf.fileExistType = FileExistTypeExistOrDownloaded;
+                [weakSelf.previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
+                [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+                [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+                weakSelf.downloadFilePath = fileDataModel.downSavePath;
+                weakSelf.fileListM.localPath = weakSelf.downloadFilePath;
+                weakSelf.downloadTask = nil;
+            });
+        }
+    }
+}
+- (void) httpDownFileProgessNoti:(NSNotification *) noti
+{
+    FileData *fileDataModel = noti.object;
+    if (fileDataModel) {
+        if (fileDataModel.msgId == [self.fileListM.MsgId intValue]) {
+            @weakify_self
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.progressV.progress = fileDataModel.progess;
             });
         }
     }
