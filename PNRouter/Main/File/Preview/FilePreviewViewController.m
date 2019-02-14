@@ -73,6 +73,10 @@
 
 #pragma mark - Operation
 - (void)previewFilePath:(NSString *) filePath {
+    
+    
+    
+    
     _sourceArr = [NSMutableArray array];
     [_sourceArr addObject:filePath];
     

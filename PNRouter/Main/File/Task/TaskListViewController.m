@@ -11,6 +11,9 @@
 #import "TaskCompletedCell.h"
 #import "FileData.h"
 #import "UserConfig.h"
+#import "NSDateFormatter+Category.h"
+#import "NSDate+Category.h"
+#import "UploadFileManager.h"
 
 @interface TaskListViewController () <UITableViewDelegate, UITableViewDataSource>
 {
@@ -26,9 +29,12 @@
 - (void) addObserver
 {
     if (!isRegiterNoti) {
+        isRegiterNoti = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadFinshNoti:) name:File_Upload_Finsh_Noti object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileProgessNoti:) name:File_Progess_Noti object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileProgessNoti:) name:Tox_Down_File_Progess_Noti object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadFaieldNoti:) name:File_Upload_Faield_Noti object:nil];
+        
     }
    
 }
@@ -38,18 +44,47 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
      [self dataInit];
-    [self.view showHudInView:self.view hint:@""];
+  //  [self.view showHudInView:self.view hint:@""];
     [self getAllTaskList];
 }
 
 - (void) getAllTaskList
 {
   //  [FileData bg_drop:FILE_STATUS_TABNAME];
-    if (_sourceArr.count > 0) {
-        [_sourceArr removeAllObjects];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSArray *arr11s = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+        
+        NSMutableArray *arr1 = [NSMutableArray array];
+        if (arr11s && arr11s.count>0) {
+            [arr1 addObjectsFromArray:arr11s];
+        }
+        
+        if (_sourceArr.count > 0) {
+            [_sourceArr removeAllObjects];
+        }
+        
+        [self.sourceArr addObject:arr1];
+        
+        NSArray *arr22s = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+        
+        NSMutableArray *arr2 = [NSMutableArray array];
+        if (arr22s && arr22s.count>0) {
+            [arr2 addObjectsFromArray:arr22s];
+        }
+        
+        [self.sourceArr addObject:arr2];
+        
+        [self addObserver];
+        [self.view hideHud];
+        [self.mainTable reloadData];
+        if ([self.sourceArr[0] count] == 0 && [self.sourceArr[1] count] == 0) {
+            [self viewInit];
+        }
+    });
+  
+    
+    /*
     @weakify_self
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))] complete:^(NSArray * _Nullable array) {
         
@@ -87,6 +122,7 @@
              
          });
     }];
+     */
 }
 
 #pragma mark - Operation
@@ -197,48 +233,141 @@
 #pragma mark -noti
 - (void) fileProgessNoti:(NSNotification *) noti
 {
-    
-    FileData *resultModel = noti.object;
-    if (_sourceArr.count == 0) {
-        return;
+    @synchronized (self) {
+        FileData *resultModel = noti.object;
+        if (_sourceArr.count == 0) {
+            return;
+        }
+        NSMutableArray *uploadArr = _sourceArr[0];
+        @weakify_self
+        [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FileData *model = obj;
+            if ([model.srcKey isEqualToString:resultModel.srcKey]) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    model.progess = resultModel.progess;
+                    if (model.status == 1) {
+                        *stop = YES;
+                    }
+                    model.status = 2;
+                    
+                    NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+                    NSDate *updateDate = [formatter dateFromString:model.optionTime];
+                    NSDate *date = [NSDate date];
+                    NSInteger seconds = [updateDate millesAfterDate:date];
+                    seconds = labs(seconds);
+                    
+                    if (seconds >=1) {
+                        if (seconds - model.backSeconds >=2 || model.backSeconds == 0) {
+                            int currentFinshSize = model.fileSize*model.progess;
+                            model.speedSize = currentFinshSize/seconds;
+                            model.backSeconds = seconds;
+                            NSLog(@"----------speed%d",model.speedSize);
+                        }
+                    }
+                    if (weakSelf.sourceArr.count > 0 && [weakSelf.sourceArr[0] count] > 0) {
+                        
+                        if ([weakSelf.sourceArr[0] count] > idx) {
+                            [UIView performWithoutAnimation:^{
+                                
+                                                    [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                            }];
+                        }
+                    }
+                    
+                    *stop = YES;
+                });
+            }
+        }];
     }
+    
+    
+    
+}
+- (void) downFileProgessNoti:(NSNotification *) noti
+{
+    @synchronized (self) {
+        FileData *resultModel = noti.object;
+        if (_sourceArr.count == 0 || ![[UserConfig getShareObject].userId isEqualToString:resultModel.userId]) {
+            return;
+        }
+        NSMutableArray *uploadArr = _sourceArr[0];
+        @weakify_self
+        [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FileData *model = obj;
+            if (model.msgId == resultModel.msgId) {
+                if (resultModel.progess > 1) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSLog(@"resultModel.progess = %f",resultModel.progess);
+                        model.progess = resultModel.progess/model.fileSize;
+                        if (model.status == 1) {
+                            *stop = YES;
+                        }
+                        model.status = 2;
+                        
+                        NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+                        NSDate *updateDate = [formatter dateFromString:model.optionTime];
+                        NSInteger seconds = [updateDate millesAfterDate:[NSDate date]];
+                        seconds = labs(seconds);
+                        if (seconds >=1) {
+                            if (seconds - model.backSeconds >=2 || model.backSeconds == 0) {
+                                model.speedSize = model.fileSize/seconds;
+                                model.backSeconds = seconds;
+                            }
+                        }
+                        if (weakSelf.sourceArr.count > 0 && [weakSelf.sourceArr[0] count] > 0) {
+                            if ([weakSelf.sourceArr[0] count] > idx) {
+                                [UIView performWithoutAnimation:^{
+                                    
+                                                        [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                                }];
+                            }
+                            
+                        }
+                        *stop = YES;
+                    });
+                }
+                
+            }
+        }];
+    }
+    
+}
+- (void) fileUploadFaieldNoti:(NSNotification *) noti
+{
+    @synchronized (self) {
+        FileData *resultModel = noti.object;
+        if (_sourceArr.count == 0 || ![[UserConfig getShareObject].userId isEqualToString:resultModel.userId]) {
+            return;
+        }
         NSMutableArray *uploadArr = _sourceArr[0];
         @weakify_self
         [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FileData *model = obj;
             if ([model.srcKey isEqualToString:resultModel.srcKey]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    model.progess = resultModel.progess;
-                    model.status = 2;
-                    [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                    
+                    if (model.status == 1) {
+                        *stop = YES;
+                    }
+                    model.progess = 0.0f;
+                    model.status = 3;
+                    if (weakSelf.sourceArr.count > 0 && [weakSelf.sourceArr[0] count] > 0) {
+                        
+                        if ([weakSelf.sourceArr[0] count] > idx) {
+                            [UIView performWithoutAnimation:^{
+                                
+                                                    [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                            }];
+                        }
+                    }
+                    
                     *stop = YES;
                 });
             }
         }];
-    
-}
-- (void) downFileProgessNoti:(NSNotification *) noti
-{
-    FileData *resultModel = noti.object;
-    if (_sourceArr.count == 0) {
-        return;
     }
-    NSMutableArray *uploadArr = _sourceArr[0];
-    @weakify_self
-    [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        FileData *model = obj;
-        if (model.msgId == resultModel.msgId) {
-            if (resultModel.progess > 1) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    model.progess = resultModel.progess/model.fileSize;
-                    model.status = 2;
-                    [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                    *stop = YES;
-                });
-            }
-            
-        }
-    }];
+   
 }
 - (void) fileUploadFinshNoti:(NSNotification *) noti
 {

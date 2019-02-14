@@ -559,7 +559,13 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                 isCancel = YES;
             }
         }
-        [(OCTFileUploadOperation *)operation chunkRequestWithPosition:position length:length cancel:isCancel];
+        
+        if (AppD.isLogOut) {
+             [(OCTFileUploadOperation *)operation chunkRequestWithPosition:position length:length cancel:YES];
+        } else {
+            [(OCTFileUploadOperation *)operation chunkRequestWithPosition:position length:length cancel:isCancel];
+        }
+        
     }
     else {
         NSLog(@"operation not found with fileNumber %d friendNumber %d", fileNumber, friendNumber);
@@ -596,12 +602,14 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                 int fileSize = [parames[@"FileSize"] intValue];
                 NSString *srcKey = parames[@"SrcKey"];
                 CGFloat progess = (position*1.0)/fileSize;
-                
-                FileData *fileDataModel = [[FileData alloc] init];
-                fileDataModel.progess = progess;
-                fileDataModel.srcKey = srcKey;
-                fileDataModel.status = 2;
-                [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
+                 if (position%7==0) {
+                     FileData *fileDataModel = [[FileData alloc] init];
+                     fileDataModel.progess = progess;
+                     fileDataModel.srcKey = srcKey;
+                     fileDataModel.status = 2;
+                     [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
+                 }
+               
             }
         }
         
@@ -655,6 +663,10 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
         position:(OCTToxFileSize)position length:(size_t)length
 {
  
+    if (AppD.isLogOut) {
+       [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
+    }
+    
     // 更新本次接受时间
    ToxPullFileTimerUtil *timeUtil = [[ChatListDataUtil getShareObject].pullTimerDic objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
     if (timeUtil) {
@@ -687,13 +699,15 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                 }
                 
                 CGFloat progess = (position*1.0);
+                if (position%7==0) {
+                    FileData *fileDataModel = [[FileData alloc] init];
+                    fileDataModel.progess = progess;
+                    fileDataModel.fileName = array[1];
+                    fileDataModel.msgId = [array[2] intValue];
+                    fileDataModel.status = 2;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:Tox_Down_File_Progess_Noti object:fileDataModel];
+                }
                 
-                FileData *fileDataModel = [[FileData alloc] init];
-                fileDataModel.progess = progess;
-                fileDataModel.fileName = array[1];
-                fileDataModel.msgId = [array[2] intValue];
-                fileDataModel.status = 2;
-                [[NSNotificationCenter defaultCenter] postNotificationName:Tox_Down_File_Progess_Noti object:fileDataModel];
                 
                 [SystemUtil writeDataToFileWithFilePath:filePath withData:chunk];
             }

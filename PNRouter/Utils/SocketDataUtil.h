@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface SocketDataUtil : NSObject
 
 @property (nonatomic ,assign) BOOL isComplete;
@@ -15,6 +16,8 @@
 @property (nonatomic ,strong) NSString *fileid;
 @property (nonatomic ,strong) NSString *srcKey;
 
+
+- (void) disSocketConnect;
 
 
 

@@ -71,6 +71,35 @@
     return [AFHTTPClientV2 shareInstance].httpManager;
 }
 
++ (AFHTTPSessionManager *)getRouterIpHTTPManager {
+    if (![AFHTTPClientV2 shareInstance].httpManager) {
+        [AFHTTPClientV2 shareInstance].httpManager = [AFHTTPSessionManager manager];
+        [AFHTTPClientV2 shareInstance].httpManager.requestSerializer = [AFHTTPRequestSerializer serializer];//[AFHTTPRequestSerializer serializer];
+        [AFHTTPClientV2 shareInstance].httpManager.responseSerializer = [AFHTTPResponseSerializer serializer];//[AFHTTPResponseSerializer serializer];
+        [AFHTTPClientV2 shareInstance].httpManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", @"text/xml", nil];
+        [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setTimeoutInterval:TimeOut_GetRequest];
+        //    manager.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithArray:@[@"POST", @"GET", @"HEAD"]];
+        //    [manager.requestSerializer setQueryStringSerializationWithStyle:AFHTTPRequestQueryStringDefaultStyle];
+        //    manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];//不设置会报-1016或者会有编码问题
+        
+        //    [manager.requestSerializer setValue:@"iOS" forHTTPHeaderField:@"platform"];
+        
+        [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue: @"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+        
+        // [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue:@"application/json;charset=utf-8"forHTTPHeaderField:@"Content-Type"];
+        
+        [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue:@"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0"forHTTPHeaderField:@"User-Agent"];
+        
+        AFSecurityPolicy *securityPolicy = [AFSecurityPolicy defaultPolicy];
+        securityPolicy.validatesDomainName = NO;
+        securityPolicy.allowInvalidCertificates = YES;
+        [AFHTTPClientV2 shareInstance].httpManager.securityPolicy = securityPolicy;
+        
+    }
+    
+    return [AFHTTPClientV2 shareInstance].httpManager;
+}
+
 + (AFHTTPSessionManager *) getJSONManager {
     if (![AFHTTPClientV2 shareInstance].jsonManager) {
         [AFHTTPClientV2 shareInstance].jsonManager = [AFHTTPSessionManager manager];
@@ -191,7 +220,7 @@
         
          DDLogDebug(@"url = %@ param = %@",URLString,params);
         
-        dataTask = [[self getHTTPManager] GET:URLString  parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+        dataTask = [[self getRouterIpHTTPManager] GET:URLString  parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             id result = [self printHTTPLogWithMethod:URLString Response:responseObject Error:nil];
             if (successReqBlock) {

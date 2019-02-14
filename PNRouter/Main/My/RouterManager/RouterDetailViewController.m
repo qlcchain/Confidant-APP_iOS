@@ -17,6 +17,8 @@
 #import "HeartBeatUtil.h"
 #import "RoutherConfig.h"
 #import "DiskManagerViewController.h"
+#import "SocketManageUtil.h"
+#import "FileDownUtil.h"
 
 @interface RouterDetailViewController ()
 
@@ -70,7 +72,6 @@
     
     if ( _routerM.isConnected) {
          [SendRequestUtil sendLogOut];
-       
          [self performSelector:@selector(logOutApp) withObject:self afterDelay:0.5f];
     } else { //删除router
         [RouterModel deleteRouterWithUsersn:_routerM.userSn];
@@ -160,9 +161,16 @@
     if ([SystemUtil isSocketConnect]) {
         [RoutherConfig getRoutherConfig].currentRouterIp = @"";
         [[SocketUtil shareInstance] disconnect];
+        // 清除所有正在发送文件
+        [[SocketManageUtil getShareObject] clearAllConnectSocket];
+        // 清除所有正在下载文件
+        [[FileDownUtil getShareObject] removeAllTask];
+       
+        
     } else {
         AppD.isConnect = NO;
-        //[self logOutTox];
+       // [self logOutTox];
+        [[NSNotificationCenter defaultCenter] postNotificationName:TOX_CONNECT_STATUS_NOTI object:nil];
     }
     [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
     AppD.isLogOut = YES;

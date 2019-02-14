@@ -19,6 +19,10 @@
 #import "OperationRecordModel.h"
 #import "PNRouter-Swift.h"
 #import "UploadFileHelper.h"
+#import <MJRefresh/MJRefresh.h>
+#import <MJRefresh/MJRefreshStateHeader.h>
+#import <MJRefresh/MJRefreshHeader.h>
+
 
 typedef enum : NSUInteger {
     MyFilesTableTypeNormal,
@@ -60,8 +64,9 @@ typedef enum : NSUInteger {
     
     [self addObserve];
     [self dataInit];
-    [self viewInit];
-    [self sendPullFileList];
+   // [self viewInit];
+    //进入刷新状态
+    [_mainTable.mj_header beginRefreshing];
 }
 
 #pragma mark - Operation
@@ -82,8 +87,15 @@ typedef enum : NSUInteger {
     _sourceArr = [NSMutableArray array];
     _searchArr = [NSMutableArray array];
     _arrangeType = ArrangeTypeByName;
+    _mainTable.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(sendPullFileList)];
+    // Hide the time
+    ((MJRefreshStateHeader *)_mainTable.mj_header).lastUpdatedTimeLabel.hidden = YES;
+    // Hide the status
+    ((MJRefreshStateHeader *)_mainTable.mj_header).stateLabel.hidden = YES;
     
     [_mainTable registerNib:[UINib nibWithNibName:MyFilesCellReuse bundle:nil] forCellReuseIdentifier:MyFilesCellReuse];
+    
+   
 }
 
 - (void)viewInit {
@@ -210,7 +222,7 @@ typedef enum : NSUInteger {
     NSNumber *MsgNum = @(15);
     NSNumber *Category = @(3);
     if (_filesType == FilesTypeAll) {
-        Category = @(3);
+        Category = @(0);
     } else if (_filesType == FilesTypeSent) {
         Category = @(1);
     } else if (_filesType == FilesTypeReceived) {
@@ -218,7 +230,7 @@ typedef enum : NSUInteger {
     }
     NSNumber *FileType = @(0);
     
-    [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
+    [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:NO];
 }
 
 #pragma mark - Action
@@ -253,6 +265,9 @@ typedef enum : NSUInteger {
     MyFilesCell *cell = [tableView dequeueReusableCellWithIdentifier:MyFilesCellReuse];
     
     FileListModel *model = _showArr[indexPath.row];
+    
+    
+    
     [cell configCellWithModel:model];
     @weakify_self
     [cell setMoreB:^{
@@ -314,6 +329,7 @@ typedef enum : NSUInteger {
 
 #pragma mark - Noti
 - (void)pullFileListCompleteNoti:(NSNotification *)noti {
+     [_mainTable.mj_header endRefreshing];
     NSDictionary *receiveDic = noti.object;
     NSString *Payload = receiveDic[@"params"][@"Payload"];
     NSArray *payloadArr = [FileListModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];

@@ -21,6 +21,7 @@
 @property (nonatomic , assign) DocumentPickerType pickerType;
 @property (nonatomic, strong) UploadAlertView *uploadAlertV;
 @property (nonatomic, strong) UIViewController *currentVC;
+@property (nonatomic , assign) BOOL isSendMessenger;
 
 @end
 
@@ -35,7 +36,6 @@
     return shareObject;
 }
 
-#pragma mark - Operation
 - (void)showUploadAlertView:(UIViewController *)vc {
     _currentVC = vc;
     _uploadAlertV = [UploadAlertView getInstance];
@@ -174,7 +174,7 @@
             NSURL *url = [NSURL fileURLWithPath:outputPath];
             BOOL success = [imgData writeToURL:url atomically:YES];
             if (success) {
-                [weakSelf jumpToUploadFiles:@[url]];
+                [weakSelf jumpToUploadFiles:@[url] isDoc:NO];
             }
         }
     }];
@@ -199,7 +199,7 @@
         NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
         //        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
         NSURL *url = [NSURL fileURLWithPath:outputPath];
-        [weakSelf jumpToUploadFiles:@[url]];
+        [weakSelf jumpToUploadFiles:@[url] isDoc:NO];
     } failure:^(NSString *errorMessage, NSError *error) {
         [AppD.window hideHud];
         [weakSelf.currentVC.view showHint:@"不支持当前视频格式"];
@@ -212,7 +212,7 @@
     
     //    NSURL *first = urls.firstObject;
     
-    [self jumpToUploadFiles:urls];
+    [self jumpToUploadFiles:urls isDoc:YES];
 }
 
 // called if the user dismisses the document picker without selecting a document (using the Cancel button)
@@ -222,13 +222,14 @@
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url NS_DEPRECATED_IOS(8_0, 11_0, "Implement documentPicker:didPickDocumentsAtURLs: instead") {
     NSLog(@"didPickDocumentAtURL:%@",url);
-    [self jumpToUploadFiles:@[url]];
+    [self jumpToUploadFiles:@[url] isDoc:YES];
 }
 
 #pragma mark - Transition
-- (void)jumpToUploadFiles:(NSArray *)urlArr {
+- (void)jumpToUploadFiles:(NSArray *)urlArr isDoc:(BOOL) isDoc {
     UploadFilesViewController *vc = [[UploadFilesViewController alloc] init];
     vc.documentType = self.pickerType;
+    vc.isDoc = isDoc;
     vc.urlArr = urlArr;
     [self.currentVC.navigationController pushViewController:vc animated:YES];
 }
@@ -248,7 +249,7 @@
     vc.delegate = self;
     vc.modalPresentationStyle = UIModalPresentationFullScreen;
     if (@available(iOS 11.0, *)) {
-        vc.allowsMultipleSelection = YES;
+        vc.allowsMultipleSelection = NO;
     } else {
         // Fallback on earlier versions
     }

@@ -540,6 +540,12 @@
     return (NSInteger) (ti / D_MINUTE);
 }
 
+- (NSInteger) millesAfterDate: (NSDate *) aDate
+{
+    NSTimeInterval ti = [self timeIntervalSinceDate:aDate];
+    return ti;
+}
+
 - (NSInteger) minutesBeforeDate: (NSDate *) aDate
 {
     NSTimeInterval ti = [aDate timeIntervalSinceDate:self];

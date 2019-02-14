@@ -10,6 +10,9 @@
 #import "FileListModel.h"
 #import "PNRouter-Swift.h"
 #import "NSDate+Category.h"
+#import "NSString+Base64.h"
+#import "SystemUtil.h"
+#import "UserConfig.h"
 
 @implementation MyFilesCell
 
@@ -53,9 +56,21 @@
     _icon.image = [UIImage imageNamed:fileTypeImgName];
     NSString *fileName = model.FileName.lastPathComponent;
     _titleLab.text = [Base58Util Base58DecodeWithCodeName:fileName];
-    int fileSize = [model.FileSize intValue]/1024;
+    
+    int fileSize = [model.FileSize intValue];
+    if (model.FileFrom == 1) {
+        _iocn_imgV.image = [UIImage imageNamed:@"icon_file_sent_black"];
+        _lblName.text = [model.Sender base64DecodedString];
+    } else if (model.FileFrom == 2) {
+        _iocn_imgV.image = [UIImage imageNamed:@"icon_file_black"];
+        _lblName.text = [model.Sender base64DecodedString];
+    } else {
+        _iocn_imgV.image = [UIImage imageNamed:@"icon_file_sent_black"];
+        _lblName.text = [UserConfig getShareObject].userName;
+    }
+    
     NSString *desTime = [NSDate formattedUploadFileTimeFromTimeInterval:[model.Timestamp  intValue]];
-    _detailLab.text = [NSString stringWithFormat:@"%d KB %@",fileSize,desTime];
+    _detailLab.text = [NSString stringWithFormat:@"%@ %@",[SystemUtil transformedValue:fileSize],desTime];
 }
 
 - (IBAction)moreAction:(id)sender {

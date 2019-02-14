@@ -13,4 +13,5 @@
 @property (nonatomic ,strong) NSMutableArray *socketArray;
 
 - (void) clearDisConnectSocket;
+- (void) clearAllConnectSocket;
 @end

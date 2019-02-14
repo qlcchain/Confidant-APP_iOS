@@ -35,6 +35,7 @@
 - (void) addObserver
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileFinshNoti:) name:FILE_UPLOAD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxConnectStatusNoti:) name:TOX_CONNECT_STATUS_NOTI object:nil];
 }
 
 #pragma mark -文件上传成功通知
@@ -92,11 +93,25 @@
                 fileModel.progess = 0.0;
                 fileModel.fileData = nil;
                 [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileModel];
                 }];
             }
         }];
     }
 }
-
+// tox 断开连接通知
+- (void) toxConnectStatusNoti:(NSNotification *) noti
+{
+    [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(2))] complete:^(NSArray * _Nullable array) {
+        if (array && array.count > 0) {
+            [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                FileData *fileM = obj;
+                fileM.status = 3;
+                fileM.progess = 0.0f;
+                [fileM bg_saveOrUpdate];
+                [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileM];
+            }];
+        }
+    }];
+}
 @end

@@ -32,4 +32,14 @@
         }
     }];
 }
+
+- (void) clearAllConnectSocket {
+    
+    [self.socketArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        SocketDataUtil *socket = (SocketDataUtil *) obj;
+        [socket disSocketConnect];
+    }];
+    [self.socketArray removeAllObjects];
+    
+}
 @end

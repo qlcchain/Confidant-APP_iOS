@@ -90,6 +90,7 @@
 - (NSDate *) dateAtStartOfDay;
 - (NSDate *) dateByAddingSecons: (NSInteger) dSecons;
 - (NSString *)formattedSystemNewsDateDescription;
+- (NSInteger) millesAfterDate: (NSDate *) aDate;
 
 // Retrieving intervals
 - (NSInteger) minutesAfterDate: (NSDate *) aDate;

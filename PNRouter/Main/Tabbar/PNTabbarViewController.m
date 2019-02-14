@@ -28,6 +28,8 @@
 #import "HeartBeatUtil.h"
 #import "RoutherConfig.h"
 #import "LibsodiumUtil.h"
+#import <AFNetworking/AFNetworking.h>
+#import "AFHTTPClientV2.h"
 
 @interface PNTabbarViewController ()<UITabBarControllerDelegate>
 @property (nonatomic ,strong) SocketAlertView *alertView;
@@ -167,17 +169,43 @@
 }
 - (void) socketDisconnectNoti:(NSNotification *) noti
 {
-//    [AppD.window hideHud];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"0"];
-//    return;
-    
-//    NSLog(@"----reConnectCount = %zd ",[SocketCountUtil getShareObject].reConnectCount);
-//    if ([SocketCountUtil getShareObject].reConnectCount == 1) {
-//        [AppD.window hideHud];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"0"];
-//        return;
-//    }
-    [self performSelector:@selector(connectSocket) withObject:nil afterDelay:1.0f];
+
+    if ([SystemUtil isSocketConnect]) {
+        AFNetworkReachabilityManager  *man=[AFNetworkReachabilityManager sharedManager];
+        
+        // AFNetworkReachabilityStatusUnknown          = -1,
+        // AFNetworkReachabilityStatusNotReachable     = 0,
+        // AFNetworkReachabilityStatusReachableViaWWAN = 1,
+        // AFNetworkReachabilityStatusReachableViaWiFi = 2,
+        
+        //开始监听
+        [man startMonitoring];
+        @weakify_self
+        [man setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            
+            switch (status) {
+            
+                case AFNetworkReachabilityStatusReachableViaWWAN:
+                    [weakSelf sendHtppRequestWithIs4g:YES];
+                    break;
+                    
+                default:
+                     [weakSelf sendHtppRequestWithIs4g:NO];
+                    break;
+            }
+            
+        }];
+    }
+}
+
+- (void) sendHtppRequestWithIs4g:(BOOL) is4g
+{
+    [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
+    if (AppD.isWifiConnect && is4g) {
+        [self sendRequestWithRid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+    } else {
+        [self performSelector:@selector(connectSocket) withObject:nil afterDelay:1.0f];
+    }
 }
 
 - (void) connectSocket {
@@ -188,6 +216,31 @@
     }
 }
 
+- (void) sendRequestWithRid:(NSString *) rid
+{
+    NSString *url = [NSString stringWithFormat:@"https://pprouter.online:9001/v1/pprmap/Check?rid=%@",rid];
+    @weakify_self
+    [AFHTTPClientV2 requestWithBaseURLStr:url params:@{} httpMethod:HttpMethodGet successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+        
+        NSInteger retCode = [responseObject[@"RetCode"] integerValue];
+        NSInteger connStatus = [responseObject[@"ConnStatus"] integerValue];
+        if (retCode == 0 && connStatus == 1) {
+            NSString *routerIp = responseObject[@"ServerHost"];
+            NSString *routerPort = [NSString stringWithFormat:@"%@",responseObject[@"ServerPort"]];
+            NSString *routerId = [NSString stringWithFormat:@"%@",responseObject[@"Rid"]];
+            [RoutherConfig getRoutherConfig].currentRouterPort = routerPort;
+            [[RoutherConfig getRoutherConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
+            [RoutherConfig getRoutherConfig].currentRouterIp = routerIp;
+            [RoutherConfig getRoutherConfig].currentRouterToxid = routerId;
+            AppD.isWifiConnect = NO;
+            [weakSelf connectSocket];
+        }
+
+    } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+        [weakSelf connectSocket];
+    }];
+   
+}
 
 #pragma mark - 获取好友列表
 - (void) sendGetFriendNoti
