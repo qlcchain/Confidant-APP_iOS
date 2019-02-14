@@ -295,7 +295,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
                                             <connections>
                                                 <action selector="diskManagementAction:" destination="-1" eventType="touchUpInside" id="Tqs-Lb-NcA"/>
-                                                <action selector="userManagementAction:" destination="-1" eventType="touchUpInside" id="6GV-rB-bbI"/>
                                             </connections>
                                         </button>
                                     </subviews>
