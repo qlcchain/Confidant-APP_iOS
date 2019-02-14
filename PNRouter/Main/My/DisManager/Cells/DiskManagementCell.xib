@@ -169,6 +169,22 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="backView" destination="6wP-G2-Bp2" id="gDR-rF-vpy"/>
+                <outlet property="capacityKeyLab" destination="X55-81-aKe" id="Y1q-RZ-h3L"/>
+                <outlet property="capacityValLab" destination="zvM-fk-omS" id="2zd-6K-aVE"/>
+                <outlet property="deviceKeyLab" destination="6Tj-aK-7rD" id="G7F-wn-khz"/>
+                <outlet property="deviceValLab" destination="yEO-ag-4N8" id="Prp-Wq-boy"/>
+                <outlet property="diskLab" destination="zaL-Jc-yUt" id="Ipf-lL-c6n"/>
+                <outlet property="frontView" destination="hOk-Sn-uQ3" id="z3s-qq-9qb"/>
+                <outlet property="serialKeyLab" destination="mrI-QG-ULU" id="Hyu-3m-V1U"/>
+                <outlet property="serialValLab" destination="1Cu-kL-qSL" id="938-ZP-nRq"/>
+                <outlet property="statusImg" destination="AfB-pA-0AX" id="ICj-C6-Kq2"/>
+                <outlet property="temperatureKeyLab" destination="odp-Gb-hai" id="c5b-b1-lWh"/>
+                <outlet property="temperatureValLab" destination="w6H-ia-cuU" id="K1F-tL-Ds4"/>
+                <outlet property="usagetimeKeyLab" destination="5fA-gL-Sg2" id="4zc-N3-oQL"/>
+                <outlet property="usagetimeValLab" destination="ME2-tD-bQB" id="gqx-9s-MfJ"/>
+            </connections>
             <point key="canvasLocation" x="137.59999999999999" y="153.82308845577214"/>
         </tableViewCell>
     </objects>

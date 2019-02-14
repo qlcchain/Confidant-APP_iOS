@@ -13,7 +13,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DiskManagerViewController">
             <connections>
                 <outlet property="mainTable" destination="j4x-9a-Jfg" id="U0D-Wr-Wc0"/>
+                <outlet property="modeLab" destination="1qY-WQ-d0o" id="lgq-uU-inV"/>
                 <outlet property="progressV" destination="2Jb-Pq-5tD" id="J10-fA-CuH"/>
+                <outlet property="spaceLab" destination="XIJ-uq-of8" id="bIb-Jf-eJs"/>
+                <outlet property="storageLab" destination="C0f-RW-0bq" id="bFy-WU-vA9"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -75,23 +78,25 @@
                                         <constraint firstAttribute="width" constant="141" id="ruy-8Z-IgH"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Storage：2055G" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C0f-RW-0bq">
-                                    <rect key="frame" x="112" y="168" width="151.5" height="24"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Storage：0G" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C0f-RW-0bq">
+                                    <rect key="frame" x="130" y="168" width="115.5" height="24"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Used Sapce：886.2 G / 2055 G （43.1%）" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XIJ-uq-of8">
-                                    <rect key="frame" x="16" y="211" width="240" height="14.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Used Sapce：0 G / 0 G （0%）" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XIJ-uq-of8">
+                                    <rect key="frame" x="16" y="211" width="176.5" height="14.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2Jb-Pq-5tD">
+                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Jb-Pq-5tD">
                                     <rect key="frame" x="16" y="228.5" width="343" height="10"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="10" id="pva-C4-K5p"/>
                                     </constraints>
+                                    <color key="progressTintColor" red="0.49411764705882355" green="0.82745098039215681" blue="0.12941176470588234" alpha="1" colorSpace="deviceRGB"/>
+                                    <color key="trackTintColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="deviceRGB"/>
                                 </progressView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MbE-Pa-eds">
                                     <rect key="frame" x="0.0" y="238.5" width="375" height="56"/>

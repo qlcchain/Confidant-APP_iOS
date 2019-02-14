@@ -156,6 +156,9 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define CHOOSE_Share_FRIEND_NOTI @"CHOOSE_Share_FRIEND_NOTI"
 // 拉取可分享文件好友列表成功通知
 #define PullSharedFriend_Noti @"PullSharedFriend_Noti"
+// 获取设备磁盘统计信息成功通知
+#define GetDiskTotalInfo_Noti @"GetDiskTotalInfo_Noti"
+
 // 删除文件成功通知
 #define Delete_File_Noti @"Delete_File_Noti"
 // 文件上传进度通知

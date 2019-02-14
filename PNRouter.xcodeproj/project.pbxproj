@@ -51,6 +51,7 @@
 		581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6621F173AC0068C120 /* ModifyRouterPWViewController.xib */; };
 		581FDF6C21F19FEA0068C120 /* AccountManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */; };
 		581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */; };
+		58245C532215470E009A6DB4 /* GetDiskTotalInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58245C522215470E009A6DB4 /* GetDiskTotalInfoModel.m */; };
 		5825A23821F9CA9F00E6194B /* FilePreviewDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A23621F9CA9E00E6194B /* FilePreviewDownloadViewController.m */; };
 		5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5825A23721F9CA9E00E6194B /* FilePreviewDownloadViewController.xib */; };
 		5825A23C21FAAE5D00E6194B /* NSString+File.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825A23B21FAAE5D00E6194B /* NSString+File.m */; };
@@ -556,6 +557,8 @@
 		581FDF6921F19FEA0068C120 /* AccountManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountManagementViewController.h; sourceTree = "<group>"; };
 		581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountManagementViewController.m; sourceTree = "<group>"; };
 		581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountManagementViewController.xib; sourceTree = "<group>"; };
+		58245C512215470E009A6DB4 /* GetDiskTotalInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetDiskTotalInfoModel.h; sourceTree = "<group>"; };
+		58245C522215470E009A6DB4 /* GetDiskTotalInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetDiskTotalInfoModel.m; sourceTree = "<group>"; };
 		5825A23521F9CA9E00E6194B /* FilePreviewDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePreviewDownloadViewController.h; sourceTree = "<group>"; };
 		5825A23621F9CA9E00E6194B /* FilePreviewDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePreviewDownloadViewController.m; sourceTree = "<group>"; };
 		5825A23721F9CA9E00E6194B /* FilePreviewDownloadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilePreviewDownloadViewController.xib; sourceTree = "<group>"; };
@@ -1813,6 +1816,8 @@
 				7360B85121FC3269008FB181 /* FileData.m */,
 				5825A24821FC3ACB00E6194B /* OperationRecordModel.h */,
 				5825A24921FC3ACB00E6194B /* OperationRecordModel.m */,
+				58245C512215470E009A6DB4 /* GetDiskTotalInfoModel.h */,
+				58245C522215470E009A6DB4 /* GetDiskTotalInfoModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3560,6 +3565,7 @@
 				736257802142143F00D7FD6B /* NSString+Localizable.m in Sources */,
 				737883F421ACF2970033A189 /* OCTToxEncryptSave.m in Sources */,
 				737883FE21ACF2970033A189 /* OCTManagerImpl.m in Sources */,
+				58245C532215470E009A6DB4 /* GetDiskTotalInfoModel.m in Sources */,
 				581FDF4121F024170068C120 /* mono_time.m in Sources */,
 				7330F3C321476E9300FF4EEC /* UserInfoCell.m in Sources */,
 				7330F3752146118800FF4EEC /* UIImage+BetterFace.m in Sources */,
