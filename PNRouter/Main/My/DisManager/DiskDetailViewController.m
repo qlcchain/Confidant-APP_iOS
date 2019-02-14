@@ -9,6 +9,7 @@
 #import "DiskDetailViewController.h"
 #import "DiskDetailCell.h"
 #import "ConfigDiskViewController.h"
+#import "GetDiskTotalInfoModel.h"
 
 @interface DiskDetailViewController () <UITableViewDelegate, UITableViewDataSource>
 

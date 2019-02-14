@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RouterDetailViewController">
             <connections>
+                <outlet property="diskHeight" destination="UWa-4d-o2r" id="IjY-4R-cyk"/>
                 <outlet property="logOutBtn" destination="waT-ua-v1e" id="rqG-RJ-9Hf"/>
                 <outlet property="logoutHeight" destination="uN1-38-8Ej" id="BtY-6Y-zsp"/>
                 <outlet property="nameValLab" destination="h1O-iC-pj2" id="p6b-w8-xSo"/>

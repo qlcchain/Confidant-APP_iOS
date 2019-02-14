@@ -9,6 +9,7 @@
 #import "ConfigDiskViewController.h"
 #import "ConfigDiskHeaderView.h"
 #import "ConfigDiskCell.h"
+#import "ReconfigDiskViewController.h"
 
 @interface ConfigDiskShowModel : NSObject
 
@@ -111,7 +112,7 @@
 }
 
 - (IBAction)confirmAction:(id)sender {
-    
+    [self jumpToReconfigDisk];
 }
 
 
@@ -180,6 +181,12 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     ConfigDiskShowModel *model = _sourceArr[indexPath.section];
+}
+
+#pragma mark - Transition
+- (void)jumpToReconfigDisk {
+    ReconfigDiskViewController *vc = [[ReconfigDiskViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

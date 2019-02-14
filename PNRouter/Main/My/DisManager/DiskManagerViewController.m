@@ -9,6 +9,8 @@
 #import "DiskManagerViewController.h"
 #import "DiskManagementCell.h"
 #import "GetDiskTotalInfoModel.h"
+#import "DiskDetailViewController.h"
+#import "ConfigDiskViewController.h"
 
 @interface DiskManagerViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -92,7 +94,7 @@
 
 
 - (IBAction)configDiskAction:(id)sender {
-    
+    [self jumpToConfigDisk];
 }
 
 #pragma mark - UITableViewDelegate
@@ -120,6 +122,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    GetDiskTotalInfo *model = _sourceArr[indexPath.row];
+    [self jumpToDiskDetail:model];
+}
+
+#pragma mark - Transition
+- (void)jumpToDiskDetail:(GetDiskTotalInfo *)model {
+    DiskDetailViewController *vc = [[DiskDetailViewController alloc] init];
+    vc.getDiskTotalInfo = model;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToConfigDisk {
+    ConfigDiskViewController *vc = [[ConfigDiskViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Noti

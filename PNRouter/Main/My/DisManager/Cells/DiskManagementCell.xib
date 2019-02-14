@@ -106,7 +106,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_disk_not_configured" translatesAutoresizingMaskIntoConstraints="NO" id="AfB-pA-0AX">
-                                        <rect key="frame" x="151" y="-5" width="134" height="77"/>
+                                        <rect key="frame" x="154" y="0.0" width="134" height="77"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="134" id="nFk-au-exr"/>
                                             <constraint firstAttribute="height" constant="77" id="ogp-Q1-tDP"/>
@@ -115,7 +115,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="AfB-pA-0AX" firstAttribute="top" secondItem="6wP-G2-Bp2" secondAttribute="top" constant="-5" id="188-ly-tbT"/>
+                                    <constraint firstItem="AfB-pA-0AX" firstAttribute="top" secondItem="6wP-G2-Bp2" secondAttribute="top" id="188-ly-tbT"/>
                                     <constraint firstItem="yEO-ag-4N8" firstAttribute="centerY" secondItem="6Tj-aK-7rD" secondAttribute="centerY" id="1gS-6D-lB3"/>
                                     <constraint firstItem="6Tj-aK-7rD" firstAttribute="width" secondItem="5fA-gL-Sg2" secondAttribute="width" id="3Yb-Xq-WGm"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1Cu-kL-qSL" secondAttribute="trailing" constant="8" id="4Ea-dn-QxZ"/>
@@ -134,7 +134,7 @@
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="yEO-ag-4N8" secondAttribute="trailing" constant="8" id="csp-BO-0s9"/>
                                     <constraint firstItem="odp-Gb-hai" firstAttribute="top" secondItem="6wP-G2-Bp2" secondAttribute="top" constant="14" id="dpF-2z-oO9"/>
                                     <constraint firstItem="hOk-Sn-uQ3" firstAttribute="top" secondItem="6wP-G2-Bp2" secondAttribute="top" id="j6N-b9-0Bp"/>
-                                    <constraint firstAttribute="trailing" secondItem="AfB-pA-0AX" secondAttribute="trailing" constant="3" id="jry-Y0-byY"/>
+                                    <constraint firstAttribute="trailing" secondItem="AfB-pA-0AX" secondAttribute="trailing" id="jry-Y0-byY"/>
                                     <constraint firstItem="yEO-ag-4N8" firstAttribute="leading" secondItem="6Tj-aK-7rD" secondAttribute="trailing" id="kSs-GM-IMZ"/>
                                     <constraint firstItem="mrI-QG-ULU" firstAttribute="top" secondItem="6Tj-aK-7rD" secondAttribute="bottom" constant="6" id="kYp-vH-jae"/>
                                     <constraint firstItem="1Cu-kL-qSL" firstAttribute="centerY" secondItem="mrI-QG-ULU" secondAttribute="centerY" id="le8-Gw-raB"/>

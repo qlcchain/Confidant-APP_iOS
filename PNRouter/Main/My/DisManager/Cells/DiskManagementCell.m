@@ -30,19 +30,19 @@
     _diskLab.text = [model.Slot integerValue] == 0?@"A":@"B";
     _temperatureKeyLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
     _temperatureValLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
-    _temperatureValLab.text = [NSString stringWithFormat:@"%@℃",model.Temperature];
+    _temperatureValLab.text = [model.Status integerValue] != 2?@"":[NSString stringWithFormat:@"%@℃",model.Temperature];
     _usagetimeKeyLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
     _usagetimeValLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
-    _usagetimeValLab.text = [NSString stringWithFormat:@"%@ H",model.PowerOn];
+    _usagetimeValLab.text = [model.Status integerValue] != 2?@"":[NSString stringWithFormat:@"%@ H",model.PowerOn];
     _deviceKeyLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
     _deviceValLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
-    _deviceValLab.text = model.Device;
+    _deviceValLab.text = [model.Status integerValue] != 2?@"":model.Device;
     _serialKeyLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
     _serialValLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
-    _serialValLab.text = model.Serial;
+    _serialValLab.text = [model.Status integerValue] != 2?@"":model.Serial;
     _capacityKeyLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
     _capacityValLab.textColor = [model.Status integerValue] == 2?UIColorFromRGB(0x2B2B2B):UIColorFromRGB(0x808080);
-    _serialValLab.text = model.Capacity;
+    _capacityValLab.text = [model.Status integerValue] != 2?@"":model.Capacity;
     _statusImg.image = [model.Status integerValue] == 2?nil:[model.Status integerValue] == 1?[UIImage imageNamed:@"icon_disk_not_configured"]:[UIImage imageNamed:@"icon_disk_not_found"];
 }
 
