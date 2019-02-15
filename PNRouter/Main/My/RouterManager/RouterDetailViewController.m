@@ -57,20 +57,19 @@
     
      NSString *userType = [_routerM.userSn substringWithRange:NSMakeRange(0, 2)];
     
-    RouterModel *connectRouter = [RouterModel getConnectRouter];
     if (![userType isEqualToString:@"01"]) {
         _userManagerContraintH.constant = 0;
+        _diskHeight.constant = 0; // 显示磁盘管理
     } else {
-//       RouterModel *model = [RouterModel getConnectRouter];
+       RouterModel *connectRouter = [RouterModel getConnectRouter];
         if (![connectRouter.userSn isEqualToString:_routerM.userSn]) {
             _userManagerContraintH.constant = 0;
+            _diskHeight.constant = 0; // 显示磁盘管理
         }
     }
     _titleLab.text = _routerM.name?:@"";
     _nameValLab.text = _routerM.name?:@"";
     
-    // 显示磁盘管理
-    _diskHeight.constant = ![connectRouter.userSn isEqualToString:_routerM.userSn]?0:48;
 }
 
 - (void)logout {
