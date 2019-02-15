@@ -247,6 +247,18 @@
     }];
     return resultM;
 }
++ (RouterModel *)getLoginOpenRouter {
+    __block RouterModel *resultM = nil;
+    NSArray *routeArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
+    [routeArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
+        if (model.isOpen) {
+            resultM = model;
+            *stop = YES;
+        }
+    }];
+    return resultM;
+}
 
 + (NSArray *)getRouterExceptConnect {
     NSArray *routeArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];

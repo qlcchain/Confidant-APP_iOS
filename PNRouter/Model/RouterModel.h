@@ -29,6 +29,7 @@
 + (void)updateRouterPassWithSn:(NSString *)sn pass:(NSString *) pass;
 + (void)updateRouterNumberWithSn:(NSString *)sn toxNumber:(int ) toxNumber;
 + (RouterModel *)getConnectRouter;
++ (RouterModel *)getLoginOpenRouter;
 + (NSArray *)getRouterExceptConnect;
 + (void)deleteRouterWithUsersn:(NSString *)sn;
 + (RouterModel *) checkRoutherWithToxid:(NSString *)toxid;

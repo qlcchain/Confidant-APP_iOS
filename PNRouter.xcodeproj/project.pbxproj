@@ -438,7 +438,7 @@
 		73E2FB7421ABE5A800DAED52 /* CreateRouterUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E2FB7221ABE5A800DAED52 /* CreateRouterUserViewController.xib */; };
 		73E2FB7821ABEC1300DAED52 /* RouterUserCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E2FB7621ABEC1300DAED52 /* RouterUserCodeViewController.m */; };
 		73E2FB7921ABEC1300DAED52 /* RouterUserCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E2FB7721ABEC1300DAED52 /* RouterUserCodeViewController.xib */; };
-		73E39B392216B78B003CD33B /* RouterDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E39B382216B78B003CD33B /* RouterDetailViewController.xib */; };
+		73E39B3B2216BEED003CD33B /* RouterDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E39B3A2216BEEC003CD33B /* RouterDetailViewController.xib */; };
 		73EE8CBE2154E5330048866B /* ChooseContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CBC2154E5330048866B /* ChooseContactViewController.m */; };
 		73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */; };
 		73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CC32159CD980048866B /* ChooseContactCell.m */; };
@@ -1325,7 +1325,7 @@
 		73E2FB7521ABEC1300DAED52 /* RouterUserCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterUserCodeViewController.h; sourceTree = "<group>"; };
 		73E2FB7621ABEC1300DAED52 /* RouterUserCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterUserCodeViewController.m; sourceTree = "<group>"; };
 		73E2FB7721ABEC1300DAED52 /* RouterUserCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouterUserCodeViewController.xib; sourceTree = "<group>"; };
-		73E39B382216B78B003CD33B /* RouterDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RouterDetailViewController.xib; path = "../../../../../../Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/8bc8f10ea106695d34a757b86948d5aa/Message/MessageTemp/10305b354fbfa431c01fe542598bbee0/File/RouterDetailViewController.xib"; sourceTree = "<group>"; };
+		73E39B3A2216BEEC003CD33B /* RouterDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RouterDetailViewController.xib; sourceTree = "<group>"; };
 		73EE8CBB2154E5330048866B /* ChooseContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactViewController.h; sourceTree = "<group>"; };
 		73EE8CBC2154E5330048866B /* ChooseContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactViewController.m; sourceTree = "<group>"; };
 		73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseContactViewController.xib; sourceTree = "<group>"; };
@@ -1940,7 +1940,7 @@
 				587C52B6215C7027006787FB /* RouterManagerViewController.xib */,
 				587C52B9215C7050006787FB /* RouterDetailViewController.h */,
 				587C52BA215C7050006787FB /* RouterDetailViewController.m */,
-				73E39B382216B78B003CD33B /* RouterDetailViewController.xib */,
+				73E39B3A2216BEEC003CD33B /* RouterDetailViewController.xib */,
 				734B793621A7EAAF0068AA2C /* UserManagerViewController.h */,
 				734B793721A7EAAF0068AA2C /* UserManagerViewController.m */,
 				734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */,
@@ -3325,7 +3325,6 @@
 				73899CC62152011000962B14 /* GuidePageView1.xib in Resources */,
 				583BF92C21F6E4940078A2A8 /* UploadFilesCell.xib in Resources */,
 				584A447F21460AFE00608122 /* FileViewController.xib in Resources */,
-				73E39B392216B78B003CD33B /* RouterDetailViewController.xib in Resources */,
 				73899CC42152011000962B14 /* GuidePageView2.xib in Resources */,
 				581FDF6321F172E00068C120 /* ModifyActivateCodeViewController.xib in Resources */,
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
@@ -3356,6 +3355,7 @@
 				73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */,
 				7330F3A9214679BF00FF4EEC /* ShareCollectionCell.xib in Resources */,
 				73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */,
+				73E39B3B2216BEED003CD33B /* RouterDetailViewController.xib in Resources */,
 				5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */,
 				7330F3CF21479AED00FF4EEC /* NewsCell.xib in Resources */,
 				584B439021FEE11D00D1F21A /* DiskManagementCell.xib in Resources */,

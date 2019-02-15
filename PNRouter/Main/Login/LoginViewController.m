@@ -273,12 +273,19 @@
 - (void) sendGB
 {
     [self loadHudView];
-   // RouterModel *routerModel = [RouterModel getConnectRouter];
     [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
 }
 - (void) getCurrentSelectRouter
 {
-    self.selectRouther = [RouterModel getConnectRouter];
+    if (AppD.showTouch) {
+        self.selectRouther = [RouterModel getLoginOpenRouter];
+        if (!self.selectRouther) {
+            self.selectRouther = [RouterModel getConnectRouter];
+        }
+    } else {
+        self.selectRouther = [RouterModel getConnectRouter];
+    }
+    
     if (self.selectRouther) {
         [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
         [RoutherConfig getRoutherConfig].currentRouterToxid = self.selectRouther.toxid;
@@ -310,8 +317,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCurrentSelectRouter) name:CANCEL_LOGINMAC_NOTI object:nil];
-    
-    [FingetprintVerificationUtil show];
+    if (AppD.showTouch) {
+         AppD.showTouch = NO;
+         [FingetprintVerificationUtil show];
+    }
+   
     
 }
 #pragma 第一次 广播完回调。验证是否走socket 还是 tox

@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:PNRouter/Main/My/RouterManager/RouterDetailViewController.xib">
+   </FileRef>
+   <FileRef
       location = "group:PNRouter.xcodeproj">
    </FileRef>
    <FileRef

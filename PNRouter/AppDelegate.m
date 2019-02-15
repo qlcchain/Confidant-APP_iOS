@@ -156,6 +156,7 @@
         GuidePageViewController *pageVC = [[GuidePageViewController alloc] init];
         self.window.rootViewController = pageVC;
     } else {
+        _showTouch = YES;
         LoginViewController  *vc = [[LoginViewController alloc] init];
         AppD.window.rootViewController = vc;
     }
