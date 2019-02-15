@@ -15,6 +15,12 @@ static NSString *DiskDetailCellReuse = @"DiskDetailCell";
 
 @interface DiskDetailCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *titleKeyLab;
+@property (weak, nonatomic) IBOutlet UILabel *titleValLab;
+
+
+- (void)configCellWithKey:(NSString *)key val:(NSString *)val;
+
 @end
 
 NS_ASSUME_NONNULL_END

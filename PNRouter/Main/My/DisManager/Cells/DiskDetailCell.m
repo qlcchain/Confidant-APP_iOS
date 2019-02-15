@@ -21,4 +21,16 @@
     // Configure the view for the selected state
 }
 
+- (void)configCellWithKey:(NSString *)key val:(NSString *)val {
+    _titleKeyLab.text = key;
+    _titleValLab.text = val;
+}
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
+    _titleKeyLab.text = nil;
+    _titleValLab.text = nil;
+}
+
 @end

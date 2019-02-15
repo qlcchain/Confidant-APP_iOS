@@ -1103,6 +1103,9 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GetDiskDetailInfo_Noti object:receiveDic];
+    } else if (retCode == 1) {
+        [AppD.window showHint:@"The system is busy, please check later"];
     }
 }
 
@@ -1111,6 +1114,14 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:FormatDisk_Success_Noti object:receiveDic];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:FormatDisk_Fail_Noti object:receiveDic];
+        if (retCode == 1) {
+            [AppD.window showHint:@"Unsupported mode"];
+        } else if (retCode == 2) {
+            [AppD.window showHint:@"The system is busy, please check later"];
+        }
     }
 }
 
@@ -1119,6 +1130,12 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:Reboot_Success_Noti object:receiveDic];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:Reboot_Fail_Noti object:receiveDic];
+        if (retCode == 1) {
+            [AppD.window showHint:@"The system is busy, please check later"];
+        }
     }
 }
 

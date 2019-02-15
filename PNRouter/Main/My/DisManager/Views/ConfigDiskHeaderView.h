@@ -10,13 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class UploadFilesShowModel;
+@class ConfigDiskShowModel;
 
 static NSString *ConfigDiskHeaderViewReuse = @"ConfigDiskHeaderView";
 #define ConfigDiskHeaderViewHeight 56
 
-typedef void(^UploadFilesSelectBlock)(void);
-typedef void(^UploadFilesShowCellBlock)(void);
+typedef void(^ConfigDiskSelectBlock)(void);
+typedef void(^ConfigDiskShowCellBlock)(void);
 
 @interface ConfigDiskHeaderView : UITableViewHeaderFooterView
 
@@ -25,10 +25,10 @@ typedef void(^UploadFilesShowCellBlock)(void);
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
 @property (weak, nonatomic) IBOutlet UILabel *detailLab;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImg;
-@property (nonatomic, copy) UploadFilesSelectBlock selectB;
-@property (nonatomic, copy) UploadFilesShowCellBlock showCellB;
+@property (nonatomic, copy) ConfigDiskSelectBlock selectB;
+@property (nonatomic, copy) ConfigDiskShowCellBlock showCellB;
 
-- (void)configHeaderWithModel:(UploadFilesShowModel *)model;
+- (void)configHeaderWithModel:(ConfigDiskShowModel *)model;
 
 @end
 

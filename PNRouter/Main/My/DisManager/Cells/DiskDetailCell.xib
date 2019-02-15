@@ -53,6 +53,10 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="titleKeyLab" destination="RTy-2M-OIB" id="sU1-Hi-YJg"/>
+                <outlet property="titleValLab" destination="ima-1G-Z5V" id="XhZ-Mr-NDb"/>
+            </connections>
             <point key="canvasLocation" x="137.59999999999999" y="153.82308845577214"/>
         </tableViewCell>
     </objects>

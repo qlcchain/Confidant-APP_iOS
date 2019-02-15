@@ -42,6 +42,12 @@
     [self addObserve];
     [self viewInit];
     [self dataInit];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     [self sendGetDiskTotalInfo];
 }
 
@@ -130,11 +136,13 @@
 - (void)jumpToDiskDetail:(GetDiskTotalInfo *)model {
     DiskDetailViewController *vc = [[DiskDetailViewController alloc] init];
     vc.getDiskTotalInfo = model;
+    vc.titleStr = [model.Slot integerValue] == 0?@"Disk A":@"Disk B";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)jumpToConfigDisk {
     ConfigDiskViewController *vc = [[ConfigDiskViewController alloc] init];
+    vc.currentMode = _getDiskTotalInfoM.Mode;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
