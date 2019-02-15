@@ -43,7 +43,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [_LoginSwitch setOn:_routerM.isOpen animated:YES];
-    [_LoginSwitch setTintColor:MAIN_PURPLE_COLOR];
+    [_LoginSwitch setTintColor:UIColorFromRGB(0xd5d5d5)];
     [_LoginSwitch addTarget:self action:@selector(swChange:) forControlEvents:UIControlEventValueChanged];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logOutSuccess:) name:REVER_LOGOUT_SUCCESS_NOTI object:nil];
 }
