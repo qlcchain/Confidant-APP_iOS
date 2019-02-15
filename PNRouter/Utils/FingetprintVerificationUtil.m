@@ -128,7 +128,6 @@
                         DDLogDebug(@"解锁验证失败");
                          [FingetprintVerificationUtil exitAPP];
                     });
-                  
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证成功");

@@ -30,6 +30,7 @@
 #import "LibsodiumUtil.h"
 #import <AFNetworking/AFNetworking.h>
 #import "AFHTTPClientV2.h"
+#import "ReviceRadio.h"
 
 @interface PNTabbarViewController ()<UITabBarControllerDelegate>
 @property (nonatomic ,strong) SocketAlertView *alertView;
@@ -98,6 +99,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxReConnectSuccessNoti:) name:TOX_RECONNECT_SUCCESS_NOTI object:nil];
     // app口强制退出通知
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appLogoutNoti:) name:REVER_APP_LOGOUT_NOTI object:nil];
+    // 广播成功
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gbFinashNoti:) name:GB_FINASH_NOTI object:nil];
     
     
 }
@@ -171,6 +174,9 @@
 {
 
     if ([SystemUtil isSocketConnect]) {
+        
+        
+        
         AFNetworkReachabilityManager  *man=[AFNetworkReachabilityManager sharedManager];
         
         // AFNetworkReachabilityStatusUnknown          = -1,
@@ -185,6 +191,10 @@
             
             switch (status) {
             
+                case AFNetworkReachabilityStatusReachableViaWiFi:
+                    [weakSelf sendHtppRequestWithIs4g:YES];
+                    break;
+                    
                 case AFNetworkReachabilityStatusReachableViaWWAN:
                     [weakSelf sendHtppRequestWithIs4g:YES];
                     break;
@@ -202,7 +212,7 @@
 {
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     if (AppD.isWifiConnect && is4g) {
-        [self sendRequestWithRid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     } else {
         [self performSelector:@selector(connectSocket) withObject:nil afterDelay:1.0f];
     }
@@ -215,32 +225,37 @@
         [SocketUtil.shareInstance connectWithUrl:connectURL];
     }
 }
-
-- (void) sendRequestWithRid:(NSString *) rid
+#pragma mark -广播完成
+- (void) gbFinashNoti:(NSNotification *) noti
 {
-    NSString *url = [NSString stringWithFormat:@"https://pprouter.online:9001/v1/pprmap/Check?rid=%@",rid];
-    @weakify_self
-    [AFHTTPClientV2 requestWithBaseURLStr:url params:@{} httpMethod:HttpMethodGet successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
-        
-        NSInteger retCode = [responseObject[@"RetCode"] integerValue];
-        NSInteger connStatus = [responseObject[@"ConnStatus"] integerValue];
-        if (retCode == 0 && connStatus == 1) {
-            NSString *routerIp = responseObject[@"ServerHost"];
-            NSString *routerPort = [NSString stringWithFormat:@"%@",responseObject[@"ServerPort"]];
-            NSString *routerId = [NSString stringWithFormat:@"%@",responseObject[@"Rid"]];
-            [RoutherConfig getRoutherConfig].currentRouterPort = routerPort;
-            [[RoutherConfig getRoutherConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
-            [RoutherConfig getRoutherConfig].currentRouterIp = routerIp;
-            [RoutherConfig getRoutherConfig].currentRouterToxid = routerId;
-            AppD.isWifiConnect = NO;
-            [weakSelf connectSocket];
-        }
-
-    } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
-        [weakSelf connectSocket];
-    }];
-   
+    [self connectSocket];
 }
+
+//- (void) sendRequestWithRid:(NSString *) rid
+//{
+//    NSString *url = [NSString stringWithFormat:@"https://pprouter.online:9001/v1/pprmap/Check?rid=%@",rid];
+//    @weakify_self
+//    [AFHTTPClientV2 requestWithBaseURLStr:url params:@{} httpMethod:HttpMethodGet successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+//
+//        NSInteger retCode = [responseObject[@"RetCode"] integerValue];
+//        NSInteger connStatus = [responseObject[@"ConnStatus"] integerValue];
+//        if (retCode == 0 && connStatus == 1) {
+//            NSString *routerIp = responseObject[@"ServerHost"];
+//            NSString *routerPort = [NSString stringWithFormat:@"%@",responseObject[@"ServerPort"]];
+//            NSString *routerId = [NSString stringWithFormat:@"%@",responseObject[@"Rid"]];
+//            [RoutherConfig getRoutherConfig].currentRouterPort = routerPort;
+//            [[RoutherConfig getRoutherConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
+//            [RoutherConfig getRoutherConfig].currentRouterIp = routerIp;
+//            [RoutherConfig getRoutherConfig].currentRouterToxid = routerId;
+//
+//            [weakSelf connectSocket];
+//        }
+//
+//    } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+//        [weakSelf connectSocket];
+//    }];
+//
+//}
 
 #pragma mark - 获取好友列表
 - (void) sendGetFriendNoti

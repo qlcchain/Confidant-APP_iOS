@@ -21,6 +21,7 @@
 #import "OCTSubmanagerFriends.h"
 #import "ConnectView.h"
 #import "UserConfig.h"
+#import "FingetprintVerificationUtil.h"
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate>
 {
@@ -310,7 +311,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCurrentSelectRouter) name:CANCEL_LOGINMAC_NOTI object:nil];
     
-    
+    [FingetprintVerificationUtil show];
     
 }
 #pragma 第一次 广播完回调。验证是否走socket 还是 tox

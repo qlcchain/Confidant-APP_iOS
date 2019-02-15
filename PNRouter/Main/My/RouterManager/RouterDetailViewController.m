@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *logoutHeight; // 48
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *userManagerContraintH;
 @property (weak, nonatomic) IBOutlet UIButton *logOutBtn;
+@property (weak, nonatomic) IBOutlet UISwitch *LoginSwitch;
 
 @end
 
@@ -39,6 +40,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [_LoginSwitch setOn:_routerM.isOpen animated:YES];
+    [_LoginSwitch setTintColor:MAIN_PURPLE_COLOR];
+    [_LoginSwitch addTarget:self action:@selector(swChange:) forControlEvents:UIControlEventValueChanged];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logOutSuccess:) name:REVER_LOGOUT_SUCCESS_NOTI object:nil];
 }
 
@@ -47,7 +51,11 @@
     
     [self refreshView];
 }
-
+#pragma mark - switch开关change
+- (void) swChange:(UISwitch *) sender
+{
+    [RouterModel updateRouterLoginSwitchWithSn:_routerM.userSn isOpen:sender.isOn];
+}
 #pragma mark - Operation
 - (void)refreshView {
     //_logoutHeight.constant = _routerM.isConnected?48:0;

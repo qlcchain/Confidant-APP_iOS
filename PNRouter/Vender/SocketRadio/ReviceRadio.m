@@ -295,18 +295,22 @@
         switch (status) {
                 
             case AFNetworkReachabilityStatusUnknown:
+                AppD.isWifiConnect = NO;
                 [weakSelf sendFailedNoti];
                 break;
                 
             case AFNetworkReachabilityStatusNotReachable:
+                AppD.isWifiConnect = NO;
                  [weakSelf sendFailedNoti];
                 break;
                 
             case AFNetworkReachabilityStatusReachableViaWWAN:
+                AppD.isWifiConnect = NO;
                  [weakSelf sendFailedNoti];
                 break;
                 
             case AFNetworkReachabilityStatusReachableViaWiFi:
+                AppD.isWifiConnect = YES;
                 self->sendCount = 0;
                 [weakSelf sendGBWithRouterId:routerid];
                 break;

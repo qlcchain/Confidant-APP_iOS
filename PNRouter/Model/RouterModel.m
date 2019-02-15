@@ -222,7 +222,19 @@
     
     [KeyCUtil saveRouterTokeychainWithArr:dicArr key:ROUTER_ARR];
 }
-
++ (void)updateRouterLoginSwitchWithSn:(NSString *)sn isOpen:(BOOL) isOpen
+{
+    NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
+    NSMutableArray *dicArr = [NSMutableArray array];
+    
+    [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
+            model.isOpen = [model.userSn isEqualToString:sn]?isOpen:NO;
+            [dicArr addObject:model.mj_keyValues];
+    }];
+    
+    [KeyCUtil saveRouterTokeychainWithArr:dicArr key:ROUTER_ARR];
+}
 + (RouterModel *)getConnectRouter {
     __block RouterModel *resultM = nil;
     NSArray *routeArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];

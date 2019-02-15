@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RouterDetailViewController">
             <connections>
+                <outlet property="LoginSwitch" destination="eay-z6-yj0" id="Pgx-Ur-ZDI"/>
                 <outlet property="logOutBtn" destination="waT-ua-v1e" id="rqG-RJ-9Hf"/>
                 <outlet property="logoutHeight" destination="uN1-38-8Ej" id="BtY-6Y-zsp"/>
                 <outlet property="nameValLab" destination="h1O-iC-pj2" id="p6b-w8-xSo"/>
@@ -184,30 +185,6 @@
                                         <constraint firstAttribute="trailing" secondItem="rwf-Gb-sBI" secondAttribute="trailing" id="v4v-bZ-Ncb"/>
                                     </constraints>
                                 </view>
-                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Tg-y9-e7w">
-                                    <rect key="frame" x="0.0" y="174" width="375" height="48"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waT-ua-v1e">
-                                            <rect key="frame" x="15" y="0.0" width="345" height="48"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                            <state key="normal" title="Log Out">
-                                                <color key="titleColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="logoutAction:" destination="-1" eventType="touchUpInside" id="1dh-Wm-Kbl"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="waT-ua-v1e" secondAttribute="bottom" id="MU2-P9-nBP"/>
-                                        <constraint firstAttribute="trailing" secondItem="waT-ua-v1e" secondAttribute="trailing" constant="15" id="kwn-Tj-fTF"/>
-                                        <constraint firstItem="waT-ua-v1e" firstAttribute="centerY" secondItem="0Tg-y9-e7w" secondAttribute="centerY" id="o3o-ZM-APL"/>
-                                        <constraint firstItem="waT-ua-v1e" firstAttribute="leading" secondItem="0Tg-y9-e7w" secondAttribute="leading" constant="15" id="ow1-0w-NOH"/>
-                                        <constraint firstAttribute="height" constant="48" id="uN1-38-8Ej"/>
-                                        <constraint firstItem="waT-ua-v1e" firstAttribute="top" secondItem="0Tg-y9-e7w" secondAttribute="top" id="xLR-Lg-7xd"/>
-                                    </constraints>
-                                </view>
                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LqV-DI-gN9">
                                     <rect key="frame" x="0.0" y="15" width="375" height="48"/>
                                     <subviews>
@@ -317,15 +294,68 @@
                                         <constraint firstItem="gQb-aP-DeF" firstAttribute="centerY" secondItem="kvF-Pg-Tf0" secondAttribute="centerY" id="xtA-oZ-1LM"/>
                                     </constraints>
                                 </view>
+                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Tg-y9-e7w">
+                                    <rect key="frame" x="0.0" y="227" width="375" height="48"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waT-ua-v1e">
+                                            <rect key="frame" x="15" y="0.0" width="345" height="48"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                            <state key="normal" title="Log Out">
+                                                <color key="titleColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="logoutAction:" destination="-1" eventType="touchUpInside" id="1dh-Wm-Kbl"/>
+                                            </connections>
+                                        </button>
+                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fuw-kK-7o9">
+                                            <rect key="frame" x="37" y="-60" width="240" height="39"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="waT-ua-v1e" secondAttribute="bottom" id="MU2-P9-nBP"/>
+                                        <constraint firstAttribute="trailing" secondItem="waT-ua-v1e" secondAttribute="trailing" constant="15" id="kwn-Tj-fTF"/>
+                                        <constraint firstItem="waT-ua-v1e" firstAttribute="centerY" secondItem="0Tg-y9-e7w" secondAttribute="centerY" id="o3o-ZM-APL"/>
+                                        <constraint firstItem="waT-ua-v1e" firstAttribute="leading" secondItem="0Tg-y9-e7w" secondAttribute="leading" constant="15" id="ow1-0w-NOH"/>
+                                        <constraint firstAttribute="height" constant="48" id="uN1-38-8Ej"/>
+                                        <constraint firstItem="waT-ua-v1e" firstAttribute="top" secondItem="0Tg-y9-e7w" secondAttribute="top" id="xLR-Lg-7xd"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lZq-q9-KEX">
+                                    <rect key="frame" x="0.0" y="159" width="375" height="48"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Direct Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qSz-sf-qgt">
+                                            <rect key="frame" x="15" y="15.5" width="81" height="17.5"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                            <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eay-z6-yj0">
+                                            <rect key="frame" x="310" y="8.5" width="51" height="31"/>
+                                        </switch>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="eay-z6-yj0" secondAttribute="trailing" constant="16" id="Ea8-2P-YWH"/>
+                                        <constraint firstAttribute="height" constant="48" id="F1x-8Z-KnT"/>
+                                        <constraint firstItem="eay-z6-yj0" firstAttribute="centerY" secondItem="lZq-q9-KEX" secondAttribute="centerY" id="Lj9-hm-dGb"/>
+                                        <constraint firstItem="qSz-sf-qgt" firstAttribute="centerY" secondItem="lZq-q9-KEX" secondAttribute="centerY" id="gFN-bA-hJv"/>
+                                        <constraint firstItem="qSz-sf-qgt" firstAttribute="leading" secondItem="lZq-q9-KEX" secondAttribute="leading" constant="15" id="hzy-55-dj5"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstItem="pwr-eS-8Ky" firstAttribute="top" secondItem="8RY-IJ-G1g" secondAttribute="bottom" id="0cu-v8-YJJ"/>
                                 <constraint firstAttribute="trailing" secondItem="kvF-Pg-Tf0" secondAttribute="trailing" id="2PP-6p-czQ"/>
                                 <constraint firstItem="8RY-IJ-G1g" firstAttribute="top" secondItem="kvF-Pg-Tf0" secondAttribute="bottom" id="8sG-yU-fWD"/>
-                                <constraint firstItem="0Tg-y9-e7w" firstAttribute="top" secondItem="pwr-eS-8Ky" secondAttribute="bottom" constant="15" id="AG6-Yp-oKY"/>
+                                <constraint firstItem="lZq-q9-KEX" firstAttribute="leading" secondItem="7PR-eA-1HS" secondAttribute="leading" id="BGt-Pm-Xvj"/>
+                                <constraint firstAttribute="trailing" secondItem="lZq-q9-KEX" secondAttribute="trailing" id="Hmg-rC-8Y4"/>
                                 <constraint firstItem="4YA-aI-ZOF" firstAttribute="top" secondItem="7PR-eA-1HS" secondAttribute="top" constant="15" id="Jm8-6C-wES"/>
                                 <constraint firstItem="LqV-DI-gN9" firstAttribute="top" secondItem="4YA-aI-ZOF" secondAttribute="bottom" id="Npg-GP-sRg"/>
+                                <constraint firstItem="0Tg-y9-e7w" firstAttribute="top" secondItem="lZq-q9-KEX" secondAttribute="bottom" constant="20" id="OCl-Ig-vVP"/>
                                 <constraint firstItem="LqV-DI-gN9" firstAttribute="leading" secondItem="7PR-eA-1HS" secondAttribute="leading" id="RnT-pG-OHh"/>
                                 <constraint firstItem="4YA-aI-ZOF" firstAttribute="leading" secondItem="7PR-eA-1HS" secondAttribute="leading" id="Syg-DY-8Qp"/>
                                 <constraint firstAttribute="trailing" secondItem="4YA-aI-ZOF" secondAttribute="trailing" id="evF-OU-b5M"/>
@@ -336,6 +366,7 @@
                                 <constraint firstAttribute="trailing" secondItem="LqV-DI-gN9" secondAttribute="trailing" id="sEM-yw-Ewl"/>
                                 <constraint firstItem="8RY-IJ-G1g" firstAttribute="leading" secondItem="7PR-eA-1HS" secondAttribute="leading" id="tAJ-SO-p5o"/>
                                 <constraint firstAttribute="trailing" secondItem="0Tg-y9-e7w" secondAttribute="trailing" id="th4-Dv-lK2"/>
+                                <constraint firstItem="lZq-q9-KEX" firstAttribute="top" secondItem="pwr-eS-8Ky" secondAttribute="bottom" id="vow-cw-P3D"/>
                                 <constraint firstItem="kvF-Pg-Tf0" firstAttribute="leading" secondItem="7PR-eA-1HS" secondAttribute="leading" id="wjV-PV-oBd"/>
                                 <constraint firstAttribute="trailing" secondItem="pwr-eS-8Ky" secondAttribute="trailing" id="xTV-Kc-NzE"/>
                             </constraints>
@@ -361,7 +392,7 @@
                 <constraint firstItem="n6N-H7-spj" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="muo-uu-vVy"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="76" y="-20"/>
+            <point key="canvasLocation" x="76" y="-20.239880059970016"/>
         </view>
     </objects>
     <resources>

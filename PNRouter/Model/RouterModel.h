@@ -13,6 +13,7 @@
 @property (nonatomic, copy) NSString *toxid;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *userSn;
+@property (nonatomic, assign) BOOL isOpen;
 @property (nonatomic, copy) NSString *userid;
 @property (nonatomic, copy) NSString *userPass;
 @property (nonatomic, assign) int routerToxNumber;
@@ -24,6 +25,7 @@
 + (void)addRouterWithToxid:(NSString *)toxid usesn:(NSString *) usesn userid:(NSString *) uesrid;
 + (void)updateRouterName:(NSString *)name usersn:(NSString *)sn;
 + (void)updateRouterConnectStatusWithSn:(NSString *)sn;
++ (void)updateRouterLoginSwitchWithSn:(NSString *)sn isOpen:(BOOL) isOpen;
 + (void)updateRouterPassWithSn:(NSString *)sn pass:(NSString *) pass;
 + (void)updateRouterNumberWithSn:(NSString *)sn toxNumber:(int ) toxNumber;
 + (RouterModel *)getConnectRouter;
