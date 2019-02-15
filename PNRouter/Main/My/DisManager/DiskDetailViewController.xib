@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DiskDetailViewController">
             <connections>
                 <outlet property="mainTable" destination="DUu-wJ-gUh" id="gRt-fI-52U"/>
+                <outlet property="titleLab" destination="SIX-pB-HZ4" id="eS8-bU-K15"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

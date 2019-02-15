@@ -28,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *userManagerContraintH;
 @property (weak, nonatomic) IBOutlet UIButton *logOutBtn;
 @property (weak, nonatomic) IBOutlet UISwitch *LoginSwitch;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *diskHeight;
+
 
 @end
 
@@ -66,14 +68,17 @@
     
     if (![userType isEqualToString:@"01"]) {
         _userManagerContraintH.constant = 0;
+        _diskHeight.constant = 0; // 显示磁盘管理
     } else {
-       RouterModel *model = [RouterModel getConnectRouter];
-        if (![model.userSn isEqualToString:_routerM.userSn]) {
+       RouterModel *connectRouter = [RouterModel getConnectRouter];
+        if (![connectRouter.userSn isEqualToString:_routerM.userSn]) {
             _userManagerContraintH.constant = 0;
+            _diskHeight.constant = 0; // 显示磁盘管理
         }
     }
     _titleLab.text = _routerM.name?:@"";
     _nameValLab.text = _routerM.name?:@"";
+    
 }
 
 - (void)logout {

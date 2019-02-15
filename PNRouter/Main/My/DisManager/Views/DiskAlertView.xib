@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="KmZ-c1-dpz" customClass="DiskAlertView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view alpha="0.65000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8aK-65-9di">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0wO-ck-vii">
+                    <rect key="frame" x="54.5" y="270" width="266" height="127"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please reboot your router" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJA-Db-cao">
+                            <rect key="frame" x="14" y="57" width="238" height="16"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your hard disk has been formatted" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oh4-qQ-zGw">
+                            <rect key="frame" x="14" y="13" width="238" height="41"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q4a-1z-i8V">
+                            <rect key="frame" x="0.0" y="82" width="266" height="1"/>
+                            <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="deviceRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="TAt-yV-ALn"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I5E-5h-YYY">
+                            <rect key="frame" x="0.0" y="83" width="266" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="XFk-gW-BAF"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <state key="normal" title="Reboot">
+                                <color key="titleColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="okAction:" destination="KmZ-c1-dpz" eventType="touchUpInside" id="Y80-Yd-kUV"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="I5E-5h-YYY" secondAttribute="bottom" id="0lY-l1-s9H"/>
+                        <constraint firstAttribute="trailing" secondItem="Q4a-1z-i8V" secondAttribute="trailing" id="4N4-G8-pPJ"/>
+                        <constraint firstItem="oh4-qQ-zGw" firstAttribute="leading" secondItem="0wO-ck-vii" secondAttribute="leading" constant="14" id="5WX-jx-1d3"/>
+                        <constraint firstAttribute="trailing" secondItem="XJA-Db-cao" secondAttribute="trailing" constant="14" id="KWo-Y7-ZbE"/>
+                        <constraint firstItem="XJA-Db-cao" firstAttribute="top" secondItem="oh4-qQ-zGw" secondAttribute="bottom" constant="3" id="NuB-Hy-FJC"/>
+                        <constraint firstItem="oh4-qQ-zGw" firstAttribute="top" secondItem="0wO-ck-vii" secondAttribute="top" constant="13" id="Ryr-qp-oEM"/>
+                        <constraint firstItem="XJA-Db-cao" firstAttribute="leading" secondItem="0wO-ck-vii" secondAttribute="leading" constant="14" id="ex9-zA-umo"/>
+                        <constraint firstAttribute="trailing" secondItem="I5E-5h-YYY" secondAttribute="trailing" id="fwZ-IK-X5I"/>
+                        <constraint firstItem="Q4a-1z-i8V" firstAttribute="leading" secondItem="0wO-ck-vii" secondAttribute="leading" id="kTa-WW-O6A"/>
+                        <constraint firstItem="Q4a-1z-i8V" firstAttribute="top" secondItem="XJA-Db-cao" secondAttribute="bottom" constant="9" id="mwD-wQ-2w2"/>
+                        <constraint firstItem="I5E-5h-YYY" firstAttribute="top" secondItem="Q4a-1z-i8V" secondAttribute="bottom" id="qBF-cJ-Igd"/>
+                        <constraint firstAttribute="width" constant="266" id="sda-KY-t2D"/>
+                        <constraint firstAttribute="trailing" secondItem="oh4-qQ-zGw" secondAttribute="trailing" constant="14" id="xla-pz-lS5"/>
+                        <constraint firstItem="I5E-5h-YYY" firstAttribute="leading" secondItem="0wO-ck-vii" secondAttribute="leading" id="xzU-S5-w5g"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="8aK-65-9di" secondAttribute="trailing" id="HLL-n1-27k"/>
+                <constraint firstItem="0wO-ck-vii" firstAttribute="centerX" secondItem="KmZ-c1-dpz" secondAttribute="centerX" id="LOV-RA-YWB"/>
+                <constraint firstItem="0wO-ck-vii" firstAttribute="centerY" secondItem="KmZ-c1-dpz" secondAttribute="centerY" id="TR6-Iz-dOM"/>
+                <constraint firstItem="8aK-65-9di" firstAttribute="leading" secondItem="KmZ-c1-dpz" secondAttribute="leading" id="ccC-9b-YMF"/>
+                <constraint firstItem="8aK-65-9di" firstAttribute="top" secondItem="KmZ-c1-dpz" secondAttribute="top" id="eZp-PC-tvK"/>
+                <constraint firstAttribute="bottom" secondItem="8aK-65-9di" secondAttribute="bottom" id="pbk-m9-dqt"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="H3L-5l-45G"/>
+            <connections>
+                <outlet property="tipBack" destination="0wO-ck-vii" id="4TA-Aa-wCC"/>
+                <outlet property="tipLab" destination="XJA-Db-cao" id="Yl4-jD-dhm"/>
+            </connections>
+            <point key="canvasLocation" x="85.599999999999994" y="30.134932533733135"/>
+        </view>
+    </objects>
+</document>

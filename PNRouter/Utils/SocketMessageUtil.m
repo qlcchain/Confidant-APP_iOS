@@ -379,6 +379,14 @@
         [SocketMessageUtil handlePullSharedFriend:receiveDic];
     } else if ([action isEqualToString:Action_ShareFile]) { // 分享文件
         [SocketMessageUtil handleShareFile:receiveDic];
+    } else if ([action isEqualToString:Action_GetDiskTotalInfo]) { // 设备磁盘统计信息
+        [SocketMessageUtil handleGetDiskTotalInfo:receiveDic];
+    } else if ([action isEqualToString:Action_GetDiskDetailInfo]) { // 设备磁盘详细信息
+        [SocketMessageUtil handleGetDiskDetailInfo:receiveDic];
+    } else if ([action isEqualToString:Action_FormatDisk]) { // 设备磁盘模式配置
+        [SocketMessageUtil handleFormatDisk:receiveDic];
+    } else if ([action isEqualToString:Action_Reboot]) { // 设备重启
+        [SocketMessageUtil handleReboot:receiveDic];
     }
 }
 
@@ -1076,6 +1084,58 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
+    }
+}
+
++ (void)handleGetDiskTotalInfo:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GetDiskTotalInfo_Noti object:receiveDic];
+    } else if (retCode == 1) {
+        [AppD.window showHint:@"The system is busy, please check later"];
+    }
+}
+
++ (void)handleGetDiskDetailInfo:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GetDiskDetailInfo_Noti object:receiveDic];
+    } else if (retCode == 1) {
+        [AppD.window showHint:@"The system is busy, please check later"];
+    }
+}
+
++ (void)handleFormatDisk:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:FormatDisk_Success_Noti object:receiveDic];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:FormatDisk_Fail_Noti object:receiveDic];
+        if (retCode == 1) {
+            [AppD.window showHint:@"Unsupported mode"];
+        } else if (retCode == 2) {
+            [AppD.window showHint:@"The system is busy, please check later"];
+        }
+    }
+}
+
++ (void)handleReboot:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:Reboot_Success_Noti object:receiveDic];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:Reboot_Fail_Noti object:receiveDic];
+        if (retCode == 1) {
+            [AppD.window showHint:@"The system is busy, please check later"];
+        }
     }
 }
 

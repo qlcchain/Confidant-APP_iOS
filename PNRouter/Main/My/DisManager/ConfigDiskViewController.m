@@ -9,17 +9,7 @@
 #import "ConfigDiskViewController.h"
 #import "ConfigDiskHeaderView.h"
 #import "ConfigDiskCell.h"
-
-@interface ConfigDiskShowModel : NSObject
-
-@property (nonatomic) BOOL isSelect;
-@property (nonatomic) BOOL showArrow;
-@property (nonatomic) BOOL showCell;
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *detail;
-@property (nullable, nonatomic, strong) NSArray *cellArr;
-
-@end
+#import "ReconfigDiskViewController.h"
 
 @implementation ConfigDiskShowModel
 
@@ -29,6 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (nonatomic, strong) NSMutableArray *sourceArr;
+@property (nonatomic, strong) NSString *selectMode;
 
 @end
 
@@ -45,21 +36,31 @@
 - (void)dataInit {
     _sourceArr = [NSMutableArray array];
     ConfigDiskShowModel *model = [[ConfigDiskShowModel alloc] init];
-    model.isSelect = NO;
+    if ([_currentMode integerValue] == 2) { // RAID 1
+        model.isSelect = YES;
+        _selectMode = @"RAID1";
+    } else {
+        model.isSelect = NO;
+    }
     model.showArrow = YES;
     model.showCell = NO;
     model.title = @"RAID 1";
-    model.detail = @"Erase data and format";
-    model.cellArr = @[@"The two hard disks are automatically mirrored. When any of the disks is damaged, it can be simply replaced by a new disk. It is the recommended ultimate mode for data security - Recommended."];
+    model.detail = @"Erase data and format, with data protection";
+    model.cellArr = @[@"The two hard disks are automatically mirrored. When any of the disks is damaged, it can be simply replaced by a new disk. It is the recommended ultimate mode for data security. "];
     [_sourceArr addObject:model];
     
     model = [[ConfigDiskShowModel alloc] init];
-    model.isSelect = NO;
+    if ([_currentMode integerValue] == 1) { // BASIC
+        model.isSelect = YES;
+        _selectMode = @"BASIC";
+    } else {
+        model.isSelect = NO;
+    }
     model.showArrow = YES;
     model.showCell = NO;
     model.title = @"BASIC";
-    model.detail = @"Erase data and format";
-    model.cellArr = @[@"Master-slave mode, the slave disk is mounted to the public directory - Recommended. "];
+    model.detail = @"Erase data and format, no data protection";
+    model.cellArr = @[@"Master-slave mode, the slave disk is mounted to the disk directory.  "];
     [_sourceArr addObject:model];
     
     model = [[ConfigDiskShowModel alloc] init];
@@ -67,7 +68,7 @@
     model.showArrow = YES;
     model.showCell = NO;
     model.title = @"RAID 0";
-    model.detail = @"Erase data and format";
+    model.detail = @"Erase data and format, no data protection";
     model.cellArr = @[@"The two hard disks are virtually merged into one, the overall capacity doubles with fast access speed. BUT, if any of the disks is damaged, the data of the other disk will be lost. "];
     [_sourceArr addObject:model];
     
@@ -76,7 +77,7 @@
     model.showArrow = YES;
     model.showCell = NO;
     model.title = @"LVM";
-    model.detail = @"Erase data and format";
+    model.detail = @"Erase data and format, no data protection";
     model.cellArr = @[@"All hard disks are merged into one virtual disk, the overall capacity is the sum of that of the two disks. This way enables adding in a new disk without any changes to the directory structure. "];
     [_sourceArr addObject:model];
     
@@ -85,7 +86,7 @@
     model.showArrow = NO;
     model.showCell = NO;
     model.title = @"Add to RAID 1";
-    model.detail = @"Erase data and format";
+    model.detail = @"Erase data and format, no data protection";
     model.cellArr = nil;
     [_sourceArr addObject:model];
     
@@ -94,7 +95,7 @@
     model.showArrow = NO;
     model.showCell = NO;
     model.title = @"Add to LVM";
-    model.detail = @"Erase data and format";
+    model.detail = @"Erase data and format, no data protection";
     model.cellArr = nil;
     [_sourceArr addObject:model];
     
@@ -111,15 +112,18 @@
 }
 
 - (IBAction)confirmAction:(id)sender {
-    
+    if (!_selectMode) {
+        [AppD.window showHint:@"This mode is not supported"];
+        return;
+    }
+    [self jumpToReconfigDisk];
 }
 
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // return _sourceArr.count;
-    return 0;
+    return _sourceArr.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView
@@ -127,7 +131,7 @@
 {
     ConfigDiskShowModel *model = _sourceArr[section];
     if (model.showCell) {
-        return model.cellArr.count + 1;
+        return model.cellArr.count;
     }
     return 0;
 }
@@ -138,9 +142,6 @@
     ConfigDiskCell *cell = [tableView dequeueReusableCellWithIdentifier:ConfigDiskCellReuse];
     
     ConfigDiskShowModel *model = _sourceArr[indexPath.section];
-    if (indexPath.row == 0) {
-        
-    }
     
     return cell;
 }
@@ -155,21 +156,38 @@
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UploadFilesShowModel *model = _sourceArr[section];
+    ConfigDiskShowModel *model = _sourceArr[section];
     
     ConfigDiskHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:ConfigDiskHeaderViewReuse];
     [headerView configHeaderWithModel:model];
+    
     @weakify_self
-//    [headerView setSelectB:^{
-//        model.isSelect = !model.isSelect;
-//        [weakSelf.mainTable reloadData];
-//    }];
-//    [headerView setShowCellB:^{
-//        if (model.showArrow) {
-//            model.showCell = !model.showCell;
-//            [weakSelf.mainTable reloadData];
-//        }
-//    }];
+    [headerView setSelectB:^{
+        if (!model.isSelect) {
+            [weakSelf.sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                ConfigDiskShowModel *tempM = obj;
+                tempM.isSelect = NO;
+            }];
+            model.isSelect = YES;
+            [weakSelf.mainTable reloadData];
+            
+            if (section == 0) { // RAID1
+                weakSelf.selectMode = @"RAID1";
+            } else if (section == 1) { // BASIC
+                weakSelf.selectMode = @"BASIC";
+            } else if (section == 2) { // RAID0
+                weakSelf.selectMode = @"RAID0";
+            } else {
+                weakSelf.selectMode = nil;
+            }
+        }
+    }];
+    [headerView setShowCellB:^{
+        if (model.showArrow) {
+            model.showCell = !model.showCell;
+            [weakSelf.mainTable reloadData];
+        }
+    }];
     
     return headerView;
 }
@@ -180,6 +198,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     ConfigDiskShowModel *model = _sourceArr[indexPath.section];
+}
+
+#pragma mark - Transition
+- (void)jumpToReconfigDisk {
+    ReconfigDiskViewController *vc = [[ReconfigDiskViewController alloc] init];
+    vc.selectMode = _selectMode;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

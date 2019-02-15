@@ -227,4 +227,40 @@
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 
+#pragma mark - 设备磁盘统计信息
++ (void)sendGetDiskTotalInfoWithShowHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_GetDiskTotalInfo};
+    [SocketMessageUtil sendVersion3WithParams:params];
+}
+
+#pragma mark - 设备磁盘详细信息
++ (void)sendGetDiskDetailInfoWithSlot:(NSNumber *)Slot showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_GetDiskDetailInfo, @"Slot":Slot};
+    [SocketMessageUtil sendVersion3WithParams:params];
+}
+
+#pragma mark - 设备磁盘模式配置
++ (void)sendFormatDiskWithMode:(NSString *)Mode showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_FormatDisk, @"Mode":Mode};
+    [SocketMessageUtil sendVersion3WithParams:params];
+}
+
+#pragma mark - 设备重启
++ (void)sendRebootWithShowHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_Reboot};
+    [SocketMessageUtil sendVersion3WithParams:params];
+}
+
 @end

@@ -48,6 +48,10 @@ static NSString *Action_UploadFile = @"UploadFile";
 static NSString *Action_DelFile = @"DelFile";
 static NSString *Action_PullSharedFriend = @"PullSharedFriend";
 static NSString *Action_ShareFile = @"ShareFile";
+static NSString *Action_GetDiskTotalInfo = @"GetDiskTotalInfo";
+static NSString *Action_GetDiskDetailInfo = @"GetDiskDetailInfo";
+static NSString *Action_FormatDisk = @"FormatDisk";
+static NSString *Action_Reboot = @"Reboot";
 
 @class FriendModel;
 

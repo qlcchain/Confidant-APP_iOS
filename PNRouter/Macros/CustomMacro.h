@@ -156,6 +156,17 @@ static NSString *USER_HEAD_CHANGE_NOTI = @"USER_HEAD_CHANGE_NOTI";
 #define CHOOSE_Share_FRIEND_NOTI @"CHOOSE_Share_FRIEND_NOTI"
 // 拉取可分享文件好友列表成功通知
 #define PullSharedFriend_Noti @"PullSharedFriend_Noti"
+// 获取设备磁盘统计信息成功通知
+#define GetDiskTotalInfo_Noti @"GetDiskTotalInfo_Noti"
+// 获取设备磁盘详细信息成功通知
+#define GetDiskDetailInfo_Noti @"GetDiskDetailInfo_Noti"
+// 设备磁盘模式配置成功通知
+#define FormatDisk_Success_Noti @"FormatDisk_Success_Noti"
+#define FormatDisk_Fail_Noti @"FormatDisk_Fail_Noti"
+// 设备重启成功通知
+#define Reboot_Success_Noti @"Reboot_Success_Noti"
+#define Reboot_Fail_Noti @"Reboot_Fail_Noti"
+
 // 删除文件成功通知
 #define Delete_File_Noti @"Delete_File_Noti"
 // 文件上传进度通知

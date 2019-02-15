@@ -40,6 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendPullSharedFriendWithUserId:(NSString *)UserId showHud:(BOOL)showHud;
 + (void)sendShareFileWithFromId:(NSString *)FromId ToId:(NSString *)ToId FileName:(NSString *)FileName DstKey:(NSString *)DstKey showHud:(BOOL)showHud;
 
++ (void)sendGetDiskTotalInfoWithShowHud:(BOOL)showHud;
++ (void)sendGetDiskDetailInfoWithSlot:(NSNumber *)Slot showHud:(BOOL)showHud;
++ (void)sendFormatDiskWithMode:(NSString *)Mode showHud:(BOOL)showHud;
++ (void)sendRebootWithShowHud:(BOOL)showHud;
+
 @end
 
 NS_ASSUME_NONNULL_END

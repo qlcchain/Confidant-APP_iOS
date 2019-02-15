@@ -7,10 +7,9 @@
 //
 
 #import "ConfigDiskHeaderView.h"
+#import "ConfigDiskViewController.h"
 
 @interface ConfigDiskHeaderView ()
-
-
 
 @end
 
@@ -27,14 +26,18 @@
 - (void)prepareForReuse {
     [super prepareForReuse];
     
+    _titleLab.text = nil;
+    _detailLab.text = nil;
+    _arrowImg.image = nil;
+    
 }
 
-- (void)configHeaderWithModel:(UploadFilesShowModel *)model {
-//    _titleLab.text = model.title;
-//    _detailLab.text = model.detail;
-//    _arrowImg.hidden = !model.showArrow;
-//    _arrowImg.image = model.showCell?[UIImage imageNamed:@"icon_arrow_down_gray"]:[UIImage imageNamed:@"icon_arrow_up_gray"];
-//    _selectBtn.selected = model.isSelect;
+- (void)configHeaderWithModel:(ConfigDiskShowModel *)model {
+    _titleLab.text = model.title;
+    _detailLab.text = model.detail;
+    _arrowImg.hidden = !model.showArrow;
+    _arrowImg.image = model.showCell?[UIImage imageNamed:@"icon_arrow_down_gray"]:[UIImage imageNamed:@"icon_arrow_up_gray"];
+    _selectBtn.selected = model.isSelect;
 }
 
 - (IBAction)selectAction:(UIButton *)sender {

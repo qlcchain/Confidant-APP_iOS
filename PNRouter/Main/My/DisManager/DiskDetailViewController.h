@@ -10,7 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class GetDiskTotalInfo;
+
 @interface DiskDetailViewController : PNBaseViewController
+
+@property (nonatomic, strong) GetDiskTotalInfo *getDiskTotalInfo;
+@property (nonatomic, strong) NSString *titleStr;
 
 @end
 
