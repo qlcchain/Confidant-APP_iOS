@@ -7,7 +7,6 @@
 //
 
 #import "DiskAlertView.h"
-#import "UIView+Visuals.h"
 
 @interface DiskAlertView ()
 
@@ -20,13 +19,17 @@
 
 + (instancetype)getInstance {
     DiskAlertView *view = [[[NSBundle mainBundle] loadNibNamed:@"DiskAlertView" owner:self options:nil] lastObject];
-    [view.tipBack setRoundedCorners:UIRectCornerAllCorners radius:8];
+    view.tipBack.layer.cornerRadius = 8;
+    view.tipBack.layer.masksToBounds = YES;
     return view;
 }
 
 - (void)show {
     self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     [AppD.window addSubview:self];
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.left.right.mas_equalTo(AppD.window).offset(0);
+    }];
 }
 
 - (void)hide {

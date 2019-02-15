@@ -103,14 +103,11 @@
 #pragma mark - Noti
 - (void)formatDiskSuccessNoti:(NSNotification *)noti {
     [self hideToast];
-//    NSDictionary *receiveDic = noti.object;
-//    NSDictionary *paramsDic = receiveDic[@"params"];
-    
     [self showRebootAlertView];
 }
 
 - (void)formatDiskFailNoti:(NSNotification *)noti {
-    [self hideToast];
+//    [self hideToast];
 }
 
 - (void)rebootSuccessNoti:(NSNotification *)noti {

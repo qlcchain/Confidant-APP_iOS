@@ -38,6 +38,7 @@
     ConfigDiskShowModel *model = [[ConfigDiskShowModel alloc] init];
     if ([_currentMode integerValue] == 2) { // RAID 1
         model.isSelect = YES;
+        _selectMode = @"RAID1";
     } else {
         model.isSelect = NO;
     }
@@ -51,6 +52,7 @@
     model = [[ConfigDiskShowModel alloc] init];
     if ([_currentMode integerValue] == 1) { // BASIC
         model.isSelect = YES;
+        _selectMode = @"BASIC";
     } else {
         model.isSelect = NO;
     }

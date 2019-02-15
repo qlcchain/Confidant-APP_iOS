@@ -43,7 +43,6 @@
             <constraints>
                 <constraint firstItem="H3L-5l-45G" firstAttribute="trailing" secondItem="0wO-ck-vii" secondAttribute="trailing" constant="52" id="Ext-8S-3Au"/>
                 <constraint firstAttribute="trailing" secondItem="8aK-65-9di" secondAttribute="trailing" id="HLL-n1-27k"/>
-                <constraint firstItem="0wO-ck-vii" firstAttribute="centerX" secondItem="KmZ-c1-dpz" secondAttribute="centerX" id="LOV-RA-YWB"/>
                 <constraint firstItem="0wO-ck-vii" firstAttribute="centerY" secondItem="KmZ-c1-dpz" secondAttribute="centerY" id="TR6-Iz-dOM"/>
                 <constraint firstItem="8aK-65-9di" firstAttribute="leading" secondItem="KmZ-c1-dpz" secondAttribute="leading" id="ccC-9b-YMF"/>
                 <constraint firstItem="8aK-65-9di" firstAttribute="top" secondItem="KmZ-c1-dpz" secondAttribute="top" id="eZp-PC-tvK"/>
