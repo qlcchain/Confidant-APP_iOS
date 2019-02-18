@@ -79,40 +79,44 @@
 - (void) addGuidePageView {
     GuidePageView1 *page1 = [GuidePageView1 loadGuidePageView1];
     page1.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-     [page1.nextBtn addTarget:self action:@selector(nextAction:) forControlEvents:UIControlEventTouchUpInside];
     
     GuidePageView2 *page2 = [GuidePageView2 loadGuidePageView2];
     page2.frame = CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-     [page2.nextBtn addTarget:self action:@selector(nextAction:) forControlEvents:UIControlEventTouchUpInside];
     
     GuidePageView3 *page3 = [GuidePageView3 loadGuidePageView3];
     page3.frame = CGRectMake(SCREEN_WIDTH*2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    [page3.nextBtn addTarget:self action:@selector(nextAction:) forControlEvents:UIControlEventTouchUpInside];
+//    [page3.nextBtn addTarget:self action:@selector(nextAction:) forControlEvents:UIControlEventTouchUpInside];
+    [page3.scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
+    [page3.scan1Btn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
+    [page3.scan2Btn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
+    [page3.scan3Btn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
     
     [_mainScrollView addSubview:page1];
     [_mainScrollView addSubview:page2];
     [_mainScrollView addSubview:page3];
 }
-- (void) nextAction:(UIButton *) sender
-{
-    if (sender.tag == 2) {
-        
-        
-         [self jumpToQR];
-    } else {
-        [_mainScrollView scrollRectToVisible:CGRectMake(SCREEN_WIDTH*(sender.tag+1), 0, SCREEN_WIDTH, SCREEN_HEIGHT) animated:YES];
-    }
+//- (void) nextAction:(UIButton *) sender
+//{
+//    if (sender.tag == 2) {
+//
+//
+//         [self jumpToQR];
+//    } else {
+//        [_mainScrollView scrollRectToVisible:CGRectMake(SCREEN_WIDTH*(sender.tag+1), 0, SCREEN_WIDTH, SCREEN_HEIGHT) animated:YES];
+//    }
+//}
+
+- (void)scanAction:(UIButton *)sender {
+    [self jumpToQR];
 }
 
-- (void)scanSuccessfulWithIsMacd:(BOOL)isMac
-{
+- (void)scanSuccessfulWithIsMacd:(BOOL)isMac {
     [AppD.window showHudInView:AppD.window hint:@"Check Router..."];
     if (isMac) {
          [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterMAC];
     } else {
         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     }
-    
 }
 
 #pragma mark -连接socket

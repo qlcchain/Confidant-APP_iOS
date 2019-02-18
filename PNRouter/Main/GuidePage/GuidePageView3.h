@@ -10,6 +10,14 @@
 
 @interface GuidePageView3 : UIView
 
-@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
+@property (weak, nonatomic) IBOutlet UIButton *scan1Btn;
+@property (weak, nonatomic) IBOutlet UIButton *scan2Btn;
+@property (weak, nonatomic) IBOutlet UIButton *scan3Btn;
+
+@property (weak, nonatomic) IBOutlet UIButton *scanBtn;
+@property (weak, nonatomic) IBOutlet UIButton *questionBtn;
+
 + (instancetype) loadGuidePageView3;
+
+
 @end

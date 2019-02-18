@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface GuidePageView1 : UIView
-@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 
 + (instancetype) loadGuidePageView1;
 
