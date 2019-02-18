@@ -38,11 +38,12 @@
     _arrowImg.hidden = !model.showArrow;
     _arrowImg.image = model.showCell?[UIImage imageNamed:@"icon_arrow_down_gray"]:[UIImage imageNamed:@"icon_arrow_up_gray"];
     _selectBtn.selected = model.isSelect;
+    _selectImg.hidden = !_selectBtn.selected;
 }
 
 - (IBAction)selectAction:(UIButton *)sender {
     if (_selectB) {
-        _selectB();
+        _selectB(_headerSection);
     }
 }
 

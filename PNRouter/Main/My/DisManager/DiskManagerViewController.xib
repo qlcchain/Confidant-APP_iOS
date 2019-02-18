@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DiskManagerViewController">
             <connections>
+                <outlet property="diskIcon" destination="4mx-BK-TUY" id="3gq-OE-BNq"/>
                 <outlet property="mainTable" destination="j4x-9a-Jfg" id="U0D-Wr-Wc0"/>
                 <outlet property="modeLab" destination="1qY-WQ-d0o" id="lgq-uU-inV"/>
                 <outlet property="progressV" destination="2Jb-Pq-5tD" id="J10-fA-CuH"/>
@@ -71,7 +72,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Inv-KG-3wb">
                             <rect key="frame" x="0.0" y="44" width="375" height="303"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_disk_management" translatesAutoresizingMaskIntoConstraints="NO" id="4mx-BK-TUY">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_disk_mmc" translatesAutoresizingMaskIntoConstraints="NO" id="4mx-BK-TUY">
                                     <rect key="frame" x="117" y="29" width="141" height="135"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="135" id="kTU-u9-rFq"/>
@@ -208,6 +209,6 @@
     <resources>
         <image name="arrow-exit-h" width="24" height="24"/>
         <image name="icon_arrow_gray" width="7" height="14"/>
-        <image name="icon_disk_management" width="141" height="135"/>
+        <image name="icon_disk_mmc" width="140" height="133"/>
     </resources>
 </document>

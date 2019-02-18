@@ -11,6 +11,16 @@
 #import "GetDiskTotalInfoModel.h"
 #import "DiskDetailViewController.h"
 #import "ConfigDiskViewController.h"
+#import "UnitUtil.h"
+#import "DiskAlertView.h"
+#import "DiskManagementMMCCell.h"
+
+typedef enum : NSUInteger {
+    DiskStatusTypeMMC,
+    DiskStatusTypeA,
+    DiskStatusTypeB,
+    DiskStatusTypeAB,
+} DiskStatusType;
 
 @interface DiskManagerViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -21,7 +31,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *storageLab;
 @property (weak, nonatomic) IBOutlet UILabel *spaceLab;
 @property (weak, nonatomic) IBOutlet UILabel *modeLab;
-
+@property (weak, nonatomic) IBOutlet UIImageView *diskIcon;
+@property (nonatomic) DiskStatusType diskStatusType;
 
 @end
 
@@ -54,6 +65,8 @@
 #pragma mark - Operation
 - (void)dataInit  {
     _sourceArr = [NSMutableArray array];
+    
+    [_mainTable registerNib:[UINib nibWithNibName:DiskManagementMMCCellReuse bundle:nil] forCellReuseIdentifier:DiskManagementMMCCellReuse];
     [_mainTable registerNib:[UINib nibWithNibName:DiskManagementCellReuse bundle:nil] forCellReuseIdentifier:DiskManagementCellReuse];
 }
 
@@ -78,18 +91,74 @@
     [strAtt_Temp setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:UIColorFromRGB(0x2b2b2b)} range:storageRange];
     _storageLab.attributedText = strAtt_Temp;
     
-    NSString *useLast = [_getDiskTotalInfoM.UsedCapacity substringFromIndex:_getDiskTotalInfoM.UsedCapacity.length - 1];
-    CGFloat useDigital = [useLast isEqualToString:@"M"]?[[_getDiskTotalInfoM.UsedCapacity substringToIndex:_getDiskTotalInfoM.UsedCapacity.length - 1] floatValue]:[[_getDiskTotalInfoM.UsedCapacity substringToIndex:_getDiskTotalInfoM.UsedCapacity.length - 1] floatValue]*1024;
-    NSString *totalLast = [_getDiskTotalInfoM.TotalCapacity substringFromIndex:_getDiskTotalInfoM.TotalCapacity.length - 1];
-    CGFloat totalDigital = [totalLast isEqualToString:@"M"]?[[_getDiskTotalInfoM.TotalCapacity substringToIndex:_getDiskTotalInfoM.TotalCapacity.length - 1] floatValue]:[[_getDiskTotalInfoM.TotalCapacity substringToIndex:_getDiskTotalInfoM.TotalCapacity.length - 1] floatValue]*1024;
+//    NSString *useLast = [_getDiskTotalInfoM.UsedCapacity substringFromIndex:_getDiskTotalInfoM.UsedCapacity.length - 1];
+    CGFloat useDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.UsedCapacity];// [useLast isEqualToString:@"M"]?[[_getDiskTotalInfoM.UsedCapacity substringToIndex:_getDiskTotalInfoM.UsedCapacity.length - 1] floatValue]:[[_getDiskTotalInfoM.UsedCapacity substringToIndex:_getDiskTotalInfoM.UsedCapacity.length - 1] floatValue]*1024;
+//    NSString *totalLast = [_getDiskTotalInfoM.TotalCapacity substringFromIndex:_getDiskTotalInfoM.TotalCapacity.length - 1];
+    CGFloat totalDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.TotalCapacity];// [totalLast isEqualToString:@"M"]?[[_getDiskTotalInfoM.TotalCapacity substringToIndex:_getDiskTotalInfoM.TotalCapacity.length - 1] floatValue]:[[_getDiskTotalInfoM.TotalCapacity substringToIndex:_getDiskTotalInfoM.TotalCapacity.length - 1] floatValue]*1024;
     CGFloat usePercent = useDigital/totalDigital;
     _spaceLab.text = [NSString stringWithFormat:@"Used Sapce：%@ / %@ （%.1f%@）",_getDiskTotalInfoM.UsedCapacity?:@"",_getDiskTotalInfoM.TotalCapacity?:@"",usePercent*100,@"%"];
     _modeLab.text = [_getDiskTotalInfoM.Mode integerValue] == 0?@"Not configured":[_getDiskTotalInfoM.Mode integerValue] == 1?@"BASIC":[_getDiskTotalInfoM.Mode integerValue] == 2?@"RAID1":@"";
     _progressV.progress = usePercent;
     
     [_sourceArr removeAllObjects];
+    // 添加mmc信息
+    GetDiskTotalInfo *mmcInfo = [[GetDiskTotalInfo alloc] init];
+    if (_getDiskTotalInfoM.Count > 0) { // 有磁盘 默认灰
+        mmcInfo.Status = @(4);
+    } else { // 无磁盘 显示
+        mmcInfo.Status = @(2);
+    }
+    mmcInfo.Capacity = _getDiskTotalInfoM.TotalCapacity;
+    [_sourceArr addObject:mmcInfo];
+    // 添加磁盘信息
     [_sourceArr addObjectsFromArray:_getDiskTotalInfoM.Info];
+
     [_mainTable reloadData];
+    
+    if (_getDiskTotalInfoM.Count <= 0) { // 无磁盘
+        _diskStatusType = DiskStatusTypeMMC;
+    } else {
+        __block BOOL aOK = NO;
+        __block BOOL bOK = NO;
+        [_getDiskTotalInfoM.Info enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            GetDiskTotalInfo *info = obj;
+            if ([info.Slot integerValue] == 0) { // A盘
+                aOK = [info.Status integerValue] == 2?YES:NO;
+            } else if ([info.Slot integerValue] == 1) { // B盘
+                bOK = [info.Status integerValue] == 2?YES:NO;
+            }
+        }];
+        if (aOK) {
+            if (bOK) {
+                _diskStatusType = DiskStatusTypeAB;
+            } else {
+                _diskStatusType = DiskStatusTypeA;
+            }
+        } else {
+            if (bOK) {
+                _diskStatusType = DiskStatusTypeB;
+            } else {
+                _diskStatusType = DiskStatusTypeMMC;
+            }
+        }
+    }
+    if (_diskStatusType == DiskStatusTypeMMC) {
+        _diskIcon.image = [UIImage imageNamed:@"icon_disk_mmc"];
+    } else if (_diskStatusType == DiskStatusTypeA) {
+        _diskIcon.image = [UIImage imageNamed:@"icon_disk_a"];
+    } else if (_diskStatusType == DiskStatusTypeB) {
+        _diskIcon.image = [UIImage imageNamed:@"icon_disk_b"];
+    } else if (_diskStatusType == DiskStatusTypeAB) {
+        _diskIcon.image = [UIImage imageNamed:@"icon_disk_ab"];
+    }
+   
+}
+
+- (void)showNoDiskAlertView {
+    DiskAlertView *view = [DiskAlertView getInstance];
+    view.okBlock = ^{
+    };
+    [view showWithTitle:@"Disk can not be found" tip:@"Please install the disk to configure its settings" click:@"Cancel"];
 }
 
 #pragma mark - Action
@@ -100,7 +169,11 @@
 
 
 - (IBAction)configDiskAction:(id)sender {
-    [self jumpToConfigDisk];
+    if ([_getDiskTotalInfoM.Count integerValue] <= 0) {
+        [self showNoDiskAlertView];
+    } else {
+        [self jumpToConfigDisk];
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -113,20 +186,35 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return DiskManagementCell_Height;
+    if (indexPath.row == 0) {
+        return DiskManagementMMCCell_Height;
+    } else  {
+        return DiskManagementCell_Height;
+    }
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    DiskManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:DiskManagementCellReuse];
     
     GetDiskTotalInfo *model = _sourceArr[indexPath.row];
-    [cell configCellWithModel:model];
+    if (indexPath.row == 0) {
+        DiskManagementMMCCell *cell = [tableView dequeueReusableCellWithIdentifier:DiskManagementMMCCellReuse];
+        [cell configCellWithModel:model];
+        return cell;
+    } else {
+        DiskManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:DiskManagementCellReuse];
+        [cell configCellWithModel:model];
+        return cell;
+    }
     
-    return cell;
+    return [UITableViewCell new];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.row == 0) {
+        return;
+    }
     
     GetDiskTotalInfo *model = _sourceArr[indexPath.row];
     [self jumpToDiskDetail:model];

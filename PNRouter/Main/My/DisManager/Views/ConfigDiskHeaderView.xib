@@ -19,12 +19,15 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X3b-TJ-Sc8">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWK-Uq-CyM">
-                            <rect key="frame" x="0.0" y="0.0" width="48" height="56"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_hook_black" translatesAutoresizingMaskIntoConstraints="NO" id="DzT-B1-RXW">
+                            <rect key="frame" x="12" y="16" width="24" height="24"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="48" id="01t-av-qus"/>
+                                <constraint firstAttribute="height" constant="24" id="MEv-ay-rej"/>
+                                <constraint firstAttribute="width" constant="24" id="zcQ-aH-NI5"/>
                             </constraints>
-                            <state key="selected" image="icon_hook_black"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWK-Uq-CyM">
+                            <rect key="frame" x="0.0" y="0.0" width="331" height="56"/>
                             <connections>
                                 <action selector="selectAction:" destination="-1" eventType="touchUpInside" id="mb1-9e-qYQ"/>
                             </connections>
@@ -49,7 +52,10 @@
                             </constraints>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jh1-7L-5EI">
-                            <rect key="frame" x="48" y="0.0" width="327" height="56"/>
+                            <rect key="frame" x="331" y="0.0" width="44" height="56"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="HXm-ew-QAR"/>
+                            </constraints>
                             <connections>
                                 <action selector="showCellAction:" destination="-1" eventType="touchUpInside" id="wnM-Zi-0G8"/>
                             </connections>
@@ -57,17 +63,19 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="Jh1-7L-5EI" firstAttribute="leading" secondItem="YWK-Uq-CyM" secondAttribute="trailing" id="1eU-4E-gMh"/>
                         <constraint firstItem="YWK-Uq-CyM" firstAttribute="top" secondItem="X3b-TJ-Sc8" secondAttribute="top" id="6a3-fz-NgN"/>
                         <constraint firstAttribute="bottom" secondItem="YWK-Uq-CyM" secondAttribute="bottom" id="6lG-YH-BEM"/>
                         <constraint firstItem="K4h-aY-LAq" firstAttribute="top" secondItem="X3b-TJ-Sc8" secondAttribute="top" constant="12" id="Ad2-4n-chN"/>
                         <constraint firstAttribute="bottom" secondItem="Jh1-7L-5EI" secondAttribute="bottom" id="AgC-3T-3tq"/>
                         <constraint firstItem="kU5-14-I7a" firstAttribute="centerY" secondItem="X3b-TJ-Sc8" secondAttribute="centerY" id="FgD-Y3-b0d"/>
                         <constraint firstAttribute="trailing" secondItem="kU5-14-I7a" secondAttribute="trailing" constant="17" id="K7w-7c-zYt"/>
+                        <constraint firstItem="PaW-0t-cjy" firstAttribute="leading" secondItem="K4h-aY-LAq" secondAttribute="leading" id="Ptn-Gp-65Z"/>
+                        <constraint firstItem="DzT-B1-RXW" firstAttribute="centerY" secondItem="X3b-TJ-Sc8" secondAttribute="centerY" id="TIx-jZ-kia"/>
                         <constraint firstItem="PaW-0t-cjy" firstAttribute="top" secondItem="K4h-aY-LAq" secondAttribute="bottom" constant="3" id="Tk9-m6-UEE"/>
-                        <constraint firstItem="K4h-aY-LAq" firstAttribute="leading" secondItem="YWK-Uq-CyM" secondAttribute="trailing" id="U5e-xO-v5q"/>
-                        <constraint firstItem="PaW-0t-cjy" firstAttribute="leading" secondItem="YWK-Uq-CyM" secondAttribute="trailing" id="VXF-eC-n4h"/>
+                        <constraint firstItem="Jh1-7L-5EI" firstAttribute="leading" secondItem="YWK-Uq-CyM" secondAttribute="trailing" id="fbm-9f-0a8"/>
+                        <constraint firstItem="K4h-aY-LAq" firstAttribute="leading" secondItem="X3b-TJ-Sc8" secondAttribute="leading" constant="48" id="gSv-6A-Ga7"/>
                         <constraint firstItem="Jh1-7L-5EI" firstAttribute="top" secondItem="X3b-TJ-Sc8" secondAttribute="top" id="nPM-lr-APe"/>
+                        <constraint firstItem="DzT-B1-RXW" firstAttribute="leading" secondItem="X3b-TJ-Sc8" secondAttribute="leading" constant="12" id="rvS-cH-ofX"/>
                         <constraint firstAttribute="trailing" secondItem="Jh1-7L-5EI" secondAttribute="trailing" id="tNY-Rx-lo7"/>
                         <constraint firstItem="YWK-Uq-CyM" firstAttribute="leading" secondItem="X3b-TJ-Sc8" secondAttribute="leading" id="tU8-gW-Q0B"/>
                     </constraints>
@@ -86,6 +94,7 @@
                 <outlet property="arrowImg" destination="kU5-14-I7a" id="qIX-qX-YTn"/>
                 <outlet property="detailLab" destination="PaW-0t-cjy" id="ZaF-0I-qPb"/>
                 <outlet property="selectBtn" destination="YWK-Uq-CyM" id="xkj-yy-9Ld"/>
+                <outlet property="selectImg" destination="DzT-B1-RXW" id="JX6-rN-IGD"/>
                 <outlet property="showCellBtn" destination="Jh1-7L-5EI" id="QAB-D0-0xa"/>
                 <outlet property="titleLab" destination="K4h-aY-LAq" id="4Nj-2e-po8"/>
             </connections>

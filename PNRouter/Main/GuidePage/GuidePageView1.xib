@@ -20,42 +20,51 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="kpc-4M-TIN">
-                            <rect key="frame" x="0.0" y="381.5" width="320" height="37"/>
+                            <rect key="frame" x="0.0" y="491" width="320" height="37"/>
                             <color key="pageIndicatorTintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </pageControl>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_logo" translatesAutoresizingMaskIntoConstraints="NO" id="RZO-i6-xgP">
-                            <rect key="frame" x="115" y="226.5" width="90" height="115"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_info_guide" translatesAutoresizingMaskIntoConstraints="NO" id="RZO-i6-xgP">
+                            <rect key="frame" x="126" y="150" width="68" height="76"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="76" id="e3G-dj-dMH"/>
+                                <constraint firstAttribute="width" constant="68" id="lcp-Y3-Svq"/>
+                            </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Safeguard your privacy using PP Messenger, via the PP Router secure channel." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOz-BT-KJq">
-                            <rect key="frame" x="27" y="82.5" width="266" height="56"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confidant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UuM-5s-UYh">
+                            <rect key="frame" x="88" y="254" width="144.5" height="41"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="34"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avx-Mk-9eD">
-                            <rect key="frame" x="27" y="465" width="266" height="54"/>
-                            <color key="backgroundColor" red="0.27843137254901962" green="0.27843137254901962" blue="0.27843137254901962" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="54" id="fkB-eg-XqN"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                            <state key="normal" title="Next"/>
-                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKN-3n-Tp7">
+                            <rect key="frame" x="232.5" y="260" width="12.5" height="10"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ri-Z6-J6C">
+                            <rect key="frame" x="56" y="310" width="208" height="100.5"/>
+                            <string key="text">Dedicated encrypted messaging system created for enterprises and individual customers to facilitate secure communication and carefree file sharing. </string>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="avx-Mk-9eD" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" constant="27" id="2bb-Er-ygF"/>
-                        <constraint firstAttribute="bottom" secondItem="avx-Mk-9eD" secondAttribute="bottom" constant="49" id="7cP-Ep-8pc"/>
-                        <constraint firstAttribute="trailing" secondItem="VOz-BT-KJq" secondAttribute="trailing" constant="27" id="A10-FG-imm"/>
-                        <constraint firstItem="VOz-BT-KJq" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" constant="27" id="Esv-0u-g05"/>
+                        <constraint firstItem="UuM-5s-UYh" firstAttribute="top" secondItem="RZO-i6-xgP" secondAttribute="bottom" constant="28" id="9Cf-TZ-utk"/>
+                        <constraint firstItem="RZO-i6-xgP" firstAttribute="top" secondItem="fDV-CI-tY0" secondAttribute="top" constant="150" id="GpV-MF-F8I"/>
+                        <constraint firstItem="CKN-3n-Tp7" firstAttribute="leading" secondItem="UuM-5s-UYh" secondAttribute="trailing" id="OoG-bS-UMR"/>
                         <constraint firstItem="RZO-i6-xgP" firstAttribute="centerX" secondItem="fDV-CI-tY0" secondAttribute="centerX" id="Op5-Ch-C46"/>
+                        <constraint firstAttribute="bottom" secondItem="kpc-4M-TIN" secondAttribute="bottom" constant="40" id="QrL-FB-SUc"/>
                         <constraint firstAttribute="trailing" secondItem="kpc-4M-TIN" secondAttribute="trailing" id="U1o-cw-bao"/>
-                        <constraint firstItem="RZO-i6-xgP" firstAttribute="centerY" secondItem="fDV-CI-tY0" secondAttribute="centerY" id="V4W-e9-pdu"/>
-                        <constraint firstItem="kpc-4M-TIN" firstAttribute="top" secondItem="RZO-i6-xgP" secondAttribute="bottom" constant="40" id="VHB-iz-NqT"/>
-                        <constraint firstItem="RZO-i6-xgP" firstAttribute="top" secondItem="VOz-BT-KJq" secondAttribute="bottom" constant="88" id="W0F-wM-hXc"/>
-                        <constraint firstAttribute="trailing" secondItem="avx-Mk-9eD" secondAttribute="trailing" constant="27" id="kTk-lS-n15"/>
+                        <constraint firstAttribute="trailing" secondItem="5Ri-Z6-J6C" secondAttribute="trailing" constant="56" id="kuU-Xa-ALs"/>
+                        <constraint firstItem="UuM-5s-UYh" firstAttribute="centerX" secondItem="fDV-CI-tY0" secondAttribute="centerX" id="liH-WE-uTp"/>
+                        <constraint firstItem="CKN-3n-Tp7" firstAttribute="top" secondItem="UuM-5s-UYh" secondAttribute="top" constant="6" id="q7a-C3-dxK"/>
                         <constraint firstItem="kpc-4M-TIN" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" id="rWj-fe-iaF"/>
+                        <constraint firstItem="5Ri-Z6-J6C" firstAttribute="top" secondItem="UuM-5s-UYh" secondAttribute="bottom" constant="15" id="rdC-9j-5Wg"/>
+                        <constraint firstItem="5Ri-Z6-J6C" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" constant="56" id="zGG-to-y91"/>
                     </constraints>
                 </view>
             </subviews>
@@ -67,13 +76,10 @@
                 <constraint firstItem="fDV-CI-tY0" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ojy-PH-cQo"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <connections>
-                <outlet property="nextBtn" destination="avx-Mk-9eD" id="6fk-lJ-uMn"/>
-            </connections>
             <point key="canvasLocation" x="-377" y="18"/>
         </view>
     </objects>
     <resources>
-        <image name="img_logo" width="90" height="115"/>
+        <image name="icon_info_guide" width="68" height="76"/>
     </resources>
 </document>

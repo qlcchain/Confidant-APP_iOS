@@ -39,6 +39,7 @@ def demo_pods
     pod 'OpenSSL', :git => 'https://github.com/isee15/OpenSSL.git'
     pod 'Bugly'
 #    pod 'JCDownloader'
+#    pod 'TYAttributedLabel'
 end
 
 

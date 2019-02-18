@@ -66,7 +66,7 @@
     view.okBlock = ^{
         [weakSelf sendReboot];
     };
-    [view show];
+    [view showWithTitle:@"Your hard disk has been formatted" tip:@"Please reboot your router" click:@"Reboot"];
 }
 
 #pragma mark - Action
@@ -107,7 +107,7 @@
 }
 
 - (void)formatDiskFailNoti:(NSNotification *)noti {
-//    [self hideToast];
+    [self hideToast];
 }
 
 - (void)rebootSuccessNoti:(NSNotification *)noti {

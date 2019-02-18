@@ -19,7 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (nonatomic, strong) NSMutableArray *sourceArr;
-@property (nonatomic, strong) NSString *selectMode;
+@property (nullable, nonatomic, strong) NSString *selectMode;
 
 @end
 
@@ -112,7 +112,7 @@
 }
 
 - (IBAction)confirmAction:(id)sender {
-    if (!_selectMode) {
+    if (!_selectMode || _selectMode.length <= 0) {
         [AppD.window showHint:@"This mode is not supported"];
         return;
     }
@@ -159,10 +159,11 @@
     ConfigDiskShowModel *model = _sourceArr[section];
     
     ConfigDiskHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:ConfigDiskHeaderViewReuse];
+    headerView.headerSection = section;
     [headerView configHeaderWithModel:model];
     
     @weakify_self
-    [headerView setSelectB:^{
+    [headerView setSelectB:^(NSInteger headerSection) {
         if (!model.isSelect) {
             [weakSelf.sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 ConfigDiskShowModel *tempM = obj;
@@ -171,14 +172,14 @@
             model.isSelect = YES;
             [weakSelf.mainTable reloadData];
             
-            if (section == 0) { // RAID1
+            if (headerSection == 0) { // RAID1
                 weakSelf.selectMode = @"RAID1";
-            } else if (section == 1) { // BASIC
+            } else if (headerSection == 1) { // BASIC
                 weakSelf.selectMode = @"BASIC";
-            } else if (section == 2) { // RAID0
+            } else if (headerSection == 2) { // RAID0
                 weakSelf.selectMode = @"RAID0";
             } else {
-                weakSelf.selectMode = nil;
+                weakSelf.selectMode = @"";
             }
         }
     }];
