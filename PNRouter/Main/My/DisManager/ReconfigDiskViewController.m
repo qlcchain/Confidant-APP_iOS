@@ -107,7 +107,7 @@
 }
 
 - (void)formatDiskFailNoti:(NSNotification *)noti {
-//    [self hideToast];
+    [self hideToast];
 }
 
 - (void)rebootSuccessNoti:(NSNotification *)noti {

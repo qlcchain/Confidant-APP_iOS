@@ -82,8 +82,7 @@
 }
 
 - (void)logout {
-    
-    if ( _routerM.isConnected) {
+    if (_routerM.isConnected) {
          [SendRequestUtil sendLogOut];
          [self performSelector:@selector(logOutApp) withObject:self afterDelay:0.5f];
     } else { //删除router

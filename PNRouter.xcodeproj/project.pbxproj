@@ -3052,15 +3052,15 @@
 		73899CB52152011000962B14 /* GuidePage */ = {
 			isa = PBXGroup;
 			children = (
-				73899CB62152011000962B14 /* GuidePageView2.m */,
-				73899CB72152011000962B14 /* GuidePageView3.h */,
-				73899CB82152011000962B14 /* GuidePageView1.m */,
-				73899CBA2152011000962B14 /* GuidePageView2.h */,
-				73899CBB2152011000962B14 /* GuidePageView3.xib */,
 				73899CBC2152011000962B14 /* GuidePageView1.h */,
-				73899CBD2152011000962B14 /* GuidePageView2.xib */,
-				73899CBE2152011000962B14 /* GuidePageView3.m */,
+				73899CB82152011000962B14 /* GuidePageView1.m */,
 				73899CBF2152011000962B14 /* GuidePageView1.xib */,
+				73899CBA2152011000962B14 /* GuidePageView2.h */,
+				73899CB62152011000962B14 /* GuidePageView2.m */,
+				73899CBD2152011000962B14 /* GuidePageView2.xib */,
+				73899CB72152011000962B14 /* GuidePageView3.h */,
+				73899CBE2152011000962B14 /* GuidePageView3.m */,
+				73899CBB2152011000962B14 /* GuidePageView3.xib */,
 				73899CB92152011000962B14 /* GuidePageViewController.h */,
 				73899CC02152011000962B14 /* GuidePageViewController.m */,
 			);
