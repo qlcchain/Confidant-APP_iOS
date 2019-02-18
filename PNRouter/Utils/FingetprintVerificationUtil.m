@@ -131,6 +131,7 @@
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证成功");
+                        [[NSNotificationCenter defaultCenter] postNotificationName:TOUCH_MODIFY_SUCCESS_NOTI object:nil];
                     });
                 }
             }];

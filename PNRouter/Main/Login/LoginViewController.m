@@ -317,12 +317,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCurrentSelectRouter) name:CANCEL_LOGINMAC_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(touchModifySuccess:) name:TOUCH_MODIFY_SUCCESS_NOTI object:nil];
+    
     if (AppD.showTouch) {
          AppD.showTouch = NO;
          [FingetprintVerificationUtil show];
     }
-   
-    
 }
 #pragma 第一次 广播完回调。验证是否走socket 还是 tox
 - (void) checkConnectStyle
@@ -406,6 +406,13 @@
 }
 
 #pragma mark - 通知回调
+// touch验证成功
+- (void) touchModifySuccess:(NSNotification *) noti
+{
+    if ([RouterModel getLoginOpenRouter]) {
+        [self loginAction:nil];
+    }
+}
 // 注册推送
 - (void) registerPushNoti:(NSNotification *) noti
 {
