@@ -10,14 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void(^DiskRebootBlock)(void);
+typedef void(^DiskClickBlock)(void);
 
 @interface DiskAlertView : UIView
 
-@property (nonatomic, copy) DiskRebootBlock okBlock;
+@property (nonatomic, copy) DiskClickBlock okBlock;
 
 + (instancetype)getInstance;
-- (void)show;
+- (void)showWithTitle:(NSString *)title tip:(NSString *)tip click:(NSString *)click;
 
 @end
 

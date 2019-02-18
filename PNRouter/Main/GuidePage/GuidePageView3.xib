@@ -24,10 +24,10 @@
                             <state key="normal" image="icon_white_question"/>
                         </button>
                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_qrcode_guide" translatesAutoresizingMaskIntoConstraints="NO" id="1JT-y9-6N6">
-                            <rect key="frame" x="0.0" y="66" width="375" height="200"/>
+                            <rect key="frame" x="0.0" y="50" width="375" height="200"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan to talk freely !" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arf-Nf-So9">
-                            <rect key="frame" x="50.5" y="271" width="274" height="41"/>
+                            <rect key="frame" x="50.5" y="251" width="274" height="41"/>
                             <fontDescription key="fontDescription" type="system" pointSize="34"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -41,39 +41,39 @@
                             <state key="normal" image="icon_scan_circle"/>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan the QR code on the Confidant Router to activate your administrator account." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gTl-WZ-0e9">
-                            <rect key="frame" x="56" y="338" width="263" height="50.5"/>
+                            <rect key="frame" x="56" y="310" width="263" height="50.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="are-9D-O3i">
-                            <rect key="frame" x="56" y="338" width="39" height="19"/>
+                            <rect key="frame" x="56" y="310" width="39" height="19"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="39" id="aQL-qI-zHc"/>
                                 <constraint firstAttribute="height" constant="19" id="uOF-D6-0Y4"/>
                             </constraints>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan your QR code of the private key to import an existing account. " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GF4-kh-xJ5">
-                            <rect key="frame" x="56" y="394.5" width="263" height="33.5"/>
+                            <rect key="frame" x="56" y="366.5" width="263" height="33.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vRh-ZC-Y0l">
-                            <rect key="frame" x="56" y="394.5" width="39" height="19"/>
+                            <rect key="frame" x="56" y="366.5" width="39" height="19"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="39" id="24s-JC-qrr"/>
                                 <constraint firstAttribute="height" constant="19" id="V0X-Sk-UFg"/>
                             </constraints>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan the invation code to join your friend's Confidant circle." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DYp-vA-l9f">
-                            <rect key="frame" x="56" y="434" width="263" height="33.5"/>
+                            <rect key="frame" x="56" y="406" width="263" height="33.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8U2-K9-Xui">
-                            <rect key="frame" x="56" y="434" width="39" height="19"/>
+                            <rect key="frame" x="56" y="406" width="39" height="19"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="39" id="Brm-lL-te7"/>
                                 <constraint firstAttribute="height" constant="19" id="wIv-Jl-45C"/>
@@ -90,15 +90,15 @@
                         <constraint firstItem="1JT-y9-6N6" firstAttribute="centerX" secondItem="vQm-MM-Wfp" secondAttribute="centerX" id="J5a-WC-EaS"/>
                         <constraint firstItem="mUB-bs-VjT" firstAttribute="centerX" secondItem="vQm-MM-Wfp" secondAttribute="centerX" id="Kyh-mV-K1f"/>
                         <constraint firstItem="gTl-WZ-0e9" firstAttribute="leading" secondItem="vQm-MM-Wfp" secondAttribute="leading" constant="56" id="PDY-zt-thn"/>
-                        <constraint firstItem="gTl-WZ-0e9" firstAttribute="top" secondItem="arf-Nf-So9" secondAttribute="bottom" constant="26" id="Q0c-Fu-etd"/>
+                        <constraint firstItem="gTl-WZ-0e9" firstAttribute="top" secondItem="arf-Nf-So9" secondAttribute="bottom" constant="18" id="Q0c-Fu-etd"/>
                         <constraint firstItem="DYp-vA-l9f" firstAttribute="leading" secondItem="vQm-MM-Wfp" secondAttribute="leading" constant="56" id="Qjp-BT-XEW"/>
                         <constraint firstItem="DYp-vA-l9f" firstAttribute="top" secondItem="GF4-kh-xJ5" secondAttribute="bottom" constant="6" id="ROT-XA-3tv"/>
                         <constraint firstAttribute="trailing" secondItem="DYp-vA-l9f" secondAttribute="trailing" constant="56" id="Uuq-uH-gAb"/>
                         <constraint firstItem="GF4-kh-xJ5" firstAttribute="leading" secondItem="vQm-MM-Wfp" secondAttribute="leading" constant="56" id="VtZ-vq-VXT"/>
-                        <constraint firstItem="arf-Nf-So9" firstAttribute="top" secondItem="1JT-y9-6N6" secondAttribute="bottom" constant="5" id="bVA-eG-KdW"/>
+                        <constraint firstItem="arf-Nf-So9" firstAttribute="top" secondItem="1JT-y9-6N6" secondAttribute="bottom" constant="1" id="bVA-eG-KdW"/>
                         <constraint firstAttribute="trailing" secondItem="9ze-bb-lvX" secondAttribute="trailing" constant="12" id="bX5-Qa-7tv"/>
                         <constraint firstItem="are-9D-O3i" firstAttribute="leading" secondItem="gTl-WZ-0e9" secondAttribute="leading" id="d5R-m7-BsS"/>
-                        <constraint firstItem="1JT-y9-6N6" firstAttribute="top" secondItem="vQm-MM-Wfp" secondAttribute="top" constant="66" id="fNJ-57-GXA"/>
+                        <constraint firstItem="1JT-y9-6N6" firstAttribute="top" secondItem="vQm-MM-Wfp" secondAttribute="top" constant="50" id="fNJ-57-GXA"/>
                         <constraint firstItem="8U2-K9-Xui" firstAttribute="top" secondItem="DYp-vA-l9f" secondAttribute="top" id="few-Bb-CNg"/>
                         <constraint firstItem="vRh-ZC-Y0l" firstAttribute="top" secondItem="GF4-kh-xJ5" secondAttribute="top" id="gaR-w7-ZYU"/>
                         <constraint firstItem="are-9D-O3i" firstAttribute="top" secondItem="gTl-WZ-0e9" secondAttribute="top" id="qhS-gZ-BWe"/>

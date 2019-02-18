@@ -12,6 +12,9 @@
 
 @property (weak, nonatomic) IBOutlet UIView *tipBack;
 @property (weak, nonatomic) IBOutlet UILabel *tipLab;
+@property (weak, nonatomic) IBOutlet UILabel *titleLab;
+@property (weak, nonatomic) IBOutlet UIButton *clickBtn;
+
 
 @end
 
@@ -24,8 +27,11 @@
     return view;
 }
 
-- (void)show {
+- (void)showWithTitle:(NSString *)title tip:(NSString *)tip click:(NSString *)click {
     self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    self.titleLab.text = title;
+    self.tipLab.text = tip;
+    [self.clickBtn setTitle:click forState:UIControlStateNormal];
     [AppD.window addSubview:self];
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.mas_equalTo(AppD.window).offset(0);

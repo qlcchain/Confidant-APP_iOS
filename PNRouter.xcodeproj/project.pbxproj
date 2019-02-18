@@ -65,6 +65,9 @@
 		582BFE39221688C200D8C2C8 /* DiskToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE34221688C100D8C2C8 /* DiskToastView.m */; };
 		582BFE3A221688C200D8C2C8 /* DiskToastView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582BFE35221688C100D8C2C8 /* DiskToastView.xib */; };
 		582BFE3B221688C200D8C2C8 /* DiskAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE37221688C200D8C2C8 /* DiskAlertView.m */; };
+		582BFE3E221A98D800D8C2C8 /* UnitUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE3D221A98D800D8C2C8 /* UnitUtil.m */; };
+		582BFE42221AAA1100D8C2C8 /* DiskManagementMMCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE3F221AAA1000D8C2C8 /* DiskManagementMMCCell.m */; };
+		582BFE43221AAA1100D8C2C8 /* DiskManagementMMCCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582BFE40221AAA1000D8C2C8 /* DiskManagementMMCCell.xib */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
@@ -586,6 +589,11 @@
 		582BFE35221688C100D8C2C8 /* DiskToastView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DiskToastView.xib; sourceTree = "<group>"; };
 		582BFE36221688C200D8C2C8 /* DiskAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiskAlertView.h; sourceTree = "<group>"; };
 		582BFE37221688C200D8C2C8 /* DiskAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiskAlertView.m; sourceTree = "<group>"; };
+		582BFE3C221A98D800D8C2C8 /* UnitUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnitUtil.h; sourceTree = "<group>"; };
+		582BFE3D221A98D800D8C2C8 /* UnitUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitUtil.m; sourceTree = "<group>"; };
+		582BFE3F221AAA1000D8C2C8 /* DiskManagementMMCCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiskManagementMMCCell.m; sourceTree = "<group>"; };
+		582BFE40221AAA1000D8C2C8 /* DiskManagementMMCCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DiskManagementMMCCell.xib; sourceTree = "<group>"; };
+		582BFE41221AAA1100D8C2C8 /* DiskManagementMMCCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiskManagementMMCCell.h; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
@@ -1738,6 +1746,9 @@
 		584B438B21FEE10000D1F21A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				582BFE41221AAA1100D8C2C8 /* DiskManagementMMCCell.h */,
+				582BFE3F221AAA1000D8C2C8 /* DiskManagementMMCCell.m */,
+				582BFE40221AAA1000D8C2C8 /* DiskManagementMMCCell.xib */,
 				584B438C21FEE11D00D1F21A /* DiskManagementCell.h */,
 				584B438D21FEE11D00D1F21A /* DiskManagementCell.m */,
 				584B438E21FEE11D00D1F21A /* DiskManagementCell.xib */,
@@ -2647,6 +2658,8 @@
 				7392791421FAF356003AAD58 /* UploadFileManager.m */,
 				7360B85321FC632A008FB181 /* FileDownUtil.h */,
 				7360B85421FC632A008FB181 /* FileDownUtil.m */,
+				582BFE3C221A98D800D8C2C8 /* UnitUtil.h */,
+				582BFE3D221A98D800D8C2C8 /* UnitUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3350,6 +3363,7 @@
 				587C52CD215CAF14006787FB /* RouterManagementCell.xib in Resources */,
 				583BF91B21F6B5AB0078A2A8 /* DetailInformationViewController.xib in Resources */,
 				73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */,
+				582BFE43221AAA1100D8C2C8 /* DiskManagementMMCCell.xib in Resources */,
 				73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */,
 				583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */,
 				73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */,
@@ -3554,6 +3568,7 @@
 				581FDF3921F024160068C120 /* toxav.m in Sources */,
 				73D00EB8215F27610013E20D /* MD5Util.m in Sources */,
 				73F9A11A219973C80011FAA5 /* ReviceRadio.m in Sources */,
+				582BFE3E221A98D800D8C2C8 /* UnitUtil.m in Sources */,
 				7386910A214CC7D3003CF6A3 /* EditTextViewController.m in Sources */,
 				7378841921ACF2970033A189 /* OCTSubmanagerFilesImpl.m in Sources */,
 				73899CC22152011000962B14 /* GuidePageView1.m in Sources */,
@@ -3770,6 +3785,7 @@
 				736257A62142149300D7FD6B /* UIView+ViewController.m in Sources */,
 				585AEE5921421DD70098A070 /* SocketMessageUtil.m in Sources */,
 				73060529216F3572005A0E13 /* AFHTTPClientV2.m in Sources */,
+				582BFE42221AAA1100D8C2C8 /* DiskManagementMMCCell.m in Sources */,
 				58C62707214BC81E0051AFD0 /* PayloadModel.m in Sources */,
 				7362573D213E8B3200D7FD6B /* AppDelegate.m in Sources */,
 				73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */,

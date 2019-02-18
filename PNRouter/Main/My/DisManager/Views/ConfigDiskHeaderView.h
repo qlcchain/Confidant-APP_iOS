@@ -15,11 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
 static NSString *ConfigDiskHeaderViewReuse = @"ConfigDiskHeaderView";
 #define ConfigDiskHeaderViewHeight 56
 
-typedef void(^ConfigDiskSelectBlock)(void);
+typedef void(^ConfigDiskSelectBlock)(NSInteger headerSection);
 typedef void(^ConfigDiskShowCellBlock)(void);
 
 @interface ConfigDiskHeaderView : UITableViewHeaderFooterView
 
+@property (weak, nonatomic) IBOutlet UIImageView *selectImg;
 @property (weak, nonatomic) IBOutlet UIButton *selectBtn;
 @property (weak, nonatomic) IBOutlet UIButton *showCellBtn;
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
@@ -27,6 +28,7 @@ typedef void(^ConfigDiskShowCellBlock)(void);
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImg;
 @property (nonatomic, copy) ConfigDiskSelectBlock selectB;
 @property (nonatomic, copy) ConfigDiskShowCellBlock showCellB;
+@property (nonatomic) NSInteger headerSection;
 
 - (void)configHeaderWithModel:(ConfigDiskShowModel *)model;
 
