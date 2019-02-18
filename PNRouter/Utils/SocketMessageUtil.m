@@ -36,6 +36,7 @@
 #import "EntryModel.h"
 #import "LibsodiumUtil.h"
 #import "FileDownUtil.h"
+#import "RoutherConfig.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -82,6 +83,33 @@
     });
     
 }
+
+/**
+ 发送文本消息 4
+ */
++ (void)sendVersion4WithParams:(NSDictionary *)params{
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams4]];
+    //    NSString *paramsJson = params.mj_JSONString;
+    //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
+    [muDic setObject:params forKey:@"params"];
+    
+    if ([[NSString getNotNullValue:params[@"Action"]] isEqualToString:Aciont_Register]) {
+       // [LibsodiumUtil en]
+       // [EntryModel getShareObject].privateKey
+        muDic[@"params"][@"Sign"] = muDic[@"timestamp"];
+    }
+    NSString *text = muDic.mj_JSONString;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (AppD.manager) {
+            [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
+        } else {
+            [SocketUtil.shareInstance sendWithText:text];
+        }
+    });
+    
+}
+
 
 /**
  回复多段文本消息
@@ -1148,6 +1176,10 @@
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION3,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
++ (NSDictionary *)getBaseParams4 {
+    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION4,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+}
 
 + (NSDictionary *)getMutBaseParamsWithMore {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
@@ -1209,4 +1241,17 @@
     [SocketMessageUtil sendVersion1WithParams:params];
 }
 
+// ---------------------v4---------------------------
+#pragma mark -设备管理员修改设备昵称
++ (void) sendUpdateRourerNickName:(NSString *) nickName
+{
+    NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserKey":[EntryModel getShareObject].publicKey,@"Name":[nickName base64EncodedString]};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+#pragma mark -新用户注册
++ (void) sendUserRegisterSn:(NSString *) sn code:(NSString *) code nickName:(NSString *) nickName
+{
+    NSDictionary *params = @{@"Action":Aciont_Register,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":sn,@"IdentifyCode":code,@"Sign":@"",@"UserKey":[EntryModel getShareObject].publicKey,@"NickName":[nickName base64EncodedString]};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 @end

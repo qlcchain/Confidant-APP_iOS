@@ -72,6 +72,7 @@
 }
 
 + (AFHTTPSessionManager *)getRouterIpHTTPManager {
+    
     if (![AFHTTPClientV2 shareInstance].httpManager) {
         [AFHTTPClientV2 shareInstance].httpManager = [AFHTTPSessionManager manager];
         [AFHTTPClientV2 shareInstance].httpManager.requestSerializer = [AFHTTPRequestSerializer serializer];//[AFHTTPRequestSerializer serializer];

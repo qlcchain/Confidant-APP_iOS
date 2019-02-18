@@ -52,6 +52,7 @@ static NSString *Action_GetDiskTotalInfo = @"GetDiskTotalInfo";
 static NSString *Action_GetDiskDetailInfo = @"GetDiskDetailInfo";
 static NSString *Action_FormatDisk = @"FormatDisk";
 static NSString *Action_Reboot = @"Reboot";
+static NSString *Action_ResetRouterName = @"ResetRouterName";
 
 @class FriendModel;
 
@@ -78,4 +79,6 @@ static NSString *Action_Reboot = @"Reboot";
  重新发送文本聊天消息 ->msgid
  */
 + (void)sendChatTextWithParams:(NSDictionary *)params withSendMsgId:(NSString *) msgid;
+// -设备管理员修改设备昵称
++ (void) sendUpdateRourerNickName:(NSString *) nickName;
 @end
