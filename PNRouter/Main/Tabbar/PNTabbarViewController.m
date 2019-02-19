@@ -147,8 +147,6 @@
         [[SocketManageUtil getShareObject] clearAllConnectSocket];
         // 清除所有正在下载文件
         [[FileDownUtil getShareObject] removeAllTask];
-        
-        
     } else {
         AppD.isConnect = NO;
         // [self logOutTox];
