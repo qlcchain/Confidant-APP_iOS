@@ -10,6 +10,8 @@
 #import "DiskToastView.h"
 #import "DiskAlertView.h"
 #import "DiskManagerViewController.h"
+#import "PNTabbarViewController.h"
+#import "AppDelegate.h"
 
 @interface ReconfigDiskViewController ()
 
@@ -45,7 +47,7 @@
 }
 
 - (void)sendReboot {
-    [self showToast:@"Rebooting..."];
+    [self showToast:@"Rebooting, will jump to the login page"];
     [SendRequestUtil sendRebootWithShowHud:NO];
 }
 
@@ -60,13 +62,19 @@
     }
 }
 
-- (void)showRebootAlertView {
-    DiskAlertView *view = [DiskAlertView getInstance];
-    @weakify_self
-    view.okBlock = ^{
-        [weakSelf sendReboot];
-    };
-    [view showWithTitle:@"Your hard disk has been formatted" tip:@"Please reboot your router" click:@"Reboot"];
+//- (void)showRebootAlertView {
+//    DiskAlertView *view = [DiskAlertView getInstance];
+//    @weakify_self
+//    view.okBlock = ^{
+//        [weakSelf sendReboot];
+//        [weakSelf performSelector:@selector(logout) withObject:nil afterDelay:1.5];
+//    };
+//    [view showWithTitle:@"Your hard disk has been formatted" tip:@"Please reboot your router" click:@"Reboot"];
+//}
+
+- (void)logout {
+    [self hideToast];
+    [[NSNotificationCenter defaultCenter] postNotificationName:REVER_APP_LOGOUT_NOTI object:nil];
 }
 
 #pragma mark - Action
@@ -103,7 +111,9 @@
 #pragma mark - Noti
 - (void)formatDiskSuccessNoti:(NSNotification *)noti {
     [self hideToast];
-    [self showRebootAlertView];
+    [self showToast:@"The device will restart automatically after 5 seconds, app will jump to the login page"];
+    [self performSelector:@selector(logout) withObject:nil afterDelay:4];
+//    [self showRebootAlertView];
 }
 
 - (void)formatDiskFailNoti:(NSNotification *)noti {
