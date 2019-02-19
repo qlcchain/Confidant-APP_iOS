@@ -95,7 +95,7 @@ typedef enum : NSUInteger {
     CGFloat totalDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.TotalCapacity];
     CGFloat usePercent = useDigital/totalDigital;
     _spaceLab.text = [NSString stringWithFormat:@"Used Sapce：%@ / %@ （%.1f%@）",_getDiskTotalInfoM.UsedCapacity?:@"",_getDiskTotalInfoM.TotalCapacity?:@"",usePercent*100,@"%"];
-    _modeLab.text = [_getDiskTotalInfoM.Mode integerValue] == 0?@"Not configured":[_getDiskTotalInfoM.Mode integerValue] == 1?@"BASIC":[_getDiskTotalInfoM.Mode integerValue] == 2?@"RAID1":@"";
+    _modeLab.text = [_getDiskTotalInfoM.Mode integerValue] == 0?@"Not configured":[_getDiskTotalInfoM.Mode integerValue] == 1?@"BASIC":[_getDiskTotalInfoM.Mode integerValue] == 2?@"RAID1":[_getDiskTotalInfoM.Mode integerValue] == 3?@"RAID0":@"";
     _progressV.progress = usePercent;
     
     [_sourceArr removeAllObjects];

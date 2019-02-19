@@ -10,5 +10,7 @@
 #import "OCTManager.h"
 
 @interface PNTabbarViewController : UITabBarController
+
 - (instancetype)initWithManager:(id<OCTManager>) manager;
+
 @end

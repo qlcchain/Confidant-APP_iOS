@@ -26,7 +26,6 @@
 @property (nonatomic ,assign) BOOL isLoginMac;
 @property (nonatomic ,assign) BOOL showTouch;
 
-
 /**
  app是否正在进行登录操作
  */
