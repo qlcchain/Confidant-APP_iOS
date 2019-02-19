@@ -191,17 +191,13 @@
 #pragma mark -tox 登陆成功
 - (void) toxLoginSuccessWithManager:(id<OCTManager>)manager
 {
-  
     [self addRouterFriend];
-
-    
 }
 
 - (void) addRouterFriend
 {
     
    // [RoutherConfig getRoutherConfig].currentRouterToxid = @"A1DA6FFE24611BDE1D14B55B02F180961A3DFB8C9C9B2A572EB274896B7EAC30B4CDCDCE68B8";
-    
     if (![AppD.manager.friends friendIsExitWithFriend:[RoutherConfig getRoutherConfig].currentRouterToxid]) {
         // 添加好友
         [self showConnectServerLoad];

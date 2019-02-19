@@ -36,9 +36,10 @@
     
     if (showHud) {
        [AppD.window showHudInView:AppD.window hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
-    } 
+    }
     NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"UserId":userid?:@"",@"LoginKey":passWord?:@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion]};
     [SocketMessageUtil sendVersion2WithParams:params];
+    
 }
 #pragma mark -派生类拉取用户
 + (void) sendPullUserList
