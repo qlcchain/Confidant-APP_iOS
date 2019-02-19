@@ -31,6 +31,8 @@
 #import <AFNetworking/AFNetworking.h>
 #import "AFHTTPClientV2.h"
 #import "ReviceRadio.h"
+#import "SocketManageUtil.h"
+#import "FileDownUtil.h"
 
 @interface PNTabbarViewController ()<UITabBarControllerDelegate>
 @property (nonatomic ,strong) SocketAlertView *alertView;
@@ -141,8 +143,16 @@
     if ([SystemUtil isSocketConnect]) {
         [RoutherConfig getRoutherConfig].currentRouterIp = @"";
         [[SocketUtil shareInstance] disconnect];
+        // 清除所有正在发送文件
+        [[SocketManageUtil getShareObject] clearAllConnectSocket];
+        // 清除所有正在下载文件
+        [[FileDownUtil getShareObject] removeAllTask];
+        
+        
     } else {
         AppD.isConnect = NO;
+        // [self logOutTox];
+        [[NSNotificationCenter defaultCenter] postNotificationName:TOX_CONNECT_STATUS_NOTI object:nil];
     }
     [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
     AppD.isLogOut = YES;
