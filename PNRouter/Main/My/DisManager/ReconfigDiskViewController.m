@@ -65,8 +65,14 @@
     @weakify_self
     view.okBlock = ^{
         [weakSelf sendReboot];
+        [weakSelf performSelector:@selector(logout) withObject:nil afterDelay:0.5];
     };
     [view showWithTitle:@"Your hard disk has been formatted" tip:@"Please reboot your router" click:@"Reboot"];
+}
+
+- (void)logout {
+    [self hideToast];
+    
 }
 
 #pragma mark - Action

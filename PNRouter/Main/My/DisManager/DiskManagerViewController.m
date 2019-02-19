@@ -91,10 +91,8 @@ typedef enum : NSUInteger {
     [strAtt_Temp setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:UIColorFromRGB(0x2b2b2b)} range:storageRange];
     _storageLab.attributedText = strAtt_Temp;
     
-//    NSString *useLast = [_getDiskTotalInfoM.UsedCapacity substringFromIndex:_getDiskTotalInfoM.UsedCapacity.length - 1];
-    CGFloat useDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.UsedCapacity];// [useLast isEqualToString:@"M"]?[[_getDiskTotalInfoM.UsedCapacity substringToIndex:_getDiskTotalInfoM.UsedCapacity.length - 1] floatValue]:[[_getDiskTotalInfoM.UsedCapacity substringToIndex:_getDiskTotalInfoM.UsedCapacity.length - 1] floatValue]*1024;
-//    NSString *totalLast = [_getDiskTotalInfoM.TotalCapacity substringFromIndex:_getDiskTotalInfoM.TotalCapacity.length - 1];
-    CGFloat totalDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.TotalCapacity];// [totalLast isEqualToString:@"M"]?[[_getDiskTotalInfoM.TotalCapacity substringToIndex:_getDiskTotalInfoM.TotalCapacity.length - 1] floatValue]:[[_getDiskTotalInfoM.TotalCapacity substringToIndex:_getDiskTotalInfoM.TotalCapacity.length - 1] floatValue]*1024;
+    CGFloat useDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.UsedCapacity];
+    CGFloat totalDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.TotalCapacity];
     CGFloat usePercent = useDigital/totalDigital;
     _spaceLab.text = [NSString stringWithFormat:@"Used Sapce：%@ / %@ （%.1f%@）",_getDiskTotalInfoM.UsedCapacity?:@"",_getDiskTotalInfoM.TotalCapacity?:@"",usePercent*100,@"%"];
     _modeLab.text = [_getDiskTotalInfoM.Mode integerValue] == 0?@"Not configured":[_getDiskTotalInfoM.Mode integerValue] == 1?@"BASIC":[_getDiskTotalInfoM.Mode integerValue] == 2?@"RAID1":@"";
@@ -102,14 +100,12 @@ typedef enum : NSUInteger {
     
     [_sourceArr removeAllObjects];
     // 添加mmc信息
-    GetDiskTotalInfo *mmcInfo = [[GetDiskTotalInfo alloc] init];
-    if (_getDiskTotalInfoM.Count > 0) { // 有磁盘 默认灰
-        mmcInfo.Status = @(4);
-    } else { // 无磁盘 显示
+    if (_getDiskTotalInfoM.Count <= 0) { // 有磁盘 默认灰
+        GetDiskTotalInfo *mmcInfo = [[GetDiskTotalInfo alloc] init];
         mmcInfo.Status = @(2);
+        mmcInfo.Capacity = _getDiskTotalInfoM.TotalCapacity;
+        [_sourceArr addObject:mmcInfo];
     }
-    mmcInfo.Capacity = _getDiskTotalInfoM.TotalCapacity;
-    [_sourceArr addObject:mmcInfo];
     // 添加磁盘信息
     [_sourceArr addObjectsFromArray:_getDiskTotalInfoM.Info];
 
@@ -186,22 +182,24 @@ typedef enum : NSUInteger {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return DiskManagementMMCCell_Height;
-    } else  {
+    GetDiskTotalInfo *model = _sourceArr[indexPath.row];
+    if ([model.Slot integerValue] == 0 || [model.Slot integerValue] == 1) {
         return DiskManagementCell_Height;
+    } else  {
+        return DiskManagementMMCCell_Height;
     }
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     GetDiskTotalInfo *model = _sourceArr[indexPath.row];
-    if (indexPath.row == 0) {
-        DiskManagementMMCCell *cell = [tableView dequeueReusableCellWithIdentifier:DiskManagementMMCCellReuse];
+    
+    if ([model.Slot integerValue] == 0 || [model.Slot integerValue] == 1) {
+        DiskManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:DiskManagementCellReuse];
         [cell configCellWithModel:model];
         return cell;
     } else {
-        DiskManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:DiskManagementCellReuse];
+        DiskManagementMMCCell *cell = [tableView dequeueReusableCellWithIdentifier:DiskManagementMMCCellReuse];
         [cell configCellWithModel:model];
         return cell;
     }
@@ -212,12 +210,12 @@ typedef enum : NSUInteger {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.row == 0) {
-        return;
-    }
-    
     GetDiskTotalInfo *model = _sourceArr[indexPath.row];
-    [self jumpToDiskDetail:model];
+    
+    if ([model.Slot integerValue] == 0 || [model.Slot integerValue] == 1) {
+        GetDiskTotalInfo *model = _sourceArr[indexPath.row];
+        [self jumpToDiskDetail:model];
+    }
 }
 
 #pragma mark - Transition
