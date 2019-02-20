@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountManagementViewController">
             <connections>
+                <outlet property="headerView" destination="Cfz-aH-Amz" id="RbI-Ga-jMw"/>
+                <outlet property="qrImgV" destination="zl9-Lp-86V" id="WhM-Xw-eLr"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -32,7 +34,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B9N-YV-fug">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcT-T8-sVj">
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcT-T8-sVj">
                                     <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="BNU-jf-14Z"/>
@@ -97,6 +99,9 @@
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FW0-Db-gWK">
                                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                                                    <connections>
+                                                                        <action selector="routerPWAction:" destination="-1" eventType="touchUpInside" id="6lP-0v-cHZ"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -136,15 +141,26 @@
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DCV-MU-mqx">
                                                             <rect key="frame" x="0.5" y="0.5" width="63" height="63"/>
                                                         </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="C" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="psn-PM-Tze">
+                                                            <rect key="frame" x="0.5" y="0.5" width="63" height="63"/>
+                                                            <color key="backgroundColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
+                                                        <constraint firstItem="psn-PM-Tze" firstAttribute="leading" secondItem="Cfz-aH-Amz" secondAttribute="leading" constant="0.5" id="Bsh-Jw-dpV"/>
                                                         <constraint firstAttribute="bottom" secondItem="DCV-MU-mqx" secondAttribute="bottom" constant="0.5" id="CZS-7t-wRi"/>
                                                         <constraint firstItem="DCV-MU-mqx" firstAttribute="top" secondItem="Cfz-aH-Amz" secondAttribute="top" constant="0.5" id="RiH-Mb-UXB"/>
+                                                        <constraint firstAttribute="bottom" secondItem="psn-PM-Tze" secondAttribute="bottom" constant="0.5" id="Rne-Mo-YXE"/>
                                                         <constraint firstItem="DCV-MU-mqx" firstAttribute="leading" secondItem="Cfz-aH-Amz" secondAttribute="leading" constant="0.5" id="ZvW-vE-Wrk"/>
                                                         <constraint firstAttribute="height" constant="64" id="aCT-3y-CKS"/>
+                                                        <constraint firstItem="psn-PM-Tze" firstAttribute="top" secondItem="Cfz-aH-Amz" secondAttribute="top" constant="0.5" id="hWK-kO-iUx"/>
                                                         <constraint firstAttribute="trailing" secondItem="DCV-MU-mqx" secondAttribute="trailing" constant="0.5" id="jdG-2z-yAP"/>
                                                         <constraint firstAttribute="width" constant="64" id="ozm-70-mvY"/>
+                                                        <constraint firstAttribute="trailing" secondItem="psn-PM-Tze" secondAttribute="trailing" constant="0.5" id="vt6-kr-j8n"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G0Q-jI-Ld0">
@@ -177,6 +193,9 @@
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="Next"/>
+                                                            <connections>
+                                                                <action selector="nextAction:" destination="-1" eventType="touchUpInside" id="RaG-XE-iIi"/>
+                                                            </connections>
                                                         </button>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zl9-Lp-86V">
                                                             <rect key="frame" x="86.5" y="102" width="202" height="202"/>

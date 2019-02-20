@@ -265,14 +265,4 @@
 }
 
 
-#pragma mark - 设备管理员修改设备昵称
-+ (void)sendResetRouterNameWithRouterId:(NSString *)RouterId UserId:(NSString *)UserId Name:(NSString *)Name ShowHud:(BOOL)showHud {
-    if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
-    }
-    NSDictionary *params = @{@"Action":Action_ResetRouterName, @"RouterId":RouterId, @"UserId":UserId, @"Name":Name};
-    [SocketMessageUtil sendVersion4WithParams:params];
-}
-
-
 @end

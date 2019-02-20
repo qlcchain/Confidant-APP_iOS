@@ -414,6 +414,8 @@
         [SocketMessageUtil handleFormatDisk:receiveDic];
     } else if ([action isEqualToString:Action_Reboot]) { // 设备重启
         [SocketMessageUtil handleReboot:receiveDic];
+    } else if ([action isEqualToString:Action_ResetRouterName]) { // 设备管理员修改设备昵称
+        [SocketMessageUtil handleResetRouterName:receiveDic];
     }
 }
 
@@ -1162,6 +1164,22 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:Reboot_Fail_Noti object:receiveDic];
         if (retCode == 1) {
             [AppD.window showHint:@"The system is busy, please check later"];
+        }
+    }
+}
+
++ (void)handleResetRouterName:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:ResetRouterName_Success_Noti object:receiveDic];
+        [AppD.window showHint:@"Reset device nickname successfully"];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"User does not have permission"];
+        } else if (retCode == 2) {
+            [AppD.window showHint:@"Other errors"];
         }
     }
 }

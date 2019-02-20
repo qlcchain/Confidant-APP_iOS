@@ -8,6 +8,7 @@
 
 #import "RouterAliasViewController.h"
 #import "AccountManagementViewController.h"
+#import "SocketMessageUtil.h"
 
 @interface RouterAliasViewController ()
 
@@ -17,6 +18,14 @@
 @end
 
 @implementation RouterAliasViewController
+
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetRouterNameSuccess:) name:ResetRouterName_Success_Noti object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,6 +40,10 @@
     _headerView.layer.masksToBounds = YES;
 }
 
+- (void)sendResetRouterName {
+    [SocketMessageUtil sendUpdateRourerNickName:_aliasTF.text];
+}
+
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -42,7 +55,7 @@
         return;
     }
     
-    
+    [self sendResetRouterName];
 }
 
 #pragma mark - Transition
@@ -55,6 +68,13 @@
     vc.RouterPW = _RouterPW;
     vc.routerAlias = _aliasTF.text?:@"";
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Noti
+- (void)resetRouterNameSuccess:(NSNotification *)noti {
+//    NSDictionary *receiveDic = noti.object;
+//    NSDictionary *paramsDic = receiveDic[@"params"];
+    [self jumpToAccountManagement];
 }
 
 @end

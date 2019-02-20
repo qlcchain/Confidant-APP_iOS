@@ -168,6 +168,8 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 // 设备重启成功通知
 #define Reboot_Success_Noti @"Reboot_Success_Noti"
 #define Reboot_Fail_Noti @"Reboot_Fail_Noti"
+// 设备管理员修改设备昵称 修改成功通知
+#define ResetRouterName_Success_Noti @"ResetRouterName_Success_Noti"
 
 // 删除文件成功通知
 #define Delete_File_Noti @"Delete_File_Noti"

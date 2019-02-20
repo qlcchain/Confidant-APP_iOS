@@ -45,8 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendFormatDiskWithMode:(NSString *)Mode showHud:(BOOL)showHud;
 + (void)sendRebootWithShowHud:(BOOL)showHud;
 
-+ (void)sendResetRouterNameWithRouterId:(NSString *)RouterId UserId:(NSString *)UserId Name:(NSString *)Name ShowHud:(BOOL)showHud;
-
 @end
 
 NS_ASSUME_NONNULL_END
