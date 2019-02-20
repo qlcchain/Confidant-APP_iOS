@@ -31,6 +31,7 @@
 #import "OperationRecordModel.h"
 #import "CreateAccountViewController.h"
 #import "UserModel.h"
+#import "EntryModel.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
@@ -68,7 +69,8 @@
     [self checkGuidenPage];
   //  [RSAModel getRSAModel];
     // 得到签名，加密 公私钥对
-    [LibsodiumUtil getPrivatekeyAndPublickey];
+   EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickey];
+    [LibsodiumUtil changeUserPrivater:model.signPrivateKey];
     [self.window makeKeyAndVisible];
     return YES;
 }
