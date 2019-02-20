@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13142" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,8 +19,139 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nrr-jW-tDk">
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d1a-yl-drR">
+                            <rect key="frame" x="125" y="11.5" width="125" height="21"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                            <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cOq-pU-07E">
+                            <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.80000000000000004" id="nOi-Hn-zLa"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="d1a-yl-drR" firstAttribute="centerY" secondItem="nrr-jW-tDk" secondAttribute="centerY" id="9xh-7L-tlX"/>
+                        <constraint firstItem="d1a-yl-drR" firstAttribute="centerX" secondItem="nrr-jW-tDk" secondAttribute="centerX" id="AoZ-ca-T6I"/>
+                        <constraint firstAttribute="bottom" secondItem="cOq-pU-07E" secondAttribute="bottom" id="X6A-ce-EeN"/>
+                        <constraint firstAttribute="trailing" secondItem="cOq-pU-07E" secondAttribute="trailing" id="edp-bp-mSY"/>
+                        <constraint firstItem="cOq-pU-07E" firstAttribute="leading" secondItem="nrr-jW-tDk" secondAttribute="leading" id="fae-sx-XVM"/>
+                        <constraint firstAttribute="height" constant="44" id="oDq-W4-hYn"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cZ-oa-FDR">
+                    <rect key="frame" x="5" y="20" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="44" id="DO5-aG-vA3"/>
+                        <constraint firstAttribute="height" constant="44" id="bVn-iL-jGx"/>
+                    </constraints>
+                    <state key="normal" image="arrow-exit-h"/>
+                    <connections>
+                        <action selector="backAction:" destination="-1" eventType="touchUpInside" id="43P-7z-nbq"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import an account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U3b-Bf-Lou">
+                    <rect key="frame" x="16" y="84" width="140" height="20"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                    <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To log in to your registered account, please import your configuration QR code which can be found in 'Settings'" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XOI-13-ys8">
+                    <rect key="frame" x="16" y="112" width="343" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" id="8f7-iJ-o21"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where to find the configuration QR code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LcQ-iA-3rM">
+                    <rect key="frame" x="16" y="154" width="307" height="20"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                    <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ko9-IY-Tkm">
+                    <rect key="frame" x="16" y="182" width="343" height="56"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" id="ZrM-Ux-h4h"/>
+                    </constraints>
+                    <string key="text">The configuration QR code is for re-logging in to your account or synchronizing your Confidant account on new devices. 
+1. Go to 'My', find 'Settings'
+ 2. Export the configuration QR code.</string>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import the configuration QR code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYb-Eg-Etq">
+                    <rect key="frame" x="16" y="252" width="255" height="20"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                    <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YFv-ZU-ABf">
+                    <rect key="frame" x="16" y="280" width="343" height="56"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" id="S3D-UU-sLi"/>
+                    </constraints>
+                    <string key="text">If the QR code has been saved on the device, find it in your 'Photos' to import. 
+Scan the QR code with your new device directly to sync an existing account.</string>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xq3-Rx-yYC">
+                    <rect key="frame" x="155.5" y="580" width="64" height="64"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="5uk-tj-ecH"/>
+                        <constraint firstAttribute="width" constant="64" id="7yq-4x-pxY"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="scan_import"/>
+                    <connections>
+                        <action selector="scannerAction:" destination="-1" eventType="touchUpInside" id="uli-RY-xAW"/>
+                    </connections>
+                </button>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="AYb-Eg-Etq" firstAttribute="leading" secondItem="U3b-Bf-Lou" secondAttribute="leading" id="A2Z-j8-8QE"/>
+                <constraint firstItem="LcQ-iA-3rM" firstAttribute="leading" secondItem="ko9-IY-Tkm" secondAttribute="leading" id="Bp6-EW-bB7"/>
+                <constraint firstItem="ko9-IY-Tkm" firstAttribute="leading" secondItem="U3b-Bf-Lou" secondAttribute="leading" id="Dkq-mN-PTN"/>
+                <constraint firstItem="nrr-jW-tDk" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="IdR-4i-O4Q"/>
+                <constraint firstItem="U3b-Bf-Lou" firstAttribute="top" secondItem="nrr-jW-tDk" secondAttribute="bottom" constant="20" id="Ld8-n9-eLc"/>
+                <constraint firstAttribute="trailing" secondItem="nrr-jW-tDk" secondAttribute="trailing" id="M0O-0w-hN8"/>
+                <constraint firstItem="YFv-ZU-ABf" firstAttribute="leading" secondItem="U3b-Bf-Lou" secondAttribute="leading" id="N9s-x2-Tz4"/>
+                <constraint firstItem="Xq3-Rx-yYC" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OCa-vA-aiM"/>
+                <constraint firstItem="YFv-ZU-ABf" firstAttribute="top" secondItem="AYb-Eg-Etq" secondAttribute="bottom" constant="8" id="SCZ-Re-08f"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="Xq3-Rx-yYC" secondAttribute="bottom" constant="23" id="akS-l2-Lkd"/>
+                <constraint firstAttribute="trailing" secondItem="XOI-13-ys8" secondAttribute="trailing" constant="16" id="f6r-L3-W8L"/>
+                <constraint firstItem="3cZ-oa-FDR" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="5" id="ffm-aC-qEC"/>
+                <constraint firstItem="LcQ-iA-3rM" firstAttribute="top" secondItem="XOI-13-ys8" secondAttribute="bottom" constant="14" id="fuP-R6-AeU"/>
+                <constraint firstAttribute="trailing" secondItem="ko9-IY-Tkm" secondAttribute="trailing" constant="16" id="gCN-yc-bDF"/>
+                <constraint firstItem="ko9-IY-Tkm" firstAttribute="top" secondItem="LcQ-iA-3rM" secondAttribute="bottom" constant="8" id="icP-ks-RZg"/>
+                <constraint firstItem="nrr-jW-tDk" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="ihQ-lj-E1X"/>
+                <constraint firstItem="U3b-Bf-Lou" firstAttribute="leading" secondItem="XOI-13-ys8" secondAttribute="leading" id="kg4-Pd-J9d"/>
+                <constraint firstItem="LcQ-iA-3rM" firstAttribute="leading" secondItem="U3b-Bf-Lou" secondAttribute="leading" id="oIM-9i-pMq"/>
+                <constraint firstItem="AYb-Eg-Etq" firstAttribute="top" secondItem="ko9-IY-Tkm" secondAttribute="bottom" constant="14" id="oUl-EI-kUh"/>
+                <constraint firstAttribute="trailing" secondItem="YFv-ZU-ABf" secondAttribute="trailing" constant="16" id="orD-TE-lxb"/>
+                <constraint firstItem="3cZ-oa-FDR" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="pWr-ue-NmO"/>
+                <constraint firstItem="XOI-13-ys8" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="uRN-gq-eOD"/>
+                <constraint firstItem="AYb-Eg-Etq" firstAttribute="leading" secondItem="YFv-ZU-ABf" secondAttribute="leading" id="unR-bk-eaR"/>
+                <constraint firstItem="XOI-13-ys8" firstAttribute="top" secondItem="U3b-Bf-Lou" secondAttribute="bottom" constant="8" id="wbu-uY-wNK"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
         </view>
     </objects>
+    <resources>
+        <image name="arrow-exit-h" width="24" height="24"/>
+        <image name="scan_import" width="64" height="64"/>
+    </resources>
 </document>

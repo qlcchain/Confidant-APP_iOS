@@ -11,14 +11,34 @@
 #import "ImportAccountViewController.h"
 
 @interface CreateAccountViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
+@property (weak, nonatomic) IBOutlet UITextField *nameTF;
 
 @end
 
 @implementation CreateAccountViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [super viewWillAppear:animated];
+}
+
+- (IBAction)importAccountAction:(id)sender {
+    [self jumpImportAccountVC];
+}
+- (IBAction)nextAction:(id)sender {
+    [self.view endEditing:YES];
+    if ([_nameTF.text.trim isEmptyString]) {
+        [self.view showHint:@"Nickname cannot be empty."];
+        return;
+    }
+    [self createUserName:_nameTF.text.trim];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    _nextBtn.layer.cornerRadius = 4.0f;
 }
 
 // 创建用户昵称
