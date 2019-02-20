@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RouterAliasViewController">
             <connections>
                 <outlet property="aliasTF" destination="NN6-9a-8FA" id="bFz-hv-uYW"/>
+                <outlet property="headerLab" destination="3Ji-sG-d69" id="P0k-p7-ThT"/>
                 <outlet property="headerView" destination="teY-oZ-BVM" id="CVb-pK-azH"/>
                 <outlet property="nextBtn" destination="0XK-zY-FaB" id="FBv-QG-rmk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -147,7 +148,7 @@
                                                                     </constraints>
                                                                     <nil key="textColor"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                                    <textInputTraits key="textInputTraits"/>
                                                                 </textField>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MrX-hT-FHa">
                                                                     <rect key="frame" x="0.0" y="49" width="343" height="1"/>

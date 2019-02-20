@@ -25,8 +25,10 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet UILabel *headerLab;
 @property (weak, nonatomic) IBOutlet UIImageView *qrImgV;
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
+@property (weak, nonatomic) IBOutlet UILabel *aliasLab;
 
 @end
 
@@ -50,6 +52,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -63,8 +70,12 @@
 - (void)viewInit {
     _headerView.layer.cornerRadius = _headerView.width/2.0;
     _headerView.layer.masksToBounds = YES;
+    _headerLab.layer.cornerRadius = _headerLab.width/2.0;
+    _headerLab.layer.masksToBounds = YES;
     _nextBtn.layer.cornerRadius = 4;
     _nextBtn.layer.masksToBounds = YES;
+    
+    _aliasLab.text = _routerAlias;
     
     @weakify_self
     [HMScanner qrImageWithString:_Qrcode?:@"" avatar:nil completion:^(UIImage *image) {

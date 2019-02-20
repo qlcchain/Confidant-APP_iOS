@@ -48,6 +48,11 @@
     [super viewDidDisappear:animated];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -59,7 +64,9 @@
 
 #pragma mark - Operation
 - (void)renderView {
-    [_loginBtn setRoundedCorners:UIRectCornerAllCorners radius:4];
+    _loginBtn.layer.cornerRadius = 4;
+    _loginBtn.layer.masksToBounds = YES;
+//    [_loginBtn setRoundedCorners:UIRectCornerAllCorners radius:4];
 }
 
 - (void)sendLogin {

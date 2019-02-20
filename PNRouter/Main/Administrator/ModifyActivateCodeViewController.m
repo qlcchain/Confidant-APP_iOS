@@ -46,7 +46,9 @@
 
 #pragma mark - Operation
 - (void)renderView {
-    [_updateBtn setRoundedCorners:UIRectCornerAllCorners radius:4];
+//    [_updateBtn setRoundedCorners:UIRectCornerAllCorners radius:4];
+    _updateBtn.layer.cornerRadius = 4;
+    _updateBtn.layer.masksToBounds = YES;
 }
 
 - (void)sendResetUserIdcode {
