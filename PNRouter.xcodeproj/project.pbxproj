@@ -68,6 +68,12 @@
 		582BFE3E221A98D800D8C2C8 /* UnitUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE3D221A98D800D8C2C8 /* UnitUtil.m */; };
 		582BFE42221AAA1100D8C2C8 /* DiskManagementMMCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE3F221AAA1000D8C2C8 /* DiskManagementMMCCell.m */; };
 		582BFE43221AAA1100D8C2C8 /* DiskManagementMMCCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582BFE40221AAA1000D8C2C8 /* DiskManagementMMCCell.xib */; };
+		582BFE47221D264200D8C2C8 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE45221D264200D8C2C8 /* CreateAccountViewController.m */; };
+		582BFE48221D264200D8C2C8 /* CreateAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582BFE46221D264200D8C2C8 /* CreateAccountViewController.xib */; };
+		582BFE4C221D26DF00D8C2C8 /* ImportAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE4A221D26DF00D8C2C8 /* ImportAccountViewController.m */; };
+		582BFE4D221D26DF00D8C2C8 /* ImportAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582BFE4B221D26DF00D8C2C8 /* ImportAccountViewController.xib */; };
+		582BFE51221D273000D8C2C8 /* CreateRouterAliasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE4F221D273000D8C2C8 /* CreateRouterAliasViewController.m */; };
+		582BFE52221D273000D8C2C8 /* CreateRouterAliasViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582BFE50221D273000D8C2C8 /* CreateRouterAliasViewController.xib */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
@@ -594,6 +600,15 @@
 		582BFE3F221AAA1000D8C2C8 /* DiskManagementMMCCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiskManagementMMCCell.m; sourceTree = "<group>"; };
 		582BFE40221AAA1000D8C2C8 /* DiskManagementMMCCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DiskManagementMMCCell.xib; sourceTree = "<group>"; };
 		582BFE41221AAA1100D8C2C8 /* DiskManagementMMCCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiskManagementMMCCell.h; sourceTree = "<group>"; };
+		582BFE44221D264200D8C2C8 /* CreateAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateAccountViewController.h; sourceTree = "<group>"; };
+		582BFE45221D264200D8C2C8 /* CreateAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
+		582BFE46221D264200D8C2C8 /* CreateAccountViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateAccountViewController.xib; sourceTree = "<group>"; };
+		582BFE49221D26DF00D8C2C8 /* ImportAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImportAccountViewController.h; sourceTree = "<group>"; };
+		582BFE4A221D26DF00D8C2C8 /* ImportAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImportAccountViewController.m; sourceTree = "<group>"; };
+		582BFE4B221D26DF00D8C2C8 /* ImportAccountViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportAccountViewController.xib; sourceTree = "<group>"; };
+		582BFE4E221D273000D8C2C8 /* CreateRouterAliasViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateRouterAliasViewController.h; sourceTree = "<group>"; };
+		582BFE4F221D273000D8C2C8 /* CreateRouterAliasViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateRouterAliasViewController.m; sourceTree = "<group>"; };
+		582BFE50221D273000D8C2C8 /* CreateRouterAliasViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateRouterAliasViewController.xib; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
@@ -1538,6 +1553,9 @@
 				581FDF6921F19FEA0068C120 /* AccountManagementViewController.h */,
 				581FDF6A21F19FEA0068C120 /* AccountManagementViewController.m */,
 				581FDF6B21F19FEA0068C120 /* AccountManagementViewController.xib */,
+				582BFE4E221D273000D8C2C8 /* CreateRouterAliasViewController.h */,
+				582BFE4F221D273000D8C2C8 /* CreateRouterAliasViewController.m */,
+				582BFE50221D273000D8C2C8 /* CreateRouterAliasViewController.xib */,
 			);
 			path = Administrator;
 			sourceTree = "<group>";
@@ -1599,6 +1617,12 @@
 				73121A71219C26E900510B48 /* LoginViewController.h */,
 				73121A72219C26E900510B48 /* LoginViewController.m */,
 				73121A73219C26E900510B48 /* LoginViewController.xib */,
+				582BFE44221D264200D8C2C8 /* CreateAccountViewController.h */,
+				582BFE45221D264200D8C2C8 /* CreateAccountViewController.m */,
+				582BFE46221D264200D8C2C8 /* CreateAccountViewController.xib */,
+				582BFE49221D26DF00D8C2C8 /* ImportAccountViewController.h */,
+				582BFE4A221D26DF00D8C2C8 /* ImportAccountViewController.m */,
+				582BFE4B221D26DF00D8C2C8 /* ImportAccountViewController.xib */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -3316,6 +3340,7 @@
 			files = (
 				587C52B8215C7027006787FB /* RouterManagerViewController.xib in Resources */,
 				583BF90721F6B4140078A2A8 /* UploadFilesViewController.xib in Resources */,
+				582BFE52221D273000D8C2C8 /* CreateRouterAliasViewController.xib in Resources */,
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
@@ -3368,6 +3393,8 @@
 				583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */,
 				73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */,
 				7330F3A9214679BF00FF4EEC /* ShareCollectionCell.xib in Resources */,
+				582BFE4D221D26DF00D8C2C8 /* ImportAccountViewController.xib in Resources */,
+				582BFE48221D264200D8C2C8 /* CreateAccountViewController.xib in Resources */,
 				73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */,
 				73E39B3B2216BEED003CD33B /* RouterDetailViewController.xib in Resources */,
 				5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */,
@@ -3621,6 +3648,7 @@
 				7330F4F32149147200FF4EEC /* ChatListInfo.m in Sources */,
 				737882A721ACF05E0033A189 /* Compression.swift in Sources */,
 				584B43A521FF0AE700D1F21A /* ConfigDiskHeaderView.m in Sources */,
+				582BFE51221D273000D8C2C8 /* CreateRouterAliasViewController.m in Sources */,
 				737883FA21ACF2970033A189 /* OCTVideoEngine.m in Sources */,
 				585AEE1E213F71E00098A070 /* ChatViewController.m in Sources */,
 				7362577D2142143F00D7FD6B /* NSString+Hash.m in Sources */,
@@ -3647,6 +3675,7 @@
 				58B41EEA21F98845004676CA /* PNDocumentPickerViewController.m in Sources */,
 				7330F3A2214671B600FF4EEC /* ShareView.m in Sources */,
 				73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */,
+				582BFE47221D264200D8C2C8 /* CreateAccountViewController.m in Sources */,
 				7378840321ACF2970033A189 /* OCTFriendRequest.m in Sources */,
 				7330F4FB2149147200FF4EEC /* CTInputCaculator.m in Sources */,
 				7330F3BE214769DF00FF4EEC /* FriendDetailViewController.m in Sources */,
@@ -3822,6 +3851,7 @@
 				736257A82142149300D7FD6B /* UIView+BlockGesture.m in Sources */,
 				7378840021ACF2970033A189 /* OCTMessageAbstract.m in Sources */,
 				736257C5214225FD00D7FD6B /* getgateway.c in Sources */,
+				582BFE4C221D26DF00D8C2C8 /* ImportAccountViewController.m in Sources */,
 				584A447E21460AFE00608122 /* FileViewController.m in Sources */,
 				583BF93021F6EDB80078A2A8 /* MyFilesCell.m in Sources */,
 				73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */,

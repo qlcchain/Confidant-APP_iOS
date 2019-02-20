@@ -185,7 +185,7 @@ typedef enum : NSUInteger {
     GetDiskTotalInfo *model = _sourceArr[indexPath.row];
     if ([model.Slot integerValue] == 0 || [model.Slot integerValue] == 1) {
         return DiskManagementCell_Height;
-    } else  {
+    } else {
         return DiskManagementMMCCell_Height;
     }
 }
