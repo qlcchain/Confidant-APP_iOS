@@ -22,7 +22,8 @@
 - (void)awakeFromNib {
 //    _nextBtn.layer.borderColor = [UIColor whiteColor].CGColor;
 //    _nextBtn.layer.borderWidth = 1.5f;
-//    _nextBtn.layer.cornerRadius = 5.0f;
+    _startBtn.layer.cornerRadius = 4.0f;
+    _startBtn.layer.masksToBounds = YES;
     [super awakeFromNib];
 }
 

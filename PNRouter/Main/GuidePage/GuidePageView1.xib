@@ -19,7 +19,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fDV-CI-tY0">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
-                        <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="kpc-4M-TIN">
+                        <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="kpc-4M-TIN">
                             <rect key="frame" x="0.0" y="491" width="320" height="37"/>
                             <color key="pageIndicatorTintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -37,17 +37,11 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKN-3n-Tp7">
-                            <rect key="frame" x="232.5" y="260" width="12.5" height="10"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ri-Z6-J6C">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ri-Z6-J6C">
                             <rect key="frame" x="56" y="310" width="208" height="100.5"/>
                             <string key="text">Dedicated encrypted messaging system created for enterprises and individual customers to facilitate secure communication and carefree file sharing. </string>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.70196078431372544" green="0.70196078431372544" blue="0.70196078431372544" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -55,13 +49,11 @@
                     <constraints>
                         <constraint firstItem="UuM-5s-UYh" firstAttribute="top" secondItem="RZO-i6-xgP" secondAttribute="bottom" constant="28" id="9Cf-TZ-utk"/>
                         <constraint firstItem="RZO-i6-xgP" firstAttribute="top" secondItem="fDV-CI-tY0" secondAttribute="top" constant="150" id="GpV-MF-F8I"/>
-                        <constraint firstItem="CKN-3n-Tp7" firstAttribute="leading" secondItem="UuM-5s-UYh" secondAttribute="trailing" id="OoG-bS-UMR"/>
                         <constraint firstItem="RZO-i6-xgP" firstAttribute="centerX" secondItem="fDV-CI-tY0" secondAttribute="centerX" id="Op5-Ch-C46"/>
                         <constraint firstAttribute="bottom" secondItem="kpc-4M-TIN" secondAttribute="bottom" constant="40" id="QrL-FB-SUc"/>
                         <constraint firstAttribute="trailing" secondItem="kpc-4M-TIN" secondAttribute="trailing" id="U1o-cw-bao"/>
                         <constraint firstAttribute="trailing" secondItem="5Ri-Z6-J6C" secondAttribute="trailing" constant="56" id="kuU-Xa-ALs"/>
                         <constraint firstItem="UuM-5s-UYh" firstAttribute="centerX" secondItem="fDV-CI-tY0" secondAttribute="centerX" id="liH-WE-uTp"/>
-                        <constraint firstItem="CKN-3n-Tp7" firstAttribute="top" secondItem="UuM-5s-UYh" secondAttribute="top" constant="6" id="q7a-C3-dxK"/>
                         <constraint firstItem="kpc-4M-TIN" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" id="rWj-fe-iaF"/>
                         <constraint firstItem="5Ri-Z6-J6C" firstAttribute="top" secondItem="UuM-5s-UYh" secondAttribute="bottom" constant="15" id="rdC-9j-5Wg"/>
                         <constraint firstItem="5Ri-Z6-J6C" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" constant="56" id="zGG-to-y91"/>

@@ -69,7 +69,7 @@
     _mainScrollView.showsVerticalScrollIndicator = NO;
     _mainScrollView.pagingEnabled = YES;
     _mainScrollView.backgroundColor = [UIColor clearColor];
-    _mainScrollView.contentSize = CGSizeMake(SCREEN_WIDTH*3, SCREEN_HEIGHT);
+    _mainScrollView.contentSize = CGSizeMake(SCREEN_WIDTH*2, SCREEN_HEIGHT);
     [self.view addSubview:_mainScrollView];
     [self addGuidePageView];
     [self addNotication];
@@ -80,21 +80,22 @@
     GuidePageView1 *page1 = [GuidePageView1 loadGuidePageView1];
     page1.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     
-    GuidePageView2 *page2 = [GuidePageView2 loadGuidePageView2];
-    page2.frame = CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+//    GuidePageView2 *page2 = [GuidePageView2 loadGuidePageView2];
+//    page2.frame = CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     
     GuidePageView3 *page3 = [GuidePageView3 loadGuidePageView3];
-    page3.frame = CGRectMake(SCREEN_WIDTH*2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-//    [page3.nextBtn addTarget:self action:@selector(nextAction:) forControlEvents:UIControlEventTouchUpInside];
-    [page3.scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
-    [page3.scan1Btn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
-    [page3.scan2Btn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
-    [page3.scan3Btn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
+    page3.frame = CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    [page3.startBtn addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
     
     [_mainScrollView addSubview:page1];
-    [_mainScrollView addSubview:page2];
+//    [_mainScrollView addSubview:page2];
     [_mainScrollView addSubview:page3];
 }
+
+- (void)startAction:(UIButton *)btn {
+    [AppD judgeLogin];
+}
+
 //- (void) nextAction:(UIButton *) sender
 //{
 //    if (sender.tag == 2) {
@@ -106,9 +107,9 @@
 //    }
 //}
 
-- (void)scanAction:(UIButton *)sender {
-    [self jumpToQR];
-}
+//- (void)scanAction:(UIButton *)sender {
+//    [self jumpToQR];
+//}
 
 - (void)scanSuccessfulWithIsMacd:(BOOL)isMac {
     [AppD.window showHudInView:AppD.window hint:@"Check Router..."];

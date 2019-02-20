@@ -33,5 +33,7 @@
 
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager;
 - (void) setRootLogin;
+- (void)judgeLogin;
+
 @end
 

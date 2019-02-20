@@ -141,4 +141,12 @@
     
 }
 
++ (BOOL)existLocalNick {
+    UserModel *userM = [UserModel getUserModel];
+    if (userM.userId && userM.userId.length > 0) {
+        return YES;
+    }
+    return NO;
+}
+
 @end
