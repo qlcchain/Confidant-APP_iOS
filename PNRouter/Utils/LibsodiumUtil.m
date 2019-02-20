@@ -26,7 +26,6 @@
 
 + (EntryModel *) getPrivatekeyAndPublickey
 {
-    
     EntryModel *model = nil;
     NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
     if ([[NSString getNotNullValue:modelJson] isEmptyString]) {
@@ -61,8 +60,6 @@
         model.privateKey = enPrivateString;
         model.signPublicKey = signPublicString;
         model.signPrivateKey = signPrivateString;
-        
-    
         
         [KeyCUtil saveStringToKeyWithString:model.mj_JSONString key:libkey];
     } else {

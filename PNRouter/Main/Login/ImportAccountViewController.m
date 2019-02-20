@@ -7,6 +7,7 @@
 //
 
 #import "ImportAccountViewController.h"
+#import "QRViewController.h"
 
 @interface ImportAccountViewController ()
 
@@ -17,6 +18,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void) scannerOldCoder
+{
+    @weakify_self
+    QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
+        if (codeValue != nil && codeValue.length > 0) {
+            
+            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
+            
+        }
+    }];
+    [self presentModalVC:vc animated:YES];
 }
 
 /*

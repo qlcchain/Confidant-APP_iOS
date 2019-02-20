@@ -21,6 +21,10 @@
         userM.username = name;
         userM.userId = @"";
         [KeyCUtil saveStringToKeyWithString:userM.mj_JSONString key:USER_LOCAL];
+    } else {
+        UserModel *userM = [UserModel getObjectWithKeyValues:[modeJson mj_keyValues]];
+        userM.username = name;
+        [KeyCUtil saveStringToKeyWithString:userM.mj_JSONString key:USER_LOCAL];
     }
 }
 + (void)createUserLocalWithName:(NSString *)name userid:(NSString *) userid version:(NSInteger)version filePay:(NSString *)filePay userpass:(NSString *)pass userSn:(NSString *) userSn hashid:(NSString *)hashid

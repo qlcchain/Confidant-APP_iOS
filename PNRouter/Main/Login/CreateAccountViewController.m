@@ -7,6 +7,8 @@
 //
 
 #import "CreateAccountViewController.h"
+#import "UserModel.h"
+#import "ImportAccountViewController.h"
 
 @interface CreateAccountViewController ()
 
@@ -18,6 +20,20 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
+
+// 创建用户昵称
+- (void) createUserName:(NSString *) nickName
+{
+    [UserModel createUserLocalWithName:nickName];
+    [AppD setRootLogin];
+}
+#pragma mark - jump vc
+- (void) jumpImportAccountVC
+{
+    ImportAccountViewController *vc = [[ImportAccountViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 /*
 #pragma mark - Navigation
