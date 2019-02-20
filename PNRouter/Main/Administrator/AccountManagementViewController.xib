@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountManagementViewController">
             <connections>
                 <outlet property="headerView" destination="Cfz-aH-Amz" id="RbI-Ga-jMw"/>
+                <outlet property="nextBtn" destination="NbG-W3-mVL" id="vF0-O4-ZSC"/>
                 <outlet property="qrImgV" destination="zl9-Lp-86V" id="WhM-Xw-eLr"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
