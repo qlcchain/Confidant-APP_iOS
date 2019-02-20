@@ -232,6 +232,6 @@
         <image name="Background 2" width="375" height="182"/>
         <image name="background1" width="375" height="340"/>
         <image name="icon_down1" width="9" height="6"/>
-        <image name="icon_little_scan" width="21" height="19.5"/>
+        <image name="icon_little_scan" width="22" height="20"/>
     </resources>
 </document>

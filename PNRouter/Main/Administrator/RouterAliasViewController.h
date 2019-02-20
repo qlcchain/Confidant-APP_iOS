@@ -1,5 +1,5 @@
 //
-//  CreateRouterAliasViewController.h
+//  RouterAliasViewController.h
 //  PNRouter
 //
 //  Created by Jelly Foo on 2019/2/20.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CreateRouterAliasViewController : PNBaseViewController
+@interface RouterAliasViewController : PNBaseViewController
 
 @end
 

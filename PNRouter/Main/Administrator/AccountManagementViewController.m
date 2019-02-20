@@ -23,6 +23,7 @@
 {
     BOOL isAccountManagementViewController;
 }
+
 @property (weak, nonatomic) IBOutlet UIImageView *qrImgV;
 @property (weak, nonatomic) IBOutlet UILabel *activitionCodeLab;
 
