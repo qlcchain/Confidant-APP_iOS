@@ -1,18 +1,18 @@
 //
-//  CreateRouterAliasViewController.m
+//  RouterAliasViewController.m
 //  PNRouter
 //
 //  Created by Jelly Foo on 2019/2/20.
 //  Copyright © 2019 旷自辉. All rights reserved.
 //
 
-#import "CreateRouterAliasViewController.h"
+#import "RouterAliasViewController.h"
 
-@interface CreateRouterAliasViewController ()
+@interface RouterAliasViewController ()
 
 @end
 
-@implementation CreateRouterAliasViewController
+@implementation RouterAliasViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
