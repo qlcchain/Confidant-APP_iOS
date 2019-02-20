@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RouterAliasViewController">
             <connections>
+                <outlet property="aliasTF" destination="NN6-9a-8FA" id="bFz-hv-uYW"/>
+                <outlet property="headerView" destination="teY-oZ-BVM" id="CVb-pK-azH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -39,22 +41,15 @@
                                         <constraint firstAttribute="width" constant="44" id="gyj-KQ-ZaQ"/>
                                     </constraints>
                                     <state key="normal" image="icon_back"/>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oU8-yt-nLT">
-                                    <rect key="frame" x="331" y="0.0" width="44" height="44"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="44" id="Z1S-XJ-tva"/>
-                                        <constraint firstAttribute="height" constant="44" id="dzO-xe-aQx"/>
-                                    </constraints>
-                                    <state key="normal" image="icon_little_scan"/>
+                                    <connections>
+                                        <action selector="backAction:" destination="-1" eventType="touchUpInside" id="n23-p8-zaI"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="D72-90-Cle" firstAttribute="centerY" secondItem="PlS-Zb-brJ" secondAttribute="centerY" id="2j8-PV-57I"/>
-                                <constraint firstAttribute="trailing" secondItem="oU8-yt-nLT" secondAttribute="trailing" id="QOW-3Z-WeO"/>
                                 <constraint firstAttribute="height" constant="44" id="TQc-TZ-9cQ"/>
-                                <constraint firstItem="oU8-yt-nLT" firstAttribute="centerY" secondItem="PlS-Zb-brJ" secondAttribute="centerY" id="kVW-JE-XCW"/>
                                 <constraint firstItem="D72-90-Cle" firstAttribute="leading" secondItem="PlS-Zb-brJ" secondAttribute="leading" id="xlF-tb-jfA"/>
                             </constraints>
                         </view>
@@ -91,15 +86,26 @@
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7vM-rR-PWk">
                                                             <rect key="frame" x="0.5" y="0.5" width="63" height="63"/>
                                                         </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="C" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ji-sG-d69">
+                                                            <rect key="frame" x="0.5" y="0.5" width="63" height="63"/>
+                                                            <color key="backgroundColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="7vM-rR-PWk" secondAttribute="trailing" constant="0.5" id="FXT-v0-CRQ"/>
+                                                        <constraint firstItem="3Ji-sG-d69" firstAttribute="leading" secondItem="teY-oZ-BVM" secondAttribute="leading" constant="0.5" id="JoC-mE-A1W"/>
+                                                        <constraint firstAttribute="bottom" secondItem="3Ji-sG-d69" secondAttribute="bottom" constant="0.5" id="PgM-nu-9zP"/>
                                                         <constraint firstAttribute="width" constant="64" id="RVp-A8-x0r"/>
                                                         <constraint firstAttribute="height" constant="64" id="g5v-iO-LNu"/>
                                                         <constraint firstItem="7vM-rR-PWk" firstAttribute="top" secondItem="teY-oZ-BVM" secondAttribute="top" constant="0.5" id="kG5-bg-FbS"/>
                                                         <constraint firstItem="7vM-rR-PWk" firstAttribute="leading" secondItem="teY-oZ-BVM" secondAttribute="leading" constant="0.5" id="nca-wF-e2W"/>
+                                                        <constraint firstItem="3Ji-sG-d69" firstAttribute="top" secondItem="teY-oZ-BVM" secondAttribute="top" constant="0.5" id="qf9-s8-76S"/>
                                                         <constraint firstAttribute="bottom" secondItem="7vM-rR-PWk" secondAttribute="bottom" constant="0.5" id="qsk-qc-n7f"/>
+                                                        <constraint firstAttribute="trailing" secondItem="3Ji-sG-d69" secondAttribute="trailing" constant="0.5" id="uix-kf-9zg"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SSb-NR-t63">
@@ -169,6 +175,9 @@
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="Next"/>
+                                                            <connections>
+                                                                <action selector="nextAction:" destination="-1" eventType="touchUpInside" id="ufq-pz-TO1"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -255,6 +264,5 @@
     <resources>
         <image name="icon_back" width="11" height="20"/>
         <image name="icon_background_top_short" width="375" height="128"/>
-        <image name="icon_little_scan" width="22" height="20"/>
     </resources>
 </document>

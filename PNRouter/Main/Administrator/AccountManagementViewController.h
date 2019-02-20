@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *IdentifyCode;
 @property (nonatomic, strong) NSString *UserSn;
 @property (nonatomic, strong) NSString *RouterPW;
+@property (nonatomic, strong) NSString *routerAlias;
 
 @end
 

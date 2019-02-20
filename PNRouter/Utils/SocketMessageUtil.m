@@ -86,13 +86,13 @@
 /**
  发送文本消息 4
  */
-+ (void)sendVersion4WithParams:(NSDictionary *)params{
++ (void)sendVersion4WithParams:(NSDictionary *)params {
     NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams4]];
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
     
-    if ([[NSString getNotNullValue:params[@"Action"]] isEqualToString:Aciont_Register]) {
+    if ([[NSString getNotNullValue:params[@"Action"]] isEqualToString:Action_Register]) {
        // [LibsodiumUtil en]
        // [EntryModel getShareObject].privateKey
         muDic[@"params"][@"Sign"] = muDic[@"timestamp"];
@@ -305,7 +305,7 @@
     
     NSString *action = receiveDic[@"params"][@"Action"];
     
-    if (!([action isEqualToString:Action_login] || [action isEqualToString: Aciont_Register] || [action isEqualToString: Aciont_Recovery] || [action isEqualToString: Action_RouterLogin] || [action isEqualToString: Action_ResetRouterKey] || [action isEqualToString: Action_ResetUserIdcode])) {
+    if (!([action isEqualToString:Action_login] || [action isEqualToString: Action_Register] || [action isEqualToString: Action_Recovery] || [action isEqualToString: Action_RouterLogin] || [action isEqualToString: Action_ResetRouterKey] || [action isEqualToString: Action_ResetUserIdcode])) {
         if (AppD.isLogOut) {
             return;
         }
@@ -364,9 +364,9 @@
         [SocketMessageUtil handlePullFriend:receiveDic];
     } else if ([action isEqualToString:Action_PushFile]) { //接收文件
         [SocketMessageUtil handlePushFile:receiveDic];
-    } else if ([action isEqualToString:Aciont_Recovery]) { //APP用户找回
+    } else if ([action isEqualToString:Action_Recovery]) { //APP用户找回
          [SocketMessageUtil handleFindRouter:receiveDic];
-    }  else if ([action isEqualToString:Aciont_Register]) { //APP用户注册
+    }  else if ([action isEqualToString:Action_Register]) { //APP用户注册
         [SocketMessageUtil handleRegiserRouter:receiveDic];
     } else if ([action isEqualToString:Action_PullUserList]) {// 拉取派生帐户下的用户
         [SocketMessageUtil handlePullUserList:receiveDic];
@@ -1250,7 +1250,7 @@
 #pragma mark -新用户注册
 + (void) sendUserRegisterSn:(NSString *) sn code:(NSString *) code nickName:(NSString *) nickName
 {
-    NSDictionary *params = @{@"Action":Aciont_Register,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":sn,@"IdentifyCode":code,@"Sign":@"",@"UserKey":[EntryModel getShareObject].publicKey,@"NickName":[nickName base64EncodedString]};
+    NSDictionary *params = @{@"Action":Action_Register,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":sn,@"IdentifyCode":code,@"Sign":@"",@"UserKey":[EntryModel getShareObject].publicKey,@"NickName":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 @end

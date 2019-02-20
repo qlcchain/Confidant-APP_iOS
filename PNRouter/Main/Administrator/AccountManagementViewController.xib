@@ -40,22 +40,12 @@
                                     </constraints>
                                     <state key="normal" image="icon_back"/>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HbN-NE-ySs">
-                                    <rect key="frame" x="331" y="0.0" width="44" height="44"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="44" id="4NE-Mm-qLT"/>
-                                        <constraint firstAttribute="height" constant="44" id="6MC-QF-39t"/>
-                                    </constraints>
-                                    <state key="normal" image="icon_little_scan"/>
-                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="0Vn-WE-LcQ"/>
-                                <constraint firstAttribute="trailing" secondItem="HbN-NE-ySs" secondAttribute="trailing" id="3aP-c2-SQq"/>
                                 <constraint firstItem="rcT-T8-sVj" firstAttribute="centerY" secondItem="B9N-YV-fug" secondAttribute="centerY" id="FUK-X9-Gsu"/>
                                 <constraint firstItem="rcT-T8-sVj" firstAttribute="leading" secondItem="B9N-YV-fug" secondAttribute="leading" id="oDC-97-SQB"/>
-                                <constraint firstItem="HbN-NE-ySs" firstAttribute="centerY" secondItem="B9N-YV-fug" secondAttribute="centerY" id="ory-tI-Ov7"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fOc-hv-dwY">
@@ -278,7 +268,6 @@
     <resources>
         <image name="icon_back" width="11" height="20"/>
         <image name="icon_background_top_short" width="375" height="128"/>
-        <image name="icon_little_scan" width="22" height="20"/>
         <image name="imageView:X28-Bx-MzC:image" width="8" height="14">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGaWpYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QGAcI
