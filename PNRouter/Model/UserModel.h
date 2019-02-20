@@ -31,4 +31,6 @@
 - (void)saveUserModeToKeyChain;
 + (void)isLogin;
 + (instancetype) getShareObject;
++ (BOOL)existLocalNick;
+
 @end

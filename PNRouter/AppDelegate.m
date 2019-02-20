@@ -29,6 +29,8 @@
 #import "RSAModel.h"
 #import "LibsodiumUtil.h"
 #import "OperationRecordModel.h"
+#import "CreateAccountViewController.h"
+#import "UserModel.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
@@ -139,28 +141,41 @@
     [AppD.window.layer addAnimation:animation forKey:nil];
     AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];;
 }
+
 #pragma mark - 是否需要显示引导页
 - (void)checkGuidenPage {
-    //NSString *version = [HWUserdefault getObjectWithKey:VERSION_KEY];
-//
-//    if (version || ![version isEqualToString:APP_Version]) {
-//        [HWUserdefault updateObject:APP_Version withKey:VERSION_KEY];
-//        GuidePageViewController *pageVC = [[GuidePageViewController alloc] init];
-//        self.window.rootViewController = pageVC;
-//    } else {
-//        [self setRootLogin];
-//    }
-    
-    NSString *version = [KeyCUtil getKeyValueWithKey:LOGIN_KEY];
-    if (![[NSString getNotNullValue:version] isEqualToString:@"1"]) {
+    NSString *version = [HWUserdefault getObjectWithKey:VERSION_KEY];
+    if (version || ![version isEqualToString:APP_Version]) {
+        [HWUserdefault updateObject:APP_Version withKey:VERSION_KEY];
         GuidePageViewController *pageVC = [[GuidePageViewController alloc] init];
         self.window.rootViewController = pageVC;
     } else {
         _showTouch = YES;
+        [self judgeLogin];
+    }
+    
+//    NSString *version = [KeyCUtil getKeyValueWithKey:LOGIN_KEY];
+//    if (![[NSString getNotNullValue:version] isEqualToString:@"1"]) {
+//        GuidePageViewController *pageVC = [[GuidePageViewController alloc] init];
+//        self.window.rootViewController = pageVC;
+//    } else {
+//        _showTouch = YES;
+//        LoginViewController  *vc = [[LoginViewController alloc] init];
+//        AppD.window.rootViewController = vc;
+//    }
+}
+
+- (void)judgeLogin {
+    if ([UserModel existLocalNick]) { // 本地有私钥和昵称
         LoginViewController  *vc = [[LoginViewController alloc] init];
         AppD.window.rootViewController = vc;
+    } else { // 本地无私钥和昵称
+        CreateAccountViewController *vc = [[CreateAccountViewController alloc] init];
+        PNNavViewController *nav = [[PNNavViewController alloc] initWithRootViewController:vc];
+        AppD.window.rootViewController = nav;
     }
 }
+
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager {
     [KeyCUtil saveStringToKeyWithString:@"1" key:LOGIN_KEY];
     AppD.isLogOut = NO;
