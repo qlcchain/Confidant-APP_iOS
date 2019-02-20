@@ -110,6 +110,13 @@
 - (IBAction)routherSelect:(id)sender {
     [self showRouter];
 }
+// 导入帐号
+- (void)scanSuccessfulWithIsAccount
+{
+    // 删除所有路由
+    [RouterModel delegateAllRouter];
+    //
+}
 // 扫码成功重新开启组播
 - (void)scanSuccessfulWithIsMacd:(BOOL)isMac
 {

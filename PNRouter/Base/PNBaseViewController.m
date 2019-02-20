@@ -17,6 +17,9 @@
 #import "OCTManager.h"
 #import "OCTSubmanagerBootstrap.h"
 #import "LoginDeviceViewController.h"
+#import "LibsodiumUtil.h"
+#import "UserModel.h"
+#import "NSString+Base64.h"
 
 @interface PNBaseViewController ()
 
@@ -204,6 +207,10 @@
 {
     
 }
+- (void) scanSuccessfulWithIsAccount
+{
+    
+}
 
 - (void)showEmptyViewToView:(UIView *)view img:(UIImage *)img title:(NSString *)title {
     if (!_emptyView) {
@@ -255,26 +262,41 @@
     @weakify_self
     QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
         if (codeValue != nil && codeValue.length > 0) {
-            NSString *result = aesDecryptString(codeValue,AES_KEY);
-            result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
-            if (result && result.length == 114) {
-               
-                NSString *toxid = [result substringWithRange:NSMakeRange(6, 76)];
-                NSString *sn = [result substringWithRange:NSMakeRange(result.length-32, 32)];
-                NSLog(@"%@",[RoutherConfig getRoutherConfig].currentRouterSn);
-              //  if (![sn isEqualToString:[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterSn]]) {
+            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
+            NSString *type = codeValues[0];
+            
+            if ([[NSString getNotNullValue:type] isEqualToString:@"type_1"]) {
+                // router 码
+                NSString *result = aesDecryptString(codeValues[1],AES_KEY);
+                result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                if (result && result.length == 114) {
                     
+                    NSString *toxid = [result substringWithRange:NSMakeRange(6, 76)];
+                    NSString *sn = [result substringWithRange:NSMakeRange(result.length-32, 32)];
+                    NSLog(@"%@",[RoutherConfig getRoutherConfig].currentRouterSn);
+                 
                     AppD.isScaner = YES;
                     [RoutherConfig getRoutherConfig].currentRouterToxid = toxid;
                     [RoutherConfig getRoutherConfig].currentRouterSn = sn;
                     [RoutherConfig getRoutherConfig].currentRouterIp = @"";
-                
+                    
                     [weakSelf scanSuccessfulWithIsMacd:NO];
-                
-            } else if (result && result.length == 17) { // 管理账户 MAC
-                AppD.isScaner = YES;
-                [RoutherConfig getRoutherConfig].currentRouterMAC = result;
-                [weakSelf scanSuccessfulWithIsMacd:YES];
+                } else {
+                    [weakSelf.view showHint:@"format error!"];
+                }
+            } else if ([[NSString getNotNullValue:type] isEqualToString:@"type_2"]) {
+                    // mac 码
+                    NSString *result = aesDecryptString(codeValues[1],AES_KEY);
+                    result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                    AppD.isScaner = YES;
+                    [RoutherConfig getRoutherConfig].currentRouterMAC = result;
+                    [weakSelf scanSuccessfulWithIsMacd:YES];
+            } else if ([[NSString getNotNullValue:type] isEqualToString:@"type_3"]) {
+                    // 帐户码
+                [LibsodiumUtil changeUserPrivater:codeValues[1]];
+                NSString *name = [codeValues[2] base64DecodedString];
+                [UserModel createUserLocalWithName:name];
+                [self scanSuccessfulWithIsAccount];
             } else {
                 [weakSelf.view showHint:@"format error!"];
             }

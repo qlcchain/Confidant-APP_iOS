@@ -36,4 +36,5 @@
 + (RouterModel *) checkRoutherWithSn:(NSString *) sn;
 + (BOOL)routerIsExitsWithSn:(NSString *)sn;
 + (NSMutableArray *) checkRoutherArrayWithToxid:(NSString *)toxid;
++ (void) delegateAllRouter;
 @end

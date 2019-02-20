@@ -222,6 +222,10 @@
     
     [KeyCUtil saveRouterTokeychainWithArr:dicArr key:ROUTER_ARR];
 }
++ (void) delegateAllRouter
+{
+    [KeyCUtil deleteWithKey:ROUTER_ARR];
+}
 + (void)updateRouterLoginSwitchWithSn:(NSString *)sn isOpen:(BOOL) isOpen
 {
     NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];

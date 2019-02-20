@@ -31,6 +31,7 @@
 - (void)setRootVCWithVC:(PNBaseViewController *) vc;
 - (void)jumpToQR;
 - (void) scanSuccessfulWithIsMacd:(BOOL) isMac;
+- (void) scanSuccessfulWithIsAccount;
 
 - (void)showEmptyViewToView:(UIView *)view img:(UIImage *)img title:(NSString *)title;
 - (void)hideEmptyView;
