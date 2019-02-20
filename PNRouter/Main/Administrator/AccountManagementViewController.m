@@ -26,6 +26,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIImageView *qrImgV;
+@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 
 @end
 
@@ -62,6 +63,8 @@
 - (void)viewInit {
     _headerView.layer.cornerRadius = _headerView.width/2.0;
     _headerView.layer.masksToBounds = YES;
+    _nextBtn.layer.cornerRadius = 4;
+    _nextBtn.layer.masksToBounds = YES;
     
     @weakify_self
     [HMScanner qrImageWithString:_Qrcode?:@"" avatar:nil completion:^(UIImage *image) {

@@ -292,6 +292,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     
     [self getCurrentSelectRouter];

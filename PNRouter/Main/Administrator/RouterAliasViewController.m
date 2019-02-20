@@ -14,6 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UITextField *aliasTF;
+@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 
 @end
 
@@ -38,6 +39,8 @@
 - (void)renderView {
     _headerView.layer.cornerRadius = _headerView.width/2.0;
     _headerView.layer.masksToBounds = YES;
+    _nextBtn.layer.cornerRadius = 4;
+    _nextBtn.layer.masksToBounds = YES;
 }
 
 - (void)sendResetRouterName {
