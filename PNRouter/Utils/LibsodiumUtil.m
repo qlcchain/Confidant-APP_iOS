@@ -24,6 +24,40 @@
 
 @implementation LibsodiumUtil
 
++ (void) changeUserPrivater:(NSString *) privater
+{
+    NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
+    EntryModel *model = [EntryModel getObjectWithKeyValues:[modelJson mj_keyValues]];
+    if (model) {
+        
+        model.signPrivateKey = privater;
+        NSData *signskData = [privater base64DecodedData];
+        NSData *signpkData = [signskData subdataWithRange:NSMakeRange(32,32)];
+        model.signPublicKey = [signpkData base64EncodedString];
+        
+        unsigned char pk[32];
+        unsigned char sk[32];
+        const unsigned char *signsk = [signskData bytes];
+        const unsigned char *signpk = [signpkData bytes];
+        // 签名转解密
+        int signResult = crypto_sign_ed25519_pk_to_curve25519(pk,signpk);
+        signResult = crypto_sign_ed25519_sk_to_curve25519(sk,signsk);
+        
+        NSData *pkData = [NSData dataWithBytesNoCopy:pk length:32 freeWhenDone:NO];
+        NSData *skData = [NSData dataWithBytesNoCopy:sk length:32 freeWhenDone:NO];
+        
+        model.publicKey = [pkData base64EncodedString];
+        model.privateKey = [skData base64EncodedString];
+        
+        [KeyCUtil saveStringToKeyWithString:model.mj_JSONString key:libkey];
+        
+        [EntryModel getShareObject].publicKey = model.publicKey;
+        [EntryModel getShareObject].privateKey = model.privateKey;
+        [EntryModel getShareObject].signPublicKey = model.signPublicKey;
+        [EntryModel getShareObject].signPrivateKey = model.signPrivateKey;
+    }
+}
+
 + (EntryModel *) getPrivatekeyAndPublickey
 {
     EntryModel *model = nil;
@@ -37,7 +71,6 @@
         unsigned char sk[32];
        // 生成签名公私钥对
         crypto_sign_keypair(signpk,signsk);
-        
         // 签名公私钥对转换成解密公私钥对
         int signResult = crypto_sign_ed25519_pk_to_curve25519(pk,signpk);
         signResult = crypto_sign_ed25519_sk_to_curve25519(sk,signsk);
@@ -60,7 +93,6 @@
         model.privateKey = enPrivateString;
         model.signPublicKey = signPublicString;
         model.signPrivateKey = signPrivateString;
-        
         [KeyCUtil saveStringToKeyWithString:model.mj_JSONString key:libkey];
     } else {
         if (![[NSString getNotNullValue:[EntryModel getShareObject].publicKey] isEmptyString]) {

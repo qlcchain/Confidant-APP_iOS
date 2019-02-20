@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LibsodiumUtil : NSObject
 // char[] 田转字符串
 + (NSMutableString *) charsToString:(unsigned char[]) chars length:(int) length;
-
++ (void) changeUserPrivater:(NSString *) privater;
 + (EntryModel *) getPrivatekeyAndPublickey;
 // 生成对称密钥
 + (NSString *) getSymmetryWithPrivate:(NSString *) privateKey publicKey:(NSString *) publicKey;

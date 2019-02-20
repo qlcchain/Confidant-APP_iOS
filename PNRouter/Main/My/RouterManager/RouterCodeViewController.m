@@ -85,6 +85,7 @@
     
     NSString *aesCode = [NSString stringWithFormat:@"%@%@%@",@"010001",_routerM.toxid?:@"",_routerM.userSn?:@""];
    aesCode = aesEncryptString(aesCode, AES_KEY);
+    aesCode = [NSString stringWithFormat:@"type_1,%@",aesCode];
     @weakify_self
     [HMScanner qrImageWithString:aesCode avatar:nil completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;

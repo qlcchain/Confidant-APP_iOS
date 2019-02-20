@@ -66,16 +66,21 @@
         if (codeValue != nil && codeValue.length > 0) {
             NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
             codeValue = codeValues[0];
-            if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
-                [AppD.window showHint:@"You cannot add yourself as a friend."];
-            } else if (codeValue.length != 76) {
-                [AppD.window showHint:@"The two-dimensional code format is wrong."];
-            } else {
-                NSString *nickName = @"";
-                if (codeValues.count>1) {
-                    nickName = codeValues[1];
+            if ([codeValue isEqualToString:@"type_0"]) {
+                codeValue = codeValues[1];
+                if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
+                    [AppD.window showHint:@"You cannot add yourself as a friend."];
+                } else if (codeValue.length != 76) {
+                    [AppD.window showHint:@"The two-dimensional code format is wrong."];
+                } else {
+                    NSString *nickName = @"";
+                    if (codeValues.count>2) {
+                        nickName = codeValues[2];
+                    }
+                    [weakSelf addFriendRequest:codeValue nickName:nickName];
                 }
-                [weakSelf addFriendRequest:codeValue nickName:nickName];
+            } else {
+                [weakSelf.view showHint:@"format error!"];
             }
         }
     }];
