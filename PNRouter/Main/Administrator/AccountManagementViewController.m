@@ -24,9 +24,8 @@
     BOOL isAccountManagementViewController;
 }
 
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIImageView *qrImgV;
-@property (weak, nonatomic) IBOutlet UILabel *activitionCodeLab;
-
 
 @end
 
@@ -40,11 +39,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userIdcodeSuccessNoti:) name:@"UserIdcodeSuccessNoti" object:nil];
     
 }
+
 - (void) userIdcodeSuccessNoti:(NSNotification *) noti
 {
     _IdentifyCode = noti.object;
-    _activitionCodeLab.text = _IdentifyCode?:@"";
 }
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -60,11 +60,13 @@
 #pragma mark - Operation
 
 - (void)viewInit {
+    _headerView.layer.cornerRadius = _headerView.width/2.0;
+    _headerView.layer.masksToBounds = YES;
+    
     @weakify_self
     [HMScanner qrImageWithString:_Qrcode?:@"" avatar:nil completion:^(UIImage *image) {
         weakSelf.qrImgV.image = image;
     }];
-    _activitionCodeLab.text = _IdentifyCode?:@"";
 }
 
 #pragma mark - Action
@@ -72,8 +74,39 @@
 - (IBAction)backAction:(id)sender {
   //  [self leftNavBarItemPressedWithPop:YES];
 }
+//
+//- (IBAction)loginAction:(id)sender {
+//    RouterModel *routherM = [RouterModel checkRoutherWithSn:_UserSn];
+//    if (routherM) {
+//        [RouterModel updateRouterConnectStatusWithSn:_UserSn];
+//        AppD.isLoginMac = NO;
+//        [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
+//        [AppD setRootLogin];
+//    } else {
+//        NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
+//        if (connectStatu == socketConnectStatusConnected) {
+//            [self sendfindRouterRequest];
+//        } else {
+//            [self connectSocket];
+//        }
+//
+//    }
+//}
 
-- (IBAction)loginAction:(id)sender {
+- (void) sendfindRouterRequest
+{
+    [SendRequestUtil sendUserFindWithToxid:_RouterId?:@"" usesn:_UserSn?:@""];
+}
+
+//- (IBAction)activitionCodeAction:(id)sender {
+//    [self jumpToModifyActivateCode];
+//}
+
+- (IBAction)routerPWAction:(id)sender {
+    [self jumpToModifyRouterPW];
+}
+
+- (IBAction)nextAction:(id)sender {
     RouterModel *routherM = [RouterModel checkRoutherWithSn:_UserSn];
     if (routherM) {
         [RouterModel updateRouterConnectStatusWithSn:_UserSn];
@@ -87,19 +120,9 @@
         } else {
             [self connectSocket];
         }
-       
+        
     }
-}
-- (void) sendfindRouterRequest
-{
-    [SendRequestUtil sendUserFindWithToxid:_RouterId?:@"" usesn:_UserSn?:@""];
-}
-- (IBAction)activitionCodeAction:(id)sender {
-    [self jumpToModifyActivateCode];
-}
 
-- (IBAction)routerPWAction:(id)sender {
-    [self jumpToModifyRouterPW];
 }
 
 #pragma mark - Transition

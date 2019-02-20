@@ -13,6 +13,7 @@
 #import "RoutherConfig.h"
 #import "PNRouter-Swift.h"
 #import "SystemUtil.h"
+#import "RouterAliasViewController.h"
 
 @interface LoginDeviceViewController ()<UITextFieldDelegate>
 {
@@ -92,7 +93,24 @@
 }
 
 #pragma mark - Transition
-- (void)jumpToAccountManagement:(NSDictionary *)receiveDic {
+//- (void)jumpToAccountManagement:(NSDictionary *)receiveDic {
+//    NSString *RouterId = receiveDic[@"params"][@"RouterId"];
+//    NSString *Qrcode = receiveDic[@"params"][@"Qrcode"];
+//    NSString *IdentifyCode = receiveDic[@"params"][@"IdentifyCode"];
+//    NSString *UserSn = receiveDic[@"params"][@"UserSn"];
+//
+//    [RoutherConfig getRoutherConfig].currentRouterSn = UserSn;
+//
+//    AccountManagementViewController *vc = [[AccountManagementViewController alloc] init];
+//    vc.RouterId = RouterId;
+//    vc.Qrcode = Qrcode;
+//    vc.IdentifyCode = IdentifyCode;
+//    vc.UserSn = UserSn;
+//    vc.RouterPW = _devicePWTF.text?:@"";
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
+
+- (void)jumpToRouterAlias:(NSDictionary *)receiveDic {
     NSString *RouterId = receiveDic[@"params"][@"RouterId"];
     NSString *Qrcode = receiveDic[@"params"][@"Qrcode"];
     NSString *IdentifyCode = receiveDic[@"params"][@"IdentifyCode"];
@@ -100,7 +118,7 @@
     
     [RoutherConfig getRoutherConfig].currentRouterSn = UserSn;
     
-    AccountManagementViewController *vc = [[AccountManagementViewController alloc] init];
+    RouterAliasViewController *vc = [[RouterAliasViewController alloc] init];
     vc.RouterId = RouterId;
     vc.Qrcode = Qrcode;
     vc.IdentifyCode = IdentifyCode;
@@ -112,7 +130,8 @@
 #pragma mark - Noti
 - (void)deviceLoginSuccessNoti:(NSNotification *)noti {
     NSDictionary *dic = [noti object];
-    [self jumpToAccountManagement:dic];
+//    [self jumpToAccountManagement:dic];
+    [self jumpToRouterAlias:dic];
 }
 
 #pragma mark -codeTF 改变回调

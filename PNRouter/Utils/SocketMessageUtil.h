@@ -27,8 +27,8 @@ static NSString *Action_PullMsg = @"PullMsg";
 static NSString *Action_PullFriend = @"PullFriend";
 static NSString *Action_PushFile = @"PushFile";
 static NSString *Action_SynchDataFile = @"SynchDataFile";
-static NSString *Aciont_Recovery = @"Recovery";
-static NSString *Aciont_Register = @"Register";
+static NSString *Action_Recovery = @"Recovery";
+static NSString *Action_Register = @"Register";
 static NSString *Action_PullUserList = @"PullUserList";
 static NSString *Action_CreateNormalUser = @"CreateNormalUser";
 static NSString *Action_ReadMsgPush = @"ReadMsgPush";
@@ -64,6 +64,7 @@ static NSString *Action_ResetRouterName = @"ResetRouterName";
 + (void)sendVersion2WithParams:(NSDictionary *)params;
 + (void)sendVersion2WithParams:(NSDictionary *)params fetchParam:(void(^)(NSDictionary *dic))paramB;
 + (void)sendVersion3WithParams:(NSDictionary *)params;
++ (void)sendVersion4WithParams:(NSDictionary *)params;
 // 回复router
 + (void)sendRecevieMessageWithParams:(NSDictionary *)params tempmsgid:(NSInteger) msgid;
 + (void)receiveText:(NSString *)text;
