@@ -8,6 +8,7 @@
 
 #import "RouterModel.h"
 #import "KeyCUtil.h"
+#import "NSString+Base64.h"
 
 @implementation RouterModel
 
@@ -121,6 +122,32 @@
     [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
         if ([model.toxid isEqualToString:toxid]) {
+            isExist = YES;
+            *stop = YES;
+        }
+    }];
+    if (!isExist) {
+        DDLogDebug(@"新添加一个本地Router");
+        [KeyCUtil saveRouterTokeychainWithValue:routerM.mj_keyValues key:ROUTER_ARR];
+    }
+}
+
++ (void) addRouterName:(NSString *) routerName routerid:(NSString *) rid usersn:(NSString *) usersn
+{
+    if (!usersn) {
+        return;
+    }
+    // 更新本地路由器
+    NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
+    RouterModel *routerM = [[RouterModel alloc] init];
+    routerM.toxid = rid;
+    routerM.userSn = usersn;
+    routerM.name = routerName? [routerName base64DecodedString]:@"";
+    // 去重
+    __block BOOL isExist = NO;
+    [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
+        if ([model.userSn isEqualToString:usersn]) {
             isExist = YES;
             *stop = YES;
         }

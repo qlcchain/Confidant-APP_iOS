@@ -108,6 +108,26 @@
     [KeyCUtil saveStringToKeyWithString:userM.mj_JSONString key:USER_LOCAL];
 }
 
++ (void) updateHashid:(NSString *) hashid usersn:(NSString *) usersn userid:(NSString *) userid needasysn:(NSInteger) needAsysn
+{
+    UserModel *userM = nil;
+    NSString *modeJson = [KeyCUtil getKeyValueWithKey:USER_LOCAL];
+    if (!modeJson || [modeJson isEmptyString]) {
+        userM = [[UserModel alloc] init];
+        userM.userId = userid;
+         userM.hashId = hashid;
+        userM.userSn = usersn;
+        userM.needAsysn = needAsysn;
+    } else {
+        userM = [UserModel getObjectWithKeyValues:[modeJson mj_keyValues]];
+        userM.userId = userid;
+        userM.hashId = hashid;
+        userM.userSn = usersn;
+        userM.needAsysn = needAsysn;
+    }
+    [KeyCUtil saveStringToKeyWithString:userM.mj_JSONString key:USER_LOCAL];
+}
+
 + (void)updateUserLocalWithUserId:(NSString *)userId withUserName:(NSString *)userName userSn:(NSString *)userSn hashid:(NSString *)hashid{
    NSString *modeJson = [KeyCUtil getKeyValueWithKey:USER_LOCAL];
     UserModel *userM = nil;
@@ -147,7 +167,7 @@
 
 + (BOOL)existLocalNick {
     UserModel *userM = [UserModel getUserModel];
-    if (userM.userId && userM.userId.length > 0) {
+    if (userM.username && userM.username.length > 0) {
         return YES;
     }
     return NO;

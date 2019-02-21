@@ -22,6 +22,7 @@
 #import "ConnectView.h"
 #import "UserConfig.h"
 #import "FingetprintVerificationUtil.h"
+#import "NSString+Base64.h"
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate>
 {
@@ -33,7 +34,7 @@
 }
 @property (weak, nonatomic) IBOutlet UIView *loginBackView;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
-@property (weak, nonatomic) IBOutlet UITextField *passTF;
+@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblRoutherName;
 @property (nonatomic , strong) NSMutableArray *showRouterArr;
 @property (nonatomic ,strong) ConnectView *connectView;
@@ -50,9 +51,8 @@
 }
 
 - (IBAction)loginAction:(id)sender {
-    
-    if (_passTF.text.trim.length < 6 ) {
-        [self.view showHint:@"The password must be greater than or equal to 6 digits"];
+    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterToxid] isEmptyString]) {
+        [self.view showHint:@"Please select the router."];
         return;
     }
     sendCount = 0;
@@ -135,11 +135,9 @@
             //[self loadHudView];
             //[[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
             _lblRoutherName.text = self.selectRouther.name;
-            _passTF.text = self.selectRouther.userPass?:@"";
-        } else {
-            [self loadHudView];
-            [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
         }
+        [self loadHudView];
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     }
   
     
@@ -186,13 +184,20 @@
 
 - (void) sendLoginRequestWithShowHud:(BOOL) isShow
 {
-    NSString *shaPass = [_passTF.text.trim SHA256];
-    [SendRequestUtil sendUserLoginWithPass:shaPass userid:self.selectRouther.userid showHud:isShow];
+   
+    [SendRequestUtil sendUserLoginWithPass:@"" userid:[UserModel getUserModel].userId showHud:isShow];
     sendCount ++;
     if (sendCount == 4) {
         return;
     }
     [self performSelector:@selector(sendLoginRequestWithShowHud:) withObject:@(0) afterDelay:5];
+}
+
+- (void) sendRegisterRequestWithShowHud:(BOOL) isShow
+{
+     NSString *userName = [[UserModel getUserModel].username base64EncodedString];
+     [SendRequestUtil sendUserRegisterWithUserPass:@"" username:userName code:@""];
+    
 }
 
 #pragma mark -tox 登陆成功
@@ -289,29 +294,21 @@
         self.selectRouther = [RouterModel getConnectRouter];
     }
     
-    if (self.selectRouther) {
-        [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
-        [RoutherConfig getRoutherConfig].currentRouterToxid = self.selectRouther.toxid;
-        _lblRoutherName.text = self.selectRouther.name;
-        _passTF.text = self.selectRouther.userPass?:@"";
-    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
-    
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
+    _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username];
     
     [self getCurrentSelectRouter];
-    _loginBackView.layer.borderWidth = 1.5;
-    _loginBackView.layer.cornerRadius = 5;
-    [_passTF setValue:RGB(128, 128, 128) forKeyPath:@"_placeholderLabel.textColor"];
+
+    _loginBtn.layer.cornerRadius = 5;
+  
     [self changeLogintStatu];
-    [self addTargetMethod];
+
     _showRouterArr = [NSMutableArray array];
     NSArray *routeArr = [RouterModel getLocalRouter];
-    
     [_showRouterArr addObjectsFromArray:routeArr];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnConnect:) name:SOCKET_ON_CONNECT_NOTI object:nil];
@@ -323,6 +320,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCurrentSelectRouter) name:CANCEL_LOGINMAC_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(touchModifySuccess:) name:TOUCH_MODIFY_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userRegisterSuccess:) name:USER_REGISTER_RECEVIE_NOTI object:nil];
     
     if (AppD.showTouch) {
          AppD.showTouch = NO;
@@ -343,15 +341,19 @@
 
 - (void) changeLogintStatu
 {
-    if ([_passTF.text.trim isEmptyString]) {
-        _loginBtn.selected = NO;
-    } else {
-        _loginBtn.selected = YES;
+    if (self.selectRouther) {
+        [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
+        [RoutherConfig getRoutherConfig].currentRouterToxid = self.selectRouther.toxid;
+        _lblRoutherName.text = self.selectRouther.name;
     }
-    if (_loginBtn.selected) {
-         _loginBackView.layer.borderColor = [UIColor whiteColor].CGColor;
+    if (self.selectRouther) {
+        _loginBtn.enabled = YES;
+        _lblRoutherName.textColor = [UIColor whiteColor];
+        _loginBtn.backgroundColor = [UIColor whiteColor];
     } else {
-        _loginBackView.layer.borderColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1].CGColor;
+        _loginBtn.enabled = NO;
+        _lblRoutherName.textColor = RGB(178, 178, 178);
+        _loginBtn.backgroundColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1];
     }
 }
 #pragma mark -切换routher 刷新方法
@@ -372,7 +374,6 @@
     [RoutherConfig getRoutherConfig].currentRouterSn = routeM.userSn;
     
     _lblRoutherName.text = self.selectRouther.name;
-    _passTF.text = self.selectRouther.userPass?:@"";
 }
 
 
@@ -392,23 +393,23 @@
     [self presentViewController:alertC animated:YES completion:nil];
 }
 
-#pragma mark - 直接添加监听方法
--(void)addTargetMethod{
-    [_passTF addTarget:self action:@selector(textField1TextChange:) forControlEvents:UIControlEventEditingChanged];
-}
--(void)textField1TextChange:(UITextField *)textField{
-    if (textField.text.trim.length > 0) {
-        if (!_loginBtn.selected) {
-            _loginBtn.selected = YES;
-            [self changeLogintStatu];
-        }
-    } else {
-        if (_loginBtn.selected) {
-            _loginBtn.selected = NO;
-            [self changeLogintStatu];
-        }
-    }
-}
+//#pragma mark - 直接添加监听方法
+//-(void)addTargetMethod{
+//    [_passTF addTarget:self action:@selector(textField1TextChange:) forControlEvents:UIControlEventEditingChanged];
+//}
+//-(void)textField1TextChange:(UITextField *)textField{
+//    if (textField.text.trim.length > 0) {
+//        if (!_loginBtn.selected) {
+//            _loginBtn.selected = YES;
+//            [self changeLogintStatu];
+//        }
+//    } else {
+//        if (_loginBtn.selected) {
+//            _loginBtn.selected = NO;
+//            [self changeLogintStatu];
+//        }
+//    }
+//}
 
 #pragma mark - 通知回调
 // touch验证成功
@@ -442,49 +443,33 @@
         }
         
     } else {
+//        RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
+//        if (routerModel) {
+//            self.selectRouther = routerModel;
+//            _lblRoutherName.text = self.selectRouther.name;
+//            _loginBtn.selected = YES;
+//            [self connectSocketWithIsShowHud:YES];
+//            [self changeLogintStatu];
+//        } else { // 走find 5
+//            isFind = YES;
+//            [self connectSocketWithIsShowHud:YES];
+//        }
+        
         RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
         if (routerModel) {
             self.selectRouther = routerModel;
             _lblRoutherName.text = self.selectRouther.name;
-            _passTF.text = self.selectRouther.userPass;
             _loginBtn.selected = YES;
-            [self connectSocketWithIsShowHud:YES];
             [self changeLogintStatu];
-        } else { // 走find 5
+        }
+            // 走find 5
             isFind = YES;
             [self connectSocketWithIsShowHud:YES];
-        }
+        
+
     }
     
     AppD.isScaner = NO;
-}
-- (void) loginSuccess:(NSNotification *) noti
-{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(sendLoginRequestWithShowHud:) object:[NSNumber numberWithBool:NO]];
-    if (resultLogin) {
-        return;
-    }
-    resultLogin = YES;
-    NSInteger retCode = [noti.object integerValue];
-    if (retCode == 0) {
-        [RouterModel updateRouterPassWithSn:[RoutherConfig getRoutherConfig].currentRouterSn pass:_passTF.text.trim];
-        [UserModel updateUserLocalWithPass:_passTF.text.trim];
-        [UserConfig getShareObject].passWord = _passTF.text.trim;
-        [AppD setRootTabbarWithManager:nil];
-        [AppD.window showHint:@"Login Success"];
-    } else if (retCode == 2) { // routeid不对
-        [AppD.window showHint:@"Routeid wrong."];
-    } else if (retCode == 1) { //需要验证
-        [AppD.window showHint:@"Need to verify"];
-    }else if (retCode == 3) { //uid错误
-        [AppD.window showHint:@"uid wrong."];
-    }else if (retCode == 4) { //登陆密码错误
-        [AppD.window showHint:@"Login password error."];
-    } else if (retCode == 5) { //验证码错误
-        [AppD.window showHint:@"Verification code error."];
-    }else { // 其它错误
-        [AppD.window showHint:@"Login failed Other error."];
-    }
 }
 
 - (void) recivceUserFind:(NSNotification *) noti
@@ -510,18 +495,79 @@
         }
         
         if (retCode == 0) { //已激活
-            [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
-            [RouterModel updateRouterConnectStatusWithSn:usesn];
-            [UserModel createUserLocalWithName:userName userid:userid version:0 filePay:@"" userpass:@"" userSn:usesn hashid:@""];
-            [RouterModel updateRouterConnectStatusWithSn:usesn];
-            LoginViewController *vc = [[LoginViewController alloc] init];
-            [self setRootVCWithVC:vc];
+            
+            [self sendLoginRequestWithShowHud:YES];
+            
+//            [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
+//            [RouterModel updateRouterConnectStatusWithSn:usesn];
+//            [UserModel createUserLocalWithName:userName userid:userid version:0 filePay:@"" userpass:@"" userSn:usesn hashid:@""];
+//            [RouterModel updateRouterConnectStatusWithSn:usesn];
+//            LoginViewController *vc = [[LoginViewController alloc] init];
+//            [self setRootVCWithVC:vc];
         } else { // 未激活 或者日临时帐户
-            RegiterViewController *vc = [[RegiterViewController alloc] initWithAccountType:type];
-            [self setRootVCWithVC:vc];
+//            RegiterViewController *vc = [[RegiterViewController alloc] initWithAccountType:type];
+//            [self setRootVCWithVC:vc];
+            
+            [self sendRegisterRequestWithShowHud:YES];
         }
     }
 }
+#pragma mark -登陆成功
+- (void) loginSuccess:(NSNotification *) noti
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(sendLoginRequestWithShowHud:) object:[NSNumber numberWithBool:NO]];
+    if (resultLogin) {
+        return;
+    }
+    resultLogin = YES;
+    NSInteger retCode = [noti.object integerValue];
+    if (retCode == 0) {
+        [AppD setRootTabbarWithManager:nil];
+        [AppD.window showHint:@"Login Success"];
+    } else if (retCode == 2) { // routeid不对
+        [AppD.window showHint:@"Routeid wrong."];
+    } else if (retCode == 1) { //需要验证
+        [AppD.window showHint:@"Need to verify"];
+    }else if (retCode == 3) { //uid错误
+        [AppD.window showHint:@"uid wrong."];
+    }else if (retCode == 4) { //登陆密码错误
+        [AppD.window showHint:@"Login password error."];
+    } else if (retCode == 5) { //验证码错误
+        [AppD.window showHint:@"Verification code error."];
+    }else { // 其它错误
+        [AppD.window showHint:@"Login failed Other error."];
+    }
+}
+
+#pragma mark -注册成功
+- (void) userRegisterSuccess:(NSNotification *) noti
+{
+   
+    NSDictionary *receiveDic = (NSDictionary *)noti.object;
+    NSString *userid = receiveDic[@"params"][@"UserId"];
+    NSString *userSn = receiveDic[@"params"][@"UserSn"];
+    NSString *hashid = receiveDic[@"params"][@"Index"];
+    NSString *routeId = receiveDic[@"params"][@"RouteId"];
+    NSString *routerName = receiveDic[@"params"][@"RouterName"];
+    NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
+    NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
+  
+    // 保存用户
+    [UserModel updateHashid:hashid usersn:userSn userid:userid needasysn:0];
+    // 保存路由
+    [RouterModel addRouterName:routerName routerid:routeId usersn:userSn];
+    [RouterModel updateRouterConnectStatusWithSn:userSn];
+    
+    [UserConfig getShareObject].userId = userid;
+    [UserConfig getShareObject].userName = [UserModel getUserModel].username;
+    [UserConfig getShareObject].usersn = userSn;
+    [UserConfig getShareObject].dataFilePay = dataFilePay;
+    [UserConfig getShareObject].dataFileVersion = dataFileVersion;
+    
+    [AppD setRootTabbarWithManager:nil];
+     [AppD.window showHint:@"Registered successfully"];
+}
+
 /*
 #pragma mark - Navigation
 
