@@ -9,10 +9,12 @@
 #import "PNBaseViewController.h"
 
 @class FriendModel;
+//@class ContactShowModel;
 
 @interface FriendDetailViewController : PNBaseViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (nonatomic, strong) FriendModel *friendModel;
+//@property (nonatomic, strong) ContactShowModel *contactShowM;
 
 @end

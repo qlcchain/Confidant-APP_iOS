@@ -26,4 +26,8 @@
 @property (nonatomic , assign) NSInteger onLineStatu;
 @property (nonatomic ,assign) BOOL isSelect;
 
+@property (nonatomic, strong) NSString *RouteId;
+@property (nonatomic, strong) NSString *RouteName;
+@property (nonatomic, strong) NSString *Index;
+
 @end
