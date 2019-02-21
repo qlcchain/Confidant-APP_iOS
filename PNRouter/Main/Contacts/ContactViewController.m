@@ -199,7 +199,7 @@
     if (AppD.showHD) {
         AppD.showHD = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
-        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         [self refreshAddContactHD];
     }
     AddFriendViewController *vc = [[AddFriendViewController alloc] init];
@@ -392,7 +392,7 @@
 - (void) requestAddFriendNoti:(NSNotification *) noti
 {
     if (![[self.navigationController.viewControllers lastObject] isKindOfClass:[AddFriendViewController class]]) {
-        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         [self refreshAddContactHD];
         // 通知tabbar 红点显示通知
     } else {
@@ -406,12 +406,7 @@
     
     NSString *jsonModel =(NSString *)noti.object;
     NSArray *modelArr = [jsonModel mj_JSONObject];
-    if (self.dataArray.count > 0) {
-        [self.dataArray removeAllObjects];
-    }
-    if ([ChatListDataUtil getShareObject].friendArray.count>0) {
-        [[ChatListDataUtil getShareObject].friendArray removeAllObjects];
-    }
+    
     if (modelArr) {
        NSArray *friendArr = [FriendModel mj_objectArrayWithKeyValuesArray:modelArr];
         [friendArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -424,8 +419,16 @@
             model.remarks = nickName;
         }];
         NSMutableArray *sortArr = [NSMutableArray arrayWithArray:friendArr];
-        [self.dataArray addObjectsFromArray:[self handleShowData:sortArr]];
-//        [self.dataArray addObjectsFromArray:[self sortWith:sortArr]];
+        NSArray *showArr = [self handleShowData:sortArr];
+        
+        if (self.dataArray.count > 0) {
+            [self.dataArray removeAllObjects];
+        }
+        [self.dataArray addObjectsFromArray:showArr];
+        
+        if ([ChatListDataUtil getShareObject].friendArray.count>0) {
+            [[ChatListDataUtil getShareObject].friendArray removeAllObjects];
+        }
         [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
     }
     
@@ -464,7 +467,8 @@
         BOOL isExist = [resultArr[0] boolValue];
         if (!isExist) { // 不存在则创建
             ContactShowModel *showM = [ContactShowModel new];
-            showM.showCell = NO;
+//            showM.showCell = NO;
+            showM.showCell = [weakSelf getOldShowCellStatus:friendM.signPublicKey];
             showM.showArrow = YES;
             showM.Index = friendM.Index;
             showM.Name = friendM.username;
@@ -490,6 +494,18 @@
     }];
     
     return [self sortWith:contactShowArr];
+}
+
+- (BOOL)getOldShowCellStatus:(NSString *)userKey {
+    __block BOOL showCell = NO;
+    [self.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ContactShowModel *model = obj;
+        if ([model.UserKey isEqualToString:userKey]) {
+            showCell = model.showCell;
+            *stop = YES;
+        }
+    }];
+    return showCell;
 }
 
 - (NSArray *)isExist:(NSString *)userKey InArr:(NSArray<ContactShowModel *> *)arr {

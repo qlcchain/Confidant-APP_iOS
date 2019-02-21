@@ -39,13 +39,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    [_scannerBorder startScannerAnimating];
-    [_scanner startScan];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+//    _parentView.frame = CGRectMake(0, 110-23, SCREEN_WIDTH, SCREEN_HEIGHT-110+23);
+    [self prepareScanerBorder];
     
     [_scannerBorder startScannerAnimating];
     [self.scanner startScan];
@@ -70,8 +70,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
-    _parentView.frame = CGRectMake(0, 110-23, SCREEN_WIDTH, SCREEN_HEIGHT-110+23);
-    [self prepareScanerBorder];
+    
     
 }
 
@@ -89,7 +88,6 @@
    // _scannerBorder.center = self.view.center;
     _scannerBorder.tintColor = MAIN_PURPLE_COLOR;
     [_parentView addSubview:_scannerBorder];
-    
     
     _maskView = [HMScannerMaskView maskViewWithFrame:_parentView.bounds cropRect:_scannerBorder.frame];
     [_parentView insertSubview:_maskView atIndex:0];
