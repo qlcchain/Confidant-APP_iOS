@@ -984,7 +984,7 @@
     if (retCode == 0) { // 成功
         if (userId.length > 0) {
             [UserModel updateHashid:hashid usersn:userSn userid:userId needasysn:needSynch];
-            [RouterModel addRouterName:routerName routerid:routeId usersn:userSn];
+            [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userId];
             [RouterModel updateRouterConnectStatusWithSn:userSn];
         }
         // 同步data文件

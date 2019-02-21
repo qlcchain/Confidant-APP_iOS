@@ -32,6 +32,8 @@
     BOOL resultLogin;
     NSInteger sendCount;
 }
+@property (weak, nonatomic) IBOutlet UIButton *arrowImgView;
+@property (weak, nonatomic) IBOutlet UILabel *lblDesc;
 @property (weak, nonatomic) IBOutlet UIView *loginBackView;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
@@ -50,6 +52,22 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (instancetype) initWithLoginType:(LoginType) type
+{
+    if (self = [super init]) {
+        self.loginType = type;
+        [self appOptionWithLoginType:type];
+    }
+    return self;
+}
+- (void) appOptionWithLoginType:(LoginType) type
+{
+    if (type == MacType) {
+        isFind = YES;
+        [self connectSocketWithIsShowHud:YES];
+    }
+}
+
 - (IBAction)loginAction:(id)sender {
     if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterToxid] isEmptyString]) {
         [self.view showHint:@"Please select the router."];
@@ -63,7 +81,8 @@
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
         if (connectStatu == socketConnectStatusConnected) {
             // 发送登陆请求
-            [self sendLoginRequestWithShowHud:YES];
+            sendCount = 0;
+            [self sendLoginRequestWithUserid:self.selectRouther.userid];
         } else {
             isLogin = YES;
             [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
@@ -178,19 +197,25 @@
         [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
     } else if (isLogin) {
         isLogin = NO;
-        [self sendLoginRequestWithShowHud:YES];
+        sendCount = 0;
+        [self sendLoginRequestWithUserid:self.selectRouther.userid];
     }
 }
 
-- (void) sendLoginRequestWithShowHud:(BOOL) isShow
+- (void) sendLoginRequestWithUserid:(NSString *) userid
 {
-   
-    [SendRequestUtil sendUserLoginWithPass:@"" userid:[UserModel getUserModel].userId showHud:isShow];
+    BOOL isShow = NO;
+    if (sendCount == 0) {
+        isShow = YES;
+    }
+    [SendRequestUtil sendUserLoginWithPass:@"" userid:userid showHud:isShow];
+    /*
     sendCount ++;
     if (sendCount == 4) {
         return;
     }
-    [self performSelector:@selector(sendLoginRequestWithShowHud:) withObject:@(0) afterDelay:5];
+    
+    [self performSelector:@selector(sendLoginRequestWithUserid:) withObject:userid afterDelay:5];*/
 }
 
 - (void) sendRegisterRequestWithShowHud:(BOOL) isShow
@@ -253,7 +278,8 @@
     isConnectSocket = NO;
     [AppD.window hideHud];
     if (isLogin) {  // 登陆
-        [self sendLoginRequestWithShowHud:YES];
+        sendCount = 0;
+        [self sendLoginRequestWithUserid:self.selectRouther.userid];
         isLogin = NO;
     } else if (isFind) {
         [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
@@ -350,6 +376,8 @@
         _loginBtn.enabled = YES;
         _lblRoutherName.textColor = [UIColor whiteColor];
         _loginBtn.backgroundColor = [UIColor whiteColor];
+        _lblDesc.text = @"*Select to re-join an existing circle or Scan the invitation QR code to join a new circle.";
+        [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_down_gray"] forState:UIControlStateNormal];
     } else {
         _loginBtn.enabled = NO;
         _lblRoutherName.textColor = RGB(178, 178, 178);
@@ -465,8 +493,6 @@
             // 走find 5
             isFind = YES;
             [self connectSocketWithIsShowHud:YES];
-        
-
     }
     
     AppD.isScaner = NO;
@@ -495,8 +521,8 @@
         }
         
         if (retCode == 0) { //已激活
-            
-            [self sendLoginRequestWithShowHud:YES];
+            sendCount = 0;
+            [self sendLoginRequestWithUserid:userid];
             
 //            [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
 //            [RouterModel updateRouterConnectStatusWithSn:usesn];
@@ -507,7 +533,6 @@
         } else { // 未激活 或者日临时帐户
 //            RegiterViewController *vc = [[RegiterViewController alloc] initWithAccountType:type];
 //            [self setRootVCWithVC:vc];
-            
             [self sendRegisterRequestWithShowHud:YES];
         }
     }
@@ -515,7 +540,7 @@
 #pragma mark -登陆成功
 - (void) loginSuccess:(NSNotification *) noti
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(sendLoginRequestWithShowHud:) object:[NSNumber numberWithBool:NO]];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(sendLoginRequestWithUserid:) object:@""];
     if (resultLogin) {
         return;
     }
@@ -555,7 +580,7 @@
     // 保存用户
     [UserModel updateHashid:hashid usersn:userSn userid:userid needasysn:0];
     // 保存路由
-    [RouterModel addRouterName:routerName routerid:routeId usersn:userSn];
+    [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userid];
     [RouterModel updateRouterConnectStatusWithSn:userSn];
     
     [UserConfig getShareObject].userId = userid;

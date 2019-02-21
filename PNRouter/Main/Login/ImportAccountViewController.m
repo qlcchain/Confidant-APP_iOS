@@ -44,7 +44,7 @@
                 [LibsodiumUtil changeUserPrivater:codeValues[1]];
                 NSString *name = [codeValues[2] base64DecodedString];
                 [UserModel createUserLocalWithName:name];
-                [AppD setRootLogin];
+                [AppD setRootLoginWithType:ImportType];
             } else {
                 [weakSelf.view showHint:@"format error."];
             }

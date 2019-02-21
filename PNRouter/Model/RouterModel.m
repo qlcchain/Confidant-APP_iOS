@@ -132,7 +132,7 @@
     }
 }
 
-+ (void) addRouterName:(NSString *) routerName routerid:(NSString *) rid usersn:(NSString *) usersn
++ (void) addRouterName:(NSString *) routerName routerid:(NSString *) rid usersn:(NSString *) usersn userid:(NSString *)userid
 {
     if (!usersn) {
         return;
@@ -141,6 +141,7 @@
     NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
     RouterModel *routerM = [[RouterModel alloc] init];
     routerM.toxid = rid;
+    routerM.userid = userid;
     routerM.userSn = usersn;
     routerM.name = routerName? [routerName base64DecodedString]:@"";
     // 去重

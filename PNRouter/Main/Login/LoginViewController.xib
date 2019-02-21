@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
+                <outlet property="arrowImgView" destination="JaM-o4-NYU" id="vM4-07-N2f"/>
+                <outlet property="lblDesc" destination="ZnW-ts-Uvo" id="WfM-uC-hFA"/>
                 <outlet property="lblRoutherName" destination="3pP-RD-uid" id="VgG-92-FSX"/>
                 <outlet property="lblTitle" destination="3Aj-gt-1na" id="6Hw-Bb-xpW"/>
                 <outlet property="loginBtn" destination="mWX-xX-Q7v" id="o7o-3S-P2B"/>

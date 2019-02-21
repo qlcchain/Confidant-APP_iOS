@@ -154,7 +154,7 @@
     }
     [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
     AppD.isLogOut = YES;
-    [AppD setRootLogin];
+    [AppD setRootLoginWithType:RouterType];
 }
 
 #pragma mark - noti
