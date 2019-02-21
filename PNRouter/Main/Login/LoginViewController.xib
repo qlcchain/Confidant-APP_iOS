@@ -92,9 +92,8 @@ Welcome back！</string>
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JaM-o4-NYU">
-                                    <rect key="frame" x="267" y="6" width="44" height="44"/>
+                                    <rect key="frame" x="48" y="6" width="263" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="44" id="Dkz-s0-o0m"/>
                                         <constraint firstAttribute="height" constant="44" id="VPC-BH-745"/>
                                     </constraints>
                                     <state key="normal" image="icon_arrow_gray"/>
@@ -103,7 +102,7 @@ Welcome back！</string>
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven't joined any circle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3pP-RD-uid">
-                                    <rect key="frame" x="48" y="6" width="219" height="44"/>
+                                    <rect key="frame" x="48" y="6" width="213" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="UtQ-MG-f8l"/>
                                     </constraints>
@@ -114,8 +113,8 @@ Welcome back！</string>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="JaM-o4-NYU" firstAttribute="leading" secondItem="3pP-RD-uid" secondAttribute="trailing" id="38B-Dz-vda"/>
                                 <constraint firstAttribute="trailing" secondItem="JaM-o4-NYU" secondAttribute="trailing" id="9bQ-Xl-3OC"/>
+                                <constraint firstItem="JaM-o4-NYU" firstAttribute="leading" secondItem="Gdf-v7-T9l" secondAttribute="trailing" constant="8" id="9is-ka-dtY"/>
                                 <constraint firstAttribute="trailing" secondItem="0qv-Wg-Wyr" secondAttribute="trailing" id="KAC-vI-vLv"/>
                                 <constraint firstAttribute="height" constant="56" id="T9s-pI-Npm"/>
                                 <constraint firstItem="Gdf-v7-T9l" firstAttribute="centerY" secondItem="IcV-iZ-iHI" secondAttribute="centerY" id="TgW-Dh-7Sb"/>
@@ -125,6 +124,7 @@ Welcome back！</string>
                                 <constraint firstItem="3pP-RD-uid" firstAttribute="centerY" secondItem="IcV-iZ-iHI" secondAttribute="centerY" id="uO9-cT-vZZ"/>
                                 <constraint firstItem="Gdf-v7-T9l" firstAttribute="leading" secondItem="IcV-iZ-iHI" secondAttribute="leading" id="vf9-Yr-uwb"/>
                                 <constraint firstItem="0qv-Wg-Wyr" firstAttribute="leading" secondItem="IcV-iZ-iHI" secondAttribute="leading" id="xF0-hp-ok7"/>
+                                <constraint firstAttribute="trailing" secondItem="3pP-RD-uid" secondAttribute="trailing" constant="50" id="z4Z-iZ-3Yl"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZnW-ts-Uvo">
@@ -185,7 +185,7 @@ Welcome back！</string>
                 <constraint firstItem="iKl-sV-VHX" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="hbH-lo-bfS"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-161.25" y="-17.95774647887324"/>
+            <point key="canvasLocation" x="-247.19999999999999" y="-41.829085457271368"/>
         </view>
     </objects>
     <resources>
