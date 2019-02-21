@@ -69,8 +69,6 @@
 {
     if (self = [super init]) {
         self.loginType = type;
-        [self addObserver];
-        [self appOptionWithLoginType:type];
     }
     return self;
 }
@@ -305,7 +303,7 @@
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
     
-    if (AppD.isLoginMac) {
+    if (AppD.isLoginMac && _loginType != MacType) {
         return;
     }
     
@@ -352,7 +350,8 @@
     NSArray *routeArr = [RouterModel getLocalRouter];
     [_showRouterArr addObjectsFromArray:routeArr];
     
-    
+    [self addObserver];
+    [self appOptionWithLoginType:_loginType];
     
     if (AppD.showTouch) {
          AppD.showTouch = NO;
@@ -506,7 +505,7 @@
 
 - (void) recivceUserFind:(NSNotification *) noti
 {
-    if (AppD.isLoginMac) {
+    if (AppD.isLoginMac && _loginType != MacType) {
         return;
     }
     
