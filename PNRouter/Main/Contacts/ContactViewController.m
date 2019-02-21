@@ -7,9 +7,9 @@
 //
 
 #import "ContactViewController.h"
-#import "ContactsCell.h"
-#import "GroupCell.h"
-#import "ContactsHeadView.h"
+#import "ContactTableCell.h"
+//#import "GroupCell.h"
+#import "ContactHeaderView.h"
 #import "FriendDetailViewController.h"
 #import "UserModel.h"
 #import "SocketMessageUtil.h"
@@ -24,32 +24,35 @@
 #import "EditTextViewController.h"
 #import "FriendRequestViewController.h"
 #import "LibsodiumUtil.h"
+#import "ContactShowModel.h"
 
-@interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate>
-{
-    BOOL isSearch;
-}
+@interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource/*,SWTableViewCellDelegate*/,UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
+@property (weak, nonatomic) IBOutlet UIView *hdBackView;
+
 @property (nonatomic ,strong) NSMutableArray *dataArray;
 @property (nonatomic ,strong) NSMutableArray *searchDataArray;
 @property (nonatomic ,strong) NSArray *groupArray;
 @property (nonatomic) NSInteger deleteIndex;
+@property (nonatomic) BOOL isSearch;
 
 @end
 
 @implementation ContactViewController
-- (void)viewDidAppear:(BOOL)animated
-{
-    
+
+- (void)viewDidAppear:(BOOL)animated {
      [self sendGetFriendNoti];
     [super viewWillAppear:animated];
 }
-- (void)viewWillAppear:(BOOL)animated
-{
+
+- (void)viewWillAppear:(BOOL)animated {
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [super viewWillAppear:animated];
+    
+    [self refreshAddContactHD];
 }
 
 #pragma mark - Observe
@@ -122,13 +125,15 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.view.backgroundColor = MAIN_PURPLE_COLOR;
     [self observe];
+    
+    _hdBackView.layer.cornerRadius = 6.0f;
+    _hdBackView.backgroundColor = RGB(44, 44, 44);
+    _hdBackView.hidden = YES;
+    
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
     _searchTF.delegate = self;
@@ -139,8 +144,9 @@
     _tableV.dataSource = self;
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
-     [_tableV registerNib:[UINib nibWithNibName:ContactsCellReuse bundle:nil] forCellReuseIdentifier:ContactsCellReuse];
+//    [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
+    [_tableV registerNib:[UINib nibWithNibName:ContactTableCellResue bundle:nil] forCellReuseIdentifier:ContactTableCellResue];
+    [_tableV registerNib:[UINib nibWithNibName:ContactHeaderViewReuse bundle:nil] forHeaderFooterViewReuseIdentifier:ContactHeaderViewReuse];
 }
 
 
@@ -152,20 +158,21 @@
 - (void) textFieldTextChange:(UITextField *) tf
 {
     if ([tf.text.trim isEmptyString]) {
-        isSearch = NO;
+        _isSearch = NO;
     } else {
-        isSearch = YES;
+        _isSearch = YES;
         [self.searchDataArray removeAllObjects];
         @weakify_self
         [self.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            FriendModel *model = obj;
-            NSString *userName = [[model.username base64DecodedString] lowercaseString];
+            ContactShowModel *model = obj;
+            NSString *userName = [[model.Name base64DecodedString] lowercaseString];
             if ([userName containsString:[tf.text.trim lowercaseString]]) {
                 [weakSelf.searchDataArray addObject:model];
             }
         }];
     }
     [_tableV reloadData];
+    [self refreshAddContactHD];
 }
 
 - (void) sendGetFriendNoti
@@ -181,93 +188,103 @@
    
 }
 
+- (void)refreshAddContactHD {
+    _hdBackView.hidden = AppD.showHD?NO:YES;
+}
+
+#pragma mark - Action
+
+- (IBAction)addContactAction:(id)sender {
+    if (AppD.showHD) {
+        AppD.showHD = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        [self refreshAddContactHD];
+    }
+    AddFriendViewController *vc = [[AddFriendViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - tableviewDataSourceDelegate
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return _isSearch? self.searchDataArray.count : self.dataArray.count;
 }
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-        return 1;
-    }
-    return isSearch? self.searchDataArray.count : self.dataArray.count;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0) {
-        return GroupCellHeight;
-    }
-    return ContactsCellHeight;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 1) {
-        return 64;
+    NSArray *arr = _isSearch? self.searchDataArray : self.dataArray;
+    ContactShowModel *model = arr[section];
+    if (model.showCell) {
+        return model.routerArr.count;
     }
     return 0;
 }
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
-    backView.backgroundColor = [UIColor clearColor];
-    ContactsHeadView *view = [ContactsHeadView loadContactsHeadView];
-    view.frame = backView.bounds;
-    [backView addSubview:view];
-    return backView;
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return ContactTableCellHeight;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return ContactHeaderViewHeight;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    ContactHeaderView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:ContactHeaderViewReuse];
+
+    NSArray *arr = _isSearch? self.searchDataArray : self.dataArray;
+    ContactShowModel *model = arr[section];
+//    view.headerSection = section;
+    [view configHeaderWithModel:model];
+    @weakify_self
+    view.showCellB = ^{
+        model.showCell = !model.showCell;
+        [weakSelf.tableV reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+    };
+//    view.selectB = ^(NSInteger headerSection) {
+//    };
+    
+    return view;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupCellReuse];
-        cell.lblName.text = self.groupArray[indexPath.row];
-        cell.hdBackView.hidden = YES;
-        if (indexPath.row == 0) {
-            if (AppD.showHD) {
-                cell.hdBackView.hidden = NO;
-            }
-        }
-        return cell;
-    }
-    ContactsCell *cell = [tableView dequeueReusableCellWithIdentifier:ContactsCellReuse];
-    FriendModel *model = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
-    [cell setModeWithModel:model];
+
+    ContactTableCell *cell = [tableView dequeueReusableCellWithIdentifier:ContactTableCellResue];
+    
+    ContactShowModel *model = _isSearch? self.searchDataArray[indexPath.section] : self.dataArray[indexPath.section];
+    ContactRouterModel *crModel = model.routerArr[indexPath.row];
+    [cell configCellWithModel:crModel];
+    @weakify_self
+    cell.contactChatB = ^(ContactRouterModel * _Nonnull crModel) {
+        
+    };
+    
     cell.tag = indexPath.row;
-    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
-    cell.delegate = self;
+//    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
+//    cell.delegate = self;
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (!tableView.isEditing) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        if (indexPath.section == 1) {
-            FriendModel *model = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
-            FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
-            model.username = [model.username base64DecodedString]?:model.username;
-            model.remarks = [model.remarks base64DecodedString]?:model.remarks;
-            vc.friendModel = model;
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if (indexPath.section == 0) {
-            if (indexPath.row == 0) {
-                if (AppD.showHD) {
-                    AppD.showHD = NO;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
-                    [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                }
-                AddFriendViewController *vc = [[AddFriendViewController alloc] init];
-                [self.navigationController pushViewController:vc animated:YES];
-            } else if (indexPath.row == 1 ){
-               
-            }
-        }
-    }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    ContactShowModel *model = _isSearch? self.searchDataArray[indexPath.section] : self.dataArray[indexPath.section];
+    ContactRouterModel *crModel = model.routerArr[indexPath.row];
+    
+    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
+    FriendModel *friendM = [[FriendModel alloc] init];
+    friendM.userId = crModel.Id;
+    friendM.username = [model.Name base64DecodedString]?:model.Name;
+    friendM.remarks = [model.Remarks base64DecodedString]?:model.Remarks;
+    friendM.Index = model.Index;
+    friendM.onLineStatu = [model.Status integerValue];
+    friendM.signPublicKey = model.UserKey;
+    friendM.RouteId = crModel.RouteId;
+    friendM.RouteName = crModel.RouteName;
+    vc.friendModel = friendM;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - SWTableViewDelegate
-
+/*
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
 {
     switch (state) {
@@ -289,7 +306,7 @@
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
 {
     [cell hideUtilityButtonsAnimated:YES];
-    FriendModel *model = isSearch? self.searchDataArray[cell.tag] : self.dataArray[cell.tag];
+    ContactShowModel *model = isSearch? self.searchDataArray[cell.tag] : self.dataArray[cell.tag];
     model.remarks = [model.remarks base64DecodedString]?:model.remarks;
     model.username = [model.username base64DecodedString]?:model.username;
     switch (index) {
@@ -347,6 +364,7 @@
     
     return rightUtilityButtons;
 }
+*/
 
 #pragma mark - NOTI
 - (void) friendListChangeNoti:(NSNotification *)noti {
@@ -357,6 +375,7 @@
 {
     if (![[self.navigationController.viewControllers lastObject] isKindOfClass:[AddFriendViewController class]]) {
         [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        [self refreshAddContactHD];
         // 通知tabbar 红点显示通知
     } else {
         AppD.showHD = NO;
@@ -364,6 +383,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
     
 }
+
 - (void) getFriendListNoti:(NSNotification *) noti {
     
     NSString *jsonModel =(NSString *)noti.object;
@@ -375,7 +395,6 @@
         [[ChatListDataUtil getShareObject].friendArray removeAllObjects];
     }
     if (modelArr) {
-        // 按名字首字母排序.
        NSArray *friendArr = [FriendModel mj_objectArrayWithKeyValuesArray:modelArr];
         [friendArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *model = obj;
@@ -387,7 +406,8 @@
             model.remarks = nickName;
         }];
         NSMutableArray *sortArr = [NSMutableArray arrayWithArray:friendArr];
-        [self.dataArray addObjectsFromArray:[self sortWith:sortArr]];
+        [self.dataArray addObjectsFromArray:[self handleShowData:sortArr]];
+//        [self.dataArray addObjectsFromArray:[self sortWith:sortArr]];
         [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
     }
     
@@ -414,11 +434,63 @@
     NSString *cha = [bigStr substringToIndex:1];
     return cha;
 }
+
+- (NSArray *)handleShowData:(NSMutableArray<FriendModel *> *)arr {
+//    NSMutableArray *tempArr = [NSMutableArray arrayWithArray:arr];
+    NSMutableArray *contactShowArr = [NSMutableArray array];
+    @weakify_self
+    [arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *friendM = obj;
+        NSArray *resultArr = [weakSelf isExist:friendM.signPublicKey InArr:contactShowArr];
+        BOOL isExist = [resultArr[0] boolValue];
+        ContactShowModel *existShowM = resultArr[1];
+        if (!isExist) { // 不存在则创建
+            ContactShowModel *showM = [ContactShowModel new];
+            showM.Index = friendM.Index;
+            showM.Name = friendM.username;
+            showM.Remarks = friendM.remarks;
+            showM.UserKey = friendM.signPublicKey;
+            showM.Status = @(friendM.onLineStatu);
+            showM.routerArr = [NSMutableArray array];
+            ContactRouterModel *routerM = [ContactRouterModel new];
+            routerM.Id = friendM.userId;
+            routerM.RouteId = friendM.RouteId;
+            routerM.RouteName = friendM.RouteName;
+            [showM.routerArr addObject:routerM];
+            
+            [contactShowArr addObject:showM];
+        } else { // 存在则合并
+            ContactRouterModel *routerM = [ContactRouterModel new];
+            routerM.Id = friendM.userId;
+            routerM.RouteId = friendM.RouteId;
+            routerM.RouteName = friendM.RouteName;
+            [existShowM.routerArr addObject:routerM];
+        }
+    }];
+    
+    return [self sortWith:contactShowArr];
+}
+
+- (NSArray *)isExist:(NSString *)userKey InArr:(NSArray<ContactShowModel *> *)arr {
+    __block BOOL isExist = NO;
+    __block ContactShowModel *resultM = nil;
+    [arr enumerateObjectsUsingBlock:^(ContactShowModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ContactShowModel *model = obj;
+        if ([model.UserKey isEqualToString:userKey]) {
+            isExist = YES;
+            resultM = model;
+            *stop = YES;
+        }
+    }];
+    
+    return @[@(isExist),resultM];
+}
+
 //根据拼音的字母排序  ps：排序适用于所有类型
-- (NSMutableArray *) sortWith:(NSMutableArray *)array{
-    [array sortUsingComparator:^NSComparisonResult(FriendModel *node1, FriendModel *node2) {
-        NSString *string1 = [NSString getNotNullValue:[self huoqushouzimuWithString:[node1.username base64DecodedString]?:node1.username]];
-        NSString *string2 = [NSString getNotNullValue:[self huoqushouzimuWithString:[node2.username base64DecodedString]?:node2.username]];
+- (NSMutableArray *) sortWith:(NSMutableArray<ContactShowModel *> *)array{
+    [array sortUsingComparator:^NSComparisonResult(ContactShowModel *node1, ContactShowModel *node2) {
+        NSString *string1 = [NSString getNotNullValue:[self huoqushouzimuWithString:[node1.Name base64DecodedString]?:node1.Name]];
+        NSString *string2 = [NSString getNotNullValue:[self huoqushouzimuWithString:[node2.Name base64DecodedString]?:node2.Name]];
         return [string1 compare:string2];
     }];
     return array;

@@ -10,6 +10,7 @@
 @class ChatListModel;
 
 @interface ChatListDataUtil : NSObject
+
 @property (nonatomic , strong) NSMutableArray *dataArray;
 @property (nonatomic , strong) NSMutableArray *friendArray;
 @property (nonatomic, assign) NSInteger tempMsgId;
@@ -21,9 +22,11 @@
 @property (nonatomic , strong) NSMutableDictionary *pullTimerDic;
 // tox取消发送文件
 @property (nonatomic , strong) NSMutableDictionary *fileCancelParames;
+
 + (instancetype) getShareObject;
 - (void) addFriendModel:(ChatListModel *) model;
 - (void) removeChatModelWithFriendID:(NSString *) friendID;
 - (void) cancelChatHDWithFriendid:(NSString *) friendid;
 - (NSString *) getFriendSignPublickeyWithFriendid:(NSString *) fid;
+
 @end

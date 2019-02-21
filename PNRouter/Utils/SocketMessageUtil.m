@@ -1248,7 +1248,7 @@
 {
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_PullFriend,@"UserId":userM.userId?:@""};
-    [SocketMessageUtil sendVersion3WithParams:params];
+    [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma -mark 发送data文件
 + (void) sendDataFileNeedSynch:(NSInteger) synch

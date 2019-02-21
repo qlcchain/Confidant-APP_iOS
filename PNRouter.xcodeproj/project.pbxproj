@@ -74,7 +74,10 @@
 		582BFE4D221D26DF00D8C2C8 /* ImportAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582BFE4B221D26DF00D8C2C8 /* ImportAccountViewController.xib */; };
 		582BFE56221D3D2700D8C2C8 /* RouterAliasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE54221D3D2700D8C2C8 /* RouterAliasViewController.m */; };
 		582BFE57221D3D2700D8C2C8 /* RouterAliasViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582BFE55221D3D2700D8C2C8 /* RouterAliasViewController.xib */; };
+		582BFE5A221E479A00D8C2C8 /* ContactShowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE59221E479A00D8C2C8 /* ContactShowModel.m */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
+		5833F9C6221E57F400F7B63D /* ContactHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5833F9C3221E57F400F7B63D /* ContactHeaderView.xib */; };
+		5833F9C7221E57F400F7B63D /* ContactHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833F9C4221E57F400F7B63D /* ContactHeaderView.m */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
 		583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */; };
@@ -153,6 +156,10 @@
 		588B3F24215F81D0008601E0 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 588B3F23215F81D0008601E0 /* ViewController.xib */; };
 		588F8CED220178FC000D7966 /* UploadFileHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 588F8CEC220178FC000D7966 /* UploadFileHelper.m */; };
 		58B41EEA21F98845004676CA /* PNDocumentPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B41EE821F98845004676CA /* PNDocumentPickerViewController.m */; };
+		58BA8DA0221E73AC00E6DE95 /* ContactsHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58BA8D9D221E73AB00E6DE95 /* ContactsHeadView.xib */; };
+		58BA8DA1221E73AC00E6DE95 /* ContactsHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BA8D9E221E73AB00E6DE95 /* ContactsHeadView.m */; };
+		58BA8DA5221E73FF00E6DE95 /* ContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BA8DA3221E73FF00E6DE95 /* ContactTableCell.m */; };
+		58BA8DA6221E73FF00E6DE95 /* ContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58BA8DA4221E73FF00E6DE95 /* ContactTableCell.xib */; };
 		58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58BD2E5421465E0A0091A77D /* Assets.xcassets */; };
 		58BD2E5E21475E020091A77D /* HWUserdefault.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BD2E5D21475E010091A77D /* HWUserdefault.m */; };
 		58BD2E6121475E960091A77D /* RouterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BD2E6021475E960091A77D /* RouterModel.m */; };
@@ -235,8 +242,6 @@
 		7330F3AF21475A0600FF4EEC /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F3AD21475A0600FF4EEC /* GroupCell.xib */; };
 		7330F3B321475A3E00FF4EEC /* ContactsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F3B121475A3E00FF4EEC /* ContactsCell.m */; };
 		7330F3B421475A3E00FF4EEC /* ContactsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F3B221475A3E00FF4EEC /* ContactsCell.xib */; };
-		7330F3B821475E2900FF4EEC /* ContactsHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F3B721475E2900FF4EEC /* ContactsHeadView.m */; };
-		7330F3BA21475E3500FF4EEC /* ContactsHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F3B921475E3500FF4EEC /* ContactsHeadView.xib */; };
 		7330F3BE214769DF00FF4EEC /* FriendDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F3BC214769DF00FF4EEC /* FriendDetailViewController.m */; };
 		7330F3BF214769DF00FF4EEC /* FriendDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F3BD214769DF00FF4EEC /* FriendDetailViewController.xib */; };
 		7330F3C321476E9300FF4EEC /* UserInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F3C121476E9300FF4EEC /* UserInfoCell.m */; };
@@ -609,8 +614,13 @@
 		582BFE53221D3D2700D8C2C8 /* RouterAliasViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterAliasViewController.h; sourceTree = "<group>"; };
 		582BFE54221D3D2700D8C2C8 /* RouterAliasViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterAliasViewController.m; sourceTree = "<group>"; };
 		582BFE55221D3D2700D8C2C8 /* RouterAliasViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouterAliasViewController.xib; sourceTree = "<group>"; };
+		582BFE58221E479A00D8C2C8 /* ContactShowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactShowModel.h; sourceTree = "<group>"; };
+		582BFE59221E479A00D8C2C8 /* ContactShowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactShowModel.m; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
+		5833F9C3221E57F400F7B63D /* ContactHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactHeaderView.xib; sourceTree = "<group>"; };
+		5833F9C4221E57F400F7B63D /* ContactHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactHeaderView.m; sourceTree = "<group>"; };
+		5833F9C5221E57F400F7B63D /* ContactHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactHeaderView.h; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
 		583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskListViewController.m; sourceTree = "<group>"; };
 		583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskListViewController.xib; sourceTree = "<group>"; };
@@ -780,6 +790,12 @@
 		588F8CEC220178FC000D7966 /* UploadFileHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFileHelper.m; sourceTree = "<group>"; };
 		58B41EE721F98845004676CA /* PNDocumentPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNDocumentPickerViewController.h; sourceTree = "<group>"; };
 		58B41EE821F98845004676CA /* PNDocumentPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNDocumentPickerViewController.m; sourceTree = "<group>"; };
+		58BA8D9D221E73AB00E6DE95 /* ContactsHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsHeadView.xib; sourceTree = "<group>"; };
+		58BA8D9E221E73AB00E6DE95 /* ContactsHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsHeadView.m; sourceTree = "<group>"; };
+		58BA8D9F221E73AC00E6DE95 /* ContactsHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsHeadView.h; sourceTree = "<group>"; };
+		58BA8DA2221E73FF00E6DE95 /* ContactTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTableCell.h; sourceTree = "<group>"; };
+		58BA8DA3221E73FF00E6DE95 /* ContactTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTableCell.m; sourceTree = "<group>"; };
+		58BA8DA4221E73FF00E6DE95 /* ContactTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableCell.xib; sourceTree = "<group>"; };
 		58BD2E5421465E0A0091A77D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		58BD2E5C21475E010091A77D /* HWUserdefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWUserdefault.h; sourceTree = "<group>"; };
 		58BD2E5D21475E010091A77D /* HWUserdefault.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWUserdefault.m; sourceTree = "<group>"; };
@@ -924,9 +940,6 @@
 		7330F3B021475A3E00FF4EEC /* ContactsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactsCell.h; sourceTree = "<group>"; };
 		7330F3B121475A3E00FF4EEC /* ContactsCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactsCell.m; sourceTree = "<group>"; };
 		7330F3B221475A3E00FF4EEC /* ContactsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactsCell.xib; sourceTree = "<group>"; };
-		7330F3B621475E2900FF4EEC /* ContactsHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactsHeadView.h; sourceTree = "<group>"; };
-		7330F3B721475E2900FF4EEC /* ContactsHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactsHeadView.m; sourceTree = "<group>"; };
-		7330F3B921475E3500FF4EEC /* ContactsHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactsHeadView.xib; sourceTree = "<group>"; };
 		7330F3BB214769DF00FF4EEC /* FriendDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendDetailViewController.h; sourceTree = "<group>"; };
 		7330F3BC214769DF00FF4EEC /* FriendDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendDetailViewController.m; sourceTree = "<group>"; };
 		7330F3BD214769DF00FF4EEC /* FriendDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendDetailViewController.xib; sourceTree = "<group>"; };
@@ -2256,6 +2269,9 @@
 				7330F50A214A74FA00FF4EEC /* AddFriendCellTableViewCell.h */,
 				7330F50B214A74FA00FF4EEC /* AddFriendCellTableViewCell.m */,
 				7330F50C214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib */,
+				58BA8DA2221E73FF00E6DE95 /* ContactTableCell.h */,
+				58BA8DA3221E73FF00E6DE95 /* ContactTableCell.m */,
+				58BA8DA4221E73FF00E6DE95 /* ContactTableCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2263,9 +2279,12 @@
 		7330F3B521475E0900FF4EEC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7330F3B621475E2900FF4EEC /* ContactsHeadView.h */,
-				7330F3B721475E2900FF4EEC /* ContactsHeadView.m */,
-				7330F3B921475E3500FF4EEC /* ContactsHeadView.xib */,
+				58BA8D9F221E73AC00E6DE95 /* ContactsHeadView.h */,
+				58BA8D9E221E73AB00E6DE95 /* ContactsHeadView.m */,
+				58BA8D9D221E73AB00E6DE95 /* ContactsHeadView.xib */,
+				5833F9C5221E57F400F7B63D /* ContactHeaderView.h */,
+				5833F9C4221E57F400F7B63D /* ContactHeaderView.m */,
+				5833F9C3221E57F400F7B63D /* ContactHeaderView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2561,6 +2580,8 @@
 				7330F511214A790400FF4EEC /* FriendModel.m */,
 				5825A24221FAE78200E6194B /* SharedFriendModel.h */,
 				5825A24321FAE78200E6194B /* SharedFriendModel.m */,
+				582BFE58221E479A00D8C2C8 /* ContactShowModel.h */,
+				582BFE59221E479A00D8C2C8 /* ContactShowModel.m */,
 			);
 			path = ContactModels;
 			sourceTree = "<group>";
@@ -3350,6 +3371,7 @@
 				587C52C7215C798E006787FB /* RouterCodeViewController.xib in Resources */,
 				583BF92021F6B5D00078A2A8 /* SharedSettingsViewController.xib in Resources */,
 				583BF91621F6B4DF0078A2A8 /* MyFilesViewController.xib in Resources */,
+				58BA8DA0221E73AC00E6DE95 /* ContactsHeadView.xib in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
 				584B43A421FF0AE700D1F21A /* ConfigDiskHeaderView.xib in Resources */,
@@ -3388,6 +3410,7 @@
 				587C52CD215CAF14006787FB /* RouterManagementCell.xib in Resources */,
 				583BF91B21F6B5AB0078A2A8 /* DetailInformationViewController.xib in Resources */,
 				73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */,
+				5833F9C6221E57F400F7B63D /* ContactHeaderView.xib in Resources */,
 				582BFE43221AAA1100D8C2C8 /* DiskManagementMMCCell.xib in Resources */,
 				73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */,
 				583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */,
@@ -3403,10 +3426,10 @@
 				7330F51F214B460A00FF4EEC /* NotifactionView.xib in Resources */,
 				7330F3A4214671C000FF4EEC /* ShareView.xib in Resources */,
 				7330F3D42147A98D00FF4EEC /* messageHistory.json in Resources */,
+				58BA8DA6221E73FF00E6DE95 /* ContactTableCell.xib in Resources */,
 				584B439A21FEF79300D1F21A /* DiskDetailCell.xib in Resources */,
 				584A447A21460AD800608122 /* MyViewController.xib in Resources */,
 				7330F50E214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib in Resources */,
-				7330F3BA21475E3500FF4EEC /* ContactsHeadView.xib in Resources */,
 				73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */,
 				584B439F21FEFF1A00D1F21A /* ConfigDiskViewController.xib in Resources */,
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
@@ -3544,6 +3567,7 @@
 				73D31B11217F08480034B2B9 /* TZPhotoPreviewController.m in Sources */,
 				73D31B10217F08480034B2B9 /* UIView+Layout.m in Sources */,
 				7330F3982146563600FF4EEC /* MyDetailViewController.m in Sources */,
+				58BA8DA5221E73FF00E6DE95 /* ContactTableCell.m in Sources */,
 				73625763214213B300D7FD6B /* UILabel+Block.m in Sources */,
 				73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */,
 				581FDF5721F024170068C120 /* ping_array.m in Sources */,
@@ -3559,6 +3583,7 @@
 				7330F5022149147200FF4EEC /* CDChatListView.m in Sources */,
 				7330F3782146118800FF4EEC /* UIImage+PDF.m in Sources */,
 				736257AA2142149300D7FD6B /* UIView+Shake.m in Sources */,
+				58BA8DA1221E73AC00E6DE95 /* ContactsHeadView.m in Sources */,
 				73FD079921D74979001B89CB /* FriendRequestViewController.m in Sources */,
 				7378841A21ACF2970033A189 /* OCTSubmanagerUserImpl.m in Sources */,
 				584A447921460AD800608122 /* MyViewController.m in Sources */,
@@ -3720,6 +3745,7 @@
 				73060528216F3572005A0E13 /* RequestService.m in Sources */,
 				7330F4802148AADA00FF4EEC /* KeyChainUtil.swift in Sources */,
 				736257AE2142149300D7FD6B /* UIView+Visuals.m in Sources */,
+				5833F9C7221E57F400F7B63D /* ContactHeaderView.m in Sources */,
 				583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */,
 				7330F4E92149147200FF4EEC /* CTClickInfo.m in Sources */,
 				73001A2321912890003D07CC /* RSAUtil.m in Sources */,
@@ -3778,7 +3804,6 @@
 				58BD2E722148E3170091A77D /* ToastUtil.m in Sources */,
 				7330F3AE21475A0600FF4EEC /* GroupCell.m in Sources */,
 				581FDF5021F024170068C120 /* tox.m in Sources */,
-				7330F3B821475E2900FF4EEC /* ContactsHeadView.m in Sources */,
 				7378840D21ACF2970033A189 /* OCTAudioQueue.m in Sources */,
 				737883F621ACF2970033A189 /* OCTDefaultFileStorage.m in Sources */,
 				58C62704214BA7170051AFD0 /* MessageListUtil.m in Sources */,
@@ -3788,6 +3813,7 @@
 				584B43A921FF0B9800D1F21A /* ConfigDiskCell.m in Sources */,
 				582BFE3B221688C200D8C2C8 /* DiskAlertView.m in Sources */,
 				583BF93521F6F4B00078A2A8 /* FileMoreAlertView.m in Sources */,
+				582BFE5A221E479A00D8C2C8 /* ContactShowModel.m in Sources */,
 				7330F4E62149147200FF4EEC /* CDTextParser.m in Sources */,
 				737883F321ACF2970033A189 /* OCTToxAV.m in Sources */,
 				581FDF4721F024170068C120 /* net_crypto.m in Sources */,
