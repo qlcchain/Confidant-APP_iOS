@@ -722,6 +722,7 @@
     NSString *FriendName = receiveDic[@"params"][@"FriendName"];
     NSString *UserKey = receiveDic[@"params"][@"UserKey"];
     NSString *Sign = receiveDic[@"params"][@"Sign"];
+    NSString *timestamp = receiveDic[@"timestamp"];
     BOOL isUserKeyOK = NO;
     if ([UserKey isEqualToString:[EntryModel getShareObject].signPublicKey]) {
         isUserKeyOK = YES;
@@ -729,6 +730,7 @@
     BOOL isSignOK = NO;
     if (isUserKeyOK) {
         // 解密sign
+        isSignOK = [LibsodiumUtil verifySign:Sign withSignPublickey:[EntryModel getShareObject].signPublicKey timestamp:timestamp];
     }
     
     NSInteger Result = [receiveDic[@"params"][@"Result"] integerValue];

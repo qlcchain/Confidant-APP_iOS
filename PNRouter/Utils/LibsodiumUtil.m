@@ -318,6 +318,7 @@
         return @"";
     }
 }
+
 + (NSString *) getOwenrSignTemp:(NSString *) temptime
 {
     NSData *temptimeData = [temptime dataUsingEncoding:NSUTF8StringEncoding];
@@ -337,6 +338,27 @@
         return @"";
     }
 }
+
++ (BOOL)verifySign:(NSString *)sign withSignPublickey:(NSString *) signPublickey timestamp:(NSString *)timestamp {
+    NSLog(@"msgstr = %@",sign);
+        
+    NSData *msgData = [sign base64DecodedData];
+    const unsigned char *msgKey = [msgData bytes];
+    
+    NSData *signPKData = [signPublickey base64DecodedData];
+    const unsigned char *signPK = [signPKData bytes];
+    
+    unsigned char m[32];
+    unsigned long long mlen_p;
+    int result = crypto_sign_open(m,&mlen_p,msgKey,msgData.length,signPK);
+    if (result >= 0) {
+        NSData *enstrData = [NSData dataWithBytesNoCopy:m length:32 freeWhenDone:NO];
+        NSString *singPublic = [enstrData base64EncodedString];
+        return [singPublic isEqualToString:timestamp];
+    }
+    return NO;
+}
+
 // 签名验证
 + (NSString *) verifySignWithSignPublickey:(NSString *) signPublickey verifyMsg:(NSString *) verifyMsg
 {

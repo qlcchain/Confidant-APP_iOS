@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *) getOwenrSignPrivateKeySignOwenrTempPublickKey;
 // 签名私钥签名字符串
 + (NSString *) getOwenrSignTemp:(NSString *) temptime;
++ (BOOL)verifySign:(NSString *)sign withSignPublickey:(NSString *) signPublickey timestamp:(NSString *)timestamp;
 // 签名验证
 + (NSString *) verifySignWithSignPublickey:(NSString *) signPublickey verifyMsg:(NSString *) verifyMsg;
 // 公钥加密对称密钥 -非对称加密方式
