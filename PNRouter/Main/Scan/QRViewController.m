@@ -39,13 +39,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    _parentView.frame = CGRectMake(0, NAVIGATION_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT);
+    [self prepareScanerBorder];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-//    _parentView.frame = CGRectMake(0, 110-23, SCREEN_WIDTH, SCREEN_HEIGHT-110+23);
-    [self prepareScanerBorder];
     
     [_scannerBorder startScannerAnimating];
     [self.scanner startScan];
