@@ -39,10 +39,23 @@
     if (model.isHD) {
         _lblUnCount.hidden = NO;
     }
-    _lblName.text =  model.friendName;
+    
     _lblNameJX.text = [StringUtil getUserNameFirstWithName:_lblName.text];
     _lblContent.text = model.lastMessage?:@"";
     _lblTime.text = [model.chatTime minuteDescription];
+    
+    NSString *friendName = model.friendName;
+    NSString *joinStr = @" - ";
+    NSString *routerName = model.routerName?:@"";
+    NSString *str = [[friendName stringByAppendingString:joinStr] stringByAppendingString:routerName];
+    if (routerName.length <= 0) {
+        str = friendName;
+    }
+    NSMutableAttributedString *strAtt = [[NSMutableAttributedString alloc] initWithString:str];
+    [strAtt setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:UIColorFromRGB(0x2B2B2B)} range:NSMakeRange(0, str.length)];
+    [strAtt setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:UIColorFromRGB(0x2B2B2B)} range:NSMakeRange(0, friendName.length)];
+    _lblName.attributedText = strAtt;
+//    _lblName.text =  model.friendName;
 }
 
 @end

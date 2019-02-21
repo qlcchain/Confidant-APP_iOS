@@ -623,6 +623,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     } else if (msgType == 4){
         chatModel.lastMessage = @"[video]";
     }
+    chatModel.routerName = self.friendModel.RouteName?:@"";
     [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
 }
 
@@ -669,6 +670,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         chatModel.chatTime = [NSDate date];
         chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
         chatModel.signPublicKey = self.friendModel.signPublicKey;
+        chatModel.routerName = self.friendModel.RouteName?:@"";
         [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
         
         if (![SystemUtil isSocketConnect]) {
@@ -861,6 +863,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             chatModel.lastMessage = weakSelf.selectMessageModel.msg;
             chatModel.chatTime = [NSDate date];
             chatModel.isHD = NO;
+            chatModel.routerName = self.friendModel.RouteName?:@"";
             [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
             
         } else { // 转发文件
