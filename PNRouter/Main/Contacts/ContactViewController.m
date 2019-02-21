@@ -25,6 +25,7 @@
 #import "FriendRequestViewController.h"
 #import "LibsodiumUtil.h"
 #import "ContactShowModel.h"
+#import "ChatViewController.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource/*,SWTableViewCellDelegate*/,UITextFieldDelegate>
 
@@ -254,7 +255,7 @@
     [cell configCellWithModel:crModel];
     @weakify_self
     cell.contactChatB = ^(ContactRouterModel * _Nonnull crModel) {
-        
+        [weakSelf jumpToChat:[weakSelf getFriendModelWithContactShowModel:model contactRouterModel:crModel]];
     };
     
     cell.tag = indexPath.row;
@@ -270,17 +271,22 @@
     ContactRouterModel *crModel = model.routerArr[indexPath.row];
     
     FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
-    FriendModel *friendM = [[FriendModel alloc] init];
-    friendM.userId = crModel.Id;
-    friendM.username = [model.Name base64DecodedString]?:model.Name;
-    friendM.remarks = [model.Remarks base64DecodedString]?:model.Remarks;
-    friendM.Index = model.Index;
-    friendM.onLineStatu = [model.Status integerValue];
-    friendM.signPublicKey = model.UserKey;
-    friendM.RouteId = crModel.RouteId;
-    friendM.RouteName = crModel.RouteName;
-    vc.friendModel = friendM;
+    vc.friendModel = [self getFriendModelWithContactShowModel:model contactRouterModel:crModel];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (FriendModel *)getFriendModelWithContactShowModel:(ContactShowModel *)contactShowM contactRouterModel:(ContactRouterModel *)contactRouterM {
+    FriendModel *friendM = [[FriendModel alloc] init];
+    friendM.userId = contactRouterM.Id;
+    friendM.username = [contactShowM.Name base64DecodedString]?:contactShowM.Name;
+    friendM.remarks = [contactShowM.Remarks base64DecodedString]?:contactShowM.Remarks;
+    friendM.Index = contactShowM.Index;
+    friendM.onLineStatu = [contactShowM.Status integerValue];
+    friendM.signPublicKey = contactShowM.UserKey;
+    friendM.RouteId = contactRouterM.RouteId;
+    friendM.RouteName = contactRouterM.RouteName;
+    
+    return friendM;
 }
 
 #pragma mark - SWTableViewDelegate
@@ -365,6 +371,12 @@
     return rightUtilityButtons;
 }
 */
+
+#pragma mark - Transition
+- (void)jumpToChat:(FriendModel *)friendM {
+    ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:friendM];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 #pragma mark - NOTI
 - (void) friendListChangeNoti:(NSNotification *)noti {
