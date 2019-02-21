@@ -168,22 +168,20 @@
     // 重新登录
     AppD.isDisConnectLogin = YES;
     UserConfig *userM = [UserConfig getShareObject];
-    [SendRequestUtil sendUserLoginWithPass:[userM.passWord SHA256] userid:userM.userId showHud:NO];
+    [SendRequestUtil sendUserLoginWithPass:@"" userid:userM.userId showHud:NO];
 }
 - (void) socketOnconnectNoti:(NSNotification *) noti
 {
     [HeartBeatUtil stop];
     AppD.isDisConnectLogin = YES;
     UserConfig *userM = [UserConfig getShareObject];
-    [SendRequestUtil sendUserLoginWithPass:[userM.passWord SHA256] userid:userM.userId showHud:NO];
+    [SendRequestUtil sendUserLoginWithPass:@"" userid:userM.userId showHud:NO];
     [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"1"];
 }
 - (void) socketDisconnectNoti:(NSNotification *) noti
 {
 
     if ([SystemUtil isSocketConnect]) {
-        
-        
         
         AFNetworkReachabilityManager  *man=[AFNetworkReachabilityManager sharedManager];
         

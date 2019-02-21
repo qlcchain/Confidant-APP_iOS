@@ -69,6 +69,7 @@
 {
     if (self = [super init]) {
         self.loginType = type;
+        [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
     }
     return self;
 }
