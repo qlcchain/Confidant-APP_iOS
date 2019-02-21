@@ -239,8 +239,13 @@
     view.showCellB = ^(NSInteger headerSection) {
         NSArray *arr = weakSelf.isSearch? self.searchDataArray : self.dataArray;
         ContactShowModel *tempM = arr[headerSection];
-        tempM.showCell = !tempM.showCell;
-        [weakSelf.tableV reloadSections:[NSIndexSet indexSetWithIndex:headerSection] withRowAnimation:UITableViewRowAnimationNone];
+        if (tempM.showArrow) { // 显示隐藏cell
+            tempM.showCell = !tempM.showCell;
+            [weakSelf.tableV reloadSections:[NSIndexSet indexSetWithIndex:headerSection] withRowAnimation:UITableViewRowAnimationNone];
+        } else { // 直接跳转详情
+            ContactRouterModel *crModel = tempM.routerArr.firstObject;
+            [weakSelf jumpToFriendDetail:[weakSelf getFriendModelWithContactShowModel:tempM contactRouterModel:crModel]];
+        }
     };
 //    view.selectB = ^(NSInteger headerSection) {
 //    };
@@ -478,7 +483,7 @@
             ContactShowModel *showM = [ContactShowModel new];
 //            showM.showCell = NO;
             showM.showCell = [weakSelf getOldShowCellStatus:friendM.signPublicKey];
-            showM.showArrow = YES;
+            showM.showArrow = NO;
             showM.Index = friendM.Index;
             showM.Name = friendM.username;
             showM.Remarks = friendM.remarks;
@@ -500,6 +505,9 @@
             routerM.Id = friendM.userId;
             routerM.RouteId = friendM.RouteId;
             routerM.RouteName = friendM.RouteName;
+            if (existShowM.routerArr.count >= 1) {
+                existShowM.showArrow = YES;
+            }
             [existShowM.routerArr addObject:routerM];
         }
     }];
