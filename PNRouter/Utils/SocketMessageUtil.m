@@ -972,7 +972,7 @@
     NSString *routerName = receiveDic[@"params"][@"RouterName"];
     NSString *userSn = receiveDic[@"params"][@"UserSn"];
     NSString *hashid = receiveDic[@"params"][@"Index"];
-    NSString *routeId = receiveDic[@"params"][@"RouterId"];
+    NSString *routeId = receiveDic[@"params"][@"Routerid"];
    
     
     [UserConfig getShareObject].userId = userId;
