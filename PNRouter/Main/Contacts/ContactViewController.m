@@ -411,7 +411,8 @@
         [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
     }
     
-    [_tableV reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+    [_tableV reloadData];
+    [self refreshAddContactHD];
 
 //    NSArray *finfAlls = [FriendModel bg_findAll:FRIEND_LIST_TABNAME];
 //    if (self.dataArray.count > 0) {
@@ -446,6 +447,8 @@
         ContactShowModel *existShowM = resultArr[1];
         if (!isExist) { // 不存在则创建
             ContactShowModel *showM = [ContactShowModel new];
+            showM.showCell = NO;
+            showM.showArrow = YES;
             showM.Index = friendM.Index;
             showM.Name = friendM.username;
             showM.Remarks = friendM.remarks;
