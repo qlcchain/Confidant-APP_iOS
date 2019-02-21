@@ -26,7 +26,7 @@
 #import "crypto_core.h"
 #import <libsodium/crypto_box.h>
 #import "EntryModel.h"
-
+#import "SettingViewController.h"
 
 
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -95,9 +95,6 @@
     }
     return _myHeadView;
 }
-
-
-
 
 
 - (void)updateView:(CGFloat)val
@@ -178,21 +175,21 @@
     cell.iconImageView.image = [UIImage imageNamed:rowArray[indexPath.row]];
     cell.lblSubContent.hidden = YES;
     if (indexPath.section == self.dataArray.count-1) {
-        cell.lblSubContent.hidden = NO;
-        if ([SystemUtil isSocketConnect]) {
-            if ([SocketUtil.shareInstance getSocketConnectStatus] == socketConnectStatusConnected) {
-                cell.lblSubContent.text = @"OnLine";
-            } else {
-                cell.lblSubContent.text = @"OffLine";
-            }
-        } else {
-           OCTToxConnectionStatus connectStatus = [AppD.manager.user connectionStatus];
-            if (connectStatus > 0) {
-                cell.lblSubContent.text = @"OnLine";
-            } else {
-                cell.lblSubContent.text = @"OffLine";
-            }
-        }
+        cell.lblSubContent.hidden = YES;
+//        if ([SystemUtil isSocketConnect]) {
+//            if ([SocketUtil.shareInstance getSocketConnectStatus] == socketConnectStatusConnected) {
+//                cell.lblSubContent.text = @"OnLine";
+//            } else {
+//                cell.lblSubContent.text = @"OffLine";
+//            }
+//        } else {
+//           OCTToxConnectionStatus connectStatus = [AppD.manager.user connectionStatus];
+//            if (connectStatus > 0) {
+//                cell.lblSubContent.text = @"OnLine";
+//            } else {
+//                cell.lblSubContent.text = @"OffLine";
+//            }
+//        }
         
     }
     return cell;
@@ -217,6 +214,11 @@
             PersonCodeViewController *vc = [[PersonCodeViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         }
+    }
+    
+    if (indexPath.section == self.dataArray.count-1) {
+        SettingViewController *vc = [[SettingViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

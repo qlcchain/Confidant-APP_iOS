@@ -340,6 +340,10 @@
 		736257C12142247F00D7FD6B /* SystemUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 736257C02142247F00D7FD6B /* SystemUtil.m */; };
 		736257C5214225FD00D7FD6B /* getgateway.c in Sources */ = {isa = PBXBuildFile; fileRef = 736257C2214225FD00D7FD6B /* getgateway.c */; };
 		73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */; };
+		73741800221E9B8F008EE243 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737417FE221E9B8F008EE243 /* SettingViewController.m */; };
+		73741801221E9B8F008EE243 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737417FF221E9B8F008EE243 /* SettingViewController.xib */; };
+		73780F07221EA9A400D2DDCF /* AccountCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73780F05221EA9A400D2DDCF /* AccountCodeViewController.m */; };
+		73780F08221EA9A400D2DDCF /* AccountCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73780F06221EA9A400D2DDCF /* AccountCodeViewController.xib */; };
 		7378829F21ABF6060033A189 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7378829E21ABF6060033A189 /* Social.framework */; };
 		737882A621ACF05E0033A189 /* SSLClientCertificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737882A121ACF05E0033A189 /* SSLClientCertificate.swift */; };
 		737882A721ACF05E0033A189 /* Compression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737882A321ACF05E0033A189 /* Compression.swift */; };
@@ -1134,6 +1138,12 @@
 		736257C4214225FD00D7FD6B /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = route.h; sourceTree = "<group>"; };
 		73682AE821C3D2D700E3E1A0 /* ToxPullFileTimerUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToxPullFileTimerUtil.h; sourceTree = "<group>"; };
 		73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToxPullFileTimerUtil.m; sourceTree = "<group>"; };
+		737417FD221E9B8F008EE243 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		737417FE221E9B8F008EE243 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		737417FF221E9B8F008EE243 /* SettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
+		73780F04221EA9A400D2DDCF /* AccountCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountCodeViewController.h; sourceTree = "<group>"; };
+		73780F05221EA9A400D2DDCF /* AccountCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountCodeViewController.m; sourceTree = "<group>"; };
+		73780F06221EA9A400D2DDCF /* AccountCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountCodeViewController.xib; sourceTree = "<group>"; };
 		7378829E21ABF6060033A189 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		737882A121ACF05E0033A189 /* SSLClientCertificate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSLClientCertificate.swift; sourceTree = "<group>"; };
 		737882A221ACF05E0033A189 /* Starscream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Starscream.h; sourceTree = "<group>"; };
@@ -1725,6 +1735,9 @@
 				73869107214CC7D3003CF6A3 /* EditTextViewController.h */,
 				73869108214CC7D3003CF6A3 /* EditTextViewController.m */,
 				73869109214CC7D3003CF6A3 /* EditTextViewController.xib */,
+				737417FD221E9B8F008EE243 /* SettingViewController.h */,
+				737417FE221E9B8F008EE243 /* SettingViewController.m */,
+				737417FF221E9B8F008EE243 /* SettingViewController.xib */,
 			);
 			path = My;
 			sourceTree = "<group>";
@@ -2247,6 +2260,9 @@
 				7330F39B214666E400FF4EEC /* PersonCodeViewController.h */,
 				7330F39C214666E400FF4EEC /* PersonCodeViewController.m */,
 				7330F39D214666E400FF4EEC /* PersonCodeViewController.xib */,
+				73780F04221EA9A400D2DDCF /* AccountCodeViewController.h */,
+				73780F05221EA9A400D2DDCF /* AccountCodeViewController.m */,
+				73780F06221EA9A400D2DDCF /* AccountCodeViewController.xib */,
 			);
 			path = QRCode;
 			sourceTree = "<group>";
@@ -3432,6 +3448,7 @@
 				7330F50E214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib in Resources */,
 				73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */,
 				584B439F21FEFF1A00D1F21A /* ConfigDiskViewController.xib in Resources */,
+				73741801221E9B8F008EE243 /* SettingViewController.xib in Resources */,
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
 				73121A75219C26E900510B48 /* LoginViewController.xib in Resources */,
@@ -3456,6 +3473,7 @@
 				7330F3992146563600FF4EEC /* MyDetailViewController.xib in Resources */,
 				587C52D8215CBA9A006787FB /* QRViewController.xib in Resources */,
 				7330F3C9214771D900FF4EEC /* BottonCell.xib in Resources */,
+				73780F08221EA9A400D2DDCF /* AccountCodeViewController.xib in Resources */,
 				5825A24021FAC03700E6194B /* ChooseShareContactViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3736,6 +3754,7 @@
 				7378841D21ACF2970033A189 /* OCTSubmanagerChatsImpl.m in Sources */,
 				736257B12142149300D7FD6B /* UIView+Screenshot.m in Sources */,
 				73D31B0D217F08480034B2B9 /* TZVideoPlayerController.m in Sources */,
+				73741800221E9B8F008EE243 /* SettingViewController.m in Sources */,
 				737883EF21ACF2970033A189 /* OCTToxConstants.m in Sources */,
 				73D31B0F217F08480034B2B9 /* NSBundle+TZImagePicker.m in Sources */,
 				5886FB9621F5C22B0052EDD0 /* UploadAlertView.m in Sources */,
@@ -3786,6 +3805,7 @@
 				583BF93F21F708B30078A2A8 /* DetailInformationCell.m in Sources */,
 				588F8CED220178FC000D7966 /* UploadFileHelper.m in Sources */,
 				73D31B0C217F08480034B2B9 /* TZAssetCell.m in Sources */,
+				73780F07221EA9A400D2DDCF /* AccountCodeViewController.m in Sources */,
 				58BD2E5E21475E020091A77D /* HWUserdefault.m in Sources */,
 				73E2FB6E21A7F3FD00DAED52 /* RouterUserModel.m in Sources */,
 				7378841721ACF2970033A189 /* OCTSubmanagerObjectsImpl.m in Sources */,
