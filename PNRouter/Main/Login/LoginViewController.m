@@ -515,7 +515,7 @@
     if (AppD.isLoginMac && _loginType != MacType) {
         return;
     }
-    
+    [AppD.window hideHud];
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     if (receiveDic) {
         NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];

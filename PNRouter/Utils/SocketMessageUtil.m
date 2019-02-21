@@ -725,15 +725,22 @@
     NSString *Sign = receiveDic[@"params"][@"Sign"];
     NSString *timestamp = receiveDic[@"timestamp"];
     BOOL isUserKeyOK = NO;
-    if ([UserKey isEqualToString:[EntryModel getShareObject].signPublicKey]) {
-        isUserKeyOK = YES;
-    }
     BOOL isSignOK = NO;
-    if (isUserKeyOK) {
-        // 解密sign
-        isSignOK = [LibsodiumUtil verifySign:Sign withSignPublickey:[EntryModel getShareObject].signPublicKey timestamp:timestamp];
-    }
     
+     NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(UserId),bg_sqlKey(@"owerId"),bg_sqlValue([UserConfig getShareObject].userId)]];
+    
+    if (finfAlls.count>0) {
+        FriendModel *model = finfAlls[0];
+        if ([UserKey isEqualToString:model.signPublicKey]) {
+            isUserKeyOK = YES;
+        }
+        if (isUserKeyOK) {
+            // 解密sign
+            isSignOK = [LibsodiumUtil verifySign:Sign withSignPublickey:model.signPublicKey timestamp:timestamp];
+        }
+        
+    }
+
     NSInteger Result = [receiveDic[@"params"][@"Result"] integerValue];
     if (Result == 0) { // 同意添加
     } else if (Result == 1) { // 拒绝好友添加
@@ -759,7 +766,6 @@
         
     }];
     
-     NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(UserId),bg_sqlKey(@"owerId"),bg_sqlValue([UserModel getUserModel].userId)]];
     if (finfAlls && finfAlls.count > 0) {
         FriendModel *model = finfAlls[0];
         model.dealStaus = 1;
@@ -1262,7 +1268,6 @@
 #pragma -mark 同意或拒绝好友请求
 + (void) sendAgreedOrRefusedWithFriendMode:(FriendModel *) model withType:(NSString *)type
 {
-   
     UserModel *userM = [UserModel getUserModel];
     NSString *result = type; // 0：同意添加   1：拒绝好友添加
     NSString *friendName = model.username?:@"";

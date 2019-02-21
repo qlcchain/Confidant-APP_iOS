@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FriendRequestViewController : PNBaseViewController
 
-- (instancetype) initWithNickname:(NSString *) nickName userId:(NSString *) userId;
+- (instancetype) initWithNickname:(NSString *) nickName userId:(NSString *) userId signpk:(NSString *) signpk;
 
 @end
 

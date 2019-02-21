@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (nonatomic , strong) NSString *userName;
 @property (nonatomic , strong) NSString *userId;
+@property (nonatomic , strong) NSString *singPK;
 @end
 
 @implementation FriendRequestViewController
@@ -40,11 +41,12 @@
     [SendRequestUtil sendAddFriendWithFriendId:self.userId msg:msg];
 }
 
-- (instancetype) initWithNickname:(NSString *) nickName userId:(NSString *) userId
+- (instancetype) initWithNickname:(NSString *) nickName userId:(NSString *) userId signpk:(NSString *) signpk
 {
     if (self = [super init]) {
         self.userName = nickName;
         self.userId = userId;
+        self.singPK = signpk;
     }
     return self;
 }
@@ -76,6 +78,7 @@
         if (finfAlls && finfAlls.count > 0) {
             FriendModel *model = finfAlls[0];
             model.requestTime = [NSDate date];
+            model.signPublicKey = self.singPK;
             model.dealStaus = 3;
             model.msg = msg;
             [model bg_saveOrUpdate];
@@ -85,6 +88,7 @@
             model.requestTime = [NSDate date];
             model.owerId = [UserConfig getShareObject].userId;
             model.userId = self.userId;
+            model.signPublicKey = self.singPK;
             model.msg = msg;
             model.username = [self.userName base64DecodedString];
             model.dealStaus = 3;
