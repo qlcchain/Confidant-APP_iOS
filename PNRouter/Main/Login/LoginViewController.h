@@ -8,10 +8,16 @@
 
 #import "PNBaseViewController.h"
 
+typedef enum : NSUInteger {
+    RouterType,
+    MacType,
+    ImportType
+} LoginType;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LoginViewController : PNBaseViewController
-
+@property (nonatomic ,assign) LoginType loginType;
+- (instancetype) initWithLoginType:(LoginType) type;
 @end
 
 NS_ASSUME_NONNULL_END

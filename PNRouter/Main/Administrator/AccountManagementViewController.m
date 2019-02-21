@@ -38,7 +38,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnConnect:) name:SOCKET_ON_CONNECT_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnDisconnect:) name:SOCKET_ON_DISCONNECT_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
+   // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userIdcodeSuccessNoti:) name:@"UserIdcodeSuccessNoti" object:nil];
     
 }
@@ -109,7 +109,10 @@
 
 - (void) sendfindRouterRequest
 {
-    [SendRequestUtil sendUserFindWithToxid:_RouterId?:@"" usesn:_UserSn?:@""];
+   // [SendRequestUtil sendUserFindWithToxid:_RouterId?:@"" usesn:_UserSn?:@""];
+    [RoutherConfig getRoutherConfig].currentRouterToxid = _RouterId;
+    [RoutherConfig getRoutherConfig].currentRouterSn = _UserSn;
+    [AppD setRootLoginWithType:MacType];
 }
 
 //- (IBAction)activitionCodeAction:(id)sender {
@@ -126,7 +129,7 @@
         [RouterModel updateRouterConnectStatusWithSn:_UserSn];
         AppD.isLoginMac = NO;
         [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
-        [AppD setRootLogin];
+        [AppD setRootLoginWithType:RouterType];
     } else {
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
         if (connectStatu == socketConnectStatusConnected) {
@@ -134,7 +137,6 @@
         } else {
             [self connectSocket];
         }
-        
     }
 
 }

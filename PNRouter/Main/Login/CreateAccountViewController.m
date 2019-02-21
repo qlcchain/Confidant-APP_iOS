@@ -45,7 +45,7 @@
 - (void) createUserName:(NSString *) nickName
 {
     [UserModel createUserLocalWithName:nickName];
-    [AppD setRootLogin];
+    [AppD setRootLoginWithType:RouterType];
 }
 #pragma mark - jump vc
 - (void) jumpImportAccountVC

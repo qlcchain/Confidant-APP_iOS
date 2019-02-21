@@ -186,7 +186,7 @@
     }
     [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
     AppD.isLogOut = YES;
-    [AppD setRootLogin];
+    [AppD setRootLoginWithType:RouterType];
 }
 #pragma mark -通知回调
 - (void) logOutSuccess:(NSNotification *) noti

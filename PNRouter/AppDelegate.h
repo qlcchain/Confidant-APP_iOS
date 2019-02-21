@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PNTabbarViewController.h"
-
+#import "LoginViewController.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -32,7 +32,7 @@
 @property (nonatomic ,assign) BOOL inLogin;
 
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager;
-- (void) setRootLogin;
+- (void)setRootLoginWithType:(LoginType) type;
 - (void)judgeLogin;
 
 @end

@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
-#import "LoginViewController.h"
+//#import "LoginViewController.h"
 #import "PNNavViewController.h"
 #import "CDChatList.h"
 #import <objc/runtime.h>
@@ -144,8 +144,8 @@
     AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];;
 }
 
-- (void)setRootLogin {
-    LoginViewController *vc = [[LoginViewController alloc] init];
+- (void)setRootLoginWithType:(LoginType) type {
+    LoginViewController *vc = [[LoginViewController alloc] initWithLoginType:type];
     CATransition *animation = [CATransition animation];
     //动画时间
     animation.duration = 0.4f;
@@ -194,7 +194,7 @@
 
 - (void)judgeLogin {
     if ([UserModel existLocalNick]) { // 本地有私钥和昵称
-        [self setRootLogin];
+        [self setRootLoginWithType:RouterType];
     } else { // 本地无私钥和昵称
         [self setRootCreateAccount];
     }
