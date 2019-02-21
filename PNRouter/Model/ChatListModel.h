@@ -9,6 +9,7 @@
 #import "BBaseModel.h"
 
 @interface ChatListModel : BBaseModel
+
 @property (nonatomic ,strong) NSString *friendID;
 @property (nonatomic ,strong) NSString *myID;
 @property (nonatomic ,strong) NSString *publicKey;
@@ -17,5 +18,6 @@
 @property (nonatomic ,strong) NSString *lastMessage;
 @property (nonatomic ,strong) NSDate *chatTime;
 @property (nonatomic , assign) BOOL isHD;
+@property (nonatomic ,strong) NSString *routerName;
 
 @end
