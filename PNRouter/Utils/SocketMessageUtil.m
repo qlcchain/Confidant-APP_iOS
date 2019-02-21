@@ -1265,7 +1265,7 @@
 #pragma mark -设备管理员修改设备昵称
 + (void) sendUpdateRourerNickName:(NSString *) nickName
 {
-    NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserKey":[EntryModel getShareObject].publicKey,@"Name":[nickName base64EncodedString]};
+    NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"Name":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark -新用户注册

@@ -29,7 +29,7 @@
 
 + (instancetype) loadGuidePageView3 {
     GuidePageView3 *view = [[[NSBundle mainBundle] loadNibNamed:@"GuidePageView3" owner:self options:nil] lastObject];
-    [view dataInit];
+//    [view dataInit];
     return view;
 }
 

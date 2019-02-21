@@ -13,6 +13,7 @@
 @interface RouterAliasViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet UILabel *headerLab;
 @property (weak, nonatomic) IBOutlet UITextField *aliasTF;
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 
@@ -28,10 +29,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self addObserve];
     [self renderView];
 }
 
@@ -39,6 +46,8 @@
 - (void)renderView {
     _headerView.layer.cornerRadius = _headerView.width/2.0;
     _headerView.layer.masksToBounds = YES;
+    _headerLab.layer.cornerRadius = _headerLab.width/2.0;
+    _headerLab.layer.masksToBounds = YES;
     _nextBtn.layer.cornerRadius = 4;
     _nextBtn.layer.masksToBounds = YES;
 }

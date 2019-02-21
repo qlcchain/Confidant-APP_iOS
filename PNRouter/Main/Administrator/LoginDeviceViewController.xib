@@ -45,14 +45,24 @@
                                         <action selector="backAction:" destination="-1" eventType="touchUpInside" id="RQ7-eH-7Et"/>
                                     </connections>
                                 </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dZf-p0-nD3">
+                                    <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                                    <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="0.80000000000000004" id="6Lr-8X-I0W"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstAttribute="trailing" secondItem="dZf-p0-nD3" secondAttribute="trailing" id="KRu-cS-FCS"/>
+                                <constraint firstItem="dZf-p0-nD3" firstAttribute="leading" secondItem="mIh-KY-RI8" secondAttribute="leading" id="QSC-Oq-W9d"/>
                                 <constraint firstAttribute="height" constant="44" id="Sug-xM-1AP"/>
                                 <constraint firstItem="71e-4d-2lA" firstAttribute="centerY" secondItem="mIh-KY-RI8" secondAttribute="centerY" id="dWk-bs-qKR"/>
                                 <constraint firstItem="fV0-n2-1UN" firstAttribute="centerY" secondItem="mIh-KY-RI8" secondAttribute="centerY" id="uUl-UO-fPp"/>
                                 <constraint firstItem="fV0-n2-1UN" firstAttribute="centerX" secondItem="mIh-KY-RI8" secondAttribute="centerX" id="vwf-7y-t8Q"/>
                                 <constraint firstItem="71e-4d-2lA" firstAttribute="leading" secondItem="mIh-KY-RI8" secondAttribute="leading" constant="5" id="yNM-5C-8W6"/>
+                                <constraint firstAttribute="bottom" secondItem="dZf-p0-nD3" secondAttribute="bottom" id="zsJ-mq-pDe"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nt-aK-cW5">
