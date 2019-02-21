@@ -233,12 +233,14 @@
 
     NSArray *arr = _isSearch? self.searchDataArray : self.dataArray;
     ContactShowModel *model = arr[section];
-//    view.headerSection = section;
+    view.headerSection = section;
     [view configHeaderWithModel:model];
     @weakify_self
-    view.showCellB = ^{
-        model.showCell = !model.showCell;
-        [weakSelf.tableV reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+    view.showCellB = ^(NSInteger headerSection) {
+        NSArray *arr = weakSelf.isSearch? self.searchDataArray : self.dataArray;
+        ContactShowModel *tempM = arr[headerSection];
+        tempM.showCell = !tempM.showCell;
+        [weakSelf.tableV reloadSections:[NSIndexSet indexSetWithIndex:headerSection] withRowAnimation:UITableViewRowAnimationNone];
     };
 //    view.selectB = ^(NSInteger headerSection) {
 //    };
@@ -269,10 +271,8 @@
     
     ContactShowModel *model = _isSearch? self.searchDataArray[indexPath.section] : self.dataArray[indexPath.section];
     ContactRouterModel *crModel = model.routerArr[indexPath.row];
-    
-    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
-    vc.friendModel = [self getFriendModelWithContactShowModel:model contactRouterModel:crModel];
-    [self.navigationController pushViewController:vc animated:YES];
+
+    [self jumpToFriendDetail:[self getFriendModelWithContactShowModel:model contactRouterModel:crModel]];
 }
 
 - (FriendModel *)getFriendModelWithContactShowModel:(ContactShowModel *)contactShowM contactRouterModel:(ContactRouterModel *)contactRouterM {
@@ -378,6 +378,12 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)jumpToFriendDetail:(FriendModel *)friendM {
+    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
+    vc.friendModel = friendM;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - NOTI
 - (void) friendListChangeNoti:(NSNotification *)noti {
     [self sendGetFriendNoti];
@@ -456,7 +462,6 @@
         FriendModel *friendM = obj;
         NSArray *resultArr = [weakSelf isExist:friendM.signPublicKey InArr:contactShowArr];
         BOOL isExist = [resultArr[0] boolValue];
-        ContactShowModel *existShowM = resultArr[1];
         if (!isExist) { // 不存在则创建
             ContactShowModel *showM = [ContactShowModel new];
             showM.showCell = NO;
@@ -475,6 +480,7 @@
             
             [contactShowArr addObject:showM];
         } else { // 存在则合并
+            ContactShowModel *existShowM = resultArr[1];
             ContactRouterModel *routerM = [ContactRouterModel new];
             routerM.Id = friendM.userId;
             routerM.RouteId = friendM.RouteId;
@@ -498,7 +504,11 @@
         }
     }];
     
-    return @[@(isExist),resultM];
+    if (!isExist) {
+        return @[@(isExist)];
+    } else {
+        return @[@(isExist),resultM];
+    }
 }
 
 //根据拼音的字母排序  ps：排序适用于所有类型
