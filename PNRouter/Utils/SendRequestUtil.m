@@ -27,9 +27,9 @@
 #pragma mark - 用户注册
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code
 {
-    [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
-    NSDictionary *params = @{@"Action":@"Register",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"IdentifyCode":code,@"LoginKey":pass,@"NickName":userName};
-    [SocketMessageUtil sendVersion2WithParams:params];
+    [AppD.window showHudInView:AppD.window hint:@"Registered..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    NSDictionary *params = @{@"Action":@"Register",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"Sign":@"",@"Pubkey":[EntryModel getShareObject].signPublicKey,@"NickName":userName};
+    [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark - 用户登陆
 + (void) sendUserLoginWithPass:(NSString *) passWord userid:(NSString *) userid showHud:(BOOL) showHud {
@@ -37,8 +37,8 @@
     if (showHud) {
        [AppD.window showHudInView:AppD.window hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"UserId":userid?:@"",@"LoginKey":passWord?:@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion]};
-    [SocketMessageUtil sendVersion2WithParams:params];
+    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion]};
+    [SocketMessageUtil sendVersion4WithParams:params];
     
 }
 #pragma mark -派生类拉取用户

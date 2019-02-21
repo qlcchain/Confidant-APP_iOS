@@ -12,11 +12,12 @@
 
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *userId;
-//@property (nonatomic, copy) NSString *hashId;
+@property (nonatomic, copy) NSString *hashId;
 @property (nonatomic, copy) NSString *userSn;
 @property (nonatomic, assign) NSInteger dataFileVersion;
 @property (nonatomic, copy) NSString *dataFilePay;
 @property (nonatomic, copy) NSString *pass;
+@property (nonatomic , assign) NSInteger needAsysn;
 
 @property (nonatomic, strong) NSString *headBaseStr;
 @property (nonatomic, copy) NSString *position;
@@ -33,4 +34,5 @@
 + (instancetype) getShareObject;
 + (BOOL)existLocalNick;
 
++ (void) updateHashid:(NSString *) hashid usersn:(NSString *) usersn userid:(NSString *) userid needasysn:(NSInteger) needAsysn;
 @end

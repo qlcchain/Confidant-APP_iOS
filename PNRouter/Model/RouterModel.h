@@ -37,4 +37,5 @@
 + (BOOL)routerIsExitsWithSn:(NSString *)sn;
 + (NSMutableArray *) checkRoutherArrayWithToxid:(NSString *)toxid;
 + (void) delegateAllRouter;
++ (void) addRouterName:(NSString *) routerName routerid:(NSString *) rid usersn:(NSString *) usersn;
 @end

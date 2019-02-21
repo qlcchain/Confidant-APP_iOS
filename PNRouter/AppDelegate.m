@@ -45,7 +45,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-//    [KeyCUtil deleteAllKey];
+ //   [KeyCUtil deleteAllKey];
 //    [FriendModel bg_drop:FRIEND_LIST_TABNAME];
 //    [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
 //    [OperationRecordModel bg_drop:OperationRecord_Table];

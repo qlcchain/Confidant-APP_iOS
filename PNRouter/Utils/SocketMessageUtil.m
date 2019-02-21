@@ -90,13 +90,14 @@
     NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams4]];
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
-    [muDic setObject:params forKey:@"params"];
-    
-    if ([[NSString getNotNullValue:params[@"Action"]] isEqualToString:Action_Register]) {
-       // [LibsodiumUtil en]
-       // [EntryModel getShareObject].privateKey
-        muDic[@"params"][@"Sign"] = muDic[@"timestamp"];
+  
+     NSMutableDictionary *paramsDic = [NSMutableDictionary dictionaryWithDictionary:params];
+    if ([[NSString getNotNullValue:params[@"Action"]] isEqualToString:Action_Register] || [[NSString getNotNullValue:params[@"Action"]] isEqualToString:Action_login]) {
+        NSString *timestamp = muDic[@"timestamp"];
+        NSString *signTime = [LibsodiumUtil getOwenrSignTemp:timestamp];
+        [paramsDic setObject:signTime forKey:@"Sign"];
     }
+    [muDic setObject:paramsDic forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -455,8 +456,9 @@
     } else if (retCode == 0) {
         // 开始心跳
         [HeartBeatUtil start];
+         [[NSNotificationCenter defaultCenter] postNotificationName:USER_REGISTER_RECEVIE_NOTI object:receiveDic];
         [[NSNotificationCenter defaultCenter] postNotificationName:REGISTER_PUSH_NOTI object:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:USER_REGISTER_RECEVIE_NOTI object:receiveDic];
+       
     }
 }
 #pragma mark -拉取用户
@@ -967,21 +969,23 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     NSString *userId = receiveDic[@"params"][@"UserId"];
     NSInteger needSynch = [receiveDic[@"params"][@"NeedSynch"] integerValue];
-    NSString *userName = receiveDic[@"params"][@"NickName"];
+    NSString *routerName = receiveDic[@"params"][@"RouterName"];
     NSString *userSn = receiveDic[@"params"][@"UserSn"];
     NSString *hashid = receiveDic[@"params"][@"Index"];
-    NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
-    NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
+    NSString *routeId = receiveDic[@"params"][@"RouteId"];
+   
     
     [UserConfig getShareObject].userId = userId;
-    [UserConfig getShareObject].userName = [userName base64DecodedString];
     [UserConfig getShareObject].usersn = userSn;
-    [UserConfig getShareObject].dataFileVersion = dataFileVersion;
-    [UserConfig getShareObject].dataFilePay = dataFilePay;
+    [UserConfig getShareObject].hashId = hashid;
+    [UserConfig getShareObject].userName = [UserModel getUserModel].username;
+    
     
     if (retCode == 0) { // 成功
         if (userId.length > 0) {
-            [UserModel updateUserLocalWithUserId:userId withUserName:userName userSn:userSn hashid:hashid];
+            [UserModel updateHashid:hashid usersn:userSn userid:userId needasysn:needSynch];
+            [RouterModel addRouterName:routerName routerid:routeId usersn:userSn];
+            [RouterModel updateRouterConnectStatusWithSn:userSn];
         }
         // 同步data文件
         if (needSynch == 0) { // 不需要 同步
@@ -996,7 +1000,6 @@
         [HeartBeatUtil start];
     } 
     [[NSNotificationCenter defaultCenter] postNotificationName:SOCKET_LOGIN_SUCCESS_NOTI object:@(retCode)];
-    
 }
 
 + (void)handleDeviceLogin:(NSDictionary *)receiveDic {

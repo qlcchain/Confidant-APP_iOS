@@ -318,6 +318,25 @@
         return @"";
     }
 }
++ (NSString *) getOwenrSignTemp:(NSString *) temptime
+{
+    NSData *temptimeData = [temptime dataUsingEncoding:NSUTF8StringEncoding];
+    const unsigned char *tempTime = [temptimeData bytes];
+    
+    NSData *singSKData = [[EntryModel getShareObject].signPrivateKey base64DecodedData];
+    const unsigned char *singSK = [singSKData bytes];
+    
+    unsigned char sm[temptimeData.length+64];
+    unsigned long long smlen_p;
+    int resut = crypto_sign(sm,&smlen_p,tempTime,temptimeData.length,singSK);
+    if (resut >= 0 ) {
+        NSData *enstrData = [NSData dataWithBytesNoCopy:sm length:temptimeData.length+64 freeWhenDone:NO];
+        NSString *signStr = [enstrData base64EncodedString];
+        return signStr;
+    } else {
+        return @"";
+    }
+}
 // 签名验证
 + (NSString *) verifySignWithSignPublickey:(NSString *) signPublickey verifyMsg:(NSString *) verifyMsg
 {

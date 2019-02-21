@@ -12,6 +12,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
+                <outlet property="lblRoutherName" destination="3pP-RD-uid" id="VgG-92-FSX"/>
+                <outlet property="lblTitle" destination="3Aj-gt-1na" id="6Hw-Bb-xpW"/>
+                <outlet property="loginBtn" destination="mWX-xX-Q7v" id="o7o-3S-P2B"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -93,28 +96,31 @@ Welcome back！</string>
                                         <constraint firstAttribute="height" constant="44" id="VPC-BH-745"/>
                                     </constraints>
                                     <state key="normal" image="icon_arrow_gray"/>
+                                    <connections>
+                                        <action selector="routherSelect:" destination="-1" eventType="touchUpInside" id="DVw-5g-t4U"/>
+                                    </connections>
                                 </button>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="You haven't joined any circle" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zyp-mB-xSb">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven't joined any circle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3pP-RD-uid">
                                     <rect key="frame" x="48" y="6" width="219" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="44" id="xF0-t5-qeF"/>
+                                        <constraint firstAttribute="height" constant="44" id="UtQ-MG-f8l"/>
                                     </constraints>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </textField>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                    <color key="textColor" red="0.69803921568627447" green="0.69803921568627447" blue="0.69803921568627447" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="JaM-o4-NYU" firstAttribute="leading" secondItem="3pP-RD-uid" secondAttribute="trailing" id="38B-Dz-vda"/>
                                 <constraint firstAttribute="trailing" secondItem="JaM-o4-NYU" secondAttribute="trailing" id="9bQ-Xl-3OC"/>
-                                <constraint firstItem="zyp-mB-xSb" firstAttribute="centerY" secondItem="IcV-iZ-iHI" secondAttribute="centerY" id="G3o-24-CY4"/>
-                                <constraint firstItem="JaM-o4-NYU" firstAttribute="leading" secondItem="zyp-mB-xSb" secondAttribute="trailing" id="Iqw-7q-0g4"/>
                                 <constraint firstAttribute="trailing" secondItem="0qv-Wg-Wyr" secondAttribute="trailing" id="KAC-vI-vLv"/>
                                 <constraint firstAttribute="height" constant="56" id="T9s-pI-Npm"/>
                                 <constraint firstItem="Gdf-v7-T9l" firstAttribute="centerY" secondItem="IcV-iZ-iHI" secondAttribute="centerY" id="TgW-Dh-7Sb"/>
                                 <constraint firstItem="JaM-o4-NYU" firstAttribute="centerY" secondItem="IcV-iZ-iHI" secondAttribute="centerY" id="bWv-GS-j7P"/>
                                 <constraint firstAttribute="bottom" secondItem="0qv-Wg-Wyr" secondAttribute="bottom" id="mIE-9Q-1Wh"/>
-                                <constraint firstItem="zyp-mB-xSb" firstAttribute="leading" secondItem="Gdf-v7-T9l" secondAttribute="trailing" constant="8" id="sZf-ll-ori"/>
+                                <constraint firstItem="3pP-RD-uid" firstAttribute="leading" secondItem="Gdf-v7-T9l" secondAttribute="trailing" constant="8" id="mSr-Jh-qtP"/>
+                                <constraint firstItem="3pP-RD-uid" firstAttribute="centerY" secondItem="IcV-iZ-iHI" secondAttribute="centerY" id="uO9-cT-vZZ"/>
                                 <constraint firstItem="Gdf-v7-T9l" firstAttribute="leading" secondItem="IcV-iZ-iHI" secondAttribute="leading" id="vf9-Yr-uwb"/>
                                 <constraint firstItem="0qv-Wg-Wyr" firstAttribute="leading" secondItem="IcV-iZ-iHI" secondAttribute="leading" id="xF0-hp-ok7"/>
                             </constraints>
@@ -137,6 +143,9 @@ Welcome back！</string>
                             <state key="normal" title="Login">
                                 <color key="titleColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="loginAction:" destination="-1" eventType="touchUpInside" id="dyJ-Kq-whA"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

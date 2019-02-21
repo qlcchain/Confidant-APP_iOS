@@ -93,6 +93,7 @@
 }
 
 - (void)startAction:(UIButton *)btn {
+    [HWUserdefault updateObject:APP_Version withKey:VERSION_KEY];
     [AppD judgeLogin];
 }
 
