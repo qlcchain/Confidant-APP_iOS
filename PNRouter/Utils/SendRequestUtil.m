@@ -19,7 +19,7 @@
 @implementation SendRequestUtil
 
 #pragma mark - 用户找回
-+ (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn {
++ (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn  {
     [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     NSDictionary *params = @{@"Action":@"Recovery",@"RouteId":toxid?:@"",@"UserSn":sn?:@""};
     [SocketMessageUtil sendVersion2WithParams:params];

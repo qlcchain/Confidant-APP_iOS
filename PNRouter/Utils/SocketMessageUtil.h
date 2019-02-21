@@ -81,5 +81,6 @@ static NSString *Action_ResetRouterName = @"ResetRouterName";
  */
 + (void)sendChatTextWithParams:(NSDictionary *)params withSendMsgId:(NSString *) msgid;
 // -设备管理员修改设备昵称
-+ (void) sendUpdateRourerNickName:(NSString *) nickName;
++ (void) sendUpdateRourerNickName:(NSString *) nickName showHud:(BOOL)showHud;
+
 @end
