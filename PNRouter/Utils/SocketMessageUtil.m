@@ -92,7 +92,7 @@
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
   
      NSMutableDictionary *paramsDic = [NSMutableDictionary dictionaryWithDictionary:params];
-    if ([[NSString getNotNullValue:params[@"Action"]] isEqualToString:Action_Register] || [[NSString getNotNullValue:params[@"Action"]] isEqualToString:Action_login]) {
+    if ([[NSString getNotNullValue:params[@"Action"]] isEqualToString:Action_Register] || [[NSString getNotNullValue:params[@"Action"]] isEqualToString:Action_login] ||[[NSString getNotNullValue:params[@"Action"]] isEqualToString:Action_AddFriendDeal]) {
         NSString *timestamp = muDic[@"timestamp"];
         NSString *signTime = [LibsodiumUtil getOwenrSignTemp:timestamp];
         [paramsDic setObject:signTime forKey:@"Sign"];
@@ -233,6 +233,18 @@
     }
 }
 
++ (void)sendRecevieMessageWithParams4:(NSDictionary *)params tempmsgid:(NSInteger) msgid{
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRecevieBaseParams4:msgid]];
+    [muDic setObject:params forKey:@"params"];
+    NSString *text = muDic.mj_JSONString;
+    
+    if (AppD.manager) {
+        [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
+    } else {
+        [SocketUtil.shareInstance sendWithText:text];
+    }
+}
+
 /**
  发送文本消息  app->router
  */
@@ -326,8 +338,6 @@
         [SocketMessageUtil handleAddFriendPush:receiveDic];
     } else if ([action isEqualToString:Action_AddFriendDeal]) { // 用户可以选择是否允许对方添加自己好友  服务器收到回调
         [SocketMessageUtil handleAddFriendDeal:receiveDic];
-        
-        
     } else if ([action isEqualToString:Action_AddFriendReply]) { // 有好友通过或拒绝加您为好友回调
         [SocketMessageUtil handleAddFriendReply:receiveDic];
         
@@ -690,7 +700,7 @@
     NSLog(@"msgid = %@",[receiveDic objectForKey:@"msgid"]);
     
      NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
-    [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
+    [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
 }
 
 + (void)handleAddFriendDeal:(NSDictionary *)receiveDic {
@@ -710,6 +720,17 @@
     NSString *FriendId = receiveDic[@"params"][@"FriendId"];
     NSString *NickName = receiveDic[@"params"][@"Nickname"];
     NSString *FriendName = receiveDic[@"params"][@"FriendName"];
+    NSString *UserKey = receiveDic[@"params"][@"UserKey"];
+    NSString *Sign = receiveDic[@"params"][@"Sign"];
+    BOOL isUserKeyOK = NO;
+    if ([UserKey isEqualToString:[EntryModel getShareObject].signPublicKey]) {
+        isUserKeyOK = YES;
+    }
+    BOOL isSignOK = NO;
+    if (isUserKeyOK) {
+        // 解密sign
+    }
+    
     NSInteger Result = [receiveDic[@"params"][@"Result"] integerValue];
     if (Result == 0) { // 同意添加
         
@@ -717,9 +738,9 @@
         
     }
     NSString *retcode = @"0"; // 0：消息接收到  1：其他错误
-    NSDictionary *params = @{@"Action":@"AddFriendReply",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
+    NSDictionary *params = @{@"Action":Action_AddFriendReply,@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
-    [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
+    [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
     
     FriendModel *model = [[FriendModel alloc] init];
     model.userId = UserId;
@@ -1220,6 +1241,11 @@
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION3,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
++ (NSDictionary *)getRecevieBaseParams4:(NSInteger) tempmsgid {
+    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION4,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+}
+
 + (NSDictionary *)getRecevieBaseVersion2Params:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
@@ -1234,8 +1260,8 @@
     NSString *result = type; // 0：同意添加   1：拒绝好友添加
     NSString *friendName = model.username?:@"";
     NSString *friendId = model.userId?:@"";
-    NSDictionary *params = @{@"Action":@"AddFriendDeal",@"Nickname":[userM.username base64EncodedString]?:@"",@"FriendName":[friendName base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId,@"UserKey":[EntryModel getShareObject].signPublicKey,@"Result":result,@"FriendKey":model.publicKey?:@""};
-    [SocketMessageUtil sendVersion3WithParams:params];
+    NSDictionary *params = @{@"Action":Action_AddFriendDeal,@"Nickname":[userM.username base64EncodedString]?:@"",@"FriendName":[friendName base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId,@"UserKey":[EntryModel getShareObject].signPublicKey,@"Result":result,@"FriendKey":model.publicKey?:@"",@"Sign":@""};
+    [SocketMessageUtil sendVersion4WithParams:params];
 }
 
 #pragma -mark 查询用户是否在线
