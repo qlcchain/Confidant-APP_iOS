@@ -20,6 +20,11 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    _chatBtn.layer.cornerRadius = 4;
+    _chatBtn.layer.masksToBounds = YES;
+    _chatBtn.layer.borderColor = UIColorFromRGB(0x2c2c2c).CGColor;
+    _chatBtn.layer.borderWidth = 0.5;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

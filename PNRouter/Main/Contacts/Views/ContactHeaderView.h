@@ -16,7 +16,7 @@ static NSString *ContactHeaderViewReuse = @"ContactHeaderView";
 #define ContactHeaderViewHeight 56
 
 //typedef void(^ContactSelectBlock)(NSInteger headerSection);
-typedef void(^ContactShowCellBlock)(void);
+typedef void(^ContactShowCellBlock)(NSInteger headerSection);
 
 @interface ContactHeaderView : UITableViewHeaderFooterView
 
@@ -33,7 +33,7 @@ typedef void(^ContactShowCellBlock)(void);
 
 //@property (nonatomic, copy) ContactSelectBlock selectB;
 @property (nonatomic, copy) ContactShowCellBlock showCellB;
-//@property (nonatomic) NSInteger headerSection;
+@property (nonatomic) NSInteger headerSection;
 
 - (void)configHeaderWithModel:(ContactShowModel *)model;
 

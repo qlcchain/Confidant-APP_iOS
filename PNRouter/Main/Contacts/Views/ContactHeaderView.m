@@ -50,7 +50,7 @@
 
 - (IBAction)showCellAction:(UIButton *)sender {
     if (_showCellB) {
-        _showCellB();
+        _showCellB(_headerSection);
     }
 }
 

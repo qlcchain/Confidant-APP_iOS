@@ -25,6 +25,7 @@
 #import "FriendRequestViewController.h"
 #import "LibsodiumUtil.h"
 #import "ContactShowModel.h"
+#import "ChatViewController.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource/*,SWTableViewCellDelegate*/,UITextFieldDelegate>
 
@@ -232,12 +233,14 @@
 
     NSArray *arr = _isSearch? self.searchDataArray : self.dataArray;
     ContactShowModel *model = arr[section];
-//    view.headerSection = section;
+    view.headerSection = section;
     [view configHeaderWithModel:model];
     @weakify_self
-    view.showCellB = ^{
-        model.showCell = !model.showCell;
-        [weakSelf.tableV reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+    view.showCellB = ^(NSInteger headerSection) {
+        NSArray *arr = weakSelf.isSearch? self.searchDataArray : self.dataArray;
+        ContactShowModel *tempM = arr[headerSection];
+        tempM.showCell = !tempM.showCell;
+        [weakSelf.tableV reloadSections:[NSIndexSet indexSetWithIndex:headerSection] withRowAnimation:UITableViewRowAnimationNone];
     };
 //    view.selectB = ^(NSInteger headerSection) {
 //    };
@@ -254,7 +257,7 @@
     [cell configCellWithModel:crModel];
     @weakify_self
     cell.contactChatB = ^(ContactRouterModel * _Nonnull crModel) {
-        
+        [weakSelf jumpToChat:[weakSelf getFriendModelWithContactShowModel:model contactRouterModel:crModel]];
     };
     
     cell.tag = indexPath.row;
@@ -268,19 +271,22 @@
     
     ContactShowModel *model = _isSearch? self.searchDataArray[indexPath.section] : self.dataArray[indexPath.section];
     ContactRouterModel *crModel = model.routerArr[indexPath.row];
-    
-    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
+
+    [self jumpToFriendDetail:[self getFriendModelWithContactShowModel:model contactRouterModel:crModel]];
+}
+
+- (FriendModel *)getFriendModelWithContactShowModel:(ContactShowModel *)contactShowM contactRouterModel:(ContactRouterModel *)contactRouterM {
     FriendModel *friendM = [[FriendModel alloc] init];
-    friendM.userId = crModel.Id;
-    friendM.username = [model.Name base64DecodedString]?:model.Name;
-    friendM.remarks = [model.Remarks base64DecodedString]?:model.Remarks;
-    friendM.Index = model.Index;
-    friendM.onLineStatu = [model.Status integerValue];
-    friendM.signPublicKey = model.UserKey;
-    friendM.RouteId = crModel.RouteId;
-    friendM.RouteName = crModel.RouteName;
-    vc.friendModel = friendM;
-    [self.navigationController pushViewController:vc animated:YES];
+    friendM.userId = contactRouterM.Id;
+    friendM.username = [contactShowM.Name base64DecodedString]?:contactShowM.Name;
+    friendM.remarks = [contactShowM.Remarks base64DecodedString]?:contactShowM.Remarks;
+    friendM.Index = contactShowM.Index;
+    friendM.onLineStatu = [contactShowM.Status integerValue];
+    friendM.signPublicKey = contactShowM.UserKey;
+    friendM.RouteId = contactRouterM.RouteId;
+    friendM.RouteName = contactRouterM.RouteName;
+    
+    return friendM;
 }
 
 #pragma mark - SWTableViewDelegate
@@ -366,6 +372,18 @@
 }
 */
 
+#pragma mark - Transition
+- (void)jumpToChat:(FriendModel *)friendM {
+    ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:friendM];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToFriendDetail:(FriendModel *)friendM {
+    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
+    vc.friendModel = friendM;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - NOTI
 - (void) friendListChangeNoti:(NSNotification *)noti {
     [self sendGetFriendNoti];
@@ -444,7 +462,6 @@
         FriendModel *friendM = obj;
         NSArray *resultArr = [weakSelf isExist:friendM.signPublicKey InArr:contactShowArr];
         BOOL isExist = [resultArr[0] boolValue];
-        ContactShowModel *existShowM = resultArr[1];
         if (!isExist) { // 不存在则创建
             ContactShowModel *showM = [ContactShowModel new];
             showM.showCell = NO;
@@ -463,6 +480,7 @@
             
             [contactShowArr addObject:showM];
         } else { // 存在则合并
+            ContactShowModel *existShowM = resultArr[1];
             ContactRouterModel *routerM = [ContactRouterModel new];
             routerM.Id = friendM.userId;
             routerM.RouteId = friendM.RouteId;
@@ -486,7 +504,11 @@
         }
     }];
     
-    return @[@(isExist),resultM];
+    if (!isExist) {
+        return @[@(isExist)];
+    } else {
+        return @[@(isExist),resultM];
+    }
 }
 
 //根据拼音的字母排序  ps：排序适用于所有类型
