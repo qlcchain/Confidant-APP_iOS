@@ -162,7 +162,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         if (indexPath.row == 1) { // share code
-            PersonCodeViewController *vc = [[PersonCodeViewController alloc] initWithUserId:self.friendModel.userId userNaem:self.friendModel.username];
+            PersonCodeViewController *vc = [[PersonCodeViewController alloc] initWithUserId:self.friendModel.userId userNaem:self.friendModel.username signPK:self.friendModel.signPublicKey];
             [self.navigationController pushViewController:vc animated:YES];
         } else { // nickname
             EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditFriendAlis friendModel:self.friendModel];

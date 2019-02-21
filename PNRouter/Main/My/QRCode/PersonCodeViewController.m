@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *codeImgView;
 @property (nonatomic , strong) ShareView *shareView;
 @property (nonatomic , copy) NSString *userId;
+@property (nonatomic , copy) NSString *signPublicKey;
 @property (nonatomic , copy) NSString *userName;
 @property (weak, nonatomic) IBOutlet UIButton *saveBtn;
 @property (weak, nonatomic) IBOutlet UIButton *shareBtn;
@@ -71,11 +72,12 @@
     }
     return _shareView;
 }
-- (instancetype) initWithUserId:(NSString *) userId userNaem:(NSString *)userNaem
+- (instancetype) initWithUserId:(NSString *) userId userNaem:(NSString *)userNaem signPK:(NSString *)signPK
 {
     if (self = [super init]) {
         self.userId = userId;
         self.userName = userNaem;
+        self.signPublicKey = signPK;
     }
     return self;
 }
@@ -90,11 +92,12 @@
     if (!self.userId || [self.userId isEmptyString]) {
         self.userName =  [UserModel getUserModel].username;
         self.userId = [UserModel getUserModel].userId;
+        self.signPublicKey = [EntryModel getShareObject].signPublicKey;
     }
     _lblNavTitle.text = self.userName;
     _lblName.text = self.userName;
     [_nameBtn setTitle:[StringUtil getUserNameFirstWithName:self.userName] forState:UIControlStateNormal];
-    NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@,%@",self.userId,[self.userName base64EncodedString],[EntryModel getShareObject].signPublicKey];
+    NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@,%@",self.userId,[self.userName base64EncodedString],self.signPublicKey?:@""];
     @weakify_self
     [HMScanner qrImageWithString:coderValue avatar:nil completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;

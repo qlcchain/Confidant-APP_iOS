@@ -143,10 +143,14 @@
     [self showRouter];
 }
 // 导入帐号
-- (void)scanSuccessfulWithIsAccount
+- (void)scanSuccessfulWithIsAccount:(NSArray *)values
 {
-    // 删除所有路由
-    [RouterModel delegateAllRouter];
+    NSString *usersn = values[2];
+    self.selectRouther = [RouterModel checkRoutherWithSn:usersn];
+    if (!self.selectRouther) {
+        // 删除所有路由
+        [RouterModel delegateAllRouter];
+    }
     [self changeLogintStatu];
 }
 // 扫码成功重新开启组播

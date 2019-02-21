@@ -37,7 +37,7 @@
     _saveBtn.layer.masksToBounds = YES;
     
     _lblName.text = [UserModel getUserModel].username;
-    NSString *coderValue = [NSString stringWithFormat:@"type_3,%@,%@",[EntryModel getShareObject].signPrivateKey,[[UserModel getUserModel].username base64EncodedString]];
+    NSString *coderValue = [NSString stringWithFormat:@"type_3,%@,%@,%@",[EntryModel getShareObject].signPrivateKey,[UserModel getUserModel].userSn,[[UserModel getUserModel].username base64EncodedString]];
     @weakify_self
     [HMScanner qrImageWithString:coderValue avatar:nil completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;
