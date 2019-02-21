@@ -15,6 +15,7 @@
 #import "NSString+Base64.h"
 #import "EditTextViewController.h"
 #import "UserConfig.h"
+#import "PNRouter-Swift.h"
 
 @interface MyDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {

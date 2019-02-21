@@ -11,6 +11,7 @@
 #import "ShareView.h"
 #import "UserModel.h"
 #import "NSString+Base64.h"
+#import "EntryModel.h"
 
 @interface PersonCodeViewController ()
 
@@ -93,7 +94,7 @@
     _lblNavTitle.text = self.userName;
     _lblName.text = self.userName;
     [_nameBtn setTitle:[StringUtil getUserNameFirstWithName:self.userName] forState:UIControlStateNormal];
-    NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@",self.userId,[self.userName base64EncodedString]];
+    NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@,%@",self.userId,[self.userName base64EncodedString],[EntryModel getShareObject].signPublicKey];
     @weakify_self
     [HMScanner qrImageWithString:coderValue avatar:nil completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;

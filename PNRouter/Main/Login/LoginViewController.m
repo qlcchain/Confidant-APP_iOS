@@ -147,7 +147,7 @@
 {
     // 删除所有路由
     [RouterModel delegateAllRouter];
-    //
+    [self changeLogintStatu];
 }
 // 扫码成功重新开启组播
 - (void)scanSuccessfulWithIsMacd:(BOOL)isMac
@@ -388,6 +388,8 @@
         _loginBtn.enabled = NO;
         _lblRoutherName.textColor = RGB(178, 178, 178);
         _loginBtn.backgroundColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1];
+        _lblDesc.text = @"*Scan the invitation QR code to join your friend's Confidant circle.\n*Scan the QR code on your Confidant router to launch your circle.";
+        [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_gray"] forState:UIControlStateNormal];
     }
 }
 #pragma mark -切换routher 刷新方法
