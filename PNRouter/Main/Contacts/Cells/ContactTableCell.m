@@ -8,6 +8,7 @@
 
 #import "ContactTableCell.h"
 #import "ContactShowModel.h"
+#import "NSString+Base64.h"
 
 @interface ContactTableCell ()
 
@@ -43,7 +44,7 @@
 - (void)configCellWithModel:(ContactRouterModel *)model {
     _contactRouterM = model;
     _icon.image = [UIImage imageNamed:@"icon_router_small"];
-    _nameLab.text = model.RouteName;
+    _nameLab.text = [model.RouteName base64DecodedString];
 }
 
 
