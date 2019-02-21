@@ -733,11 +733,14 @@
     
     NSInteger Result = [receiveDic[@"params"][@"Result"] integerValue];
     if (Result == 0) { // 同意添加
-        
     } else if (Result == 1) { // 拒绝好友添加
-        
+        [AppD.window showHint:@"User refuse to add friend"];
     }
+    
     NSString *retcode = @"0"; // 0：消息接收到  1：其他错误
+    if (!isUserKeyOK || !isSignOK) {
+        retcode = @"1";
+    }
     NSDictionary *params = @{@"Action":Action_AddFriendReply,@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
