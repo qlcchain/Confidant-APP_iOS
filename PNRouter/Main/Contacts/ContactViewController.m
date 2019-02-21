@@ -81,7 +81,7 @@
                     if (codeValues.count>2) {
                         nickName = codeValues[2];
                     }
-                    [weakSelf addFriendRequest:codeValue nickName:nickName];
+                    [weakSelf addFriendRequest:codeValue nickName:nickName signpk:codeValues[3]];
                 }
             } else {
                 [weakSelf.view showHint:@"format error!"];
@@ -182,9 +182,9 @@
 }
 
 #pragma mark -Operation-
-- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName{
+- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk{
     
-   FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId];
+   FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
     [self.navigationController pushViewController:vc animated:YES];
    
 }
