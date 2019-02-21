@@ -279,6 +279,7 @@
     FriendModel *friendM = [[FriendModel alloc] init];
     friendM.userId = contactRouterM.Id;
     friendM.username = [contactShowM.Name base64DecodedString]?:contactShowM.Name;
+    friendM.publicKey = contactShowM.publicKey;
     friendM.remarks = [contactShowM.Remarks base64DecodedString]?:contactShowM.Remarks;
     friendM.Index = contactShowM.Index;
     friendM.onLineStatu = [contactShowM.Status integerValue];
@@ -430,6 +431,14 @@
             [[ChatListDataUtil getShareObject].friendArray removeAllObjects];
         }
         [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
+    } else {
+        if (self.dataArray.count > 0) {
+            [self.dataArray removeAllObjects];
+        }
+        
+        if ([ChatListDataUtil getShareObject].friendArray.count>0) {
+            [[ChatListDataUtil getShareObject].friendArray removeAllObjects];
+        }
     }
     
     [_tableV reloadData];
@@ -474,8 +483,10 @@
             showM.Name = friendM.username;
             showM.Remarks = friendM.remarks;
             showM.UserKey = friendM.signPublicKey;
+            showM.publicKey = friendM.publicKey;
             showM.Status = @(friendM.onLineStatu);
             showM.routerArr = [NSMutableArray array];
+//            showM.remarks = friendM.remarks;
             ContactRouterModel *routerM = [ContactRouterModel new];
             routerM.Id = friendM.userId;
             routerM.RouteId = friendM.RouteId;

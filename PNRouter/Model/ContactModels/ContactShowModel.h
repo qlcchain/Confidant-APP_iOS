@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *Remarks;
 @property (nonatomic, strong) NSString *UserKey;
 @property (nonatomic, strong) NSNumber *Status;
+@property (nonatomic, strong) NSString *publicKey;
+//@property (nonatomic, strong) NSString *remarks;
 @property (nonatomic, strong) NSMutableArray *routerArr;
 
 @property (nonatomic) BOOL showCell;

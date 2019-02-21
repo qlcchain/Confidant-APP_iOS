@@ -348,13 +348,11 @@
     NSData *signPKData = [signPublickey base64DecodedData];
     const unsigned char *signPK = [signPKData bytes];
     
-    unsigned char m[32];
+    unsigned char m[msgData.length];
     unsigned long long mlen_p;
     int result = crypto_sign_open(m,&mlen_p,msgKey,msgData.length,signPK);
     if (result >= 0) {
-        NSData *enstrData = [NSData dataWithBytesNoCopy:m length:32 freeWhenDone:NO];
-        NSString *singPublic = [enstrData base64EncodedString];
-        return [singPublic isEqualToString:timestamp];
+        return YES;
     }
     return NO;
 }
