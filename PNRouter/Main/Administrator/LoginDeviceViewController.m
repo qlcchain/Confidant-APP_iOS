@@ -14,6 +14,7 @@
 #import "PNRouter-Swift.h"
 #import "SystemUtil.h"
 #import "RouterAliasViewController.h"
+#import "NSString+Base64.h"
 
 @interface LoginDeviceViewController ()<UITextFieldDelegate>
 {
@@ -100,22 +101,24 @@
 }
 
 #pragma mark - Transition
-//- (void)jumpToAccountManagement:(NSDictionary *)receiveDic {
-//    NSString *RouterId = receiveDic[@"params"][@"RouterId"];
-//    NSString *Qrcode = receiveDic[@"params"][@"Qrcode"];
-//    NSString *IdentifyCode = receiveDic[@"params"][@"IdentifyCode"];
-//    NSString *UserSn = receiveDic[@"params"][@"UserSn"];
-//
-//    [RoutherConfig getRoutherConfig].currentRouterSn = UserSn;
-//
-//    AccountManagementViewController *vc = [[AccountManagementViewController alloc] init];
-//    vc.RouterId = RouterId;
-//    vc.Qrcode = Qrcode;
-//    vc.IdentifyCode = IdentifyCode;
-//    vc.UserSn = UserSn;
-//    vc.RouterPW = _devicePWTF.text?:@"";
-//    [self.navigationController pushViewController:vc animated:YES];
-//}
+- (void)jumpToAccountManagement:(NSDictionary *)receiveDic {
+    NSString *RouterId = receiveDic[@"params"][@"RouterId"];
+    NSString *Qrcode = receiveDic[@"params"][@"Qrcode"];
+    NSString *IdentifyCode = receiveDic[@"params"][@"IdentifyCode"];
+    NSString *UserSn = receiveDic[@"params"][@"UserSn"];
+    NSString *RouterName = receiveDic[@"params"][@"RouterName"];
+
+    [RoutherConfig getRoutherConfig].currentRouterSn = UserSn;
+
+    AccountManagementViewController *vc = [[AccountManagementViewController alloc] init];
+    vc.RouterId = RouterId;
+    vc.Qrcode = Qrcode;
+    vc.IdentifyCode = IdentifyCode;
+    vc.UserSn = UserSn;
+    vc.RouterPW = _devicePWTF.text?:@"";
+    vc.routerAlias = [RouterName base64DecodedString];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 - (void)jumpToRouterAlias:(NSDictionary *)receiveDic {
     NSString *RouterId = receiveDic[@"params"][@"RouterId"];
@@ -136,9 +139,13 @@
 
 #pragma mark - Noti
 - (void)deviceLoginSuccessNoti:(NSNotification *)noti {
-    NSDictionary *dic = [noti object];
-//    [self jumpToAccountManagement:dic];
-    [self jumpToRouterAlias:dic];
+    NSDictionary *receiveDic = [noti object];
+    NSString *RouterName = receiveDic[@"params"][@"RouterName"];
+    if (!RouterName || RouterName.length <= 0) {
+        [self jumpToRouterAlias:receiveDic];
+    } else {
+        [self jumpToAccountManagement:receiveDic];
+    }
 }
 
 #pragma mark -codeTF 改变回调

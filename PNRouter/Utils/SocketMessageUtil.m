@@ -1263,8 +1263,10 @@
 
 // ---------------------v4---------------------------
 #pragma mark -设备管理员修改设备昵称
-+ (void) sendUpdateRourerNickName:(NSString *) nickName
-{
++ (void) sendUpdateRourerNickName:(NSString *) nickName showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Load..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
     NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"Name":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }

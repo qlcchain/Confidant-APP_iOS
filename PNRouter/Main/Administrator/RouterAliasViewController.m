@@ -53,7 +53,7 @@
 }
 
 - (void)sendResetRouterName {
-    [SocketMessageUtil sendUpdateRourerNickName:_aliasTF.text];
+    [SocketMessageUtil sendUpdateRourerNickName:_aliasTF.text showHud:YES];
 }
 
 #pragma mark - Action
