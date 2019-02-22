@@ -575,7 +575,7 @@
     NSInteger retCode = [noti.object integerValue];
     if (retCode == 0) {
         [AppD setRootTabbarWithManager:nil];
-        [AppD.window showHint:@"Login Success"];
+      //  [AppD.window showHint:@"Login Success"];
     } else if (retCode == 2) { // routeid不对
         [AppD.window showHint:@"Routeid wrong."];
     } else if (retCode == 1) { //需要验证
@@ -583,7 +583,7 @@
     }else if (retCode == 3) { //uid错误
         [AppD.window showHint:@"uid wrong."];
     }else if (retCode == 4) { //登陆密码错误
-        [AppD.window showHint:@"Login password error."];
+        [AppD.window showHint:@"Login failed, verification failed."];
     } else if (retCode == 5) { //验证码错误
         [AppD.window showHint:@"Verification code error."];
     }else { // 其它错误
@@ -617,7 +617,7 @@
     [UserConfig getShareObject].dataFileVersion = dataFileVersion;
     
     [AppD setRootTabbarWithManager:nil];
-     [AppD.window showHint:@"Registered successfully"];
+   //  [AppD.window showHint:@"Registered successfully"];
 }
 
 /*

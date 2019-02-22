@@ -27,7 +27,7 @@
 #pragma mark - 用户注册
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code
 {
-    [AppD.window showHudInView:AppD.window hint:@"Registered..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    [AppD.window showHudInView:AppD.window hint:@"Register..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     NSDictionary *params = @{@"Action":@"Register",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"Sign":@"",@"Pubkey":[EntryModel getShareObject].signPublicKey,@"NickName":userName};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
@@ -37,7 +37,7 @@
     if (showHud) {
        [AppD.window showHudInView:AppD.window hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion]};
+    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion],@"NickName":[[UserModel getUserModel].username base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
     
 }
