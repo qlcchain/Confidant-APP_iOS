@@ -435,7 +435,7 @@
         if ([ChatListDataUtil getShareObject].friendArray.count>0) {
             [[ChatListDataUtil getShareObject].friendArray removeAllObjects];
         }
-        [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
+        [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:sortArr];
     } else {
         if (self.dataArray.count > 0) {
             [self.dataArray removeAllObjects];

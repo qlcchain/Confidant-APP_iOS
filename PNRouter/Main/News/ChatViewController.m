@@ -824,13 +824,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         // 生成nonce
         NSString *nonceString = [LibsodiumUtil getGenterSysmetryNonce];
         
-        
-       
-        
         if (weakSelf.selectMessageModel.msgType == CDMessageTypeText) { // 转发文字
             
             // 生成对称密钥
-            NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].tempPrivateKey publicKey:self.friendModel.publicKey];
+            NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].tempPrivateKey publicKey:model.publicKey];
             // 加密消息
             NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:weakSelf.selectMessageModel.msg nonce:nonceString];
             // 加密对称密钥
