@@ -171,7 +171,7 @@
     //kCATransitionFromTop//顶部弹出
     // kCATransitionFromBottom//底部弹出
     [AppD.window.layer addAnimation:animation forKey:nil];
-    AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];;
+    AppD.window.rootViewController =vc;
 }
 
 #pragma mark - 是否需要显示引导页

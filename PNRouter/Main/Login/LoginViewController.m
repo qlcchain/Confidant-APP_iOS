@@ -55,7 +55,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-- (void) addObserver
+- (void) addObserve
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnConnect:) name:SOCKET_ON_CONNECT_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnDisconnect:) name:SOCKET_ON_DISCONNECT_NOTI object:nil];
@@ -292,7 +292,6 @@
 
 - (void)socketOnConnect:(NSNotification *)noti {
     
-    
     if (AppD.isLoginMac && _loginType != MacType) {
         return;
     }
@@ -366,7 +365,7 @@
     NSArray *routeArr = [RouterModel getLocalRouter];
     [_showRouterArr addObjectsFromArray:routeArr];
     
-    [self addObserver];
+    [self addObserve];
     [self appOptionWithLoginType:_loginType];
     
     if (AppD.showTouch) {
