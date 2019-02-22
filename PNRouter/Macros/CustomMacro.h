@@ -8,7 +8,8 @@
 
 #ifndef CustomMacro_h
 #define CustomMacro_h
-
+// 是否要清人除数据
+#define CLEAR_DATA  @"CLEAR_DATA"
 // 数据库表名
 #define FRIEND_REQUEST_TABNAME  @"friend_requet_tableName"
 // 文件记录表
