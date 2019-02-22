@@ -34,7 +34,8 @@
 }
 
 - (void)configHeaderWithModel:(ContactShowModel *)model {
-    _lblName.text = [model.Name base64DecodedString]?:model.Name;
+    NSString *name = [model.Name base64DecodedString]?:model.Name;
+    _lblName.text = model.showArrow?[NSString stringWithFormat:@"%@(%@)",name,@(model.routerArr.count)]:name;
     _lblTitle.text = [StringUtil getUserNameFirstWithName:_lblName.text];
     _arrowImg.hidden = !model.showArrow;
     _arrowImg.image = model.showCell?[UIImage imageNamed:@"icon_arrow_down_gray"]:[UIImage imageNamed:@"icon_arrow_up_gray"];
