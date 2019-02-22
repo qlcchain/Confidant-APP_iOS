@@ -34,6 +34,7 @@
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager;
 - (void)setRootLoginWithType:(LoginType) type;
 - (void)judgeLogin;
+- (void)addTransitionAnimation;
 
 @end
 

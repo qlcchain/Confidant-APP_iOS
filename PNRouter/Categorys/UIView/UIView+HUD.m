@@ -109,7 +109,9 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
 }
 
 - (void)hideHud{
-    [[self HUD] hideAnimated:YES];
+    MBProgressHUD *hud = [self HUD];
+    [hud hideAnimated:YES];
+    [hud removeFromSuperview];
 }
 
 @end
