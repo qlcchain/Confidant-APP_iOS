@@ -127,13 +127,13 @@
 - (void)setRootCreateAccount {
     CreateAccountViewController *vc = [[CreateAccountViewController alloc] init];
     [AppD addTransitionAnimation];
-    AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];;
+    AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];
 }
 
 - (void)setRootLoginWithType:(LoginType) type {
     [AppD addTransitionAnimation];
     LoginViewController *vc = [[LoginViewController alloc] initWithLoginType:type];
-    AppD.window.rootViewController = vc;
+    AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];
 }
 
 - (void)addTransitionAnimation {
