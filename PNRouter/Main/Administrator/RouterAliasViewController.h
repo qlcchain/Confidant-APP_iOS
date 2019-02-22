@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^RouterAliasFinishBlock)(NSString *alias);
+
 @interface RouterAliasViewController : PNBaseViewController
 
 @property (nonatomic, strong) NSString *RouterId;
@@ -17,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *IdentifyCode;
 @property (nonatomic, strong) NSString *UserSn;
 @property (nonatomic, strong) NSString *RouterPW;
+@property (nonatomic, strong) NSString *inputRouterAlias;
+@property (nonatomic) BOOL finishBack;
+@property (nonatomic, copy) RouterAliasFinishBlock finishB;
 
 @end
 

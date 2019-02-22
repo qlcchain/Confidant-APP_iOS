@@ -39,6 +39,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _nextBtn.layer.cornerRadius = 4.0f;
+    [_nameTF becomeFirstResponder];
 }
 
 // 创建用户昵称
