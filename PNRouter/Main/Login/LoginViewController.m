@@ -24,8 +24,7 @@
 #import "FingetprintVerificationUtil.h"
 #import "NSString+Base64.h"
 
-@interface LoginViewController ()<OCTSubmanagerUserDelegate>
-{
+@interface LoginViewController ()<OCTSubmanagerUserDelegate> {
     BOOL isLogin;
     BOOL isFind;
     BOOL isConnectSocket;
@@ -51,12 +50,12 @@
 
 @implementation LoginViewController
 
-- (void) dealloc
-{
+- (void)dealloc {
+    NSLog(@"Login View Controller dealloc***************************************************");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-- (void) addObserve
-{
+
+- (void) addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnConnect:) name:SOCKET_ON_CONNECT_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnDisconnect:) name:SOCKET_ON_DISCONNECT_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gbFinashNoti:) name:GB_FINASH_NOTI object:nil];
@@ -69,8 +68,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userRegisterSuccess:) name:USER_REGISTER_RECEVIE_NOTI object:nil];
 }
 
-- (instancetype) initWithLoginType:(LoginType) type
-{
+- (instancetype) initWithLoginType:(LoginType)type {
     if (self = [super init]) {
         self.loginType = type;
         [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
@@ -340,8 +338,11 @@
     }
     
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSLog(@"Login View Controller alloc***************************************************");
     
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username];
@@ -618,14 +619,9 @@
    //  [AppD.window showHint:@"Registered successfully"];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - OCTSubmanagerUserDelegate
+- (void)submanagerUser:(nonnull id<OCTSubmanagerUser>)submanager connectionStatusUpdate:(OCTToxConnectionStatus)connectionStatus {
+    
 }
-*/
 
 @end

@@ -126,31 +126,18 @@
 
 - (void)setRootCreateAccount {
     CreateAccountViewController *vc = [[CreateAccountViewController alloc] init];
-    CATransition *animation = [CATransition animation];
-    //动画时间
-    animation.duration = 0.4f;
-    //过滤效果
-    animation.type = kCATransitionReveal;
-    //枚举值:
-    // kCATransitionPush 推入效果
-    //  kCATransitionMoveIn 移入效果
-    //  kCATransitionReveal 截开效果
-    //  kCATransitionFade 渐入渐出效果
-    //动画执行完毕时是否被移除
-    animation.removedOnCompletion = YES;
-    //设置方向-该属性从下往上弹出
-    animation.subtype = kCATransitionFromRight;
-    // 枚举值:
-    //  kCATransitionFromRight//右侧弹出
-    //  kCATransitionFromLeft//左侧弹出
-    //kCATransitionFromTop//顶部弹出
-    // kCATransitionFromBottom//底部弹出
-    [AppD.window.layer addAnimation:animation forKey:nil];
+    [AppD addTransitionAnimation];
     AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];;
 }
 
 - (void)setRootLoginWithType:(LoginType) type {
+    [AppD addTransitionAnimation];
     LoginViewController *vc = [[LoginViewController alloc] initWithLoginType:type];
+    AppD.window.rootViewController = vc;
+}
+
+- (void)addTransitionAnimation {
+    // 我们要把系统windown的rootViewController替换掉
     CATransition *animation = [CATransition animation];
     //动画时间
     animation.duration = 0.4f;
@@ -171,7 +158,6 @@
     //kCATransitionFromTop//顶部弹出
     // kCATransitionFromBottom//底部弹出
     [AppD.window.layer addAnimation:animation forKey:nil];
-    AppD.window.rootViewController =vc;
 }
 
 #pragma mark - 是否需要显示引导页
@@ -215,26 +201,7 @@
     [RouterModel updateRouterConnectStatusWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
     // 我们要把系统windown的rootViewController替换掉
     PNTabbarViewController  *tabbarC = [[PNTabbarViewController alloc] initWithManager:manager];
-    CATransition *animation = [CATransition animation];
-    //动画时间
-    animation.duration = 0.4f;
-    //过滤效果
-    animation.type = kCATransitionReveal;
-    //枚举值:
-    // kCATransitionPush 推入效果
-    //  kCATransitionMoveIn 移入效果
-    //  kCATransitionReveal 截开效果
-    //  kCATransitionFade 渐入渐出效果
-    //动画执行完毕时是否被移除
-    animation.removedOnCompletion = YES;
-    //设置方向-该属性从下往上弹出
-    animation.subtype = kCATransitionFromRight;
-    // 枚举值:
-    //  kCATransitionFromRight//右侧弹出
-    //  kCATransitionFromLeft//左侧弹出
-    //kCATransitionFromTop//顶部弹出
-    // kCATransitionFromBottom//底部弹出
-    [AppD.window.layer addAnimation:animation forKey:nil];
+    [AppD addTransitionAnimation];
     AppD.window.rootViewController = tabbarC;
     AppD.inLogin = YES;
 }
