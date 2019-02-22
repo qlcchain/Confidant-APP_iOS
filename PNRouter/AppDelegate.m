@@ -45,10 +45,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-//    [KeyCUtil deleteAllKey];
-//    [FriendModel bg_drop:FRIEND_LIST_TABNAME];
-//    [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
-//    [OperationRecordModel bg_drop:OperationRecord_Table];
+    NSString *clearDataResult = [KeyCUtil getKeyValueWithKey:CLEAR_DATA];
+    if (![[NSString getNotNullValue:clearDataResult] isEqualToString:@"1"]) {
+        [KeyCUtil deleteAllKey];
+        [FriendModel bg_drop:FRIEND_LIST_TABNAME];
+        [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
+        [OperationRecordModel bg_drop:OperationRecord_Table];
+        [KeyCUtil saveStringToKeyWithString:@"1" key:CLEAR_DATA];
+    }
+    
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];

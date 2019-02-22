@@ -475,6 +475,7 @@
 }
 - (void) gbFinashNoti:(NSNotification *) noti
 {
+     [AppD.window hideHud];
     if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
         if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
             [self.view showHint:@"Unable to connect to server."];
@@ -503,8 +504,8 @@
             [self changeLogintStatu];
         }
             // 走find 5
-            isFind = YES;
-            [self connectSocketWithIsShowHud:YES];
+        isFind = YES;
+        [self connectSocketWithIsShowHud:YES];
     }
     
     AppD.isScaner = NO;
