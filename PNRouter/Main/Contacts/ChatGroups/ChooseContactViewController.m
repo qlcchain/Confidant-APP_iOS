@@ -40,6 +40,18 @@
 - (IBAction)backAction:(id)sender {
     if (isMutable) {
         isMutable = NO;
+        
+        [_dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ChooseContactShowModel *showModel = obj;
+            showModel.showSelect = self->isMutable;
+            showModel.isSelect = NO;
+            [showModel.routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                ChooseContactRouterModel *routerModel = obj;
+                routerModel.showSelect = self->isMutable;
+                routerModel.isSelect = NO;
+            }];
+        }];
+        
         [_tableV reloadData];
         _rightBtn.hidden = NO;
         if (self.downView.frame.origin.y == SCREEN_HEIGHT-Tab_BAR_HEIGHT) {
@@ -69,6 +81,21 @@
             }];
         }
     }
+    
+    [_dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ChooseContactShowModel *showModel = obj;
+        if (showModel.showArrow) {
+            showModel.showSelect = NO;
+        } else {
+            showModel.showSelect = YES;
+        }
+        
+        [showModel.routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ChooseContactRouterModel *routerModel = obj;
+            routerModel.showSelect = self->isMutable;
+        }];
+    }];
+    
     [_tableV reloadData];
 }
 
@@ -238,6 +265,24 @@
     [self.view addSubview:self.downView];
 }
 
+- (NSMutableArray *) getIsSelectRouter{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    @weakify_self
+    [_dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ChooseContactShowModel *showModel = obj;
+        if (showModel.isSelect) {
+            [array addObject:[weakSelf getFriendModelWithContactShowModel:showModel contactRouterModel:showModel.routerArr.firstObject]];
+        }
+        [showModel.routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ChooseContactRouterModel *routerModel = obj;
+            if (routerModel.isSelect) {
+                [array addObject:[weakSelf getFriendModelWithContactShowModel:showModel contactRouterModel:routerModel]];
+            }
+            
+        }];
+    }];
+    return array;
+}
 
 #pragma mark - tableviewDataSourceDelegate
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -270,12 +315,40 @@
     [view configHeaderWithModel:model];
     @weakify_self
     view.showCellB = ^(NSInteger headerSection) {
-        NSArray *arr = weakSelf.isSearch? self.searchDataArray : self.dataArray;
+        NSArray *arr = weakSelf.isSearch? weakSelf.searchDataArray : weakSelf.dataArray;
         ChooseContactShowModel *tempM = arr[headerSection];
         if (tempM.showArrow) { // 显示隐藏cell
-          
+            tempM.showArrow = !tempM.showArrow;
+             [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
         } else { // 直接跳转详情
-
+            if (!self->isMutable) {
+                [weakSelf.selectArray addObject:[weakSelf getFriendModelWithContactShowModel:tempM contactRouterModel:tempM.routerArr.firstObject]];
+                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
+                [weakSelf backVC];
+            } else {
+                
+                model.isSelect = !model.isSelect;
+                
+                [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+                NSMutableArray *selectArr = [weakSelf getIsSelectRouter];
+                if (selectArr.count > 0) {
+                    if (weakSelf.downView) {
+                        weakSelf.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                        [weakSelf.view addSubview:weakSelf.downView];
+                    }
+                    if (weakSelf.downView.frame.origin.y == SCREEN_HEIGHT) {
+                        [UIView animateWithDuration:0.3f animations:^{
+                            weakSelf.downView.frame = CGRectMake(0, SCREEN_HEIGHT-Tab_BAR_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                        }];
+                    }
+                    self.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %d groups",(unsigned long)selectArr.count,0];
+                    
+                } else {
+                    [UIView animateWithDuration:0.3f animations:^{
+                        weakSelf.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                    }];
+                }
+            }
         }
     };
     //    view.selectB = ^(NSInteger headerSection) {
@@ -291,14 +364,7 @@
     ChooseContactShowModel *model = _isSearch? self.searchDataArray[indexPath.section] : self.dataArray[indexPath.section];
     ChooseContactRouterModel *crModel = model.routerArr[indexPath.row];
     [cell configCellWithModel:crModel];
-    @weakify_self
-    cell.contactChatB = ^(ChooseContactRouterModel * _Nonnull crModel) {
-//        [weakSelf jumpToChat:[weakSelf getFriendModelWithContactShowModel:model contactRouterModel:crModel]];
-    };
-    
     cell.tag = indexPath.row;
-    //    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
-    //    cell.delegate = self;
     return cell;
 }
 
@@ -306,17 +372,19 @@
 {
     if (!tableView.isEditing) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        if (indexPath.section == 1) {
-            FriendModel *model = self.dataArray[indexPath.row];
+        if (indexPath.section >=0) {
+            
+            NSArray *arr = _isSearch? self.searchDataArray : self.dataArray;
+            ChooseContactShowModel *model = arr[indexPath.section];
+            ChooseContactRouterModel *subModel = model.routerArr[indexPath.row];
+            
+            FriendModel *friendModel = [self getFriendModelWithContactShowModel:model contactRouterModel:subModel];
+            
             if (isMutable) {
-                if (model.isSelect) {
-                    [self.selectArray removeObject:model];
-                } else {
-                     [self.selectArray addObject:model];
-                }
                 model.isSelect = !model.isSelect;
                 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                if (self.selectArray.count > 0) {
+                NSMutableArray *selectArr = [self getIsSelectRouter];
+                if (selectArr.count > 0) {
                     if (!_downView) {
                         self.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
                         [self.view addSubview:_downView];
@@ -334,7 +402,7 @@
                     }];
                 }
             } else {
-                [self.selectArray addObject:model];
+                [self.selectArray addObject:friendModel];
                 [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
                 [self backVC];
             }
@@ -344,6 +412,22 @@
         }
     }
     
+}
+
+#pragma mark -mode转换
+- (FriendModel *)getFriendModelWithContactShowModel:(ChooseContactShowModel *)contactShowM contactRouterModel:(ChooseContactRouterModel *)contactRouterM {
+    FriendModel *friendM = [[FriendModel alloc] init];
+    friendM.userId = contactRouterM.Id;
+    friendM.username = [contactShowM.Name base64DecodedString]?:contactShowM.Name;
+    friendM.publicKey = contactShowM.publicKey;
+    friendM.remarks = [contactShowM.Remarks base64DecodedString]?:contactShowM.Remarks;
+    friendM.Index = contactShowM.Index;
+    friendM.onLineStatu = [contactShowM.Status integerValue];
+    friendM.signPublicKey = contactShowM.UserKey;
+    friendM.RouteId = contactRouterM.RouteId;
+    friendM.RouteName = contactRouterM.RouteName;
+    
+    return friendM;
 }
 
 #pragma mark - 直接添加监听方法
@@ -372,6 +456,7 @@
 
 #pragma mark -uibutton_tag
 - (void) comfirmBtnAction {
+    [self.selectArray addObjectsFromArray:[self getIsSelectRouter]];
     [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
     [self backVC];
 }

@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="mRu-Ez-Vhg" customClass="ContactHeaderView">
+        <view contentMode="scaleToFill" id="mRu-Ez-Vhg" customClass="ChooseContactHeaderView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -117,9 +117,11 @@
                 <outlet property="headImgView" destination="Yjp-Mv-Tn0" id="4nf-UT-IcF"/>
                 <outlet property="lblName" destination="tyz-kB-Hqt" id="M9J-1s-7iD"/>
                 <outlet property="lblTitle" destination="isK-Fw-pnd" id="2IE-0H-NBI"/>
+                <outlet property="leftContraintW" destination="T6a-7q-sHS" id="YD6-wP-e1x"/>
+                <outlet property="selectImgView" destination="QMc-PV-sr2" id="GdJ-mS-AyL"/>
                 <outlet property="showCellBtn" destination="Jh1-7L-5EI" id="QAB-D0-0xa"/>
             </connections>
-            <point key="canvasLocation" x="61.600000000000001" y="230.28485757121442"/>
+            <point key="canvasLocation" x="1044" y="35"/>
         </view>
     </objects>
     <resources>

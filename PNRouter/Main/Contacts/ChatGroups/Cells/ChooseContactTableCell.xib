@@ -87,7 +87,9 @@
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="icon" destination="SnR-GZ-9zT" id="QQ4-Jw-uXQ"/>
+                <outlet property="leftContraintW" destination="Pwf-qX-mlA" id="cqA-Pm-ai3"/>
                 <outlet property="nameLab" destination="a4u-qB-j8w" id="neC-dj-fIP"/>
+                <outlet property="selectImgView" destination="4d4-PO-JLd" id="jOs-h0-fI0"/>
             </connections>
         </tableViewCell>
     </objects>

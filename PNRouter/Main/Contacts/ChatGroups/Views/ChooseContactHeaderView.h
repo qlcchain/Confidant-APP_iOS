@@ -20,6 +20,8 @@ typedef void(^ChooseContactShowCellBlock)(NSInteger headerSection);
 
 @interface ChooseContactHeaderView : UITableViewHeaderFooterView
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftContraintW;
+@property (weak, nonatomic) IBOutlet UIImageView *selectImgView;
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;

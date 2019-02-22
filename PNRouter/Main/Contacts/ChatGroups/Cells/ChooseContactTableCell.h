@@ -18,6 +18,8 @@ static NSString *ChooseContactTableCellResue = @"ChooseContactTableCell";
 //typedef void(^ChooseContactChatBlock)(ChooseContactRouterModel *crModel);
 
 @interface ChooseContactTableCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftContraintW;
+@property (weak, nonatomic) IBOutlet UIImageView *selectImgView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UILabel *nameLab;
