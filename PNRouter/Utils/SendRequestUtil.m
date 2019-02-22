@@ -32,12 +32,16 @@
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark - 用户登陆
-+ (void) sendUserLoginWithPass:(NSString *) passWord userid:(NSString *) userid showHud:(BOOL) showHud {
++ (void) sendUserLoginWithPass:(NSString *) usersn userid:(NSString *) userid showHud:(BOOL) showHud {
     
     if (showHud) {
        [AppD.window showHudInView:AppD.window hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion],@"NickName":[[UserModel getUserModel].username base64EncodedString]};
+    NSString *loginUsersn = [RoutherConfig getRoutherConfig].currentRouterSn;
+    if (![[NSString getNotNullValue:usersn] isEmptyString]) {
+        loginUsersn = usersn;
+    }
+    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":loginUsersn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion],@"NickName":[[UserModel getUserModel].username base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
     
 }

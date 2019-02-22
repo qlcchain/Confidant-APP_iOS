@@ -97,7 +97,7 @@
         if (connectStatu == socketConnectStatusConnected) {
             // 发送登陆请求
             sendCount = 0;
-            [self sendLoginRequestWithUserid:self.selectRouther.userid];
+            [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
         } else {
             isLogin = YES;
             [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
@@ -215,17 +215,17 @@
     } else if (isLogin) {
         isLogin = NO;
         sendCount = 0;
-        [self sendLoginRequestWithUserid:self.selectRouther.userid];
+        [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
     }
 }
 
-- (void) sendLoginRequestWithUserid:(NSString *) userid
+- (void) sendLoginRequestWithUserid:(NSString *) userid usersn:(NSString *) usersn
 {
     BOOL isShow = NO;
     if (sendCount == 0) {
         isShow = YES;
     }
-    [SendRequestUtil sendUserLoginWithPass:@"" userid:userid showHud:isShow];
+    [SendRequestUtil sendUserLoginWithPass:usersn userid:userid showHud:isShow];
     /*
     sendCount ++;
     if (sendCount == 4) {
@@ -296,7 +296,7 @@
     [AppD.window hideHud];
     if (isLogin) {  // 登陆
         sendCount = 0;
-        [self sendLoginRequestWithUserid:self.selectRouther.userid];
+        [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
         isLogin = NO;
     } else if (isFind) {
         [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
@@ -556,7 +556,7 @@
         
         if (retCode == 0) { //已激活
             sendCount = 0;
-            [self sendLoginRequestWithUserid:userid];
+            [self sendLoginRequestWithUserid:userid usersn:usesn];
             
 //            [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
 //            [RouterModel updateRouterConnectStatusWithSn:usesn];
@@ -574,7 +574,7 @@
 #pragma mark -登陆成功
 - (void) loginSuccess:(NSNotification *) noti
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(sendLoginRequestWithUserid:) object:@""];
+  //  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(sendLoginRequestWithUserid:) object:@""];
 //    if (resultLogin) {
 //        return;
 //    }

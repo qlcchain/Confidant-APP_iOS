@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn;
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code;
-+ (void) sendUserLoginWithPass:(NSString *) passWord userid:(NSString *) userid showHud:(BOOL) showHud;
++ (void) sendUserLoginWithPass:(NSString *) usersn userid:(NSString *) userid showHud:(BOOL) showHud;
 + (void) sendPullUserList;
 + (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg;
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId;
