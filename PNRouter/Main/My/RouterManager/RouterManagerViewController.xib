@@ -281,7 +281,7 @@
         <image name="arrow-exit-h" width="24" height="24"/>
         <image name="icon_choose" width="8" height="14"/>
         <image name="icon_connected" width="16" height="16"/>
-        <image name="icon_little_scan" width="21" height="19.5"/>
+        <image name="icon_little_scan" width="22" height="20"/>
         <image name="img_router" width="115" height="127"/>
     </resources>
 </document>
