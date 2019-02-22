@@ -123,6 +123,7 @@
     //设置相册呈现的样式
     pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary; //UIImagePickerControllerSourceTypeSavedPhotosAlbum;//图片分组列表样式
     pickerController.delegate = self;
+    pickerController.allowsEditing = YES;
     //使用模态呈现相册
     [self.navigationController presentViewController:pickerController animated:YES completion:nil];
     

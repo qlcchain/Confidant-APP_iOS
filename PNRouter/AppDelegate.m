@@ -45,12 +45,12 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     NSString *clearDataResult = [KeyCUtil getKeyValueWithKey:CLEAR_DATA];
-    if (![[NSString getNotNullValue:clearDataResult] isEqualToString:@"1"]) {
+    if (![[NSString getNotNullValue:clearDataResult] isEqualToString:@"2"]) {
         [KeyCUtil deleteAllKey];
         [FriendModel bg_drop:FRIEND_LIST_TABNAME];
         [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
         [OperationRecordModel bg_drop:OperationRecord_Table];
-        [KeyCUtil saveStringToKeyWithString:@"1" key:CLEAR_DATA];
+        [KeyCUtil saveStringToKeyWithString:@"2" key:CLEAR_DATA];
     }
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

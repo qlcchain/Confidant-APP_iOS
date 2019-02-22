@@ -393,6 +393,7 @@
 
 - (void) changeLogintStatu
 {
+     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username];
     if (self.selectRouther) {
         [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
         [RoutherConfig getRoutherConfig].currentRouterToxid = self.selectRouther.toxid;
