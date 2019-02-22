@@ -575,10 +575,10 @@
 - (void) loginSuccess:(NSNotification *) noti
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(sendLoginRequestWithUserid:) object:@""];
-    if (resultLogin) {
-        return;
-    }
-    resultLogin = YES;
+//    if (resultLogin) {
+//        return;
+//    }
+//    resultLogin = YES;
     NSInteger retCode = [noti.object integerValue];
     if (retCode == 0) {
         [AppD setRootTabbarWithManager:nil];

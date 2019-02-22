@@ -818,21 +818,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.publicKey = [model.publicKey stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
         UserModel *userM = [UserModel getUserModel];
         NSString *msgKey = [SystemUtil get16AESKey];
-        
         // 生成签名
         NSString *signString = [LibsodiumUtil getOwenrSignPrivateKeySignOwenrTempPublickKey];
         // 生成nonce
         NSString *nonceString = [LibsodiumUtil getGenterSysmetryNonce];
         
         if (weakSelf.selectMessageModel.msgType == CDMessageTypeText) { // 转发文字
-            
             // 生成对称密钥
             NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].tempPrivateKey publicKey:model.publicKey];
             // 加密消息
             NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:weakSelf.selectMessageModel.msg nonce:nonceString];
             // 加密对称密钥
             NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
-            
             
              NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
             NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
