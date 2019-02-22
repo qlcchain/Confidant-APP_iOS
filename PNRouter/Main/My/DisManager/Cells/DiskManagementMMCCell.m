@@ -39,7 +39,7 @@
     
 //    _backView;
 //    _frontView;
-    _diskLab.text = nil;
+//    _diskLab.text = nil;
 //    _temperatureKeyLab;
     _capacityValLab.text = nil;
     

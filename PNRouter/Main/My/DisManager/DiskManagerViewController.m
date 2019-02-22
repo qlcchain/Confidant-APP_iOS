@@ -100,9 +100,10 @@ typedef enum : NSUInteger {
     
     [_sourceArr removeAllObjects];
     // 添加mmc信息
-    if (_getDiskTotalInfoM.Count <= 0) { // 有磁盘 默认灰
+    if ([_getDiskTotalInfoM.Count integerValue] <= 0) { // 有磁盘 默认灰
         GetDiskTotalInfo *mmcInfo = [[GetDiskTotalInfo alloc] init];
         mmcInfo.Status = @(2);
+        mmcInfo.Slot = @(2);
         mmcInfo.Capacity = _getDiskTotalInfoM.TotalCapacity;
         [_sourceArr addObject:mmcInfo];
     }
@@ -111,7 +112,7 @@ typedef enum : NSUInteger {
 
     [_mainTable reloadData];
     
-    if (_getDiskTotalInfoM.Count <= 0) { // 无磁盘
+    if ([_getDiskTotalInfoM.Count integerValue] <= 0) { // 无磁盘
         _diskStatusType = DiskStatusTypeMMC;
     } else {
         __block BOOL aOK = NO;
