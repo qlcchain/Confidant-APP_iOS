@@ -587,13 +587,13 @@
         [AppD.window showHint:@"Routeid wrong."];
     } else if (retCode == 1) { //需要验证
         [AppD.window showHint:@"Need to verify"];
-    }else if (retCode == 3) { //uid错误
+    } else if (retCode == 3) { //uid错误
         [AppD.window showHint:@"uid wrong."];
-    }else if (retCode == 4) { //登陆密码错误
+    } else if (retCode == 4) { //登陆密码错误
         [AppD.window showHint:@"Login failed, verification failed."];
     } else if (retCode == 5) { //验证码错误
         [AppD.window showHint:@"Verification code error."];
-    }else { // 其它错误
+    } else { // 其它错误
         [AppD.window showHint:@"Login failed Other error."];
     }
 }

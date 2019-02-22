@@ -175,8 +175,9 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        NSArray *arr = [self handleShowData:[[ChatListDataUtil getShareObject].friendArray mutableCopy]];
-        _dataArray = [NSMutableArray arrayWithArray:arr];
+//        NSArray *arr = [self handleShowData:[[ChatListDataUtil getShareObject].friendArray mutableCopy]];
+//        _dataArray = [NSMutableArray arrayWithArray:arr];
+        _dataArray = [[ChatListDataUtil getShareObject].friendArray mutableCopy];
     }
     return _dataArray;
 }
