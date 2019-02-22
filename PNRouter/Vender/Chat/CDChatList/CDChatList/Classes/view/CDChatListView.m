@@ -222,18 +222,12 @@
 //        CGFloat right = self.contentInset.right;
 //        CGFloat bottom = self.contentInset.bottom;
 //        [self setContentInset:UIEdgeInsetsMake(newTopInset, left, right, bottom)];
-//        [self relayoutTable:NO];
+        [weakSelf relayoutTable:NO];
 //        if (totalHeight < self.frame.size.height - newTopInset - bottom) {
 //            [self setContentOffset:CGPointZero];
 //        }
 //        self.loadHeaderState = CDHeaderLoadStateNoraml;
-        
-        [weakSelf performSelector:@selector(scrollToBottomWithoutAnimate) withObject:nil afterDelay:.2];
     }];
-}
-
-- (void)scrollToBottomWithoutAnimate {
-    [self relayoutTable:NO];
 }
 
 
@@ -365,7 +359,7 @@
     // 异步让tableview滚到最底部
     NSInteger cellCount = [self numberOfRowsInSection:0];
     NSInteger num = cellCount - 1 > 0 ? cellCount - 1 : 0;
-    NSIndexPath *index = [NSIndexPath indexPathForRow:num  inSection:0];
+    NSIndexPath *index = [NSIndexPath indexPathForRow:num inSection:0];
     
    // [self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:NSNotFound inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     [self scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:animated];

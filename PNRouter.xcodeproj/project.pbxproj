@@ -170,6 +170,10 @@
 		58C62704214BA7170051AFD0 /* MessageListUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C62703214BA7170051AFD0 /* MessageListUtil.m */; };
 		58C62707214BC81E0051AFD0 /* PayloadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C62706214BC81E0051AFD0 /* PayloadModel.m */; };
 		58F1789B221FDFEC001CD0AF /* ChooseContactShowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */; };
+		58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */; };
+		58F178A0221FF333001CD0AF /* ChooseContactHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F1789D221FF333001CD0AF /* ChooseContactHeaderView.m */; };
+		58F178A4221FF376001CD0AF /* ChooseContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F178A1221FF376001CD0AF /* ChooseContactTableCell.xib */; };
+		58F178A5221FF376001CD0AF /* ChooseContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F178A3221FF376001CD0AF /* ChooseContactTableCell.m */; };
 		58F4430B2149FF6200A94106 /* HeartBeatUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F4430A2149FF6200A94106 /* HeartBeatUtil.m */; };
 		73001A1D21904897003D07CC /* DDRSAWrapper+openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A1B21904896003D07CC /* DDRSAWrapper+openssl.m */; };
 		73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A1E219048AE003D07CC /* DDRSAWrapper.m */; };
@@ -818,6 +822,12 @@
 		58C62706214BC81E0051AFD0 /* PayloadModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PayloadModel.m; sourceTree = "<group>"; };
 		58F17899221FDFEC001CD0AF /* ChooseContactShowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactShowModel.h; sourceTree = "<group>"; };
 		58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactShowModel.m; sourceTree = "<group>"; };
+		58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseContactHeaderView.xib; sourceTree = "<group>"; };
+		58F1789D221FF333001CD0AF /* ChooseContactHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseContactHeaderView.m; sourceTree = "<group>"; };
+		58F1789E221FF333001CD0AF /* ChooseContactHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseContactHeaderView.h; sourceTree = "<group>"; };
+		58F178A1221FF376001CD0AF /* ChooseContactTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseContactTableCell.xib; sourceTree = "<group>"; };
+		58F178A2221FF376001CD0AF /* ChooseContactTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseContactTableCell.h; sourceTree = "<group>"; };
+		58F178A3221FF376001CD0AF /* ChooseContactTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseContactTableCell.m; sourceTree = "<group>"; };
 		58F443092149FF6200A94106 /* HeartBeatUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeartBeatUtil.h; sourceTree = "<group>"; };
 		58F4430A2149FF6200A94106 /* HeartBeatUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeartBeatUtil.m; sourceTree = "<group>"; };
 		73001A1B21904896003D07CC /* DDRSAWrapper+openssl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDRSAWrapper+openssl.m"; sourceTree = "<group>"; };
@@ -3167,6 +3177,9 @@
 		73D00E902159DABF0013E20D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				58F1789E221FF333001CD0AF /* ChooseContactHeaderView.h */,
+				58F1789D221FF333001CD0AF /* ChooseContactHeaderView.m */,
+				58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */,
 				73D00E912159DADF0013E20D /* ChooseDownView.h */,
 				73D00E922159DADF0013E20D /* ChooseDownView.m */,
 				73D00E942159DAE80013E20D /* ChooseDownView.xib */,
@@ -3242,6 +3255,9 @@
 		73EE8CC12159CD4F0048866B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				58F178A2221FF376001CD0AF /* ChooseContactTableCell.h */,
+				58F178A3221FF376001CD0AF /* ChooseContactTableCell.m */,
+				58F178A1221FF376001CD0AF /* ChooseContactTableCell.xib */,
 				73EE8CC22159CD980048866B /* ChooseContactCell.h */,
 				73EE8CC32159CD980048866B /* ChooseContactCell.m */,
 				73EE8CC42159CD980048866B /* ChooseContactCell.xib */,
@@ -3422,12 +3438,14 @@
 				734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */,
 				7330F3AF21475A0600FF4EEC /* GroupCell.xib in Resources */,
 				73D31B12217F08480034B2B9 /* TZImagePickerController.bundle in Resources */,
+				58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */,
 				737883EE21ACF2970033A189 /* nodes.json in Resources */,
 				73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */,
 				587C52CD215CAF14006787FB /* RouterManagementCell.xib in Resources */,
 				583BF91B21F6B5AB0078A2A8 /* DetailInformationViewController.xib in Resources */,
 				73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */,
 				5833F9C6221E57F400F7B63D /* ContactHeaderView.xib in Resources */,
+				58F178A4221FF376001CD0AF /* ChooseContactTableCell.xib in Resources */,
 				582BFE43221AAA1100D8C2C8 /* DiskManagementMMCCell.xib in Resources */,
 				73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */,
 				583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */,
@@ -3778,6 +3796,7 @@
 				73869111214CEAA3003CF6A3 /* ChatListDataUtil.m in Sources */,
 				7330F4FA2149147200FF4EEC /* CTInputView.m in Sources */,
 				587C52D7215CBA9A006787FB /* QRViewController.m in Sources */,
+				58F178A0221FF333001CD0AF /* ChooseContactHeaderView.m in Sources */,
 				7378841421ACF2970033A189 /* OCTFileDownloadOperation.m in Sources */,
 				584A449E21464D4800608122 /* FingetprintVerificationUtil.m in Sources */,
 				7330F39E214666E400FF4EEC /* PersonCodeViewController.m in Sources */,
@@ -3821,6 +3840,7 @@
 				582BFE56221D3D2700D8C2C8 /* RouterAliasViewController.m in Sources */,
 				73899CC72152011000962B14 /* GuidePageViewController.m in Sources */,
 				73D00EB5215F17670013E20D /* FileModel.m in Sources */,
+				58F178A5221FF376001CD0AF /* ChooseContactTableCell.m in Sources */,
 				7378841521ACF2970033A189 /* NSError+OCTFile.m in Sources */,
 				7330F3772146118800FF4EEC /* UIImage+Rotate.m in Sources */,
 				58BD2E722148E3170091A77D /* ToastUtil.m in Sources */,
