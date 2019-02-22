@@ -7,13 +7,16 @@
 //
 
 #import "ChooseContactViewController.h"
-#import "GroupCell.h"
-#import "ChooseContactCell.h"
-#import "ContactsHeadView.h"
+//#import "GroupCell.h"
+//#import "ChooseContactCell.h"
+//#import "ContactsHeadView.h"
 #import "ChooseDownView.h"
 #import "ChatListDataUtil.h"
 #import "ChooseContactShowModel.h"
 #import "NSString+Base64.h"
+#import "ChooseContactTableCell.h"
+#import "ChooseContactHeaderView.h"
+#import "FriendModel.h"
 
 @interface ChooseContactViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
     BOOL isMutable;
@@ -23,12 +26,13 @@
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
 @property (nonatomic, strong) ChooseDownView *downView;
 
-
 @property (nonatomic ,strong) NSMutableArray *dataArray;
-@property (nonatomic ,strong) NSArray *groupArray;
+@property (nonatomic ,strong) NSMutableArray *searchDataArray;
+//@property (nonatomic ,strong) NSArray *groupArray;
 @property (nonatomic ,strong) NSMutableArray *selectArray;
 @property (weak, nonatomic) IBOutlet UIButton *leftBtn;
 @property (weak, nonatomic) IBOutlet UIButton *rightBtn;
+@property (nonatomic) BOOL isSearch;
 
 @end
 
@@ -172,22 +176,21 @@
 }
 
 #pragma mark -layz
-- (NSMutableArray *)dataArray
+
+- (NSMutableArray *)searchDataArray
 {
-    if (!_dataArray) {
-//        NSArray *arr = [self handleShowData:[[ChatListDataUtil getShareObject].friendArray mutableCopy]];
-//        _dataArray = [NSMutableArray arrayWithArray:arr];
-        _dataArray = [[ChatListDataUtil getShareObject].friendArray mutableCopy];
+    if (!_searchDataArray) {
+        _searchDataArray = [NSMutableArray array];
     }
-    return _dataArray;
+    return _searchDataArray;
 }
-- (NSArray *)groupArray
-{
-    if (!_groupArray) {
-        _groupArray = @[@"New Chat"];
-    }
-    return _groupArray;
-}
+//- (NSArray *)groupArray
+//{
+//    if (!_groupArray) {
+//        _groupArray = @[@"New Chat"];
+//    }
+//    return _groupArray;
+//}
 - (NSMutableArray *)selectArray
 {
     if (!_selectArray) {
@@ -213,15 +216,25 @@
 #pragma mark -viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
+    
     _searchTF.delegate = self;
+    _searchTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
+    _searchTF.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [self addTargetMethod];
+    
+    _dataArray = [NSMutableArray array];
+    NSArray *arr = [self handleShowData:[ChatListDataUtil getShareObject].friendArray];
+    [_dataArray addObjectsFromArray:arr];
+    
     _tableV.delegate = self;
     _tableV.dataSource = self;
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
-    [_tableV registerNib:[UINib nibWithNibName:ChooseContactCellReuse bundle:nil] forCellReuseIdentifier:ChooseContactCellReuse];
+    [_tableV registerNib:[UINib nibWithNibName:ChooseContactTableCellResue bundle:nil] forCellReuseIdentifier:ChooseContactTableCellResue];
+    [_tableV registerNib:[UINib nibWithNibName:ChooseContactHeaderViewReuse bundle:nil] forHeaderFooterViewReuseIdentifier:ChooseContactHeaderViewReuse];
     [self.view addSubview:self.downView];
 }
 
@@ -229,60 +242,63 @@
 #pragma mark - tableviewDataSourceDelegate
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return _isSearch? self.searchDataArray.count : self.dataArray.count;
 }
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-        return self.groupArray.count;
-    }
-    return self.dataArray.count;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0) {
-        return GroupCellHeight;
-    }
-    return ChooseContactCellHeight;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 1) {
-        return 64;
+    NSArray *arr = _isSearch? self.searchDataArray : self.dataArray;
+    ChooseContactShowModel *model = arr[section];
+    if (model.showCell) {
+        return model.routerArr.count;
     }
     return 0;
 }
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
-    backView.backgroundColor = [UIColor clearColor];
-    ContactsHeadView *view = [ContactsHeadView loadContactsHeadView];
-    view.lblTitle.text = @"Recent Chat";
-    view.frame = backView.bounds;
-    [backView addSubview:view];
-    return backView;
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return ChooseContactTableCellHeight;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return ChooseContactHeaderViewHeight;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    ChooseContactHeaderView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:ChooseContactHeaderViewReuse];
+    
+    NSArray *arr = _isSearch? self.searchDataArray : self.dataArray;
+    ChooseContactShowModel *model = arr[section];
+    view.headerSection = section;
+    [view configHeaderWithModel:model];
+    @weakify_self
+    view.showCellB = ^(NSInteger headerSection) {
+        NSArray *arr = weakSelf.isSearch? self.searchDataArray : self.dataArray;
+        ChooseContactShowModel *tempM = arr[headerSection];
+        if (tempM.showArrow) { // 显示隐藏cell
+          
+        } else { // 直接跳转详情
+
+        }
+    };
+    //    view.selectB = ^(NSInteger headerSection) {
+    //    };
+    
+    return view;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupCellReuse];
-        cell.lblName.text = self.groupArray[indexPath.row];
-        cell.hdBackView.hidden = YES;
-        if (indexPath.row == 0) {
-            if (AppD.showHD) {
-                cell.hdBackView.hidden = NO;
-            }
-        }
-        return cell;
-    }
-    ChooseContactCell *cell = [tableView dequeueReusableCellWithIdentifier:ChooseContactCellReuse];
-    FriendModel *model = self.dataArray[indexPath.row];
-    CGFloat leftV = 0;
-    if (isMutable) {
-        leftV = 38;
-    }
-    [cell setModeWithModel:model withLeftContraintV:leftV];
+    
+    ChooseContactTableCell *cell = [tableView dequeueReusableCellWithIdentifier:ChooseContactTableCellResue];
+    
+    ChooseContactShowModel *model = _isSearch? self.searchDataArray[indexPath.section] : self.dataArray[indexPath.section];
+    ChooseContactRouterModel *crModel = model.routerArr[indexPath.row];
+    [cell configCellWithModel:crModel];
+    @weakify_self
+    cell.contactChatB = ^(ChooseContactRouterModel * _Nonnull crModel) {
+//        [weakSelf jumpToChat:[weakSelf getFriendModelWithContactShowModel:model contactRouterModel:crModel]];
+    };
+    
     cell.tag = indexPath.row;
+    //    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
+    //    cell.delegate = self;
     return cell;
 }
 
@@ -328,6 +344,30 @@
         }
     }
     
+}
+
+#pragma mark - 直接添加监听方法
+-(void)addTargetMethod{
+    [_searchTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
+}
+
+- (void) textFieldTextChange:(UITextField *) tf
+{
+    if ([tf.text.trim isEmptyString]) {
+        _isSearch = NO;
+    } else {
+        _isSearch = YES;
+        [self.searchDataArray removeAllObjects];
+        @weakify_self
+        [self.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ChooseContactShowModel *model = obj;
+            NSString *userName = [[model.Name base64DecodedString] lowercaseString];
+            if ([userName containsString:[tf.text.trim lowercaseString]]) {
+                [weakSelf.searchDataArray addObject:model];
+            }
+        }];
+    }
+    [_tableV reloadData];
 }
 
 #pragma mark -uibutton_tag

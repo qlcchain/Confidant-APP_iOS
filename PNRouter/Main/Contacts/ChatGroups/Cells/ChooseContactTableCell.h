@@ -13,16 +13,16 @@ NS_ASSUME_NONNULL_BEGIN
 @class ChooseContactRouterModel;
 
 static NSString *ChooseContactTableCellResue = @"ChooseContactTableCell";
-#define ContactTableCellHeight 48
+#define ChooseContactTableCellHeight 48
 
-typedef void(^ChooseContactChatBlock)(ChooseContactRouterModel *crModel);
+//typedef void(^ChooseContactChatBlock)(ChooseContactRouterModel *crModel);
 
 @interface ChooseContactTableCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UILabel *nameLab;
-@property (weak, nonatomic) IBOutlet UIButton *chatBtn;
-@property (nonatomic, copy) ChooseContactChatBlock contactChatB;
+//@property (weak, nonatomic) IBOutlet UIButton *chatBtn;
+//@property (nonatomic, copy) ChooseContactChatBlock contactChatB;
 
 - (void)configCellWithModel:(ChooseContactRouterModel *)model;
 

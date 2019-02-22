@@ -23,12 +23,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="47.5"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_router_small" translatesAutoresizingMaskIntoConstraints="NO" id="SnR-GZ-9zT">
-                                <rect key="frame" x="71" y="16" width="16" height="16"/>
+                                <rect key="frame" x="88" y="16" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="c5T-pE-Qar"/>
                                     <constraint firstAttribute="width" constant="16" id="dHz-Qh-Mca"/>
                                 </constraints>
                             </imageView>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cSN-Sg-Yi6">
+                                <rect key="frame" x="0.0" y="0.0" width="38" height="47.5"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_unselectmsg" translatesAutoresizingMaskIntoConstraints="NO" id="4d4-PO-JLd">
+                                        <rect key="frame" x="16" y="13" width="22" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="dh8-4O-Wso"/>
+                                            <constraint firstAttribute="width" constant="22" id="goZ-87-e7u"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="4d4-PO-JLd" firstAttribute="centerY" secondItem="cSN-Sg-Yi6" secondAttribute="centerY" id="PGE-95-z4u"/>
+                                    <constraint firstAttribute="width" constant="38" id="Pwf-qX-mlA"/>
+                                    <constraint firstItem="4d4-PO-JLd" firstAttribute="leading" secondItem="cSN-Sg-Yi6" secondAttribute="leading" constant="16" id="cwm-1E-jVq"/>
+                                    <constraint firstAttribute="trailing" secondItem="4d4-PO-JLd" secondAttribute="trailing" id="v6a-pC-Hey"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xwF-Bi-lgT">
                                 <rect key="frame" x="71" y="47" width="249" height="0.5"/>
                                 <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
@@ -37,37 +56,24 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4u-qB-j8w">
-                                <rect key="frame" x="93" y="17" width="28.5" height="13.5"/>
+                                <rect key="frame" x="110" y="17" width="28.5" height="13.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1SL-Bo-TB1">
-                                <rect key="frame" x="252" y="12" width="52" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="OVP-46-4s8"/>
-                                    <constraint firstAttribute="width" constant="52" id="y7d-6A-vKG"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <state key="normal" title="Chat">
-                                    <color key="titleColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="chatAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="QVd-xx-hKq"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="xwF-Bi-lgT" secondAttribute="trailing" id="7d2-sY-2l2"/>
+                            <constraint firstAttribute="bottom" secondItem="cSN-Sg-Yi6" secondAttribute="bottom" id="Gh1-7y-U88"/>
+                            <constraint firstItem="cSN-Sg-Yi6" firstAttribute="top" secondItem="qSh-JC-QiC" secondAttribute="top" id="V5P-sA-QK5"/>
                             <constraint firstItem="SnR-GZ-9zT" firstAttribute="centerY" secondItem="qSh-JC-QiC" secondAttribute="centerY" id="Xhr-6P-b73"/>
-                            <constraint firstItem="1SL-Bo-TB1" firstAttribute="centerY" secondItem="qSh-JC-QiC" secondAttribute="centerY" id="e2u-ha-pLH"/>
-                            <constraint firstItem="SnR-GZ-9zT" firstAttribute="leading" secondItem="qSh-JC-QiC" secondAttribute="leading" constant="71" id="knC-p5-EG6"/>
+                            <constraint firstItem="cSN-Sg-Yi6" firstAttribute="leading" secondItem="qSh-JC-QiC" secondAttribute="leading" id="daA-pm-dFI"/>
+                            <constraint firstItem="SnR-GZ-9zT" firstAttribute="leading" secondItem="cSN-Sg-Yi6" secondAttribute="trailing" constant="50" id="iCm-r2-Kr5"/>
                             <constraint firstItem="xwF-Bi-lgT" firstAttribute="leading" secondItem="qSh-JC-QiC" secondAttribute="leading" constant="71" id="oaR-S3-Ycp"/>
                             <constraint firstItem="a4u-qB-j8w" firstAttribute="centerY" secondItem="qSh-JC-QiC" secondAttribute="centerY" id="r8v-M7-gcu"/>
                             <constraint firstAttribute="bottom" secondItem="xwF-Bi-lgT" secondAttribute="bottom" id="tBc-ox-wh9"/>
                             <constraint firstItem="a4u-qB-j8w" firstAttribute="leading" secondItem="SnR-GZ-9zT" secondAttribute="trailing" constant="6" id="xdK-sW-YRM"/>
-                            <constraint firstAttribute="trailing" secondItem="1SL-Bo-TB1" secondAttribute="trailing" constant="16" id="zme-PB-QdJ"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -80,7 +86,6 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
-                <outlet property="chatBtn" destination="1SL-Bo-TB1" id="Xfh-aF-c3Q"/>
                 <outlet property="icon" destination="SnR-GZ-9zT" id="QQ4-Jw-uXQ"/>
                 <outlet property="nameLab" destination="a4u-qB-j8w" id="neC-dj-fIP"/>
             </connections>
@@ -88,5 +93,6 @@
     </objects>
     <resources>
         <image name="icon_router_small" width="24" height="24"/>
+        <image name="icon_unselectmsg" width="22" height="22"/>
     </resources>
 </document>
