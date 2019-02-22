@@ -137,7 +137,6 @@
 }
 
 - (void)addTransitionAnimation {
-    return;
     // 我们要把系统windown的rootViewController替换掉
     CATransition *animation = [CATransition animation];
     //动画时间

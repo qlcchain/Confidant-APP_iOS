@@ -276,7 +276,7 @@
                 [LibsodiumUtil changeUserPrivater:codeValues[1]];
                 NSString *name = [codeValues[3] base64DecodedString];
                 [UserModel createUserLocalWithName:name];
-                [self scanSuccessfulWithIsAccount:codeValues];
+                [weakSelf scanSuccessfulWithIsAccount:codeValues];
             } else {
                 [weakSelf.view showHint:@"format error!"];
             }
