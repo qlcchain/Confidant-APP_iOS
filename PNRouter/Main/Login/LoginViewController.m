@@ -152,6 +152,7 @@
     if (!self.selectRouther) {
         // 删除所有路由
         [RouterModel delegateAllRouter];
+        [_showRouterArr removeAllObjects];
     }
     [self changeLogintStatu];
 }
@@ -413,6 +414,7 @@
         _loginBtn.enabled = NO;
         _lblRoutherName.textColor = RGB(178, 178, 178);
         _loginBtn.backgroundColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1];
+         _lblRoutherName.text = @"You haven't joined any circle";
         _lblDesc.text = @"*Scan the invitation QR code to join your friend's Confidant circle.\n*Scan the QR code on your Confidant router to launch your circle.";
         [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_gray"] forState:UIControlStateNormal];
     }
