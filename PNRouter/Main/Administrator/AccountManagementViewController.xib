@@ -190,9 +190,6 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cfz-aH-Amz">
                                                     <rect key="frame" x="16" y="40" width="64" height="64"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DCV-MU-mqx">
-                                                            <rect key="frame" x="1" y="1" width="62" height="62"/>
-                                                        </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="C" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="psn-PM-Tze">
                                                             <rect key="frame" x="1" y="1" width="62" height="62"/>
                                                             <color key="backgroundColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -204,13 +201,9 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="psn-PM-Tze" firstAttribute="leading" secondItem="Cfz-aH-Amz" secondAttribute="leading" constant="1" id="Bsh-Jw-dpV"/>
-                                                        <constraint firstAttribute="bottom" secondItem="DCV-MU-mqx" secondAttribute="bottom" constant="1" id="CZS-7t-wRi"/>
-                                                        <constraint firstItem="DCV-MU-mqx" firstAttribute="top" secondItem="Cfz-aH-Amz" secondAttribute="top" constant="1" id="RiH-Mb-UXB"/>
                                                         <constraint firstAttribute="bottom" secondItem="psn-PM-Tze" secondAttribute="bottom" constant="1" id="Rne-Mo-YXE"/>
-                                                        <constraint firstItem="DCV-MU-mqx" firstAttribute="leading" secondItem="Cfz-aH-Amz" secondAttribute="leading" constant="1" id="ZvW-vE-Wrk"/>
                                                         <constraint firstAttribute="height" constant="64" id="aCT-3y-CKS"/>
                                                         <constraint firstItem="psn-PM-Tze" firstAttribute="top" secondItem="Cfz-aH-Amz" secondAttribute="top" constant="1" id="hWK-kO-iUx"/>
-                                                        <constraint firstAttribute="trailing" secondItem="DCV-MU-mqx" secondAttribute="trailing" constant="1" id="jdG-2z-yAP"/>
                                                         <constraint firstAttribute="width" constant="64" id="ozm-70-mvY"/>
                                                         <constraint firstAttribute="trailing" secondItem="psn-PM-Tze" secondAttribute="trailing" constant="1" id="vt6-kr-j8n"/>
                                                     </constraints>
