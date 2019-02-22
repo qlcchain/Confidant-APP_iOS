@@ -215,21 +215,26 @@
  @param msgArr 数据源
  */
 -(void)setMsgArr:(CDChatMessageArray)msgArr{
-    
+    @weakify_self
     [self configTableData:msgArr completeBlock:^(CGFloat totalHeight){
 //        CGFloat newTopInset = LoadingH + self->originInset;
 //        CGFloat left = self.contentInset.left;
 //        CGFloat right = self.contentInset.right;
 //        CGFloat bottom = self.contentInset.bottom;
 //        [self setContentInset:UIEdgeInsetsMake(newTopInset, left, right, bottom)];
-        [self relayoutTable:NO];
+//        [self relayoutTable:NO];
 //        if (totalHeight < self.frame.size.height - newTopInset - bottom) {
 //            [self setContentOffset:CGPointZero];
 //        }
 //        self.loadHeaderState = CDHeaderLoadStateNoraml;
+        
+        [weakSelf performSelector:@selector(scrollToBottomWithoutAnimate) withObject:nil afterDelay:.2];
     }];
 }
 
+- (void)scrollToBottomWithoutAnimate {
+    [self relayoutTable:NO];
+}
 
 
 /**

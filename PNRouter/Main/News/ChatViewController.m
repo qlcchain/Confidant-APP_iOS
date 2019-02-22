@@ -198,7 +198,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *MsgType = @"1"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
     NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(_msgStartId)]; // 从这个消息号往前（不包含该消息），为0表示默认从最新的消息回溯
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
-    NSDictionary *params = @{@"Action":@"PullMsg",@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
+    NSDictionary *params = @{@"Action":Action_PullMsg,@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
     [SocketMessageUtil sendVersion3WithParams:params];
 }
 
