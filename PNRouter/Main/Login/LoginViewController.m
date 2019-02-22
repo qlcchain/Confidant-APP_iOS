@@ -38,6 +38,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblRoutherName;
+@property (weak, nonatomic) IBOutlet UIView *circleBack;
+@property (weak, nonatomic) IBOutlet UIImageView *circleDefaultImgV;
+@property (weak, nonatomic) IBOutlet UILabel *circleDefaultLab;
+
 @property (nonatomic , strong) NSMutableArray *showRouterArr;
 @property (nonatomic ,strong) ConnectView *connectView;
 
@@ -345,6 +349,13 @@
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username];
     
+    _circleBack.layer.cornerRadius = _circleBack.width/2.0;
+    _circleBack.layer.masksToBounds = YES;
+    _circleDefaultImgV.layer.cornerRadius = _circleDefaultImgV.width/2.0;
+    _circleDefaultImgV.layer.masksToBounds = YES;
+    _circleDefaultLab.layer.cornerRadius = _circleDefaultLab.width/2.0;
+    _circleDefaultLab.layer.masksToBounds = YES;
+    
     [self getCurrentSelectRouter];
 
     _loginBtn.layer.cornerRadius = 5;
@@ -388,7 +399,11 @@
         _loginBtn.backgroundColor = [UIColor whiteColor];
         _lblDesc.text = @"*Select to re-join an existing circle or Scan the invitation QR code to join a new circle.";
         [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_down_gray"] forState:UIControlStateNormal];
+        _circleDefaultLab.hidden = NO;
+        _circleDefaultImgV.hidden = YES;
     } else {
+        _circleDefaultLab.hidden = YES;
+        _circleDefaultImgV.hidden = NO;
         _loginBtn.enabled = NO;
         _lblRoutherName.textColor = RGB(178, 178, 178);
         _loginBtn.backgroundColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1];

@@ -13,6 +13,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
                 <outlet property="arrowImgView" destination="JaM-o4-NYU" id="vM4-07-N2f"/>
+                <outlet property="circleBack" destination="Gdf-v7-T9l" id="hAg-dQ-toc"/>
+                <outlet property="circleDefaultImgV" destination="AQh-Yy-36U" id="1Td-8b-OTd"/>
+                <outlet property="circleDefaultLab" destination="uvU-kX-g8T" id="gEd-1R-bgT"/>
                 <outlet property="lblDesc" destination="ZnW-ts-Uvo" id="WfM-uC-hFA"/>
                 <outlet property="lblRoutherName" destination="3pP-RD-uid" id="VgG-92-FSX"/>
                 <outlet property="lblTitle" destination="3Aj-gt-1na" id="6Hw-Bb-xpW"/>
@@ -71,17 +74,28 @@ Welcome back！</string>
                                     <rect key="frame" x="0.0" y="8" width="40" height="40"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_circle_login" translatesAutoresizingMaskIntoConstraints="NO" id="AQh-Yy-36U">
-                                            <rect key="frame" x="0.5" y="0.5" width="39" height="39"/>
+                                            <rect key="frame" x="1" y="1" width="38" height="38"/>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="C" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uvU-kX-g8T">
+                                            <rect key="frame" x="1" y="1" width="38" height="38"/>
+                                            <color key="backgroundColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="uvU-kX-g8T" secondAttribute="bottom" constant="1" id="0og-bb-C6s"/>
                                         <constraint firstAttribute="height" constant="40" id="4PV-Ub-PQP"/>
+                                        <constraint firstAttribute="trailing" secondItem="uvU-kX-g8T" secondAttribute="trailing" constant="1" id="5zn-OS-is4"/>
                                         <constraint firstAttribute="width" constant="40" id="GoW-km-GTe"/>
-                                        <constraint firstAttribute="bottom" secondItem="AQh-Yy-36U" secondAttribute="bottom" constant="0.5" id="H1b-vH-8Iv"/>
-                                        <constraint firstItem="AQh-Yy-36U" firstAttribute="leading" secondItem="Gdf-v7-T9l" secondAttribute="leading" constant="0.5" id="WmM-GA-gMD"/>
-                                        <constraint firstItem="AQh-Yy-36U" firstAttribute="top" secondItem="Gdf-v7-T9l" secondAttribute="top" constant="0.5" id="a2O-fh-zVj"/>
-                                        <constraint firstAttribute="trailing" secondItem="AQh-Yy-36U" secondAttribute="trailing" constant="0.5" id="yZR-TA-ZR6"/>
+                                        <constraint firstAttribute="bottom" secondItem="AQh-Yy-36U" secondAttribute="bottom" constant="1" id="H1b-vH-8Iv"/>
+                                        <constraint firstItem="AQh-Yy-36U" firstAttribute="leading" secondItem="Gdf-v7-T9l" secondAttribute="leading" constant="1" id="WmM-GA-gMD"/>
+                                        <constraint firstItem="AQh-Yy-36U" firstAttribute="top" secondItem="Gdf-v7-T9l" secondAttribute="top" constant="1" id="a2O-fh-zVj"/>
+                                        <constraint firstItem="uvU-kX-g8T" firstAttribute="leading" secondItem="Gdf-v7-T9l" secondAttribute="leading" constant="1" id="nr4-QC-rcD"/>
+                                        <constraint firstItem="uvU-kX-g8T" firstAttribute="top" secondItem="Gdf-v7-T9l" secondAttribute="top" constant="1" id="qjm-8I-7fC"/>
+                                        <constraint firstAttribute="trailing" secondItem="AQh-Yy-36U" secondAttribute="trailing" constant="1" id="yZR-TA-ZR6"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0qv-Wg-Wyr">
