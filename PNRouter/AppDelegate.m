@@ -42,7 +42,6 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     NSString *clearDataResult = [KeyCUtil getKeyValueWithKey:CLEAR_DATA];
@@ -53,7 +52,6 @@
         [OperationRecordModel bg_drop:OperationRecord_Table];
         [KeyCUtil saveStringToKeyWithString:@"1" key:CLEAR_DATA];
     }
-    
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
