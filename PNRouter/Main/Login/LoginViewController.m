@@ -349,10 +349,17 @@
     
     _circleBack.layer.cornerRadius = _circleBack.width/2.0;
     _circleBack.layer.masksToBounds = YES;
+    _circleBack.layer.magnificationFilter = kCAFilterNearest;
+    _circleBack.layer.contentsScale = [[UIScreen mainScreen] scale];
     _circleDefaultImgV.layer.cornerRadius = _circleDefaultImgV.width/2.0;
     _circleDefaultImgV.layer.masksToBounds = YES;
+    _circleDefaultImgV.layer.magnificationFilter = kCAFilterNearest;
+    _circleDefaultImgV.layer.contentsScale = [[UIScreen mainScreen] scale];
     _circleDefaultLab.layer.cornerRadius = _circleDefaultLab.width/2.0;
     _circleDefaultLab.layer.masksToBounds = YES;
+    _circleDefaultLab.layer.magnificationFilter = kCAFilterNearest;
+    _circleDefaultLab.layer.contentsScale = [[UIScreen mainScreen] scale];
+    
     
     [self getCurrentSelectRouter];
 

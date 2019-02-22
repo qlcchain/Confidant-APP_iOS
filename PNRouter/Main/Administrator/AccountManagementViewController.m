@@ -71,8 +71,13 @@
 - (void)viewInit {
     _headerView.layer.cornerRadius = _headerView.width/2.0;
     _headerView.layer.masksToBounds = YES;
+    _headerView.layer.magnificationFilter = kCAFilterNearest;
+    _headerView.layer.contentsScale = [[UIScreen mainScreen] scale];
     _headerLab.layer.cornerRadius = _headerLab.width/2.0;
     _headerLab.layer.masksToBounds = YES;
+    _headerLab.layer.magnificationFilter = kCAFilterNearest;
+    _headerLab.layer.contentsScale = [[UIScreen mainScreen] scale];
+    
     _nextBtn.layer.cornerRadius = 4;
     _nextBtn.layer.masksToBounds = YES;
     

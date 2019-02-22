@@ -198,7 +198,6 @@
 		73060557217719A5005A0E13 /* VPNFileInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73060551217719A5005A0E13 /* VPNFileInputView.xib */; };
 		73060558217719A5005A0E13 /* VPNFileInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73060553217719A5005A0E13 /* VPNFileInputView.m */; };
 		7306055B21771CEA005A0E13 /* VPNFileUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7306055A21771CEA005A0E13 /* VPNFileUtil.m */; };
-		7306055D217729AC005A0E13 /* 测试文件1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7306055C217729AC005A0E13 /* 测试文件1.txt */; };
 		730605622179B3C0005A0E13 /* MediaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 730605612179B3C0005A0E13 /* MediaTableViewCell.m */; };
 		73121A68219AD4FC00510B48 /* RegiterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A66219AD4FC00510B48 /* RegiterViewController.m */; };
 		73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73121A67219AD4FC00510B48 /* RegiterViewController.xib */; };
@@ -867,7 +866,6 @@
 		73060553217719A5005A0E13 /* VPNFileInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPNFileInputView.m; sourceTree = "<group>"; };
 		7306055921771CEA005A0E13 /* VPNFileUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPNFileUtil.h; sourceTree = "<group>"; };
 		7306055A21771CEA005A0E13 /* VPNFileUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPNFileUtil.m; sourceTree = "<group>"; };
-		7306055C217729AC005A0E13 /* 测试文件1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "测试文件1.txt"; sourceTree = "<group>"; };
 		730605602179B3C0005A0E13 /* MediaTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaTableViewCell.h; sourceTree = "<group>"; };
 		730605612179B3C0005A0E13 /* MediaTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaTableViewCell.m; sourceTree = "<group>"; };
 		73121A65219AD4FC00510B48 /* RegiterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegiterViewController.h; sourceTree = "<group>"; };
@@ -1660,7 +1658,6 @@
 				7330F3CA21479AC000FF4EEC /* Cells */,
 				585AEE1B213F71E00098A070 /* ChatViewController.h */,
 				585AEE1C213F71E00098A070 /* ChatViewController.m */,
-				7306055C217729AC005A0E13 /* 测试文件1.txt */,
 				585AEE1D213F71E00098A070 /* ChatViewController.xib */,
 				584A448021460B0800608122 /* NewsViewController.h */,
 				584A448121460B0800608122 /* NewsViewController.m */,
@@ -3382,7 +3379,6 @@
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
 				5886FB9821F5C2390052EDD0 /* UploadAlertView.xib in Resources */,
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
-				7306055D217729AC005A0E13 /* 测试文件1.txt in Resources */,
 				7330F3BF214769DF00FF4EEC /* FriendDetailViewController.xib in Resources */,
 				587C52C7215C798E006787FB /* RouterCodeViewController.xib in Resources */,
 				583BF92021F6B5D00078A2A8 /* SharedSettingsViewController.xib in Resources */,
