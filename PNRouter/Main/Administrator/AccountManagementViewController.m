@@ -18,6 +18,7 @@
 #import "RegiterViewController.h"
 #import "UserModel.h"
 #import "LoginViewController.h"
+#import "RouterAliasViewController.h"
 
 @interface AccountManagementViewController ()
 {
@@ -123,6 +124,10 @@
     [self jumpToModifyRouterPW];
 }
 
+- (IBAction)routerAliasAction:(id)sender {
+    [self jumpToRouterAlias];
+}
+
 - (IBAction)nextAction:(id)sender {
     RouterModel *routherM = [RouterModel checkRoutherWithSn:_UserSn];
     if (routherM) {
@@ -154,6 +159,18 @@
     vc.RouterId = _RouterId;
     vc.IdentifyCode = _IdentifyCode;
     vc.UserSn = _UserSn;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToRouterAlias {
+    RouterAliasViewController *vc = [[RouterAliasViewController alloc] init];
+    vc.inputRouterAlias = _routerAlias;
+    vc.finishBack = YES;
+    @weakify_self
+    vc.finishB = ^(NSString * _Nonnull alias) {
+        weakSelf.routerAlias = alias;
+        weakSelf.aliasLab.text = weakSelf.routerAlias;
+    };
     [self.navigationController pushViewController:vc animated:YES];
 }
 

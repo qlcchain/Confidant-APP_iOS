@@ -40,9 +40,14 @@
     
     [self addObserve];
     [self renderView];
+    [self viewInit];
 }
 
 #pragma mark - Operation
+- (void)viewInit {
+    _aliasTF.text = _inputRouterAlias;
+}
+
 - (void)renderView {
     _headerView.layer.cornerRadius = _headerView.width/2.0;
     _headerView.layer.masksToBounds = YES;
@@ -86,7 +91,15 @@
 - (void)resetRouterNameSuccess:(NSNotification *)noti {
 //    NSDictionary *receiveDic = noti.object;
 //    NSDictionary *paramsDic = receiveDic[@"params"];
-    [self jumpToAccountManagement];
+    if (_finishBack) {
+        if (_finishB) {
+            NSString *alias = _aliasTF.text?:@"";
+            _finishB(alias);
+        }
+        [self backAction:nil];
+    } else {
+        [self jumpToAccountManagement];
+    }
 }
 
 @end

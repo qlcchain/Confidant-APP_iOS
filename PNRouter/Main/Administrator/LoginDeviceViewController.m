@@ -134,6 +134,7 @@
     vc.IdentifyCode = IdentifyCode;
     vc.UserSn = UserSn;
     vc.RouterPW = _devicePWTF.text?:@"";
+    vc.finishBack = NO;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
