@@ -10,5 +10,4 @@
 
 @interface ChooseContactViewController : PNBaseViewController
 
-
 @end

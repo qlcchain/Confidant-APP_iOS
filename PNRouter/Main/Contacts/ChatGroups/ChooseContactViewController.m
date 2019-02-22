@@ -12,10 +12,10 @@
 #import "ContactsHeadView.h"
 #import "ChooseDownView.h"
 #import "ChatListDataUtil.h"
+#import "ChooseContactShowModel.h"
+#import "NSString+Base64.h"
 
-
-@interface ChooseContactViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
-{
+@interface ChooseContactViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
     BOOL isMutable;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
@@ -67,11 +67,116 @@
     }
     [_tableV reloadData];
 }
+
+#pragma mark - Operation Data
+- (NSArray *)handleShowData:(NSMutableArray<FriendModel *> *)arr {
+    //    NSMutableArray *tempArr = [NSMutableArray arrayWithArray:arr];
+    NSMutableArray *contactShowArr = [NSMutableArray array];
+    @weakify_self
+    [arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *friendM = obj;
+        NSArray *resultArr = [weakSelf isExist:friendM.signPublicKey InArr:contactShowArr];
+        BOOL isExist = [resultArr[0] boolValue];
+        if (!isExist) { // 不存在则创建
+            ChooseContactShowModel *showM = [ChooseContactShowModel new];
+            showM.showSelect = NO;
+            showM.isSelect = NO;
+            showM.showCell = [weakSelf getOldShowCellStatus:friendM.signPublicKey];
+            showM.showArrow = NO;
+            showM.Index = friendM.Index;
+            showM.Name = friendM.username;
+            showM.Remarks = friendM.remarks;
+            showM.UserKey = friendM.signPublicKey;
+            showM.publicKey = friendM.publicKey;
+            showM.Status = @(friendM.onLineStatu);
+            showM.routerArr = [NSMutableArray array];
+            //            showM.remarks = friendM.remarks;
+            ChooseContactRouterModel *routerM = [ChooseContactRouterModel new];
+            routerM.Id = friendM.userId;
+            routerM.RouteId = friendM.RouteId;
+            routerM.RouteName = friendM.RouteName;
+            routerM.showSelect = NO;
+            routerM.isSelect = NO;
+            [showM.routerArr addObject:routerM];
+            
+            [contactShowArr addObject:showM];
+        } else { // 存在则合并
+            ChooseContactShowModel *existShowM = resultArr[1];
+            ChooseContactRouterModel *routerM = [ChooseContactRouterModel new];
+            routerM.Id = friendM.userId;
+            routerM.RouteId = friendM.RouteId;
+            routerM.RouteName = friendM.RouteName;
+            routerM.showSelect = NO;
+            routerM.isSelect = NO;
+            if (existShowM.routerArr.count >= 1) {
+                existShowM.showArrow = YES;
+            }
+            [existShowM.routerArr addObject:routerM];
+        }
+    }];
+    
+    return [self sortWith:contactShowArr];
+}
+
+- (BOOL)getOldShowCellStatus:(NSString *)userKey {
+    __block BOOL showCell = NO;
+    [self.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ChooseContactShowModel *model = obj;
+        if ([model.UserKey isEqualToString:userKey]) {
+            showCell = model.showCell;
+            *stop = YES;
+        }
+    }];
+    return showCell;
+}
+
+- (NSArray *)isExist:(NSString *)userKey InArr:(NSArray<ChooseContactShowModel *> *)arr {
+    __block BOOL isExist = NO;
+    __block ChooseContactShowModel *resultM = nil;
+    [arr enumerateObjectsUsingBlock:^(ChooseContactShowModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ChooseContactShowModel *model = obj;
+        if ([model.UserKey isEqualToString:userKey]) {
+            isExist = YES;
+            resultM = model;
+            *stop = YES;
+        }
+    }];
+    
+    if (!isExist) {
+        return @[@(isExist)];
+    } else {
+        return @[@(isExist),resultM];
+    }
+}
+
+//根据拼音的字母排序  ps：排序适用于所有类型
+- (NSMutableArray *) sortWith:(NSMutableArray<ChooseContactShowModel *> *)array{
+    [array sortUsingComparator:^NSComparisonResult(ChooseContactShowModel *node1, ChooseContactShowModel *node2) {
+        NSString *string1 = [NSString getNotNullValue:[self huoqushouzimuWithString:[node1.Name base64DecodedString]?:node1.Name]];
+        NSString *string2 = [NSString getNotNullValue:[self huoqushouzimuWithString:[node2.Name base64DecodedString]?:node2.Name]];
+        return [string1 compare:string2];
+    }];
+    return array;
+}
+
+//获取其拼音
+- (NSString *)huoqushouzimuWithString:(NSString *)string{
+    if (!string || [string isEmptyString]) {
+        return @"";
+    }
+    NSMutableString *ms = [[NSMutableString alloc]initWithString:string];
+    CFStringTransform((__bridge CFMutableStringRef)ms, 0,kCFStringTransformStripDiacritics, NO);
+    NSString *bigStr = [ms uppercaseString];
+    NSString *cha = [bigStr substringToIndex:1];
+    return cha;
+}
+
 #pragma mark -layz
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [[ChatListDataUtil getShareObject].friendArray mutableCopy];
+        NSArray *arr = [self handleShowData:[[ChatListDataUtil getShareObject].friendArray mutableCopy]];
+        _dataArray = [NSMutableArray arrayWithArray:arr];
     }
     return _dataArray;
 }
@@ -234,15 +339,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
