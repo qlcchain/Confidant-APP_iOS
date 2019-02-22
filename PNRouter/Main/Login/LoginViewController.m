@@ -177,8 +177,6 @@
         [self loadHudView];
         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     }
-  
-    
 }
 #pragma mark -连接socket_tox
 - (void) connectSocketWithIsShowHud:(BOOL) isShow

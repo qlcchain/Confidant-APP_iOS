@@ -271,6 +271,7 @@
                     AppD.isScaner = YES;
                     [RoutherConfig getRoutherConfig].currentRouterMAC = result;
                     [weakSelf scanSuccessfulWithIsMacd:YES];
+                
             } else if ([[NSString getNotNullValue:type] isEqualToString:@"type_3"]) {
                     // 帐户码
                 [LibsodiumUtil changeUserPrivater:codeValues[1]];
