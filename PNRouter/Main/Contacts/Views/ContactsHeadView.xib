@@ -33,7 +33,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="wfg-B5-hAe" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="NCc-Kr-NF8"/>
                 <constraint firstItem="wfg-B5-hAe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="gZE-g7-quP"/>

@@ -19,44 +19,36 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fDV-CI-tY0">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_guide_1" translatesAutoresizingMaskIntoConstraints="NO" id="YKj-Rm-xat">
+                            <rect key="frame" x="0.0" y="80" width="320" height="170.5"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="YKj-Rm-xat" secondAttribute="height" multiplier="15:8" id="p3Y-4I-cln"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your own private network Exchange private information" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ri-Z6-J6C">
+                            <rect key="frame" x="32" y="287.5" width="256" height="38.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="kpc-4M-TIN">
                             <rect key="frame" x="0.0" y="491" width="320" height="37"/>
                             <color key="pageIndicatorTintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </pageControl>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_info_guide" translatesAutoresizingMaskIntoConstraints="NO" id="RZO-i6-xgP">
-                            <rect key="frame" x="126" y="150" width="68" height="76"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="76" id="e3G-dj-dMH"/>
-                                <constraint firstAttribute="width" constant="68" id="lcp-Y3-Svq"/>
-                            </constraints>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confidant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UuM-5s-UYh">
-                            <rect key="frame" x="88" y="254" width="144.5" height="41"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="34"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ri-Z6-J6C">
-                            <rect key="frame" x="56" y="310" width="208" height="100.5"/>
-                            <string key="text">Dedicated encrypted messaging system created for enterprises and individual customers to facilitate secure communication and carefree file sharing. </string>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.70196078431372544" green="0.70196078431372544" blue="0.70196078431372544" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="UuM-5s-UYh" firstAttribute="top" secondItem="RZO-i6-xgP" secondAttribute="bottom" constant="28" id="9Cf-TZ-utk"/>
-                        <constraint firstItem="RZO-i6-xgP" firstAttribute="top" secondItem="fDV-CI-tY0" secondAttribute="top" constant="150" id="GpV-MF-F8I"/>
-                        <constraint firstItem="RZO-i6-xgP" firstAttribute="centerX" secondItem="fDV-CI-tY0" secondAttribute="centerX" id="Op5-Ch-C46"/>
+                        <constraint firstAttribute="trailing" secondItem="YKj-Rm-xat" secondAttribute="trailing" id="3KL-BP-73Q"/>
+                        <constraint firstItem="YKj-Rm-xat" firstAttribute="centerX" secondItem="fDV-CI-tY0" secondAttribute="centerX" id="KAc-yd-wCc"/>
+                        <constraint firstItem="YKj-Rm-xat" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" id="Kxu-Qa-Dw1"/>
                         <constraint firstAttribute="bottom" secondItem="kpc-4M-TIN" secondAttribute="bottom" constant="40" id="QrL-FB-SUc"/>
                         <constraint firstAttribute="trailing" secondItem="kpc-4M-TIN" secondAttribute="trailing" id="U1o-cw-bao"/>
-                        <constraint firstAttribute="trailing" secondItem="5Ri-Z6-J6C" secondAttribute="trailing" constant="56" id="kuU-Xa-ALs"/>
-                        <constraint firstItem="UuM-5s-UYh" firstAttribute="centerX" secondItem="fDV-CI-tY0" secondAttribute="centerX" id="liH-WE-uTp"/>
+                        <constraint firstItem="YKj-Rm-xat" firstAttribute="top" secondItem="fDV-CI-tY0" secondAttribute="top" constant="80" id="W2a-R9-WXI"/>
+                        <constraint firstAttribute="trailing" secondItem="5Ri-Z6-J6C" secondAttribute="trailing" constant="32" id="kuU-Xa-ALs"/>
                         <constraint firstItem="kpc-4M-TIN" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" id="rWj-fe-iaF"/>
-                        <constraint firstItem="5Ri-Z6-J6C" firstAttribute="top" secondItem="UuM-5s-UYh" secondAttribute="bottom" constant="15" id="rdC-9j-5Wg"/>
-                        <constraint firstItem="5Ri-Z6-J6C" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" constant="56" id="zGG-to-y91"/>
+                        <constraint firstItem="5Ri-Z6-J6C" firstAttribute="top" secondItem="YKj-Rm-xat" secondAttribute="bottom" constant="37" id="uJG-bG-tyd"/>
+                        <constraint firstItem="5Ri-Z6-J6C" firstAttribute="leading" secondItem="fDV-CI-tY0" secondAttribute="leading" constant="32" id="zGG-to-y91"/>
                     </constraints>
                 </view>
             </subviews>
@@ -72,6 +64,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_info_guide" width="68" height="76"/>
+        <image name="icon_guide_1" width="375" height="200"/>
     </resources>
 </document>

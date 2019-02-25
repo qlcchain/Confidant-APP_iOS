@@ -7,7 +7,7 @@
 //
 
 #import "FileViewController.h"
-#import "FileCell.h"
+//#import "FileCell.h"
 #import "TaskListViewController.h"
 #import "MyFilesViewController.h"
 #import "SendRequestUtil.h"
@@ -22,6 +22,12 @@
 #import "FileListModel.h"
 #import "DetailInformationViewController.h"
 #import "UploadFileHelper.h"
+#import "MyFilesCell.h"
+#import <MJRefresh/MJRefresh.h>
+#import <MJRefresh/MJRefreshStateHeader.h>
+#import <MJRefresh/MJRefreshHeader.h>
+#import "PNRouter-Swift.h"
+#import "FilePreviewDownloadViewController.h"
 
 typedef enum : NSUInteger {
     FileTableTypeNormal,
@@ -37,20 +43,23 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 @property (nonatomic, strong) NSMutableArray *searchArr;
 @property (nonatomic, strong) NSArray *showArr;
-@property (nonatomic) FileTableType fileTableType;
+//@property (nonatomic) FileTableType fileTableType;
+@property (nonatomic) MyFilesTableType myFilesTableType;
+@property (nonatomic ,strong) FileListModel *selectModel;
 
 @end
 
 @implementation FileViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [super viewWillAppear:animated];
 }
+
 #pragma mark - Observe
 - (void)addObserve {
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFileCompleteNoti:) name:Delete_File_Noti object:nil];
 }
 
 - (void)dealloc {
@@ -69,67 +78,40 @@ typedef enum : NSUInteger {
     _searchTF.delegate = self;
     [self addTFTarget];
     
-    _fileTableType = FileTableTypeNormal;
+//    _fileTableType = FileTableTypeNormal;
+    _myFilesTableType = MyFilesTableTypeNormal;
     _sourceArr = [NSMutableArray array];
     _searchArr = [NSMutableArray array];
-    [_mainTable registerNib:[UINib nibWithNibName:FileCellReuse bundle:nil] forCellReuseIdentifier:FileCellReuse];
     
-//    [self sendPullFileList];
+    _mainTable.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(sendPullFileList)];
+    // Hide the time
+    ((MJRefreshStateHeader *)_mainTable.mj_header).lastUpdatedTimeLabel.hidden = YES;
+    // Hide the status
+    ((MJRefreshStateHeader *)_mainTable.mj_header).stateLabel.hidden = YES;
+    [_mainTable registerNib:[UINib nibWithNibName:MyFilesCellReuse bundle:nil] forCellReuseIdentifier:MyFilesCellReuse];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self refreshTable];
+    
+    // 刷新
+    [self sendPullFileList];
 }
-
 
 #pragma mark - Operation
 
 - (void)refreshTable {
-    if (_fileTableType == FileTableTypeNormal) {
-        [_sourceArr removeAllObjects];
-        [_sourceArr addObjectsFromArray:[OperationRecordModel getAllOperationRecordOrderByDesc]];
-        
+    if (_myFilesTableType == MyFilesTableTypeNormal) {
         _showArr = _sourceArr;
-    } else if (_fileTableType == FileTableTypeSearch) {
+    } else if (_myFilesTableType == MyFilesTableTypeSearch) {
         _showArr = _searchArr;
     }
     
     [_mainTable reloadData];
 }
 
-
-
-//- (void)showFileMoreAlertView:(OperationRecordModel *)model {
-////    self.selectModel = model;
-//    FileMoreAlertView *view = [FileMoreAlertView getInstance];
-//    @weakify_self
-//    [view setSendB:^{
-//
-//    }];
-//    [view setDownloadB:^{
-//
-//    }];
-//    [view setOtherApplicationOpenB:^{
-//        [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:@""]];
-//    }];
-//    [view setDetailInformationB:^{
-//        [weakSelf jumpToDetailInformation:model];
-//    }];
-//    [view setRenameB:^{
-//
-//    }];
-//    [view setDeleteB:^{
-////        [weakSelf deleteFileWithModel:model];
-//    }];
-//
-//    NSString *fileName = @"";
-//    [view showWithFileName:fileName fileType:@(1)];
-//}
-
 #pragma mark -删除文件
-- (void) deleteFileWithModel:(FileListModel *) model
-{
+- (void) deleteFileWithModel:(FileListModel *) model {
     [SendRequestUtil sendDelFileWithUserId:[UserConfig getShareObject].userId FileName:model.FileName showHud:YES];
 }
 
@@ -139,15 +121,52 @@ typedef enum : NSUInteger {
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }
 
+- (void)showFileMoreAlertView:(FileListModel *)model {
+    self.selectModel = model;
+    FileMoreAlertView *view = [FileMoreAlertView getInstance];
+    @weakify_self
+    [view setSendB:^{
+        if (model.localPath == nil) {
+            [AppD.window showHint:@"Please download first"];
+        } else {
+            
+        }
+    }];
+    [view setDownloadB:^{
+        
+    }];
+    [view setOtherApplicationOpenB:^{
+        if (model.localPath == nil) {
+            [AppD.window showHint:@"Please download first"];
+        } else {
+            [weakSelf otherApplicationOpen:[NSURL fileURLWithPath:model.localPath]];
+        }
+    }];
+    [view setDetailInformationB:^{
+        [weakSelf jumpToDetailInformation:model];
+    }];
+    [view setRenameB:^{
+        
+    }];
+    [view setDeleteB:^{
+        [weakSelf deleteFileWithModel:model];
+    }];
+    
+    NSString *fileNameBase58 = model.FileName.lastPathComponent;
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    [view showWithFileName:fileName fileType:model.FileType];
+}
+
 #pragma mark - Request
-//- (void)sendPullFileList {
-//    NSString *UserId = [UserConfig getShareObject].userId;
-//    NSNumber *MsgStartId = @(0);
-//    NSNumber *MsgNum = @(15);
-//    NSNumber *Category = @(0);
-//    NSNumber *FileType = @(0);
-//    [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:YES];
-//}
+- (void)sendPullFileList {
+    NSString *UserId = [UserConfig getShareObject].userId;
+    NSNumber *MsgStartId = @(0);
+    NSNumber *MsgNum = @(15);
+    NSNumber *Category = @(0); // ALL
+    NSNumber *FileType = @(0);
+    
+    [SendRequestUtil sendPullFileListWithUserId:UserId MsgStartId:MsgStartId MsgNum:MsgNum Category:Category FileType:FileType showHud:NO];
+}
 
 #pragma mark - Action
 
@@ -182,114 +201,36 @@ typedef enum : NSUInteger {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return FileCellHeight;
+    return MyFilesCellHeight;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    FileCell *cell = [tableView dequeueReusableCellWithIdentifier:FileCellReuse];
+    MyFilesCell *cell = [tableView dequeueReusableCellWithIdentifier:MyFilesCellReuse];
     
-    OperationRecordModel *model = _showArr[indexPath.row];
+    FileListModel *model = _showArr[indexPath.row];
+
     [cell configCellWithModel:model];
     @weakify_self
-    [cell setFileMoreB:^{
-//        [weakSelf showFileMoreAlertView:<#(FileListModel *)#>];
+    [cell setMoreB:^{
+        [weakSelf showFileMoreAlertView:model];
     }];
-    
-//    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
-//    cell.delegate = (id)self;
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (!tableView.isEditing) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    FileListModel *model = _showArr[indexPath.row];
+    [self jumpToFilePreviewDownload:model];
 }
-
-//#pragma mark - SWTableViewDelegate
-//- (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state {
-//    switch (state) {
-//        case 0:
-//            NSLog(@"utility buttons closed");
-//            break;
-//        case 1:
-//            NSLog(@"left utility buttons open");
-//            break;
-//        case 2:
-//            NSLog(@"right utility buttons open");
-//            break;
-//        default:
-//            break;
-//    }
-//}
-//
-//
-//- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
-//{
-//    [cell hideUtilityButtonsAnimated:YES];
-//    switch (index) {
-//        case 0:
-//        {
-//            NSLog(@"More button was pressed  1");
-//
-//            break;
-//        }
-//        case 1:
-//        {
-//            NSLog(@"More button was pressed  2");
-//            break;
-//        }
-//        default:
-//            break;
-//    }
-//}
-//
-//- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
-//{
-//    // allow just one cell's utility button to be open at once
-//    return YES;
-//}
-//
-//- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state
-//{
-//    switch (state) {
-//        case 1:
-//            // set to NO to disable all left utility buttons appearing
-//            return YES;
-//            break;
-//        case 2:
-//            // set to NO to disable all right utility buttons appearing
-//            return YES;
-//            break;
-//        default:
-//            break;
-//    }
-//
-//    return YES;
-//}
-//
-//- (NSArray *)rightButtons {
-//    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-//    [rightUtilityButtons sw_addUtilityButtonWithColor:
-//     MAIN_PURPLE_COLOR
-//                                                 icon:[UIImage imageNamed:@"icon_forward"]];
-//    [rightUtilityButtons sw_addUtilityButtonWithColor:
-//     MAIN_PURPLE_COLOR
-//                                                 icon:[UIImage imageNamed:@"icon_right"]];
-//    [rightUtilityButtons sw_addUtilityButtonWithColor:
-//     MAIN_PURPLE_COLOR
-//                                                 icon:[UIImage imageNamed:@"icon_delete"]];
-//
-//    return rightUtilityButtons;
-//}
 
 #pragma mark -
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     
     [picker dismissViewControllerAnimated:YES completion:nil];
-    UIImage *img = info[UIImagePickerControllerOriginalImage];
-    NSData *imgData = UIImageJPEGRepresentation(img,1.0);
+//    UIImage *img = info[UIImagePickerControllerOriginalImage];
+//    NSData *imgData = UIImageJPEGRepresentation(img,1.0);
     
 }
 
@@ -304,21 +245,27 @@ typedef enum : NSUInteger {
 
 - (void)textFieldTextChange:(UITextField *)tf {
     if (tf == _searchTF) {
-        if ([tf.text.trim isEmptyString]) {
-            _fileTableType = FileTableTypeNormal;
-        } else {
-            _fileTableType = FileTableTypeSearch;
-            [_searchArr removeAllObjects];
-            @weakify_self
-            [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                OperationRecordModel *model = obj;
-                if ([model.fileName containsString:tf.text.trim]) {
-                    [weakSelf.searchArr addObject:model];
-                }
-            }];
-        }
-        [self refreshTable];
+        [self refreshTableByTF:tf];
     }
+}
+
+- (void)refreshTableByTF:(UITextField *)tf {
+    if ([tf.text.trim isEmptyString]) {
+        _myFilesTableType = MyFilesTableTypeNormal;
+    } else {
+        _myFilesTableType = MyFilesTableTypeSearch;
+        [_searchArr removeAllObjects];
+        @weakify_self
+        [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FileListModel *model = obj;
+            NSString *fileNameBase58 = model.FileName.lastPathComponent;
+            NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58];
+            if ([fileName containsString:tf.text.trim]) {
+                [weakSelf.searchArr addObject:model];
+            }
+        }];
+    }
+    [self refreshTable];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -357,17 +304,62 @@ typedef enum : NSUInteger {
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
+- (void)jumpToFilePreviewDownload:(FileListModel *)model {
+    FilePreviewDownloadViewController *vc = [[FilePreviewDownloadViewController alloc] init];
+    vc.fileListM = model;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 #pragma mark - Noti
-//- (void)pullFileListCompleteNoti:(NSNotification *)noti {
-//    NSArray *arr = noti.object;
-//    if (arr.count <= 0) {
-//        
-//    } else {
-//        
-//    }
-//}
+- (void)pullFileListCompleteNoti:(NSNotification *)noti {
+    [_mainTable.mj_header endRefreshing];
+    NSDictionary *receiveDic = noti.object;
+    NSString *Payload = receiveDic[@"params"][@"Payload"];
+    NSArray *payloadArr = [FileListModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+    if (payloadArr == nil || payloadArr.count <= 0) {
+//        [self showEmptyView];
+        [_sourceArr removeAllObjects];
+        [self refreshTable];
+    } else {
+//        [self hideEmptyView];
+        
+        NSMutableArray *tempArr = [NSMutableArray array];
+        [payloadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FileListModel *model = obj;
+            model.showSelect = NO;
+            model.isSelect = NO;
+            [tempArr addObject:model];
+        }];
+        
+        [_sourceArr removeAllObjects];
+        [_sourceArr addObjectsFromArray:tempArr];
+        
+        [self refreshTable];
+    }
+}
+
+- (void)deleteFileCompleteNoti:(NSNotification *) noti {
+    @weakify_self
+    [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FileListModel *model = obj;
+        if ([model.MsgId integerValue] == [weakSelf.selectModel.MsgId integerValue]) {
+            [weakSelf.sourceArr removeObject:model];
+            if (weakSelf.myFilesTableType == MyFilesTableTypeNormal) {
+                [weakSelf.mainTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            } else if (weakSelf.myFilesTableType == MyFilesTableTypeSearch) {
+                [weakSelf refreshTableByTF:weakSelf.searchTF];
+            }
+            
+            // 删除成功-保存操作记录
+            NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
+            NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
+            NSString *fileName = [Base58Util Base58DecodeWithCodeName:model.FileName.lastPathComponent];
+            [OperationRecordModel saveOrUpdateWithFileType:model.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:model.FileName?:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
+            
+            *stop = YES;
+        }
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

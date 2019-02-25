@@ -23,12 +23,6 @@
 #import <MJRefresh/MJRefreshStateHeader.h>
 #import <MJRefresh/MJRefreshHeader.h>
 
-
-typedef enum : NSUInteger {
-    MyFilesTableTypeNormal,
-    MyFilesTableTypeSearch,
-} MyFilesTableType;
-
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *sourceArr;
@@ -65,6 +59,12 @@ typedef enum : NSUInteger {
     [self addObserve];
     [self dataInit];
    // [self viewInit];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     //进入刷新状态
     [_mainTable.mj_header beginRefreshing];
 }
