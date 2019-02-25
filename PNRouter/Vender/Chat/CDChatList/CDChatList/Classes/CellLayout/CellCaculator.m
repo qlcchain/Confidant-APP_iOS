@@ -75,6 +75,8 @@
         NSInteger lastTime = previousData.TimeStatmp;
         NSInteger currentTime = data.TimeStatmp;
         data.willDisplayTime = (labs(currentTime - lastTime) > 180); // 3分钟
+    } else {
+        data.willDisplayTime = YES;
     }
     CGSize res = [self caculateCellHeightAndBubleWidth:data];
     

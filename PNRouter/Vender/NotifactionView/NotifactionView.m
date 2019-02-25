@@ -27,7 +27,7 @@
 - (void) show
 {
     if (!IS_iPhoneX) {
-        _contraintTop.constant = STATUS_BAR_HEIGHT;
+       // _contraintTop.constant = STATUS_BAR_HEIGHT;
     }
     [self performSelector:@selector(hide) withObject:self afterDelay:3.0f];
     self.frame = CGRectMake(0,-(80+STATUS_BAR_HEIGHT), SCREEN_WIDTH,80+STATUS_BAR_HEIGHT);

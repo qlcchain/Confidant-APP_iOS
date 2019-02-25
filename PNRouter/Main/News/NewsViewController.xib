@@ -193,7 +193,7 @@
                 <constraint firstItem="pvw-3y-TpM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="w9A-cJ-Ftu"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="130.40000000000001" y="139.880059970015"/>
+            <point key="canvasLocation" x="159" y="83"/>
         </view>
     </objects>
     <resources>

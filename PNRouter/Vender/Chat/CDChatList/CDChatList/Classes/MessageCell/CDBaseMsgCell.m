@@ -475,7 +475,7 @@
     
     // 是否  昨天时间；
     if (compareDay == 1 || (compareDay == 0 && nowDay != thisDay) ){
-        timeString = @"昨天";
+        timeString = @"yesterday";
         
         NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:@"HH:mm"];
@@ -486,24 +486,28 @@
     }
     
     // 是否  前天时间；
-    if (compareDay == 2 || (compareDay == 0 && nowDay != thisDay) ){
-        timeString = @"前天";
-        
-        NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"HH:mm"];
-        NSString* time = [dateFormat stringFromDate:thisDate];
-        timeString = [NSString stringWithFormat:@"%@ %@" , timeString , time ];
-        
-        return timeString;
-    }
+//    if (compareDay == 2 || (compareDay == 0 && nowDay != thisDay) ){
+//        timeString = @"前天";
+//
+//        NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
+//        [dateFormat setDateFormat:@"HH:mm"];
+//        NSString* time = [dateFormat stringFromDate:thisDate];
+//        timeString = [NSString stringWithFormat:@"%@ %@" , timeString , time ];
+//
+//        return timeString;
+//    }
+    
+    NSDateFormatter *formate = [[NSDateFormatter alloc] init];
+    formate.dateFormat = @"MM-dd HH:mm";
+    return [formate stringFromDate:thisDate];
     
     // 非近 一周时间 ；
-    NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"MM-dd"];
-    timeString  = [dateFormat stringFromDate:thisDate];
-    
-    [dateFormat setDateFormat:@"yy/MM/dd"];
-    timeString  = [dateFormat stringFromDate:thisDate];
+//    NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
+//    [dateFormat setDateFormat:@"MM-dd"];
+//    timeString  = [dateFormat stringFromDate:thisDate];
+//
+//    [dateFormat setDateFormat:@"yy/MM/dd"];
+//    timeString  = [dateFormat stringFromDate:thisDate];
     
     return timeString;
 }

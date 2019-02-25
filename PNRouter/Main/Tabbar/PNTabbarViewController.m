@@ -180,7 +180,7 @@
 }
 - (void) socketDisconnectNoti:(NSNotification *) noti
 {
-
+     [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"0"];
     if ([SystemUtil isSocketConnect]) {
         
         AFNetworkReachabilityManager  *man=[AFNetworkReachabilityManager sharedManager];

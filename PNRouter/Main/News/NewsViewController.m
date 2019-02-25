@@ -37,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIView *connectBackView;
 @property (weak, nonatomic) IBOutlet UIButton *switchRoutherBtn;
 @property (weak, nonatomic) IBOutlet UIButton *reloadBtn;
+@property (strong, nonatomic) UILabel *lblTop;
 @end
 
 @implementation NewsViewController
@@ -49,6 +50,26 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark -layz
+- (UILabel *)lblTop
+{
+    CGFloat y = 0;
+    if (IS_iPhoneX) {
+        y = 24;
+    }
+    if (!_lblTop) {
+        _lblTop = [[UILabel alloc] initWithFrame:CGRectMake(0,y, SCREEN_WIDTH, 20)];
+        _lblTop.textColor = [UIColor whiteColor];
+        _lblTop.backgroundColor = RGB(48, 145, 242);
+        _lblTop.font = [UIFont systemFontOfSize:11];
+        _lblTop.textAlignment = NSTextAlignmentCenter;
+        _lblTop.text = @"Connecting you to the circle";
+        [AppD.window addSubview:_lblTop];
+    }
+    return _lblTop;
+}
+
 - (IBAction)switchRouther:(id)sender {
 }
 - (IBAction)reload:(id)sender {
@@ -66,7 +87,6 @@
 }
 
 - (IBAction)rightAction:(id)sender {
-    
     @weakify_self
     QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
         if (codeValue != nil && codeValue.length > 0) {
@@ -158,6 +178,8 @@
     [self chatMessageChangeNoti:nil];
     [self showSocketStatu];
     [self addNoti];
+
+    
 }
 
 #pragma mark - 直接添加监听方法
@@ -419,9 +441,13 @@
 {
     NSString *result = noti.object;
     if ([result integerValue] == 0) {
-        _connectBackView.hidden = NO;
+        //_connectBackView.hidden = NO;
+        self.lblTop.hidden = NO;
+         AppD.window.windowLevel = UIWindowLevelAlert;
     } else {
-        _connectBackView.hidden = YES;
+        self.lblTop.hidden = YES;
+         AppD.window.windowLevel = UIWindowLevelNormal;
+       // _connectBackView.hidden = YES;
     }
     
 }
