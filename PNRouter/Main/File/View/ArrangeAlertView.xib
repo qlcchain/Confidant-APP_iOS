@@ -196,10 +196,20 @@
                         <constraint firstAttribute="trailing" secondItem="zK4-GY-VD3" secondAttribute="trailing" id="uoF-sA-vE8"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jbR-jd-M7q">
+                    <rect key="frame" x="0.0" y="20" width="375" height="427"/>
+                    <connections>
+                        <action selector="blackAction:" destination="ayc-sM-H1A" eventType="touchUpInside" id="hOt-7C-LEK"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.023529411764705882" green="0.023529411764705882" blue="0.023529411764705882" alpha="0.5" colorSpace="deviceRGB"/>
             <constraints>
+                <constraint firstItem="xVh-Iv-lIx" firstAttribute="trailing" secondItem="jbR-jd-M7q" secondAttribute="trailing" id="Ikp-sd-9pG"/>
                 <constraint firstItem="xVh-Iv-lIx" firstAttribute="bottom" secondItem="ZhP-OK-hiL" secondAttribute="bottom" id="Ulc-QZ-Adn"/>
+                <constraint firstItem="jbR-jd-M7q" firstAttribute="top" secondItem="xVh-Iv-lIx" secondAttribute="top" id="aXi-GM-Kf1"/>
+                <constraint firstItem="jbR-jd-M7q" firstAttribute="leading" secondItem="xVh-Iv-lIx" secondAttribute="leading" id="ay8-nI-r59"/>
+                <constraint firstItem="ZhP-OK-hiL" firstAttribute="top" secondItem="jbR-jd-M7q" secondAttribute="bottom" id="dNR-Sd-74z"/>
                 <constraint firstItem="ZhP-OK-hiL" firstAttribute="leading" secondItem="xVh-Iv-lIx" secondAttribute="leading" id="sPm-rO-nB0"/>
                 <constraint firstItem="xVh-Iv-lIx" firstAttribute="trailing" secondItem="ZhP-OK-hiL" secondAttribute="trailing" id="uee-YA-Xsc"/>
             </constraints>

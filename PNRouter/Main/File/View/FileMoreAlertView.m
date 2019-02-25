@@ -105,5 +105,9 @@
     [self hide];
 }
 
+- (IBAction)blackAction:(id)sender {
+    [self hide];
+}
+
 
 @end

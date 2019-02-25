@@ -11,6 +11,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef enum : NSUInteger {
+    MyFilesTableTypeNormal,
+    MyFilesTableTypeSearch,
+} MyFilesTableType;
+
+typedef enum : NSUInteger {
     FilesTypeAll,
     FilesTypeSent,
     FilesTypeReceived,

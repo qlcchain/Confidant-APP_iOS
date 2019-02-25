@@ -154,7 +154,7 @@
     [_nameTF becomeFirstResponder];
 }
 
-#pragma mark -通知回调
+#pragma mark - 通知回调
 - (void) updateNickSuccess:(NSNotification *) noti
 {
     if (self.editType == EditFriendAlis) {
