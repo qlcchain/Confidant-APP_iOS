@@ -98,7 +98,6 @@ typedef enum : NSUInteger {
     [self sendPullFileList];
 }
 
-
 #pragma mark - Operation
 
 - (void)refreshTable {
@@ -112,8 +111,7 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark -删除文件
-- (void) deleteFileWithModel:(FileListModel *) model
-{
+- (void) deleteFileWithModel:(FileListModel *) model {
     [SendRequestUtil sendDelFileWithUserId:[UserConfig getShareObject].userId FileName:model.FileName showHud:YES];
 }
 
