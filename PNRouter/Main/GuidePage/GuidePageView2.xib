@@ -19,59 +19,34 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xhH-RY-2gU">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_chat_guide" translatesAutoresizingMaskIntoConstraints="NO" id="1GY-gV-jW3">
-                            <rect key="frame" x="0.0" y="54" width="375" height="200"/>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A confidant router based private messenger" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bc7-G2-LIC">
-                            <rect key="frame" x="56" y="254" width="263" height="48"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password is saved locally and securely against hacking or misuse." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVJ-3j-RQB">
-                            <rect key="frame" x="56" y="310" width="263" height="33.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.70196078431372544" green="0.70196078431372544" blue="0.70196078431372544" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security of the local data, all data is saved in the router ROM and never exposed to any intermediary server. " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6AE-Bq-XP6">
-                            <rect key="frame" x="56" y="353.5" width="263" height="50.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.70196078429999997" green="0.70196078429999997" blue="0.70196078429999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unique system architecture that serves as a decentralised private network communication tunnel." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R0w-dM-NRi">
-                            <rect key="frame" x="56" y="414" width="263" height="50.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.70196078429999997" green="0.70196078429999997" blue="0.70196078429999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" currentPage="1" translatesAutoresizingMaskIntoConstraints="NO" id="33W-Us-gSh">
                             <rect key="frame" x="0.0" y="590" width="375" height="37"/>
                             <color key="pageIndicatorTintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </pageControl>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_guide_2" translatesAutoresizingMaskIntoConstraints="NO" id="6h7-ca-6K3">
+                            <rect key="frame" x="0.0" y="80" width="375" height="200"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="6h7-ca-6K3" secondAttribute="height" multiplier="15:8" id="h8z-DX-lgA"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The resulting data is owned by the user" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vcd-jn-4wV">
+                            <rect key="frame" x="32" y="317" width="311" height="19.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="R0w-dM-NRi" secondAttribute="trailing" constant="56" id="52Y-Vl-N9C"/>
                         <constraint firstAttribute="trailing" secondItem="33W-Us-gSh" secondAttribute="trailing" id="Ccc-Rr-5hZ"/>
-                        <constraint firstAttribute="trailing" secondItem="bc7-G2-LIC" secondAttribute="trailing" constant="56" id="Ezo-aH-DQE"/>
-                        <constraint firstItem="1GY-gV-jW3" firstAttribute="top" secondItem="xhH-RY-2gU" secondAttribute="top" constant="54" id="FXm-4w-Zlp"/>
-                        <constraint firstItem="bc7-G2-LIC" firstAttribute="top" secondItem="1GY-gV-jW3" secondAttribute="bottom" id="IHv-K9-8Y1"/>
-                        <constraint firstItem="6AE-Bq-XP6" firstAttribute="leading" secondItem="xhH-RY-2gU" secondAttribute="leading" constant="56" id="IS7-X6-Pwj"/>
-                        <constraint firstItem="R0w-dM-NRi" firstAttribute="top" secondItem="6AE-Bq-XP6" secondAttribute="bottom" constant="10" id="KeQ-lH-dVZ"/>
-                        <constraint firstAttribute="trailing" secondItem="6AE-Bq-XP6" secondAttribute="trailing" constant="56" id="PcO-YS-rXf"/>
-                        <constraint firstItem="1GY-gV-jW3" firstAttribute="centerX" secondItem="xhH-RY-2gU" secondAttribute="centerX" id="Pi8-ou-skP"/>
+                        <constraint firstAttribute="trailing" secondItem="vcd-jn-4wV" secondAttribute="trailing" constant="32" id="DNb-Is-rad"/>
                         <constraint firstAttribute="bottom" secondItem="33W-Us-gSh" secondAttribute="bottom" constant="40" id="Tcy-o1-1US"/>
-                        <constraint firstItem="KVJ-3j-RQB" firstAttribute="top" secondItem="bc7-G2-LIC" secondAttribute="bottom" constant="8" id="W1u-dX-aR4"/>
                         <constraint firstItem="33W-Us-gSh" firstAttribute="leading" secondItem="xhH-RY-2gU" secondAttribute="leading" id="Wvo-e2-Y5Q"/>
-                        <constraint firstItem="bc7-G2-LIC" firstAttribute="leading" secondItem="xhH-RY-2gU" secondAttribute="leading" constant="56" id="XmF-y1-Y7l"/>
-                        <constraint firstItem="KVJ-3j-RQB" firstAttribute="leading" secondItem="xhH-RY-2gU" secondAttribute="leading" constant="56" id="dQk-1M-Scn"/>
-                        <constraint firstItem="R0w-dM-NRi" firstAttribute="leading" secondItem="xhH-RY-2gU" secondAttribute="leading" constant="56" id="kHw-KM-M9o"/>
-                        <constraint firstItem="6AE-Bq-XP6" firstAttribute="top" secondItem="KVJ-3j-RQB" secondAttribute="bottom" constant="10" id="kgp-Df-bv7"/>
-                        <constraint firstAttribute="trailing" secondItem="KVJ-3j-RQB" secondAttribute="trailing" constant="56" id="q2A-no-asY"/>
-                        <constraint firstItem="bc7-G2-LIC" firstAttribute="centerX" secondItem="xhH-RY-2gU" secondAttribute="centerX" id="wfg-cD-i8I"/>
+                        <constraint firstItem="6h7-ca-6K3" firstAttribute="top" secondItem="xhH-RY-2gU" secondAttribute="top" constant="80" id="gOX-dT-hje"/>
+                        <constraint firstItem="vcd-jn-4wV" firstAttribute="top" secondItem="6h7-ca-6K3" secondAttribute="bottom" constant="37" id="hAF-9n-8me"/>
+                        <constraint firstItem="vcd-jn-4wV" firstAttribute="leading" secondItem="xhH-RY-2gU" secondAttribute="leading" constant="32" id="m2Q-iz-504"/>
+                        <constraint firstItem="6h7-ca-6K3" firstAttribute="centerX" secondItem="xhH-RY-2gU" secondAttribute="centerX" id="nVZ-Sc-14W"/>
                     </constraints>
                 </view>
             </subviews>
@@ -87,6 +62,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_chat_guide" width="375" height="200"/>
+        <image name="icon_guide_2" width="375" height="200"/>
     </resources>
 </document>
