@@ -11,5 +11,6 @@
 @interface FingetprintVerificationUtil : NSObject
 
 + (void)show;
++ (void)backShow;
 
 @end

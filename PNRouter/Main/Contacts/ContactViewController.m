@@ -132,7 +132,6 @@
     [self observe];
     
     _hdBackView.layer.cornerRadius = 6.0f;
-    _hdBackView.backgroundColor = RGB(44, 44, 44);
     _hdBackView.hidden = YES;
     
     _searchBackView.layer.cornerRadius = 3.0f;

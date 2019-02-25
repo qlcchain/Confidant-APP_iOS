@@ -97,7 +97,7 @@
                 <outlet property="lblTitle" destination="isK-Fw-pnd" id="2IE-0H-NBI"/>
                 <outlet property="showCellBtn" destination="Jh1-7L-5EI" id="QAB-D0-0xa"/>
             </connections>
-            <point key="canvasLocation" x="61.600000000000001" y="230.28485757121442"/>
+            <point key="canvasLocation" x="118" y="94"/>
         </view>
     </objects>
     <resources>

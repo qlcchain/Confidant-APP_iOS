@@ -361,7 +361,6 @@
 }
 + (BOOL) isFriendWithFriendid:(NSString *) friendId
 {
-    
     __block BOOL isEixt = NO;
     [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;

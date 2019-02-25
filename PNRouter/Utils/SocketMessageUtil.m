@@ -652,6 +652,14 @@
     model.owerId = [UserConfig getShareObject].userId;
     model.bg_tableName = FRIEND_REQUEST_TABNAME;
     
+    NSString *retcode = @"0"; // 0：请求接收到   1：其他错误
+    NSDictionary *params = @{@"Action":@"AddFriendPush",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
+    NSLog(@"msgid = %@",[receiveDic objectForKey:@"msgid"]);
+    
+    NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
+    [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
+    
+    
     NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(model.userId),bg_sqlKey(@"owerId"),bg_sqlValue(model.owerId)]];
     if (!finfAlls || finfAlls.count == 0) {
         if ([SystemUtil isFriendWithFriendid:model.userId]) {
@@ -692,16 +700,9 @@
             [SocketMessageUtil sendAgreedOrRefusedWithFriendMode:model1 withType:[NSString stringWithFormat:@"%d",0]];
             [model1 bg_saveOrUpdate];
         }
-        
-        
     }
     
-    NSString *retcode = @"0"; // 0：请求接收到   1：其他错误
-    NSDictionary *params = @{@"Action":@"AddFriendPush",@"Retcode":retcode,@"Msg":@"",@"ToId":[UserConfig getShareObject].userId};
-    NSLog(@"msgid = %@",[receiveDic objectForKey:@"msgid"]);
     
-     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
-    [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
 }
 
 + (void)handleAddFriendDeal:(NSDictionary *)receiveDic {

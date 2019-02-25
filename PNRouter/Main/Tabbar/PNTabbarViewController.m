@@ -292,7 +292,7 @@
 {
     UITabBarItem *item1 = self.tabBar.items[2];
     if (AppD.showHD) {
-        item1.badgeBgColor = MAIN_PURPLE_COLOR;
+        item1.badgeBgColor = TABBAR_RED_COLOR;
         [item1 showBadge];
     } else {
         [item1 clearBadge];
@@ -315,7 +315,7 @@
         
         UITabBarItem *item1 = [self.tabBar.items firstObject];
         if (isShow) {
-            item1.badgeBgColor = MAIN_PURPLE_COLOR;
+            item1.badgeBgColor = TABBAR_RED_COLOR;
             [item1 showBadge];
         } else {
             [item1 clearBadge];

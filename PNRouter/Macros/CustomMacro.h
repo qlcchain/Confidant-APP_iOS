@@ -23,13 +23,14 @@
 // 请求超时时间
 #define REQEUST_TIME  20
 #define RADIUS 3.0f
-
+#define BACK_TIME @"BACK_TIME"
 #define Bugly_AppID @"d22a5845f9"
 
 //#define MAIN_PURPLE_COLOR RGB(44, 44, 44)
 #define MAIN_PURPLE_COLOR UIColorFromRGB(0x2B2B2B)
 #define MAIN_WHITE_COLOR UIColorFromRGB(0xffffff)
 #define SHADOW_COLOR UIColorFromRGB(0x333333)
+#define TABBAR_RED_COLOR UIColorFromRGB(0xF74C31)
 
 #define TABBARTEXT_SELECT_COLOR UIColorFromRGB(0x2c2c2c)
 #define TABBARTEXT_DEFAULT_COLOR UIColorFromRGB(0xb3b3b3)
