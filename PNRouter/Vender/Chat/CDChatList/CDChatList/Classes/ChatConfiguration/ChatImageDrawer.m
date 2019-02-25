@@ -147,8 +147,8 @@
     CGContextSetFillColorWithColor(context, ChatHelpr.share.config.msgTextContentBackGroundColor_left.CGColor);//填充色
     
     // 设置边框
-    CGContextSetStrokeColorWithColor(context, CDHexColor(0xD1CECE).CGColor);
-    CGContextSetLineWidth(context, 0.5);
+    CGContextSetStrokeColorWithColor(context, CDHexColor(0xD6D7D7).CGColor);
+    CGContextSetLineWidth(context, 0.3);
     // 画边框
     CGContextDrawPath(context, kCGPathFillStroke);
     
@@ -179,8 +179,8 @@
     CGContextSetFillColorWithColor(context, ChatHelpr.share.config.msgTextContentBackGroundColor_right.CGColor);//填充色
     
     // 设置边框
-    CGContextSetStrokeColorWithColor(context, CDHexColor(0xD1CECE).CGColor);
-    CGContextSetLineWidth(context, 0.5);
+    CGContextSetStrokeColorWithColor(context, CDHexColor(0x9BCEF2).CGColor);
+    CGContextSetLineWidth(context, 0.3);
     // 画边框
     CGContextDrawPath(context, kCGPathFillStroke);
     

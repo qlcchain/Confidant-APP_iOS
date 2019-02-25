@@ -88,16 +88,16 @@
         return _headBackGroundColor;
     }
 }
-
+#pragma mark -右聊天气泡背景色
 -(UIColor *)msgTextContentBackGroundColor_right{
 //    if ([self isDebug]) {
 //        return [UIColor cyanColor];
 //    } else {
 //        return _msgTextContentBackGroundColor_right;
 //    }
-    return [UIColor colorWithRed:44/255.0f green:44/255.0f blue:44/255.0f alpha:1];
+    return [UIColor colorWithRed:204/255.0f green:234/255.0f blue:255/255.0f alpha:1];
 }
-
+#pragma mark -左聊天气泡背景色
 -(UIColor *)msgTextContentBackGroundColor_left{
 //    if ([self isDebug]) {
 //        return [UIColor magentaColor];

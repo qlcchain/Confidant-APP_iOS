@@ -645,6 +645,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
        
         NSDictionary *params = @{@"Action":@"SendMsg",@"To":_friendModel.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
         NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
+
         
         CDMessageModel *model = [[CDMessageModel alloc] init];
         model.FromId = [UserConfig getShareObject].userId;
@@ -1115,7 +1116,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
     CTDataConfig config = [CTData defaultConfig];
     if (!model.isLeft) {
-        config.textColor =[UIColor whiteColor].CGColor;
+       // config.textColor = MAIN_PURPLE_COLOR.CGColor;
         config.isOwner = YES;
     }
     model.publicKey = self.friendModel.publicKey;
@@ -1195,7 +1196,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         CTDataConfig config = [CTData defaultConfig];
         if (!model.isLeft) {
-            config.textColor =[UIColor whiteColor].CGColor;
+            //config.textColor = MAIN_PURPLE_COLOR.CGColor;
             config.isOwner = YES;
         }
         model.ctDataconfig = config;

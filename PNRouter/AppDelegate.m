@@ -32,6 +32,8 @@
 #import "CreateAccountViewController.h"
 #import "UserModel.h"
 #import "EntryModel.h"
+#import "NSDate+Category.h"
+#import "FingetprintVerificationUtil.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
@@ -97,6 +99,9 @@
 //        });
  //   }
     
+    NSInteger seconds =  [NSDate getTimestampFromDate:[NSDate date]] ;
+    [HWUserdefault updateObject:@(seconds) withKey:BACK_TIME];
+   
 }
 
 
@@ -114,6 +119,17 @@
 //    if (![self.thread isMainThread]) {
 //        //        [self.thread cancel];
 //    }
+   
+    NSInteger seconds = [[HWUserdefault getObjectWithKey:BACK_TIME] integerValue];
+    if (seconds == 0) {
+        return;
+    }
+    NSDate *backDate = [NSDate dateWithTimeIntervalSince1970:seconds];
+    NSInteger minues = [backDate minutesAfterDate:[NSDate date]];
+    if (_inLogin && labs(minues) >= 2) {
+        [HWUserdefault updateObject:@(0) withKey:BACK_TIME];
+        [FingetprintVerificationUtil backShow];
+    }
 }
 
 
