@@ -23,6 +23,7 @@
 #import "OperationRecordModel.h"
 #import "UserConfig.h"
 #import "FileDownUtil.h"
+#import "TaskListViewController.h"
 
 typedef enum : NSUInteger {
     FileExistTypeNone,
@@ -144,7 +145,8 @@ typedef enum : NSUInteger {
         }
     }];
     [view setDownloadB:^{
-        
+        [FileDownUtil downloadFileWithFileModel:model];
+        [weakSelf jumpToTaskList];
     }];
     [view setOtherApplicationOpenB:^{
         if (model.localPath == nil) {
@@ -282,6 +284,11 @@ typedef enum : NSUInteger {
     vc.fileName = fileName;
     vc.userKey = _fileListM.UserKey;
     vc.fileListM = _fileListM;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToTaskList {
+    TaskListViewController *vc = [[TaskListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -394,7 +394,32 @@
 }
 
 
-
++ (void)downloadFileWithFileModel:(FileListModel *)fileModel {
+    if ([SystemUtil isSocketConnect]) {
+        [[FileDownUtil getShareObject] downFileWithFileModel:fileModel progressBlock:^(CGFloat progress) {
+        } success:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSString * _Nonnull filePath) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [AppD.window showHint:@"Download Success"];
+            });
+        } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"%@     %@   %@",error.localizedDescription, error.domain,@(error.code));
+                if (error.code == -999) {
+                    [AppD.window showHint:@"Download Cancel"];
+                } else if (error.code == -1011) { // url不存在
+                    [AppD.window showHint:@"File does not exist."];
+                } else {
+                    [AppD.window showHint:@"Download Fail"];
+                }
+            });
+            
+        } downloadTaskB:^(NSURLSessionDownloadTask * _Nonnull downloadTask) {
+        }];
+    } else {
+        [[FileDownUtil getShareObject] toxDownFileModel:fileModel];
+    }
+}
 
 
 

@@ -22,6 +22,8 @@
 #import <MJRefresh/MJRefresh.h>
 #import <MJRefresh/MJRefreshStateHeader.h>
 #import <MJRefresh/MJRefreshHeader.h>
+#import "FileDownUtil.h"
+#import "TaskListViewController.h"
 
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -176,7 +178,8 @@
         }
     }];
     [view setDownloadB:^{
-        
+        [FileDownUtil downloadFileWithFileModel:model];
+        [weakSelf jumpToTaskList];
     }];
     [view setOtherApplicationOpenB:^{
         if (model.localPath == nil) {
@@ -324,6 +327,11 @@
 - (void)jumpToFilePreviewDownload:(FileListModel *)model {
     FilePreviewDownloadViewController *vc = [[FilePreviewDownloadViewController alloc] init];
     vc.fileListM = model;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToTaskList {
+    TaskListViewController *vc = [[TaskListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

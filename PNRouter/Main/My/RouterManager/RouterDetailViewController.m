@@ -177,8 +177,6 @@
         [[SocketManageUtil getShareObject] clearAllConnectSocket];
         // 清除所有正在下载文件
         [[FileDownUtil getShareObject] removeAllTask];
-       
-        
     } else {
         AppD.isConnect = NO;
        // [self logOutTox];
@@ -188,9 +186,10 @@
     AppD.isLogOut = YES;
     [AppD setRootLoginWithType:RouterType];
 }
+
 #pragma mark -通知回调
-- (void) logOutSuccess:(NSNotification *) noti
-{
+- (void)logOutSuccess:(NSNotification *) noti {
     
 }
+
 @end

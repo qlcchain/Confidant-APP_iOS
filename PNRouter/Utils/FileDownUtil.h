@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) updateFileDataBaseWithFileModel:(FileModel *) fileModel;
 - (void) deToxDownFileModel:(FileData *) fileModel;
 - (void) removeAllTask;
+
++ (void)downloadFileWithFileModel:(FileListModel *)fileModel;
+
 @end
 
 NS_ASSUME_NONNULL_END
