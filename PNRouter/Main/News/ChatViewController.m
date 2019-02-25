@@ -605,26 +605,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
         }
     }
-    
-    // 添加到chatlist
-    ChatListModel *chatModel = [[ChatListModel alloc] init];
-    chatModel.myID = [UserConfig getShareObject].userId;
-    chatModel.friendID = toId;
-    chatModel.publicKey = publicKey;
-    chatModel.chatTime = [NSDate date];
-    chatModel.isHD = NO;
-    NSInteger msgType = fileType;
-    if (msgType == 1) {
-        chatModel.lastMessage = @"[photo]";
-    } else if (msgType == 2) {
-        chatModel.lastMessage = @"[voice]";
-    } else if (msgType == 5){
-        chatModel.lastMessage = @"[file]";
-    } else if (msgType == 4){
-        chatModel.lastMessage = @"[video]";
-    }
-    chatModel.routerName = [self.friendModel.RouteName base64DecodedString]?:@"";
-    [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
 }
 
 // 输入框输出文字
@@ -661,18 +641,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.messageStatu = -1;
         [self addMessagesToList:model];
         
-        // 添加到chatlist
-        ChatListModel *chatModel = [[ChatListModel alloc] init];
-        chatModel.myID = [UserConfig getShareObject].userId;
-        chatModel.friendID = self.friendModel.userId;
-      
-        chatModel.publicKey = self.friendModel.publicKey;
-        chatModel.lastMessage = model.msg;
-        chatModel.chatTime = [NSDate date];
-        chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
-        chatModel.signPublicKey = self.friendModel.signPublicKey;
-        chatModel.routerName = [self.friendModel.RouteName base64DecodedString]?:@"";
-        [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+        
         
         if (![SystemUtil isSocketConnect]) {
             [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
@@ -969,7 +938,27 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             model.messageStatu = -1;
             
         } else {
+            
             NSLog(@"文件发送成功");
+            // 添加到chatlist
+            ChatListModel *chatModel = [[ChatListModel alloc] init];
+            chatModel.myID = [UserConfig getShareObject].userId;
+            chatModel.friendID = weakSelf.friendModel.userId;
+            chatModel.publicKey = weakSelf.friendModel.publicKey;
+            chatModel.chatTime = [NSDate date];
+            chatModel.isHD = NO;
+            NSInteger msgType = model.msgType;
+            if (msgType == 1) {
+                chatModel.lastMessage = @"[photo]";
+            } else if (msgType == 2) {
+                chatModel.lastMessage = @"[voice]";
+            } else if (msgType == 5){
+                chatModel.lastMessage = @"[file]";
+            } else if (msgType == 4){
+                chatModel.lastMessage = @"[video]";
+            }
+            chatModel.routerName = [self.friendModel.RouteName base64DecodedString]?:@"";
+            [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
             // 添加到最后一条消息
             model.msgState = CDMessageStateNormal;
             if (model.messageStatu == 1) {
@@ -980,6 +969,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
         }
         [weakSelf.listView updateMessage:model];
+        
+        
+        
+        
         
         if ([arr[0] integerValue] == 5) {
             CDMessageModel *messageModel = [[CDMessageModel alloc] init];
@@ -1061,6 +1054,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     model.msgState = CDMessageStateNormal;
                     model.messageStatu = 1;
                     [weakSelf.listView updateMessage:model];
+                    
+                    // 添加到chatlist
+                    ChatListModel *chatModel = [[ChatListModel alloc] init];
+                    chatModel.myID = [UserConfig getShareObject].userId;
+                    chatModel.friendID = self.friendModel.userId;
+                    
+                    chatModel.publicKey = self.friendModel.publicKey;
+                    chatModel.lastMessage = model.msg;
+                    chatModel.chatTime = [NSDate date];
+                    chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
+                    chatModel.signPublicKey = self.friendModel.signPublicKey;
+                    chatModel.routerName = [self.friendModel.RouteName base64DecodedString]?:@"";
+                    [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+                    
+                    
                 } else if ([array[0] integerValue] == 2) {
                     CDMessageModel *messageModel = [[CDMessageModel alloc] init];
                     messageModel.msgType = 3;
