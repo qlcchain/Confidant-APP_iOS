@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,33 +30,35 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gmQ-qr-s9O">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jA-vp-bLq">
-                                    <rect key="frame" x="15" y="10" width="40" height="40"/>
+                                    <rect key="frame" x="5" y="2" width="44" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="Vhd-l3-rdW"/>
-                                        <constraint firstAttribute="width" constant="40" id="sKB-KZ-aPs"/>
+                                        <constraint firstAttribute="width" constant="44" id="sKB-KZ-aPs"/>
                                     </constraints>
-                                    <state key="normal" image="icon_back"/>
+                                    <state key="normal" image="arrow-exit-h"/>
                                     <connections>
                                         <action selector="backAction:" destination="-1" eventType="touchUpInside" id="72m-dB-Bzk"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOG" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UPi-AU-H56">
-                                    <rect key="frame" x="171" y="19.5" width="33" height="21"/>
+                                    <rect key="frame" x="170" y="12" width="35.5" height="20"/>
                                     <fontDescription key="fontDescription" name="VAGRoundedBT-Regular" family="VAGRounded BT" pointSize="17"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZeT-wz-kiS">
-                                    <rect key="frame" x="314" y="10" width="46" height="40"/>
+                                    <rect key="frame" x="314" y="2" width="46" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="frT-i9-pjM"/>
                                         <constraint firstAttribute="width" constant="46" id="l6h-5j-hw1"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="VAGRoundedBT-Regular" family="VAGRounded BT" pointSize="17"/>
-                                    <state key="normal" title="Clear"/>
+                                    <state key="normal" title="Clear">
+                                        <color key="titleColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
                                     <connections>
                                         <action selector="clearAction:" destination="-1" eventType="touchUpInside" id="bvb-nj-7Oo"/>
                                     </connections>
@@ -68,12 +71,12 @@
                                 <constraint firstItem="4jA-vp-bLq" firstAttribute="centerY" secondItem="gmQ-qr-s9O" secondAttribute="centerY" id="JiC-gA-4Jz"/>
                                 <constraint firstItem="UPi-AU-H56" firstAttribute="centerY" secondItem="gmQ-qr-s9O" secondAttribute="centerY" id="Tgf-qk-dHZ"/>
                                 <constraint firstItem="UPi-AU-H56" firstAttribute="centerX" secondItem="gmQ-qr-s9O" secondAttribute="centerX" id="Xiq-mF-UI5"/>
-                                <constraint firstItem="4jA-vp-bLq" firstAttribute="leading" secondItem="gmQ-qr-s9O" secondAttribute="leading" constant="15" id="chb-x6-sks"/>
-                                <constraint firstAttribute="height" constant="60" id="gWk-ut-HtW"/>
+                                <constraint firstItem="4jA-vp-bLq" firstAttribute="leading" secondItem="gmQ-qr-s9O" secondAttribute="leading" constant="5" id="chb-x6-sks"/>
+                                <constraint firstAttribute="height" constant="44" id="gWk-ut-HtW"/>
                             </constraints>
                         </view>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="YF0-Uj-1BF">
-                            <rect key="frame" x="0.0" y="60" width="375" height="587"/>
+                            <rect key="frame" x="0.0" y="44" width="375" height="603"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -100,9 +103,10 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="9tA-25-qwW" secondAttribute="bottom" id="kwL-js-dRX"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="150" y="38"/>
         </view>
     </objects>
     <resources>
-        <image name="icon_back" width="38" height="38"/>
+        <image name="arrow-exit-h" width="24" height="24"/>
     </resources>
 </document>

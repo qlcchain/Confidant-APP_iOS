@@ -196,7 +196,7 @@
         AppD.manager = nil;
     }
     // 设置当前路由
-    [RouterModel updateRouterConnectStatusWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
+   // [RouterModel updateRouterConnectStatusWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
     // 我们要把系统windown的rootViewController替换掉
     PNTabbarViewController  *tabbarC = [[PNTabbarViewController alloc] initWithManager:manager];
     [AppD addTransitionAnimation];

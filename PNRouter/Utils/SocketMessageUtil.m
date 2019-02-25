@@ -853,6 +853,10 @@
     // 解签名
     NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:signPublickey verifyMsg:signKey];
     if ([tempPublickey isEmptyString]) {
+        NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
+        NSDictionary *params = @{@"Action":@"PushMsg",@"Retcode":retcode,@"Msg":@"",@"ToId":model.ToId};
+        NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
+        [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
         return;
     }
     // 生成对称密钥

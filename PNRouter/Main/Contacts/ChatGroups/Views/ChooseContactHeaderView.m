@@ -39,6 +39,19 @@
     _lblTitle.text = [StringUtil getUserNameFirstWithName:_lblName.text];
     _arrowImg.hidden = !model.showArrow;
     _arrowImg.image = model.showCell?[UIImage imageNamed:@"icon_arrow_down_gray"]:[UIImage imageNamed:@"icon_arrow_up_gray"];
+    
+    if (model.showSelect) {
+        _leftContraintW.constant = 38;
+    } else {
+        _leftContraintW.constant = 0;
+    }
+    if (model.isSelect) {
+        _selectImgView.image = [UIImage imageNamed:@"icon_selectmsg"];
+    } else {
+        _selectImgView.image = [UIImage imageNamed:@"icon_unselectmsg"];
+    }
+    
+    
 //    _selectBtn.selected = model.isSelect;
 //    _selectImg.hidden = !_selectBtn.selected;
 }

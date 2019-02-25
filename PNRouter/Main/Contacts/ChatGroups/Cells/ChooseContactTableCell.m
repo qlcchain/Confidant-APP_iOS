@@ -22,10 +22,10 @@
     [super awakeFromNib];
     // Initialization code
     
-    _chatBtn.layer.cornerRadius = 4;
-    _chatBtn.layer.masksToBounds = YES;
-    _chatBtn.layer.borderColor = UIColorFromRGB(0x2c2c2c).CGColor;
-    _chatBtn.layer.borderWidth = 0.5;
+//    _chatBtn.layer.cornerRadius = 4;
+//    _chatBtn.layer.masksToBounds = YES;
+//    _chatBtn.layer.borderColor = UIColorFromRGB(0x2c2c2c).CGColor;
+//    _chatBtn.layer.borderWidth = 0.5;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -45,13 +45,24 @@
     _contactRouterM = model;
     _icon.image = [UIImage imageNamed:@"icon_router_small"];
     _nameLab.text = [model.RouteName base64DecodedString];
+    
+    if (model.showSelect) {
+        _leftContraintW.constant = 38;
+    } else {
+        _leftContraintW.constant = 0;
+    }
+    if (model.isSelect) {
+        _selectImgView.image = [UIImage imageNamed:@"icon_selectmsg"];
+    } else {
+        _selectImgView.image = [UIImage imageNamed:@"icon_unselectmsg"];
+    }
 }
 
 
 - (IBAction)chatAction:(id)sender {
-    if (_contactChatB) {
-        _contactChatB(_contactRouterM);
-    }
+//    if (_contactChatB) {
+//        _contactChatB(_contactRouterM);
+//    }
 }
 
 @end
