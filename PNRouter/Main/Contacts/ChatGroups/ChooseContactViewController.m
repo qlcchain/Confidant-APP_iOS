@@ -231,6 +231,7 @@
         _downView = [ChooseDownView loadChooseDownView];
         _downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
         [_downView.comfirmBtn addTarget:self action:@selector(comfirmBtnAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_downView];
     }
     return _downView;
 }
@@ -278,7 +279,6 @@
             if (routerModel.isSelect) {
                 [array addObject:[weakSelf getFriendModelWithContactShowModel:showModel contactRouterModel:routerModel]];
             }
-            
         }];
     }];
     return array;
@@ -318,12 +318,13 @@
         NSArray *arr = weakSelf.isSearch? weakSelf.searchDataArray : weakSelf.dataArray;
         ChooseContactShowModel *tempM = arr[headerSection];
         if (tempM.showArrow) { // 显示隐藏cell
-            tempM.showArrow = !tempM.showArrow;
+           // tempM.showArrow = !tempM.showArrow;
+            tempM.showCell = !tempM.showCell;
              [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
         } else { // 直接跳转详情
             if (!self->isMutable) {
                 [weakSelf.selectArray addObject:[weakSelf getFriendModelWithContactShowModel:tempM contactRouterModel:tempM.routerArr.firstObject]];
-                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
+                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
                 [weakSelf backVC];
             } else {
                 
@@ -332,16 +333,13 @@
                 [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
                 NSMutableArray *selectArr = [weakSelf getIsSelectRouter];
                 if (selectArr.count > 0) {
-                    if (weakSelf.downView) {
-                        weakSelf.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
-                        [weakSelf.view addSubview:weakSelf.downView];
-                    }
+                    
                     if (weakSelf.downView.frame.origin.y == SCREEN_HEIGHT) {
                         [UIView animateWithDuration:0.3f animations:^{
                             weakSelf.downView.frame = CGRectMake(0, SCREEN_HEIGHT-Tab_BAR_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
                         }];
                     }
-                    self.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %d groups",(unsigned long)selectArr.count,0];
+                    weakSelf.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %d groups",(unsigned long)selectArr.count,0];
                     
                 } else {
                     [UIView animateWithDuration:0.3f animations:^{
@@ -381,7 +379,7 @@
             FriendModel *friendModel = [self getFriendModelWithContactShowModel:model contactRouterModel:subModel];
             
             if (isMutable) {
-                model.isSelect = !model.isSelect;
+                subModel.isSelect = !subModel.isSelect;
                 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 NSMutableArray *selectArr = [self getIsSelectRouter];
                 if (selectArr.count > 0) {

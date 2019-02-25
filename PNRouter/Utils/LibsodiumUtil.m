@@ -303,7 +303,6 @@
 {
     NSData *tempPKData = [[EntryModel getShareObject].tempPublicKey base64DecodedData];
         const unsigned char *tempPK = [tempPKData bytes];
-    
     NSData *singSKData = [[EntryModel getShareObject].signPrivateKey base64DecodedData];
     const unsigned char *singSK = [singSKData bytes];
         
