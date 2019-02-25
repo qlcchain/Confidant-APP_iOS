@@ -28,6 +28,7 @@
 #import <MJRefresh/MJRefreshHeader.h>
 #import "PNRouter-Swift.h"
 #import "FilePreviewDownloadViewController.h"
+#import "FileDownUtil.h"
 
 typedef enum : NSUInteger {
     FileTableTypeNormal,
@@ -133,7 +134,8 @@ typedef enum : NSUInteger {
         }
     }];
     [view setDownloadB:^{
-        
+        [FileDownUtil downloadFileWithFileModel:model];
+        [weakSelf jumpToTaskList];
     }];
     [view setOtherApplicationOpenB:^{
         if (model.localPath == nil) {
