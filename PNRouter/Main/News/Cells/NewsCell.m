@@ -40,10 +40,11 @@
         _lblUnCount.hidden = NO;
     }
     
-    _lblNameJX.text = [StringUtil getUserNameFirstWithName:_lblName.text];
+    _lblNameJX.text = [StringUtil getUserNameFirstWithName:model.friendName];
+    
     if (model.isDraft) {
-        NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[草稿] %@",model.draftMessage?:@""]];
-        NSRange redRange = NSMakeRange([[noteStr string] rangeOfString:@"[草稿]"].location, [[noteStr string] rangeOfString:@"[草稿]"].length);
+        NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[Drafts] %@",model.draftMessage?:@""]];
+        NSRange redRange = NSMakeRange([[noteStr string] rangeOfString:@"[Drafts]"].location, [[noteStr string] rangeOfString:@"[Drafts]"].length);
         //需要设置的位置
         [noteStr addAttribute:NSForegroundColorAttributeName value:RGB(239, 59, 48) range:redRange];
         //设置颜色

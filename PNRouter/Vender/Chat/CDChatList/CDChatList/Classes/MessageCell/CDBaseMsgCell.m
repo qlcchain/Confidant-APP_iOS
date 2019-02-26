@@ -8,6 +8,7 @@
 #import "CDBaseMsgCell.h"
 #import "ChatHelpr.h"
 #import "UITool.h"
+#import "NSDate+Category.h"
 
 @interface CDBaseMsgCell()
 
@@ -330,7 +331,7 @@
     } else {
         _statuImgView_right.image = [UIImage imageNamed:@"Send out_n"];
     }
-    _statuImgView_right.frame = CGRectMake(bubbleRec.origin.x+bubbleRec.size.width-23,bubbleRec.origin.y+ bubbleRec.size.height-15, 11, 11);
+    _statuImgView_right.frame = CGRectMake(bubbleRec.origin.x+bubbleRec.size.width-25,bubbleRec.origin.y+ bubbleRec.size.height-18, 16, 16);
    
     self.bubbleImage_right.frame = bubbleRec;
     
@@ -406,11 +407,6 @@
     
     // 设置顶部时间Label
     NSDate *date;
-//    if (data.TimeStatmp.length == 10) {
-//        date = [NSDate dateWithTimeIntervalSince1970:[data.createTime doubleValue]];
-//    } else {
-//        date = [NSDate dateWithTimeIntervalSince1970:[data.createTime doubleValue] * 0.001];
-//    }
     date = [NSDate dateWithTimeIntervalSince1970:data.TimeStatmp ];
     self.timeLabel.text = [self checkDateDisplay:date msg:data];
     CGSize textSize = [self.timeLabel.text boundingRectWithSize:CGSizeMake(cd_ScreenW(), data.chatConfig.msgTimeH) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: self.timeLabel.font} context:nil].size;
@@ -443,6 +439,9 @@
         return [formate stringFromDate:thisDate];
     }
     
+    return [thisDate chatTimeDescription];
+    
+    /*
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
     NSDate *nowDate =  [NSDate date];
     
@@ -508,8 +507,8 @@
 //
 //    [dateFormat setDateFormat:@"yy/MM/dd"];
 //    timeString  = [dateFormat stringFromDate:thisDate];
+    */
     
-    return timeString;
 }
 
 

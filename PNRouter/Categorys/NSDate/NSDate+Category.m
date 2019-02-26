@@ -66,7 +66,7 @@
 }
 
 /*精确到分钟的日期描述*/
-- (NSString *)minuteDescription {
+- (NSString *) minuteDescription {
     NSDateFormatter *dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"dd/MM/yyyy"];
     dateFormatter.timeZone = [NSTimeZone localTimeZone];
     if ([self isToday]) { // 同一天
@@ -75,9 +75,9 @@
         NSRange containsA = [formatStringForHours rangeOfString:@"a"];
         BOOL hasAMPM = containsA.location != NSNotFound;
         if (!hasAMPM) { //24小时制
-            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"HH:mm"];
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"H:mm"];
         } else { //12小时制
-            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"hh:mm a"];
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"h:mm a"];
             dateFormatter.AMSymbol = @"AM";
             dateFormatter.PMSymbol = @"PM";
         }
@@ -111,6 +111,79 @@
 //        [dateFormatter setDateFormat:@"yyyy-MM-dd ah:mm"];
 //        return [dateFormatter stringFromDate:self];
 //    }
+}
+
+
+/*精确到分钟的日期描述*/
+- (NSString *) chatTimeDescription {
+    NSDateFormatter *dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"dd/MM/yyyy"];
+    dateFormatter.timeZone = [NSTimeZone localTimeZone];
+    if ([self isToday]) { // 同一天
+        //hasAMPM==TURE为12小时制，否则为24小时制
+        NSString *formatStringForHours = [NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]];
+        NSRange containsA = [formatStringForHours rangeOfString:@"a"];
+        BOOL hasAMPM = containsA.location != NSNotFound;
+        if (!hasAMPM) { //24小时制
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"H:mm"];
+        } else { //12小时制
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"h:mm a"];
+            dateFormatter.AMSymbol = @"AM";
+            dateFormatter.PMSymbol = @"PM";
+        }
+    } else if ([self isThisWeek]) { // 同一个星期
+        
+        NSString *formatStringForHours = [NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]];
+        NSRange containsA = [formatStringForHours rangeOfString:@"a"];
+        BOOL hasAMPM = containsA.location != NSNotFound;
+        if (!hasAMPM) { //24小时制
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"H:mm"];
+        } else { //12小时制
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"h:mm a"];
+            dateFormatter.AMSymbol = @"AM";
+            dateFormatter.PMSymbol = @"PM";
+        }
+        NSString *timeStr = [dateFormatter stringFromDate:self];
+        return [[self weekStrInEn:[self weekday]] stringByAppendingString:[NSString stringWithFormat:@" %@",timeStr]];
+        
+    } else if ([self isThisYear]) { // 同一年
+        NSString *formatStringForHours = [NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]];
+        NSRange containsA = [formatStringForHours rangeOfString:@"a"];
+        BOOL hasAMPM = containsA.location != NSNotFound;
+        if (!hasAMPM) { //24小时制
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"H:mm"];
+        } else { //12小时制
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"h:mm a"];
+            dateFormatter.AMSymbol = @"AM";
+            dateFormatter.PMSymbol = @"PM";
+        }
+        NSString *timeStr = [dateFormatter stringFromDate:self];
+        return [NSString stringWithFormat:@"%@ %@ %@",@(self.day),[self monthStrInEn:[self month]],timeStr];
+    }
+    
+    return [dateFormatter stringFromDate:self];
+    
+    
+    //    NSString *theDay = [dateFormatter stringFromDate:self];//日期的年月日
+    //    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];//当前年月日
+    //    if ([theDay isEqualToString:currentDay]) {//当天
+    //        [dateFormatter setDateFormat:@"ah:mm"];
+    //        return [dateFormatter stringFromDate:self];
+    //    } else if ([[dateFormatter dateFromString:currentDay] timeIntervalSinceDate:[dateFormatter dateFromString:theDay]] == 86400) {//昨天
+    //        [dateFormatter setDateFormat:@"ah:mm"];
+    //        return [NSString stringWithFormat:@"Yesterday %@", [dateFormatter stringFromDate:self]];
+    //    } else  {
+    //        [dateFormatter setDateFormat:@"yyyy/MM/dd"];
+    //        return [dateFormatter stringFromDate:self];
+    //    }
+    
+    
+    //    } else if ([[dateFormatter dateFromString:currentDay] timeIntervalSinceDate:[dateFormatter dateFromString:theDay]] < 86400 * 7) {//间隔一周内
+    //        [dateFormatter setDateFormat:@"EEE ah:mm"];
+    //        return [dateFormatter stringFromDate:self];
+    //    } else {//以前
+    //        [dateFormatter setDateFormat:@"yyyy-MM-dd ah:mm"];
+    //        return [dateFormatter stringFromDate:self];
+    //    }
 }
 
 /*标准时间日期描述*/

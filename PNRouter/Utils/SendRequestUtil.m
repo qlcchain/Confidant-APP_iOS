@@ -117,16 +117,8 @@
       //  NSDictionary *params = @{@"os":@"1",@"appversion":APP_Version,@"regid":AppD.regId,@"topicid":@"",@"routerid":[RoutherConfig getRoutherConfig].currentRouterToxid,@"userid":[UserModel getUserModel].userId?:@"",@"usersn":[UserModel getUserModel].userSn?:@""};
         
          NSDictionary *params = @{@"os":@"1",@"appversion":APP_Version,@"regid":AppD.regId,@"routerid":[RoutherConfig getRoutherConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
-        NSString *pushUrl = @"";
-        
-#ifdef DEBUG
-        pushUrl = PUSH_DEBUG_URL;
-#else
-        pushUrl = PUSH_ONLINE_URL;
-#endif
-        NSLog(@"pushurl = %@",pushUrl);
-        
-        [AFHTTPClientV2 requestWithBaseURLStr:pushUrl params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+       
+        [AFHTTPClientV2 requestWithBaseURLStr:PUSH_ONLINE_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
             int retCode = [responseObject[@"Ret"] intValue];
             if (retCode == 0) {
                 NSLog(@"注册推送成功!");

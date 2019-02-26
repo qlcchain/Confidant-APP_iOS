@@ -43,7 +43,6 @@
 
 @property (nonatomic , strong) NSMutableArray *showRouterArr;
 @property (nonatomic ,strong) ConnectView *connectView;
-
 @property (nonatomic , strong) RouterModel *selectRouther;
 
 @end
@@ -147,14 +146,29 @@
 // 导入帐号
 - (void)scanSuccessfulWithIsAccount:(NSArray *)values
 {
-    NSString *usersn = values[2];
-    self.selectRouther = [RouterModel checkRoutherWithSn:usersn];
-    if (!self.selectRouther) {
-        // 删除所有路由
-        [RouterModel delegateAllRouter];
-        [_showRouterArr removeAllObjects];
-    }
-    [self changeLogintStatu];
+    
+    UIAlertController *vc = [UIAlertController alertControllerWithTitle:@"" message:@"This operation will overwrite the current account. Do you want to continue?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    @weakify_self
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *usersn = values[2];
+        weakSelf.selectRouther = [RouterModel checkRoutherWithSn:usersn];
+        if (!weakSelf.selectRouther) {
+            // 删除所有路由
+            [RouterModel delegateAllRouter];
+            [weakSelf.showRouterArr removeAllObjects];
+        }
+        [weakSelf changeLogintStatu];
+    }];
+    
+    [vc addAction:cancelAction];
+    [vc addAction:confirm];
+    
+    [self presentViewController:vc animated:YES completion:nil];
+    
+    
 }
 // 扫码成功重新开启组播
 - (void)scanSuccessfulWithIsMacd:(BOOL)isMac
