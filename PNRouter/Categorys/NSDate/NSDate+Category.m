@@ -66,22 +66,44 @@
 }
 
 /*精确到分钟的日期描述*/
-- (NSString *)minuteDescription
-{
-    NSDateFormatter *dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"yyyy-MM-dd"];
-    
-    NSString *theDay = [dateFormatter stringFromDate:self];//日期的年月日
-    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];//当前年月日
-    if ([theDay isEqualToString:currentDay]) {//当天
-        [dateFormatter setDateFormat:@"ah:mm"];
-        return [dateFormatter stringFromDate:self];
-    } else if ([[dateFormatter dateFromString:currentDay] timeIntervalSinceDate:[dateFormatter dateFromString:theDay]] == 86400) {//昨天
-        [dateFormatter setDateFormat:@"ah:mm"];
-        return [NSString stringWithFormat:@"Yesterday %@", [dateFormatter stringFromDate:self]];
-    } else  {
-        [dateFormatter setDateFormat:@"yyyy/MM/dd"];
-        return [dateFormatter stringFromDate:self];
+- (NSString *)minuteDescription {
+    NSDateFormatter *dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"dd/MM/yyyy"];
+    dateFormatter.timeZone = [NSTimeZone localTimeZone];
+    if ([self isToday]) { // 同一天
+        //hasAMPM==TURE为12小时制，否则为24小时制
+        NSString *formatStringForHours = [NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]];
+        NSRange containsA = [formatStringForHours rangeOfString:@"a"];
+        BOOL hasAMPM = containsA.location != NSNotFound;
+        if (!hasAMPM) { //24小时制
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"HH:mm"];
+        } else { //12小时制
+            dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"hh:mm a"];
+            dateFormatter.AMSymbol = @"AM";
+            dateFormatter.PMSymbol = @"PM";
+        }
+    } else if ([self isThisWeek]) { // 同一个星期
+        return [self weekStrInEn:[self weekday]];
+    } else if ([self isThisYear]) { // 同一年
+        return [NSString stringWithFormat:@"%@ %@",@(self.day),[self monthStrInEn:[self month]]];
     }
+    
+    return [dateFormatter stringFromDate:self];
+    
+    
+//    NSString *theDay = [dateFormatter stringFromDate:self];//日期的年月日
+//    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];//当前年月日
+//    if ([theDay isEqualToString:currentDay]) {//当天
+//        [dateFormatter setDateFormat:@"ah:mm"];
+//        return [dateFormatter stringFromDate:self];
+//    } else if ([[dateFormatter dateFromString:currentDay] timeIntervalSinceDate:[dateFormatter dateFromString:theDay]] == 86400) {//昨天
+//        [dateFormatter setDateFormat:@"ah:mm"];
+//        return [NSString stringWithFormat:@"Yesterday %@", [dateFormatter stringFromDate:self]];
+//    } else  {
+//        [dateFormatter setDateFormat:@"yyyy/MM/dd"];
+//        return [dateFormatter stringFromDate:self];
+//    }
+    
+    
 //    } else if ([[dateFormatter dateFromString:currentDay] timeIntervalSinceDate:[dateFormatter dateFromString:theDay]] < 86400 * 7) {//间隔一周内
 //        [dateFormatter setDateFormat:@"EEE ah:mm"];
 //        return [dateFormatter stringFromDate:self];
@@ -90,8 +112,6 @@
 //        return [dateFormatter stringFromDate:self];
 //    }
 }
-
-
 
 /*标准时间日期描述*/
 -(NSString *)formattedTime{
@@ -637,6 +657,86 @@
     
     return components.weekday;
 }
+
+
+- (NSString *)monthStrInEn:(NSInteger)month {
+    NSString *monthStr = @"";
+    switch (month) {
+        case 1:
+            monthStr = @"Jan";
+            break;
+        case 2:
+            monthStr = @"Feb";
+            break;
+        case 3:
+            monthStr = @"Mar";
+            break;
+        case 4:
+            monthStr = @"Apr";
+            break;
+        case 5:
+            monthStr = @"May";
+            break;
+        case 6:
+            monthStr = @"June";
+            break;
+        case 7:
+            monthStr = @"July";
+            break;
+        case 8:
+            monthStr = @"Aug";
+            break;
+        case 9:
+            monthStr = @"Sept";
+            break;
+        case 10:
+            monthStr = @"Oct";
+            break;
+        case 11:
+            monthStr = @"Nov";
+            break;
+        case 12:
+            monthStr = @"Dec";
+            break;
+        default:
+            monthStr = @"";
+            break;
+    }
+    return monthStr;
+}
+
+
+- (NSString *)weekStrInEn:(NSInteger)weekDay {
+    NSString *weekDayStr = @"";
+    switch (weekDay) {
+        case 1:
+            weekDayStr = @"Sun";
+            break;
+        case 2:
+            weekDayStr = @"Mon";
+            break;
+        case 3:
+            weekDayStr = @"Tues";
+            break;
+        case 4:
+            weekDayStr = @"Weds";
+            break;
+        case 5:
+            weekDayStr = @"Thurs";
+            break;
+        case 6:
+            weekDayStr = @"Fri";
+            break;
+        case 7:
+            weekDayStr = @"Sat";
+            break;
+        default:
+            weekDayStr = @"";
+            break;
+    }
+    return weekDayStr;
+}
+
 
 + (NSString *) weekdayInger:(NSInteger) weekDay
 {
