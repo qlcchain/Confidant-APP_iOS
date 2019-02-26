@@ -34,12 +34,15 @@
 #import "EntryModel.h"
 #import "NSDate+Category.h"
 #import "FingetprintVerificationUtil.h"
+#import "PNUnlockView.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
     BOOL isBackendRun;
 }
 //@property (nonatomic, assign) NSThread *thread;
+@property (nonatomic, strong) PNUnlockView *unlockView;
+
 @end
 
 @implementation AppDelegate
@@ -128,7 +131,14 @@
     NSInteger minues = [backDate minutesAfterDate:[NSDate date]];
     if (_inLogin && labs(minues) >= 2) {
         [HWUserdefault updateObject:@(0) withKey:BACK_TIME];
-        [FingetprintVerificationUtil backShow];
+        
+        if (_unlockView) {
+//            [_unlockView hide];
+//            _unlockView = nil;
+        } else {
+            [self.unlockView show];
+        }
+//        [FingetprintVerificationUtil backShow];
     }
 }
 
@@ -480,4 +490,14 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     }
     completionHandler();
 }
+
+#pragma mark - Lazy
+- (PNUnlockView *)unlockView {
+    if (!_unlockView) {
+        _unlockView = [PNUnlockView getInstance];
+    }
+    
+    return _unlockView;
+}
+
 @end

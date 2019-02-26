@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="5n4-80-q3R" customClass="PNUnlockView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BE4-xk-1Jo">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="OEq-p8-Vw8">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_confidant_white" translatesAutoresizingMaskIntoConstraints="NO" id="J2t-2p-7P0">
+                            <rect key="frame" x="143.5" y="233.5" width="88" height="100"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confidant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0LJ-W6-r37">
+                            <rect key="frame" x="107.5" y="368.5" width="160.5" height="45.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="38"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e2w-1R-wKv">
+                            <rect key="frame" x="16" y="591" width="343" height="44"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="L7y-L5-Jl1"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <state key="normal" title="Unlock Confidant">
+                                <color key="titleColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="deviceRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="unlockAction:" destination="5n4-80-q3R" eventType="touchUpInside" id="jxD-RM-9fa"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="OEq-p8-Vw8" secondAttribute="bottom" id="4bK-w5-P4b"/>
+                        <constraint firstAttribute="trailing" secondItem="OEq-p8-Vw8" secondAttribute="trailing" id="5WA-2j-qS8"/>
+                        <constraint firstItem="0LJ-W6-r37" firstAttribute="centerX" secondItem="BE4-xk-1Jo" secondAttribute="centerX" id="R90-c0-zMu"/>
+                        <constraint firstItem="0LJ-W6-r37" firstAttribute="top" secondItem="J2t-2p-7P0" secondAttribute="bottom" constant="35" id="Sbh-vJ-edO"/>
+                        <constraint firstItem="J2t-2p-7P0" firstAttribute="centerX" secondItem="BE4-xk-1Jo" secondAttribute="centerX" id="UDT-8Q-GBc"/>
+                        <constraint firstItem="OEq-p8-Vw8" firstAttribute="top" secondItem="BE4-xk-1Jo" secondAttribute="top" id="UmS-RD-nur"/>
+                        <constraint firstItem="e2w-1R-wKv" firstAttribute="leading" secondItem="BE4-xk-1Jo" secondAttribute="leading" constant="16" id="Zdm-B3-KIQ"/>
+                        <constraint firstItem="J2t-2p-7P0" firstAttribute="centerY" secondItem="BE4-xk-1Jo" secondAttribute="centerY" constant="-50" id="cog-tl-guh"/>
+                        <constraint firstItem="OEq-p8-Vw8" firstAttribute="leading" secondItem="BE4-xk-1Jo" secondAttribute="leading" id="ohW-mJ-JsI"/>
+                        <constraint firstAttribute="trailing" secondItem="e2w-1R-wKv" secondAttribute="trailing" constant="16" id="rCY-mF-Plo"/>
+                        <constraint firstAttribute="bottom" secondItem="e2w-1R-wKv" secondAttribute="bottom" constant="32" id="tp0-Fw-U2K"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
+            <constraints>
+                <constraint firstItem="BE4-xk-1Jo" firstAttribute="bottom" secondItem="BWu-Ax-N6i" secondAttribute="bottom" id="7Ut-iO-vV8"/>
+                <constraint firstItem="BE4-xk-1Jo" firstAttribute="top" secondItem="5n4-80-q3R" secondAttribute="top" id="O9J-Eb-2mh"/>
+                <constraint firstItem="BE4-xk-1Jo" firstAttribute="trailing" secondItem="BWu-Ax-N6i" secondAttribute="trailing" id="RJJ-GM-Ft6"/>
+                <constraint firstItem="BE4-xk-1Jo" firstAttribute="leading" secondItem="BWu-Ax-N6i" secondAttribute="leading" id="Zhv-GY-W10"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="BWu-Ax-N6i"/>
+            <connections>
+                <outlet property="unlockBtn" destination="e2w-1R-wKv" id="ewz-54-FfQ"/>
+            </connections>
+            <point key="canvasLocation" x="153" y="29"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_confidant_white" width="88" height="100"/>
+        <image name="launch" width="540" height="960"/>
+    </resources>
+</document>

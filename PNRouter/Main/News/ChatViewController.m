@@ -1051,7 +1051,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     model.msgState = CDMessageStateNormal;
                     model.messageStatu = 1;
                     [weakSelf.listView updateMessage:model];
-                    
                 } else if ([array[0] integerValue] == 2) {
                     CDMessageModel *messageModel = [[CDMessageModel alloc] init];
                     messageModel.msgType = 3;

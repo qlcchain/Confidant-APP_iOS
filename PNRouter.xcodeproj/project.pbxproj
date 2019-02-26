@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		580CFE112224DD8200460B41 /* PNUnlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 580CFE102224DD8200460B41 /* PNUnlockView.m */; };
+		580CFE132224DD8E00460B41 /* PNUnlockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580CFE122224DD8E00460B41 /* PNUnlockView.xib */; };
 		581FDF3521F024160068C120 /* vpx.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581FDEEA21F024160068C120 /* vpx.framework */; };
 		581FDF3621F024160068C120 /* msi.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEED21F024160068C120 /* msi.m */; };
 		581FDF3721F024160068C120 /* video.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEEE21F024160068C120 /* video.m */; };
@@ -501,6 +503,9 @@
 
 /* Begin PBXFileReference section */
 		49C33670BA720BB01C8243AF /* libPods-PNRouter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PNRouter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		580CFE0F2224DD8200460B41 /* PNUnlockView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNUnlockView.h; sourceTree = "<group>"; };
+		580CFE102224DD8200460B41 /* PNUnlockView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNUnlockView.m; sourceTree = "<group>"; };
+		580CFE122224DD8E00460B41 /* PNUnlockView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNUnlockView.xib; sourceTree = "<group>"; };
 		581FDEEA21F024160068C120 /* vpx.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = vpx.framework; sourceTree = "<group>"; };
 		581FDEED21F024160068C120 /* msi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = msi.m; sourceTree = "<group>"; };
 		581FDEEE21F024160068C120 /* video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = video.m; sourceTree = "<group>"; };
@@ -1454,6 +1459,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		580CFE0E2224DD5B00460B41 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				580CFE0F2224DD8200460B41 /* PNUnlockView.h */,
+				580CFE102224DD8200460B41 /* PNUnlockView.m */,
+				580CFE122224DD8E00460B41 /* PNUnlockView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		581FDEE821F024160068C120 /* toxcore */ = {
 			isa = PBXGroup;
 			children = (
@@ -1645,6 +1660,7 @@
 		584A4471214609D300608122 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				580CFE0E2224DD5B00460B41 /* View */,
 				73121A65219AD4FC00510B48 /* RegiterViewController.h */,
 				73121A66219AD4FC00510B48 /* RegiterViewController.m */,
 				73121A67219AD4FC00510B48 /* RegiterViewController.xib */,
@@ -3403,6 +3419,7 @@
 				7330F3BF214769DF00FF4EEC /* FriendDetailViewController.xib in Resources */,
 				587C52C7215C798E006787FB /* RouterCodeViewController.xib in Resources */,
 				583BF92021F6B5D00078A2A8 /* SharedSettingsViewController.xib in Resources */,
+				580CFE132224DD8E00460B41 /* PNUnlockView.xib in Resources */,
 				583BF91621F6B4DF0078A2A8 /* MyFilesViewController.xib in Resources */,
 				58BA8DA0221E73AC00E6DE95 /* ContactsHeadView.xib in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
@@ -3861,6 +3878,7 @@
 				581FDF4721F024170068C120 /* net_crypto.m in Sources */,
 				736257AD2142149300D7FD6B /* UIView+Gradient.m in Sources */,
 				585AEE522140D2280098A070 /* HMScannerMaskView.m in Sources */,
+				580CFE112224DD8200460B41 /* PNUnlockView.m in Sources */,
 				58BD2E6E2147B6CF0091A77D /* FileCell.m in Sources */,
 				7330F4F62149147200FF4EEC /* ChatConfiguration.m in Sources */,
 				7330F512214A790400FF4EEC /* FriendModel.m in Sources */,
