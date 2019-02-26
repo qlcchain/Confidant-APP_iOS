@@ -30,19 +30,19 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="guide-n" translatesAutoresizingMaskIntoConstraints="NO" id="Mqg-6j-Mx1">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_confidant_white" translatesAutoresizingMaskIntoConstraints="NO" id="2Ja-lE-NKy">
                                         <rect key="frame" x="143.5" y="233.5" width="88" height="100"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="Mqg-6j-Mx1" firstAttribute="centerX" secondItem="EVv-sF-eas" secondAttribute="centerX" id="3Xe-cc-4LL"/>
-                                    <constraint firstItem="cIL-c2-BSj" firstAttribute="top" secondItem="Mqg-6j-Mx1" secondAttribute="bottom" constant="35" id="5Uu-9Z-6KC"/>
+                                    <constraint firstItem="2Ja-lE-NKy" firstAttribute="centerX" secondItem="EVv-sF-eas" secondAttribute="centerX" id="Kce-lE-TFi"/>
                                     <constraint firstAttribute="trailing" secondItem="zK7-uZ-JOY" secondAttribute="trailing" id="Kno-h1-1Or"/>
                                     <constraint firstAttribute="bottom" secondItem="zK7-uZ-JOY" secondAttribute="bottom" id="Pve-Lp-ZjO"/>
                                     <constraint firstItem="zK7-uZ-JOY" firstAttribute="top" secondItem="EVv-sF-eas" secondAttribute="top" id="Qt5-po-cOJ"/>
+                                    <constraint firstItem="cIL-c2-BSj" firstAttribute="top" secondItem="2Ja-lE-NKy" secondAttribute="bottom" constant="35" id="WzW-KX-qmx"/>
                                     <constraint firstItem="cIL-c2-BSj" firstAttribute="centerX" secondItem="EVv-sF-eas" secondAttribute="centerX" id="hiG-JC-mgG"/>
-                                    <constraint firstItem="Mqg-6j-Mx1" firstAttribute="centerY" secondItem="EVv-sF-eas" secondAttribute="centerY" constant="-50" id="prg-ml-wgL"/>
+                                    <constraint firstItem="2Ja-lE-NKy" firstAttribute="centerY" secondItem="EVv-sF-eas" secondAttribute="centerY" constant="-50" id="hl4-xk-klV"/>
                                     <constraint firstItem="zK7-uZ-JOY" firstAttribute="leading" secondItem="EVv-sF-eas" secondAttribute="leading" id="rvS-BL-gZT"/>
                                 </constraints>
                             </view>
@@ -63,7 +63,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="guide-n" width="88" height="100"/>
+        <image name="icon_confidant_white" width="88" height="100"/>
         <image name="launch" width="540" height="960"/>
     </resources>
 </document>
