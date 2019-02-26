@@ -9,6 +9,12 @@
 #import "FingetprintVerificationUtil.h"
 #import <LocalAuthentication/LocalAuthentication.h>
 
+@interface FingetprintVerificationUtil ()
+
+@property (nonatomic, strong) LAContext *unlockContext;
+
+@end
+
 @implementation FingetprintVerificationUtil
 
 
@@ -115,6 +121,49 @@
 //    }
 //}
 
+- (LAContext *)unlockContext {
+    if (!_unlockContext) {
+        _unlockContext = [[LAContext alloc] init];
+    }
+    
+    return _unlockContext;
+}
+
+- (void)backShowWithComplete:(void(^_Nullable)(BOOL success, NSError * _Nullable error))complete {
+    @weakify_self
+    dispatch_async(dispatch_get_main_queue(), ^{
+        DDLogDebug(@"开始解锁");
+        NSError *error = nil;
+        if( [weakSelf.unlockContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error]) {
+            [weakSelf.unlockContext evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"Enter Password" reply:^(BOOL success, NSError * _Nullable error) {
+                if (error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        DDLogDebug(@"解锁验证失败");
+                    });
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        DDLogDebug(@"解锁验证成功");
+                        
+                    });
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (complete) {
+                        complete(success, error);
+                    }
+                });
+            }];
+        }
+    });
+}
+
+- (void)hide {
+    if (self.unlockContext) {
+        [self.unlockContext invalidate];
+        self.unlockContext = nil;
+    }
+}
+
 + (void)backShow
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -178,5 +227,7 @@
          exit(0);
     });
 }
+
+
 
 @end

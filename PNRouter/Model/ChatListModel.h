@@ -17,7 +17,7 @@
 @property (nonatomic ,strong) NSString *friendName;
 @property (nonatomic ,strong) NSString *lastMessage;
 @property (nonatomic ,strong) NSDate *chatTime;
-@property (nonatomic , assign) BOOL isHD;
+@property (nonatomic , assign) BOOL isHD; // 红点
 @property (nonatomic ,strong) NSString *routerName;
 
 @end
