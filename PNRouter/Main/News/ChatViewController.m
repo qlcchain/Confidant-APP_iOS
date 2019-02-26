@@ -1059,7 +1059,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     ChatListModel *chatModel = [[ChatListModel alloc] init];
                     chatModel.myID = [UserConfig getShareObject].userId;
                     chatModel.friendID = self.friendModel.userId;
-                    
                     chatModel.publicKey = self.friendModel.publicKey;
                     chatModel.lastMessage = model.msg;
                     chatModel.chatTime = [NSDate date];
@@ -1067,7 +1066,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     chatModel.signPublicKey = self.friendModel.signPublicKey;
                     chatModel.routerName = [self.friendModel.RouteName base64DecodedString]?:@"";
                     [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
-                    
                     
                 } else if ([array[0] integerValue] == 2) {
                     CDMessageModel *messageModel = [[CDMessageModel alloc] init];
