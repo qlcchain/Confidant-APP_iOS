@@ -110,20 +110,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-}
-
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    // 播放无声音乐
-    if (isBackendRun) {
-        [[RunInBackground sharedBg] stopAudioPlay];
-    }
-//    if (![self.thread isMainThread]) {
-//        //        [self.thread cancel];
-//    }
-   
+    
     NSInteger seconds = [[HWUserdefault getObjectWithKey:BACK_TIME] integerValue];
     if (seconds == 0) {
         return;
@@ -134,14 +121,26 @@
         [HWUserdefault updateObject:@(0) withKey:BACK_TIME];
         
         if (_unlockView) {
-//            [_unlockView hide];
-//            _unlockView = nil;
         } else {
-            [self.unlockView show];
+            @weakify_self
+            [self.unlockView showWithUnlockOK:^{
+                weakSelf.unlockView = nil;
+            }];
         }
     }
+
 }
 
+
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+//    // 播放无声音乐
+//    if (isBackendRun) {
+//        [[RunInBackground sharedBg] stopAudioPlay];
+//    }
+    
+}
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

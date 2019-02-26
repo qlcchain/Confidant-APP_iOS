@@ -10,10 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^UnlockOKBlock)(void);
+
 @interface PNUnlockView : UIView
 
 + (instancetype)getInstance;
-- (void)show;
+- (void)showWithUnlockOK:(UnlockOKBlock)block;
 - (void)hide;
 
 @end

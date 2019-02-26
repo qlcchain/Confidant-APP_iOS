@@ -23,10 +23,10 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_confidant_white" translatesAutoresizingMaskIntoConstraints="NO" id="J2t-2p-7P0">
-                            <rect key="frame" x="143.5" y="233.5" width="88" height="100"/>
+                            <rect key="frame" x="143.5" y="243.5" width="88" height="100"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confidant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0LJ-W6-r37">
-                            <rect key="frame" x="107.5" y="368.5" width="160.5" height="45.5"/>
+                            <rect key="frame" x="107.5" y="378.5" width="160.5" height="45.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="38"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -55,7 +55,7 @@
                         <constraint firstItem="J2t-2p-7P0" firstAttribute="centerX" secondItem="BE4-xk-1Jo" secondAttribute="centerX" id="UDT-8Q-GBc"/>
                         <constraint firstItem="OEq-p8-Vw8" firstAttribute="top" secondItem="BE4-xk-1Jo" secondAttribute="top" id="UmS-RD-nur"/>
                         <constraint firstItem="e2w-1R-wKv" firstAttribute="leading" secondItem="BE4-xk-1Jo" secondAttribute="leading" constant="16" id="Zdm-B3-KIQ"/>
-                        <constraint firstItem="J2t-2p-7P0" firstAttribute="centerY" secondItem="BE4-xk-1Jo" secondAttribute="centerY" constant="-50" id="cog-tl-guh"/>
+                        <constraint firstItem="J2t-2p-7P0" firstAttribute="centerY" secondItem="BE4-xk-1Jo" secondAttribute="centerY" constant="-40" id="cog-tl-guh"/>
                         <constraint firstItem="OEq-p8-Vw8" firstAttribute="leading" secondItem="BE4-xk-1Jo" secondAttribute="leading" id="ohW-mJ-JsI"/>
                         <constraint firstAttribute="trailing" secondItem="e2w-1R-wKv" secondAttribute="trailing" constant="16" id="rCY-mF-Plo"/>
                         <constraint firstAttribute="bottom" secondItem="e2w-1R-wKv" secondAttribute="bottom" constant="32" id="tp0-Fw-U2K"/>
@@ -72,6 +72,9 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="BWu-Ax-N6i"/>
             <connections>
+                <outlet property="btnOffsetBottom" destination="tp0-Fw-U2K" id="nVw-JO-c4v"/>
+                <outlet property="contentView" destination="BE4-xk-1Jo" id="fhc-KD-2eM"/>
+                <outlet property="imgCenterY" destination="cog-tl-guh" id="8Ic-b3-o1i"/>
                 <outlet property="unlockBtn" destination="e2w-1R-wKv" id="ewz-54-FfQ"/>
             </connections>
             <point key="canvasLocation" x="153" y="29"/>

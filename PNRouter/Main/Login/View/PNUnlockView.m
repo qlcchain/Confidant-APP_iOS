@@ -9,10 +9,17 @@
 #import "PNUnlockView.h"
 #import "FingetprintVerificationUtil.h"
 
+#define UnlockAnimateTime 0.6
+
 @interface PNUnlockView ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imgCenterY; // -40
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *btnOffsetBottom; // 44+32
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 @property (weak, nonatomic) IBOutlet UIButton *unlockBtn;
 @property (nonatomic, strong) FingetprintVerificationUtil *fingerprintUtil;
+@property (nonatomic, copy) UnlockOKBlock okBlock;
 
 @end
 
@@ -28,28 +35,72 @@
 - (void)viewInit {
     _unlockBtn.layer.cornerRadius = 4;
     _unlockBtn.layer.masksToBounds = YES;
+    _btnOffsetBottom.constant = -44;
     _unlockBtn.hidden = YES;
 }
 
-- (void)show {
+- (void)showWithUnlockOK:(UnlockOKBlock)block {
+    _okBlock = block;
     [AppD.window addSubview:self];
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.bottom.mas_equalTo(AppD.window).offset(0);
     }];
     
-    self.alpha = 0;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.alpha = 1;
-    } completion:^(BOOL finished) {
+//    self.imgCenterY.constant = -40;
+    @weakify_self
+    [UIView animateWithDuration:UnlockAnimateTime animations:^{
+        weakSelf.imgCenterY.constant = -(SCREEN_HEIGHT/4.0);
         
+        [weakSelf.contentView layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [weakSelf showFingetprintVerification];
     }];
-    
-    [self showFingetprintVerification];
 }
 
 - (void)hide {
-    [_fingerprintUtil hide];
     [self removeFromSuperview];
+    if (_okBlock) {
+        _okBlock();
+    }
+}
+
+- (void)hideAnimate {
+    [_fingerprintUtil hide];
+    @weakify_self
+//    self.btnOffsetBottom.constant = 32;
+    [UIView animateWithDuration:UnlockAnimateTime animations:^{
+        weakSelf.imgCenterY.constant = -40;
+        weakSelf.btnOffsetBottom.constant = -44;
+        
+        [weakSelf.contentView layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [weakSelf hide];
+    }];
+}
+
+- (void)showUnlockBtn {
+    _unlockBtn.hidden = NO;
+    @weakify_self
+    self.btnOffsetBottom.constant = -44;
+    [UIView animateWithDuration:UnlockAnimateTime animations:^{
+        weakSelf.btnOffsetBottom.constant = 32;
+        
+        [weakSelf.contentView layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void)hideUnlockBtn {
+    @weakify_self
+//    self.btnOffsetBottom.constant = -44;
+    [UIView animateWithDuration:.4 animations:^{
+        weakSelf.btnOffsetBottom.constant = -44;
+        
+        [weakSelf.contentView layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [weakSelf showFingetprintVerification];
+    }];
 }
 
 - (void)showFingetprintVerification {
@@ -57,9 +108,9 @@
     _fingerprintUtil = [[FingetprintVerificationUtil alloc] init];
     [_fingerprintUtil backShowWithComplete:^(BOOL success, NSError * _Nullable error) {
         if (success) {
-            [weakSelf hide];
+            [weakSelf hideAnimate];
         } else {
-            weakSelf.unlockBtn.hidden = NO;
+            [weakSelf showUnlockBtn];
         }
     }];
 }
@@ -67,8 +118,7 @@
 #pragma mark - Action
 
 - (IBAction)unlockAction:(id)sender {
-    _unlockBtn.hidden = YES;
-    [self showFingetprintVerification];
+    [self hideUnlockBtn];
 }
 
 @end

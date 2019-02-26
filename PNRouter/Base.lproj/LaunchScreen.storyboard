@@ -25,13 +25,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confidant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIL-c2-BSj">
-                                        <rect key="frame" x="107.5" y="368.5" width="160.5" height="45.5"/>
+                                        <rect key="frame" x="107.5" y="378.5" width="160.5" height="45.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="38"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_info_guide" translatesAutoresizingMaskIntoConstraints="NO" id="2Ja-lE-NKy">
-                                        <rect key="frame" x="143.5" y="233.5" width="88" height="100"/>
+                                        <rect key="frame" x="143.5" y="243.5" width="88" height="100"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="88" id="XFZ-Lt-6ZF"/>
                                             <constraint firstAttribute="height" constant="100" id="hhH-w1-MBM"/>
@@ -46,7 +46,7 @@
                                     <constraint firstItem="zK7-uZ-JOY" firstAttribute="top" secondItem="EVv-sF-eas" secondAttribute="top" id="Qt5-po-cOJ"/>
                                     <constraint firstItem="cIL-c2-BSj" firstAttribute="top" secondItem="2Ja-lE-NKy" secondAttribute="bottom" constant="35" id="WzW-KX-qmx"/>
                                     <constraint firstItem="cIL-c2-BSj" firstAttribute="centerX" secondItem="EVv-sF-eas" secondAttribute="centerX" id="hiG-JC-mgG"/>
-                                    <constraint firstItem="2Ja-lE-NKy" firstAttribute="centerY" secondItem="EVv-sF-eas" secondAttribute="centerY" constant="-50" id="hl4-xk-klV"/>
+                                    <constraint firstItem="2Ja-lE-NKy" firstAttribute="centerY" secondItem="EVv-sF-eas" secondAttribute="centerY" constant="-40" id="hl4-xk-klV"/>
                                     <constraint firstItem="zK7-uZ-JOY" firstAttribute="leading" secondItem="EVv-sF-eas" secondAttribute="leading" id="rvS-BL-gZT"/>
                                 </constraints>
                             </view>
