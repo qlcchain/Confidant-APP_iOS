@@ -1648,11 +1648,14 @@ void friendConnectionStatusCallback(Tox *cTox, uint32_t friendNumber, TOX_CONNEC
         if (friendNumber == AppD.currentRouterNumber) {
             if (AppD.manager) {
                 if (status > 0) {
-                    [AppD.window hideHud];
+                   // [AppD.window hideHud];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"1"];
                 } else {
-                    [AppD.window showHudInView:AppD.window hint:@"Connect Server..."];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"0"];
                     [[NSNotificationCenter defaultCenter] postNotificationName:TOX_CONNECT_STATUS_NOTI object:nil];
                 }
+                
+                
             }
         }
         

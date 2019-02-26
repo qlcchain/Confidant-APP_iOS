@@ -369,6 +369,22 @@ static UIColor *InputHexColor(int hexColor){
     [self.textView textDidChange];
 }
 
+- (NSString *) getTextViewString
+{
+    NSString *plainStr = [EmojiTextAttachment getPlainString: [self.textView.attributedText copy]];
+    return plainStr;
+}
+
+- (void) setTextViewString:(NSString *) textString
+{
+    self.textView.text = textString;
+    [self performSelector:@selector(textBecomeFirstResponder) withObject:self afterDelay:0.7];
+}
+- (void) textBecomeFirstResponder
+{
+    [self.textView becomeFirstResponder];
+}
+
 #pragma mark 更多 CTMoreKeyBoardDelegare
 -(void)moreKeyBoardSelectKey:(NSString *)key image:(UIImage *)img{
     [self.delegate inputViewPopCommand:key];

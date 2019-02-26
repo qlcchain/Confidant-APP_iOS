@@ -19,6 +19,9 @@
 #import "UserConfig.h"
 #import "FileData.h"
 #import "NSDateFormatter+Category.h"
+#import "ChatListModel.h"
+#import "RouterModel.h"
+#import "ChatListDataUtil.h"
 
 #define NTOHL(x)    (x) = ntohl((__uint32_t)x) //转换成本地字节流
 #define NTOHS(x)    (x) = ntohs((__uint16_t)x) //转换成本地字节流
@@ -405,6 +408,26 @@ struct ResultFile {
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,@"",@(self.fileType),self.srcKey]];
             } else {
+                
+                // 添加到chatlist
+                ChatListModel *chatModel = [[ChatListModel alloc] init];
+                chatModel.myID = [UserConfig getShareObject].userId;
+                chatModel.friendID = self.toid;
+                chatModel.chatTime = [NSDate date];
+                chatModel.isHD = NO;
+                NSInteger msgType = self.fileType;
+                if (msgType == 1) {
+                    chatModel.lastMessage = @"[photo]";
+                } else if (msgType == 2) {
+                    chatModel.lastMessage = @"[voice]";
+                } else if (msgType == 5){
+                    chatModel.lastMessage = @"[file]";
+                } else if (msgType == 4){
+                    chatModel.lastMessage = @"[video]";
+                }
+                chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
+                [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+                
                  [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
             }
            

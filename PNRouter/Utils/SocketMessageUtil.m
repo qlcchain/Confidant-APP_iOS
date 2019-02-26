@@ -553,6 +553,27 @@
     NSString *fileType = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"FileType"]];
     
      [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(retCode),msgId,toId,fileType,fileId,msgId]];
+    
+    if (retCode == 0) {
+        // 添加到chatlist
+        ChatListModel *chatModel = [[ChatListModel alloc] init];
+        chatModel.myID = [UserConfig getShareObject].userId;
+        chatModel.friendID = toId;
+        chatModel.chatTime = [NSDate date];
+        chatModel.isHD = NO;
+        NSInteger msgType = [fileType integerValue];
+        if (msgType == 1) {
+            chatModel.lastMessage = @"[photo]";
+        } else if (msgType == 2) {
+            chatModel.lastMessage = @"[voice]";
+        } else if (msgType == 5){
+            chatModel.lastMessage = @"[file]";
+        } else if (msgType == 4){
+            chatModel.lastMessage = @"[video]";
+        }
+        chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
+        [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+    }
 }
 
 #pragma mark -tox pull文件
@@ -807,19 +828,26 @@
 + (void)handleSendMsg:(NSDictionary *)receiveDic {
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     NSString *MsgId = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"MsgId"]];
-   // NSString *Msg = receiveDic[@"params"][@"Msg"];
-  //  NSString *FromId = receiveDic[@"params"][@"FromId"];
-  //  NSString *ToId = receiveDic[@"params"][@"ToId"];
+    NSString *Msg = receiveDic[@"params"][@"Msg"];
+    NSString *FromId = receiveDic[@"params"][@"From"];
+    NSString *ToId = receiveDic[@"params"][@"To"];
+    NSString *PriKey = receiveDic[@"params"][@"PriKey"];
+    NSString *Nonce = receiveDic[@"params"][@"Nonce"];
     NSString *sendMsgID = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
     if (retCode == 0) { // 0：消息发送成功
-//        CDMessageModel *model = [[CDMessageModel alloc] init];
-//        model.FromId = FromId;
-//        model.ToId = ToId;
-//        model.messageId = MsgId;
-//        model.sendMsgId = sendMsgID;
-//        model.msg = Msg;
-//
-//
+        // 添加到chatlist
+        ChatListModel *chatModel = [[ChatListModel alloc] init];
+        chatModel.myID = FromId;
+        chatModel.friendID = ToId;
+        chatModel.chatTime = [NSDate date];
+        chatModel.isHD = NO;
+        chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
+        // 解密消息
+        NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:PriKey];
+        chatModel.lastMessage = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:Msg nonce:Nonce];
+        
+        [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+        
     } else if (retCode == 1) { // 1：目标不可达
        // [AppD.window showHint:@"Message sending failed"];
     } else if (retCode == 2) { // 2：其他错误
@@ -838,6 +866,12 @@
     NSString *nonceKey = receiveDic[@"params"][@"Nonce"];
     NSString *symmetkey = receiveDic[@"params"][@"PriKey"];
     
+    // 回复路由
+    NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
+    NSDictionary *params = @{@"Action":@"PushMsg",@"Retcode":retcode,@"Msg":@"",@"ToId":ToId};
+    NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
+    [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
+    // 保存记录
     CDMessageModel *model = [[CDMessageModel alloc] init];
     model.FromId = FromId;
     model.ToId = ToId;
@@ -896,10 +930,7 @@
     }
     [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
     [[NSNotificationCenter defaultCenter] postNotificationName:RECEIVE_MESSAGE_NOTI object:model];
-    NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
-    NSDictionary *params = @{@"Action":@"PushMsg",@"Retcode":retcode,@"Msg":@"",@"ToId":model.ToId};
-    NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
-    [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
+   
 }
 
 + (void)handleDelMsg:(NSDictionary *)receiveDic {

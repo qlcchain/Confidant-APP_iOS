@@ -18,6 +18,8 @@
 @property (nonatomic ,strong) NSString *lastMessage;
 @property (nonatomic ,strong) NSDate *chatTime;
 @property (nonatomic , assign) BOOL isHD;
+@property (nonatomic , assign) BOOL isDraft;
+@property (nonatomic ,strong) NSString *draftMessage;
 @property (nonatomic ,strong) NSString *routerName;
 
 @end

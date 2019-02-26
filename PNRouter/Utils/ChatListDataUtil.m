@@ -69,10 +69,14 @@
         NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(model.friendID),bg_sqlKey(@"myID"),bg_sqlValue(model.myID)]];
         if (friends && friends.count > 0) {
             ChatListModel *model1 = friends[0];
-            model1.lastMessage = model.lastMessage;
             model1.friendName = model.friendName;
-            model1.chatTime = model.chatTime;
             model1.isHD = model.isHD;
+            model1.isDraft = model.isDraft;
+            if (!model1.isDraft) {
+                 model1.lastMessage = model.lastMessage;
+                model1.chatTime = model.chatTime;
+            }
+            model1.draftMessage = model.draftMessage;
             [model1 bg_saveOrUpdate];
         } else {
             model.bg_tableName = FRIEND_CHAT_TABNAME;

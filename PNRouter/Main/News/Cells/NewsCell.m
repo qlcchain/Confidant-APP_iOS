@@ -41,7 +41,17 @@
     }
     
     _lblNameJX.text = [StringUtil getUserNameFirstWithName:_lblName.text];
-    _lblContent.text = model.lastMessage?:@"";
+    if (model.isDraft) {
+        NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[草稿] %@",model.draftMessage?:@""]];
+        NSRange redRange = NSMakeRange([[noteStr string] rangeOfString:@"[草稿]"].location, [[noteStr string] rangeOfString:@"[草稿]"].length);
+        //需要设置的位置
+        [noteStr addAttribute:NSForegroundColorAttributeName value:RGB(239, 59, 48) range:redRange];
+        //设置颜色
+        [_lblContent setAttributedText:noteStr];
+    } else {
+        _lblContent.text = model.lastMessage?:@"";
+    }
+   
     _lblTime.text = [model.chatTime minuteDescription];
     
     NSString *friendName = model.friendName;
