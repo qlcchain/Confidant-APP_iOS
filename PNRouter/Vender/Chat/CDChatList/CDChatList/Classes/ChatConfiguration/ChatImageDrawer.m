@@ -113,11 +113,11 @@
     [self pathAddLineToPoint:path point: leftX pointy: bubbleCornerRadius + bubbleUppereight]; // 2
     
     
-    {// 尖角
-        [self pathAddLineToPoint:path point:1 pointy:bubbleCornerRadius + bubbleUppereight + 3]; // 3
-        CGPathAddQuadCurveToPoint(path, NULL, 0, bubbleCornerRadius + bubbleUppereight + 5, // 4
-                              1, bubbleCornerRadius + bubbleUppereight + 6);
-    }
+//    {// 尖角
+//        [self pathAddLineToPoint:path point:1 pointy:bubbleCornerRadius + bubbleUppereight + 3]; // 3
+//        CGPathAddQuadCurveToPoint(path, NULL, 0, bubbleCornerRadius + bubbleUppereight + 5, // 4
+//                              1, bubbleCornerRadius + bubbleUppereight + 6);
+//    }
     
     [self pathAddLineToPoint:path point: leftX pointy: bubbleCornerRadius + bubbleUppereight + bubbleAngleHeight];  // 5
     CGFloat y6 = bubbleCornerRadius + bubbleUppereight + bubbleAngleHeight + gap;
