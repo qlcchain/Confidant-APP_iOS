@@ -24,25 +24,25 @@
                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="zK7-uZ-JOY">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_confidant_white" translatesAutoresizingMaskIntoConstraints="NO" id="zth-p6-zaA">
-                                        <rect key="frame" x="143.5" y="233.5" width="88" height="100"/>
-                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confidant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIL-c2-BSj">
                                         <rect key="frame" x="107.5" y="368.5" width="160.5" height="45.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="38"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="guide-n" translatesAutoresizingMaskIntoConstraints="NO" id="Mqg-6j-Mx1">
+                                        <rect key="frame" x="143.5" y="233.5" width="88" height="100"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="zth-p6-zaA" firstAttribute="centerX" secondItem="EVv-sF-eas" secondAttribute="centerX" id="1fW-FU-Xb9"/>
+                                    <constraint firstItem="Mqg-6j-Mx1" firstAttribute="centerX" secondItem="EVv-sF-eas" secondAttribute="centerX" id="3Xe-cc-4LL"/>
+                                    <constraint firstItem="cIL-c2-BSj" firstAttribute="top" secondItem="Mqg-6j-Mx1" secondAttribute="bottom" constant="35" id="5Uu-9Z-6KC"/>
                                     <constraint firstAttribute="trailing" secondItem="zK7-uZ-JOY" secondAttribute="trailing" id="Kno-h1-1Or"/>
                                     <constraint firstAttribute="bottom" secondItem="zK7-uZ-JOY" secondAttribute="bottom" id="Pve-Lp-ZjO"/>
-                                    <constraint firstItem="cIL-c2-BSj" firstAttribute="top" secondItem="zth-p6-zaA" secondAttribute="bottom" constant="35" id="QmA-ce-hKI"/>
                                     <constraint firstItem="zK7-uZ-JOY" firstAttribute="top" secondItem="EVv-sF-eas" secondAttribute="top" id="Qt5-po-cOJ"/>
                                     <constraint firstItem="cIL-c2-BSj" firstAttribute="centerX" secondItem="EVv-sF-eas" secondAttribute="centerX" id="hiG-JC-mgG"/>
-                                    <constraint firstItem="zth-p6-zaA" firstAttribute="centerY" secondItem="EVv-sF-eas" secondAttribute="centerY" constant="-50" id="pgG-XK-1wI"/>
+                                    <constraint firstItem="Mqg-6j-Mx1" firstAttribute="centerY" secondItem="EVv-sF-eas" secondAttribute="centerY" constant="-50" id="prg-ml-wgL"/>
                                     <constraint firstItem="zK7-uZ-JOY" firstAttribute="leading" secondItem="EVv-sF-eas" secondAttribute="leading" id="rvS-BL-gZT"/>
                                 </constraints>
                             </view>
@@ -59,11 +59,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="-129" y="349"/>
         </scene>
     </scenes>
     <resources>
-        <image name="icon_confidant_white" width="88" height="100"/>
+        <image name="guide-n" width="88" height="100"/>
         <image name="launch" width="540" height="960"/>
     </resources>
 </document>

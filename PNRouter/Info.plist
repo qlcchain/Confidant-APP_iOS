@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>PP Messenger</string>
+	<string>Confidant</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -41,7 +41,7 @@
 	<key>CFBundleSignature</key>
 	<string>???</string>
 	<key>CFBundleVersion</key>
-	<string>39</string>
+	<string>54</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
