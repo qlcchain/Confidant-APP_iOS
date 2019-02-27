@@ -142,6 +142,7 @@
     
     [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
     [SendRequestUtil sendLogOut];
+    AppD.inLogin = NO;
     [HeartBeatUtil stop];
     if ([SystemUtil isSocketConnect]) {
         [RoutherConfig getRoutherConfig].currentRouterIp = @"";

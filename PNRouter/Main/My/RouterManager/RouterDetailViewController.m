@@ -170,6 +170,7 @@
 - (void) logOutApp
 {
     [HeartBeatUtil stop];
+    AppD.inLogin = NO;
     if ([SystemUtil isSocketConnect]) {
         [RoutherConfig getRoutherConfig].currentRouterIp = @"";
         [[SocketUtil shareInstance] disconnect];

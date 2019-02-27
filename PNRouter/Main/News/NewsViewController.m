@@ -440,15 +440,21 @@
 - (void) reloadSecketFaieldNoti:(NSNotification *) noti
 {
     NSString *result = noti.object;
-    if ([result integerValue] == 0) {
-        //_connectBackView.hidden = NO;
-        self.lblTop.hidden = NO;
-         AppD.window.windowLevel = UIWindowLevelAlert;
-    } else {
+    if (!AppD.inLogin) {
         self.lblTop.hidden = YES;
-         AppD.window.windowLevel = UIWindowLevelNormal;
-       // _connectBackView.hidden = YES;
+        AppD.window.windowLevel = UIWindowLevelNormal;
+    } else {
+        if ([result integerValue] == 0) {
+            //_connectBackView.hidden = NO;
+            self.lblTop.hidden = NO;
+            AppD.window.windowLevel = UIWindowLevelAlert;
+        } else {
+            self.lblTop.hidden = YES;
+            AppD.window.windowLevel = UIWindowLevelNormal;
+            // _connectBackView.hidden = YES;
+        }
     }
+    
     
 }
 
