@@ -37,6 +37,7 @@
 #import "LibsodiumUtil.h"
 #import "FileDownUtil.h"
 #import "RoutherConfig.h"
+#import "ChatModel.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -836,23 +837,30 @@
     NSString *sendMsgID = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
     if (retCode == 0) { // 0：消息发送成功
         // 添加到chatlist
-        ChatListModel *chatModel = [[ChatListModel alloc] init];
-        chatModel.myID = FromId;
-        chatModel.friendID = ToId;
-        chatModel.chatTime = [NSDate date];
-        chatModel.isHD = NO;
-        chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
+        ChatListModel *chatListModel = [[ChatListModel alloc] init];
+        chatListModel.myID = FromId;
+        chatListModel.friendID = ToId;
+        chatListModel.chatTime = [NSDate date];
+        chatListModel.isHD = NO;
+        chatListModel.routerName = [RouterModel getConnectRouter].name?:@"";
         // 解密消息
         NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:PriKey];
-        chatModel.lastMessage = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:Msg nonce:Nonce];
+        chatListModel.lastMessage = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:Msg nonce:Nonce];
+        [[ChatListDataUtil getShareObject] addFriendModel:chatListModel];
         
-        [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+       // NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
+        
+      BOOL result =  [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
+        if (result) {
+            NSLog(@"----------------------删除-----------");
+        }
         
     } else if (retCode == 1) { // 1：目标不可达
        // [AppD.window showHint:@"Message sending failed"];
     } else if (retCode == 2) { // 2：其他错误
        // [AppD.window showHint:@"Message sending failed"];
     }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:SEND_CHATMESSAGE_SUCCESS_NOTI object:@[@(retCode),MsgId,sendMsgID?:@""]];
 }
 
