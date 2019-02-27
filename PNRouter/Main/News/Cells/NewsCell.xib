@@ -29,17 +29,6 @@
                                     <constraint firstAttribute="height" constant="48" id="z6H-4S-zmF"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lW3-pk-Dfx">
-                                <rect key="frame" x="16" y="8" width="12" height="12"/>
-                                <color key="backgroundColor" red="0.96862745098039216" green="0.29803921568627451" blue="0.19215686274509802" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="12" id="4KA-Zr-7in"/>
-                                    <constraint firstAttribute="height" constant="12" id="uwo-T5-7xe"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="8"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ge8-gJ-B9q">
                                 <rect key="frame" x="74" y="12" width="230" height="39.5"/>
                                 <subviews>
@@ -65,7 +54,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="9ri-0a-Gmg" firstAttribute="leading" secondItem="Nkh-mg-xda" secondAttribute="trailing" id="9sV-yk-7eP"/>
                                     <constraint firstItem="3ub-XD-rda" firstAttribute="leading" secondItem="Ge8-gJ-B9q" secondAttribute="leading" id="V87-Sg-vbk"/>
@@ -94,7 +83,6 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="VAs-vP-6ik" firstAttribute="trailing" secondItem="JJc-Ef-S8M" secondAttribute="trailing" id="04i-0G-oxi"/>
-                            <constraint firstItem="JJc-Ef-S8M" firstAttribute="top" secondItem="lW3-pk-Dfx" secondAttribute="top" id="3FB-4Q-sg8"/>
                             <constraint firstAttribute="trailing" secondItem="Ge8-gJ-B9q" secondAttribute="trailing" constant="16" id="7Hl-hN-dm2"/>
                             <constraint firstItem="y2i-gL-Mps" firstAttribute="leading" secondItem="heL-Cn-ZP1" secondAttribute="leading" constant="16" id="Eyi-OW-FoO"/>
                             <constraint firstItem="JJc-Ef-S8M" firstAttribute="top" secondItem="heL-Cn-ZP1" secondAttribute="top" constant="8" id="G9V-60-Q54"/>
@@ -105,7 +93,6 @@
                             <constraint firstItem="VAs-vP-6ik" firstAttribute="bottom" secondItem="JJc-Ef-S8M" secondAttribute="bottom" id="Xg7-9a-DBn"/>
                             <constraint firstItem="Ge8-gJ-B9q" firstAttribute="leading" secondItem="JJc-Ef-S8M" secondAttribute="trailing" constant="10" id="Y8g-2V-Khn"/>
                             <constraint firstItem="VAs-vP-6ik" firstAttribute="top" secondItem="JJc-Ef-S8M" secondAttribute="top" id="aEt-qr-S8e"/>
-                            <constraint firstItem="JJc-Ef-S8M" firstAttribute="leading" secondItem="lW3-pk-Dfx" secondAttribute="leading" id="nyN-e1-3cl"/>
                             <constraint firstAttribute="bottom" secondItem="y2i-gL-Mps" secondAttribute="bottom" id="w5P-jc-fiY"/>
                             <constraint firstItem="Ge8-gJ-B9q" firstAttribute="top" secondItem="heL-Cn-ZP1" secondAttribute="top" constant="12" id="y0Z-2V-SkH"/>
                         </constraints>
@@ -120,12 +107,12 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="backView" destination="heL-Cn-ZP1" id="ht8-fm-aBW"/>
                 <outlet property="headImgView" destination="JJc-Ef-S8M" id="DTp-Sc-c70"/>
                 <outlet property="lblContent" destination="3ub-XD-rda" id="Hbl-fe-YgD"/>
                 <outlet property="lblName" destination="Nkh-mg-xda" id="QPy-ha-PfE"/>
                 <outlet property="lblNameJX" destination="VAs-vP-6ik" id="wz8-Po-5ib"/>
                 <outlet property="lblTime" destination="9ri-0a-Gmg" id="Ish-Lj-f9N"/>
-                <outlet property="lblUnCount" destination="lW3-pk-Dfx" id="2K1-XF-fNg"/>
             </connections>
             <point key="canvasLocation" x="-1047" y="-186"/>
         </tableViewCell>

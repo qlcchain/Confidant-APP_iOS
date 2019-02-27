@@ -340,7 +340,7 @@ typedef enum : NSUInteger {
     }
 }
 
-- (void)deleteFileCompleteNoti:(NSNotification *) noti {
+- (void)deleteFileCompleteNoti:(NSNotification *)noti {
     @weakify_self
     [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FileListModel *model = obj;

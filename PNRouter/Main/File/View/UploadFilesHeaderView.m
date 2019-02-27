@@ -11,8 +11,6 @@
 
 @interface UploadFilesHeaderView ()
 
-
-
 @end
 
 @implementation UploadFilesHeaderView

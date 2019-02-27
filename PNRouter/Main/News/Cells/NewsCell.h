@@ -15,7 +15,7 @@ static NSString *NewsCellResue = @"NewsCell";
 @interface NewsCell : SWTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *lblNameJX;
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
-@property (weak, nonatomic) IBOutlet UILabel *lblUnCount;
+//@property (weak, nonatomic) IBOutlet UILabel *lblUnCount;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
 @property (weak, nonatomic) IBOutlet UILabel *lblTime;
