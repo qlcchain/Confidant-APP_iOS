@@ -24,11 +24,8 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-//    _lblUnCount.layer.cornerRadius = 6.0f;
-//    _lblUnCount.layer.masksToBounds = YES;
-    // Initialization code
     
-    _backView.badgeBgColor = UIColorFromRGB(0xF74C31);
+    _backView.badgeBgColor = UIColorFromRGB(0xF7625F);
     _backView.badgeTextColor = [UIColor whiteColor];
 }
 
@@ -38,18 +35,15 @@
     // Configure the view for the selected state
 }
 
-- (void) setModeWithChatListModel:(ChatListModel *) model
-{
+- (void)setModeWithChatListModel:(ChatListModel *)model {
     _chatListM = model;
-//    _lblUnCount.hidden = YES;
-//    if (model.isHD) {
-//        _lblUnCount.hidden = NO;
-//    }
-    //
     if (model.isHD) {
         CGFloat offset = SCREEN_WIDTH - _backView.width;
         _backView.badgeCenterOffset = CGPointMake(-30+offset, 45);
-        [_backView showBadgeWithStyle:WBadgeStyleNumber value:8 animationType:WBadgeAnimTypeNone];
+        [_backView showBadgeWithStyle:WBadgeStyleNumber value:[model.unReadNum integerValue] animationType:WBadgeAnimTypeNone];
+        if (!model.unReadNum || [model.unReadNum integerValue] == 0) {
+            [_backView clearBadge];
+        }
     } else {
         [_backView clearBadge];
     }

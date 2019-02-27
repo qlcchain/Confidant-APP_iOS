@@ -71,6 +71,7 @@
             ChatListModel *model1 = friends[0];
             model1.friendName = model.friendName;
             model1.isHD = model.isHD;
+            model1.unReadNum = model.isHD?@([model1.unReadNum integerValue] + 1):model1.unReadNum;
             model1.isDraft = model.isDraft;
             if (!model1.isDraft) {
                  model1.lastMessage = model.lastMessage;
@@ -79,6 +80,7 @@
             model1.draftMessage = model.draftMessage;
             [model1 bg_saveOrUpdate];
         } else {
+            model.unReadNum = model.isHD?@(1):@(0);
             model.bg_tableName = FRIEND_CHAT_TABNAME;
             if (model.publicKey && ![model.publicKey isEmptyString]) {
                 [model bg_save];
@@ -121,6 +123,7 @@
     if (friends && friends.count > 0) {
         ChatListModel *model1 = friends[0];
         model1.isHD = NO;
+        model1.unReadNum = @(0);
         [model1 bg_saveOrUpdate];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
