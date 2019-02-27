@@ -203,7 +203,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
 
-
 //    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"1539912662170117"ofType:@"mp4"]];
 //    UIImage *img = [SystemUtil thumbnailImageForVideo:url];
 //    UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
