@@ -26,7 +26,7 @@
 /**
  *  秒时间戳
  */
-+ (NSInteger)getTimestampFromDate:(NSDate *)date;
++ (long)getTimestampFromDate:(NSDate *)date;
 /**
  *  毫秒时间戳
  */

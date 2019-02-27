@@ -45,6 +45,7 @@
 #import "LibsodiumUtil.h"
 #import "EntryModel.h"
 #import "PNDocumentPickerViewController.h"
+#import "ChatModel.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -624,6 +625,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void) sendFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey
 {
     if ([SystemUtil isSocketConnect]) {
+        
+        ChatModel *chatModel = [[ChatModel alloc] init];
+        chatModel.fromId = [UserConfig getShareObject].userId;
+        chatModel.toId = toId;
+        chatModel.toPublicKey = publicKey;
+        chatModel.msgType = fileType;
+        chatModel.msgid = (long)[messageId integerValue];
+        chatModel.bg_tableName = CHAT_CACHE_TABNAME;
+        chatModel.fileName = fileName;
+        chatModel.filePath =[[SystemUtil getBaseFilePath:toId] stringByAppendingPathComponent:fileName];
+        chatModel.srcKey = srcKey;
+        chatModel.dsKey = dsKey;
+        chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
+        [chatModel bg_save];
+        
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
         [dataUtil sendFileId:toId fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:messageId srcKey:srcKey dstKey:dsKey];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
@@ -653,17 +669,15 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         // 加密对称密钥
         NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
         DDLogDebug(@"临时公钥：%@   对称密钥：%@",[EntryModel getShareObject].tempPublicKey,symmetryString);
-       
-        NSDictionary *params = @{@"Action":@"SendMsg",@"To":_friendModel.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
-        NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
 
-        
         CDMessageModel *model = [[CDMessageModel alloc] init];
         model.FromId = [UserConfig getShareObject].userId;
         model.ToId = self.friendModel.userId;
         model.publicKey = self.friendModel.publicKey;
         model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
-        model.messageId = msgid;
+        long tempMsgid = (long)[ChatListDataUtil getShareObject].tempMsgId++;
+        tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
+        model.messageId = [NSString stringWithFormat:@"%ld",(long)tempMsgid];
         model.msg = string;
         model.msgState = CDMessageStateNormal;
         model.nonceKey = nonceString;
@@ -672,17 +686,27 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.messageStatu = -1;
         [self addMessagesToList:model];
         
+        if ([SystemUtil isSocketConnect]) {
+            ChatModel *chatModel = [[ChatModel alloc] init];
+            chatModel.fromId = model.FromId;
+            chatModel.toId = model.ToId;
+            chatModel.toPublicKey = model.publicKey;
+            chatModel.msgType = 0;
+            chatModel.msgid = tempMsgid;
+            chatModel.messageMsg = string;
+            chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
+            chatModel.bg_tableName = CHAT_CACHE_TABNAME;
+            [chatModel bg_save];
+        }
         
+        NSDictionary *params = @{@"Action":@"SendMsg",@"To":_friendModel.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
+        [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:model.messageId];
         
         if (![SystemUtil isSocketConnect]) {
             [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
-        }
+        } 
     }
     
-    
-//    CDMessageModel *model = [[CDMessageModel alloc] init];
-//    model.msg = string;
-//    [self.listView addMessagesToBottom:@[model]];
 }
 
 #pragma mark - 当输入框frame变化是，会回调此方法
@@ -833,14 +857,16 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
             
              NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
-            NSString *msgid = [SocketMessageUtil sendChatTextWithParams:params];
-
+            
+            long tempMsgid = (long)[ChatListDataUtil getShareObject].tempMsgId++;
+            tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
+    
             if ([model.userId isEqualToString:weakSelf.friendModel.userId]) {
                 CDMessageModel *messageModel = [[CDMessageModel alloc] init];
                 messageModel.FromId = [UserConfig getShareObject].userId;
                 messageModel.ToId = model.userId;
                 messageModel.publicKey = model.publicKey;
-                messageModel.messageId = msgid;
+                messageModel.messageId = [NSString stringWithFormat:@"%ld",(long)tempMsgid];
                 messageModel.msg = weakSelf.selectMessageModel.msg;
                 messageModel.msgState = CDMessageStateNormal;
                 messageModel.nonceKey = nonceString;
@@ -848,6 +874,20 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 messageModel.symmetKey = enSymmetString;
                 messageModel.messageStatu = -1;
                 [self addMessagesToList:messageModel];
+            }
+           [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:[NSString stringWithFormat:@"%ld",(long)tempMsgid]];
+            
+            if ([SystemUtil isSocketConnect]) {
+                ChatModel *chatModel = [[ChatModel alloc] init];
+                chatModel.fromId = [UserConfig getShareObject].userId;
+                chatModel.toId = model.userId;
+                chatModel.toPublicKey = model.publicKey;
+                chatModel.msgType = 0;
+                chatModel.msgid = tempMsgid;
+                chatModel.messageMsg = weakSelf.selectMessageModel.msg;
+                chatModel.bg_tableName = CHAT_CACHE_TABNAME;
+                chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
+                [chatModel bg_save];
             }
             
         } else { // 转发文件

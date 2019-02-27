@@ -18,7 +18,7 @@
 
 @implementation NSDate (Category)
 
-+ (NSInteger)getTimestampFromDate:(NSDate *)date {
++ (long)getTimestampFromDate:(NSDate *)date {
     return (long)[date timeIntervalSince1970];
 }
 
