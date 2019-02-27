@@ -17,6 +17,8 @@
 #define FRIEND_LIST_TABNAME  @"friend_list_tableName"
 // 好友聊天记录表
 #define FRIEND_CHAT_TABNAME  @"FRIEND_CHAT_TABNAME"
+// 消息缓存表
+#define CHAT_CACHE_TABNAME  @"CHAT_CACHE_TABNAME"
 
 #define OperationRecord_Table @"OperationRecord_Table"
 

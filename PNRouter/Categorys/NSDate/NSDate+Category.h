@@ -26,13 +26,13 @@
 /**
  *  秒时间戳
  */
-+ (NSInteger)getTimestampFromDate:(NSDate *)date;
++ (long)getTimestampFromDate:(NSDate *)date;
 /**
  *  毫秒时间戳
  */
 + (UInt64)getMillisecondTimestampFromDate:(NSDate *)date;
 + (NSString *)getTimeWithTimestamp:(NSString *)timestamp format:(NSString *)format isMil:(BOOL)isMil;
-
+- (NSString *) chatTimeDescription;
 - (NSString *)timeIntervalDescription;//距离当前的时间间隔描述
 - (NSString *)minuteDescription;/*精确到分钟的日期描述*/
 - (NSString *)formattedTime;

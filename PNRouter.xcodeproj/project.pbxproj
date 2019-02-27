@@ -308,6 +308,7 @@
 		7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F525214BF4C000FF4EEC /* SocketAlertView.xib */; };
 		734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734B793721A7EAAF0068AA2C /* UserManagerViewController.m */; };
 		734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */; };
+		7356429D222630D800DC0BCB /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7356429C222630D800DC0BCB /* ChatModel.m */; };
 		7360B85221FC3269008FB181 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85121FC3269008FB181 /* FileData.m */; };
 		7360B85521FC632A008FB181 /* FileDownUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85421FC632A008FB181 /* FileDownUtil.m */; };
 		7362573D213E8B3200D7FD6B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362573C213E8B3200D7FD6B /* AppDelegate.m */; };
@@ -1076,6 +1077,8 @@
 		734B793621A7EAAF0068AA2C /* UserManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManagerViewController.h; sourceTree = "<group>"; };
 		734B793721A7EAAF0068AA2C /* UserManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManagerViewController.m; sourceTree = "<group>"; };
 		734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserManagerViewController.xib; sourceTree = "<group>"; };
+		7356429B222630D800DC0BCB /* ChatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatModel.h; sourceTree = "<group>"; };
+		7356429C222630D800DC0BCB /* ChatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatModel.m; sourceTree = "<group>"; };
 		7360B85021FC3269008FB181 /* FileData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
 		7360B85121FC3269008FB181 /* FileData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileData.m; sourceTree = "<group>"; };
 		7360B85321FC632A008FB181 /* FileDownUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileDownUtil.h; sourceTree = "<group>"; };
@@ -2626,6 +2629,8 @@
 				582BFE59221E479A00D8C2C8 /* ContactShowModel.m */,
 				58F17899221FDFEC001CD0AF /* ChooseContactShowModel.h */,
 				58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */,
+				7356429B222630D800DC0BCB /* ChatModel.h */,
+				7356429C222630D800DC0BCB /* ChatModel.m */,
 			);
 			path = ContactModels;
 			sourceTree = "<group>";
@@ -3546,7 +3551,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ $CONFIGURATION == Release ]; then\necho \"Bumping build number...\"\nplist=${PROJECT_DIR}/${INFOPLIST_FILE}\n#increment the build number (ie 115 to 116)\nbuildnum=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${plist}\")\nif [[ \"${buildnum}\" == \"\" ]]; then\necho \"No build number in $plist\"\nexit 2\nfi\nbuildnum=$(expr $buildnum + 1)\n/usr/libexec/Plistbuddy -c \"Set CFBundleVersion $buildnum\" \"${plist}\"\necho \"Bumped build number to $buildnum\"\n\nelse\necho $CONFIGURATION \" build - Not bumping build number.\"\nfi\n";
+			shellScript = "
+";
 		};
 		73F8806E21EC82230047C3DA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3559,7 +3565,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ $CONFIGURATION == Release ]; then\necho \"Bumping build number...\"\nplist=${PROJECT_DIR}/${INFOPLIST_FILE}\n#increment the build number (ie 115 to 116)\nbuildnum=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${plist}\")\nif [[ \"${buildnum}\" == \"\" ]]; then\necho \"No build number in $plist\"\nexit 2\nfi\nbuildnum=$(expr $buildnum + 1)\n/usr/libexec/Plistbuddy -c \"Set CFBundleVersion $buildnum\" \"${plist}\"\necho \"Bumped build number to $buildnum\"\n\nelse\necho $CONFIGURATION \" build - Not bumping build number.\"\nfi\n";
+			shellScript = "
+";
 		};
 		EB8769ED3DB9A8774136A768 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3755,6 +3762,7 @@
 				7330F3A2214671B600FF4EEC /* ShareView.m in Sources */,
 				73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */,
 				582BFE47221D264200D8C2C8 /* CreateAccountViewController.m in Sources */,
+				7356429D222630D800DC0BCB /* ChatModel.m in Sources */,
 				7378840321ACF2970033A189 /* OCTFriendRequest.m in Sources */,
 				7330F4FB2149147200FF4EEC /* CTInputCaculator.m in Sources */,
 				7330F3BE214769DF00FF4EEC /* FriendDetailViewController.m in Sources */,

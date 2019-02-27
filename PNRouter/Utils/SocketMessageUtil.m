@@ -186,7 +186,7 @@
  重新发送文本聊天消息 ->msgid
  */
 + (void)sendChatTextWithParams:(NSDictionary *)params withSendMsgId:(NSString *) msgid {
-    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRecevieBaseParams:[msgid integerValue]]];
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRecevieBaseParams3:[msgid integerValue]]];
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
@@ -1283,7 +1283,7 @@
 
 + (NSDictionary *)getRecevieBaseParams:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":SOCKET_APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION3,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 + (NSDictionary *)getRecevieBaseParams3:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];

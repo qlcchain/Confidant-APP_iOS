@@ -127,9 +127,10 @@
                 weakSelf.unlockView = nil;
             }];
         }
-        //        [FingetprintVerificationUtil backShow];
     }
+
 }
+
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -138,11 +139,8 @@
 //    if (isBackendRun) {
 //        [[RunInBackground sharedBg] stopAudioPlay];
 //    }
-//    if (![self.thread isMainThread]) {
-//        //        [self.thread cancel];
-//    }
+    
 }
-
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

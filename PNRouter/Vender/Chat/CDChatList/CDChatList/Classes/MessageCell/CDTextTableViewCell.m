@@ -126,14 +126,14 @@
 -(void)tapContent:(UITapGestureRecognizer *)tap {
     //
     [self hidMenu];
-    if (self.msgModal.msgState == CDMessageStateSendFaild
-        ) { // 重发
-        NSString *msgKey = [RSAUtil privateKeyDecryptValue:self.msgModal.srckey];
-        NSString *msg = aesEncryptString(self.msgModal.msg,msgKey);
-
-        NSDictionary *params = @{@"Action":@"SendMsg",@"ToId":self.msgModal.ToId?:@"",@"FromId":self.msgModal.FromId?:@"",@"Msg":msg?:@"",@"SrcKey":self.msgModal.srckey?:@"",@"DstKey":self.msgModal.dskey?:@""};
-        [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:self.msgModal.sendMsgId];
-    }
+//    if (self.msgModal.msgState == CDMessageStateSendFaild
+//        ) { // 重发
+//        NSString *msgKey = [RSAUtil privateKeyDecryptValue:self.msgModal.srckey];
+//        NSString *msg = aesEncryptString(self.msgModal.msg,msgKey);
+//
+//        NSDictionary *params = @{@"Action":@"SendMsg",@"ToId":self.msgModal.ToId?:@"",@"FromId":self.msgModal.FromId?:@"",@"Msg":msg?:@"",@"SrcKey":self.msgModal.srckey?:@"",@"DstKey":self.msgModal.dskey?:@""};
+//        [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:self.msgModal.sendMsgId];
+//    }
 }
 
 
