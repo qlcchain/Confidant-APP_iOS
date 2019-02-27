@@ -21,5 +21,6 @@
 @property (nonatomic , assign) BOOL isDraft;
 @property (nonatomic ,strong) NSString *draftMessage;
 @property (nonatomic ,strong) NSString *routerName;
+@property (nonatomic, strong) NSNumber *unReadNum;
 
 @end

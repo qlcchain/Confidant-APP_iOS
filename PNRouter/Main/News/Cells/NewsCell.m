@@ -10,10 +10,13 @@
 #import "ChatListModel.h"
 #import "NSDate+Category.h"
 #import "NSString+Base64.h"
+#import <WZLBadge/WZLBadgeImport.h>
 
 @interface NewsCell ()
 
 @property (nonatomic, strong) ChatListModel *chatListM;
+@property (weak, nonatomic) IBOutlet UIView *backView;
+
 
 @end
 
@@ -21,9 +24,9 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    _lblUnCount.layer.cornerRadius = 6.0f;
-    _lblUnCount.layer.masksToBounds = YES;
-    // Initialization code
+    
+    _backView.badgeBgColor = UIColorFromRGB(0xF7625F);
+    _backView.badgeTextColor = [UIColor whiteColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -32,12 +35,17 @@
     // Configure the view for the selected state
 }
 
-- (void) setModeWithChatListModel:(ChatListModel *) model
-{
+- (void)setModeWithChatListModel:(ChatListModel *)model {
     _chatListM = model;
-    _lblUnCount.hidden = YES;;
     if (model.isHD) {
-        _lblUnCount.hidden = NO;
+        CGFloat offset = SCREEN_WIDTH - _backView.width;
+        _backView.badgeCenterOffset = CGPointMake(-30+offset, 45);
+        [_backView showBadgeWithStyle:WBadgeStyleNumber value:[model.unReadNum integerValue] animationType:WBadgeAnimTypeNone];
+        if (!model.unReadNum || [model.unReadNum integerValue] == 0) {
+            [_backView clearBadge];
+        }
+    } else {
+        [_backView clearBadge];
     }
     
     _lblNameJX.text = [StringUtil getUserNameFirstWithName:model.friendName];
