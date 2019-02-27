@@ -22,6 +22,7 @@
 #import "EditTextViewController.h"
 #import "UserConfig.h"
 #import "SystemUtil.h"
+#import "ChatModel.h"
 
 @interface FriendDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -196,6 +197,8 @@
     [FriendModel bg_delete:FRIEND_LIST_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(_friendModel.userId?:@"")]];
     // 删除聊天文件
     NSString *filePath = [SystemUtil getBaseFilePath:_friendModel.userId];
+    // 删除未发送消息表
+     [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"toId"),bg_sqlValue(_friendModel.userId)]];
     [SystemUtil removeDocmentFilePath:filePath];
     
     // 删除本地聊天记录

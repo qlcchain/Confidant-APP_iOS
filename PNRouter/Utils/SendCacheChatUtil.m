@@ -98,6 +98,7 @@ const NSInteger timerTime = 10;
         if (fileData) {
             fileData = aesEncryptData(fileData,msgKeyData);
             dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SENDING_NOTI object:@[model.toId,@(model.msgid)]];
                 SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
                 [dataUtil sendFileId:model.toId fileName:model.fileName fileData:fileData fileid:(int)model.msgid fileType:model.msgType messageid:[NSString stringWithFormat:@"%ld",model.msgid] srcKey:model.srcKey dstKey:model.dsKey];
@@ -121,7 +122,11 @@ const NSInteger timerTime = 10;
     NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
     
     NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.toId?:@"",@"From":model.fromId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
-    [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:[NSString stringWithFormat:@"%ld",model.msgid]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:[NSString stringWithFormat:@"%ld",model.msgid]];
+    });
+    
 }
 
 @end

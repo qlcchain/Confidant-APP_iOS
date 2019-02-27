@@ -133,6 +133,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileToxPullSuccess:) name:REVER_FILE_PULL_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryFriendSuccess:) name:REVER_QUERY_FRIEND_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterFore) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendingNoti:) name:FILE_SENDING_NOTI object:nil];
+    
 }
 
 - (IBAction)rightAction:(id)sender {
@@ -734,6 +736,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 #pragma mark - NOTI
+// 未发成功文件发送中通知
+- (void) fileSendingNoti:(NSNotification *) noti
+{
+    NSArray *resultArr = noti.object;
+    @weakify_self
+    [weakSelf.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([resultArr[0] isEqualToString:weakSelf.friendModel.userId]) {
+            if ([resultArr[1] integerValue] == [obj.messageId integerValue]) {
+                obj.msgState = CDMessageStateSending;
+                [weakSelf.listView updateMessage:obj];
+            }
+        }
+    }];
+    
+}
 - (void) queryFriendSuccess:(NSNotification *) noti
 {
     NSString *friendId = noti.object;

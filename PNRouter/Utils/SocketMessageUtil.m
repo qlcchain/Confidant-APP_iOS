@@ -851,7 +851,7 @@
        // NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
     
       // 发送成功，删除记录.
-      [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
+      [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(sendMsgID)]];
       
         
     } else if (retCode == 1) { // 1：目标不可达
