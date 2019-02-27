@@ -7,7 +7,7 @@
 //
 
 #import "BBaseModel.h"
-
+#import <BGFMDB/BGFMDB.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ChatModel : BBaseModel
@@ -22,7 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) int msgType;
 @property (nonatomic, strong) NSString *dsKey;
 @property (nonatomic, strong) NSString *srcKey;
+@property (nonatomic, strong) NSString *msgKey;
 @property (nonatomic, assign) long sendTime;
+@property (nonatomic, assign) float fileSize;
+@property (nonatomic, assign) BOOL isSendFailed;
 
 @end
 

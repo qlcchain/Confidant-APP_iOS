@@ -35,6 +35,7 @@
 #import "NSDate+Category.h"
 #import "FingetprintVerificationUtil.h"
 #import "PNUnlockView.h"
+#import "SendCacheChatUtil.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
@@ -145,6 +146,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [SystemUtil configureAPPTerminate];
+    [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
 }
 
 - (void)setRootCreateAccount {
@@ -216,6 +218,9 @@
 
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager {
     [KeyCUtil saveStringToKeyWithString:@"1" key:LOGIN_KEY];
+    // 发送未完成消息
+    [[SendCacheChatUtil getSendCacheChatUtilShare] start];
+    
     AppD.isLogOut = NO;
     if ([SystemUtil isSocketConnect]) {
         AppD.manager = nil;

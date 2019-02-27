@@ -24,6 +24,7 @@
 #import "FingetprintVerificationUtil.h"
 #import "NSString+Base64.h"
 
+
 @interface LoginViewController ()<OCTSubmanagerUserDelegate> {
     BOOL isLogin;
     BOOL isFind;
@@ -590,11 +591,7 @@
 #pragma mark -登陆成功
 - (void) loginSuccess:(NSNotification *) noti
 {
-  //  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(sendLoginRequestWithUserid:) object:@""];
-//    if (resultLogin) {
-//        return;
-//    }
-//    resultLogin = YES;
+  
     NSInteger retCode = [noti.object integerValue];
     if (retCode == 0) {
         [AppD setRootTabbarWithManager:nil];
@@ -626,7 +623,8 @@
     NSString *routerName = receiveDic[@"params"][@"RouterName"];
     NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
     NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
-  
+    
+    
     // 保存用户
     [UserModel updateHashid:hashid usersn:userSn userid:userid needasysn:0];
     // 保存路由
