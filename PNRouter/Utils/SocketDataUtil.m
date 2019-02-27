@@ -22,6 +22,7 @@
 #import "ChatListModel.h"
 #import "RouterModel.h"
 #import "ChatListDataUtil.h"
+#import "ChatModel.h"
 
 #define NTOHL(x)    (x) = ntohl((__uint32_t)x) //转换成本地字节流
 #define NTOHS(x)    (x) = ntohs((__uint16_t)x) //转换成本地字节流
@@ -255,7 +256,7 @@ struct ResultFile {
     self.fileType = fileType;
     self.fileData = imgData;
     self.toid = toid;
-    self.fileid = [NSString stringWithFormat:@"%d",fileid];
+    self.fileid = [NSString stringWithFormat:@"%ld",(long)fileid];
     currentSegseq = 1;
     //int millSecond = [[NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])] intValue];
     uint32_t action = fileType;
@@ -371,7 +372,11 @@ struct ResultFile {
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),self.fileName,@"",@(self.fileType),self.srcKey]];
                 } else {
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
+                    
+                    // 文件发送失败，更改发送状态
+                    [ChatModel bg_update:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"isSendFailed"),bg_sqlValue(@(1)),bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(self.messageid)]];
                 }
                 
                 
@@ -429,8 +434,10 @@ struct ResultFile {
                 [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
                 
                  [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
+                
+                 // 文件发送成功，删除记录
+                 [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(self.messageid)]];
             }
-           
             return;
         }
         if (![_fileUtil isConnected]) { // socket断开连接

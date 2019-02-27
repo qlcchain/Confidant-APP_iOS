@@ -33,6 +33,7 @@
 #import "ReviceRadio.h"
 #import "SocketManageUtil.h"
 #import "FileDownUtil.h"
+#import "SendCacheChatUtil.h"
 
 @interface PNTabbarViewController ()<UITabBarControllerDelegate>
 @property (nonatomic ,strong) SocketAlertView *alertView;
@@ -137,7 +138,9 @@
     
 }
 
-- (void)logout {
+- (void) logout {
+    
+    [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
     [SendRequestUtil sendLogOut];
     [HeartBeatUtil stop];
     if ([SystemUtil isSocketConnect]) {
@@ -180,6 +183,7 @@
 }
 - (void) socketDisconnectNoti:(NSNotification *) noti
 {
+     [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
      [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"0"];
     if ([SystemUtil isSocketConnect]) {
         

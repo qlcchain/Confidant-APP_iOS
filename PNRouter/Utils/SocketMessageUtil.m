@@ -849,16 +849,17 @@
         [[ChatListDataUtil getShareObject] addFriendModel:chatListModel];
         
        // NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
-        
-      BOOL result =  [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
-        if (result) {
-            NSLog(@"----------------------删除-----------");
-        }
+    
+      // 发送成功，删除记录.
+      [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
+      
         
     } else if (retCode == 1) { // 1：目标不可达
-       // [AppD.window showHint:@"Message sending failed"];
+       
     } else if (retCode == 2) { // 2：其他错误
-       // [AppD.window showHint:@"Message sending failed"];
+        
+        // 对方已经不是好友，删除记录.
+        [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SEND_CHATMESSAGE_SUCCESS_NOTI object:@[@(retCode),MsgId,sendMsgID?:@""]];
