@@ -66,7 +66,7 @@
 }
 
 /*精确到分钟的日期描述*/
-- (NSString *) minuteDescription {
+- (NSString *)minuteDescription {
     NSDateFormatter *dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"dd/MM/yyyy"];
     dateFormatter.timeZone = [NSTimeZone localTimeZone];
     if ([self isToday]) { // 同一天

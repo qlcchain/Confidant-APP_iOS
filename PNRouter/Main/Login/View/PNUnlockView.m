@@ -84,6 +84,7 @@
     self.btnOffsetBottom.constant = -44;
     [UIView animateWithDuration:UnlockAnimateTime animations:^{
         weakSelf.btnOffsetBottom.constant = 32;
+        weakSelf.imgCenterY.constant = -40;
         
         [weakSelf.contentView layoutIfNeeded];
     } completion:^(BOOL finished) {
@@ -96,6 +97,7 @@
 //    self.btnOffsetBottom.constant = -44;
     [UIView animateWithDuration:.4 animations:^{
         weakSelf.btnOffsetBottom.constant = -44;
+        weakSelf.imgCenterY.constant = -(SCREEN_HEIGHT/4.0);
         
         [weakSelf.contentView layoutIfNeeded];
     } completion:^(BOOL finished) {
