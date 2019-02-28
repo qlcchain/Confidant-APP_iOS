@@ -27,7 +27,7 @@
 #import <libsodium/crypto_box.h>
 #import "EntryModel.h"
 #import "SettingViewController.h"
-
+#import "PTBPerformanceCenter.h"
 
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource> {
 }
@@ -131,6 +131,18 @@
 - (void)updateOnlineStatus:(BOOL)onLine {
 //    [self.myHeadView.lblName showBadge];
 //    self.myHeadView.lblName.badgeBgColor = onLine?[UIColor greenColor]:RGB(230, 230, 230);
+}
+
+#pragma mark - Action
+
+- (IBAction)rightAction:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    if (sender.selected) {
+        // 性能监控
+        [[PTBPerformanceCenter defaultCenter] enable];
+    } else {
+        [[PTBPerformanceCenter defaultCenter] disable];
+    }
 }
 
 #pragma mark - Transition

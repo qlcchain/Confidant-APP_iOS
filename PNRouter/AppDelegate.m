@@ -36,7 +36,6 @@
 #import "FingetprintVerificationUtil.h"
 #import "PNUnlockView.h"
 #import "SendCacheChatUtil.h"
-#import "PTBPerformanceCenter.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
@@ -64,8 +63,6 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
-    // 性能监控
-    [[PTBPerformanceCenter defaultCenter] enable];
     // 配置Bugly
     [self configBugly];
     // 配置小米推送
