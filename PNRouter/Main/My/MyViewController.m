@@ -29,6 +29,10 @@
 #import "SettingViewController.h"
 #import "PTBPerformanceCenter.h"
 
+static NSString *Management_Circle_Str = @"Management Circles";
+static NSString *My_QRCode_Str = @"My QR Code";
+static NSString *Settings_Str = @"Settings";
+
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource> {
 }
 
@@ -76,7 +80,7 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@[@"Management Circles"],@[@"My QR Code"],@[@"Settings"], nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@[Management_Circle_Str],@[My_QRCode_Str],@[Settings_Str], nil];
     }
     return _dataArray;
 }
@@ -182,8 +186,17 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     MyCell *cell = [tableView dequeueReusableCellWithIdentifier:MyCellReuse];
      NSArray *rowArray = self.dataArray[indexPath.section];
-    cell.lblContent.text = rowArray[indexPath.row];
-    cell.iconImageView.image = [UIImage imageNamed:rowArray[indexPath.row]];
+    NSString *titleStr = rowArray[indexPath.row];
+    cell.lblContent.text = titleStr;
+    NSString *iconStr = @"";
+    if ([titleStr isEqualToString:Management_Circle_Str]) {
+        iconStr = @"icon_management_circle";
+    } else if ([titleStr isEqualToString:My_QRCode_Str]) {
+        iconStr = @"icon_my_qrcode";
+    } else if ([titleStr isEqualToString:Settings_Str]) {
+        iconStr = @"Settings";
+    }
+    cell.iconImageView.image = [UIImage imageNamed:iconStr];
     cell.lblSubContent.hidden = YES;
     if (indexPath.section == self.dataArray.count-1) {
         cell.lblSubContent.hidden = YES;
