@@ -1136,7 +1136,7 @@
 }
 
 + (void)handlePullFileList:(NSDictionary *)receiveDic {
-    [AppD.window hideHud];
+   // [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {

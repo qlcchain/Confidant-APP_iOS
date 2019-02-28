@@ -188,7 +188,9 @@
 
 #pragma mark -视频导出到本地
 - (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
+    
     [AppD.window showHudInView:AppD.window hint:@"File encrypting"];
+    
     NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
     outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
