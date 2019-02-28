@@ -29,17 +29,16 @@
 #import "SettingViewController.h"
 
 
-@interface MyViewController ()<UITableViewDelegate,UITableViewDataSource>
-{
-    
-   
+@interface MyViewController ()<UITableViewDelegate,UITableViewDataSource> {
 }
+
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (nonatomic , strong) NSMutableArray *dataArray;
 @property (nonatomic , strong) MyHeadView *myHeadView;
 @property (nonatomic , assign) CGFloat downloadedBytes;
 @property (strong, nonatomic) RMDownloadIndicator *filedIndicator_left;
 @property (weak, nonatomic) IBOutlet UILabel *lblVersion;
+
 @end
 
 @implementation MyViewController
@@ -77,7 +76,7 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@[@"Router management"],@[@"Share QRCode"],@[@"Settings"], nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@[@"Management Circles"],@[@"My QR Code"],@[@"Settings"], nil];
     }
     return _dataArray;
 }
