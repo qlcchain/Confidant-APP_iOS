@@ -15,6 +15,7 @@
 #import "NSDate+Category.h"
 #import "UploadFilesViewController.h"
 #import "SystemUtil.h"
+#import "NSString+File.h"
 
 @interface UploadFileHelper () <UIDocumentPickerDelegate, UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
@@ -179,8 +180,26 @@
         }
     }];
     // 你可以通过block或者代理，来得到用户选择的视频.
-    [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *asset) {
-        [weakSelf extracted:asset evImage:coverImage];
+    [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *phAsset) {
+        
+        PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+        options.version = PHVideoRequestOptionsVersionOriginal;
+        [[PHImageManager defaultManager] requestAVAssetForVideo:phAsset options:options resultHandler:^(AVAsset *avAsset, AVAudioMix *audioMix, NSDictionary *info) {
+            if ([avAsset isKindOfClass:[AVURLAsset class]]) {
+                AVURLAsset* urlAsset = (AVURLAsset*)avAsset;
+                NSNumber *size;
+                [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
+//                NSLog(@"size is %f",[size floatValue]/(1024.0*1024.0));
+                CGFloat sizeMB = [size floatValue]/(1024.0*1024.0);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (sizeMB <= 100) {
+                        [weakSelf extracted:phAsset evImage:coverImage];
+                    } else {
+                        [AppD.window showHint:@"dddddddddddddd"];
+                    }
+                });
+            }}];
+        
     }];
     [self.currentVC presentViewController:imagePickerVc animated:YES completion:nil];
     
