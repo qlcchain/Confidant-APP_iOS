@@ -74,7 +74,11 @@ const NSInteger timerTime = 10;
               NSInteger secons = [sendDate millesAfterDate:[NSDate date]];
                 if (labs(secons) >= sendTime) {
                     // 如果 10s 没有发送成功，就重发
-                    [weakSelf sendTextMessageWithChatModel:model];
+                   // [weakSelf sendTextMessageWithChatModel:model];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf performSelector:@selector(sendTextMessageWithChatModel:) withObject:model afterDelay:0.2];
+                    });
+                    
                 }
             } else {
                 // 如果是文件，发送失败则重发
@@ -82,7 +86,11 @@ const NSInteger timerTime = 10;
                     // 更新状态为正在发送
                     model.isSendFailed = NO;
                     [model bg_saveOrUpdate];
-                    [weakSelf sendFileWithChatModel:model];
+                   // [weakSelf sendFileWithChatModel:model];
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         
+                    });
+                     [weakSelf performSelector:@selector(sendFileWithChatModel:) withObject:model afterDelay:0.2];
                 }
             }
         }];

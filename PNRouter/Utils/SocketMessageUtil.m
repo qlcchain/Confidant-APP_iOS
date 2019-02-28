@@ -38,6 +38,7 @@
 #import "FileDownUtil.h"
 #import "RoutherConfig.h"
 #import "ChatModel.h"
+#import "SendCacheChatUtil.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -469,7 +470,8 @@
         [HeartBeatUtil start];
          [[NSNotificationCenter defaultCenter] postNotificationName:USER_REGISTER_RECEVIE_NOTI object:receiveDic];
         [[NSNotificationCenter defaultCenter] postNotificationName:REGISTER_PUSH_NOTI object:nil];
-       
+        // 发送未完成消息
+        [[SendCacheChatUtil getSendCacheChatUtilShare] start];
     }
 }
 #pragma mark -拉取用户
@@ -1061,6 +1063,8 @@
             [UserModel updateHashid:hashid usersn:userSn userid:userId needasysn:needSynch];
             [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userId];
             [RouterModel updateRouterConnectStatusWithSn:userSn];
+            // 开启未发送成功消息发送
+            [[SendCacheChatUtil getSendCacheChatUtilShare] start];
         }
         // 同步data文件
         if (needSynch == 0) { // 不需要 同步

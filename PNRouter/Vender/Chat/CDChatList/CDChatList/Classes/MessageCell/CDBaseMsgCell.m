@@ -324,12 +324,14 @@
         // bubbleRec.size.height += 10;
     }
     
+    [self stopAnimation];
     if (data.messageStatu == 1 || data.messageStatu == 0) {
         _statuImgView_right.image = [UIImage imageNamed:@"Send out_h"];
     } else if (data.messageStatu == 2){
         _statuImgView_right.image = [UIImage imageNamed:@"Send out_t"];
     } else {
         _statuImgView_right.image = [UIImage imageNamed:@"Send out_n"];
+        [self startAnimation];
     }
     _statuImgView_right.frame = CGRectMake(bubbleRec.origin.x+bubbleRec.size.width-25,bubbleRec.origin.y+ bubbleRec.size.height-18, 16, 16);
    
@@ -359,6 +361,32 @@
         [_failLabel_right setHidden: YES];
     }
 }
+
+- (void)startAnimation
+
+{
+    CABasicAnimation* rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    
+     rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
+    
+     rotationAnimation.duration = 1.5;
+    
+     rotationAnimation.cumulative = YES;
+    
+     rotationAnimation.repeatCount = HUGE_VALF;
+    
+     [_statuImgView_right.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+    
+}
+
+- (void)stopAnimation
+
+{
+    
+    [_statuImgView_right.layer removeAllAnimations];
+    
+}
+
 
 #pragma mark 设置消息data
 -(void)configCellByData:(CDChatMessage)data table:(CDChatListView *)table{
