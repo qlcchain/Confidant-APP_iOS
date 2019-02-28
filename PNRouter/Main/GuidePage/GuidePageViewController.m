@@ -112,7 +112,7 @@
 //}
 
 - (void)scanSuccessfulWithIsMacd:(BOOL)isMac {
-    [AppD.window showHudInView:AppD.window hint:@"Check Router..."];
+    [AppD.window showHudInView:AppD.window hint:@"Check Circle..."];
     if (isMac) {
          [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterMAC];
     } else {
@@ -127,7 +127,7 @@
     if (connectStatu == socketConnectStatusConnected) {
         [[SocketUtil shareInstance] disconnect];
     }    // 连接
-    [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
+    [AppD.window showHudInView:AppD.window hint:@"Connect Circle..."];
     NSString *connectURL = [SystemUtil connectUrl];
     [SocketUtil.shareInstance connectWithUrl:connectURL];
 }

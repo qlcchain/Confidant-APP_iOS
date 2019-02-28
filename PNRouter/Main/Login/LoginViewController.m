@@ -101,7 +101,7 @@
             [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
         } else {
             isLogin = YES;
-            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
+            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
             NSString *connectURL = [SystemUtil connectUrl];
             [SocketUtil.shareInstance connectWithUrl:connectURL];
         }
@@ -109,33 +109,6 @@
         isLogin = YES;
         [self sendGB];
     }
-    
-    /*
-    
-    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString] && AppD.manager == nil) {
-        isLogin = YES;
-        [self sendGB];
-        return;
-    }
-    
-    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
-        isLogin = YES;
-        [self connectSocketWithIsShowHud:YES];
-        return;
-    }
-    
-    NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
-    if (connectStatu == socketConnectStatusConnected) {
-        // 发送登陆请求
-        [SendRequestUtil sendUserLoginWithPass:shaPass userid:self.selectRouther.userid];
-    } else {
-        isLogin = YES;
-        [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
-        NSString *connectURL = [SystemUtil connectUrl];
-        [SocketUtil.shareInstance connectWithUrl:connectURL];
-    }
-     
-     */
 }
 - (IBAction)rightAction:(id)sender {
     isLogin = NO;
@@ -213,7 +186,7 @@
             [[SocketUtil shareInstance] disconnect];
         }    // 连接
         if (isShow) {
-            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
+            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
         }
         
         NSString *connectURL = [SystemUtil connectUrl];
@@ -340,7 +313,7 @@
 }
 - (void) loadHudView
 {
-    [AppD.window showHudInView:AppD.window hint:@"Check Router..."];
+    [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
 }
 - (void) sendGB
 {

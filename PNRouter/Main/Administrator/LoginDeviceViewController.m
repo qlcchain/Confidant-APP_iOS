@@ -171,7 +171,7 @@
     if (connectStatu == socketConnectStatusConnected) {
         [[SocketUtil shareInstance] disconnect];
     }    // 连接
-    [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
+    [AppD.window showHudInView:AppD.window hint:@"Connect Circle..."];
     NSString *connectURL = [SystemUtil connectUrl];
     [SocketUtil.shareInstance connectWithUrl:connectURL];
 }

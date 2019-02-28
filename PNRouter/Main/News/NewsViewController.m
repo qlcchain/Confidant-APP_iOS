@@ -25,10 +25,10 @@
 #import "UploadFileManager.h"
 #import "FileDownUtil.h"
 
-@interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate>
-{
+@interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate> {
     BOOL isSearch;
 }
+
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
@@ -38,6 +38,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *switchRoutherBtn;
 @property (weak, nonatomic) IBOutlet UIButton *reloadBtn;
 @property (strong, nonatomic) UILabel *lblTop;
+
 @end
 
 @implementation NewsViewController
@@ -178,8 +179,6 @@
     [self chatMessageChangeNoti:nil];
     [self showSocketStatu];
     [self addNoti];
-
-    
 }
 
 #pragma mark - 直接添加监听方法

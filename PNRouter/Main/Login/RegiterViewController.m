@@ -102,7 +102,7 @@
             [SendRequestUtil sendUserRegisterWithUserPass:shaPass username:userName code:_codeTF.text.trim?:@""];
         } else {
             isLogin = YES;
-            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
+            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
             NSString *connectURL = [SystemUtil connectUrl];
             [SocketUtil.shareInstance connectWithUrl:connectURL];
         }
@@ -110,8 +110,6 @@
     } else {
         isLogin = YES;
         [self connectSocketWithIsShowHud:YES];
-//        [AppD.window showHudInView:AppD.window hint:@"Check Router..."];
-//        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     }
 }
 
@@ -123,7 +121,7 @@
 }
 - (void) scanSuccessfulWithIsMacd:(BOOL)isMac
 {
-    [AppD.window showHudInView:AppD.window hint:@"Check Router..."];
+    [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
     if (isMac) {
         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterMAC];
     } else {
@@ -197,7 +195,7 @@
             [[SocketUtil shareInstance] disconnect];
         }    // 连接
         if (isShow) {
-            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
+            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
         }
         
         NSString *connectURL = [SystemUtil connectUrl];
