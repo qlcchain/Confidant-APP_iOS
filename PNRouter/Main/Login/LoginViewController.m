@@ -23,6 +23,7 @@
 #import "UserConfig.h"
 #import "FingetprintVerificationUtil.h"
 #import "NSString+Base64.h"
+#import "LibsodiumUtil.h"
 
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate> {
@@ -157,7 +158,11 @@
         NSString *usersn = values[2];
         weakSelf.selectRouther = [RouterModel checkRoutherWithSn:usersn];
         if (!weakSelf.selectRouther) {
-            // 删除所有路由
+            // 更改私钥
+            [LibsodiumUtil changeUserPrivater:values[1]];
+            NSString *name = [values[3] base64DecodedString];
+            [UserModel createUserLocalWithName:name];
+             // 删除所有路由
             [RouterModel delegateAllRouter];
             [weakSelf.showRouterArr removeAllObjects];
         }
@@ -409,7 +414,7 @@
 
 - (void) changeLogintStatu
 {
-     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username];
+    _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username]?:@"";
     if (self.selectRouther) {
         [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
         [RoutherConfig getRoutherConfig].currentRouterToxid = self.selectRouther.toxid;

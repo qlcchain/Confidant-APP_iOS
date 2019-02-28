@@ -36,6 +36,7 @@
 #import "FingetprintVerificationUtil.h"
 #import "PNUnlockView.h"
 #import "SendCacheChatUtil.h"
+#import "SocketMessageUtil.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
 {
@@ -105,6 +106,13 @@
     
     NSInteger seconds =  [NSDate getTimestampFromDate:[NSDate date]] ;
     [HWUserdefault updateObject:@(seconds) withKey:BACK_TIME];
+    
+    // 发送心跳
+    UserModel *userM = [UserModel getUserModel];
+    if (userM.userId && userM.userId.length >0 && _inLogin) {
+        NSDictionary *params = @{@"Action":@"HeartBeat",@"UserId":userM.userId?:@"",@"Active":@"1"};
+        [SocketMessageUtil sendVersion1WithParams:params];
+    }
    
 }
 

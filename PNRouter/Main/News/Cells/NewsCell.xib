@@ -67,7 +67,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y2i-gL-Mps">
-                                <rect key="frame" x="16" y="63" width="304" height="0.5"/>
+                                <rect key="frame" x="74" y="63" width="246" height="0.5"/>
                                 <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.5" id="2kd-ki-Tbd"/>
@@ -84,7 +84,6 @@
                         <constraints>
                             <constraint firstItem="VAs-vP-6ik" firstAttribute="trailing" secondItem="JJc-Ef-S8M" secondAttribute="trailing" id="04i-0G-oxi"/>
                             <constraint firstAttribute="trailing" secondItem="Ge8-gJ-B9q" secondAttribute="trailing" constant="16" id="7Hl-hN-dm2"/>
-                            <constraint firstItem="y2i-gL-Mps" firstAttribute="leading" secondItem="heL-Cn-ZP1" secondAttribute="leading" constant="16" id="Eyi-OW-FoO"/>
                             <constraint firstItem="JJc-Ef-S8M" firstAttribute="top" secondItem="heL-Cn-ZP1" secondAttribute="top" constant="8" id="G9V-60-Q54"/>
                             <constraint firstAttribute="bottom" secondItem="Ge8-gJ-B9q" secondAttribute="bottom" constant="12" id="JOR-tK-Ts9"/>
                             <constraint firstItem="VAs-vP-6ik" firstAttribute="leading" secondItem="JJc-Ef-S8M" secondAttribute="leading" id="K4g-YW-1jf"/>
@@ -93,6 +92,7 @@
                             <constraint firstItem="VAs-vP-6ik" firstAttribute="bottom" secondItem="JJc-Ef-S8M" secondAttribute="bottom" id="Xg7-9a-DBn"/>
                             <constraint firstItem="Ge8-gJ-B9q" firstAttribute="leading" secondItem="JJc-Ef-S8M" secondAttribute="trailing" constant="10" id="Y8g-2V-Khn"/>
                             <constraint firstItem="VAs-vP-6ik" firstAttribute="top" secondItem="JJc-Ef-S8M" secondAttribute="top" id="aEt-qr-S8e"/>
+                            <constraint firstItem="Ge8-gJ-B9q" firstAttribute="leading" secondItem="y2i-gL-Mps" secondAttribute="leading" id="dqQ-ts-D2R"/>
                             <constraint firstAttribute="bottom" secondItem="y2i-gL-Mps" secondAttribute="bottom" id="w5P-jc-fiY"/>
                             <constraint firstItem="Ge8-gJ-B9q" firstAttribute="top" secondItem="heL-Cn-ZP1" secondAttribute="top" constant="12" id="y0Z-2V-SkH"/>
                         </constraints>

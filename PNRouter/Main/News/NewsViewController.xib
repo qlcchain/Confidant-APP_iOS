@@ -96,7 +96,7 @@
                     <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nqK-E7-K72">
-                            <rect key="frame" x="0.0" y="1" width="375" height="546"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
                     </subviews>
@@ -105,7 +105,7 @@
                         <constraint firstAttribute="trailing" secondItem="nqK-E7-K72" secondAttribute="trailing" id="Hmm-ls-lbk"/>
                         <constraint firstItem="nqK-E7-K72" firstAttribute="leading" secondItem="2jw-MK-GGa" secondAttribute="leading" id="RA7-Yy-nCR"/>
                         <constraint firstAttribute="bottom" secondItem="nqK-E7-K72" secondAttribute="bottom" id="fyd-8H-8c0"/>
-                        <constraint firstItem="nqK-E7-K72" firstAttribute="top" secondItem="2jw-MK-GGa" secondAttribute="top" constant="1" id="ww0-2t-Hmn"/>
+                        <constraint firstItem="nqK-E7-K72" firstAttribute="top" secondItem="2jw-MK-GGa" secondAttribute="top" id="ww0-2t-Hmn"/>
                     </constraints>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fmp-6N-PAy">
