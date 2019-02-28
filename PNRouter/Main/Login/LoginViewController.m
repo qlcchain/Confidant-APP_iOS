@@ -23,6 +23,7 @@
 #import "UserConfig.h"
 #import "FingetprintVerificationUtil.h"
 #import "NSString+Base64.h"
+#import "LibsodiumUtil.h"
 
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate> {
@@ -100,7 +101,7 @@
             [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
         } else {
             isLogin = YES;
-            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
+            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
             NSString *connectURL = [SystemUtil connectUrl];
             [SocketUtil.shareInstance connectWithUrl:connectURL];
         }
@@ -108,33 +109,6 @@
         isLogin = YES;
         [self sendGB];
     }
-    
-    /*
-    
-    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString] && AppD.manager == nil) {
-        isLogin = YES;
-        [self sendGB];
-        return;
-    }
-    
-    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
-        isLogin = YES;
-        [self connectSocketWithIsShowHud:YES];
-        return;
-    }
-    
-    NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
-    if (connectStatu == socketConnectStatusConnected) {
-        // 发送登陆请求
-        [SendRequestUtil sendUserLoginWithPass:shaPass userid:self.selectRouther.userid];
-    } else {
-        isLogin = YES;
-        [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
-        NSString *connectURL = [SystemUtil connectUrl];
-        [SocketUtil.shareInstance connectWithUrl:connectURL];
-    }
-     
-     */
 }
 - (IBAction)rightAction:(id)sender {
     isLogin = NO;
@@ -157,7 +131,11 @@
         NSString *usersn = values[2];
         weakSelf.selectRouther = [RouterModel checkRoutherWithSn:usersn];
         if (!weakSelf.selectRouther) {
-            // 删除所有路由
+            // 更改私钥
+            [LibsodiumUtil changeUserPrivater:values[1]];
+            NSString *name = [values[3] base64DecodedString];
+            [UserModel createUserLocalWithName:name];
+             // 删除所有路由
             [RouterModel delegateAllRouter];
             [weakSelf.showRouterArr removeAllObjects];
         }
@@ -208,7 +186,7 @@
             [[SocketUtil shareInstance] disconnect];
         }    // 连接
         if (isShow) {
-            [AppD.window showHudInView:AppD.window hint:@"Connect Router..."];
+            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
         }
         
         NSString *connectURL = [SystemUtil connectUrl];
@@ -335,7 +313,7 @@
 }
 - (void) loadHudView
 {
-    [AppD.window showHudInView:AppD.window hint:@"Check Router..."];
+    [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
 }
 - (void) sendGB
 {
@@ -409,7 +387,7 @@
 
 - (void) changeLogintStatu
 {
-     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username];
+    _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username]?:@"";
     if (self.selectRouther) {
         [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
         [RoutherConfig getRoutherConfig].currentRouterToxid = self.selectRouther.toxid;

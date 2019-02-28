@@ -274,9 +274,6 @@
                 
             } else if ([[NSString getNotNullValue:type] isEqualToString:@"type_3"]) {
                     // 帐户码
-                [LibsodiumUtil changeUserPrivater:codeValues[1]];
-                NSString *name = [codeValues[3] base64DecodedString];
-                [UserModel createUserLocalWithName:name];
                 [weakSelf scanSuccessfulWithIsAccount:codeValues];
             } else {
                 [weakSelf.view showHint:@"format error!"];

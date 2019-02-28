@@ -339,7 +339,7 @@
 }
 
 + (BOOL)verifySign:(NSString *)sign withSignPublickey:(NSString *) signPublickey timestamp:(NSString *)timestamp {
-    NSLog(@"msgstr = %@",sign);
+    //NSLog(@"msgstr = %@",sign);
         
     NSData *msgData = [sign base64DecodedData];
     const unsigned char *msgKey = [msgData bytes];
@@ -360,7 +360,7 @@
 + (NSString *) verifySignWithSignPublickey:(NSString *) signPublickey verifyMsg:(NSString *) verifyMsg
 {
     
-    NSLog(@"msgstr = %@",verifyMsg);
+    //NSLog(@"msgstr = %@",verifyMsg);
     
     NSData *msgData = [verifyMsg base64DecodedData];
     const unsigned char *msgKey = [msgData bytes];

@@ -68,7 +68,7 @@
 
 - (IBAction)nextAction:(id)sender {
     if (!_aliasTF.text || _aliasTF.text.length <= 0) {
-        [AppD.window showHint:@"Please input router alias"];
+        [AppD.window showHint:@"Please input circle alias"];
         return;
     }
     
