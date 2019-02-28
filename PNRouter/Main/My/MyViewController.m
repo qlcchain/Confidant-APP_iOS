@@ -27,19 +27,18 @@
 #import <libsodium/crypto_box.h>
 #import "EntryModel.h"
 #import "SettingViewController.h"
+#import "PTBPerformanceCenter.h"
 
-
-@interface MyViewController ()<UITableViewDelegate,UITableViewDataSource>
-{
-    
-   
+@interface MyViewController ()<UITableViewDelegate,UITableViewDataSource> {
 }
+
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (nonatomic , strong) NSMutableArray *dataArray;
 @property (nonatomic , strong) MyHeadView *myHeadView;
 @property (nonatomic , assign) CGFloat downloadedBytes;
 @property (strong, nonatomic) RMDownloadIndicator *filedIndicator_left;
 @property (weak, nonatomic) IBOutlet UILabel *lblVersion;
+
 @end
 
 @implementation MyViewController
@@ -77,7 +76,7 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@[@"Router management"],@[@"Share QRCode"],@[@"Settings"], nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@[@"Management Circles"],@[@"My QR Code"],@[@"Settings"], nil];
     }
     return _dataArray;
 }
@@ -132,6 +131,18 @@
 - (void)updateOnlineStatus:(BOOL)onLine {
 //    [self.myHeadView.lblName showBadge];
 //    self.myHeadView.lblName.badgeBgColor = onLine?[UIColor greenColor]:RGB(230, 230, 230);
+}
+
+#pragma mark - Action
+
+- (IBAction)rightAction:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    if (sender.selected) {
+        // 性能监控
+        [[PTBPerformanceCenter defaultCenter] enable];
+    } else {
+        [[PTBPerformanceCenter defaultCenter] disable];
+    }
 }
 
 #pragma mark - Transition
