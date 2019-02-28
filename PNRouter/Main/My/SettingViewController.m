@@ -25,7 +25,7 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@"Export configuration QR code",@"Status", nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@"Configuration QR code",@"Status", nil];
     }
     return _dataArray;
 }

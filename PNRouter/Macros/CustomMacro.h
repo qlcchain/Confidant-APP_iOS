@@ -10,7 +10,7 @@
 #define CustomMacro_h
 // 是否要清人除数据
 #define CLEAR_DATA  @"CLEAR_DATA"
-#define Connect_Cricle @"Connect Router..."
+#define Connect_Cricle @"Connect Circle..."
 // 数据库表名
 #define FRIEND_REQUEST_TABNAME  @"friend_requet_tableName"
 // 文件记录表

@@ -86,7 +86,7 @@
 
 - (IBAction)loginAction:(id)sender {
     if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterToxid] isEmptyString]) {
-        [self.view showHint:@"Please select the router."];
+        [self.view showHint:@"Please select the circle."];
         return;
     }
     sendCount = 0;
