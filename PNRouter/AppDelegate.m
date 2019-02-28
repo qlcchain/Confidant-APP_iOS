@@ -124,6 +124,7 @@
         if (_unlockView) {
         } else {
             @weakify_self
+            [self.window endEditing:YES];
             [self.unlockView showWithUnlockOK:^{
                 weakSelf.unlockView = nil;
             }];

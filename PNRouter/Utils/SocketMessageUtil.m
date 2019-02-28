@@ -877,7 +877,7 @@
     
     // 回复路由
     NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
-    NSDictionary *params = @{@"Action":@"PushMsg",@"Retcode":retcode,@"Msg":@"",@"ToId":ToId};
+    NSDictionary *params = @{@"Action":Action_PushMsg,@"Retcode":retcode,@"Msg":@"",@"ToId":ToId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
     // 保存记录
@@ -929,11 +929,11 @@
             NSTimeInterval timeInterval =  [[NSDate date] timeIntervalSinceDate:date];
             if (timeInterval >PLAY_TIME) {
                 [SystemUtil playSystemSound];
-                [HWUserdefault updateObject:[format stringFromDate:[NSDate date]]withKey:PLAY_KEY];
+                [HWUserdefault updateObject:[format stringFromDate:[NSDate date]] withKey:PLAY_KEY];
             }
         } else {
              [SystemUtil playSystemSound];
-             [HWUserdefault updateObject:[format stringFromDate:[NSDate date]]withKey:PLAY_KEY];
+             [HWUserdefault updateObject:[format stringFromDate:[NSDate date]] withKey:PLAY_KEY];
         }
        
     }
