@@ -218,9 +218,6 @@
 
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager {
     [KeyCUtil saveStringToKeyWithString:@"1" key:LOGIN_KEY];
-    // 发送未完成消息
-    [[SendCacheChatUtil getSendCacheChatUtilShare] start];
-    
     AppD.isLogOut = NO;
     if ([SystemUtil isSocketConnect]) {
         AppD.manager = nil;
