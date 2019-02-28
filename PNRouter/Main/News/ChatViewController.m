@@ -1425,7 +1425,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
     outputPath =  [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:outputPath];
     [TZImageManager manager].outputPath = outputPath;
-    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPreset640x480 success:^(NSString *outputPath) {
+    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetHighestQuality success:^(NSString *outputPath) {
         NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
         //UIImage *img = [SystemUtil thumbnailImageForVideo:url];
        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
@@ -1619,8 +1619,29 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }];
      // 你可以通过block或者代理，来得到用户选择的视频.
-    [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *asset) {
-        [weakSelf extracted:asset evImage:coverImage];
+    [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *phAsset) {
+        
+        PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+        options.version = PHVideoRequestOptionsVersionOriginal;
+        [[PHImageManager defaultManager] requestAVAssetForVideo:phAsset options:options resultHandler:^(AVAsset *avAsset, AVAudioMix *audioMix, NSDictionary *info) {
+            if ([avAsset isKindOfClass:[AVURLAsset class]]) {
+                AVURLAsset* urlAsset = (AVURLAsset*)avAsset;
+                NSNumber *size;
+                [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
+                CGFloat sizeMB = [size floatValue]/(1024.0*1024.0);
+                if (sizeMB <= 100) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf extracted:phAsset evImage:coverImage];
+                    });
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [AppD.window showHint:@"Video cannot be larger than 100MB"];
+                    });
+                }
+                
+            }}];
+        
+//        [weakSelf extracted:asset evImage:coverImage];
     }];
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 }

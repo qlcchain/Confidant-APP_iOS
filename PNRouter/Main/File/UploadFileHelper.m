@@ -181,7 +181,7 @@
     }];
     // 你可以通过block或者代理，来得到用户选择的视频.
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *phAsset) {
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
         PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
         options.version = PHVideoRequestOptionsVersionOriginal;
         [[PHImageManager defaultManager] requestAVAssetForVideo:phAsset options:options resultHandler:^(AVAsset *avAsset, AVAudioMix *audioMix, NSDictionary *info) {
@@ -189,17 +189,19 @@
                 AVURLAsset* urlAsset = (AVURLAsset*)avAsset;
                 NSNumber *size;
                 [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
-//                NSLog(@"size is %f",[size floatValue]/(1024.0*1024.0));
                 CGFloat sizeMB = [size floatValue]/(1024.0*1024.0);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (sizeMB <= 100) {
+                if (sizeMB <= 100) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
                         [weakSelf extracted:phAsset evImage:coverImage];
-                    } else {
-                        [AppD.window showHint:@"dddddddddddddd"];
-                    }
-                });
+                    });
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [AppD.window showHint:@"Video cannot be larger than 100MB"];
+                    });
+                }
+               
             }}];
-        
+        });
     }];
     [self.currentVC presentViewController:imagePickerVc animated:YES completion:nil];
     
@@ -215,15 +217,19 @@
     outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
     @weakify_self
     [TZImageManager manager].outputPath = outputPath;
-    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPreset640x480 success:^(NSString *outputPath) {
-        [AppD.window hideHud];
-        NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
-        //        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
-        NSURL *url = [NSURL fileURLWithPath:outputPath];
-        [weakSelf jumpToUploadFiles:@[url] isDoc:NO];
+    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetHighestQuality success:^(NSString *outputPath) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [AppD.window hideHud];
+            NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
+            //        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
+            NSURL *url = [NSURL fileURLWithPath:outputPath];
+            [weakSelf jumpToUploadFiles:@[url] isDoc:NO];
+        });
     } failure:^(NSString *errorMessage, NSError *error) {
-        [AppD.window hideHud];
-        [weakSelf.currentVC.view showHint:@"不支持当前视频格式"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [AppD.window hideHud];
+            [weakSelf.currentVC.view showHint:@"不支持当前视频格式"];
+        });
     }];
 }
 
