@@ -4,6 +4,10 @@ source 'https://github.com/CocoaPods/Specs.git'
 #use_frameworks!
 inhibit_all_warnings!
 
+def performanceTest_pods
+#    pod 'MLeaksFinder'
+    pod 'FBRetainCycleDetector'
+end
 
 def common_pods
     #    pod 'toxcore', '0.2.2'
@@ -40,6 +44,7 @@ def demo_pods
     pod 'Bugly'
 #    pod 'JCDownloader'
 #    pod 'TYAttributedLabel'
+
 end
 
 
@@ -48,5 +53,6 @@ target 'PNRouter' do
     platform :ios, '9.0'
     common_pods
     demo_pods
+    performanceTest_pods
     
 end
