@@ -135,7 +135,7 @@
         NSURL *fileUrl = obj;
         size += [NSString fileSizeAtPath:fileUrl.path];
     }];
-    _fileSizeLab.text = [NSString stringWithFormat:@"%@KB",@(size/1024)];
+    _fileSizeLab.text = [SystemUtil transformedValue:size];//[NSString stringWithFormat:@"%@KB",@()];
     _nameTF.hidden = _urlArr.count == 1?NO:YES;
 
 }
