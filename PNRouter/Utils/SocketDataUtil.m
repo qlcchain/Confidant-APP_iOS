@@ -430,7 +430,6 @@ struct ResultFile {
                 } else if (msgType == 4){
                     chatModel.lastMessage = @"[video]";
                 }
-                chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
                 [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
                 
                  [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];

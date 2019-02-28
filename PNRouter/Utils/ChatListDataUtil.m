@@ -50,6 +50,7 @@
 
     @synchronized (self) {
         // 加锁操作
+        // 在好友列表中遍历赋值
         [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *friendModel = (FriendModel *)obj;
             if ([friendModel.userId isEqualToString:model.friendID]) {
@@ -62,6 +63,7 @@
                 }
                 model.publicKey = friendModel.publicKey;
                 model.signPublicKey = friendModel.signPublicKey;
+                model.routerName = [friendModel.RouteName base64DecodedString]?[friendModel.RouteName base64DecodedString]:friendModel.RouteName;
                 *stop = YES;
             }
         }];
@@ -78,6 +80,7 @@
                 model1.chatTime = model.chatTime;
             }
             model1.draftMessage = model.draftMessage;
+            model1.routerName = model.routerName;
             [model1 bg_saveOrUpdate];
         } else {
             model.unReadNum = model.isHD?@(1):@(0);

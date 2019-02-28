@@ -572,7 +572,6 @@
         } else if (msgType == 4){
             chatModel.lastMessage = @"[video]";
         }
-        chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
         [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
     }
 }
@@ -617,7 +616,6 @@
     } else if (fileModel.FileType == 4) {
         chatModel.lastMessage = @"[video]";
     }
-    chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
     
     // 收到好友消息播放系统声音
     if (!([SocketCountUtil getShareObject].chatToId && [[SocketCountUtil getShareObject].chatToId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
@@ -842,7 +840,6 @@
         chatListModel.friendID = ToId;
         chatListModel.chatTime = [NSDate date];
         chatListModel.isHD = NO;
-        chatListModel.routerName = [RouterModel getConnectRouter].name?:@"";
         // 解密消息
         NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:PriKey];
         chatListModel.lastMessage = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:Msg nonce:Nonce];
@@ -917,7 +914,6 @@
     chatModel.chatTime = [NSDate date];
     chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
     chatModel.lastMessage = model.msg;
-    chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
     
     // 收到好友消息播放系统声音
     if (!([SocketCountUtil getShareObject].chatToId && [[SocketCountUtil getShareObject].chatToId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面

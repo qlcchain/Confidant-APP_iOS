@@ -130,10 +130,7 @@
             }];
         }
     }
-
 }
-
-
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -414,7 +411,6 @@
         }
     }
     
-    
     return YES;
 }
 
@@ -434,18 +430,12 @@
     
 }
 
-
-
-
-
-
 #pragma mark UIApplicationDelegate
 - (void)application:(UIApplication *)app
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     // 注册APNS成功, 注册deviceToken
     [MiPushSDK bindDeviceToken:deviceToken];
-    
 }
 
 - (void)application:(UIApplication *)app
