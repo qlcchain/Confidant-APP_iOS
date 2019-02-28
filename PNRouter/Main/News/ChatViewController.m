@@ -156,7 +156,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         chatModel.myID = [UserModel getUserModel].userId;
         chatModel.friendID = self.friendModel.userId;
         chatModel.isHD = NO;
-        chatModel.routerName = self.friendModel.RouteName?:@"";
         // 解密消息
         chatModel.isDraft = YES;
         chatModel.draftMessage = textString;

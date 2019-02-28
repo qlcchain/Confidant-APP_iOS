@@ -574,7 +574,6 @@
         } else if (msgType == 4){
             chatModel.lastMessage = @"[video]";
         }
-        chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
         [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
     }
 }
@@ -619,7 +618,6 @@
     } else if (fileModel.FileType == 4) {
         chatModel.lastMessage = @"[video]";
     }
-    chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
     
     // 收到好友消息播放系统声音
     if (!([SocketCountUtil getShareObject].chatToId && [[SocketCountUtil getShareObject].chatToId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
@@ -844,7 +842,6 @@
         chatListModel.friendID = ToId;
         chatListModel.chatTime = [NSDate date];
         chatListModel.isHD = NO;
-        chatListModel.routerName = [RouterModel getConnectRouter].name?:@"";
         // 解密消息
         NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:PriKey];
         chatListModel.lastMessage = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:Msg nonce:Nonce];
@@ -879,7 +876,7 @@
     
     // 回复路由
     NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
-    NSDictionary *params = @{@"Action":@"PushMsg",@"Retcode":retcode,@"Msg":@"",@"ToId":ToId};
+    NSDictionary *params = @{@"Action":Action_PushMsg,@"Retcode":retcode,@"Msg":@"",@"ToId":ToId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
     // 保存记录
@@ -919,7 +916,6 @@
     chatModel.chatTime = [NSDate date];
     chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
     chatModel.lastMessage = model.msg;
-    chatModel.routerName = [RouterModel getConnectRouter].name?:@"";
     
     // 收到好友消息播放系统声音
     if (!([SocketCountUtil getShareObject].chatToId && [[SocketCountUtil getShareObject].chatToId isEqualToString:chatModel.friendID])) { // 不在当前聊天界面
@@ -931,11 +927,11 @@
             NSTimeInterval timeInterval =  [[NSDate date] timeIntervalSinceDate:date];
             if (timeInterval >PLAY_TIME) {
                 [SystemUtil playSystemSound];
-                [HWUserdefault updateObject:[format stringFromDate:[NSDate date]]withKey:PLAY_KEY];
+                [HWUserdefault updateObject:[format stringFromDate:[NSDate date]] withKey:PLAY_KEY];
             }
         } else {
              [SystemUtil playSystemSound];
-             [HWUserdefault updateObject:[format stringFromDate:[NSDate date]]withKey:PLAY_KEY];
+             [HWUserdefault updateObject:[format stringFromDate:[NSDate date]] withKey:PLAY_KEY];
         }
        
     }
