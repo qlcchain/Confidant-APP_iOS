@@ -57,7 +57,7 @@
         NSArray *colums = @[bg_sqlKey(@"msgId"),bg_sqlKey(@"fileId"),bg_sqlKey(@"fileFrom"),bg_sqlKey(@"backSeconds"),bg_sqlKey(@"userId"),bg_sqlKey(@"toId"),bg_sqlKey(@"fileName"),bg_sqlKey(@"filePath"),bg_sqlKey(@"progess"),bg_sqlKey(@"speedSize"),bg_sqlKey(@"srcKey"),bg_sqlKey(@"optionTime"),bg_sqlKey(@"fileSize"),bg_sqlKey(@"status"),bg_sqlKey(@"fileType"),bg_sqlKey(@"fileOptionType")];
   
         NSString *columString = [colums componentsJoinedByString:@","];
-        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ order by %@ desc limit 5",columString,FILE_STATUS_TABNAME,bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"optionTime")];
+        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ order by %@ desc limit 100",columString,FILE_STATUS_TABNAME,bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"optionTime")];
         
        NSArray *results = bg_executeSql(sql, FILE_STATUS_TABNAME,[FileData class]);
         NSMutableArray *arr1 = [NSMutableArray array];

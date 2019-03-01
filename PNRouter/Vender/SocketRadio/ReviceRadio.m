@@ -320,17 +320,14 @@
 }
 - (void) sendFailedNoti
 {
-    NSLog(@"-------sendFailedNoti------");
+  
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
-    NSLog(@"-------sendFailedNotiend------");
+    
     if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
          [self sendGBFinsh];
     } else {
-        NSLog(@"-------sendRequestWithRid------");
          [self sendRequestWithRid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     }
-   
-   
 }
 
 - (void) sendGBFinsh
@@ -349,7 +346,7 @@
 - (void) sendRequestWithRid:(NSString *) rid
 {
     NSLog(@"----sendRequestWithRid---pprmap---");
-    NSString *url = [NSString stringWithFormat:@"https://pprouter.online:9001/v1/pprmap/Check?rid=%@",rid];
+    NSString *url = [NSString stringWithFormat:@"https://pprouter.online:9001/v1/pprmap/Check?rid=%@",rid?:@""];
     @weakify_self
     [AFHTTPClientV2 requestWithBaseURLStr:url params:@{} httpMethod:HttpMethodGet successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
         
