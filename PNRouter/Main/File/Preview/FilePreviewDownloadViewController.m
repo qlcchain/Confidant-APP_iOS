@@ -72,10 +72,16 @@ typedef enum : NSUInteger {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self addObserve];
+    [self viewInit];
     [self dataInit];
 }
 
 #pragma mark - Operation
+- (void)viewInit {
+    _previewBtn.layer.cornerRadius = 4;
+    _previewBtn.layer.masksToBounds = YES;
+}
+
 - (void)dataInit {
 //    _icon.image = [UIImage imageNamed:@"icon_doc_gray"];
     NSString *fileImgStr = @"";

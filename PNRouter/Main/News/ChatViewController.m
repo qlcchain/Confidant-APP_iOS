@@ -1591,9 +1591,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                         [AppD.window showHint:@"Video cannot be larger than 100MB"];
                     });
                 }
-                
             }}];
-        
 //        [weakSelf extracted:asset evImage:coverImage];
     }];
     [self presentViewController:imagePickerVc animated:YES completion:nil];
