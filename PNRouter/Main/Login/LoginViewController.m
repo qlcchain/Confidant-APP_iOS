@@ -339,7 +339,7 @@
     NSLog(@"Login View Controller alloc***************************************************");
     AppD.inLogin = NO;
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
-    _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username];
+    _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back!",[UserModel getUserModel].username];
     
     _circleBack.layer.cornerRadius = _circleBack.width/2.0;
     _circleBack.layer.masksToBounds = YES;
@@ -387,7 +387,7 @@
 
 - (void) changeLogintStatu
 {
-    _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back",[UserModel getUserModel].username]?:@"";
+    _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back!",[UserModel getUserModel].username]?:@"";
     if (self.selectRouther) {
         [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
         [RoutherConfig getRoutherConfig].currentRouterToxid = self.selectRouther.toxid;
@@ -397,7 +397,7 @@
         _loginBtn.enabled = YES;
         _lblRoutherName.textColor = [UIColor whiteColor];
         _loginBtn.backgroundColor = [UIColor whiteColor];
-        _lblDesc.text = @"*Select to re-join an existing circle or Scan the invitation QR code to join a new circle.";
+        _lblDesc.text = @"*Select to re-join a circle or scan to join a new one.";
         [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_down_gray"] forState:UIControlStateNormal];
         _circleDefaultLab.hidden = NO;
         _circleDefaultImgV.hidden = YES;
@@ -408,7 +408,7 @@
         _lblRoutherName.textColor = RGB(178, 178, 178);
         _loginBtn.backgroundColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1];
          _lblRoutherName.text = @"You haven't joined any circle";
-        _lblDesc.text = @"*Scan the invitation QR code to join your friend's Confidant circle.\n*Scan the QR code on your Confidant router to launch your circle.";
+        _lblDesc.text = @"*Scan the invitation QR code to join a Confidant Circle.\n*Scan the QR Code on your Confidant node to launch your Circle.";
         [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_gray"] forState:UIControlStateNormal];
     }
 }

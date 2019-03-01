@@ -59,51 +59,34 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import an account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U3b-Bf-Lou">
-                    <rect key="frame" x="16" y="84" width="140" height="20"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                    <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <rect key="frame" x="16" y="84" width="147.5" height="21"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                    <color key="textColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To log in to your registered account, please import your configuration QR code which can be found in 'Settings'" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XOI-13-ys8">
-                    <rect key="frame" x="16" y="112" width="343" height="28"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To log in to your registered account, please scan your configuration QR code or import it from your 'photos'." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XOI-13-ys8">
+                    <rect key="frame" x="16" y="113" width="343" height="28"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" id="8f7-iJ-o21"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where to find the configuration QR code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LcQ-iA-3rM">
-                    <rect key="frame" x="16" y="154" width="307" height="20"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                    <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How to export your configuration QR code from an account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LcQ-iA-3rM">
+                    <rect key="frame" x="16" y="155" width="319" height="14"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                    <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ko9-IY-Tkm">
-                    <rect key="frame" x="16" y="182" width="343" height="56"/>
+                    <rect key="frame" x="16" y="177" width="343" height="70"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" id="ZrM-Ux-h4h"/>
                     </constraints>
-                    <string key="text">The configuration QR code is for re-logging in to your account or synchronizing your Confidant account on new devices. 
+                    <string key="text"> Want to switch to another device with your account synchronised? Export the configuration QR code for quick login.  
 1. Go to 'My', find 'Settings'
- 2. Export the configuration QR code.</string>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import the configuration QR code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYb-Eg-Etq">
-                    <rect key="frame" x="16" y="252" width="255" height="20"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                    <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YFv-ZU-ABf">
-                    <rect key="frame" x="16" y="280" width="343" height="56"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" id="S3D-UU-sLi"/>
-                    </constraints>
-                    <string key="text">If the QR code has been saved on the device, find it in your 'Photos' to import. 
-Scan the QR code with your new device directly to sync an existing account.</string>
+2. Export the configuration QR code.</string>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -122,15 +105,12 @@ Scan the QR code with your new device directly to sync an existing account.</str
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="AYb-Eg-Etq" firstAttribute="leading" secondItem="U3b-Bf-Lou" secondAttribute="leading" id="A2Z-j8-8QE"/>
                 <constraint firstItem="LcQ-iA-3rM" firstAttribute="leading" secondItem="ko9-IY-Tkm" secondAttribute="leading" id="Bp6-EW-bB7"/>
                 <constraint firstItem="ko9-IY-Tkm" firstAttribute="leading" secondItem="U3b-Bf-Lou" secondAttribute="leading" id="Dkq-mN-PTN"/>
                 <constraint firstItem="nrr-jW-tDk" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="IdR-4i-O4Q"/>
                 <constraint firstItem="U3b-Bf-Lou" firstAttribute="top" secondItem="nrr-jW-tDk" secondAttribute="bottom" constant="20" id="Ld8-n9-eLc"/>
                 <constraint firstAttribute="trailing" secondItem="nrr-jW-tDk" secondAttribute="trailing" id="M0O-0w-hN8"/>
-                <constraint firstItem="YFv-ZU-ABf" firstAttribute="leading" secondItem="U3b-Bf-Lou" secondAttribute="leading" id="N9s-x2-Tz4"/>
                 <constraint firstItem="Xq3-Rx-yYC" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OCa-vA-aiM"/>
-                <constraint firstItem="YFv-ZU-ABf" firstAttribute="top" secondItem="AYb-Eg-Etq" secondAttribute="bottom" constant="8" id="SCZ-Re-08f"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="Xq3-Rx-yYC" secondAttribute="bottom" constant="23" id="akS-l2-Lkd"/>
                 <constraint firstAttribute="trailing" secondItem="XOI-13-ys8" secondAttribute="trailing" constant="16" id="f6r-L3-W8L"/>
                 <constraint firstItem="3cZ-oa-FDR" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="5" id="ffm-aC-qEC"/>
@@ -140,11 +120,8 @@ Scan the QR code with your new device directly to sync an existing account.</str
                 <constraint firstItem="nrr-jW-tDk" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="ihQ-lj-E1X"/>
                 <constraint firstItem="U3b-Bf-Lou" firstAttribute="leading" secondItem="XOI-13-ys8" secondAttribute="leading" id="kg4-Pd-J9d"/>
                 <constraint firstItem="LcQ-iA-3rM" firstAttribute="leading" secondItem="U3b-Bf-Lou" secondAttribute="leading" id="oIM-9i-pMq"/>
-                <constraint firstItem="AYb-Eg-Etq" firstAttribute="top" secondItem="ko9-IY-Tkm" secondAttribute="bottom" constant="14" id="oUl-EI-kUh"/>
-                <constraint firstAttribute="trailing" secondItem="YFv-ZU-ABf" secondAttribute="trailing" constant="16" id="orD-TE-lxb"/>
                 <constraint firstItem="3cZ-oa-FDR" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="pWr-ue-NmO"/>
                 <constraint firstItem="XOI-13-ys8" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="uRN-gq-eOD"/>
-                <constraint firstItem="AYb-Eg-Etq" firstAttribute="leading" secondItem="YFv-ZU-ABf" secondAttribute="leading" id="unR-bk-eaR"/>
                 <constraint firstItem="XOI-13-ys8" firstAttribute="top" secondItem="U3b-Bf-Lou" secondAttribute="bottom" constant="8" id="wbu-uY-wNK"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>

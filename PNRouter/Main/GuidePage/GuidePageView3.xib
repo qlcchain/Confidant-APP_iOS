@@ -30,14 +30,14 @@
                                 <color key="titleColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_guide_2" translatesAutoresizingMaskIntoConstraints="NO" id="zjq-dh-WYi">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_guide_3" translatesAutoresizingMaskIntoConstraints="NO" id="zjq-dh-WYi">
                             <rect key="frame" x="0.0" y="80" width="375" height="200"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="zjq-dh-WYi" secondAttribute="height" multiplier="15:8" id="E8w-rQ-adR"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The user has account management" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2uk-wJ-Mo1">
-                            <rect key="frame" x="32" y="317" width="311" height="19.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unique ID and complete ownership of the account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2uk-wJ-Mo1">
+                            <rect key="frame" x="32" y="317" width="311" height="38.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -71,6 +71,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_guide_2" width="375" height="200"/>
+        <image name="icon_guide_3" width="375" height="200"/>
     </resources>
 </document>
