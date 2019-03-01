@@ -320,10 +320,13 @@
 }
 - (void) sendFailedNoti
 {
+    NSLog(@"-------sendFailedNoti------");
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
+    NSLog(@"-------sendFailedNotiend------");
     if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
          [self sendGBFinsh];
     } else {
+        NSLog(@"-------sendRequestWithRid------");
          [self sendRequestWithRid:[RoutherConfig getRoutherConfig].currentRouterToxid];
     }
    

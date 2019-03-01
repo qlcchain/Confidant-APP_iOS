@@ -57,7 +57,7 @@
         NSArray *colums = @[bg_sqlKey(@"msgId"),bg_sqlKey(@"fileId"),bg_sqlKey(@"fileFrom"),bg_sqlKey(@"backSeconds"),bg_sqlKey(@"userId"),bg_sqlKey(@"toId"),bg_sqlKey(@"fileName"),bg_sqlKey(@"filePath"),bg_sqlKey(@"progess"),bg_sqlKey(@"speedSize"),bg_sqlKey(@"srcKey"),bg_sqlKey(@"optionTime"),bg_sqlKey(@"fileSize"),bg_sqlKey(@"status"),bg_sqlKey(@"fileType"),bg_sqlKey(@"fileOptionType")];
   
         NSString *columString = [colums componentsJoinedByString:@","];
-        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@",columString,FILE_STATUS_TABNAME,bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId)];
+        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ order by %@ desc limit 5",columString,FILE_STATUS_TABNAME,bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"optionTime")];
         
        NSArray *results = bg_executeSql(sql, FILE_STATUS_TABNAME,[FileData class]);
         NSMutableArray *arr1 = [NSMutableArray array];
@@ -75,6 +75,16 @@
             if (self.sourceArr.count > 0) {
                 [self.sourceArr removeAllObjects];
             }
+//            NSArray *sortArr1 = [arr1 sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+//                FileData *model1 = obj1;
+//                FileData *model2 = obj2;
+//                return [model2.optionTime compare:model1.optionTime];
+//            }];
+//            NSArray *sortArr2 = [arr2 sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+//                FileData *model1 = obj1;
+//                FileData *model2 = obj2;
+//                return [model2.optionTime compare:model1.optionTime];
+//            }];
              [self.sourceArr addObject:arr1];
              [self.sourceArr addObject:arr2];
             
