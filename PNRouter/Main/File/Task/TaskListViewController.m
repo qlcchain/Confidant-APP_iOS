@@ -52,36 +52,71 @@
 - (void) getAllTaskList
 {
   //  [FileData bg_drop:FILE_STATUS_TABNAME];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSArray *arr11s = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+    
+   
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        NSArray *colums = @[bg_sqlKey(@"msgId"),bg_sqlKey(@"fileId"),bg_sqlKey(@"fileFrom"),bg_sqlKey(@"backSeconds"),bg_sqlKey(@"userId"),bg_sqlKey(@"toId"),bg_sqlKey(@"fileName"),bg_sqlKey(@"filePath"),bg_sqlKey(@"progess"),bg_sqlKey(@"speedSize"),bg_sqlKey(@"srcKey"),bg_sqlKey(@"optionTime"),bg_sqlKey(@"fileSize"),bg_sqlKey(@"status"),bg_sqlKey(@"fileType"),bg_sqlKey(@"fileOptionType")];
+        
+        NSString *columString = [colums componentsJoinedByString:@","];
+        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@",columString,FILE_STATUS_TABNAME,bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId)];
+
+       NSArray *results = bg_executeSql(sql, FILE_STATUS_TABNAME,[FileData class]);
+        
+       // NSArray *arr11s = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId)]];
         
         NSMutableArray *arr1 = [NSMutableArray array];
-        if (arr11s && arr11s.count>0) {
-            [arr1 addObjectsFromArray:arr11s];
-        }
-        
-        if (_sourceArr.count > 0) {
-            [_sourceArr removeAllObjects];
-        }
-        
-        [self.sourceArr addObject:arr1];
-        
-        NSArray *arr22s = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
-        
         NSMutableArray *arr2 = [NSMutableArray array];
-        if (arr22s && arr22s.count>0) {
-            [arr2 addObjectsFromArray:arr22s];
+        if (results && results.count>0) {
+            
+            [results enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                FileData *fileModel = obj;
+                if (fileModel.status != 1) {
+                    [arr1 addObject:fileModel];
+                } else {
+                    [arr2 addObject:fileModel];
+                }
+            }];
+            if (self.sourceArr.count > 0) {
+                [self.sourceArr removeAllObjects];
+            }
+             [self.sourceArr addObject:arr1];
+             [self.sourceArr addObject:arr2];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [self.mainTable reloadData];
+                [self addObserver];
+                [self.view hideHud];
+                
+                if ([self.sourceArr[0] count] == 0 && [self.sourceArr[1] count] == 0) {
+                    [self viewInit];
+                }
+            });
+           
         }
-        
-        [self.sourceArr addObject:arr2];
-        
-        [self addObserver];
-        [self.view hideHud];
-        [self.mainTable reloadData];
-        if ([self.sourceArr[0] count] == 0 && [self.sourceArr[1] count] == 0) {
-            [self viewInit];
-        }
+//        NSArray *arr22s = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+//
+//        NSMutableArray *arr2 = [NSMutableArray array];
+//        if (arr22s && arr22s.count>0) {
+//            [arr2 addObjectsFromArray:arr22s];
+//        }
+//        [self.sourceArr addObject:arr2];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//
+//            [self.mainTable reloadData];
+//            [self addObserver];
+//            [self.view hideHud];
+//
+//            if ([self.sourceArr[0] count] == 0 && [self.sourceArr[1] count] == 0) {
+//                [self viewInit];
+//            }
+//        });
     });
+    
+    
+ 
   
     
     /*

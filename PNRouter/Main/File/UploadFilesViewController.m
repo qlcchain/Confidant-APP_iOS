@@ -149,7 +149,6 @@
 - (IBAction)uploadAction:(id)sender {
     UploadFileManager *uploadFileM = [UploadFileManager getShareObject];
     //TODO:赋值
-    
     _uploadParams = [NSMutableArray array];
     @weakify_self
     [_urlArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {

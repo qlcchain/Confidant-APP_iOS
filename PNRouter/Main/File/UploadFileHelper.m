@@ -169,6 +169,12 @@
         if (photos.count > 0) {
             UIImage *img = photos[0];
             NSData *imgData = UIImageJPEGRepresentation(img,1.0);
+            
+            if (imgData.length/(1024*1024) > 100) {
+                [AppD.window showHint:@"Image cannot be larger than 100MB"];
+                return;
+            }
+            
             NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
             NSString *outputPath = [NSString stringWithFormat:@"%@.jpg",mills];
             outputPath =  [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:outputPath];
@@ -192,7 +198,7 @@
                 CGFloat sizeMB = [size floatValue]/(1024.0*1024.0);
                 if (sizeMB <= 100) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [weakSelf extracted:phAsset evImage:coverImage];
+                        [weakSelf extractedVideWithAsset:urlAsset evImage:coverImage];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -208,6 +214,27 @@
 }
 
 #pragma mark -视频导出到本地
+- (void)extractedVideWithAsset:(AVURLAsset *)asset evImage:(UIImage *) evImage
+{
+   // [AppD.window showHudInView:AppD.window hint:@"File encrypting"];
+    
+    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
+    outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
+    NSURL *url = [NSURL fileURLWithPath:outputPath];
+    
+    BOOL result = [[NSFileManager defaultManager] copyItemAtURL:asset.URL toURL:url error:nil];
+    if (result) {
+      //  [AppD.window hideHud];
+        [self jumpToUploadFiles:@[url] isDoc:NO];
+    } else {
+      //  [AppD.window hideHud];
+        [self.currentVC.view showHint:@"不支持当前视频格式"];
+    }
+    
+   
+}
+
 - (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
     
     [AppD.window showHudInView:AppD.window hint:@"File encrypting"];
@@ -215,9 +242,12 @@
     NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
     outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
+    
+    
+    
     @weakify_self
     [TZImageManager manager].outputPath = outputPath;
-    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetHighestQuality success:^(NSString *outputPath) {
+    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetMediumQuality success:^(NSString *outputPath) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [AppD.window hideHud];
             NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
@@ -249,6 +279,12 @@
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url NS_DEPRECATED_IOS(8_0, 11_0, "Implement documentPicker:didPickDocumentsAtURLs: instead") {
     NSLog(@"didPickDocumentAtURL:%@",url);
+
+    NSData *txtData = [NSData dataWithContentsOfURL:url];
+    if (txtData.length/(1024*1024) > 100) {
+        [AppD.window showHint:@"File cannot be larger than 100MB"];
+        return;
+    }
     [self jumpToUploadFiles:@[url] isDoc:YES];
 }
 

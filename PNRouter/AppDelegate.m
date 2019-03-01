@@ -13,7 +13,6 @@
 #import "CDChatList.h"
 #import <objc/runtime.h>
 #import "KeyCUtil.h"
-#import <BGFMDB/BGFMDB.h>
 #import "FriendModel.h"
 #import "SystemUtil.h"
 #import "PNRouter-Swift.h"

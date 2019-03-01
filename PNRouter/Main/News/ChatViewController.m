@@ -75,6 +75,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @end
 
 @implementation ChatViewController
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void) enterFore
 {
    
@@ -1396,66 +1402,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     return imgBackView;
 }
 
-#pragma mark -视频导出到本地完成 并发送
-- (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
-    
-    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
-    int msgid = [mill intValue];
-    CDMessageModel *model = [[CDMessageModel alloc] init];
-    model.msgType = CDMessageTypeMedia;
-    model.messageStatu = -1;
-    model.FromId = [UserConfig getShareObject].userId;
-    model.ToId = self.friendModel.userId;
-    model.msgState = CDMessageStateSending;
-    model.messageId = [NSString stringWithFormat:@"%d",msgid];;
-    model.fileID = msgid;
-    CTDataConfig config = [CTData defaultConfig];
-    config.isOwner = YES;
-    model.willDisplayTime = YES;
-     model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
-    model.publicKey = self.friendModel.publicKey;
-    model.ctDataconfig = config;
-    model.mediaImage = evImage;
-    NSString *nkName = [UserModel getUserModel].username;
-    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
-    [self.listView addMessagesToBottom:@[model]];
-    
-//    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
-    outputPath =  [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:outputPath];
-    [TZImageManager manager].outputPath = outputPath;
-    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetHighestQuality success:^(NSString *outputPath) {
-        NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
-        //UIImage *img = [SystemUtil thumbnailImageForVideo:url];
-       __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
-        
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            
-            model.fileSize = mediaData.length;
-            model.fileName = [[outputPath componentsSeparatedByString:@"/"] lastObject];
-            // 生成32位对称密钥
-            NSString *msgKey = [SystemUtil get32AESKey];
-            NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-            NSString *symmetKey = [symmetData base64EncodedString];
-            // 好友公钥加密对称密钥
-            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
-            // 自己公钥加密对称密钥
-            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
-            
-            NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-            mediaData = aesEncryptData(mediaData,msgKeyData);
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                 [self sendFileWithToid:self.friendModel.userId fileName:model.fileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey];
-            });
-        });
-        
-        
-    } failure:^(NSString *errorMessage, NSError *error) {
-        [self.view showHint:@"不支持当前视频格式"];
-    }];
-}
+
 
 - (void)pushTZImagePickerControllerWithIsSelectImgage:(BOOL) isImage {
     
@@ -1577,6 +1524,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         if (photos.count > 0) {
             UIImage *img = photos[0];
             NSData *imgData = UIImageJPEGRepresentation(img,1.0);
+            
+            if (imgData.length/(1024*1024) > 100) {
+                [AppD.window showHint:@"Image cannot be larger than 100MB"];
+                return;
+            }
+            
             NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
             NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
             int msgid = [mill intValue];
@@ -1631,7 +1584,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 CGFloat sizeMB = [size floatValue]/(1024.0*1024.0);
                 if (sizeMB <= 100) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [weakSelf extracted:phAsset evImage:coverImage];
+                        [weakSelf extractedVideWithAsset:urlAsset evImage:coverImage];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1644,6 +1597,129 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 //        [weakSelf extracted:asset evImage:coverImage];
     }];
     [self presentViewController:imagePickerVc animated:YES completion:nil];
+}
+
+- (void)extractedVideWithAsset:(AVURLAsset *)asset evImage:(UIImage *) evImage
+{
+    // [AppD.window showHudInView:AppD.window hint:@"File encrypting"];
+    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+    int msgid = [mill intValue];
+    
+    CDMessageModel *model = [[CDMessageModel alloc] init];
+    model.msgType = CDMessageTypeMedia;
+    model.messageStatu = -1;
+    model.FromId = [UserConfig getShareObject].userId;
+    model.ToId = self.friendModel.userId;
+    model.msgState = CDMessageStateSending;
+    model.messageId = [NSString stringWithFormat:@"%d",msgid];;
+    model.fileID = msgid;
+    CTDataConfig config = [CTData defaultConfig];
+    config.isOwner = YES;
+    model.willDisplayTime = YES;
+    model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+    model.publicKey = self.friendModel.publicKey;
+    model.ctDataconfig = config;
+    model.mediaImage = evImage;
+    NSString *nkName = [UserModel getUserModel].username;
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+    [self.listView addMessagesToBottom:@[model]];
+    
+    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
+    outputPath =  [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:outputPath];
+    NSURL *url = [NSURL fileURLWithPath:outputPath];
+    
+    BOOL result = [[NSFileManager defaultManager] copyItemAtURL:asset.URL toURL:url error:nil];
+    
+    if (result) {
+        NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
+        //UIImage *img = [SystemUtil thumbnailImageForVideo:url];
+        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            
+            model.fileSize = mediaData.length;
+            model.fileName = [[outputPath componentsSeparatedByString:@"/"] lastObject];
+            // 生成32位对称密钥
+            NSString *msgKey = [SystemUtil get32AESKey];
+            NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *symmetKey = [symmetData base64EncodedString];
+            // 好友公钥加密对称密钥
+            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
+            // 自己公钥加密对称密钥
+            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+            
+            NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+            mediaData = aesEncryptData(mediaData,msgKeyData);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self sendFileWithToid:self.friendModel.userId fileName:model.fileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey];
+            });
+        });
+    } else {
+        //  [AppD.window hideHud];
+        [self.view showHint:@"不支持当前视频格式"];
+    }
+}
+
+#pragma mark -视频导出到本地完成 并发送
+- (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
+    
+    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+    int msgid = [mill intValue];
+    CDMessageModel *model = [[CDMessageModel alloc] init];
+    model.msgType = CDMessageTypeMedia;
+    model.messageStatu = -1;
+    model.FromId = [UserConfig getShareObject].userId;
+    model.ToId = self.friendModel.userId;
+    model.msgState = CDMessageStateSending;
+    model.messageId = [NSString stringWithFormat:@"%d",msgid];;
+    model.fileID = msgid;
+    CTDataConfig config = [CTData defaultConfig];
+    config.isOwner = YES;
+    model.willDisplayTime = YES;
+    model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+    model.publicKey = self.friendModel.publicKey;
+    model.ctDataconfig = config;
+    model.mediaImage = evImage;
+    NSString *nkName = [UserModel getUserModel].username;
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+    [self.listView addMessagesToBottom:@[model]];
+    
+    //    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
+    outputPath =  [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:outputPath];
+    [TZImageManager manager].outputPath = outputPath;
+    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetHighestQuality success:^(NSString *outputPath) {
+        NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
+        //UIImage *img = [SystemUtil thumbnailImageForVideo:url];
+        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
+        
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            
+            model.fileSize = mediaData.length;
+            model.fileName = [[outputPath componentsSeparatedByString:@"/"] lastObject];
+            // 生成32位对称密钥
+            NSString *msgKey = [SystemUtil get32AESKey];
+            NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *symmetKey = [symmetData base64EncodedString];
+            // 好友公钥加密对称密钥
+            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
+            // 自己公钥加密对称密钥
+            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+            
+            NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+            mediaData = aesEncryptData(mediaData,msgKeyData);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self sendFileWithToid:self.friendModel.userId fileName:model.fileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey];
+            });
+        });
+        
+        
+    } failure:^(NSString *errorMessage, NSError *error) {
+        [self.view showHint:@"不支持当前视频格式"];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -1675,6 +1751,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (urls && urls.count > 0) {
         NSURL *fileUrl = urls[0];
         NSData *txtData = [NSData dataWithContentsOfURL:fileUrl];
+        if (txtData.length/(1024*1024) > 100) {
+            [AppD.window showHint:@"File cannot be larger than 100MB"];
+            return;
+        }
         NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
         NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
         int msgid = [mill intValue];
