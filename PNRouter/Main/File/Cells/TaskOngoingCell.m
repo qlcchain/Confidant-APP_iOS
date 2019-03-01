@@ -24,6 +24,41 @@
 
 @implementation TaskOngoingCell
 
+// 重新上传文件
+- (void) deUploadFile
+{
+    if ([SystemUtil isSocketConnect]) { // 是socket
+        SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+        dataUtil.srcKey = self.fileModel.srcKey;
+        dataUtil.fileid = [NSString stringWithFormat:@"%d",self.fileModel.fileId];
+        [dataUtil sendFileId:@"" fileName:self.fileModel.fileName fileData:self.fileModel.fileData fileid:self.fileModel.fileId fileType:self.fileModel.fileType messageid:@"" srcKey:self.fileModel.srcKey dstKey:@""];
+        [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+    } else { // tox
+        NSString *fileMd5 = @"";
+        NSString *filePath = self.fileModel.filePath;
+        if ([SystemUtil filePathisExist:self.fileModel.filePath]) {
+            fileMd5 = [MD5Util md5WithPath:self.fileModel.filePath];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:self.fileModel.fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(self.fileModel.fileSize),@"FileType":@(self.fileModel.fileType),@"SrcKey":self.fileModel.srcKey,@"DstKey":@"",@"FileId":@(self.fileModel.fileId)};
+                [SendToxRequestUtil uploadFileWithFilePath:filePath parames:parames fileData:self.fileModel.fileData];
+            });
+            
+        } else {
+            filePath = [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:self.fileModel.fileName];
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                BOOL isSuccess = [self.fileModel.fileData writeToFile:filePath atomically:YES];
+                if (isSuccess) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:self.fileModel.fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(self.fileModel.fileSize),@"FileType":@(self.fileModel.fileType),@"SrcKey":self.fileModel.srcKey,@"DstKey":@"",@"FileId":@(self.fileModel.fileId)};
+                        [SendToxRequestUtil uploadFileWithFilePath:filePath parames:parames fileData:self.fileModel.fileData];
+                    });
+                }
+            });
+        }
+    }
+}
+
 - (IBAction)optionAction:(id)sender {
     
    
@@ -37,36 +72,28 @@
     _optionBtn.userInteractionEnabled = NO;
     
     if (self.fileModel.fileOptionType == 1) { // 上传
-        if ([SystemUtil isSocketConnect]) { // 是socket
-            SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-            dataUtil.srcKey = self.fileModel.srcKey;
-            dataUtil.fileid = [NSString stringWithFormat:@"%d",self.fileModel.fileId];
-            [dataUtil sendFileId:@"" fileName:self.fileModel.fileName fileData:self.fileModel.fileData fileid:self.fileModel.fileId fileType:self.fileModel.fileType messageid:@"" srcKey:self.fileModel.srcKey dstKey:@""];
-            [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
-        } else { // tox
-            NSString *fileMd5 = @"";
-            NSString *filePath = self.fileModel.filePath;
-            if ([SystemUtil filePathisExist:self.fileModel.filePath]) {
-                fileMd5 = [MD5Util md5WithPath:self.fileModel.filePath];
+        
+        if (!self.fileModel.fileData || self.fileModel.fileData.length == 0) {
+            
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ and %@=%@",bg_sqlKey(@"fileData"),FILE_STATUS_TABNAME,bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.fileModel.srcKey)];
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:self.fileModel.fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(self.fileModel.fileSize),@"FileType":@(self.fileModel.fileType),@"SrcKey":self.fileModel.srcKey,@"DstKey":@"",@"FileId":@(self.fileModel.fileId)};
-                    [SendToxRequestUtil uploadFileWithFilePath:filePath parames:parames fileData:self.fileModel.fileData];
-                });
+                NSArray *results = bg_executeSql(sql, FILE_STATUS_TABNAME,[FileData class]);
+                if (results && results.count > 0) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        FileData *resultModel = results[0];
+                        self.fileModel.fileData = resultModel.fileData;
+                        [self deUploadFile];
+                    });
+                }
                 
-            } else {
-               filePath = [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:self.fileModel.fileName];
-                dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                    BOOL isSuccess = [self.fileModel.fileData writeToFile:filePath atomically:YES];
-                    if (isSuccess) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:self.fileModel.fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(self.fileModel.fileSize),@"FileType":@(self.fileModel.fileType),@"SrcKey":self.fileModel.srcKey,@"DstKey":@"",@"FileId":@(self.fileModel.fileId)};
-                            [SendToxRequestUtil uploadFileWithFilePath:filePath parames:parames fileData:self.fileModel.fileData];
-                        });
-                    }
-                });
-            }
+            });
+        } else {
+            [self deUploadFile];
         }
+        
+        
     } else { // 下载
          if ([SystemUtil isSocketConnect]) { // 是socket
              

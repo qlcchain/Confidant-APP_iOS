@@ -53,7 +53,7 @@
                 FileData *fileModel = array[0];
                 fileModel.status = 1;
                 fileModel.progess = 1;
-                fileModel.fileData = nil;
+                fileModel.fileData = [[NSData alloc] init];
                 [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
                 }];
@@ -91,7 +91,7 @@
                 FileData *fileModel = array[0];
                 fileModel.status = 3;
                 fileModel.progess = 0.0;
-                fileModel.fileData = nil;
+                fileModel.fileData = [NSData data];
                 [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileModel];
                 }];

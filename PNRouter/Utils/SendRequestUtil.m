@@ -186,7 +186,8 @@
 #pragma mark - 上传文件请求
 + (void)sendUploadFileReqWithUserId:(NSString *)UserId FileName:(NSString *)FileName FileSize:(NSNumber *)FileSize FileType:(NSNumber *)FileType showHud:(BOOL)showHud fetchParam:(void(^)(NSDictionary *dic))paramB {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+       // File encrypting
+        [AppD.window showHudInView:AppD.window hint:@"Upload..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_UploadFileReq,@"UserId":UserId?:@"",@"FileName":FileName?:@"",@"FileSize":FileSize?:@"",@"FileType":FileType?:@""};
     [SocketMessageUtil sendVersion2WithParams:params fetchParam:^(NSDictionary *dic) {
