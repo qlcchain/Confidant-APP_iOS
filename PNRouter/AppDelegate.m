@@ -38,7 +38,7 @@
 #import "SocketMessageUtil.h"
 
 
-@interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate>
+@interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate,UNUserNotificationCenterDelegate>
 {
     BOOL isBackendRun;
 }
