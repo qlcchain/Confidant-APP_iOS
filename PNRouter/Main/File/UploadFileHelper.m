@@ -235,33 +235,33 @@
    
 }
 
-- (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
-    
-    [AppD.window showHudInView:AppD.window hint:@"File encrypting"];
-    
-    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
-    outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
-    
-    
-    
-    @weakify_self
-    [TZImageManager manager].outputPath = outputPath;
-    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetMediumQuality success:^(NSString *outputPath) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [AppD.window hideHud];
-            NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
-            //        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
-            NSURL *url = [NSURL fileURLWithPath:outputPath];
-            [weakSelf jumpToUploadFiles:@[url] isDoc:NO];
-        });
-    } failure:^(NSString *errorMessage, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [AppD.window hideHud];
-            [weakSelf.currentVC.view showHint:@"不支持当前视频格式"];
-        });
-    }];
-}
+//- (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
+//    
+//    [AppD.window showHudInView:AppD.window hint:@"File encrypting"];
+//    
+//    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+//    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
+//    outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
+//    
+//    
+//    
+//    @weakify_self
+//    [TZImageManager manager].outputPath = outputPath;
+//    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetMediumQuality success:^(NSString *outputPath) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [AppD.window hideHud];
+//            NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
+//            //        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
+//            NSURL *url = [NSURL fileURLWithPath:outputPath];
+//            [weakSelf jumpToUploadFiles:@[url] isDoc:NO];
+//        });
+//    } failure:^(NSString *errorMessage, NSError *error) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [AppD.window hideHud];
+//            [weakSelf.currentVC.view showHint:@"不支持当前视频格式"];
+//        });
+//    }];
+//}
 
 #pragma mark - UIDocumentPickerDelegate
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls NS_AVAILABLE_IOS(11_0) {
