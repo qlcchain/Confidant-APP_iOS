@@ -17,6 +17,8 @@
 }
 @property (weak, nonatomic) IBOutlet UITextField *pwOldTF;
 @property (weak, nonatomic) IBOutlet UITextField *pwNewTF;
+@property (weak, nonatomic) IBOutlet UITextField *pwConfirmTF;
+
 @property (weak, nonatomic) IBOutlet UIButton *updateBtn;
 
 @end
@@ -41,6 +43,7 @@
    // self.view.backgroundColor = MAIN_WHITE_COLOR;
     _pwOldTF.delegate = self;
     _pwNewTF.delegate = self;
+    _pwConfirmTF.delegate = self;
     [self addObserve];
     [self renderView];
 }
@@ -75,11 +78,15 @@
         return;
     }
     if (![_pwOldTF.text isEqualToString:_RouterPW]) {
-        [AppD.window showHint:@"Old password is wrong"];
+        [AppD.window showHint:@"Old password is wrong."];
         return;
     }
     if ([[NSString getNotNullValue:_pwNewTF.text.trim] isEmptyString] || _pwNewTF.text.trim.length !=8) {
         [self.view showHint:@"Your password must include 8 charactors."];
+        return;
+    }
+    if (![_pwNewTF.text.trim isEqualToString:_pwConfirmTF.text.trim]) {
+        [self.view showHint:@"The new password entered twice is different."];
         return;
     }
     NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];

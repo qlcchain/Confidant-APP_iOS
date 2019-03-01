@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ModifyRouterPWViewController">
             <connections>
+                <outlet property="pwConfirmTF" destination="beJ-zW-iVp" id="0ef-yq-CLX"/>
                 <outlet property="pwNewTF" destination="G6x-KN-dVc" id="SYQ-nH-0XL"/>
                 <outlet property="pwOldTF" destination="j11-A0-ztV" id="oAw-Hx-Way"/>
                 <outlet property="updateBtn" destination="M6w-do-PFm" id="R4c-cd-adD"/>
@@ -75,6 +76,22 @@
                                         <constraint firstAttribute="height" constant="1" id="Nr4-Rj-9Bp"/>
                                     </constraints>
                                 </view>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm New Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="beJ-zW-iVp">
+                                    <rect key="frame" x="48" y="132" width="279" height="49"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="49" id="VcP-0Q-EeF"/>
+                                    </constraints>
+                                    <nil key="textColor"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                </textField>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xx3-dZ-yRk">
+                                    <rect key="frame" x="48" y="181" width="279" height="1"/>
+                                    <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="GbL-gl-l0D"/>
+                                    </constraints>
+                                </view>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Old Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="j11-A0-ztV">
                                     <rect key="frame" x="48" y="32" width="279" height="49"/>
                                     <constraints>
@@ -92,13 +109,13 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*You are advised to change your activation code on a regular basis to safeguard your privacy. " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vwm-wU-XPr">
-                                    <rect key="frame" x="48" y="144" width="279" height="26.5"/>
+                                    <rect key="frame" x="48" y="194" width="279" height="26.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                     <color key="textColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="deviceRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M6w-do-PFm">
-                                    <rect key="frame" x="48" y="214.5" width="279" height="44"/>
+                                    <rect key="frame" x="48" y="264.5" width="279" height="44"/>
                                     <color key="backgroundColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="deviceRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="T7u-fV-2UF"/>
@@ -116,11 +133,14 @@
                             <constraints>
                                 <constraint firstItem="M6w-do-PFm" firstAttribute="top" secondItem="vwm-wU-XPr" secondAttribute="bottom" constant="44" id="6tv-Gg-0Ws"/>
                                 <constraint firstItem="j11-A0-ztV" firstAttribute="leading" secondItem="6nt-aK-cW5" secondAttribute="leading" constant="48" id="GkO-Qh-mZy"/>
+                                <constraint firstItem="beJ-zW-iVp" firstAttribute="top" secondItem="3bs-pf-cdl" secondAttribute="bottom" id="HUg-oi-HTb"/>
+                                <constraint firstItem="Xx3-dZ-yRk" firstAttribute="trailing" secondItem="beJ-zW-iVp" secondAttribute="trailing" id="Hm4-ie-2bK"/>
                                 <constraint firstAttribute="trailing" secondItem="M6w-do-PFm" secondAttribute="trailing" constant="48" id="MUG-X2-2aI"/>
                                 <constraint firstItem="G6x-KN-dVc" firstAttribute="top" secondItem="TH4-Xj-pPd" secondAttribute="bottom" id="OSb-0H-Gbu"/>
+                                <constraint firstItem="beJ-zW-iVp" firstAttribute="leading" secondItem="G6x-KN-dVc" secondAttribute="leading" id="Pfa-Uh-wDs"/>
                                 <constraint firstItem="TH4-Xj-pPd" firstAttribute="top" secondItem="j11-A0-ztV" secondAttribute="bottom" id="UaY-yL-zg8"/>
                                 <constraint firstItem="j11-A0-ztV" firstAttribute="top" secondItem="6nt-aK-cW5" secondAttribute="top" constant="32" id="Uad-me-gYj"/>
-                                <constraint firstItem="vwm-wU-XPr" firstAttribute="top" secondItem="3bs-pf-cdl" secondAttribute="bottom" constant="12" id="WIF-Ka-qVb"/>
+                                <constraint firstItem="vwm-wU-XPr" firstAttribute="top" secondItem="3bs-pf-cdl" secondAttribute="bottom" constant="62" id="WIF-Ka-qVb"/>
                                 <constraint firstItem="TH4-Xj-pPd" firstAttribute="leading" secondItem="j11-A0-ztV" secondAttribute="leading" id="XPq-Wa-lG5"/>
                                 <constraint firstItem="3bs-pf-cdl" firstAttribute="top" secondItem="G6x-KN-dVc" secondAttribute="bottom" id="Yec-Bw-NLu"/>
                                 <constraint firstItem="TH4-Xj-pPd" firstAttribute="trailing" secondItem="j11-A0-ztV" secondAttribute="trailing" id="YyR-Eo-Ocl"/>
@@ -128,8 +148,11 @@
                                 <constraint firstItem="vwm-wU-XPr" firstAttribute="trailing" secondItem="G6x-KN-dVc" secondAttribute="trailing" id="aAB-Fj-2qz"/>
                                 <constraint firstItem="M6w-do-PFm" firstAttribute="leading" secondItem="6nt-aK-cW5" secondAttribute="leading" constant="48" id="bBr-Ck-hQq"/>
                                 <constraint firstItem="3bs-pf-cdl" firstAttribute="leading" secondItem="G6x-KN-dVc" secondAttribute="leading" id="bUR-pf-6M5"/>
+                                <constraint firstItem="Xx3-dZ-yRk" firstAttribute="leading" secondItem="beJ-zW-iVp" secondAttribute="leading" id="ev3-cx-9bZ"/>
                                 <constraint firstAttribute="trailing" secondItem="j11-A0-ztV" secondAttribute="trailing" constant="48" id="he2-zC-SRd"/>
+                                <constraint firstItem="Xx3-dZ-yRk" firstAttribute="top" secondItem="beJ-zW-iVp" secondAttribute="bottom" id="iZE-PV-eDa"/>
                                 <constraint firstItem="G6x-KN-dVc" firstAttribute="leading" secondItem="6nt-aK-cW5" secondAttribute="leading" constant="48" id="mag-Sg-g3F"/>
+                                <constraint firstItem="beJ-zW-iVp" firstAttribute="trailing" secondItem="G6x-KN-dVc" secondAttribute="trailing" id="r2o-Cm-ztc"/>
                                 <constraint firstItem="3bs-pf-cdl" firstAttribute="trailing" secondItem="G6x-KN-dVc" secondAttribute="trailing" id="wHR-2q-QwI"/>
                                 <constraint firstAttribute="trailing" secondItem="G6x-KN-dVc" secondAttribute="trailing" constant="48" id="x8N-lP-p7I"/>
                             </constraints>
