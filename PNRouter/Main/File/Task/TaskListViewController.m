@@ -54,7 +54,6 @@
   //  [FileData bg_drop:FILE_STATUS_TABNAME];
     dispatch_async(dispatch_get_main_queue(), ^{
         NSArray *arr11s = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
-        
         NSMutableArray *arr1 = [NSMutableArray array];
         if (arr11s && arr11s.count>0) {
             [arr1 addObjectsFromArray:arr11s];

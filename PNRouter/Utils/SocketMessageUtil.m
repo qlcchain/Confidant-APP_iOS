@@ -961,7 +961,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:RECEIVE_DELET_MESSAGE_NOTI object:@[MsgId,FriendId]];
     
     NSString *retcode = @"0"; // 0：消息删除成功   1：目标不可达   2：其他错误
-    NSDictionary *params = @{@"Action":@"PushDelMsg",@"Retcode":retcode,@"Msg":@""  ,@"ToId":UserId};
+    NSDictionary *params = @{@"Action":Action_PushDelMsg,@"Retcode":retcode,@"Msg":@""  ,@"ToId":UserId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
 }
@@ -1269,7 +1269,7 @@
 #pragma mark - Base
 + (NSDictionary *)getBaseParams {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":SOCKET_APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION1,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 + (NSDictionary *)getBaseParams3 {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
@@ -1282,18 +1282,19 @@
 
 + (NSDictionary *)getMutBaseParamsWithMore {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":SOCKET_APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION1,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRegiserBaseParams {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION2,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION3,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION1,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
+
 + (NSDictionary *)getRecevieBaseParams3:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION3,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
@@ -1306,7 +1307,7 @@
 
 + (NSDictionary *)getRecevieBaseVersion2Params:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION2,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 
