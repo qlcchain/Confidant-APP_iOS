@@ -333,6 +333,13 @@
     
 }
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -340,7 +347,6 @@
     AppD.inLogin = NO;
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back!",[UserModel getUserModel].username];
-    
     _circleBack.layer.cornerRadius = _circleBack.width/2.0;
     _circleBack.layer.masksToBounds = YES;
     _circleBack.layer.magnificationFilter = kCAFilterNearest;

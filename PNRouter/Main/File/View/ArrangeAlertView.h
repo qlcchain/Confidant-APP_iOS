@@ -14,6 +14,7 @@ typedef enum : NSUInteger {
     ArrangeTypeByName,
     ArrangeTypeByTime,
     ArrangeTypeBySize,
+    ArrangeTypeByContact
 } ArrangeType;
 
 typedef void(^ArrangeClickBlock)(ArrangeType type);

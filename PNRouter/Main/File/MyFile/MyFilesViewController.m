@@ -161,6 +161,8 @@
                 return [listM1.FileSize compare:listM2.FileSize];
             }];
             [weakSelf refreshTable];
+        } else if (type == ArrangeTypeByContact) {
+            
         }
     }];
     [view showWithArrange:_arrangeType];

@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *nameSelect;
 @property (weak, nonatomic) IBOutlet UIImageView *timeSelect;
+@property (weak, nonatomic) IBOutlet UIImageView *contactSelect;
 @property (weak, nonatomic) IBOutlet UIImageView *sizeSelect;
 @property (nonatomic) ArrangeType arrangeType;
 
@@ -54,6 +55,7 @@
     _nameSelect.hidden = _arrangeType == ArrangeTypeByName?NO:YES;
     _timeSelect.hidden = _arrangeType == ArrangeTypeByTime?NO:YES;
     _sizeSelect.hidden = _arrangeType == ArrangeTypeBySize?NO:YES;
+    _contactSelect.hidden = _arrangeType == ArrangeTypeByContact?NO:YES;
 }
 
 #pragma mark - Action
@@ -78,6 +80,14 @@
 
 - (IBAction)arrangeBySizeAction:(id)sender {
     _arrangeType = ArrangeTypeBySize;
+    [self refreshSelect];
+    if (_clickB) {
+        _clickB(_arrangeType);
+    }
+    [self hide];
+}
+- (IBAction)arrangeContactAction:(id)sender {
+    _arrangeType = ArrangeTypeByContact;
     [self refreshSelect];
     if (_clickB) {
         _clickB(_arrangeType);
