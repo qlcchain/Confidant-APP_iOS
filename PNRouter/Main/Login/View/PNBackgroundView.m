@@ -10,8 +10,6 @@
 
 @interface PNBackgroundView ()
 
-@property (nonatomic) BOOL isShow;
-
 @end
 
 @implementation PNBackgroundView

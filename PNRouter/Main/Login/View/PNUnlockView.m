@@ -27,6 +27,7 @@
 
 + (instancetype)getInstance {
     PNUnlockView *view = [[[NSBundle mainBundle] loadNibNamed:@"PNUnlockView" owner:self options:nil] lastObject];
+    view.isShow = NO;
     [view viewInit];
     return view;
 }
@@ -46,6 +47,8 @@
         make.left.right.top.bottom.mas_equalTo(AppD.window).offset(0);
     }];
     
+     _isShow = YES;
+    
 //    self.imgCenterY.constant = -40;
     @weakify_self
     [UIView animateWithDuration:UnlockAnimateTime animations:^{
@@ -59,6 +62,7 @@
 
 - (void)hide {
     [self removeFromSuperview];
+    _isShow = NO;
     if (_okBlock) {
         _okBlock();
     }

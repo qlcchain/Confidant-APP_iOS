@@ -14,6 +14,8 @@ typedef void(^UnlockOKBlock)(void);
 
 @interface PNUnlockView : UIView
 
+@property (nonatomic) BOOL isShow;
+
 + (instancetype)getInstance;
 - (void)showWithUnlockOK:(UnlockOKBlock)block;
 - (void)hide;

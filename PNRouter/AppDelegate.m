@@ -41,6 +41,7 @@
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate,UNUserNotificationCenterDelegate>
 {
     BOOL isBackendRun;
+    BOOL isFingerprintOn;
 }
 //@property (nonatomic, assign) NSThread *thread;
 @property (nonatomic, strong) PNUnlockView *unlockView;
@@ -92,6 +93,9 @@
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     
     [self.backgroundView show];
+    if (self.backgroundView.isShow && _unlockView.isShow) {
+        [self.window insertSubview:self.backgroundView belowSubview:self.unlockView];
+    }
 }
 
 
@@ -106,7 +110,6 @@
 //            [[NSRunLoop currentRunLoop] run];
 //        });
  //   }
-    
     NSInteger seconds =  [NSDate getTimestampFromDate:[NSDate date]] ;
     [HWUserdefault updateObject:@(seconds) withKey:BACK_TIME];
     
@@ -122,7 +125,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    
+
     NSInteger seconds = [[HWUserdefault getObjectWithKey:BACK_TIME] integerValue];
     if (seconds == 0) {
         return;

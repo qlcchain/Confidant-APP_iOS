@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PNBackgroundView : UIView
 
+@property (nonatomic) BOOL isShow;
+
 + (instancetype)getInstance;
 - (void)show;
 - (void)hide;
