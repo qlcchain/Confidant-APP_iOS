@@ -253,7 +253,7 @@
     
     DDFileLogger *fileLogger = [[DDFileLogger alloc] init]; // File Logger
     fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    fileLogger.logFileManager.maximumNumberOfLogFiles = 7; // 7
+    fileLogger.logFileManager.maximumNumberOfLogFiles = 1; // 7
     [DDLog addLogger:fileLogger];
     
     //针对单个文件配置DDLog打印级别，尚未测试

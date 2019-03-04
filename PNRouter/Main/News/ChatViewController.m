@@ -76,6 +76,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 @implementation ChatViewController
 
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -189,8 +190,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
     _lblNavTitle.text = self.friendModel.username;
     [self observe];
     [self loadChatUI];
