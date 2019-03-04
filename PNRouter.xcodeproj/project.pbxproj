@@ -195,6 +195,8 @@
 		58F178A4221FF376001CD0AF /* ChooseContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F178A1221FF376001CD0AF /* ChooseContactTableCell.xib */; };
 		58F178A5221FF376001CD0AF /* ChooseContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F178A3221FF376001CD0AF /* ChooseContactTableCell.m */; };
 		58F4430B2149FF6200A94106 /* HeartBeatUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F4430A2149FF6200A94106 /* HeartBeatUtil.m */; };
+		58F5E4C0222CD45A00695F0A /* PNBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F5E4BF222CD45A00695F0A /* PNBackgroundView.m */; };
+		58F5E4C2222CD46E00695F0A /* PNBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F5E4C1222CD46E00695F0A /* PNBackgroundView.xib */; };
 		73001A1D21904897003D07CC /* DDRSAWrapper+openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A1B21904896003D07CC /* DDRSAWrapper+openssl.m */; };
 		73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A1E219048AE003D07CC /* DDRSAWrapper.m */; };
 		73001A2321912890003D07CC /* RSAUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A2221912890003D07CC /* RSAUtil.m */; };
@@ -892,6 +894,9 @@
 		58F178A3221FF376001CD0AF /* ChooseContactTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseContactTableCell.m; sourceTree = "<group>"; };
 		58F443092149FF6200A94106 /* HeartBeatUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeartBeatUtil.h; sourceTree = "<group>"; };
 		58F4430A2149FF6200A94106 /* HeartBeatUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeartBeatUtil.m; sourceTree = "<group>"; };
+		58F5E4BE222CD45A00695F0A /* PNBackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNBackgroundView.h; sourceTree = "<group>"; };
+		58F5E4BF222CD45A00695F0A /* PNBackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNBackgroundView.m; sourceTree = "<group>"; };
+		58F5E4C1222CD46E00695F0A /* PNBackgroundView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNBackgroundView.xib; sourceTree = "<group>"; };
 		73001A1B21904896003D07CC /* DDRSAWrapper+openssl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDRSAWrapper+openssl.m"; sourceTree = "<group>"; };
 		73001A1C21904896003D07CC /* DDRSAWrapper+openssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDRSAWrapper+openssl.h"; sourceTree = "<group>"; };
 		73001A1E219048AE003D07CC /* DDRSAWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDRSAWrapper.m; sourceTree = "<group>"; };
@@ -1526,6 +1531,9 @@
 				580CFE0F2224DD8200460B41 /* PNUnlockView.h */,
 				580CFE102224DD8200460B41 /* PNUnlockView.m */,
 				580CFE122224DD8E00460B41 /* PNUnlockView.xib */,
+				58F5E4BE222CD45A00695F0A /* PNBackgroundView.h */,
+				58F5E4BF222CD45A00695F0A /* PNBackgroundView.m */,
+				58F5E4C1222CD46E00695F0A /* PNBackgroundView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3625,6 +3633,7 @@
 				5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */,
 				7330F3CF21479AED00FF4EEC /* NewsCell.xib in Resources */,
 				584B439021FEE11D00D1F21A /* DiskManagementCell.xib in Resources */,
+				58F5E4C2222CD46E00695F0A /* PNBackgroundView.xib in Resources */,
 				7330F51F214B460A00FF4EEC /* NotifactionView.xib in Resources */,
 				7330F3A4214671C000FF4EEC /* ShareView.xib in Resources */,
 				7330F3D42147A98D00FF4EEC /* messageHistory.json in Resources */,
@@ -3822,6 +3831,7 @@
 				7330F47B2147DBB800FF4EEC /* StringUtil.m in Sources */,
 				7330F4EF2149147200FF4EEC /* CDImageTableViewCell.m in Sources */,
 				581FDF5821F024170068C120 /* toxencryptsave.m in Sources */,
+				58F5E4C0222CD45A00695F0A /* PNBackgroundView.m in Sources */,
 				7330F37E2146118800FF4EEC /* UIImage+RoundedCorner.m in Sources */,
 				7378840A21ACF2970033A189 /* OCTCallTimer.m in Sources */,
 				7330F47E2148A74200FF4EEC /* KeyCUtil.m in Sources */,
