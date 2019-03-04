@@ -36,7 +36,7 @@
 #import "PNUnlockView.h"
 #import "SendCacheChatUtil.h"
 #import "SocketMessageUtil.h"
-
+#import "PNBackgroundView.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate,UNUserNotificationCenterDelegate>
 {
@@ -44,6 +44,7 @@
 }
 //@property (nonatomic, assign) NSThread *thread;
 @property (nonatomic, strong) PNUnlockView *unlockView;
+@property (nonatomic, strong) PNBackgroundView *backgroundView;
 
 @end
 
@@ -89,6 +90,8 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+    
+    [self.backgroundView show];
 }
 
 
@@ -113,7 +116,7 @@
         NSDictionary *params = @{@"Action":@"HeartBeat",@"UserId":userM.userId?:@"",@"Active":@"1"};
         [SocketMessageUtil sendVersion1WithParams:params];
     }
-   
+
 }
 
 
@@ -147,6 +150,7 @@
 //        [[RunInBackground sharedBg] stopAudioPlay];
 //    }
     
+    [self.backgroundView hide];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -498,6 +502,14 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     }
     
     return _unlockView;
+}
+
+- (PNBackgroundView *)backgroundView {
+    if (!_backgroundView) {
+        _backgroundView = [PNBackgroundView getInstance];
+    }
+    
+    return _backgroundView;
 }
 
 @end
