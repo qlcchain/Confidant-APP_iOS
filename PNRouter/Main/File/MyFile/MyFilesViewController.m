@@ -24,6 +24,7 @@
 #import <MJRefresh/MJRefreshHeader.h>
 #import "FileDownUtil.h"
 #import "TaskListViewController.h"
+#import "NSString+Base64.h"
 
 @interface MyFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -162,7 +163,12 @@
             }];
             [weakSelf refreshTable];
         } else if (type == ArrangeTypeByContact) {
-            
+            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                FileListModel *listM1 = obj1;
+                FileListModel *listM2 = obj2;
+                return [[listM1.Sender base64DecodedString] compare:[listM2.Sender base64DecodedString]];
+            }];
+            [weakSelf refreshTable];
         }
     }];
     [view showWithArrange:_arrangeType];
