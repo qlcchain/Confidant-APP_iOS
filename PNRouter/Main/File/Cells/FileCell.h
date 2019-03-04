@@ -9,12 +9,14 @@
 //#import <SWTableViewCell/SWTableViewCell.h>
 #import <UIKit/UIKit.h>
 
-@class OperationRecordModel;
+@class FileListModel;
 
 static NSString *FileCellReuse = @"FileCell";
-#define FileCellHeight 64
+#define FileCellHeight 153
 
 typedef void(^FileMoreBlock)(void);
+typedef void(^FileForwardBlock)(void);
+typedef void(^FileDownloadBlock)(void);
 
 //@interface FileCell : SWTableViewCell
 @interface FileCell : UITableViewCell
@@ -26,7 +28,15 @@ typedef void(^FileMoreBlock)(void);
 @property (weak, nonatomic) IBOutlet UILabel *fileNameLab;
 @property (weak, nonatomic) IBOutlet UIButton *moreBtn;
 @property (nonatomic, copy) FileMoreBlock fileMoreB;
+@property (weak, nonatomic) IBOutlet UIButton *forwardBtn;
+@property (nonatomic, copy) FileForwardBlock fileForwardB;
+@property (weak, nonatomic) IBOutlet UIButton *downloadBtn;
+@property (nonatomic, copy) FileDownloadBlock fileDownloadB;
 
-- (void)configCellWithModel:(OperationRecordModel *)model;
+@property (weak, nonatomic) IBOutlet UILabel *spellLab;
+@property (weak, nonatomic) IBOutlet UILabel *operationLab;
+@property (weak, nonatomic) IBOutlet UILabel *sizeLab;
+
+- (void)configCellWithModel:(FileListModel *)model;
 
 @end

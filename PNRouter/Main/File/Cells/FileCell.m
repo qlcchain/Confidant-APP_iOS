@@ -7,7 +7,17 @@
 //
 
 #import "FileCell.h"
-#import "OperationRecordModel.h"
+#import "FileListModel.h"
+#import "PNRouter-Swift.h"
+#import "NSDate+Category.h"
+#import "NSString+Base64.h"
+#import "SystemUtil.h"
+#import "UserConfig.h"
+#import "NSString+Base64.h"
+
+@interface FileCell ()
+
+@end
 
 @implementation FileCell
 
@@ -28,33 +38,61 @@
     _timeLab.text = nil;
     _nameLab.text = nil;
     _fileNameLab.text = nil;
+    _spellLab.text = nil;
+    _operationLab.text = nil;
+    _sizeLab.text = nil;
 }
 
-- (void)configCellWithModel:(OperationRecordModel *)model {
-    _timeLab.text = model.operationTime;
-    _nameLab.text = model.operationFrom;
-    _fileNameLab.text = model.fileName;
+- (void)configCellWithModel:(FileListModel *)model {
+    _timeLab.text = [NSDate formattedUploadFileTimeFromTimeInterval:[model.Timestamp  intValue]];
+    NSString *fileName = model.FileName.lastPathComponent;
+    _fileNameLab.text = [Base58Util Base58DecodeWithCodeName:fileName];
+    _sizeLab.text = [NSString stringWithFormat:@"%@ KB",@([model.FileSize integerValue])];
     NSString *operationImgStr = @"";
-    if ([model.operationType integerValue] == 0) { // 上传
+    NSString *nameStr = @"";
+    NSString *operationStr = @"";
+    if (model.FileFrom == 1) { // 发出
+        operationImgStr = @"icon_file_sent_black";
+        nameStr = [model.Sender base64DecodedString];
+        operationStr = @"File Sent";
+    } else if (model.FileFrom == 2) { // 接受
+        operationImgStr = @"icon_file_black";
+        nameStr = [model.Sender base64DecodedString];
+        operationStr = @"File Received";
+    } else if (model.FileFrom == 3) { // 上传
         operationImgStr = @"icon_upload_small_gray";
-    } else if ([model.operationType integerValue] == 1) { // 下载
-        operationImgStr = @"icon_download_small_gray";
-    } else if ([model.operationType integerValue] == 2) { // 删除
-        operationImgStr = @"icon_delete_small_gray";
+        nameStr = [model.Sender base64DecodedString];
+        operationStr = @"My File";
+    } else {
+        operationStr = @"File Sent";
+        operationImgStr = @"icon_file_sent_black";
+        nameStr = [UserConfig getShareObject].userName;
     }
     _operationIcon.image = [UIImage imageNamed:operationImgStr];
+    _nameLab.text = nameStr;
+    _spellLab.text = [StringUtil getUserNameFirstWithName:nameStr];
+    _operationLab.text = operationStr;
     
-    NSString *fileImgStr = @"";
-    if ([model.fileType integerValue] == 1) { // 图片
-        fileImgStr = @"icon_picture_small_gray";
-    } else if ([model.fileType integerValue] == 4) { // 视频
-        fileImgStr = @"icon_video_small_gray";
-    } else if ([model.fileType integerValue] == 5) { // 文档
-        fileImgStr = @"icon_document_small_gray";
-    } else if ([model.fileType integerValue] == 6) { // 其他
-        fileImgStr = @"icon_other_small_gray";
+    NSString *fileTypeImgName = @"";
+    switch ([model.FileType intValue]) {
+        case 1:
+            fileTypeImgName = @"icon_picture_small_gray";
+            break;
+        case 2:
+            fileTypeImgName = @"icon_video_small_gray";
+            break;
+        case 4:
+            fileTypeImgName = @"icon_video_small_gray";
+            break;
+        case 5:
+            fileTypeImgName = @"icon_document_small_gray";
+            break;
+            
+        default:
+            fileTypeImgName = @"icon_other_small_gray";
+            break;
     }
-    _icon.image = [UIImage imageNamed:fileImgStr];
+    _icon.image = [UIImage imageNamed:fileTypeImgName];
 }
 
 - (IBAction)moreAction:(id)sender {
@@ -63,5 +101,16 @@
     }
 }
 
+- (IBAction)forwardAction:(id)sender {
+    if (_fileForwardB) {
+        _fileForwardB();
+    }
+}
+
+- (IBAction)downloadAction:(id)sender {
+    if (_fileDownloadB) {
+        _fileDownloadB();
+    }
+}
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "FileViewController.h"
-//#import "FileCell.h"
+#import "FileCell.h"
 #import "TaskListViewController.h"
 #import "MyFilesViewController.h"
 #import "SendRequestUtil.h"
@@ -22,13 +22,14 @@
 #import "FileListModel.h"
 #import "DetailInformationViewController.h"
 #import "UploadFileHelper.h"
-#import "MyFilesCell.h"
+//#import "MyFilesCell.h"
 #import <MJRefresh/MJRefresh.h>
 #import <MJRefresh/MJRefreshStateHeader.h>
 #import <MJRefresh/MJRefreshHeader.h>
 #import "PNRouter-Swift.h"
 #import "FilePreviewDownloadViewController.h"
 #import "FileDownUtil.h"
+#import "ArrangeAlertView.h"
 
 typedef enum : NSUInteger {
     FileTableTypeNormal,
@@ -43,10 +44,11 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 @property (nonatomic, strong) NSMutableArray *searchArr;
-@property (nonatomic, strong) NSArray *showArr;
+@property (nonatomic, strong) NSMutableArray *showArr;
 //@property (nonatomic) FileTableType fileTableType;
 @property (nonatomic) MyFilesTableType myFilesTableType;
 @property (nonatomic ,strong) FileListModel *selectModel;
+@property (nonatomic) ArrangeType arrangeType;
 
 @end
 
@@ -89,7 +91,7 @@ typedef enum : NSUInteger {
     ((MJRefreshStateHeader *)_mainTable.mj_header).lastUpdatedTimeLabel.hidden = YES;
     // Hide the status
     ((MJRefreshStateHeader *)_mainTable.mj_header).stateLabel.hidden = YES;
-    [_mainTable registerNib:[UINib nibWithNibName:MyFilesCellReuse bundle:nil] forCellReuseIdentifier:MyFilesCellReuse];
+    [_mainTable registerNib:[UINib nibWithNibName:FileCellReuse bundle:nil] forCellReuseIdentifier:FileCellReuse];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -159,6 +161,40 @@ typedef enum : NSUInteger {
     [view showWithFileName:fileName fileType:model.FileType];
 }
 
+- (void)showArrangeAlertView {
+    ArrangeAlertView *view = [ArrangeAlertView getInstance];
+    @weakify_self
+    [view setClickB:^(ArrangeType type) {
+        weakSelf.arrangeType = type;
+        if (type == ArrangeTypeByName) {
+            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                FileListModel *listM1 = obj1;
+                NSString *fileName1 = [Base58Util Base58DecodeWithCodeName:listM1.FileName.lastPathComponent];
+                FileListModel *listM2 = obj2;
+                NSString *fileName2 = [Base58Util Base58DecodeWithCodeName:listM2.FileName.lastPathComponent];
+                return [fileName1 compare:fileName2];
+            }];
+            [weakSelf refreshTable];
+            
+        } else if (type == ArrangeTypeByTime) {
+            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                FileListModel *listM1 = obj1;
+                FileListModel *listM2 = obj2;
+                return [listM1.Timestamp compare:listM2.Timestamp];
+            }];
+            [weakSelf refreshTable];
+        } else if (type == ArrangeTypeBySize) {
+            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                FileListModel *listM1 = obj1;
+                FileListModel *listM2 = obj2;
+                return [listM1.FileSize compare:listM2.FileSize];
+            }];
+            [weakSelf refreshTable];
+        }
+    }];
+    [view showWithArrange:_arrangeType];
+}
+
 #pragma mark - Request
 - (void)sendPullFileList {
     NSString *UserId = [UserConfig getShareObject].userId;
@@ -181,16 +217,20 @@ typedef enum : NSUInteger {
     [helper showUploadAlertView:self];
 }
 
-- (IBAction)myFileAction:(id)sender {
-    [self jumpToMyFile];
-}
+//- (IBAction)myFileAction:(id)sender {
+//    [self jumpToMyFile];
+//}
+//
+//- (IBAction)shareAction:(id)sender {
+//    [self jumpToDocumentShare];
+//}
+//
+//- (IBAction)receiveAction:(id)sender {
+//    [self jumpToDocumentReceived];
+//}
 
-- (IBAction)shareAction:(id)sender {
-    [self jumpToDocumentShare];
-}
-
-- (IBAction)receiveAction:(id)sender {
-    [self jumpToDocumentReceived];
+- (IBAction)arrangeAction:(id)sender {
+    [self showArrangeAlertView];
 }
 
 #pragma mark - UITableViewDelegate
@@ -203,19 +243,30 @@ typedef enum : NSUInteger {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return MyFilesCellHeight;
+    return FileCellHeight;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    MyFilesCell *cell = [tableView dequeueReusableCellWithIdentifier:MyFilesCellReuse];
+    FileCell *cell = [tableView dequeueReusableCellWithIdentifier:FileCellReuse];
     
     FileListModel *model = _showArr[indexPath.row];
 
     [cell configCellWithModel:model];
     @weakify_self
-    [cell setMoreB:^{
+    cell.fileMoreB = ^{
         [weakSelf showFileMoreAlertView:model];
-    }];
+    };
+    cell.fileForwardB = ^{
+        if (model.localPath == nil) {
+            [AppD.window showHint:@"Please download first"];
+        } else {
+            
+        }
+    };
+    cell.fileDownloadB = ^{
+        [FileDownUtil downloadFileWithFileModel:model];
+        [weakSelf jumpToTaskList];
+    };
     
     return cell;
 }
@@ -282,23 +333,23 @@ typedef enum : NSUInteger {
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)jumpToMyFile {
-    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
-    vc.filesType = FilesTypeAll;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)jumpToDocumentShare {
-    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
-    vc.filesType = FilesTypeSent;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)jumpToDocumentReceived {
-    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
-    vc.filesType = FilesTypeReceived;
-    [self.navigationController pushViewController:vc animated:YES];
-}
+//- (void)jumpToMyFile {
+//    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
+//    vc.filesType = FilesTypeAll;
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
+//
+//- (void)jumpToDocumentShare {
+//    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
+//    vc.filesType = FilesTypeSent;
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
+//
+//- (void)jumpToDocumentReceived {
+//    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
+//    vc.filesType = FilesTypeReceived;
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
 
 - (void)jumpToDetailInformation:(FileListModel *)model  {
     DetailInformationViewController *vc = [[DetailInformationViewController alloc] init];
