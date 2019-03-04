@@ -47,7 +47,7 @@
     _timeLab.text = [NSDate formattedUploadFileTimeFromTimeInterval:[model.Timestamp  intValue]];
     NSString *fileName = model.FileName.lastPathComponent;
     _fileNameLab.text = [Base58Util Base58DecodeWithCodeName:fileName];
-    _sizeLab.text = [NSString stringWithFormat:@"%@ KB",@([model.FileSize integerValue])];
+    _sizeLab.text = [SystemUtil transformedValue:[model.FileSize floatValue]];
     NSString *operationImgStr = @"";
     NSString *nameStr = @"";
     NSString *operationStr = @"";

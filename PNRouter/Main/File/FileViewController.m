@@ -30,6 +30,7 @@
 #import "FilePreviewDownloadViewController.h"
 #import "FileDownUtil.h"
 #import "ArrangeAlertView.h"
+#import "NSString+Base64.h"
 
 typedef enum : NSUInteger {
     FileTableTypeNormal,
@@ -188,6 +189,13 @@ typedef enum : NSUInteger {
                 FileListModel *listM1 = obj1;
                 FileListModel *listM2 = obj2;
                 return [listM1.FileSize compare:listM2.FileSize];
+            }];
+            [weakSelf refreshTable];
+        } else if (type == ArrangeTypeByContact) {
+            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                FileListModel *listM1 = obj1;
+                FileListModel *listM2 = obj2;
+                return [[listM1.Sender base64DecodedString] compare:[listM2.Sender base64DecodedString]];
             }];
             [weakSelf refreshTable];
         }
