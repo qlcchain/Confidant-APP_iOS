@@ -15,8 +15,31 @@
     [super awakeFromNib];
     // Initialization code
 }
-- (void) setFileModel:(FileData *) model
+- (IBAction)selectAction:(id)sender {
+    
+    if (_selectBlock) {
+        _selectBlock(@[_srcKey,@(_fileId),@(1)]);
+    }
+}
+- (void) updateSelectShow:(BOOL) isShow
 {
+    if (isShow) {
+        _leftContraintW.constant = 54;
+    } else {
+        _leftContraintW.constant = 16;
+    }
+}
+- (void) setFileModel:(FileData *) model isSelect:(BOOL)isSelect
+{
+    self.srcKey = model.srcKey;
+    self.fileId = model.fileId;
+    
+    if (isSelect) {
+        _selectImgView.image = [UIImage imageNamed:@"icon_selectmsg"];
+    } else {
+        _selectImgView.image = [UIImage imageNamed:@"icon_unselectmsg"];
+    }
+    
     _lblTitle.text = model.fileName;
     if (model.fileOptionType == 1) {
         _lblDesc.text = @"Upload to: Router";

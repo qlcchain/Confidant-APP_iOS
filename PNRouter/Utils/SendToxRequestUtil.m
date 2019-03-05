@@ -51,7 +51,7 @@
 //    });
     
     NSString *srcKey = parames[@"SrcKey"];
-    int fileid = [parames[@"FileId"] intValue];
+    NSInteger fileid = [parames[@"FileId"] integerValue];
     int fileType = [parames[@"FileType"] intValue];
     NSString *fileName = parames[@"FileName"];
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srcKey)] complete:^(NSArray * _Nullable array) {
@@ -91,7 +91,7 @@
             NSString *srcKey = parames[@"SrcKey"];
             int fileType = [parames[@"FileType"] intValue];
             NSString *fileName = parames[@"FileName"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(1),fileName,@"",@(fileType),srcKey]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(1),fileName,@"",@(fileType),srcKey,@(fileid)]];
         }
         
     }];

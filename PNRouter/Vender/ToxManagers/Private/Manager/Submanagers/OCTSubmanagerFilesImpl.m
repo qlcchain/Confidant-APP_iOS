@@ -554,7 +554,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
         BOOL isCancel = NO;
         NSDictionary *parames = [[ChatListDataUtil getShareObject].fileParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
         if (parames) {
-            NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:parames[@"FileId"]];
+            NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:[NSString stringWithFormat:@"%@",parames[@"FileId"]?:@""]];
             if ([[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
                 isCancel = YES;
             }
@@ -585,8 +585,13 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                 NSString *srcKey = parames[@"SrcKey"];
                 NSString *FileMD5 = parames[@"FileMD5"];
                 NSNumber *FileSize = parames[@"FileSize"];
-            
-                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize]];
+                NSNumber *fileidNumber = parames[@"FileId"];
+                NSInteger fileid = 0;
+                if (fileidNumber) {
+                    fileid = [fileidNumber integerValue];
+                }
+               
+                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize,@(fileid)]];
             } else { // 发送
                 NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:parames[@"FileId"]];
                 if (![[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {

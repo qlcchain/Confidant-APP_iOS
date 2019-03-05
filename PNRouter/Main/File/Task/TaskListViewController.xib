@@ -12,8 +12,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskListViewController">
             <connections>
+                <outlet property="DelBtn" destination="d1H-IY-0vs" id="7dN-gV-nnN"/>
+                <outlet property="backBtn" destination="NCw-WY-biQ" id="MQB-4f-igQ"/>
                 <outlet property="contentBack" destination="h9c-nP-d2T" id="NGQ-WK-MAN"/>
+                <outlet property="delContraintH" destination="CDH-dr-aP7" id="Qg1-rJ-HNP"/>
                 <outlet property="mainTable" destination="V9m-CI-9n8" id="0ve-TB-prd"/>
+                <outlet property="rightBtn" destination="X23-dk-db6" id="nMW-ze-kUH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -35,13 +39,13 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NCw-WY-biQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="70" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="44" id="Mtm-zE-e8s"/>
+                                        <constraint firstAttribute="width" constant="70" id="Mtm-zE-e8s"/>
                                         <constraint firstAttribute="height" constant="44" id="qdp-pW-X4f"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="arrow-exit-h">
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                    <state key="normal" title="Cancel">
                                         <color key="titleColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="deviceRGB"/>
                                     </state>
                                     <connections>
@@ -97,13 +101,37 @@
                                         <outlet property="delegate" destination="-1" id="icw-0W-udR"/>
                                     </connections>
                                 </tableView>
+                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w9C-gu-Ket">
+                                    <rect key="frame" x="0.0" y="603" width="375" height="0.0"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1H-IY-0vs">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                            <state key="normal" title="Delete(2)"/>
+                                            <connections>
+                                                <action selector="delAction:" destination="-1" eventType="touchUpInside" id="uqT-3V-KQ8"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="d1H-IY-0vs" secondAttribute="bottom" id="4jP-18-1b3"/>
+                                        <constraint firstAttribute="height" id="CDH-dr-aP7"/>
+                                        <constraint firstAttribute="trailing" secondItem="d1H-IY-0vs" secondAttribute="trailing" id="NcX-q4-0bb"/>
+                                        <constraint firstItem="d1H-IY-0vs" firstAttribute="leading" secondItem="w9C-gu-Ket" secondAttribute="leading" id="ryV-Cj-0fy"/>
+                                        <constraint firstItem="d1H-IY-0vs" firstAttribute="top" secondItem="w9C-gu-Ket" secondAttribute="top" id="yqF-id-In9"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="deviceRGB"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="V9m-CI-9n8" secondAttribute="bottom" id="36M-qR-KgZ"/>
                                 <constraint firstItem="V9m-CI-9n8" firstAttribute="top" secondItem="h9c-nP-d2T" secondAttribute="top" id="EAT-Nj-BnA"/>
                                 <constraint firstItem="V9m-CI-9n8" firstAttribute="leading" secondItem="h9c-nP-d2T" secondAttribute="leading" id="F4y-cb-p36"/>
+                                <constraint firstItem="w9C-gu-Ket" firstAttribute="top" secondItem="V9m-CI-9n8" secondAttribute="bottom" id="YFA-ai-ZRx"/>
+                                <constraint firstAttribute="bottom" secondItem="w9C-gu-Ket" secondAttribute="bottom" id="ZU8-qI-sTY"/>
                                 <constraint firstAttribute="trailing" secondItem="V9m-CI-9n8" secondAttribute="trailing" id="amx-dv-ykN"/>
+                                <constraint firstItem="w9C-gu-Ket" firstAttribute="leading" secondItem="h9c-nP-d2T" secondAttribute="leading" id="bDr-OI-ipW"/>
+                                <constraint firstAttribute="trailing" secondItem="w9C-gu-Ket" secondAttribute="trailing" id="rg0-ye-VOJ"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -127,10 +155,10 @@
                 <constraint firstAttribute="trailing" secondItem="Nhe-P3-eRj" secondAttribute="trailing" id="vEX-2t-6iS"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="50.399999999999999" y="57.121439280359823"/>
         </view>
     </objects>
     <resources>
-        <image name="arrow-exit-h" width="24" height="24"/>
         <image name="icon_multipleselection_black" width="24" height="24"/>
     </resources>
 </document>

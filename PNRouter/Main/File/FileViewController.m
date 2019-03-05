@@ -38,6 +38,9 @@ typedef enum : NSUInteger {
 } FileTableType;
 
 @interface FileViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource/*, SWTableViewCellDelegate*/>
+{
+    BOOL isFristLoad;
+}
 
 //@property (weak, nonatomic) IBOutlet UILabel *fontLab;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
@@ -93,13 +96,18 @@ typedef enum : NSUInteger {
     // Hide the status
     ((MJRefreshStateHeader *)_mainTable.mj_header).stateLabel.hidden = YES;
     [_mainTable registerNib:[UINib nibWithNibName:FileCellReuse bundle:nil] forCellReuseIdentifier:FileCellReuse];
+    isFristLoad = YES;
+     [_mainTable.mj_header beginRefreshing];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
     // 刷新
-    [self sendPullFileList];
+    if (isFristLoad) {
+        isFristLoad = NO;
+    } else {
+        [self sendPullFileList];
+    }
 }
 
 #pragma mark - Operation

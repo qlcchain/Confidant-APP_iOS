@@ -14,12 +14,22 @@
 #import "NSDateFormatter+Category.h"
 #import "NSDate+Category.h"
 #import "UploadFileManager.h"
+#import "SystemUtil.h"
+#import "SocketManageUtil.h"
+#import "ChatListDataUtil.h"
+#import "FileDownUtil.h"
 
 @interface TaskListViewController () <UITableViewDelegate, UITableViewDataSource>
 {
     BOOL isRegiterNoti;
+    BOOL isSelect;
 }
+@property (weak, nonatomic) IBOutlet UIButton *DelBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *delContraintH;
+@property (weak, nonatomic) IBOutlet UIButton *backBtn;
+@property (weak, nonatomic) IBOutlet UIButton *rightBtn;
 @property (nonatomic, strong) NSMutableArray *sourceArr;
+@property (nonatomic, strong) NSMutableArray *selectArr;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (weak, nonatomic) IBOutlet UIView *contentBack;
 
@@ -41,6 +51,14 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+#pragma mark -layz
+- (NSMutableArray *)selectArr
+{
+    if (!_selectArr) {
+        _selectArr = [NSMutableArray array];
+    }
+    return _selectArr;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -52,6 +70,7 @@
 
 - (void) getAllTaskList
 {
+    
   //  [FileData bg_drop:FILE_STATUS_TABNAME];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
@@ -166,7 +185,21 @@
 }
 
 #pragma mark - Operation
+- (void) updateLeftBtn
+{
+    if (isSelect) {
+        [_backBtn setTitle:@"Cancel" forState:UIControlStateNormal];
+        [_backBtn setImage:[[UIImage alloc] init] forState:UIControlStateNormal];
+    } else {
+        [_backBtn setImage:[UIImage imageNamed:@"arrow-exit-h"] forState:UIControlStateNormal];
+         [_backBtn setTitle:@"" forState:UIControlStateNormal];
+    }
+    _rightBtn.hidden = isSelect;
+}
 - (void)dataInit {
+    
+    [self updateLeftBtn];
+    
     _sourceArr = [NSMutableArray array];
     
     [_mainTable registerNib:[UINib nibWithNibName:TaskOngoingCellReuse bundle:nil] forCellReuseIdentifier:TaskOngoingCellReuse];
@@ -184,11 +217,91 @@
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (isSelect) {
+        isSelect = NO;
+        [self updateLeftBtn];
+        if (self.selectArr.count > 0) {
+            [self.selectArr removeAllObjects];
+        }
+        _delContraintH.constant = 0;
+        [_mainTable reloadData];
+    } else {
+         [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+- (IBAction)delAction:(id)sender {
+    
+    [self.view showHudInView:self.view hint:@""];
+    @weakify_self
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [self.selectArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            NSString *srcKey = obj[0];
+            NSInteger fileid = [obj[1] integerValue];
+            NSInteger status = [obj[2] integerValue];
+            
+            [FileData bg_delete:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"srcKey"),bg_sqlValue(srcKey),bg_sqlKey(@"fileId"),bg_sqlValue(@(fileid))]];
+            
+            if (status == 2) {
+                NSInteger fileOptionType = [obj[3] integerValue];
+                if (fileOptionType == 1) { // 上传
+                    if ([SystemUtil isSocketConnect]) {
+                        [[SocketManageUtil getShareObject] cancelFileOptionWithSrcKey:srcKey fileid:fileid];
+                    } else {
+                         [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"1" forKey:[NSString stringWithFormat:@"%ld",fileid]];
+                    }
+                } else { // 下载
+                    if ([SystemUtil isSocketConnect]) {
+                       
+                    } else { // tox
+                        
+                    }
+                }
+            }
+        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.view hideHud];
+            self->isSelect = NO;
+            [weakSelf updateLeftBtn];
+            if (weakSelf.selectArr.count > 0) {
+                [weakSelf.selectArr removeAllObjects];
+            }
+            weakSelf.delContraintH.constant = 0;
+            [weakSelf getAllTaskList];
+        });
+    });
+    
+    
+    
+    
+    
+//    [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        NSMutableArray *sectionArr = obj;
+//        [sectionArr enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            FileData *model = obj;
+//            BOOL isExit = [weakSelf containsSrckey:model.srcKey fileid:model.fileId];
+//            if (isExit) {
+//                if (model.status == 2) {
+//                    if (model.fileOptionType == 1) { // 上传
+//                        if ([SystemUtil isSocketConnect]) {
+//                            [[SocketManageUtil getShareObject] cancelFileOptionWithSrcKey:model.srcKey fileid:model.fileId];
+//                        }
+//                    } else { // 下载
+//
+//                    }
+//                }
+//                [sectionArr removeObject:obj];
+//            }
+//        }];
+//    }];
+    
+    
 }
 
 - (IBAction)multiSelectAction:(id)sender {
-    
+    isSelect = YES;
+    [self updateLeftBtn];
+    [_mainTable reloadData];
 }
 
 #pragma mark - UITableViewDelegate
@@ -214,11 +327,21 @@
     FileData *model = modelArr[indexPath.row];
     if (indexPath.section == 0) {
         TaskOngoingCell *cell = [tableView dequeueReusableCellWithIdentifier:TaskOngoingCellReuse];
-        [cell setFileModel:model];
+        [cell setFileModel:model isSelect:[self containsSrckey:model.srcKey fileid:model.fileId]];
+        [cell updateSelectShow:isSelect];
+        @weakify_self
+        [cell setSelectBlock:^(NSArray *values) {
+            [weakSelf selectFileDataWithSrckey:values];
+        }];
         return cell;
     } else if (indexPath.section == 1) {
         TaskCompletedCell *cell = [tableView dequeueReusableCellWithIdentifier:TaskCompletedCellReuse];
-        [cell setFileModel:model];
+        [cell setFileModel:model isSelect:[self containsSrckey:model.srcKey fileid:model.fileId]];
+        [cell updateSelectShow:isSelect];
+        @weakify_self
+        [cell setSelectBlock:^(NSArray *values) {
+            [weakSelf selectFileDataWithSrckey:values];
+        }];
         return cell;
     }
     return [UITableViewCell new];
@@ -226,8 +349,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -252,9 +373,12 @@
         view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 40);
         view.backgroundColor = [UIColor whiteColor];
        // [headerView.contentView addSubview:view];
-        
+    CGFloat lblX = 16;
+    if (isSelect) {
+        lblX = 54;
+    }
         titleLab = [UILabel new];
-        titleLab.frame = CGRectMake(16, 10, 200, 20);
+        titleLab.frame = CGRectMake(lblX, 10, 200, 20);
         titleLab.font = [UIFont systemFontOfSize:14];
         titleLab.textColor = UIColorFromRGB(0x2c2c2c);
         [view addSubview:titleLab];
@@ -268,6 +392,56 @@
     }
     
     return view;
+}
+
+- (void) cancelUploadOrDownFile:(FileData *) fileData
+{
+    
+}
+
+#pragma mark -添加srckey
+- (void) selectFileDataWithSrckey:(NSArray *) values
+{
+    __block BOOL isExit =NO;
+    @weakify_self
+    [self.selectArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *srcKey = obj[0];
+        NSInteger fileid = [obj[1] integerValue];
+        
+        NSString *srcKey1 = values[0];
+        NSInteger fileid1 = [values[1] integerValue];
+        
+        if ([srcKey isEqualToString:srcKey1] && fileid == fileid1) {
+            [weakSelf.selectArr removeObject:obj];
+            isExit = YES;
+            *stop = YES;
+        }
+    }];
+    if (!isExit) {
+        [weakSelf.selectArr addObject:values];
+    }
+    
+    if (_selectArr.count>0) {
+        _delContraintH.constant = 44;
+    } else {
+        _delContraintH.constant = 0;
+    }
+    [_DelBtn setTitle:[NSString stringWithFormat:@"Delete(%lu)",(unsigned long)_selectArr.count] forState:UIControlStateNormal];
+    [_mainTable reloadData];
+}
+
+- (BOOL) containsSrckey:(NSString *) srcKey fileid:(NSInteger) fileid
+{
+    __block BOOL result = NO;
+    [self.selectArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *srcKey1 = obj[0];
+        NSInteger fileid1 = [obj[1] integerValue];
+        if ([srcKey isEqualToString:srcKey1] && fileid1 == fileid) {
+            result = YES;
+            *stop = YES;
+        }
+    }];
+    return result;
 }
 
 #pragma mark -noti

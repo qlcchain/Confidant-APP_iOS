@@ -26,6 +26,7 @@
 #import "MD5Util.h"
 #import "UploadFileManager.h"
 #import "TaskListViewController.h"
+#import "NSDate+Category.h"
 
 
 #define UploadFileURL @"UploadFileURL"
@@ -277,9 +278,12 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             NSString *fileName = [fileUrl lastPathComponent];
             NSData *fileData = [NSData dataWithContentsOfURL:fileUrl];
             int fileType = [@(weakSelf.documentType) intValue];
-            int fileId = [SocketCountUtil getShareObject].fileIDCount;
-            fileId += 1;
             
+           
+            long tempMsgid = [SocketCountUtil getShareObject].fileIDCount++;
+            tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
+            NSInteger fileId = tempMsgid;
+   
             // 生成32位对称密钥
             NSString *msgKey = [SystemUtil get32AESKey];
             if (weakSelf.isDoc) {
@@ -297,7 +301,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             if ([SystemUtil isSocketConnect]) { // socket
                 SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
                 dataUtil.srcKey = srcKey;
-                dataUtil.fileid = [NSString stringWithFormat:@"%d",fileId];
+                dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)fileId];
                 [dataUtil sendFileId:@"" fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
             } else { // tox

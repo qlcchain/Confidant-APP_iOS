@@ -23,14 +23,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
                         <subviews>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_txt_small_gray" translatesAutoresizingMaskIntoConstraints="NO" id="PuC-jG-9UJ">
-                                <rect key="frame" x="16" y="20" width="24" height="24"/>
+                                <rect key="frame" x="54" y="20" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="Lwi-uf-g3V"/>
                                     <constraint firstAttribute="height" constant="24" id="QjY-uC-UEH"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Google project ofx…information.zip" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HnA-cN-O8o">
-                                <rect key="frame" x="56" y="8" width="206" height="19.5"/>
+                                <rect key="frame" x="94" y="8" width="168" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
@@ -47,19 +47,19 @@
                                 </connections>
                             </button>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="tXO-xY-vEn">
-                                <rect key="frame" x="56" y="30.5" width="206" height="2"/>
+                                <rect key="frame" x="94" y="30.5" width="168" height="2"/>
                                 <color key="progressTintColor" red="0.4941176471" green="0.82745098039999998" blue="0.12941176469999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="trackTintColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="deviceRGB"/>
                             </progressView>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_download_small_gray" translatesAutoresizingMaskIntoConstraints="NO" id="Vuo-2F-lad">
-                                <rect key="frame" x="56" y="41.5" width="12" height="12"/>
+                                <rect key="frame" x="94" y="41.5" width="12" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="12" id="0Vt-Mb-oqD"/>
                                     <constraint firstAttribute="height" constant="12" id="Iru-Qy-FVb"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15.4 MB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysK-Jw-bFA">
-                                <rect key="frame" x="76" y="41" width="42" height="13.5"/>
+                                <rect key="frame" x="114" y="41" width="42" height="13.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -77,10 +77,39 @@
                                     <constraint firstAttribute="height" constant="0.5" id="eXA-ry-M7M"/>
                                 </constraints>
                             </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Fk-48-84Q">
+                                <rect key="frame" x="0.0" y="0.0" width="54" height="63.5"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_unselectmsg" translatesAutoresizingMaskIntoConstraints="NO" id="6hG-Yg-eET">
+                                        <rect key="frame" x="16" y="21" width="22" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="B4f-VH-6cF"/>
+                                            <constraint firstAttribute="width" constant="22" id="u9c-do-zhb"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VI5-e9-Mpu">
+                                        <rect key="frame" x="0.0" y="0.0" width="54" height="63.5"/>
+                                        <connections>
+                                            <action selector="selectAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="0pP-az-Jb9"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="VI5-e9-Mpu" secondAttribute="bottom" id="Rya-6N-Yqc"/>
+                                    <constraint firstItem="6hG-Yg-eET" firstAttribute="leading" secondItem="2Fk-48-84Q" secondAttribute="leading" constant="16" id="Ze0-ay-4Iq"/>
+                                    <constraint firstItem="VI5-e9-Mpu" firstAttribute="top" secondItem="2Fk-48-84Q" secondAttribute="top" id="hUX-Qp-SZP"/>
+                                    <constraint firstAttribute="trailing" secondItem="VI5-e9-Mpu" secondAttribute="trailing" id="ndd-Ch-Nmx"/>
+                                    <constraint firstItem="VI5-e9-Mpu" firstAttribute="leading" secondItem="2Fk-48-84Q" secondAttribute="leading" id="urz-VY-Nzg"/>
+                                    <constraint firstAttribute="width" constant="54" id="uxL-Oc-S0n"/>
+                                    <constraint firstItem="6hG-Yg-eET" firstAttribute="centerY" secondItem="2Fk-48-84Q" secondAttribute="centerY" id="uy0-Jn-bRC"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="y7y-LC-KEJ" firstAttribute="centerY" secondItem="KRP-1N-oM4" secondAttribute="centerY" id="1Yv-UC-rX9"/>
+                            <constraint firstItem="2Fk-48-84Q" firstAttribute="leading" secondItem="KRP-1N-oM4" secondAttribute="leading" id="2cW-ik-NUB"/>
                             <constraint firstItem="ysK-Jw-bFA" firstAttribute="leading" secondItem="Vuo-2F-lad" secondAttribute="trailing" constant="8" id="BMu-AM-6km"/>
                             <constraint firstItem="9vm-Ew-WXc" firstAttribute="trailing" secondItem="HnA-cN-O8o" secondAttribute="trailing" id="F18-88-NBh"/>
                             <constraint firstItem="PuC-jG-9UJ" firstAttribute="centerY" secondItem="KRP-1N-oM4" secondAttribute="centerY" id="HQQ-Fc-gZx"/>
@@ -93,12 +122,14 @@
                             <constraint firstItem="tXO-xY-vEn" firstAttribute="top" secondItem="HnA-cN-O8o" secondAttribute="bottom" constant="3" id="Z0M-VS-cyv"/>
                             <constraint firstItem="Vuo-2F-lad" firstAttribute="top" secondItem="tXO-xY-vEn" secondAttribute="bottom" constant="9" id="byd-q4-5Fv"/>
                             <constraint firstItem="HnA-cN-O8o" firstAttribute="leading" secondItem="PuC-jG-9UJ" secondAttribute="trailing" constant="16" id="eV7-i1-L0G"/>
-                            <constraint firstItem="PuC-jG-9UJ" firstAttribute="leading" secondItem="KRP-1N-oM4" secondAttribute="leading" constant="16" id="isC-G0-gLb"/>
                             <constraint firstItem="Vuo-2F-lad" firstAttribute="leading" secondItem="HnA-cN-O8o" secondAttribute="leading" id="j4a-EP-MvQ"/>
+                            <constraint firstItem="PuC-jG-9UJ" firstAttribute="leading" secondItem="2Fk-48-84Q" secondAttribute="trailing" id="kjj-h0-foA"/>
                             <constraint firstItem="Ogf-up-v4d" firstAttribute="leading" secondItem="KRP-1N-oM4" secondAttribute="leading" constant="16" id="lFR-hD-tmS"/>
                             <constraint firstItem="ysK-Jw-bFA" firstAttribute="centerY" secondItem="Vuo-2F-lad" secondAttribute="centerY" id="oXH-JQ-pOq"/>
                             <constraint firstAttribute="trailing" secondItem="Ogf-up-v4d" secondAttribute="trailing" id="oiv-VF-pSg"/>
                             <constraint firstItem="tXO-xY-vEn" firstAttribute="leading" secondItem="HnA-cN-O8o" secondAttribute="leading" id="pJ5-Uc-qr6"/>
+                            <constraint firstAttribute="bottom" secondItem="2Fk-48-84Q" secondAttribute="bottom" id="uJg-wU-TNf"/>
+                            <constraint firstItem="2Fk-48-84Q" firstAttribute="top" secondItem="KRP-1N-oM4" secondAttribute="top" id="xNI-3V-prS"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -116,15 +147,18 @@
                 <outlet property="lblProgess" destination="9vm-Ew-WXc" id="luZ-fy-qgd"/>
                 <outlet property="lblSize" destination="ysK-Jw-bFA" id="UsZ-fV-EjG"/>
                 <outlet property="lblTitle" destination="HnA-cN-O8o" id="JvB-Ob-2NT"/>
+                <outlet property="leftContraintW" destination="uxL-Oc-S0n" id="xAA-kc-lrh"/>
                 <outlet property="optionBtn" destination="y7y-LC-KEJ" id="FHh-la-9bo"/>
                 <outlet property="progess" destination="tXO-xY-vEn" id="SCi-fZ-BSd"/>
+                <outlet property="selectImgView" destination="6hG-Yg-eET" id="NZx-7m-6s7"/>
             </connections>
-            <point key="canvasLocation" x="-909" y="59"/>
+            <point key="canvasLocation" x="-907.20000000000005" y="15.292353823088456"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon_download_small_gray" width="12" height="12"/>
         <image name="icon_stop_gray" width="16" height="16"/>
         <image name="icon_txt_small_gray" width="24" height="24"/>
+        <image name="icon_unselectmsg" width="22" height="22"/>
     </resources>
 </document>

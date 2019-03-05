@@ -14,4 +14,5 @@
 
 - (void) clearDisConnectSocket;
 - (void) clearAllConnectSocket;
+- (void) cancelFileOptionWithSrcKey:(NSString *) srcKey fileid:(NSInteger) fileid;
 @end
