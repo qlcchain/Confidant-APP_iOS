@@ -62,7 +62,7 @@
     NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
     NSString *downloadFilePath = [SystemUtil getTempDownloadFilePath:fileName];
     
-   __block FileData *fileDataModel = nil;
+    __block FileData *fileDataModel = nil;
     
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.UserKey),bg_sqlKey(@"msgId"),bg_sqlValue(fileModel.MsgId)] complete:^(NSArray * _Nullable array) {
         

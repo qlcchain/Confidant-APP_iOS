@@ -138,11 +138,11 @@ typedef enum : NSUInteger {
     FileMoreAlertView *view = [FileMoreAlertView getInstance];
     @weakify_self
     [view setSendB:^{
-        if (model.localPath == nil) {
-            [AppD.window showHint:@"Please download first"];
-        } else {
-            
-        }
+//        if (model.localPath == nil) {
+//            [AppD.window showHint:@"Please download first"];
+//        } else {
+//
+//        }
     }];
     [view setDownloadB:^{
         [FileDownUtil downloadFileWithFileModel:model];
@@ -273,11 +273,11 @@ typedef enum : NSUInteger {
         [weakSelf showFileMoreAlertView:model];
     };
     cell.fileForwardB = ^{
-        if (model.localPath == nil) {
-            [AppD.window showHint:@"Please download first"];
-        } else {
-            
-        }
+//        if (model.localPath == nil) {
+//            [AppD.window showHint:@"Please download first"];
+//        } else {
+//
+//        }
     };
     cell.fileDownloadB = ^{
         [FileDownUtil downloadFileWithFileModel:model];
