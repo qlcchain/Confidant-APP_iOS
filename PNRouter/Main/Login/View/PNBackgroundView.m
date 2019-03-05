@@ -44,12 +44,13 @@
     if (!_isShow) {
         return;
     }
+    
     self.alpha = 1;
+    self.isShow = NO;
     @weakify_self
     [UIView animateWithDuration:0.3 animations:^{
         weakSelf.alpha = 0;
     } completion:^(BOOL finished) {
-        weakSelf.isShow = NO;
 //        [weakSelf removeFromSuperview];
     }];
 }

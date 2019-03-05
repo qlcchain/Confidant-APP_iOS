@@ -132,7 +132,7 @@
     }
     NSDate *backDate = [NSDate dateWithTimeIntervalSince1970:seconds];
     NSInteger minues = [backDate minutesAfterDate:[NSDate date]];
-    if (_inLogin && labs(minues) >= 2) {
+    if (_inLogin && labs(minues) >= 0) {
         [HWUserdefault updateObject:@(0) withKey:BACK_TIME];
         
         if (_unlockView) {
