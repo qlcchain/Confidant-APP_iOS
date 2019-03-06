@@ -21,6 +21,7 @@
 @interface ChooseContactViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
     BOOL isMutable;
 }
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableContraintV;
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
@@ -343,6 +344,7 @@
                     if (weakSelf.downView.frame.origin.y == SCREEN_HEIGHT) {
                         [UIView animateWithDuration:0.3f animations:^{
                             weakSelf.downView.frame = CGRectMake(0, SCREEN_HEIGHT-Tab_BAR_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                            weakSelf.tableContraintV.constant = Tab_BAR_HEIGHT;
                         }];
                     }
                     weakSelf.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %d groups",(unsigned long)selectArr.count,0];
@@ -350,6 +352,7 @@
                 } else {
                     [UIView animateWithDuration:0.3f animations:^{
                         weakSelf.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                        weakSelf.tableContraintV.constant = 0;
                     }];
                 }
             }
@@ -389,6 +392,7 @@
                 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 NSMutableArray *selectArr = [self getIsSelectRouter];
                 if (selectArr.count > 0) {
+                   
                     if (!_downView) {
                         self.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
                         [self.view addSubview:_downView];
@@ -396,13 +400,16 @@
                     if (self.downView.frame.origin.y == SCREEN_HEIGHT) {
                         [UIView animateWithDuration:0.3f animations:^{
                             self.downView.frame = CGRectMake(0, SCREEN_HEIGHT-Tab_BAR_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                             self.tableContraintV.constant = Tab_BAR_HEIGHT;
                         }];
                     }
-                    self.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %d groups",(unsigned long)self.selectArray.count,0];
+                    self.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %d groups",(unsigned long)selectArr.count,0];
  
                 } else {
+                    
                     [UIView animateWithDuration:0.3f animations:^{
                         self.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                        self.tableContraintV.constant = 0;
                     }];
                 }
             } else {
