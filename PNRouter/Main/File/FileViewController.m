@@ -222,6 +222,10 @@ typedef enum : NSUInteger {
         }];
         [_mainTable reloadData];
     }
+    
+    if (_showArr.count <= 0) {
+        [self showEmptyView];
+    }
 }
 
 - (void)showEmptyView {
@@ -449,7 +453,8 @@ typedef enum : NSUInteger {
         if ([model.MsgId integerValue] == [weakSelf.selectModel.MsgId integerValue]) {
             [weakSelf.sourceArr removeObject:model];
             if (weakSelf.myFilesTableType == MyFilesTableTypeNormal) {
-                [weakSelf.mainTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//                [weakSelf.mainTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                [weakSelf refreshTable];
             } else if (weakSelf.myFilesTableType == MyFilesTableTypeSearch) {
                 [weakSelf refreshTableByTF:weakSelf.searchTF];
             }
