@@ -300,8 +300,9 @@ typedef enum : NSUInteger {
         [weakSelf jumpForwardVC];
     };
     cell.fileDownloadB = ^{
-        [FileDownUtil downloadFileWithFileModel:model];
-        [weakSelf jumpToTaskList];
+//        [FileDownUtil downloadFileWithFileModel:model];
+//        [weakSelf jumpToTaskList];
+        [weakSelf jumpToFilePreviewDownload:model];
     };
     
     return cell;
