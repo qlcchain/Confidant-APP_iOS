@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FileData : BBaseModel
 
 @property (nonatomic ,assign) int msgId;
-@property (nonatomic ,assign) int fileId;
+@property (nonatomic ,assign) NSInteger fileId;
 @property (nonatomic ,assign) int fileFrom;
 @property (nonatomic ,assign) int backSeconds;
 @property (nonatomic ,strong) NSString *userId;

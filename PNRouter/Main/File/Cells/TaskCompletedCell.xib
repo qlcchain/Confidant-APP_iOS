@@ -23,27 +23,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
                         <subviews>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_txt_small_gray" translatesAutoresizingMaskIntoConstraints="NO" id="ddR-GQ-uct">
-                                <rect key="frame" x="16" y="20" width="24" height="24"/>
+                                <rect key="frame" x="54" y="20" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="NhV-py-oQH"/>
                                     <constraint firstAttribute="height" constant="24" id="kRe-Rq-DpV"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Google project ofx…information.zip" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B84-2o-3KZ">
-                                <rect key="frame" x="56" y="14" width="206" height="19.5"/>
+                                <rect key="frame" x="94" y="14" width="168" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_download_small_gray" translatesAutoresizingMaskIntoConstraints="NO" id="7GH-BB-YXC">
-                                <rect key="frame" x="56" y="37.5" width="12" height="12"/>
+                                <rect key="frame" x="94" y="37.5" width="12" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="yHO-Ul-luA"/>
                                     <constraint firstAttribute="width" constant="12" id="yT3-Ph-u9N"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download to: Local" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qp-61-gzY">
-                                <rect key="frame" x="76" y="37" width="100" height="13.5"/>
+                                <rect key="frame" x="114" y="37" width="100" height="13.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -55,21 +55,52 @@
                                     <constraint firstAttribute="height" constant="0.5" id="6SH-71-FDu"/>
                                 </constraints>
                             </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ZK-R9-lPD">
+                                <rect key="frame" x="0.0" y="0.0" width="54" height="63.5"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_unselectmsg" translatesAutoresizingMaskIntoConstraints="NO" id="h6H-O7-IqK">
+                                        <rect key="frame" x="16" y="21" width="22" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="dgz-nc-uoA"/>
+                                            <constraint firstAttribute="width" constant="22" id="lTs-JB-9jO"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DqM-7Y-f2J">
+                                        <rect key="frame" x="0.0" y="0.0" width="54" height="63.5"/>
+                                        <connections>
+                                            <action selector="selectAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="xra-Fx-UVQ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="h6H-O7-IqK" firstAttribute="centerY" secondItem="1ZK-R9-lPD" secondAttribute="centerY" id="0cu-0q-YTd"/>
+                                    <constraint firstAttribute="trailing" secondItem="DqM-7Y-f2J" secondAttribute="trailing" id="4PV-Vw-1qk"/>
+                                    <constraint firstAttribute="width" constant="54" id="Brz-Wd-n7c"/>
+                                    <constraint firstAttribute="bottom" secondItem="DqM-7Y-f2J" secondAttribute="bottom" id="SET-Wn-R5m"/>
+                                    <constraint firstItem="DqM-7Y-f2J" firstAttribute="top" secondItem="1ZK-R9-lPD" secondAttribute="top" id="coY-zE-ht7"/>
+                                    <constraint firstItem="DqM-7Y-f2J" firstAttribute="leading" secondItem="1ZK-R9-lPD" secondAttribute="leading" id="qU4-0n-xVg"/>
+                                    <constraint firstItem="h6H-O7-IqK" firstAttribute="leading" secondItem="1ZK-R9-lPD" secondAttribute="leading" constant="16" id="ukd-TA-cKk"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="B84-2o-3KZ" firstAttribute="leading" secondItem="ddR-GQ-uct" secondAttribute="trailing" constant="16" id="2as-oh-Sa1"/>
+                            <constraint firstItem="1ZK-R9-lPD" firstAttribute="top" secondItem="nAR-Ak-THG" secondAttribute="top" id="3EP-0I-Y0V"/>
                             <constraint firstItem="7GH-BB-YXC" firstAttribute="leading" secondItem="B84-2o-3KZ" secondAttribute="leading" id="9do-Md-hCn"/>
                             <constraint firstItem="kZr-zx-HFN" firstAttribute="leading" secondItem="nAR-Ak-THG" secondAttribute="leading" constant="16" id="BFh-LT-Xob"/>
                             <constraint firstAttribute="trailing" secondItem="kZr-zx-HFN" secondAttribute="trailing" id="FRd-lh-vwj"/>
-                            <constraint firstItem="ddR-GQ-uct" firstAttribute="leading" secondItem="nAR-Ak-THG" secondAttribute="leading" constant="16" id="G9H-83-6Yf"/>
                             <constraint firstAttribute="trailing" secondItem="B84-2o-3KZ" secondAttribute="trailing" constant="58" id="MUo-rj-V6v"/>
                             <constraint firstItem="6qp-61-gzY" firstAttribute="centerY" secondItem="7GH-BB-YXC" secondAttribute="centerY" id="TLq-Jf-O1l"/>
                             <constraint firstItem="ddR-GQ-uct" firstAttribute="centerY" secondItem="nAR-Ak-THG" secondAttribute="centerY" id="arg-1U-b2r"/>
                             <constraint firstAttribute="bottom" secondItem="kZr-zx-HFN" secondAttribute="bottom" id="cGC-ue-L9X"/>
+                            <constraint firstItem="ddR-GQ-uct" firstAttribute="leading" secondItem="1ZK-R9-lPD" secondAttribute="trailing" id="cx2-pW-IdM"/>
                             <constraint firstItem="B84-2o-3KZ" firstAttribute="top" secondItem="nAR-Ak-THG" secondAttribute="top" constant="14" id="d3G-CV-hCm"/>
                             <constraint firstItem="7GH-BB-YXC" firstAttribute="top" secondItem="B84-2o-3KZ" secondAttribute="bottom" constant="4" id="dJn-46-14k"/>
                             <constraint firstItem="6qp-61-gzY" firstAttribute="leading" secondItem="7GH-BB-YXC" secondAttribute="trailing" constant="8" id="fFk-lj-IbC"/>
+                            <constraint firstAttribute="bottom" secondItem="1ZK-R9-lPD" secondAttribute="bottom" id="uuF-XU-gVI"/>
+                            <constraint firstItem="1ZK-R9-lPD" firstAttribute="leading" secondItem="nAR-Ak-THG" secondAttribute="leading" id="xBw-Qp-CZc"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -86,12 +117,15 @@
                 <outlet property="iconImgView" destination="7GH-BB-YXC" id="bem-Kd-QqH"/>
                 <outlet property="lblDesc" destination="6qp-61-gzY" id="Sn5-4o-Svc"/>
                 <outlet property="lblTitle" destination="B84-2o-3KZ" id="cTa-0z-iZJ"/>
+                <outlet property="leftContraintW" destination="Brz-Wd-n7c" id="RYy-g0-JHj"/>
+                <outlet property="selectImgView" destination="h6H-O7-IqK" id="RNY-do-MoO"/>
             </connections>
-            <point key="canvasLocation" x="136" y="7"/>
+            <point key="canvasLocation" x="245" y="5"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon_download_small_gray" width="12" height="12"/>
         <image name="icon_txt_small_gray" width="24" height="24"/>
+        <image name="icon_unselectmsg" width="22" height="22"/>
     </resources>
 </document>

@@ -19,10 +19,18 @@
 #import "NSDateFormatter+Category.h"
 
 @interface TaskOngoingCell ()
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftContraintW;
+@property (weak, nonatomic) IBOutlet UIImageView *selectImgView;
 
 @end
 
 @implementation TaskOngoingCell
+- (IBAction)selectAction:(id)sender {
+    
+    if (_selectBlock) {
+        _selectBlock(@[_fileModel.srcKey,@(_fileModel.fileId),@(2),@(_fileModel.fileOptionType)]);
+    }
+}
 
 // 重新上传文件
 - (void) deUploadFile
@@ -125,10 +133,23 @@
     [super awakeFromNib];
     // Initialization code
 }
+- (void) updateSelectShow:(BOOL) isShow
+{
+    if (isShow) {
+        _leftContraintW.constant = 54;
+    } else {
+        _leftContraintW.constant = 16;
+    }
+}
 
-- (void) setFileModel:(FileData *) model
+- (void) setFileModel:(FileData *) model isSelect:(BOOL)isSelect
 {
     _fileModel = model;
+    if (isSelect) {
+        _selectImgView.image = [UIImage imageNamed:@"icon_selectmsg"];
+    } else {
+        _selectImgView.image = [UIImage imageNamed:@"icon_unselectmsg"];
+    }
     if (model.status == 2) {
         [_optionBtn setImage:[UIImage imageNamed:@"icon_stop_gray"] forState:UIControlStateNormal];
        _lblProgess.text = [[SystemUtil transformedZSValue:model.speedSize] stringByAppendingString:@"/s"];

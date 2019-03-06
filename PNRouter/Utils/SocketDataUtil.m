@@ -246,7 +246,7 @@ struct ResultFile {
 //    return parames;
 //}
 
-- (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(int)fileid fileType:(uint32_t) fileType messageid:(NSString *)messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey
+- (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSInteger)fileid fileType:(uint32_t) fileType messageid:(NSString *)messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey
 {
     
     fileName = [Base58Util Base58EncodeWithCodeName:fileName];
@@ -262,7 +262,7 @@ struct ResultFile {
     uint32_t action = fileType;
     uint32_t segseq = 1;
     uint32_t offset = 0;
-    uint32_t millFileid = fileid;
+    uint32_t millFileid = (int)fileid;
     uint16_t crc = 0;
     uint32_t magic = 0x0dadc0de;
     
@@ -292,7 +292,7 @@ struct ResultFile {
     
     if ([toid isEmptyString]) // 上传文件
     {
-        [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srcKey)] complete:^(NSArray * _Nullable array) {
+        [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srcKey),bg_sqlKey(@"fileId"),bg_sqlValue(@(fileid))] complete:^(NSArray * _Nullable array) {
             if (array && array.count > 0) {
                 FileData *fileModel = array[0];
                 fileModel.status = 2;
@@ -370,7 +370,7 @@ struct ResultFile {
                 
                 if ([weakSelf.toid isEmptyString]) {
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),weakSelf.fileName,@"",@(weakSelf.fileType),weakSelf.srcKey]];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),weakSelf.fileName,@"",@(weakSelf.fileType),weakSelf.srcKey,weakSelf.fileid]];
                 } else {
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
@@ -415,7 +415,7 @@ struct ResultFile {
             [_fileUtil disconnect];
             if ([self.toid isEmptyString]) {
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,@"",@(self.fileType),self.srcKey]];
+                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
             } else {
                 
                 // 添加到chatlist

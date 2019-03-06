@@ -48,7 +48,9 @@
     if (resultArr && resultArr.count>0 && [resultArr[0] integerValue] == 0) { // 成功
         
         NSString *srckey = resultArr[4];
-        [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)] complete:^(NSArray * _Nullable array) {
+        NSInteger fileid = [[resultArr lastObject] integerValue];
+        
+        [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey),bg_sqlKey(@"fileId"),bg_sqlValue(@(fileid))] complete:^(NSArray * _Nullable array) {
             if (array && array.count > 0) {
                 FileData *fileModel = array[0];
                 fileModel.status = 1;
@@ -86,7 +88,8 @@
         
     } else { // 上传失败
         NSString *srckey = resultArr[4];
-        [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey)] complete:^(NSArray * _Nullable array) {
+         NSInteger fileid = [[resultArr lastObject] integerValue];
+        [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey),bg_sqlKey(@"fileId"),bg_sqlValue(@(fileid))] complete:^(NSArray * _Nullable array) {
             if (array && array.count > 0) {
                 FileData *fileModel = array[0];
                 fileModel.status = 3;
