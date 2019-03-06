@@ -45,8 +45,8 @@
 
 - (void)configCellWithModel:(FileListModel *)model {
     _timeLab.text = [NSDate formattedUploadFileTimeFromTimeInterval:[model.Timestamp  intValue]];
-    NSString *fileName = model.FileName.lastPathComponent;
-    _fileNameLab.text = [Base58Util Base58DecodeWithCodeName:fileName];
+    NSString *lastPath = model.FileName.lastPathComponent;
+    _fileNameLab.text = [Base58Util Base58DecodeWithCodeName:lastPath];
     _sizeLab.text = [SystemUtil transformedValue:[model.FileSize floatValue]];
     NSString *operationImgStr = @"";
     NSString *nameStr = @"";

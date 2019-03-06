@@ -6,6 +6,8 @@
 //  Copyright © 2019 旷自辉. All rights reserved.
 //
 
+#warning MyFilesViewController已废弃
+
 #import "MyFilesViewController.h"
 #import "MyFilesCell.h"
 #import "DetailInformationViewController.h"
