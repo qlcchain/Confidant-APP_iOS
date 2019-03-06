@@ -98,6 +98,7 @@ typedef enum : NSUInteger {
     _myFilesTableType = MyFilesTableTypeNormal;
     _sourceArr = [NSMutableArray array];
     _searchArr = [NSMutableArray array];
+    _arrangeType = ArrangeTypeByName;
     
     _mainTable.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(sendPullFileList)];
     // Hide the time
@@ -129,7 +130,7 @@ typedef enum : NSUInteger {
         _showArr = _searchArr;
     }
     
-    [_mainTable reloadData];
+    [self refreshTableWithArrange];
 }
 
 #pragma mark -删除文件
@@ -183,40 +184,44 @@ typedef enum : NSUInteger {
     @weakify_self
     [view setClickB:^(ArrangeType type) {
         weakSelf.arrangeType = type;
-        if (type == ArrangeTypeByName) {
-            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                FileListModel *listM1 = obj1;
-                NSString *fileName1 = [Base58Util Base58DecodeWithCodeName:listM1.FileName.lastPathComponent];
-                FileListModel *listM2 = obj2;
-                NSString *fileName2 = [Base58Util Base58DecodeWithCodeName:listM2.FileName.lastPathComponent];
-                return [fileName1 compare:fileName2];
-            }];
-            [weakSelf refreshTable];
-            
-        } else if (type == ArrangeTypeByTime) {
-            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                FileListModel *listM1 = obj1;
-                FileListModel *listM2 = obj2;
-                return [listM1.Timestamp compare:listM2.Timestamp];
-            }];
-            [weakSelf refreshTable];
-        } else if (type == ArrangeTypeBySize) {
-            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                FileListModel *listM1 = obj1;
-                FileListModel *listM2 = obj2;
-                return [listM1.FileSize compare:listM2.FileSize];
-            }];
-            [weakSelf refreshTable];
-        } else if (type == ArrangeTypeByContact) {
-            [weakSelf.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                FileListModel *listM1 = obj1;
-                FileListModel *listM2 = obj2;
-                return [[listM1.Sender base64DecodedString] compare:[listM2.Sender base64DecodedString]];
-            }];
-            [weakSelf refreshTable];
-        }
+        [weakSelf refreshTableWithArrange];
     }];
     [view showWithArrange:_arrangeType];
+}
+
+- (void)refreshTableWithArrange {
+    if (_arrangeType == ArrangeTypeByName) {
+        [self.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            FileListModel *listM1 = obj1;
+            NSString *fileName1 = [Base58Util Base58DecodeWithCodeName:listM1.FileName.lastPathComponent];
+            FileListModel *listM2 = obj2;
+            NSString *fileName2 = [Base58Util Base58DecodeWithCodeName:listM2.FileName.lastPathComponent];
+            return [fileName1 compare:fileName2];
+        }];
+        [_mainTable reloadData];
+        
+    } else if (_arrangeType == ArrangeTypeByTime) {
+        [self.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            FileListModel *listM1 = obj1;
+            FileListModel *listM2 = obj2;
+            return [listM2.Timestamp compare:listM1.Timestamp];
+        }];
+        [_mainTable reloadData];
+    } else if (_arrangeType == ArrangeTypeBySize) {
+        [self.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            FileListModel *listM1 = obj1;
+            FileListModel *listM2 = obj2;
+            return [listM1.FileSize compare:listM2.FileSize];
+        }];
+        [_mainTable reloadData];
+    } else if (_arrangeType == ArrangeTypeByContact) {
+        [self.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            FileListModel *listM1 = obj1;
+            FileListModel *listM2 = obj2;
+            return [[listM1.Sender base64DecodedString] compare:[listM2.Sender base64DecodedString]];
+        }];
+        [_mainTable reloadData];
+    }
 }
 
 - (void)showEmptyView {
