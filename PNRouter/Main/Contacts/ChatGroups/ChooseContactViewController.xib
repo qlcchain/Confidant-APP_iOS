@@ -16,6 +16,7 @@
                 <outlet property="rightBtn" destination="w2q-1y-H72" id="HVR-zp-tAf"/>
                 <outlet property="searchBackView" destination="aIL-eR-epz" id="u3S-YR-O2E"/>
                 <outlet property="searchTF" destination="udL-qS-dqd" id="zHG-wk-wDv"/>
+                <outlet property="tableContraintV" destination="Nls-by-4Ah" id="l62-pn-Y1h"/>
                 <outlet property="tableV" destination="S5S-0H-CP1" id="4wV-GU-f7U"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
