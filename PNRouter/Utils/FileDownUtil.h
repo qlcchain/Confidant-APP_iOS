@@ -14,6 +14,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FileDownUtil : NSObject
+
 + (instancetype) getShareObject;
 - (void) downFileWithFileModel:(FileListModel *) fileModel  progressBlock:(void(^)(CGFloat progress)) progressBlock
                 success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
@@ -32,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) updateFileDataBaseWithFileModel:(FileModel *) fileModel;
 - (void) deToxDownFileModel:(FileData *) fileModel;
 - (void) removeAllTask;
-
+- (void) cancelDownWithFileid:(NSInteger) fileid srckey:(NSString *) srckey;
 + (void)downloadFileWithFileModel:(FileListModel *)fileModel;
 
 @end

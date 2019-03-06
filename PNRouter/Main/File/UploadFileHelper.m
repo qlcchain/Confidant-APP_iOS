@@ -56,8 +56,8 @@
         [weakSelf jumpToDocumentPicker:DocumentPickerTypeDocument];
     }];
     [_uploadAlertV setOtherB:^{
-        weakSelf.pickerType = DocumentPickerTypeOther;
-        [weakSelf jumpToDocumentPicker:DocumentPickerTypeOther];
+        weakSelf.pickerType = DocumentPickerTypeDocument;
+        [weakSelf jumpToDocumentPicker:DocumentPickerTypeDocument];
     }];
     [_uploadAlertV show];
 }
@@ -303,9 +303,10 @@
         documentTypes = @[@"public.video"];
     } else if (type == DocumentPickerTypeDocument) {
         documentTypes = @[@"public.content"];
-    } else if (type == DocumentPickerTypeOther) {
-        documentTypes = @[@"public.item"];
     }
+//    else if (type == DocumentPickerTypeOther) {
+//        documentTypes = @[@"public.item"];
+//    }
     PNDocumentPickerViewController *vc = [[PNDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeImport];
     vc.delegate = self;
     vc.modalPresentationStyle = UIModalPresentationFullScreen;

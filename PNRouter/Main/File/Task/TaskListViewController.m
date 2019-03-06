@@ -92,51 +92,26 @@
                     [arr2 addObject:fileModel];
                 }
             }];
+           
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
             if (self.sourceArr.count > 0) {
                 [self.sourceArr removeAllObjects];
             }
-//            NSArray *sortArr1 = [arr1 sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-//                FileData *model1 = obj1;
-//                FileData *model2 = obj2;
-//                return [model2.optionTime compare:model1.optionTime];
-//            }];
-//            NSArray *sortArr2 = [arr2 sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-//                FileData *model1 = obj1;
-//                FileData *model2 = obj2;
-//                return [model2.optionTime compare:model1.optionTime];
-//            }];
-             [self.sourceArr addObject:arr1];
-             [self.sourceArr addObject:arr2];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                [self.mainTable reloadData];
-                [self addObserver];
-                [self.view hideHud];
-                
-                if ([self.sourceArr[0] count] == 0 && [self.sourceArr[1] count] == 0) {
-                    [self viewInit];
-                }
-            });
-           
-        }
-//        NSArray *arr22s = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
-//
-//        NSMutableArray *arr2 = [NSMutableArray array];
-//        if (arr22s && arr22s.count>0) {
-//            [arr2 addObjectsFromArray:arr22s];
-//        }
-//        [self.sourceArr addObject:arr2];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//
-//            [self.mainTable reloadData];
-//            [self addObserver];
-//            [self.view hideHud];
-//
-//            if ([self.sourceArr[0] count] == 0 && [self.sourceArr[1] count] == 0) {
-//                [self viewInit];
-//            }
-//        });
+            [self.sourceArr addObject:arr1];
+            [self.sourceArr addObject:arr2];
+            
+            [self.mainTable reloadData];
+            [self addObserver];
+            [self.view hideHud];
+            
+            if ([self.sourceArr[0] count] == 0 && [self.sourceArr[1] count] == 0) {
+                [self viewInit];
+            }
+        });
+        
     });
     
     
@@ -244,17 +219,18 @@
             
             if (status == 2) {
                 NSInteger fileOptionType = [obj[3] integerValue];
+                NSString *fileName = obj[4];
                 if (fileOptionType == 1) { // 上传
                     if ([SystemUtil isSocketConnect]) {
                         [[SocketManageUtil getShareObject] cancelFileOptionWithSrcKey:srcKey fileid:fileid];
                     } else {
-                         [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"1" forKey:[NSString stringWithFormat:@"%ld",fileid]];
+                        [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"1" forKey:[NSString stringWithFormat:@"%ld",(long)fileid]];
                     }
                 } else { // 下载
                     if ([SystemUtil isSocketConnect]) {
-                       
+                        [[FileDownUtil getShareObject] cancelDownWithFileid:fileid srckey:srcKey];
                     } else { // tox
-                        
+                        [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"1" forKey:fileName];
                     }
                 }
             }

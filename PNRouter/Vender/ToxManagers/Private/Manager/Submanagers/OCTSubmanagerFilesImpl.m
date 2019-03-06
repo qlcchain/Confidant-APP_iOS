@@ -557,6 +557,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
             NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:[NSString stringWithFormat:@"%@",parames[@"FileId"]?:@""]];
             if ([[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
                 isCancel = YES;
+                [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"0" forKey:[NSString stringWithFormat:@"%@",parames[@"FileId"]?:@""]];
             }
         }
         
@@ -672,6 +673,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
        [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
     }
     
+    
     // 更新本次接受时间
    ToxPullFileTimerUtil *timeUtil = [[ChatListDataUtil getShareObject].pullTimerDic objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
     if (timeUtil) {
@@ -680,6 +682,16 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     
     NSString *fileName = [[ChatListDataUtil getShareObject].fileNameParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
     if (fileName) {
+        
+       NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:fileName];
+        
+        if ([[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
+            
+             [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
+            
+            [[ChatListDataUtil getShareObject].fileNameParames setObject:@"0" forKey:fileName];
+        }
+        
         NSArray *array = [fileName componentsSeparatedByString:@":"];
         NSLog(@"---接受到的文件 length = %zu",length);
         if (length == 0) {

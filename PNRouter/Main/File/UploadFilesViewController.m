@@ -124,10 +124,11 @@
     } else if (_documentType == DocumentPickerTypeDocument) {
         imgStr = @"icon_compress_gray";
         nameStr = [NSString stringWithFormat:@"Upload Documents (%@)",@(_urlArr.count)];
-    } else if (_documentType == DocumentPickerTypeOther) {
-        imgStr = @"icon_compress_gray";
-        nameStr = [NSString stringWithFormat:@"Upload Others (%@)",@(_urlArr.count)];
     }
+//    else if (_documentType == DocumentPickerTypeOther) {
+//        imgStr = @"icon_compress_gray";
+//        nameStr = [NSString stringWithFormat:@"Upload Others (%@)",@(_urlArr.count)];
+//    }
     _fileImg.image = [UIImage imageNamed:imgStr];
     _fileNameLab.text = nameStr;
     
@@ -187,9 +188,10 @@
             FileType = @(4);
         } else if (weakSelf.documentType == DocumentPickerTypeDocument) {
             FileType = @(5);
-        } else if (weakSelf.documentType == DocumentPickerTypeOther) {
-            FileType = @(6);
         }
+//        else if (weakSelf.documentType == DocumentPickerTypeOther) {
+//            FileType = @(5);
+//        }
         [SendRequestUtil sendUploadFileReqWithUserId:UserId FileName:FileName FileSize:FileSize FileType:FileType showHud:YES fetchParam:^(NSDictionary * _Nonnull dic) {
             NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:dic];
             [muDic setObject:url forKey:UploadFileURL];
@@ -279,7 +281,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             NSData *fileData = [NSData dataWithContentsOfURL:fileUrl];
             int fileType = [@(weakSelf.documentType) intValue];
             
-           
             long tempMsgid = [SocketCountUtil getShareObject].fileIDCount++;
             tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
             NSInteger fileId = tempMsgid;
