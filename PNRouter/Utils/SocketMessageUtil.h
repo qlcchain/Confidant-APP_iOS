@@ -29,6 +29,7 @@ static NSString *Action_PushFile = @"PushFile";
 static NSString *Action_SynchDataFile = @"SynchDataFile";
 static NSString *Action_Recovery = @"Recovery";
 static NSString *Action_Register = @"Register";
+static NSString *Action_FileForward = @"FileForward";
 static NSString *Action_PullUserList = @"PullUserList";
 static NSString *Action_CreateNormalUser = @"CreateNormalUser";
 static NSString *Action_ReadMsgPush = @"ReadMsgPush";

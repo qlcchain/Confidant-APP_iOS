@@ -279,6 +279,12 @@
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 
+#pragma mark -转发
++ (void) sendFileForwardMsgid:(NSString *) msgid toid:(NSString *) toid fileName:(NSString *) fileName filekey:(NSString *) filekey
+{
+    NSDictionary *params = @{@"Action":Action_FileForward,@"MsgId":msgid?:@"",@"FromId":[UserConfig getShareObject].userId?:@"",@"ToId":toid,@"FileName":fileName?:@"",@"FileKey":filekey?:@""};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 
 
 @end

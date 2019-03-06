@@ -45,7 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendFormatDiskWithMode:(NSString *)Mode showHud:(BOOL)showHud;
 + (void)sendRebootWithShowHud:(BOOL)showHud;
 + (void)sendFileRenameWithMsgId:(NSNumber *)MsgId Filename:(NSString *)Filename Rename:(NSString *)Rename showHud:(BOOL)showHud;
-
+// 文件转发
++ (void) sendFileForwardMsgid:(NSString *) msgid toid:(NSString *) toid fileName:(NSString *) fileName filekey:(NSString *) filekey;
 @end
 
 NS_ASSUME_NONNULL_END

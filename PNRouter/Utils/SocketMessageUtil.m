@@ -431,6 +431,8 @@
         [SocketMessageUtil handleResetRouterName:receiveDic];
     } else if ([action isEqualToString:Action_FileRename]) { // 文件重命名
         [SocketMessageUtil handleFileRename:receiveDic];
+    } else if ([action isEqualToString:Action_FileForward]) { // 文件转发
+         [SocketMessageUtil handleFileForward:receiveDic];
     }
 }
 
@@ -1285,6 +1287,25 @@
         }
     }
 }
++ (void) handleFileForward:(NSDictionary *)receiveDic {
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+//    0：成功
+//    1：用户id错误
+//    2：目标文件错误
+//    3：目标不可达
+//    4：其他错误
+    if (retCode == 0) {
+        
+    } else {
+        if (retCode == 1) {
+           
+        } else if (retCode == 2) {
+           
+        } else if (retCode == 3) {
+           
+        }
+    }
+}
 
 #pragma mark - Base
 + (NSDictionary *)getBaseParams {
@@ -1362,6 +1383,7 @@
 {
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_SynchDataFile,@"UserId":userM.userId?:@"",@"NeedSynch":@(synch),@"UserDataVersion":@"1.0",@"DataPay":@"database64"};
+
     [SocketMessageUtil sendVersion1WithParams:params];
 }
 
@@ -1380,5 +1402,5 @@
     NSDictionary *params = @{@"Action":Action_Register,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":sn,@"IdentifyCode":code,@"Sign":@"",@"UserKey":[EntryModel getShareObject].publicKey,@"NickName":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
-#pragma mark -转发
+
 @end

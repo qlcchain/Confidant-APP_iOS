@@ -31,6 +31,9 @@
 #import "FileDownUtil.h"
 #import "ArrangeAlertView.h"
 #import "NSString+Base64.h"
+#import "ChooseContactViewController.h"
+#import "FriendModel.h"
+#import "LibsodiumUtil.h"
 
 typedef enum : NSUInteger {
     FileTableTypeNormal,
@@ -69,6 +72,7 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFileCompleteNoti:) name:Delete_File_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileRenameSuccessNoti:) name:FileRename_Success_Noti object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileForwardNoti:) name:CHOOSE_FRIEND_NOTI object:nil];
     
 }
 
@@ -147,11 +151,7 @@ typedef enum : NSUInteger {
     FileMoreAlertView *view = [FileMoreAlertView getInstance];
     @weakify_self
     [view setSendB:^{
-//        if (model.localPath == nil) {
-//            [AppD.window showHint:@"Please download first"];
-//        } else {
-//
-//        }
+        [weakSelf jumpForwardVC];
     }];
     [view setDownloadB:^{
         [FileDownUtil downloadFileWithFileModel:model];
@@ -288,11 +288,8 @@ typedef enum : NSUInteger {
         [weakSelf showFileMoreAlertView:model];
     };
     cell.fileForwardB = ^{
-//        if (model.localPath == nil) {
-//            [AppD.window showHint:@"Please download first"];
-//        } else {
-//
-//        }
+        weakSelf.selectModel = model;
+        [weakSelf jumpForwardVC];
     };
     cell.fileDownloadB = ^{
         [FileDownUtil downloadFileWithFileModel:model];
@@ -363,6 +360,11 @@ typedef enum : NSUInteger {
     TaskListViewController *vc = [[TaskListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
+- (void) jumpForwardVC
+{
+    ChooseContactViewController *vc = [[ChooseContactViewController alloc] init];
+    [self presentModalVC:vc animated:YES];
+}
 
 //- (void)jumpToMyFile {
 //    MyFilesViewController *vc = [[MyFilesViewController alloc] init];
@@ -395,6 +397,19 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark - Noti
+- (void)fileForwardNoti:(NSNotification *)noti {
+    NSArray *modeArray = (NSArray *)noti.object;
+    @weakify_self
+    [modeArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        // 自己私钥解密对称密钥
+        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:weakSelf.selectModel.UserKey];
+         // 好友公钥加密对称密钥
+        NSString *fileKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:datakey enPK:model.publicKey];
+        
+        [SendRequestUtil sendFileForwardMsgid:[NSString stringWithFormat:@"%@",weakSelf.selectModel.MsgId] toid:model.userId?:@"" fileName:weakSelf.selectModel.FileName filekey:fileKey?:@""];
+    }];
+}
 - (void)pullFileListCompleteNoti:(NSNotification *)noti {
     [_mainTable.mj_header endRefreshing];
     NSDictionary *receiveDic = noti.object;
