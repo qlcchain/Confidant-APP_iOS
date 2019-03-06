@@ -56,7 +56,7 @@
 + (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic code:(NSString *) code
 {
     [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
-     UserModel *userM = [UserModel getUserModel];
+    UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":@"CreateNormalUser",@"RouterId":routerId,@"AdminUserId":userM.userId,@"Mnemonic":mnemonic,@"IdentifyCode":code};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
@@ -268,6 +268,17 @@
     NSDictionary *params = @{@"Action":Action_Reboot};
     [SocketMessageUtil sendVersion3WithParams:params];
 }
+
+#pragma mark - 文件重命名
++ (void)sendFileRenameWithMsgId:(NSNumber *)MsgId Filename:(NSString *)Filename Rename:(NSString *)Rename showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_FileRename, @"UserId":userM.userId?:@"", @"MsgId":MsgId, @"Filename":[Filename base64EncodedString], @"Rename":[Rename base64EncodedString]};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+
 
 
 @end

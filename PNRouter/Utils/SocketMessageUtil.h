@@ -54,6 +54,8 @@ static NSString *Action_FormatDisk = @"FormatDisk";
 static NSString *Action_Reboot = @"Reboot";
 static NSString *Action_ResetRouterName = @"ResetRouterName";
 
+static NSString *Action_FileRename = @"FileRename";
+
 @class FriendModel;
 
 @interface SocketMessageUtil : NSObject

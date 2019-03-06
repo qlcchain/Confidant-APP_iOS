@@ -429,6 +429,8 @@
         [SocketMessageUtil handleReboot:receiveDic];
     } else if ([action isEqualToString:Action_ResetRouterName]) { // 设备管理员修改设备昵称
         [SocketMessageUtil handleResetRouterName:receiveDic];
+    } else if ([action isEqualToString:Action_FileRename]) { // 文件重命名
+        [SocketMessageUtil handleFileRename:receiveDic];
     }
 }
 
@@ -1261,6 +1263,24 @@
         if (retCode == 1) {
             [AppD.window showHint:@"User does not have permission"];
         } else if (retCode == 2) {
+            [AppD.window showHint:@"Other errors"];
+        }
+    }
+}
+
++ (void)handleFileRename:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:FileRename_Success_Noti object:receiveDic];
+//        [AppD.window showHint:@"Reset device nickname successfully"];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"User id error"];
+        } else if (retCode == 2) {
+            [AppD.window showHint:@"The renamed file already exists"];
+        } else if (retCode == 3) {
             [AppD.window showHint:@"Other errors"];
         }
     }

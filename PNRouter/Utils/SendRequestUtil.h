@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendGetDiskDetailInfoWithSlot:(NSNumber *)Slot showHud:(BOOL)showHud;
 + (void)sendFormatDiskWithMode:(NSString *)Mode showHud:(BOOL)showHud;
 + (void)sendRebootWithShowHud:(BOOL)showHud;
++ (void)sendFileRenameWithMsgId:(NSNumber *)MsgId Filename:(NSString *)Filename Rename:(NSString *)Rename showHud:(BOOL)showHud;
 
 @end
 
