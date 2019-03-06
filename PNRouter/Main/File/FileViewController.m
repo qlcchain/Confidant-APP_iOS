@@ -43,6 +43,7 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
+@property (weak, nonatomic) IBOutlet UIView *contentBack;
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 @property (nonatomic, strong) NSMutableArray *searchArr;
 @property (nonatomic, strong) NSMutableArray *showArr;
@@ -64,6 +65,8 @@ typedef enum : NSUInteger {
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFileCompleteNoti:) name:Delete_File_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileRenameSuccessNoti:) name:FileRename_Success_Noti object:nil];
+    
 }
 
 - (void)dealloc {
@@ -93,6 +96,8 @@ typedef enum : NSUInteger {
     // Hide the status
     ((MJRefreshStateHeader *)_mainTable.mj_header).stateLabel.hidden = YES;
     [_mainTable registerNib:[UINib nibWithNibName:FileCellReuse bundle:nil] forCellReuseIdentifier:FileCellReuse];
+    
+    [self viewInit];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -103,6 +108,9 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark - Operation
+- (void)viewInit {
+    [self showEmptyView];
+}
 
 - (void)refreshTable {
     if (_myFilesTableType == MyFilesTableTypeNormal) {
@@ -151,7 +159,7 @@ typedef enum : NSUInteger {
         [weakSelf jumpToDetailInformation:model];
     }];
     [view setRenameB:^{
-        
+        [SendRequestUtil sendFileRenameWithMsgId:model.MsgId Filename:model.FileName Rename:@"123" showHud:YES];
     }];
     [view setDeleteB:^{
         [weakSelf deleteFileWithModel:model];
@@ -201,6 +209,12 @@ typedef enum : NSUInteger {
         }
     }];
     [view showWithArrange:_arrangeType];
+}
+
+- (void)showEmptyView {
+    NSString *imgStr = @"icon_documents_received_gray";
+    NSString *tipStr = @"No documents yet Let friends share";
+    [self showEmptyViewToView:_contentBack img:[UIImage imageNamed:imgStr] title:tipStr];
 }
 
 #pragma mark - Request
@@ -378,11 +392,12 @@ typedef enum : NSUInteger {
     NSString *Payload = receiveDic[@"params"][@"Payload"];
     NSArray *payloadArr = [FileListModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
     if (payloadArr == nil || payloadArr.count <= 0) {
-//        [self showEmptyView];
         [_sourceArr removeAllObjects];
         [self refreshTable];
+        
+        [self showEmptyView];
     } else {
-//        [self hideEmptyView];
+        [self hideEmptyView];
         
         NSMutableArray *tempArr = [NSMutableArray array];
         [payloadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -420,6 +435,13 @@ typedef enum : NSUInteger {
             *stop = YES;
         }
     }];
+}
+
+- (void)fileRenameSuccessNoti:(NSNotification *)noti {
+    NSDictionary *receiveDic = noti.object;
+    NSInteger MsgId = [receiveDic[@"MsgId"] integerValue];
+    
+    [self sendPullFileList];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FileViewController">
             <connections>
+                <outlet property="contentBack" destination="CON-Gs-ga2" id="qA1-Lq-rMa"/>
                 <outlet property="mainTable" destination="JJs-2l-eTx" id="cmV-AP-9nd"/>
                 <outlet property="searchBackView" destination="8TN-ZT-OxV" id="jLF-EG-alf"/>
                 <outlet property="searchTF" destination="OJA-hV-u1j" id="AN8-ua-rL0"/>
