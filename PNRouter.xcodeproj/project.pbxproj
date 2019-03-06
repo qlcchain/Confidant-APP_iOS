@@ -197,6 +197,7 @@
 		58F4430B2149FF6200A94106 /* HeartBeatUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F4430A2149FF6200A94106 /* HeartBeatUtil.m */; };
 		58F5E4C0222CD45A00695F0A /* PNBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F5E4BF222CD45A00695F0A /* PNBackgroundView.m */; };
 		58F5E4C2222CD46E00695F0A /* PNBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F5E4C1222CD46E00695F0A /* PNBackgroundView.xib */; };
+		58F5E4C7222F9A1600695F0A /* FileRenameHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F5E4C6222F9A1600695F0A /* FileRenameHelper.m */; };
 		73001A1D21904897003D07CC /* DDRSAWrapper+openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A1B21904896003D07CC /* DDRSAWrapper+openssl.m */; };
 		73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A1E219048AE003D07CC /* DDRSAWrapper.m */; };
 		73001A2321912890003D07CC /* RSAUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A2221912890003D07CC /* RSAUtil.m */; };
@@ -897,6 +898,8 @@
 		58F5E4BE222CD45A00695F0A /* PNBackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNBackgroundView.h; sourceTree = "<group>"; };
 		58F5E4BF222CD45A00695F0A /* PNBackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNBackgroundView.m; sourceTree = "<group>"; };
 		58F5E4C1222CD46E00695F0A /* PNBackgroundView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNBackgroundView.xib; sourceTree = "<group>"; };
+		58F5E4C5222F9A1600695F0A /* FileRenameHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileRenameHelper.h; sourceTree = "<group>"; };
+		58F5E4C6222F9A1600695F0A /* FileRenameHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileRenameHelper.m; sourceTree = "<group>"; };
 		73001A1B21904896003D07CC /* DDRSAWrapper+openssl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DDRSAWrapper+openssl.m"; sourceTree = "<group>"; };
 		73001A1C21904896003D07CC /* DDRSAWrapper+openssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDRSAWrapper+openssl.h"; sourceTree = "<group>"; };
 		73001A1E219048AE003D07CC /* DDRSAWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDRSAWrapper.m; sourceTree = "<group>"; };
@@ -1859,6 +1862,8 @@
 				584A447B21460AFE00608122 /* FileViewController.h */,
 				584A447C21460AFE00608122 /* FileViewController.m */,
 				584A447D21460AFE00608122 /* FileViewController.xib */,
+				58F5E4C5222F9A1600695F0A /* FileRenameHelper.h */,
+				58F5E4C6222F9A1600695F0A /* FileRenameHelper.m */,
 				588F8CEB220178FC000D7966 /* UploadFileHelper.h */,
 				588F8CEC220178FC000D7966 /* UploadFileHelper.m */,
 				583BF90321F6B4140078A2A8 /* UploadFilesViewController.h */,
@@ -3894,6 +3899,7 @@
 				7378842321AD364E0033A189 /* Base58Util.swift in Sources */,
 				5825A23821F9CA9F00E6194B /* FilePreviewDownloadViewController.m in Sources */,
 				7330F4F32149147200FF4EEC /* ChatListInfo.m in Sources */,
+				58F5E4C7222F9A1600695F0A /* FileRenameHelper.m in Sources */,
 				737882A721ACF05E0033A189 /* Compression.swift in Sources */,
 				584B43A521FF0AE700D1F21A /* ConfigDiskHeaderView.m in Sources */,
 				737883FA21ACF2970033A189 /* OCTVideoEngine.m in Sources */,

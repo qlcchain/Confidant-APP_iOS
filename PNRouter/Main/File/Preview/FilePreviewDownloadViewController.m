@@ -24,6 +24,7 @@
 #import "UserConfig.h"
 #import "FileDownUtil.h"
 #import "TaskListViewController.h"
+#import "FileRenameHelper.h"
 
 typedef enum : NSUInteger {
     FileExistTypeNone,
@@ -56,6 +57,7 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileFaieldNoti:) name:TOX_PULL_FILE_FAIELD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileSuccessNoti:) name:TOX_PULL_FILE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileProgessNoti:) name:Tox_Down_File_Progess_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileRenameSuccessNoti:) name:FileRename_Success_Noti object:nil];
 }
 - (void) addSocketDownObserve
 {
@@ -96,9 +98,7 @@ typedef enum : NSUInteger {
     }
     _icon.image = [UIImage imageNamed:fileImgStr];
     
-    NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
-    _nameLab.text = fileName;
+    [self refreshFileName];
     _sizeLab.text =[SystemUtil transformedValue:[self.fileListM.FileSize intValue]];
     _progressV.hidden = YES;
     _openTipLab.text = nil;
@@ -140,6 +140,12 @@ typedef enum : NSUInteger {
   //  [_previewBtn setTitle:btnTitle forState:UIControlStateNormal];
 }
 
+- (void)refreshFileName {
+    NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    _nameLab.text = fileName;
+}
+
 - (void)showFileMoreAlertView:(FileListModel *)model {
     FileMoreAlertView *view = [FileMoreAlertView getInstance];
     @weakify_self
@@ -165,7 +171,7 @@ typedef enum : NSUInteger {
         [weakSelf jumpToDetailInformation:model];
     }];
     [view setRenameB:^{
-        
+        [FileRenameHelper showRenameViewWithModel:model vc:weakSelf];
     }];
     [view setDeleteB:^{
         [weakSelf deleteFileWithModel:model];
@@ -411,5 +417,13 @@ typedef enum : NSUInteger {
     [self backAction:nil];
 }
 
+- (void)fileRenameSuccessNoti:(NSNotification *)noti {
+    NSDictionary *receiveDic = noti.object;
+    NSInteger MsgId = [receiveDic[@"params"][@"MsgId"] integerValue];
+    NSString *Filename = receiveDic[@"params"][@"Filename"];
+    
+    _fileListM.FileName = [_fileListM.FileName stringByReplacingOccurrencesOfString:_fileListM.FileName.lastPathComponent withString:Filename];
+    [self refreshFileName];
+}
 
 @end

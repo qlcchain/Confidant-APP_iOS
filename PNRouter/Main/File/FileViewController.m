@@ -34,6 +34,8 @@
 #import "ChooseContactViewController.h"
 #import "FriendModel.h"
 #import "LibsodiumUtil.h"
+#import "FileRenameHelper.h"
+
 
 typedef enum : NSUInteger {
     FileTableTypeNormal,
@@ -104,8 +106,6 @@ typedef enum : NSUInteger {
     ((MJRefreshStateHeader *)_mainTable.mj_header).stateLabel.hidden = YES;
     [_mainTable registerNib:[UINib nibWithNibName:FileCellReuse bundle:nil] forCellReuseIdentifier:FileCellReuse];
     
-    [self viewInit];
-    
     isFristLoad = YES;
      [_mainTable.mj_header beginRefreshing];
 }
@@ -121,9 +121,6 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark - Operation
-- (void)viewInit {
-    [self showEmptyView];
-}
 
 - (void)refreshTable {
     if (_myFilesTableType == MyFilesTableTypeNormal) {
@@ -148,6 +145,9 @@ typedef enum : NSUInteger {
 
 - (void)showFileMoreAlertView:(FileListModel *)model {
     self.selectModel = model;
+    NSString *fileNameBase58 = model.FileName.lastPathComponent;
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    
     FileMoreAlertView *view = [FileMoreAlertView getInstance];
     @weakify_self
     [view setSendB:^{
@@ -168,16 +168,15 @@ typedef enum : NSUInteger {
         [weakSelf jumpToDetailInformation:model];
     }];
     [view setRenameB:^{
-        [SendRequestUtil sendFileRenameWithMsgId:model.MsgId Filename:model.FileName Rename:@"123" showHud:YES];
+        [FileRenameHelper showRenameViewWithModel:model vc:weakSelf];
     }];
     [view setDeleteB:^{
         [weakSelf deleteFileWithModel:model];
     }];
     
-    NSString *fileNameBase58 = model.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
     [view showWithFileName:fileName fileType:model.FileType];
 }
+
 
 - (void)showArrangeAlertView {
     ArrangeAlertView *view = [ArrangeAlertView getInstance];
@@ -463,9 +462,17 @@ typedef enum : NSUInteger {
 
 - (void)fileRenameSuccessNoti:(NSNotification *)noti {
     NSDictionary *receiveDic = noti.object;
-    NSInteger MsgId = [receiveDic[@"MsgId"] integerValue];
+    NSInteger MsgId = [receiveDic[@"params"][@"MsgId"] integerValue];
+    NSString *Filename = receiveDic[@"params"][@"Filename"];
     
-    [self sendPullFileList];
+    [_showArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FileListModel *model = obj;
+        if ([model.MsgId integerValue] == MsgId) {
+            model.FileName = [model.FileName stringByReplacingOccurrencesOfString:model.FileName.lastPathComponent withString:Filename];
+            *stop = YES;
+        }
+    }];
+    [self refreshTable];
 }
 
 - (void)didReceiveMemoryWarning {

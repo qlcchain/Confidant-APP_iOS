@@ -16,6 +16,8 @@
 #import "AFHTTPClientV2.h"
 #import "UserConfig.h"
 #import "EntryModel.h"
+#import "PNRouter-Swift.h"
+
 @implementation SendRequestUtil
 
 #pragma mark - 用户找回
@@ -275,7 +277,7 @@
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_FileRename, @"UserId":userM.userId?:@"", @"MsgId":MsgId, @"Filename":[Filename base64EncodedString], @"Rename":[Rename base64EncodedString]};
+    NSDictionary *params = @{@"Action":Action_FileRename, @"UserId":userM.userId?:@"", @"MsgId":MsgId, @"Filename":[Base58Util Base58EncodeWithCodeName:Filename], @"Rename":[Base58Util Base58EncodeWithCodeName:Rename]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 

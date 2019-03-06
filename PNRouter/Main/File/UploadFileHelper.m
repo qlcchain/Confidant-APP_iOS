@@ -227,10 +227,8 @@
         [self jumpToUploadFiles:@[url] isDoc:NO];
     } else {
       //  [AppD.window hideHud];
-        [self.currentVC.view showHint:@"不支持当前视频格式"];
+        [self.currentVC.view showHint:@"The current video format is not supported"];
     }
-    
-   
 }
 
 //- (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
@@ -256,7 +254,7 @@
 //    } failure:^(NSString *errorMessage, NSError *error) {
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            [AppD.window hideHud];
-//            [weakSelf.currentVC.view showHint:@"不支持当前视频格式"];
+//            [weakSelf.currentVC.view showHint:@"The current video format is not supported"];
 //        });
 //    }];
 //}
