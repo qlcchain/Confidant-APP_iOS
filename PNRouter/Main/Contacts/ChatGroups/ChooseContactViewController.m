@@ -337,7 +337,7 @@
                 
                 model.isSelect = !model.isSelect;
                 
-                [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+                [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
                 NSMutableArray *selectArr = [weakSelf getIsSelectRouter];
                 if (selectArr.count > 0) {
                     
@@ -389,7 +389,7 @@
             
             if (isMutable) {
                 subModel.isSelect = !subModel.isSelect;
-                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 NSMutableArray *selectArr = [self getIsSelectRouter];
                 if (selectArr.count > 0) {
                    
