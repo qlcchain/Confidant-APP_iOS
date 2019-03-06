@@ -52,6 +52,22 @@
     return shareObject;
 }
 
+// 取消当前下载
+- (void) cancelDownWithFileid:(NSInteger) fileid srckey:(NSString *) srckey
+{
+    @weakify_self
+    [self.taskArr enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FileData *fileModel = obj;
+        if ([fileModel.srcKey isEqualToString:fileModel.srcKey] && fileid == fileModel.fileId) {
+            if (fileModel.downloadTask) {
+                [fileModel.downloadTask cancel];
+            }
+            [weakSelf.taskArr removeObject:obj];
+            *stop = YES;
+        }
+    }];
+}
+
 - (void) downFileWithFileModel:(FileListModel *) fileModel  progressBlock:(void(^)(CGFloat progress)) progressBlock
                        success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
                        failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure

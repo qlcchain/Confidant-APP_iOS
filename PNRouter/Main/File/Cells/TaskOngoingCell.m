@@ -28,7 +28,7 @@
 - (IBAction)selectAction:(id)sender {
     
     if (_selectBlock) {
-        _selectBlock(@[_fileModel.srcKey,@(_fileModel.fileId),@(2),@(_fileModel.fileOptionType)]);
+        _selectBlock(@[_fileModel.srcKey,@(_fileModel.fileId),@(2),@(_fileModel.fileOptionType),_fileModel.fileName]);
     }
 }
 
