@@ -1659,7 +1659,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         });
     } else {
         //  [AppD.window hideHud];
-        [self.view showHint:@"不支持当前视频格式"];
+        [self.view showHint:@"The current video format is not supported"];
     }
 }
 
@@ -1720,7 +1720,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         
     } failure:^(NSString *errorMessage, NSError *error) {
-        [self.view showHint:@"不支持当前视频格式"];
+        [self.view showHint:@"The current video format is not supported"];
     }];
 }
 
