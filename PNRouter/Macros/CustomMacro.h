@@ -22,6 +22,7 @@
 #define CHAT_CACHE_TABNAME  @"CHAT_CACHE_TABNAME"
 
 #define OperationRecord_Table @"OperationRecord_Table"
+#define UserHeader_Table @"UserHeader_Table"
 
 // 请求超时时间
 #define REQEUST_TIME  20

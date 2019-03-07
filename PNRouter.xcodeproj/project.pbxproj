@@ -100,6 +100,7 @@
 		5833F9C7221E57F400F7B63D /* ContactHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833F9C4221E57F400F7B63D /* ContactHeaderView.m */; };
 		583B2B2D2231099F00E6238D /* PNDefaultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B2C2231099F00E6238D /* PNDefaultHeaderView.m */; };
 		583B2B2F223109A900E6238D /* PNDefaultHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583B2B2E223109A900E6238D /* PNDefaultHeaderView.xib */; };
+		583B2B3222311F3300E6238D /* UserHeaderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B3122311F3300E6238D /* UserHeaderModel.m */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
 		583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */; };
@@ -700,6 +701,8 @@
 		583B2B2B2231099F00E6238D /* PNDefaultHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNDefaultHeaderView.h; sourceTree = "<group>"; };
 		583B2B2C2231099F00E6238D /* PNDefaultHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNDefaultHeaderView.m; sourceTree = "<group>"; };
 		583B2B2E223109A900E6238D /* PNDefaultHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNDefaultHeaderView.xib; sourceTree = "<group>"; };
+		583B2B3022311F3300E6238D /* UserHeaderModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserHeaderModel.h; sourceTree = "<group>"; };
+		583B2B3122311F3300E6238D /* UserHeaderModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserHeaderModel.m; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
 		583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskListViewController.m; sourceTree = "<group>"; };
 		583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskListViewController.xib; sourceTree = "<group>"; };
@@ -2101,6 +2104,8 @@
 				58245C522215470E009A6DB4 /* GetDiskTotalInfoModel.m */,
 				582BFE2E2216538D00D8C2C8 /* GetDiskDetailInfoModel.h */,
 				582BFE2F2216538D00D8C2C8 /* GetDiskDetailInfoModel.m */,
+				583B2B3022311F3300E6238D /* UserHeaderModel.h */,
+				583B2B3122311F3300E6238D /* UserHeaderModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3978,6 +3983,7 @@
 				73D31B20218025270034B2B9 /* RMDownloadIndicator.m in Sources */,
 				7362575B214213AA00D7FD6B /* NSDate+Category.m in Sources */,
 				73D00EBB215F792F0013E20D /* SocketManageUtil.m in Sources */,
+				583B2B3222311F3300E6238D /* UserHeaderModel.m in Sources */,
 				7330F3CE21479AED00FF4EEC /* NewsCell.m in Sources */,
 				7360B85221FC3269008FB181 /* FileData.m in Sources */,
 				7378841C21ACF2970033A189 /* OCTSubmanagerFriendsImpl.m in Sources */,
