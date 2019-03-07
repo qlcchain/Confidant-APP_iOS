@@ -31,24 +31,14 @@
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_headportrait" translatesAutoresizingMaskIntoConstraints="NO" id="kLU-3K-xyv">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fC7-Fs-pyp">
-                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="8"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="kLU-3K-xyv" firstAttribute="leading" secondItem="94k-7X-lxO" secondAttribute="leading" id="0d6-cs-AOg"/>
                                             <constraint firstAttribute="bottom" secondItem="kLU-3K-xyv" secondAttribute="bottom" id="1mn-Vz-f87"/>
                                             <constraint firstAttribute="height" constant="20" id="9Ke-sn-OyR"/>
-                                            <constraint firstItem="fC7-Fs-pyp" firstAttribute="top" secondItem="94k-7X-lxO" secondAttribute="top" id="DR4-9x-oVS"/>
                                             <constraint firstAttribute="trailing" secondItem="kLU-3K-xyv" secondAttribute="trailing" id="NAN-rc-dtM"/>
-                                            <constraint firstAttribute="bottom" secondItem="fC7-Fs-pyp" secondAttribute="bottom" id="QjG-fr-NA5"/>
-                                            <constraint firstAttribute="trailing" secondItem="fC7-Fs-pyp" secondAttribute="trailing" id="Vcx-HN-S8v"/>
                                             <constraint firstAttribute="width" constant="20" id="b6z-Ep-nCP"/>
-                                            <constraint firstItem="fC7-Fs-pyp" firstAttribute="leading" secondItem="94k-7X-lxO" secondAttribute="leading" id="bD3-Fv-e5c"/>
                                             <constraint firstItem="kLU-3K-xyv" firstAttribute="top" secondItem="94k-7X-lxO" secondAttribute="top" id="o3i-c7-Upn"/>
                                         </constraints>
                                     </view>
@@ -207,13 +197,13 @@
                 <outlet property="downloadBtn" destination="Sub-bV-dUT" id="oBK-OP-Zmc"/>
                 <outlet property="fileNameLab" destination="bpD-Bw-UNe" id="CYm-hh-2DZ"/>
                 <outlet property="forwardBtn" destination="fjy-1z-2w7" id="0MZ-x9-GSA"/>
+                <outlet property="headerImgV" destination="kLU-3K-xyv" id="CuT-3O-sL1"/>
                 <outlet property="icon" destination="kZc-N0-tOW" id="lRx-9j-x23"/>
                 <outlet property="moreBtn" destination="rxC-lg-otr" id="c6O-Nw-uMe"/>
                 <outlet property="nameLab" destination="SUO-HQ-KiC" id="kW4-is-bjH"/>
                 <outlet property="operationIcon" destination="WZR-fq-rqK" id="Fxa-FZ-iJd"/>
                 <outlet property="operationLab" destination="lsd-SZ-AZb" id="7hW-jE-y5k"/>
                 <outlet property="sizeLab" destination="LyN-bU-BQE" id="dJk-Ze-mdL"/>
-                <outlet property="spellLab" destination="fC7-Fs-pyp" id="Evl-yJ-2AZ"/>
                 <outlet property="timeLab" destination="zqU-sa-aw7" id="g4p-q6-UPt"/>
             </connections>
             <point key="canvasLocation" x="129.59999999999999" y="48.125937031484263"/>

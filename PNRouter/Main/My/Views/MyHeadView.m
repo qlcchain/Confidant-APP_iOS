@@ -9,6 +9,7 @@
 #import "MyHeadView.h"
 #import "UserModel.h"
 #import "NSString+Base64.h"
+#import "PNDefaultHeaderView.h"
 
 @implementation MyHeadView
 + (instancetype) loadMyHeadView
@@ -23,10 +24,13 @@
 
 - (void) setUserNameFirstWithName:(NSString *) userName
 {
+    
     if (![UserModel getUserModel].headBaseStr || !_isMyHead) {
-        [_HeanBtn setTitle:userName forState:UIControlStateNormal];
+//        [_HeanBtn setTitle:userName forState:UIControlStateNormal];
+        UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:userName];
+        [_HeanBtn setImage:defaultImg forState:UIControlStateNormal];
     } else {
-        [_HeanBtn setTitle:@"" forState:UIControlStateNormal];
+//        [_HeanBtn setTitle:@"" forState:UIControlStateNormal];
         [_HeanBtn setImage:[UIImage imageWithData:[UserModel getUserModel].headBaseStr.base64DecodedData] forState:UIControlStateNormal];
     }
     

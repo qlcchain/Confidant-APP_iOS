@@ -15,7 +15,8 @@ static NSString *ChooseContactCellReuse = @"ChooseContactCell";
 @interface ChooseContactCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftContraintV;
 @property (weak, nonatomic) IBOutlet UIImageView *selectImgView;
-@property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UIImageView *headerImgV;
+//@property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
 
 - (void) setModeWithModel:(FriendModel *) model withLeftContraintV:(CGFloat) leftV;

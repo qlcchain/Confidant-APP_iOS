@@ -12,6 +12,7 @@
 #import "UserModel.h"
 #import "NSString+Base64.h"
 #import "EntryModel.h"
+#import "PNDefaultHeaderView.h"
 
 @interface PersonCodeViewController ()
 
@@ -96,7 +97,9 @@
     }
     _lblNavTitle.text = self.userName;
     _lblName.text = self.userName;
-    [_nameBtn setTitle:[StringUtil getUserNameFirstWithName:self.userName] forState:UIControlStateNormal];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:self.userName]];
+    [_nameBtn setImage:defaultImg forState:UIControlStateNormal];
+//    [_nameBtn setTitle:[StringUtil getUserNameFirstWithName:self.userName] forState:UIControlStateNormal];
     NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@,%@",self.userId,[self.userName base64EncodedString],self.signPublicKey?:@""];
     @weakify_self
     [HMScanner qrImageWithString:coderValue avatar:nil completion:^(UIImage *image) {

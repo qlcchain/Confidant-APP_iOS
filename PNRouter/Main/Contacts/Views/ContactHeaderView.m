@@ -9,6 +9,7 @@
 #import "ContactHeaderView.h"
 #import "ContactShowModel.h"
 #import "NSString+Base64.h"
+#import "PNDefaultHeaderView.h"
 
 @interface ContactHeaderView ()
 
@@ -28,7 +29,7 @@
     [super prepareForReuse];
     
     _lblName.text = nil;
-    _lblTitle.text = nil;
+//    _lblTitle.text = nil;
     _arrowImg.image = nil;
     
 }
@@ -36,7 +37,9 @@
 - (void)configHeaderWithModel:(ContactShowModel *)model {
     NSString *name = [model.Name base64DecodedString]?:model.Name;
     _lblName.text = model.showArrow?[NSString stringWithFormat:@"%@(%@)",name,@(model.routerArr.count)]:name;
-    _lblTitle.text = [StringUtil getUserNameFirstWithName:_lblName.text];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:_lblName.text]];
+    _headImgView.image = defaultImg;
+//    _lblTitle.text = [StringUtil getUserNameFirstWithName:_lblName.text];
     _arrowImg.hidden = !model.showArrow;
     _arrowImg.image = model.showCell?[UIImage imageNamed:@"icon_arrow_down_gray"]:[UIImage imageNamed:@"icon_arrow_up_gray"];
 //    _selectBtn.selected = model.isSelect;

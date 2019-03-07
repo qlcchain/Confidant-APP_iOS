@@ -288,5 +288,24 @@
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 
+#pragma mark - 用户上传头像
++ (void)sendUploadAvatarWithFileName:(NSString *)FileName FileMd5:(NSString *)FileMd5 showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_UploadAvatar,@"Uid":userM.userId?:@"",@"FileName":[Base58Util Base58EncodeWithCodeName:FileName],@"FileMd5":FileMd5};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+
+#pragma mark - 更新好友头像
++ (void)sendUpdateAvatarWithFid:(NSString *)Fid Md5:(NSString *)Md5 showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_UpdateAvatar,@"Uid":userM.userId?:@"",@"Fid":Fid,@"Md5":Md5};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 
 @end

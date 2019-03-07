@@ -16,6 +16,16 @@
 #import "EditTextViewController.h"
 #import "UserConfig.h"
 #import "PNRouter-Swift.h"
+#import "LibsodiumUtil.h"
+#import "SystemUtil.h"
+#import "EntryModel.h"
+#import "AESCipher.h"
+#import "SocketDataUtil.h"
+#import "SocketManageUtil.h"
+#import "NSDate+Category.h"
+#import "SocketCountUtil.h"
+#import "MD5Util.h"
+#import "PNDefaultHeaderView.h"
 
 @interface MyDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
@@ -28,6 +38,10 @@
 @implementation MyDetailViewController
 
 
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileFinshNoti:) name:FILE_UPLOAD_NOTI object:nil];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
@@ -35,6 +49,9 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self addObserve];
+    
     _tableV.delegate = self;
     _tableV.dataSource = self;
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -83,12 +100,14 @@
         if (indexPath.row == 0) {
             if ([UserModel getUserModel].headBaseStr) {
                 [cell.subBtn setImage:[UIImage imageWithData:[UserModel getUserModel].headBaseStr.base64DecodedData] forState:UIControlStateNormal];
-                [cell.subBtn setTitle:@"" forState:UIControlStateNormal];
+//                [cell.subBtn setTitle:@"" forState:UIControlStateNormal];
             } else {
-                [cell.subBtn setBackgroundImage:[UIImage imageNamed:@"detailHead"] forState:UIControlStateNormal];
-                [cell.subBtn setTitle:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] forState:UIControlStateNormal];
+                UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
+                [cell.subBtn setImage:defaultImg forState:UIControlStateNormal];
+//                [cell.subBtn setBackgroundImage:[UIImage imageNamed:@"detailHead"] forState:UIControlStateNormal];
+//                [cell.subBtn setTitle:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] forState:UIControlStateNormal];
             }
-            
+        
         } else {
              [cell.subBtn setImage:[UIImage imageNamed:@"icon_code"] forState:UIControlStateNormal];
         }
@@ -171,29 +190,89 @@
     //    UIImagePickerControllerOriginalImage//原图
     UIImage *resultImage = [info objectForKey:@"UIImagePickerControllerEditedImage"];
     if (resultImage) {
-        resultImage = [resultImage resizeImage:resultImage];
-        UserModel *model = [UserModel getUserModel];
-        model.headBaseStr = UIImagePNGRepresentation(resultImage).base64EncodedString;
-        [model saveUserModeToKeyChain];
-        _selectImage = resultImage;
-        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-        [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_CHANGE_NOTI object:nil];
+        NSData *imgData = [resultImage compressJPGImage:resultImage toMaxFileSize:User_Header_Size];
+        [self uploadHeader:imgData];
+        
+////        resultImage = [resultImage resizeImage:resultImage];
+//        UserModel *model = [UserModel getUserModel];
+////        model.headBaseStr = UIImagePNGRepresentation(resultImage).base64EncodedString;
+//        model.headBaseStr = imgData.base64EncodedString;
+//        [model saveUserModeToKeyChain];
+//        _selectImage = [UIImage imageWithData:imgData];
+//        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_CHANGE_NOTI object:nil];
     }
     
-    //    [_headImageView sd_setImageWithURL:[NSURL URLWithString:[UserManage getHeadUrl]] placeholderImage:nil];
-    
-    //    [_topHeadImgView sd_setImageWithURL:[NSURL URLWithString:[UserManage getHeadUrl]] placeholderImage:nil];
-    
-    //    _topHeadImgView.image = [_topHeadImgView hyb_setImage:resultImage size:CGSizeMake(100, 100) cornerRadius:50 onCliped:nil];
-    //    _topHeadImgView.hyb_borderColor = [UIColor whiteColor];
-    //    _topHeadImgView.hyb_borderWidth = 5.0f;
     //使用模态返回到软件界面
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:nil];
+//    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)uploadHeader:(NSData *)imgData {
+
+    // 上传文件
+//    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getTimestampFromDate:[NSDate date]])];
+    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *outputPath = [NSString stringWithFormat:@"%@.jpg",mills];
+    outputPath =  [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:outputPath];
+//    NSString *fileName = outputPath.lastPathComponent;
+    NSString *fileName = [EntryModel getShareObject].signPublicKey;
+    NSData *fileData = imgData;
+    int fileType = 6;
+    
+    long tempMsgid = [SocketCountUtil getShareObject].fileIDCount++;
+    tempMsgid = +tempMsgid;
+    NSInteger fileId = tempMsgid;
+    
+    // 生成32位对称密钥
+    NSString *msgKey = [SystemUtil get32AESKey];
+//    if (weakSelf.isDoc) {
+//        msgKey = [SystemUtil getDoc32AESKey];
+//    }
+    NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *symmetKey = [symmetData base64EncodedString];
+    // 自己公钥加密对称密钥
+    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+    
+    NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+    fileData = aesEncryptData(fileData,msgKeyData);
+    
+    
+    if ([SystemUtil isSocketConnect]) { // socket
+        SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+        dataUtil.srcKey = srcKey;
+        dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)fileId];
+        [dataUtil sendFileId:@"" fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
+        [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+    } else { // tox
+        fileName = [NSString stringWithFormat:@"a:%@",fileName];
+        BOOL isSuccess = [fileData writeToFile:outputPath atomically:YES];
+        if (isSuccess) {
+            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:outputPath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
+            [SendToxRequestUtil uploadFileWithFilePath:outputPath parames:parames fileData:fileData];
+        }
+    }
+}
+
+#pragma mark - Noti
+- (void) uploadFileFinshNoti:(NSNotification *) noti {
+    //  [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),self.fileName,self.fileData,@(self.fileType),self.srcKey]];
+    
+    NSArray *resultArr = noti.object;
+    if (resultArr && resultArr.count>0 && [resultArr[0] integerValue] == 0) { // 成功
+        
+        NSString *srckey = resultArr[4];
+        NSInteger fileid = [[resultArr lastObject] integerValue];
+        
+    
+        
+    } else { // 上传失败
+        
+    }
 }
 
 #pragma mark - layz

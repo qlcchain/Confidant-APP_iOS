@@ -20,6 +20,6 @@ static NSString *ContactsCellReuse = @"ContactsCell";
 - (void) setModeWithModel:(FriendModel *) model;
 - (void) setModeWithRoutherUserModel:(RouterUserModel *) model;
 
-@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
+//@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 
 @end

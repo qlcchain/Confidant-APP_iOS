@@ -98,6 +98,8 @@
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		5833F9C6221E57F400F7B63D /* ContactHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5833F9C3221E57F400F7B63D /* ContactHeaderView.xib */; };
 		5833F9C7221E57F400F7B63D /* ContactHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833F9C4221E57F400F7B63D /* ContactHeaderView.m */; };
+		583B2B2D2231099F00E6238D /* PNDefaultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B2C2231099F00E6238D /* PNDefaultHeaderView.m */; };
+		583B2B2F223109A900E6238D /* PNDefaultHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583B2B2E223109A900E6238D /* PNDefaultHeaderView.xib */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
 		583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */; };
@@ -694,6 +696,10 @@
 		5833F9C3221E57F400F7B63D /* ContactHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactHeaderView.xib; sourceTree = "<group>"; };
 		5833F9C4221E57F400F7B63D /* ContactHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactHeaderView.m; sourceTree = "<group>"; };
 		5833F9C5221E57F400F7B63D /* ContactHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactHeaderView.h; sourceTree = "<group>"; };
+		583B2B292230E65600E6238D /* NotiMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotiMacro.h; sourceTree = "<group>"; };
+		583B2B2B2231099F00E6238D /* PNDefaultHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNDefaultHeaderView.h; sourceTree = "<group>"; };
+		583B2B2C2231099F00E6238D /* PNDefaultHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNDefaultHeaderView.m; sourceTree = "<group>"; };
+		583B2B2E223109A900E6238D /* PNDefaultHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNDefaultHeaderView.xib; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
 		583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskListViewController.m; sourceTree = "<group>"; };
 		583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskListViewController.xib; sourceTree = "<group>"; };
@@ -1774,6 +1780,16 @@
 			path = UIColor;
 			sourceTree = "<group>";
 		};
+		583B2B2A2231092700E6238D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				583B2B2B2231099F00E6238D /* PNDefaultHeaderView.h */,
+				583B2B2C2231099F00E6238D /* PNDefaultHeaderView.m */,
+				583B2B2E223109A900E6238D /* PNDefaultHeaderView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		583BF8FA21F6AE4B0078A2A8 /* MyFile */ = {
 			isa = PBXGroup;
 			children = (
@@ -1836,6 +1852,7 @@
 		584A4472214609E200608122 /* News */ = {
 			isa = PBXGroup;
 			children = (
+				583B2B2A2231092700E6238D /* View */,
 				73F8806621DF874A0047C3DA /* DebugLogViewController.h */,
 				73F8806521DF87490047C3DA /* DebugLogViewController.m */,
 				73F8806721DF874A0047C3DA /* DebugLogViewController.xib */,
@@ -2104,6 +2121,7 @@
 		585AEE15213F6F040098A070 /* Macros */ = {
 			isa = PBXGroup;
 			children = (
+				583B2B292230E65600E6238D /* NotiMacro.h */,
 				736257B3214214B400D7FD6B /* GlobalMacro.h */,
 				585AEE1A213F71A90098A070 /* ServerMacro.h */,
 				7330F351214610E700FF4EEC /* CustomMacro.h */,
@@ -3651,6 +3669,7 @@
 				73741801221E9B8F008EE243 /* SettingViewController.xib in Resources */,
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
+				583B2B2F223109A900E6238D /* PNDefaultHeaderView.xib in Resources */,
 				73121A75219C26E900510B48 /* LoginViewController.xib in Resources */,
 				73E03B4C21DDF88A005DF993 /* DHTnodes.json in Resources */,
 				585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */,
@@ -4073,6 +4092,7 @@
 				7330F386214612E800FF4EEC /* ContactViewController.m in Sources */,
 				7378840921ACF2970033A189 /* OCTSettingsStorageObject.m in Sources */,
 				5825A24121FAC03700E6194B /* ChooseShareContactViewController.m in Sources */,
+				583B2B2D2231099F00E6238D /* PNDefaultHeaderView.m in Sources */,
 				737883FD21ACF2970033A189 /* OCTManagerConstants.m in Sources */,
 				737883F921ACF2970033A189 /* OCTVideoView.m in Sources */,
 				581FDF5521F024170068C120 /* friend_connection.m in Sources */,

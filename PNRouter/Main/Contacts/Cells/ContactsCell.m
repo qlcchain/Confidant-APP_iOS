@@ -10,6 +10,7 @@
 #import "FriendModel.h"
 #import "NSString+Base64.h"
 #import "RouterUserModel.h"
+#import "PNDefaultHeaderView.h"
 
 @implementation ContactsCell
 
@@ -29,7 +30,9 @@
     _descContraintW.constant = 0;
     _lblDesc.text = @"";
     _lblName.text = [model.username base64DecodedString]?:model.username;
-    _lblTitle.text =[StringUtil getUserNameFirstWithName:_lblName.text];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:_lblName.text]];
+    _headImgView.image = defaultImg;
+//    _lblTitle.text =[StringUtil getUserNameFirstWithName:_lblName.text];
 }
 - (void) setModeWithRoutherUserModel:(RouterUserModel *) model
 {
@@ -41,7 +44,9 @@
     }
     
     _lblName.text = model.NickName?:@"";
-    _lblTitle.text =[StringUtil getUserNameFirstWithName:model.NickName];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:_lblName.text]];
+    _headImgView.image = defaultImg;
+//    _lblTitle.text =[StringUtil getUserNameFirstWithName:model.NickName];
 }
 
 @end

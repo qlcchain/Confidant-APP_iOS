@@ -13,7 +13,7 @@ static NSString *AddFriendCellReuse = @"AddFriendCellTableViewCell";
 typedef void(^ClickRightBlock)(NSInteger tag,NSInteger row);
 
 @interface AddFriendCellTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
+//@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblStatus;

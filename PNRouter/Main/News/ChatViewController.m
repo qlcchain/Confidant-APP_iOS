@@ -46,6 +46,7 @@
 #import "EntryModel.h"
 #import "PNDocumentPickerViewController.h"
 #import "ChatModel.h"
+#import "PNDefaultHeaderView.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -1395,14 +1396,16 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     imgBackView.backgroundColor = [UIColor clearColor];
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:imgBackView.bounds];
-    imgView.image = [UIImage imageNamed:@"icon_headportrait"];
-    UILabel *lblName = [[UILabel alloc] initWithFrame:imgBackView.bounds];
-    lblName.textColor = [UIColor whiteColor];
-    lblName.textAlignment = NSTextAlignmentCenter;
-    lblName.font = [UIFont systemFontOfSize:16];
-    lblName.text = [StringUtil getUserNameFirstWithName:name];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:name]];
+//    imgView.image = [UIImage imageNamed:@"icon_headportrait"];
+    imgView.image = defaultImg;
+//    UILabel *lblName = [[UILabel alloc] initWithFrame:imgBackView.bounds];
+//    lblName.textColor = [UIColor whiteColor];
+//    lblName.textAlignment = NSTextAlignmentCenter;
+//    lblName.font = [UIFont systemFontOfSize:16];
+//    lblName.text = [StringUtil getUserNameFirstWithName:name];
     [imgBackView addSubview:imgView];
-    [imgBackView addSubview:lblName];
+//    [imgBackView addSubview:lblName];
     return imgBackView;
 }
 

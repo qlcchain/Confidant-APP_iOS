@@ -4,5 +4,6 @@
 
 #import "SocketMessageUtil.h"
 #import "CustomMacro.h"
+#import "NotiMacro.h"
 #import "SocketCountUtil.h"
 #import "SocketDataUtil.h"

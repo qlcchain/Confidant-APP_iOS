@@ -32,6 +32,7 @@
         #import "ServerMacro.h"
         #import "CustomMacro.h"
         #import "GlobalMacro.h"
+        #import "NotiMacro.h"
 
         // 类目
         #import "UIView+Frame.h"
