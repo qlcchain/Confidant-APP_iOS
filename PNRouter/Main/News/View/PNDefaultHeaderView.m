@@ -26,6 +26,16 @@
 + (UIImage *)getImageWithName:(NSString *)name {
     PNDefaultHeaderView *view = [PNDefaultHeaderView loadView];
     view.nameLab.text = name;
+    view.nameLab.font = [UIFont systemFontOfSize:16];
+    UIImage *img = [view convertViewToImage];
+    
+    return img;
+}
+
++ (UIImage *)getImageWithName:(NSString *)name fontSize:(NSInteger)fontSize {
+    PNDefaultHeaderView *view = [PNDefaultHeaderView loadView];
+    view.nameLab.text = name;
+    view.nameLab.font = [UIFont systemFontOfSize:fontSize];
     UIImage *img = [view convertViewToImage];
     
     return img;
