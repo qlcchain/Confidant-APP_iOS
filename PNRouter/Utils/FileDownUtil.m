@@ -55,14 +55,12 @@
 // 取消当前下载
 - (void) cancelDownWithFileid:(NSInteger) fileid srckey:(NSString *) srckey
 {
-    @weakify_self
     [self.taskArr enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FileData *fileModel = obj;
         if ([fileModel.srcKey isEqualToString:fileModel.srcKey] && fileid == fileModel.fileId) {
             if (fileModel.downloadTask) {
                 [fileModel.downloadTask cancel];
             }
-            [weakSelf.taskArr removeObject:obj];
             *stop = YES;
         }
     }];
@@ -289,7 +287,7 @@
     __block NSURLSessionDownloadTask *downloadTask = nil;
     [self.taskArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FileData *tempFileData = obj;
-        if ([tempFileData.srcKey isEqualToString:fileDataM.srcKey]) {
+        if ([tempFileData.srcKey isEqualToString:fileDataM.srcKey] && fileDataM.msgId == tempFileData.msgId) {
             downloadTask = tempFileData.downloadTask;
             *stop = YES;
         }
@@ -397,18 +395,6 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
         }];
         
-//         [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(fileModel.MsgId)] complete:^(NSArray * _Nullable array) {
-//             if (array && array.count > 0) {
-//                 FileData *fileDataModel = array[0];
-//                 fileDataModel.status = 3;
-//                 fileDataModel.progess = 0.0f;
-//                 [fileDataModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
-//
-//                 }];
-//                [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileDataModel];
-//             }
-//         }];
-        
          [[NSNotificationCenter defaultCenter] postNotificationName:TOX_PULL_FILE_FAIELD_NOTI object:fileModel.MsgId];
     }
 }
@@ -452,13 +438,17 @@
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(@(msgid))] complete:^(NSArray * _Nullable array) {
         if (array && array.count > 0) {
             FileData *fileModel = array[0];
-            fileModel.status = 3;
+            
             fileModel.progess = 0.0;
             fileModel.fileData = [NSData data];
             [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
                
             }];
-             [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileModel];
+            if (fileModel.status != 3) {
+                fileModel.status = 3;
+                [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileModel];
+            }
+           
         }
     }];
 }

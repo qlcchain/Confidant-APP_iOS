@@ -17,6 +17,7 @@
 #import "PNRouter-Swift.h"
 #import "MD5Util.h"
 #import "NSDateFormatter+Category.h"
+#import "ChatListDataUtil.h"
 
 @interface TaskOngoingCell ()
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftContraintW;
@@ -28,7 +29,7 @@
 - (IBAction)selectAction:(id)sender {
     
     if (_selectBlock) {
-        _selectBlock(@[_fileModel.srcKey,@(_fileModel.fileId),@(2),@(_fileModel.fileOptionType),_fileModel.fileName]);
+        _selectBlock(@[_fileModel.srcKey,@(_fileModel.fileId),@(2),@(_fileModel.fileOptionType),_fileModel.fileName,@(_fileModel.msgId)]);
     }
 }
 
@@ -38,7 +39,7 @@
     if ([SystemUtil isSocketConnect]) { // 是socket
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
         dataUtil.srcKey = self.fileModel.srcKey;
-        dataUtil.fileid = [NSString stringWithFormat:@"%d",self.fileModel.fileId];
+        dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)self.fileModel.fileId];
         [dataUtil sendFileId:@"" fileName:self.fileModel.fileName fileData:self.fileModel.fileData fileid:self.fileModel.fileId fileType:self.fileModel.fileType messageid:@"" srcKey:self.fileModel.srcKey dstKey:@""];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
     } else { // tox
@@ -66,66 +67,94 @@
         }
     }
 }
+// 取消上传
+- (void) cancelUploadFile
+{
+    _progess.progress = 0;
+    if ([SystemUtil isSocketConnect]) {
+        [[SocketManageUtil getShareObject] cancelFileOptionWithSrcKey:self.fileModel.srcKey fileid:self.fileModel.fileId];
+    } else {
+        [SendToxRequestUtil cancelToxFileUploadWithFileid:[NSString stringWithFormat:@"%ld",(long)self.fileModel.fileId]];
+    }
+}
+// 重新下载
+- (void) deDownFile
+{
+    if ([SystemUtil isSocketConnect]) {
+        [[FileDownUtil getShareObject] deDownFileWithFileModel:self.fileModel progressBlock:^(CGFloat progress) {
+        } success:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSString * _Nonnull filePath) {
+        } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
+        } downloadTaskB:^(NSURLSessionDownloadTask * _Nonnull downloadTask) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+            });
+        }];
+    } else {
+         [[FileDownUtil getShareObject] deToxDownFileModel:self.fileModel];
+    }
+}
+// 取消下载
+- (void) cancelFileDown
+{
+    if ([SystemUtil isSocketConnect]) {
+       NSURLSessionDownloadTask *downTask = [[FileDownUtil getShareObject] getDownloadTask:_fileModel];
+        [downTask cancel];
+    } else {
+        [SendToxRequestUtil cancelToxFileDownWithMsgid:[NSString stringWithFormat:@"%ld",(long)self.fileModel.msgId]];
+    }
+}
 
 - (IBAction)optionAction:(id)sender {
     
-   
     // 更新下载时间
     NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
     self.fileModel.optionTime = [formatter stringFromDate:[NSDate date]];
     
     
-    [_optionBtn setImage:[UIImage imageNamed:@"icon_stop_gray"] forState:UIControlStateNormal];
-    self.fileModel.status = 2;
-    _optionBtn.userInteractionEnabled = NO;
+    if (self.fileModel.status == 3) {
+        self.fileModel.status = 2;
+        self.fileModel.speedSize = 0;
+        [_optionBtn setImage:[UIImage imageNamed:@"icon_stop_gray"] forState:UIControlStateNormal];
+    } else {
+        self.fileModel.status = 3;
+        self.fileModel.speedSize = 0;
+        [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
+        _lblProgess.text = @"0 KB/s";
+    }
+    // 更新数据库
+    [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"status"),bg_sqlValue(@(self.fileModel.status)),bg_sqlKey(@"speedSize"),bg_sqlValue(@(0)),bg_sqlKey(@"msgId"),bg_sqlValue(@(self.fileModel.msgId)),bg_sqlKey(@"userId"),bg_sqlValue(self.fileModel.userId)]];
+   
     
     if (self.fileModel.fileOptionType == 1) { // 上传
-        
-        if (!self.fileModel.fileData || self.fileModel.fileData.length == 0) {
+        if (self.fileModel.status == 2) { // 开始上传
             
-            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ and %@=%@",bg_sqlKey(@"fileData"),FILE_STATUS_TABNAME,bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.fileModel.srcKey)];
+            if (!self.fileModel.fileData || self.fileModel.fileData.length == 0) {
                 
-                NSArray *results = bg_executeSql(sql, FILE_STATUS_TABNAME,[FileData class]);
-                if (results && results.count > 0) {
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ and %@=%@",bg_sqlKey(@"fileData"),FILE_STATUS_TABNAME,bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.fileModel.srcKey)];
                     
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        FileData *resultModel = results[0];
-                        self.fileModel.fileData = resultModel.fileData;
-                        [self deUploadFile];
-                    });
-                }
-                
-            });
-        } else {
-            [self deUploadFile];
+                    NSArray *results = bg_executeSql(sql, FILE_STATUS_TABNAME,[FileData class]);
+                    if (results && results.count > 0) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            FileData *resultModel = results[0];
+                            self.fileModel.fileData = resultModel.fileData;
+                            [self deUploadFile];
+                        });
+                    }
+                    
+                });
+            } else {
+                [self deUploadFile];
+            }
+        } else { // 取消上传
+            [self cancelUploadFile];
         }
-        
-        
     } else { // 下载
-         if ([SystemUtil isSocketConnect]) { // 是socket
-             
-             if (_fileModel.status == 5) { // 如果下载中 停止下载
-                 NSURLSessionDownloadTask *downloadTask = [[FileDownUtil getShareObject] getDownloadTask:_fileModel];
-                 if (downloadTask) {
-                     [downloadTask cancel];
-                 }
-             } else { // 未下载 则开始下载
-//                 @weakify_self
-                 [[FileDownUtil getShareObject] deDownFileWithFileModel:self.fileModel progressBlock:^(CGFloat progress) {
-                 } success:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSString * _Nonnull filePath) {
-                 } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
-                 } downloadTaskB:^(NSURLSessionDownloadTask * _Nonnull downloadTask) {
-                     dispatch_async(dispatch_get_main_queue(), ^{
-//                         weakSelf.downloadTask = downloadTask;
-                     });
-                 }];
-             }
-             
-         } else { // tox
-              [[FileDownUtil getShareObject] deToxDownFileModel:self.fileModel];
-         }
-        
+        if (self.fileModel.status == 2) { // 开始下载
+            [self deDownFile];
+        } else { // 取消下载
+            [self cancelFileDown];
+        }
     }
 }
 
@@ -152,12 +181,17 @@
     }
     if (model.status == 2) {
         [_optionBtn setImage:[UIImage imageNamed:@"icon_stop_gray"] forState:UIControlStateNormal];
-       _lblProgess.text = [[SystemUtil transformedZSValue:model.speedSize] stringByAppendingString:@"/s"];
-        _optionBtn.userInteractionEnabled = NO;
+        if (model.speedSize == 0) {
+            _lblProgess.text = @"0 KB/s";
+        } else {
+            _lblProgess.text = [[SystemUtil transformedZSValue:model.speedSize] stringByAppendingString:@"/s"];
+        }
+       
+        //_optionBtn.userInteractionEnabled = NO;
     } else {
         [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
         _lblProgess.text = @"0 KB/s";
-        _optionBtn.userInteractionEnabled = YES;
+       // _optionBtn.userInteractionEnabled = YES;
     }
     _lblTitle.text = model.fileName;
     _lblSize.text = [SystemUtil transformedValue:model.fileSize];//[NSString stringWithFormat:@"%d kb",model.fileSize/1024];

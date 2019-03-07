@@ -27,6 +27,7 @@
             shareObject.fileNameParames = [NSMutableDictionary dictionary];
             shareObject.pullTimerDic = [NSMutableDictionary dictionary];
             shareObject.fileCancelParames = [NSMutableDictionary dictionary];
+            shareObject.fileNumberParames = [NSMutableDictionary dictionary];
         }
        
     });

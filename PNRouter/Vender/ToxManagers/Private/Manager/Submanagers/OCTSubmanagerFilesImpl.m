@@ -27,6 +27,7 @@
 #import "ToxPullFileTimerUtil.h"
 #import "FileData.h"
 
+
 #if TARGET_OS_IPHONE
 @import MobileCoreServices;
 #endif
@@ -190,6 +191,11 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     }
     NSLog(@"filepath = %@ fileNumber = %d",filePath,fileNumber);
     if (parames) {
+         if ([toid isEmptyString]) { // 上传文件
+            NSString *fileId = [NSString stringWithFormat:@"%@",parames[@"FileId"]];
+             // 通过fileid 绑定fileNumber
+             [[ChatListDataUtil getShareObject].fileNumberParames setObject:[NSString stringWithFormat:@"%d",fileNumber] forKey:fileId];
+         }
         [[ChatListDataUtil getShareObject].fileParames setObject:parames forKey:[NSString stringWithFormat:@"%d",fileNumber]];
     }
     //OCTRealmManager *realmManager = [self.dataSource managerGetRealmManager];
@@ -219,6 +225,12 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                                                                                                        userFailureBlock:failureBlock]];
 
     [self.queue addOperation:operation];
+}
+
+- (void) cancelCurrentOperationWithFileNumber:(OCTToxFileNumber) fileNumber
+{
+     OCTFileBaseOperation *operation = [self operationWithFileNumber:fileNumber friendNumber:AppD.currentRouterNumber];
+     [(OCTFileUploadOperation *)operation chunkRequestWithPosition:5 length:5 cancel:YES];
 }
 
 - (void)acceptFileTransfer:(OCTMessageAbstract *)message
@@ -549,77 +561,92 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
 {
     OCTFileBaseOperation *operation = [self operationWithFileNumber:fileNumber friendNumber:friendNumber];
 
+    BOOL isCancel = NO;
     if ([operation isKindOfClass:[OCTFileUploadOperation class]]) {
     
-        BOOL isCancel = NO;
-        NSDictionary *parames = [[ChatListDataUtil getShareObject].fileParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
-        if (parames) {
-            NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:[NSString stringWithFormat:@"%@",parames[@"FileId"]?:@""]];
+        NSDictionary *fileNumberValues = [[ChatListDataUtil getShareObject].fileParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
+        if (fileNumberValues) {
+            NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:[NSString stringWithFormat:@"%@",fileNumberValues[@"FileId"]?:@""]];
             if ([[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
                 isCancel = YES;
-                [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"0" forKey:[NSString stringWithFormat:@"%@",parames[@"FileId"]?:@""]];
+                [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"0" forKey:[NSString stringWithFormat:@"%@",fileNumberValues[@"FileId"]?:@""]];
             }
         }
         
         if (AppD.isLogOut) {
-             [(OCTFileUploadOperation *)operation chunkRequestWithPosition:position length:length cancel:YES];
-        } else {
-            [(OCTFileUploadOperation *)operation chunkRequestWithPosition:position length:length cancel:isCancel];
+             isCancel = YES;
         }
         
-    }
-    else {
+        [(OCTFileUploadOperation *)operation chunkRequestWithPosition:position length:length cancel:isCancel];
+        
+       
+        
+        NSLog(@"length = %zu",length);
+        
+        if (fileNumberValues) {
+            NSString *toid = fileNumberValues[@"ToId"];
+            if (isCancel && [toid isEmptyString]) {
+                return;
+            }
+        }
+        
+        if (length == 0) {
+            NSLog(@"file 发送成功-----------%d",fileNumber);
+            
+            if (fileNumberValues) {
+                NSString *toid = fileNumberValues[@"ToId"];
+                if ([toid isEmptyString]) { // 上传
+                    
+                    int fileType = [fileNumberValues[@"FileType"] intValue];
+                    NSString *fileName = fileNumberValues[@"FileName"];
+                    NSString *srcKey = fileNumberValues[@"SrcKey"];
+                    NSString *FileMD5 = fileNumberValues[@"FileMD5"];
+                    NSNumber *FileSize = fileNumberValues[@"FileSize"];
+                    NSNumber *fileidNumber = fileNumberValues[@"FileId"];
+                    NSInteger fileid = 0;
+                    if (fileidNumber) {
+                        fileid = [fileidNumber integerValue];
+                    }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize,@(fileid)]];
+                } else { // 发送
+                    NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:fileNumberValues[@"FileId"]];
+                    if (![[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
+                        [SendRequestUtil sendToxSendFileWithParames:fileNumberValues];
+                    }
+                }
+            }
+        } else { // 上传时更新进度
+            if (fileNumberValues) {
+                
+                NSString *toid = fileNumberValues[@"ToId"];
+                if ([toid isEmptyString]) {
+                    int fileSize = [fileNumberValues[@"FileSize"] intValue];
+                    NSString *srcKey = fileNumberValues[@"SrcKey"];
+                    CGFloat progess = (position*1.0)/fileSize;
+                    if (position%7==0) {
+                        FileData *fileDataModel = [[FileData alloc] init];
+                        fileDataModel.progess = progess;
+                        fileDataModel.srcKey = srcKey;
+                        fileDataModel.status = 2;
+                        NSNumber *fileidNumber = fileNumberValues[@"FileId"];
+                        NSInteger fileid = 0;
+                        if (fileidNumber) {
+                            fileid = [fileidNumber integerValue];
+                        }
+                        fileDataModel.fileId = fileid;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
+                    }
+                    
+                }
+            }
+            
+        }
+        
+    } else {
         NSLog(@"operation not found with fileNumber %d friendNumber %d", fileNumber, friendNumber);
         [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
     }
     
-    NSLog(@"length = %zu",length);
-     NSDictionary *parames = [[ChatListDataUtil getShareObject].fileParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
-    
-    if (length == 0) {
-        NSLog(@"file 发送成功-----------%d",fileNumber);
-        if (parames) {
-            NSString *toid = parames[@"ToId"];
-            if ([toid isEmptyString]) { // 上传
-                int fileType = [parames[@"FileType"] intValue];
-                NSString *fileName = parames[@"FileName"];
-                NSString *srcKey = parames[@"SrcKey"];
-                NSString *FileMD5 = parames[@"FileMD5"];
-                NSNumber *FileSize = parames[@"FileSize"];
-                NSNumber *fileidNumber = parames[@"FileId"];
-                NSInteger fileid = 0;
-                if (fileidNumber) {
-                    fileid = [fileidNumber integerValue];
-                }
-               
-                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize,@(fileid)]];
-            } else { // 发送
-                NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:parames[@"FileId"]];
-                if (![[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
-                    [SendRequestUtil sendToxSendFileWithParames:parames];
-                }
-            }
-        }
-    } else { // 上传时更新进度
-        if (parames) {
-            
-            NSString *toid = parames[@"ToId"];
-            if ([toid isEmptyString]) {
-                int fileSize = [parames[@"FileSize"] intValue];
-                NSString *srcKey = parames[@"SrcKey"];
-                CGFloat progess = (position*1.0)/fileSize;
-                 if (position%7==0) {
-                     FileData *fileDataModel = [[FileData alloc] init];
-                     fileDataModel.progess = progess;
-                     fileDataModel.srcKey = srcKey;
-                     fileDataModel.status = 2;
-                     [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
-                 }
-               
-            }
-        }
-        
-    }
 }
 
 - (void)     tox:(OCTTox *)tox fileReceiveForFileNumber:(OCTToxFileNumber)fileNumber
@@ -637,6 +664,15 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlResume error:nil];
     
     NSLog(@"---接受到tox文件。文件number = %d name = %@",fileNumber,fileName);
+    
+    NSArray *array = [fileName componentsSeparatedByString:@":"];
+    NSString *msgid = [NSString stringWithFormat:@"%@",array[2]];
+    NSString *optionType = array[3];
+    
+    if ([optionType intValue] == 2) { // 上传
+        [[ChatListDataUtil getShareObject].fileNumberParames setObject:[NSString stringWithFormat:@"%d",fileNumber] forKey:msgid];
+    }
+    
     
     [[ChatListDataUtil getShareObject].fileNameParames setObject:fileName forKey:[NSString stringWithFormat:@"%d",fileNumber]];
     
@@ -668,53 +704,47 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     friendNumber:(OCTToxFriendNumber)friendNumber
         position:(OCTToxFileSize)position length:(size_t)length
 {
- 
+    BOOL isCancel = NO;
     if (AppD.isLogOut) {
+        isCancel = YES;
        [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
     }
-    
-    
-    // 更新本次接受时间
-   ToxPullFileTimerUtil *timeUtil = [[ChatListDataUtil getShareObject].pullTimerDic objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
-    if (timeUtil) {
-        timeUtil.date = [NSDate date];
-    }
-    
-    NSString *fileName = [[ChatListDataUtil getShareObject].fileNameParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
-    if (fileName) {
+     NSString *fileValues = [[ChatListDataUtil getShareObject].fileNameParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
+    if (fileValues) {
         
-       NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:fileName];
-        
-        if ([[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
-            
-             [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
-            
-            [[ChatListDataUtil getShareObject].fileNameParames setObject:@"0" forKey:fileName];
+        // 更新本次接受时间
+        ToxPullFileTimerUtil *timeUtil = [[ChatListDataUtil getShareObject].pullTimerDic objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
+        if (timeUtil) {
+            timeUtil.date = [NSDate date];
         }
         
-        NSArray *array = [fileName componentsSeparatedByString:@":"];
-        NSLog(@"---接受到的文件 length = %zu",length);
+        NSArray *array = [fileValues componentsSeparatedByString:@":"];
+        NSString *fileName = array[1];
+        NSString *msgid = array[2];
+        NSString *optionType = array[3];
+        
         if (length == 0) {
             NSLog(@"---接受到的文件完成");
             [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
-            if ([array[3] intValue] == 2) {
+            if ([optionType intValue] == 2) { // 文件列表下载
                 [[NSNotificationCenter defaultCenter] postNotificationName:TOX_PULL_FILE_SUCCESS_NOTI object:array];
             } else {
                 [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_SUCCESS_NOTI object:array];
             }
         } else {
-            if (array && array.count > 0) {
-                // 异步写入文件
-                NSString *filePath = [[SystemUtil getTempBaseFilePath:array[0]] stringByAppendingPathComponent:array[1]];
-                filePath = [filePath stringByAppendingString:[NSString stringWithFormat:@"%d",[array[2] intValue]]];
-                NSLog(@"-----filePath = %@",filePath);
-                if (position == 0) {
-                    NSLog(@"position == 0");
-                    if ([SystemUtil filePathisExist:filePath]) {
-                        [SystemUtil removeDocmentFilePath:filePath];
-                    }
+            
+            // 异步写入文件
+            NSString *filePath = [[SystemUtil getTempBaseFilePath:array[0]] stringByAppendingPathComponent:fileName];
+            filePath = [filePath stringByAppendingString:[NSString stringWithFormat:@"%d",[array[2] intValue]]];
+            NSLog(@"-----filePath = %@",filePath);
+            if (position == 0) {
+                NSLog(@"position == 0");
+                if ([SystemUtil filePathisExist:filePath]) {
+                    [SystemUtil removeDocmentFilePath:filePath];
                 }
-                
+            }
+            
+            if ([optionType intValue] == 2) { // 文件列表下载
                 CGFloat progess = (position*1.0);
                 if (position%7==0) {
                     FileData *fileDataModel = [[FileData alloc] init];
@@ -724,14 +754,13 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                     fileDataModel.status = 2;
                     [[NSNotificationCenter defaultCenter] postNotificationName:Tox_Down_File_Progess_Noti object:fileDataModel];
                 }
-                
-                
-                [SystemUtil writeDataToFileWithFilePath:filePath withData:chunk];
             }
+            [SystemUtil writeDataToFileWithFilePath:filePath withData:chunk];
         }
+        
+    } else {
+        [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
     }
-    
-    
     
 //    OCTFileBaseOperation *operation = [self operationWithFileNumber:fileNumber friendNumber:friendNumber];
 //
@@ -746,6 +775,12 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
 //    {
 //
 //    }
+}
+
+// 取消下载
+- (void) cancelToxFileDownWithFileNumber:(OCTToxFileNumber) fileNumber
+{
+     [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:AppD.currentRouterNumber control:OCTToxFileControlCancel error:nil];
 }
 
 #pragma mark -  NSNotification
