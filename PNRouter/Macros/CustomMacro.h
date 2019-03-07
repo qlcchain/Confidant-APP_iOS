@@ -61,6 +61,6 @@ static NSInteger socketConnectStatusDisconnecting = 3;
 static NSInteger socketConnectStatusDisconnected = 4;
 
 
-#define User_Header_Size 2*1024*1024      //2M
+#define User_Header_Size 500*1024      // 500KB
 
 #endif /* CustomMacro_h */

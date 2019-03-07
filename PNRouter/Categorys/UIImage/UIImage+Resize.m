@@ -199,7 +199,6 @@
 
 - (NSData *)compressJPGImage:(UIImage *)image toMaxFileSize:(NSInteger)maxFileSize {
     CGFloat compression = 1.0f;
-//    CGFloat maxCompression = 0.1f;
     NSData *imageData = UIImageJPEGRepresentation(image, compression);
 //    while ([imageData length] > maxFileSize && compression > maxCompression) {
     while ([imageData length] > maxFileSize) {
