@@ -11,8 +11,19 @@
 #import "FriendModel.h"
 #import "NSString+Base64.h"
 #import "UserConfig.h"
+#import "UserHeaderModel.h"
+#import "EntryModel.h"
 
 @implementation UserModel
+
+- (NSString *)headBaseStr {
+    NSString *headerStr = nil;
+    
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    headerStr = [UserHeaderModel getUserHeaderImg64StrWithKey:userKey];
+    
+    return headerStr;
+}
 
 + (void)createUserLocalWithName:(NSString *)name {
     NSString *modeJson = [KeyCUtil getKeyValueWithKey:USER_LOCAL];
