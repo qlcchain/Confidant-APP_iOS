@@ -455,6 +455,7 @@ struct ResultFile {
             fileDataModel.progess = progess;
             fileDataModel.srcKey = self.srcKey;
             fileDataModel.status = 2;
+            fileDataModel.fileId = [self.fileid integerValue];
             [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
             
 //            [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.srcKey)] complete:^(NSArray * _Nullable array) {

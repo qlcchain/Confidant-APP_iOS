@@ -92,12 +92,15 @@
         [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srckey),bg_sqlKey(@"fileId"),bg_sqlValue(@(fileid))] complete:^(NSArray * _Nullable array) {
             if (array && array.count > 0) {
                 FileData *fileModel = array[0];
-                fileModel.status = 3;
+               
                 fileModel.progess = 0.0;
                 fileModel.fileData = [NSData data];
-                [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileModel];
-                }];
+                if (fileModel.status != 3) {
+                     fileModel.status = 3;
+                    [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Faield_Noti object:fileModel];
+                    }];
+                }
             }
         }];
     }

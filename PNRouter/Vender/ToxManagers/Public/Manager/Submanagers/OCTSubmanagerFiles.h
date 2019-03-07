@@ -46,6 +46,10 @@
                 toFriendId:(int) friendNumber
           failureBlock:(nullable void (^)(NSError *__nonnull error))failureBlock;
 
+- (void) cancelCurrentOperationWithFileNumber:(OCTToxFileNumber) fileNumber;
+- (void) cancelToxFileDownWithFileNumber:(OCTToxFileNumber) fileNumber;
+
+
 /**
  * Accept file transfer.
  *

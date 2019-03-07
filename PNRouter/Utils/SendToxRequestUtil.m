@@ -14,6 +14,7 @@
 #import "UserConfig.h"
 #import "PNRouter-Swift.h"
 #import "NSDateFormatter+Category.h"
+#import "ChatListDataUtil.h"
 
 @implementation SendToxRequestUtil
 + (void) sendTextMessageWithText:(NSString *) message manager:(id<OCTManager>) manage
@@ -82,6 +83,7 @@
         }
     }];
     
+ 
     [AppD.manager.files sendFileAtPath:filePath moveToUploads:NO parames:parames  toFriendId:AppD.currentRouterNumber failureBlock:^(NSError * _Nonnull error) {
         
         NSLog(@"文件发送失败 = %@",error.description);
@@ -95,6 +97,26 @@
         }
         
     }];
+}
+// 取消tox文件上传
++ (void) cancelToxFileUploadWithFileid:(NSString *) fileid
+{
+
+    
+   NSString *numberVaules = [[ChatListDataUtil getShareObject].fileNumberParames objectForKey:fileid];
+    if (![[NSString getNotNullValue:numberVaules] isEmptyString]) {
+        int fileNumber = [numberVaules intValue];
+        [AppD.manager.files cancelCurrentOperationWithFileNumber:fileNumber];
+    }
+}
+// 取消tox文件上传
++ (void) cancelToxFileDownWithMsgid:(NSString *) msgid
+{
+    NSString *numberVaules = [[ChatListDataUtil getShareObject].fileNumberParames objectForKey:msgid];
+    if (![[NSString getNotNullValue:numberVaules] isEmptyString]) {
+        int fileNumber = [numberVaules intValue];
+        [AppD.manager.files cancelToxFileDownWithFileNumber:fileNumber];
+    }
 }
 
 @end

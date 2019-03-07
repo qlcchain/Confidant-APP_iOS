@@ -219,18 +219,20 @@
             
             if (status == 2) {
                 NSInteger fileOptionType = [obj[3] integerValue];
-                NSString *fileName = obj[4];
+                NSInteger msgid = [obj[5] integerValue];
                 if (fileOptionType == 1) { // 上传
                     if ([SystemUtil isSocketConnect]) {
                         [[SocketManageUtil getShareObject] cancelFileOptionWithSrcKey:srcKey fileid:fileid];
                     } else {
-                        [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"1" forKey:[NSString stringWithFormat:@"%ld",(long)fileid]];
+                      //  [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"1" forKey:[NSString stringWithFormat:@"%ld",(long)fileid]];
+                       [SendToxRequestUtil cancelToxFileUploadWithFileid:[NSString stringWithFormat:@"%ld",(long)fileid]];
                     }
                 } else { // 下载
                     if ([SystemUtil isSocketConnect]) {
                         [[FileDownUtil getShareObject] cancelDownWithFileid:fileid srckey:srcKey];
                     } else { // tox
-                        [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"1" forKey:fileName];
+                        NSString *msgidKey = [NSString stringWithFormat:@"%ld",(long)msgid];
+                        [[ChatListDataUtil getShareObject].fileCancelParames setObject:@"1" forKey:msgidKey];
                     }
                 }
             }
@@ -432,11 +434,11 @@
         @weakify_self
         [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FileData *model = obj;
-            if ([model.srcKey isEqualToString:resultModel.srcKey]) {
+            if ([model.srcKey isEqualToString:resultModel.srcKey] && model.fileId == resultModel.fileId) {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     model.progess = resultModel.progess;
-                    if (model.status == 1) {
+                    if (model.status != 2) {
                         *stop = YES;
                     }
                     model.status = 2;
@@ -490,7 +492,7 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         NSLog(@"resultModel.progess = %f",resultModel.progess);
                         model.progess = resultModel.progess/model.fileSize;
-                        if (model.status == 1) {
+                        if (model.status != 2) {
                             *stop = YES;
                         }
                         model.status = 2;

@@ -22,6 +22,8 @@
 @property (nonatomic , strong) NSMutableDictionary *pullTimerDic;
 // tox取消发送文件
 @property (nonatomic , strong) NSMutableDictionary *fileCancelParames;
+// tox fileid 绑定 filenumber
+@property (nonatomic , strong) NSMutableDictionary *fileNumberParames;
 
 + (instancetype) getShareObject;
 - (void) addFriendModel:(ChatListModel *) model;

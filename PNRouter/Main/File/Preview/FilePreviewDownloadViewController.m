@@ -272,9 +272,14 @@ typedef enum : NSUInteger {
         [self downloadFile];
     } else if (_fileExistType == FileExistTypeDownloading) {
         // 取消下载
-        if (_downloadTask) {
-            [_downloadTask cancel];
+        if ([SystemUtil isSocketConnect]) {
+            if (_downloadTask) {
+                [_downloadTask cancel];
+            }
+        } else {
+            [SendToxRequestUtil cancelToxFileDownWithMsgid:[NSString stringWithFormat:@"%ld",(long)self.fileListM.MsgId]];
         }
+        
     } else if (_fileExistType == FileExistTypeExistOrDownloaded) {
         // 预览
         [self jumpToFilePreview:_downloadFilePath];

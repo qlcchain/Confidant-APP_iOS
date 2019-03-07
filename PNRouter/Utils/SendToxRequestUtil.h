@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendTextMessageWithText:(NSString *) message manager:(id<OCTManager>) manage;
 + (void) sendFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames;
 + (void) uploadFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames fileData:(NSData *) fileData;
++ (void) cancelToxFileUploadWithFileid:(NSString *) fileid;
+// 取消tox文件上传
++ (void) cancelToxFileDownWithMsgid:(NSString *) msgid;
 @end
 
 NS_ASSUME_NONNULL_END
