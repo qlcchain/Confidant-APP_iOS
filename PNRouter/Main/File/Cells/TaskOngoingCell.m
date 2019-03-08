@@ -97,7 +97,7 @@
 - (void) cancelFileDown
 {
     if ([SystemUtil isSocketConnect]) {
-       NSURLSessionDownloadTask *downTask = [[FileDownUtil getShareObject] getDownloadTask:_fileModel];
+        NSURLSessionDownloadTask *downTask = [[FileDownUtil getShareObject] getDownloadTask:_fileModel];
         [downTask cancel];
     } else {
         [SendToxRequestUtil cancelToxFileDownWithMsgid:[NSString stringWithFormat:@"%ld",(long)self.fileModel.msgId]];
@@ -109,20 +109,24 @@
     // 更新下载时间
     NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
     self.fileModel.optionTime = [formatter stringFromDate:[NSDate date]];
-    
-    
+
     if (self.fileModel.status == 3) {
         self.fileModel.status = 2;
         self.fileModel.speedSize = 0;
+        self.fileModel.progess = 0;
+         _progess.progress = 0;
         [_optionBtn setImage:[UIImage imageNamed:@"icon_stop_gray"] forState:UIControlStateNormal];
     } else {
         self.fileModel.status = 3;
         self.fileModel.speedSize = 0;
+        self.fileModel.progess = 0;
+         _progess.progress = 0;
         [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
         _lblProgess.text = @"0 KB/s";
     }
+    self.fileModel.backSeconds = 0;
     // 更新数据库
-    [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"status"),bg_sqlValue(@(self.fileModel.status)),bg_sqlKey(@"speedSize"),bg_sqlValue(@(0)),bg_sqlKey(@"msgId"),bg_sqlValue(@(self.fileModel.msgId)),bg_sqlKey(@"userId"),bg_sqlValue(self.fileModel.userId)]];
+    [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@,%@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"status"),bg_sqlValue(@(self.fileModel.status)),bg_sqlKey(@"speedSize"),bg_sqlValue(@(0)),bg_sqlKey(@"backSeconds"),bg_sqlValue(@(0)),bg_sqlKey(@"fileId"),bg_sqlValue(@(self.fileModel.fileId)),bg_sqlKey(@"srcKey"),bg_sqlValue(self.fileModel.srcKey)]];
    
     
     if (self.fileModel.fileOptionType == 1) { // 上传
@@ -137,8 +141,13 @@
                     if (results && results.count > 0) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             FileData *resultModel = results[0];
-                            self.fileModel.fileData = resultModel.fileData;
-                            [self deUploadFile];
+                            if (!resultModel.fileData || resultModel.fileData.length == 0) {
+                                
+                            } else {
+                                self.fileModel.fileData = resultModel.fileData;
+                                [self deUploadFile];
+                            }
+                           
                         });
                     }
                     
@@ -173,7 +182,7 @@
 
 - (void) setFileModel:(FileData *) model isSelect:(BOOL)isSelect
 {
-    _fileModel = model;
+    self.fileModel = model;
     if (isSelect) {
         _selectImgView.image = [UIImage imageNamed:@"icon_selectmsg"];
     } else {
@@ -196,7 +205,6 @@
     _lblTitle.text = model.fileName;
     _lblSize.text = [SystemUtil transformedValue:model.fileSize];//[NSString stringWithFormat:@"%d kb",model.fileSize/1024];
     if (model.fileOptionType == 1) {
-      
         _iconImgView.image = [UIImage imageNamed:@"icon_upload_small_gray"];
     } else {
         _iconImgView.image = [UIImage imageNamed:@"icon_download_small_gray"];

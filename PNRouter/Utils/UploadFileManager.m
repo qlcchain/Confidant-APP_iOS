@@ -54,7 +54,7 @@
             if (array && array.count > 0) {
                 FileData *fileModel = array[0];
                 fileModel.status = 1;
-                fileModel.progess = 1;
+                fileModel.progess = 0;
                 fileModel.fileData = [[NSData alloc] init];
                 [fileModel bg_saveOrUpdateAsync:^(BOOL isSuccess) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
