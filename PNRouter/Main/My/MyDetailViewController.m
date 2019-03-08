@@ -213,46 +213,41 @@
 }
 
 - (void)uploadHeader:(NSData *)imgData {
-
     // 上传文件
-//    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getTimestampFromDate:[NSDate date]])];
-    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    NSString *outputPath = [NSString stringWithFormat:@"%@.jpg",mills];
-    outputPath =  [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:outputPath];
-//    NSString *fileName = outputPath.lastPathComponent;
+//    NSString *fileName = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     NSString *fileName = [EntryModel getShareObject].signPublicKey;
+    fileName = [NSString stringWithFormat:@"%@__Avatar.jpg",[Base58Util Base58EncodeWithCodeName:fileName]];
+    NSString *outputPath = [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:fileName];
+//    NSString *fileName = outputPath.lastPathComponent;
     NSData *fileData = imgData;
     int fileType = 6;
     
     long tempMsgid = [SocketCountUtil getShareObject].fileIDCount++;
-    tempMsgid = +tempMsgid;
+    tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
     NSInteger fileId = tempMsgid;
     
-    // 生成32位对称密钥
-    NSString *msgKey = [SystemUtil get32AESKey];
-//    if (weakSelf.isDoc) {
-//        msgKey = [SystemUtil getDoc32AESKey];
-//    }
-    NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *symmetKey = [symmetData base64EncodedString];
-    // 自己公钥加密对称密钥
-    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
-    
-    NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-    fileData = aesEncryptData(fileData,msgKeyData);
-    
+//    // 生成32位对称密钥
+//    NSString *msgKey = [SystemUtil get32AESKey];
+//    NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+//    NSString *symmetKey = [symmetData base64EncodedString];
+//    // 自己公钥加密对称密钥
+//    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+//    NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+//    fileData = aesEncryptData(fileData,msgKeyData);
+    NSString *srcKey = @"";
+    NSString *ToId = @"0";
     
     if ([SystemUtil isSocketConnect]) { // socket
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
         dataUtil.srcKey = srcKey;
         dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)fileId];
-        [dataUtil sendFileId:@"0" fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
+        [dataUtil sendFileId:ToId fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
     } else { // tox
         fileName = [NSString stringWithFormat:@"a:%@",fileName];
         BOOL isSuccess = [fileData writeToFile:outputPath atomically:YES];
         if (isSuccess) {
-            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"0",@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:outputPath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
+            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:outputPath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
             [SendToxRequestUtil uploadFileWithFilePath:outputPath parames:parames fileData:fileData];
         }
     }
