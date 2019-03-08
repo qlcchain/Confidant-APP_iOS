@@ -20,7 +20,6 @@ typedef void(^ContactShowCellBlock)(NSInteger headerSection);
 
 @interface ContactHeaderView : UITableViewHeaderFooterView
 
-
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 //@property (weak, nonatomic) IBOutlet UILabel *lblTitle;

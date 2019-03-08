@@ -39,6 +39,7 @@
 #import "RoutherConfig.h"
 #import "ChatModel.h"
 #import "SendCacheChatUtil.h"
+#import "UserHeadUtil.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -689,7 +690,6 @@
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
     
-    
     NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(model.userId),bg_sqlKey(@"owerId"),bg_sqlValue(model.owerId)]];
     if (!finfAlls || finfAlls.count == 0) {
         if ([SystemUtil isFriendWithFriendid:model.userId]) {
@@ -732,7 +732,7 @@
         }
     }
     
-    
+    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:model.userId md5:@"0" showHud:NO];
 }
 
 + (void)handleAddFriendDeal:(NSDictionary *)receiveDic {
@@ -1045,8 +1045,10 @@
 + (void)handleAddFriendReq:(NSDictionary *)receiveDic {
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    NSString *FriendId = receiveDic[@"params"][@"FriendId"]?:@"";
     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_FRIEND_NOTI object:@(retCode)];
     
+    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:FriendId md5:@"0" showHud:NO];
 }
 
 + (void)handleLogin:(NSDictionary *)receiveDic {
