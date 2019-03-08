@@ -221,8 +221,29 @@
     // 删除未发送消息表
      [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"toId"),bg_sqlValue(_friendModel.userId)]];
     [SystemUtil removeDocmentFilePath:filePath];
+    
+    // 先删除全局好友
+    @weakify_self
+    [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if ([model.userId isEqualToString:weakSelf.friendModel.userId]) {
+            [[ChatListDataUtil getShareObject].friendArray removeObject:obj];
+            *stop = YES;
+        }
+    }];
     // 删除好友头像数据库
-    [UserHeaderModel bg_delete:UserHeader_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"UserKey"),bg_sqlValue(_friendModel.signPublicKey)]];
+    __block BOOL haveFriend = NO;
+    // 查找是否有好友
+    [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if ([model.signPublicKey isEqualToString:weakSelf.friendModel.signPublicKey]) {
+            haveFriend = YES;
+            *stop = YES;
+        }
+    }];
+    if (!haveFriend) { // 没有此好友--调用删除
+        [UserHeaderModel bg_delete:UserHeader_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"UserKey"),bg_sqlValue(_friendModel.signPublicKey)]];
+    }
     
     // 删除本地聊天记录
     //[ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(_friendModel.userId?:@"")]];

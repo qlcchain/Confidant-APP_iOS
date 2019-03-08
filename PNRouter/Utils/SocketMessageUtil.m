@@ -774,6 +774,7 @@
 
     NSInteger Result = [receiveDic[@"params"][@"Result"] integerValue];
     if (Result == 0) { // 同意添加
+        [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:FriendId md5:@"0" showHud:NO];
     } else if (Result == 1) { // 拒绝好友添加
         [AppD.window showHint:@"User refuse to add friend"];
     }
@@ -1047,8 +1048,6 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     NSString *FriendId = receiveDic[@"params"][@"FriendId"]?:@"";
     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_FRIEND_NOTI object:@(retCode)];
-    
-    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:FriendId md5:@"0" showHud:NO];
 }
 
 + (void)handleLogin:(NSDictionary *)receiveDic {

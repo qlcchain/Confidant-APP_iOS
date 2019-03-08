@@ -10,6 +10,7 @@
 #import "NSString+Base64.h"
 #import "UserConfig.h"
 #import "FriendModel.h"
+#import "UserHeadUtil.h"
 
 @interface FriendRequestViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *msgTF;
@@ -62,6 +63,8 @@
 #pragma mark -添加好友成功通知
 - (void) addFriendSuccess:(NSNotification *) noti
 {
+    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:self.userId md5:@"0" showHud:NO];
+    
     NSInteger retCode = [noti.object integerValue];
     if (retCode == 0) { // 发送成功
         [AppD.window showHint:@"Send Success"];
