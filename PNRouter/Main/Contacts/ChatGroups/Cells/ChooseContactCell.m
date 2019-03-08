@@ -20,7 +20,8 @@
 - (void) setModeWithModel:(FriendModel *) model withLeftContraintV:(CGFloat)leftV
 {
     _lblContent.text = [model.username base64DecodedString]?:model.username;
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:_lblContent.text]];
+    NSString *userKey = model.signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_lblContent.text]];
     _headerImgV.image = defaultImg;
 //    _lblName.text =[StringUtil getUserNameFirstWithName:_lblContent.text];
     _leftContraintV.constant = leftV;

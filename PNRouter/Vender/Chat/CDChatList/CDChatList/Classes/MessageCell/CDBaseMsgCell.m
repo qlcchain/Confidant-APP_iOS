@@ -200,6 +200,8 @@
 //        _headImage_left.frame = CGRectZero;
         _headImage_left.frame = CGRectMake(_chooseMsgBtn_left.cd_right, 0, 0, 0);
     }
+    _headImage_left.layer.cornerRadius = _headImage_left.width/2.0;
+    _headImage_left.layer.masksToBounds = YES;
     
     // 昵称
     _userName_left.frame = CGRectMake(data.chatConfig.messageMargin + _headImage_left.cd_width + data.chatConfig.bubbleShareAngleWidth, 0, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);
@@ -289,6 +291,8 @@
     } else {
         _headImage_right.frame = CGRectMake(cd_ScreenW(), data.chatConfig.messageMargin, 0, data.chatConfig.headSideLength);
     }
+    _headImage_right.layer.cornerRadius = _headImage_right.width/2.0;
+    _headImage_right.layer.masksToBounds = YES;
     
     // 昵称
     _userName_right.frame = CGRectMake(_headImage_right.cd_left - data.chatConfig.messageMargin - data.chatConfig.bubbleMaxWidth, 0, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);

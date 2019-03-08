@@ -1340,7 +1340,11 @@
         if (retCode == 1) {
             [AppD.window showHint:@"User id error"];
         } else if (retCode == 2) {
-            [AppD.window showHint:@"Avatars are up to date"];
+//            [AppD.window showHint:@"Avatars are up to date"];
+        } else if (retCode == 3) {
+            [AppD.window showHint:@"The user profile does not exist"];
+        } else if (retCode == 4) {
+            [AppD.window showHint:@"Other errors"];
         }
     }
 }

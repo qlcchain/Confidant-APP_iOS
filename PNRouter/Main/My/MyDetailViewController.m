@@ -125,7 +125,8 @@
                 [cell.subBtn setImage:[UIImage imageWithData:[UserModel getUserModel].headBaseStr.base64DecodedData] forState:UIControlStateNormal];
 //                [cell.subBtn setTitle:@"" forState:UIControlStateNormal];
             } else {
-                UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
+                NSString *userKey = [EntryModel getShareObject].signPublicKey;
+                UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
                 [cell.subBtn setImage:defaultImg forState:UIControlStateNormal];
 //                [cell.subBtn setBackgroundImage:[UIImage imageNamed:@"detailHead"] forState:UIControlStateNormal];
 //                [cell.subBtn setTitle:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] forState:UIControlStateNormal];

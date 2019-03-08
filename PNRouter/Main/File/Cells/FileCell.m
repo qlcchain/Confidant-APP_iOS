@@ -15,6 +15,7 @@
 #import "UserConfig.h"
 #import "NSString+Base64.h"
 #import "PNDefaultHeaderView.h"
+#import "EntryModel.h"
 
 @interface FileCell ()
 
@@ -71,7 +72,9 @@
     }
     _operationIcon.image = [UIImage imageNamed:operationImgStr];
     _nameLab.text = nameStr;
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:nameStr] fontSize:18];
+    NSString *userKey = model.UserKey;
+    NSString *key = [EntryModel getShareObject].signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:nameStr] fontSize:18];
     _headerImgV.image = defaultImg;
 //    _spellLab.text = [StringUtil getUserNameFirstWithName:nameStr];
     _operationLab.text = operationStr;

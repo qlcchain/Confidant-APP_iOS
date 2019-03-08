@@ -10,6 +10,7 @@
 #import "UserModel.h"
 #import "NSString+Base64.h"
 #import "PNDefaultHeaderView.h"
+#import "EntryModel.h"
 
 @implementation MyHeadView
 + (instancetype) loadMyHeadView
@@ -22,25 +23,15 @@
     return headView;
 }
 
-- (void) setUserNameFirstWithName:(NSString *) userName
-{
-    
+- (void) setUserNameFirstWithName:(NSString *)userName userKey:(NSString *)userKey {
     if (![UserModel getUserModel].headBaseStr || !_isMyHead) {
-//        [_HeanBtn setTitle:userName forState:UIControlStateNormal];
-        UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:userName];
+//        NSString *userKey = [EntryModel getShareObject].signPublicKey;
+        UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:userName];
         [_HeanBtn setImage:defaultImg forState:UIControlStateNormal];
     } else {
-//        [_HeanBtn setTitle:@"" forState:UIControlStateNormal];
         [_HeanBtn setImage:[UIImage imageWithData:[UserModel getUserModel].headBaseStr.base64DecodedData] forState:UIControlStateNormal];
     }
     
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 @end

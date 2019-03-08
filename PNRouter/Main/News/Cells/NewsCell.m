@@ -48,8 +48,8 @@
     } else {
         [_backView clearBadge];
     }
-    
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:model.friendName]];
+    NSString *userKey = model.signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:model.friendName]];
     _headImgView.image = defaultImg;
 //    _lblNameJX.text = [StringUtil getUserNameFirstWithName:model.friendName];
     

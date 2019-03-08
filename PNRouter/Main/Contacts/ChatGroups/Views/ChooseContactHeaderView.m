@@ -37,7 +37,8 @@
 - (void)configHeaderWithModel:(ChooseContactShowModel *)model {
     NSString *name = [model.Name base64DecodedString]?:model.Name;
     _lblName.text = model.showArrow?[NSString stringWithFormat:@"%@(%@)",name,@(model.routerArr.count)]:name;
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:_lblName.text]];
+    NSString *userKey = model.UserKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_lblName.text]];
     _headImgView.image = defaultImg;
 //    _lblTitle.text = [StringUtil getUserNameFirstWithName:_lblName.text];
     _arrowImg.hidden = !model.showArrow;

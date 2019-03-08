@@ -42,14 +42,14 @@
 }
 
 #pragma mark -layz
-- (MyHeadView *)myHeadView
-{
+- (MyHeadView *)myHeadView {
     if (!_myHeadView) {
         _myHeadView = [MyHeadView loadMyHeadView];
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpDetailvc)];
         
         _myHeadView.lblName.text = self.friendModel.remarks;
-        [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:self.friendModel.username]];
+        NSString *userKey = self.friendModel.signPublicKey;
+        [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:self.friendModel.username] userKey:userKey];
         
         _myHeadView.userInteractionEnabled = YES;
         [_myHeadView addGestureRecognizer:gesture];

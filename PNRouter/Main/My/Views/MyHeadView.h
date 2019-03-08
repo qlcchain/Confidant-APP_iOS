@@ -14,5 +14,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
 @property (nonatomic , assign) BOOL isMyHead;
 + (instancetype) loadMyHeadView;
-- (void) setUserNameFirstWithName:(NSString *) userName;
+- (void) setUserNameFirstWithName:(NSString *)userName userKey:(NSString *)userKey;
 @end
