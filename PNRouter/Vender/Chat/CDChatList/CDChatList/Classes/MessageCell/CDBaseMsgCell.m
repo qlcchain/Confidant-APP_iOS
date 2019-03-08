@@ -60,7 +60,7 @@
     UIImage *left_head = ChatHelpr.share.imageDic[ChatHelpr.share.config.icon_head];
     _headImage_left = [[UIImageView alloc] initWithImage:left_head];
     _headImage_left.frame = CGRectZero;
-    _headImage_left.contentMode = UIViewContentModeScaleAspectFit;
+    _headImage_left.contentMode = UIViewContentModeScaleAspectFill;
     [_msgContent_left addSubview:_headImage_left];
     
     // 昵称
@@ -123,7 +123,7 @@
     UIImage *right_head = ChatHelpr.share.imageDic[ChatHelpr.share.config.icon_head];
     _headImage_right = [[UIImageView alloc] initWithImage:right_head];
     _headImage_right.frame = CGRectZero;
-    _headImage_right.contentMode = UIViewContentModeScaleAspectFit;
+    _headImage_right.contentMode = UIViewContentModeScaleAspectFill;
     [_msgContent_right addSubview:_headImage_right];
     
     // 昵称
