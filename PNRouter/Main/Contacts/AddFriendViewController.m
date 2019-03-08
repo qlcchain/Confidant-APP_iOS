@@ -16,6 +16,7 @@
 #import "RSAModel.h"
 #import "SystemUtil.h"
 #import "FriendRequestViewController.h"
+#import "UserHeaderModel.h"
 //#import "NSString+Base64.h"
 
 @interface AddFriendViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
@@ -30,6 +31,18 @@
 
 @implementation AddFriendViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(realFriendNoti:) name:DEAL_FRIEND_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:FRIEND_ACCEPED_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadDownloadSuccess:) name:USER_HEAD_DOWN_SUCCESS_NOTI object:nil];
+}
+
 #pragma -mark layz
 - (NSMutableArray *)dataArray
 {
@@ -38,6 +51,7 @@
     }
     return _dataArray;
 }
+
 - (IBAction)backAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
 }
@@ -74,13 +88,10 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void) dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self addObserve];
     
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
@@ -91,9 +102,6 @@
     _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableV registerNib:[UINib nibWithNibName:AddFriendCellReuse bundle:nil] forCellReuseIdentifier:AddFriendCellReuse];
     [self checkData];
- 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(realFriendNoti:) name:DEAL_FRIEND_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:FRIEND_ACCEPED_NOTI object:nil];
 }
 
 #pragma mark -查询好友请求数据库
@@ -215,20 +223,14 @@
     [_tableV reloadData];
 }
 
+- (void)userHeadDownloadSuccess:(NSNotification *)noti {
+//    UserHeaderModel *model = noti.object;
+    [_tableV reloadData];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
