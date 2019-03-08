@@ -23,6 +23,10 @@
 #import "UserConfig.h"
 #import "SystemUtil.h"
 #import "ChatModel.h"
+#import "MD5Util.h"
+#import "NSData+Base64.h"
+#import "UserHeadUtil.h"
+#import "UserHeaderModel.h"
 
 @interface FriendDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -32,9 +36,14 @@
 
 @implementation FriendDetailViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Observe
 - (void)observe {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFriendSuccess:) name:SOCKET_DELETE_FRIEND_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadDownloadSuccess:) name:USER_HEAD_DOWN_SUCCESS_NOTI object:nil];
 }
 
 - (IBAction)backAction:(id)sender {
@@ -80,6 +89,7 @@
     [_tableV registerNib:[UINib nibWithNibName:UserInfoCellReuse bundle:nil] forCellReuseIdentifier:UserInfoCellReuse];
     [_tableV registerNib:[UINib nibWithNibName:BottonCellResue bundle:nil] forCellReuseIdentifier:BottonCellResue];
     
+    [self sendUpdateAvatar];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -87,6 +97,17 @@
     _lblNavTitle.text = self.friendModel.username;
     [_tableV reloadData];
     [super viewDidAppear:animated];
+}
+
+#pragma mark - Operation
+- (void)sendUpdateAvatar {
+    NSString *Fid = _friendModel.userId?:@"";
+    NSString *Md5 = @"0";
+    NSString *userHeaderImg64Str = [UserHeaderModel getUserHeaderImg64StrWithKey:_friendModel.signPublicKey];
+    if (userHeaderImg64Str) {
+        Md5 = [MD5Util md5WithData:[NSData dataWithBase64EncodedString:userHeaderImg64Str]];
+    }
+    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
 }
 
 #pragma mark - tableviewDataSourceDelegate
@@ -207,6 +228,12 @@
    // [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
     [self backAction:nil];
     
+}
+
+- (void)userHeadDownloadSuccess:(NSNotification *)noti {
+    UserHeaderModel *model = noti.object;
+    NSString *userKey = model.UserKey;
+    [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:self.friendModel.username] userKey:userKey];
 }
 
 - (void)didReceiveMemoryWarning {

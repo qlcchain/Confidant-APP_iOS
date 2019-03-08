@@ -30,6 +30,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         shareObject = [[self alloc] init];
+        [shareObject addNoti];
     });
     return shareObject;
 }
@@ -46,7 +47,7 @@
         NSString *fileNameBase58 = filePath.lastPathComponent;
         NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
         NSString *downloadFilePath = [SystemUtil getTempDownloadFilePath:fileName];
-        NSString *userId = parames[@"ToId"];
+        NSString *signPublicKey = parames[@"TargetKey"];
         
         [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
             
@@ -55,9 +56,12 @@
             NSLog(@"success");
             NSData *fileData = [NSData dataWithContentsOfFile:filePath];
             UserHeaderModel *model = [UserHeaderModel new];
-             NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:userId];
-            model.UserKey = signPublickey;
+//             NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:userId];
+            model.UserKey = signPublicKey;
             model.UserHeaderImg64Str = [fileData base64EncodedString];
+            if (model.UserKey && model.UserKey.length > 0) {
+                [UserHeaderModel saveOrUpdate:model];
+            }
             [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_DOWN_SUCCESS_NOTI object:model];
             
         } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
@@ -76,8 +80,7 @@
 }
 
 #pragma mark -noti
-- (void) updateAvatarSuccessNoti:(NSNotification *) noti
-{
+- (void) updateAvatarSuccessNoti:(NSNotification *) noti {
     NSDictionary *receiveDic = noti.object;
     NSDictionary *params = receiveDic[@"params"];
     [self downUserHeadWithDic:params];

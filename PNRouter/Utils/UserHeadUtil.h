@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UserHeadUtil : NSObject
 + (instancetype) getUserHeadUtilShare;
-- (void) downUserHeadWithDic:(NSDictionary *) parames;
+//- (void) downUserHeadWithDic:(NSDictionary *) parames;
 - (void) sendUpdateAvatarWithFid:(NSString *) fid md5:(NSString *) md5 showHud:(BOOL) isShow;
 @end
 

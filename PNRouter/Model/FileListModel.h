@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSNumber *FileSize;
 @property (nonatomic ,strong) NSString *UserKey;
 @property (nonatomic ,strong) NSString *Sender;
+@property (nonatomic ,strong) NSString *SenderKey;
 @property (nonatomic ,assign) int FileFrom; //1 :发出 2: 接受 3:上传
 
 @property (nonatomic) BOOL showSelect;

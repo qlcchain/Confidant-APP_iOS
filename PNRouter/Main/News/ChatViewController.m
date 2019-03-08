@@ -47,6 +47,8 @@
 #import "PNDocumentPickerViewController.h"
 #import "ChatModel.h"
 #import "PNDefaultHeaderView.h"
+#import "UserHeadUtil.h"
+#import "UserHeaderModel.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -59,8 +61,6 @@ typedef void(^PullMoreBlock)(NSArray *arr);
 CTInputViewProtocol,
 UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate>
-
-
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (weak, nonatomic) IBOutlet UIView *tabBackView;
@@ -142,6 +142,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryFriendSuccess:) name:REVER_QUERY_FRIEND_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterFore) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendingNoti:) name:FILE_SENDING_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadDownloadSuccess:) name:USER_HEAD_DOWN_SUCCESS_NOTI object:nil];
     
 }
 
@@ -215,6 +216,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
 
+    [self sendUpdateAvatar];
 //    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"1539912662170117"ofType:@"mp4"]];
 //    UIImage *img = [SystemUtil thumbnailImageForVideo:url];
 //    UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
@@ -236,6 +238,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 #pragma mark - Operation
+
+- (void)sendUpdateAvatar {
+    NSString *Fid = _friendModel.userId?:@"";
+    NSString *Md5 = @"0";
+    NSString *userHeaderImg64Str = [UserHeaderModel getUserHeaderImg64StrWithKey:_friendModel.signPublicKey];
+    if (userHeaderImg64Str) {
+        Md5 = [MD5Util md5WithData:[NSData dataWithBase64EncodedString:userHeaderImg64Str]];
+    }
+    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
+}
+
 - (void)pullMessageRequest {
     UserModel *userM = [UserModel getUserModel];
     NSString *MsgType = @"1"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
@@ -1398,6 +1411,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     });
     
+}
+
+- (void)userHeadDownloadSuccess:(NSNotification *)noti {
+//    UserHeaderModel *model = noti.object;
+    [_listView justReload];
 }
 
 - (UIView *) getHeadViewWithName:(NSString *)name userKey:(NSString *)userKey {

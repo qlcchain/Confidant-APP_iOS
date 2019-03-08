@@ -28,6 +28,9 @@
     
     _backView.badgeBgColor = UIColorFromRGB(0xF7625F);
     _backView.badgeTextColor = [UIColor whiteColor];
+    
+    _headImgView.layer.cornerRadius = _headImgView.width/2.0;
+    _headImgView.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

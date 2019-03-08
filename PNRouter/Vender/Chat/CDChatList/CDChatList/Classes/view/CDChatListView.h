@@ -54,4 +54,6 @@
 - (void)startRefresh;
 - (void)stopRefresh;
 
+- (void)justReload;
+
 @end

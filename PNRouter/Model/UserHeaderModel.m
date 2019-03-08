@@ -29,6 +29,7 @@
 }
 
 + (NSString *)getUserHeaderImg64StrWithKey:(NSString *)userKey {
+    NSArray *findAll = [UserHeaderModel bg_findAll:UserHeader_Table];
     NSArray *finfAlls = [UserHeaderModel bg_find:UserHeader_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"UserKey"),bg_sqlValue(userKey)]];
     UserHeaderModel *model = finfAlls.firstObject;
     return model?model.UserHeaderImg64Str:nil;
