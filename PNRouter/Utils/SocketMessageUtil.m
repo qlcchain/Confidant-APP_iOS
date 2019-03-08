@@ -677,6 +677,7 @@
     model.userId = receiveDic[@"params"][@"FriendId"];
     model.username= [receiveDic[@"params"][@"NickName"] base64DecodedString];
     model.publicKey= receiveDic[@"params"][@"UserKey"];
+    model.signPublicKey= receiveDic[@"params"][@"UserKey"];
     model.msg= receiveDic[@"params"][@"Msg"];
     model.requestTime = [NSDate date];
     model.bg_createTime = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"timestamp"]];
