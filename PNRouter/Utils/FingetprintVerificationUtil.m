@@ -135,7 +135,7 @@
         DDLogDebug(@"开始解锁");
         NSError *error = nil;
         if( [weakSelf.unlockContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error]) {
-            [weakSelf.unlockContext evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"Enter Password" reply:^(BOOL success, NSError * _Nullable error) {
+            [weakSelf.unlockContext evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"Use the fingerprint to continue." reply:^(BOOL success, NSError * _Nullable error) {
                 if (error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证失败");
@@ -172,7 +172,7 @@
         NSError *error = nil;
         if( [myContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error])
         {
-            [myContext evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"Enter Password" reply:^(BOOL success, NSError * _Nullable error) {
+            [myContext evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"Use the fingerprint to continue." reply:^(BOOL success, NSError * _Nullable error) {
                 if (error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证失败");
@@ -196,7 +196,7 @@
         NSError *error = nil;
         if( [myContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error])
         {
-            [myContext evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"Enter Password" reply:^(BOOL success, NSError * _Nullable error) {
+            [myContext evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"Use the fingerprint to continue." reply:^(BOOL success, NSError * _Nullable error) {
                 if (error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证失败");

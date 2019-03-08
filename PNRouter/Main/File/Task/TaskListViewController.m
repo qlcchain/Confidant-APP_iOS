@@ -436,51 +436,61 @@
             FileData *model = obj;
             if ([model.srcKey isEqualToString:resultModel.srcKey] && model.fileId == resultModel.fileId) {
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    model.progess = resultModel.progess;
                     if (model.status != 2) {
-                        *stop = YES;
-                    }
-                    model.status = 2;
-                    
-                    NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
-                    NSDate *updateDate = [formatter dateFromString:model.optionTime];
-                    NSDate *date = [NSDate date];
-                    NSInteger seconds = [updateDate millesAfterDate:date];
-                    seconds = labs(seconds);
-                    
-                    if (seconds >=1) {
-                        if (seconds - model.backSeconds >=2 || model.backSeconds == 0) {
-                            int currentFinshSize = model.fileSize*model.progess;
-                            model.speedSize = currentFinshSize/seconds;
-                            model.backSeconds = seconds;
-                            NSLog(@"----------speed%d",model.speedSize);
-                        }
-                    }
-                    if (weakSelf.sourceArr.count > 0 && [weakSelf.sourceArr[0] count] > 0) {
-                        
-                        if ([weakSelf.sourceArr[0] count] > idx) {
-                            [UIView performWithoutAnimation:^{
+                        if (model.status == 3) {
+                            if ([weakSelf.sourceArr[0] count] > idx) {
                                 
-                                                    [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                            }];
+                                TaskOngoingCell *myCell = [weakSelf.mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+                                
+                                model.speedSize = 0;
+                                model.progess = 0;
+                                model.backSeconds = 0;
+                                myCell.lblProgess.text = @"0 KB/s";
+                                myCell.progess.progress = model.progess;
+                                
+                            }
+                        }
+                    } else {
+                        
+                        model.progess = resultModel.progess;
+                        NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+                        NSDate *updateDate = [formatter dateFromString:model.optionTime];
+                        NSDate *date = [NSDate date];
+                        NSInteger seconds = [updateDate millesAfterDate:date];
+                        seconds = labs(seconds);
+                        
+                        if (seconds >=1) {
+                            if (seconds - model.backSeconds >=2 || model.backSeconds == 0) {
+                                int currentFinshSize = model.fileSize*model.progess;
+                                model.speedSize = currentFinshSize/seconds;
+                                model.backSeconds = seconds;
+                                NSLog(@"----------speed%d",model.speedSize);
+                            }
+                        }
+                        if (weakSelf.sourceArr.count > 0 && [weakSelf.sourceArr[0] count] > 0) {
+                            
+                            if ([weakSelf.sourceArr[0] count] > idx) {
+                                TaskOngoingCell *myCell = [weakSelf.mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+                                
+                                myCell.progess.progress = model.progess;
+                                if (model.speedSize == 0) {
+                                    myCell.lblProgess.text = @"0 KB/s";
+                                } else {
+                                    myCell.lblProgess.text = [[SystemUtil transformedZSValue:model.speedSize] stringByAppendingString:@"/s"];
+                                }
+                            }
                         }
                     }
-                    
-                    *stop = YES;
-                });
+                *stop = YES;
             }
         }];
     }
-    
-    
-    
 }
 - (void) downFileProgessNoti:(NSNotification *) noti
 {
     @synchronized (self) {
         FileData *resultModel = noti.object;
-        if (_sourceArr.count == 0 || ![[UserConfig getShareObject].userId isEqualToString:resultModel.userId]) {
+        if (_sourceArr.count == 0 ) {
             return;
         }
         NSMutableArray *uploadArr = _sourceArr[0];
@@ -489,14 +499,26 @@
             FileData *model = obj;
             if (model.msgId == resultModel.msgId) {
                 if (resultModel.progess > 1) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        NSLog(@"resultModel.progess = %f",resultModel.progess);
-                        model.progess = resultModel.progess/model.fileSize;
-                        if (model.status != 2) {
-                            *stop = YES;
-                        }
-                        model.status = 2;
+                    
+                    NSLog(@"resultModel.progess = %f",resultModel.progess);
+                    if (model.status != 2) {
                         
+                        if (model.status == 3) {
+                            if ([weakSelf.sourceArr[0] count] > idx) {
+                                
+                                TaskOngoingCell *myCell = [weakSelf.mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+                                
+                                model.speedSize = 0;
+                                model.progess = 0;
+                                model.backSeconds = 0;
+                                myCell.lblProgess.text = @"0 KB/s";
+                                myCell.progess.progress = model.progess;
+                                
+                            }
+                        }
+                        
+                    } else {
+                        model.progess = resultModel.progess/model.fileSize;
                         NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
                         NSDate *updateDate = [formatter dateFromString:model.optionTime];
                         NSInteger seconds = [updateDate millesAfterDate:[NSDate date]];
@@ -509,17 +531,21 @@
                         }
                         if (weakSelf.sourceArr.count > 0 && [weakSelf.sourceArr[0] count] > 0) {
                             if ([weakSelf.sourceArr[0] count] > idx) {
-                                [UIView performWithoutAnimation:^{
-                                    
-                                                        [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                                }];
+                                
+                                TaskOngoingCell *myCell = [weakSelf.mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+                                
+                                myCell.progess.progress = model.progess;
+                                if (model.speedSize == 0) {
+                                    myCell.lblProgess.text = @"0 KB/s";
+                                } else {
+                                    myCell.lblProgess.text = [[SystemUtil transformedZSValue:model.speedSize] stringByAppendingString:@"/s"];
+                                }
                             }
                             
                         }
-                        *stop = YES;
-                    });
+                    }
                 }
-                
+                *stop = YES;
             }
         }];
     }
@@ -536,10 +562,10 @@
         @weakify_self
         [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FileData *model = obj;
-            if ([model.srcKey isEqualToString:resultModel.srcKey]) {
+            if ([model.srcKey isEqualToString:resultModel.srcKey] && model.fileId == resultModel.fileId) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
-                    if (model.status == 1) {
+                    if (model.status == 1 || model.status == 3) {
                         *stop = YES;
                     }
                     model.progess = 0.0f;

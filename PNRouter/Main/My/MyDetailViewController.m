@@ -226,16 +226,8 @@
     tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
     NSInteger fileId = tempMsgid;
     
-//    // 生成32位对称密钥
-//    NSString *msgKey = [SystemUtil get32AESKey];
-//    NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-//    NSString *symmetKey = [symmetData base64EncodedString];
-//    // 自己公钥加密对称密钥
-//    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
-//    NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-//    fileData = aesEncryptData(fileData,msgKeyData);
     NSString *srcKey = @"";
-    NSString *ToId = @"0";
+    NSString *ToId = @"";
     
     if ([SystemUtil isSocketConnect]) { // socket
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
@@ -262,9 +254,7 @@
         
         NSString *srckey = resultArr[4];
         NSInteger fileid = [[resultArr lastObject] integerValue];
-        
-    
-        
+
     } else { // 上传失败
         
     }

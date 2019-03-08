@@ -44,10 +44,12 @@
 
 - (void) cancelFileOptionWithSrcKey:(NSString *) srcKey fileid:(NSInteger)fileid
 {
+    @weakify_self
     [self.socketArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         SocketDataUtil *socket = (SocketDataUtil *) obj;
         if ([[NSString getNotNullValue:socket.srcKey] isEqualToString:srcKey] && fileid == [socket.fileid integerValue]) {
              [socket disSocketConnect];
+             [weakSelf.socketArray removeObject:obj];
             *stop = YES;
         }
     }];
