@@ -41,41 +41,45 @@
 
 - (void) downUserHeadWithDic:(NSDictionary *) parames
 {
-    if ([SystemUtil isSocketConnect]) {
-        
+    if (parames) {
         NSString *filePath = parames[@"FileName"];
         NSString *fileNameBase58 = filePath.lastPathComponent;
         NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
         NSString *downloadFilePath = [SystemUtil getTempDownloadFilePath:fileName];
         NSString *signPublicKey = parames[@"TargetKey"];
+        NSString *toid = parames[@"TargetId"];
         
-        [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
+        if ([SystemUtil isSocketConnect]) {
             
-        } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
+            [RequestService downFileWithBaseURLStr:filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
+                
+            } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
+                
+                NSLog(@"success");
+                NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+                UserHeaderModel *model = [UserHeaderModel new];
+                //             NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:userId];
+                model.UserKey = signPublicKey;
+                model.UserHeaderImg64Str = [fileData base64EncodedString];
+                if (model.UserKey && model.UserKey.length > 0) {
+                    [UserHeaderModel saveOrUpdate:model];
+                }
+                [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_DOWN_SUCCESS_NOTI object:model];
+                
+            } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
+                NSLog(@"failure");
+            }];
             
-            NSLog(@"success");
-            NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-            UserHeaderModel *model = [UserHeaderModel new];
-//             NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:userId];
-            model.UserKey = signPublicKey;
-            model.UserHeaderImg64Str = [fileData base64EncodedString];
-            if (model.UserKey && model.UserKey.length > 0) {
-                [UserHeaderModel saveOrUpdate:model];
-            }
-            [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_DOWN_SUCCESS_NOTI object:model];
+        } else {
             
-        } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
-             NSLog(@"failure");
-        }];
-        
-    } else {
-        
-        NSString *filePath = parames[@"FileName"];
-        NSString *fileNameBase58 = filePath.lastPathComponent;
-       // NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
-    
-        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileNameBase58 msgId:@"" fileOwer:@"4" fileFrom:@"3"];
+            NSString *filePath = parames[@"FileName"];
+            NSString *fileNameBase58 = filePath.lastPathComponent;
+            // NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+            
+            [SendRequestUtil sendToxPullFileWithFromId:toid?:@"" toid:[UserConfig getShareObject].userId fileName:fileNameBase58 msgId:@"00" fileOwer:@"4" fileFrom:@"3"];
+        }
     }
+    
 }
 
 #pragma mark -noti
