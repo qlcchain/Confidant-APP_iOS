@@ -15,7 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *UserKey;
 @property (nonatomic, strong) NSString *UserHeaderImg64Str;
 
-+ (void)saveOrUpdateWithUserKey:(NSString *)UserKey UserHeaderImg64Str:(NSString *)UserHeaderImg64Str;
+//+ (void)saveOrUpdateWithUserKey:(NSString *)UserKey UserHeaderImg64Str:(NSString *)UserHeaderImg64Str;
++ (void)saveOrUpdate:(UserHeaderModel *)model;
 + (NSString *)getUserHeaderImg64StrWithKey:(NSString *)userKey;
 
 @end

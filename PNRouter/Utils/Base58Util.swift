@@ -20,4 +20,14 @@ class Base58Util: NSObject {
         return String(data: codeData!, encoding: String.Encoding.utf8) ?? ""
 
     }
+    
+    static func Base58EncodeDataToStr(data:Data) -> String {
+        return  Base58.encode(data)
+    }
+    
+    static func Base58DecodeStrToData(str:String) -> Data? {
+        let codeData = Base58.decode(str)
+        return codeData ?? nil
+        
+    }
 }

@@ -26,20 +26,31 @@
 #import "SocketCountUtil.h"
 #import "MD5Util.h"
 #import "PNDefaultHeaderView.h"
+#import "UserHeaderModel.h"
 
 @interface MyDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
     UIImage *_selectImage;
 }
+
 @property (nonatomic , strong) NSMutableArray *dataArray;
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
+@property (nonatomic, strong) NSData *uploadImgData;
+@property (nonatomic, strong) NSString *uploadFileName;
+
 @end
 
 @implementation MyDetailViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileFinshNoti:) name:FILE_UPLOAD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadAvatarSuccessNoti:) name:UploadAvatar_Success_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAvatarSuccessNoti:) name:UpdateAvatar_Success_Noti object:nil];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -57,6 +68,8 @@
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableV registerNib:[UINib nibWithNibName:MyCellReuse bundle:nil] forCellReuseIdentifier:MyCellReuse];
+    
+    [self sendUpdateUserHeader];
 }
 
 #pragma mark - Action
@@ -65,6 +78,16 @@
 }
 
 #pragma mark - Operation
+- (void)sendUpdateUserHeader {
+    NSString *Fid = [UserModel getUserModel].userId?:@"";
+    NSString *Md5 = @"0";
+    NSString *userHeaderImg64Str = [UserModel getUserModel].headBaseStr;
+    if (userHeaderImg64Str) {
+        Md5 = [MD5Util md5WithData:[NSData dataWithBase64EncodedString:userHeaderImg64Str]];
+    }
+    [SendRequestUtil sendUpdateAvatarWithFid:Fid Md5:Md5 showHud:NO];
+}
+
 - (void)showPickPhoto {
     @weakify_self
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -214,12 +237,13 @@
 
 - (void)uploadHeader:(NSData *)imgData {
     // 上传文件
-//    NSString *fileName = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    NSString *fileName = [EntryModel getShareObject].signPublicKey;
-    fileName = [NSString stringWithFormat:@"%@__Avatar.jpg",[Base58Util Base58EncodeWithCodeName:fileName]];
-    NSString *outputPath = [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:fileName];
+//    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+//    _uploadFileName = [NSString stringWithFormat:@"%@__Avatar.jpg",timestamp];
+    NSData *signPublicKeyDecodeData = [NSData dataWithBase64EncodedString:[EntryModel getShareObject].signPublicKey];
+    _uploadFileName = [NSString stringWithFormat:@"%@__Avatar.jpg",[Base58Util Base58EncodeDataToStrWithData:signPublicKeyDecodeData]];
+    NSString *outputPath = [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:_uploadFileName];
 //    NSString *fileName = outputPath.lastPathComponent;
-    NSData *fileData = imgData;
+    _uploadImgData = imgData;
     int fileType = 6;
     
     long tempMsgid = [SocketCountUtil getShareObject].fileIDCount++;
@@ -229,35 +253,60 @@
     NSString *srcKey = @"";
     NSString *ToId = @"";
     
+    [AppD.window showHudInView:AppD.window hint:@"Uploading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     if ([SystemUtil isSocketConnect]) { // socket
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
         dataUtil.srcKey = srcKey;
         dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)fileId];
-        [dataUtil sendFileId:ToId fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
+        [dataUtil sendFileId:ToId fileName:_uploadFileName fileData:_uploadImgData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
     } else { // tox
-        fileName = [NSString stringWithFormat:@"a:%@",fileName];
-        BOOL isSuccess = [fileData writeToFile:outputPath atomically:YES];
+        _uploadFileName = [NSString stringWithFormat:@"a:%@",_uploadFileName];
+        BOOL isSuccess = [_uploadImgData writeToFile:outputPath atomically:YES];
         if (isSuccess) {
-            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:outputPath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
-            [SendToxRequestUtil uploadFileWithFilePath:outputPath parames:parames fileData:fileData];
+            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:_uploadFileName],@"FileMD5":[MD5Util md5WithPath:outputPath],@"FileSize":@(_uploadImgData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
+            [SendToxRequestUtil uploadFileWithFilePath:outputPath parames:parames fileData:_uploadImgData];
         }
     }
 }
 
 #pragma mark - Noti
 - (void) uploadFileFinshNoti:(NSNotification *) noti {
+    [AppD.window hideHud];
     //  [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),self.fileName,self.fileData,@(self.fileType),self.srcKey]];
     
     NSArray *resultArr = noti.object;
     if (resultArr && resultArr.count>0 && [resultArr[0] integerValue] == 0) { // 成功
         
-        NSString *srckey = resultArr[4];
-        NSInteger fileid = [[resultArr lastObject] integerValue];
+//        NSString *srckey = resultArr[4];
+//        NSInteger fileid = [[resultArr lastObject] integerValue];
 
+        NSString *FileMd5 = [MD5Util md5WithData:_uploadImgData];
+        [SendRequestUtil sendUploadAvatarWithFileName:_uploadFileName FileMd5:FileMd5 showHud:YES];
+        
     } else { // 上传失败
         
     }
+}
+
+- (void)uploadAvatarSuccessNoti:(NSNotification *)noti {
+    NSDictionary *receiveDic = noti.object;
+    NSDictionary *params = receiveDic[@"params"];
+    
+    UserHeaderModel *model = [UserHeaderModel new];
+    model.UserKey = [EntryModel getShareObject].signPublicKey;
+    model.UserHeaderImg64Str = [_uploadImgData base64EncodedString];
+    [UserHeaderModel saveOrUpdate:model];
+    
+    [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_CHANGE_NOTI object:nil];
+}
+
+- (void)updateAvatarSuccessNoti:(NSNotification *)noti {
+    NSDictionary *receiveDic = noti.object;
+    NSDictionary *params = receiveDic[@"params"];
+    
+    // 下载
 }
 
 #pragma mark - layz

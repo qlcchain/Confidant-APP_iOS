@@ -36,7 +36,7 @@
     CC_MD5_Final(result, &md5);
     NSMutableString *resultString = [NSMutableString string];
     for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
-        [resultString appendFormat:@"%02X", result[i]];
+        [resultString appendFormat:@"%02x", result[i]];
     }
     return resultString;
 }

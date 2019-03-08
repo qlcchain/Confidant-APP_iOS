@@ -22,9 +22,10 @@
     if (model.bg_tableName == nil) {
         model.bg_tableName = UserHeader_Table;
     }
-    [model bg_saveOrUpdateAsync:^(BOOL isSuccess) {
-        NSLog(@"------------UserHeader_Table bg_saveOrUpdateAsync %@",@(isSuccess));
-    }];
+    [model bg_saveOrUpdate];
+//    [model bg_saveOrUpdateAsync:^(BOOL isSuccess) {
+//        NSLog(@"------------UserHeader_Table bg_saveOrUpdateAsync %@",@(isSuccess));
+//    }];
 }
 
 + (NSString *)getUserHeaderImg64StrWithKey:(NSString *)userKey {
@@ -33,11 +34,11 @@
     return model?model.UserHeaderImg64Str:nil;
 }
 
-+ (void)saveOrUpdateWithUserKey:(NSString *)UserKey UserHeaderImg64Str:(NSString *)UserHeaderImg64Str {
-    UserHeaderModel *model = [UserHeaderModel new];
-    model.UserKey = UserKey;
-    model.UserHeaderImg64Str = UserHeaderImg64Str;
-    [UserHeaderModel saveOrUpdate:model];
-}
+//+ (void)saveOrUpdateWithUserKey:(NSString *)UserKey UserHeaderImg64Str:(NSString *)UserHeaderImg64Str {
+//    UserHeaderModel *model = [UserHeaderModel new];
+//    model.UserKey = UserKey;
+//    model.UserHeaderImg64Str = UserHeaderImg64Str;
+//    [UserHeaderModel saveOrUpdate:model];
+//}
 
 @end

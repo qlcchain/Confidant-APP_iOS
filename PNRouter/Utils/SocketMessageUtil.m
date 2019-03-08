@@ -1323,7 +1323,7 @@
         } else if (retCode == 2) {
             [AppD.window showHint:@"Target file error"];
         } else if (retCode == 3) {
-            [AppD.window showHint:@"Goal out of reach"];
+            [AppD.window showHint:@"The profile image has not changed"];
         } else if (retCode == 4) {
             [AppD.window showHint:@"Other errors"];
         }
@@ -1331,7 +1331,7 @@
 }
 
 + (void)handleUpdateAvatar:(NSDictionary *)receiveDic {
-    [AppD.window hideHud];
+//    [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
