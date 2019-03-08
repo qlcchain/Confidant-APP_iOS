@@ -9,6 +9,7 @@
 #import "ChooseMutAlertView.h"
 #import "FriendModel.h"
 #import "ChooseCollectionCell.h"
+#import "PNDefaultHeaderView.h"
 
 @interface ChooseMutAlertView()<UICollectionViewDelegate,UICollectionViewDataSource>
 
@@ -72,7 +73,9 @@
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     ChooseCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ChooseCollectionCellReuse forIndexPath:indexPath];
     FriendModel *model = self.dataArray[indexPath.item];
-    cell.lblName.text = [StringUtil getUserNameFirstWithName:model.username];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:model.username]];
+//    cell.lblName.text = [StringUtil getUserNameFirstWithName:model.username];
+    cell.headerImgV.image = defaultImg;
     return cell;
 }
 

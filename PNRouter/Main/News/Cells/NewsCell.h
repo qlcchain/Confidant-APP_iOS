@@ -13,7 +13,7 @@ static NSString *NewsCellResue = @"NewsCell";
 #define NewsCellHeight 64
 
 @interface NewsCell : SWTableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *lblNameJX;
+//@property (weak, nonatomic) IBOutlet UILabel *lblNameJX;
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 //@property (weak, nonatomic) IBOutlet UILabel *lblUnCount;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;

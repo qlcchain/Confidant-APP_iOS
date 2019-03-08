@@ -39,12 +39,6 @@
                             <constraint firstAttribute="height" constant="0.5" id="t3p-R1-FQm"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PsO-yY-YJg">
-                        <rect key="frame" x="16" y="18.5" width="40" height="40"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="d" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNk-oO-jhR">
                         <rect key="frame" x="225" y="31.5" width="80" height="14"/>
                         <constraints>
@@ -56,12 +50,8 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="PsO-yY-YJg" firstAttribute="trailing" secondItem="Lm7-pZ-cJM" secondAttribute="trailing" id="4Nq-YT-HIG"/>
-                    <constraint firstItem="PsO-yY-YJg" firstAttribute="leading" secondItem="Lm7-pZ-cJM" secondAttribute="leading" id="Bhf-51-DwT"/>
-                    <constraint firstItem="PsO-yY-YJg" firstAttribute="bottom" secondItem="Lm7-pZ-cJM" secondAttribute="bottom" id="INi-jK-ES4"/>
                     <constraint firstItem="Lm7-pZ-cJM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Q0Q-N6-B8u"/>
                     <constraint firstItem="49c-or-aaZ" firstAttribute="leading" secondItem="Lm7-pZ-cJM" secondAttribute="trailing" constant="20" id="Vrc-vn-scJ"/>
-                    <constraint firstItem="PsO-yY-YJg" firstAttribute="top" secondItem="Lm7-pZ-cJM" secondAttribute="top" id="WzB-B0-GSY"/>
                     <constraint firstItem="Lm7-pZ-cJM" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="YQQ-rp-CzL"/>
                     <constraint firstItem="49c-or-aaZ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="fwR-I7-kH9"/>
                     <constraint firstAttribute="bottom" secondItem="Vqt-wH-5Cu" secondAttribute="bottom" id="iGY-VT-qlp"/>
@@ -78,7 +68,6 @@
                 <outlet property="headImgView" destination="Lm7-pZ-cJM" id="Q9R-QL-JeL"/>
                 <outlet property="lblDesc" destination="bNk-oO-jhR" id="jHd-RZ-Ha7"/>
                 <outlet property="lblName" destination="49c-or-aaZ" id="iLW-K5-qrk"/>
-                <outlet property="lblTitle" destination="PsO-yY-YJg" id="zsm-WG-kd6"/>
             </connections>
             <point key="canvasLocation" x="127" y="-67"/>
         </tableViewCell>

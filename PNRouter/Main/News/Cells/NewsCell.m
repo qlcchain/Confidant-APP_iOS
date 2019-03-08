@@ -11,6 +11,7 @@
 #import "NSDate+Category.h"
 #import "NSString+Base64.h"
 #import <WZLBadge/WZLBadgeImport.h>
+#import "PNDefaultHeaderView.h"
 
 @interface NewsCell ()
 
@@ -48,7 +49,9 @@
         [_backView clearBadge];
     }
     
-    _lblNameJX.text = [StringUtil getUserNameFirstWithName:model.friendName];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:model.friendName]];
+    _headImgView.image = defaultImg;
+//    _lblNameJX.text = [StringUtil getUserNameFirstWithName:model.friendName];
     
     if (model.isDraft) {
         NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[Drafts] %@",model.draftMessage?:@""]];

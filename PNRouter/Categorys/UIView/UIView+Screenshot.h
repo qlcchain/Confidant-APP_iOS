@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface UIView (Screenshot)
+
 - (UIImage *)screenshot;
+- (UIImage *)convertViewToImage;
+
 @end

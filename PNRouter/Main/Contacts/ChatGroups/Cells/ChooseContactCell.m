@@ -8,6 +8,7 @@
 
 #import "ChooseContactCell.h"
 #import "NSString+Base64.h"
+#import "PNDefaultHeaderView.h"
 
 @implementation ChooseContactCell
 
@@ -19,7 +20,9 @@
 - (void) setModeWithModel:(FriendModel *) model withLeftContraintV:(CGFloat)leftV
 {
     _lblContent.text = [model.username base64DecodedString]?:model.username;
-    _lblName.text =[StringUtil getUserNameFirstWithName:_lblContent.text];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:_lblContent.text]];
+    _headerImgV.image = defaultImg;
+//    _lblName.text =[StringUtil getUserNameFirstWithName:_lblContent.text];
     _leftContraintV.constant = leftV;
     if (model.isSelect) {
         _selectImgView.image = [UIImage imageNamed:@"icon_selectmsg"];

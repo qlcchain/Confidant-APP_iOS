@@ -10,6 +10,7 @@
 #import "StringUtil.h"
 #import <Social/Social.h>
 #import "HMScanner.h"
+#import "PNDefaultHeaderView.h"
 
 @interface RouterUserCodeViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *UserHeadBtn;
@@ -45,7 +46,9 @@
     _invitaionBtn.layer.cornerRadius = 5.0f;
     _delRightBtn.layer.cornerRadius = 5.0f;
     _lblUserName.text = self.routerUserModel.NickName;
-    [_UserHeadBtn setTitle:[StringUtil getUserNameFirstWithName:self.routerUserModel.NickName] forState:UIControlStateNormal];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:self.routerUserModel.NickName]];
+    [_UserHeadBtn setImage:defaultImg forState:UIControlStateNormal];
+//    [_UserHeadBtn setTitle:[StringUtil getUserNameFirstWithName:self.routerUserModel.NickName] forState:UIControlStateNormal];
     if (self.routerUserModel.UserType == 2) {
         _lblNavTitle.text = @"User details";
         _delUserBtn.hidden = YES;

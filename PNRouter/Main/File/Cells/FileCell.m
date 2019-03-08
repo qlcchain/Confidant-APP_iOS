@@ -14,6 +14,7 @@
 #import "SystemUtil.h"
 #import "UserConfig.h"
 #import "NSString+Base64.h"
+#import "PNDefaultHeaderView.h"
 
 @interface FileCell ()
 
@@ -38,7 +39,7 @@
     _timeLab.text = nil;
     _nameLab.text = nil;
     _fileNameLab.text = nil;
-    _spellLab.text = nil;
+//    _spellLab.text = nil;
     _operationLab.text = nil;
     _sizeLab.text = nil;
 }
@@ -70,7 +71,9 @@
     }
     _operationIcon.image = [UIImage imageNamed:operationImgStr];
     _nameLab.text = nameStr;
-    _spellLab.text = [StringUtil getUserNameFirstWithName:nameStr];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:nameStr] fontSize:18];
+    _headerImgV.image = defaultImg;
+//    _spellLab.text = [StringUtil getUserNameFirstWithName:nameStr];
     _operationLab.text = operationStr;
     
     NSString *fileTypeImgName = @"";

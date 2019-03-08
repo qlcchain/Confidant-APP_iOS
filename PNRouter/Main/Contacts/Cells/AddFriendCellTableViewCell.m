@@ -10,6 +10,7 @@
 #import "FriendModel.h"
 #import "NSDate+Category.h"
 #import "NSString+Base64.h"
+#import "PNDefaultHeaderView.h"
 
 @implementation AddFriendCellTableViewCell
 
@@ -40,7 +41,9 @@
              _rightBackView.hidden = NO;
         }
     }
-    _lblTitle.text = [StringUtil getUserNameFirstWithName:model.username];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:model.username]];
+    _headImgView.image = defaultImg;
+//    _lblTitle.text = [StringUtil getUserNameFirstWithName:model.username];
     NSString *msg = model.msg?:@"";
     if (msg && ![msg isEmptyString]) {
         msg = [msg base64DecodedString];

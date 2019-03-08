@@ -73,25 +73,15 @@
                                     <constraint firstAttribute="height" constant="0.5" id="2kd-ki-Tbd"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAs-vP-6ik">
-                                <rect key="frame" x="16" y="8" width="48" height="48"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="VAs-vP-6ik" firstAttribute="trailing" secondItem="JJc-Ef-S8M" secondAttribute="trailing" id="04i-0G-oxi"/>
                             <constraint firstAttribute="trailing" secondItem="Ge8-gJ-B9q" secondAttribute="trailing" constant="16" id="7Hl-hN-dm2"/>
                             <constraint firstItem="JJc-Ef-S8M" firstAttribute="top" secondItem="heL-Cn-ZP1" secondAttribute="top" constant="8" id="G9V-60-Q54"/>
                             <constraint firstAttribute="bottom" secondItem="Ge8-gJ-B9q" secondAttribute="bottom" constant="12" id="JOR-tK-Ts9"/>
-                            <constraint firstItem="VAs-vP-6ik" firstAttribute="leading" secondItem="JJc-Ef-S8M" secondAttribute="leading" id="K4g-YW-1jf"/>
                             <constraint firstItem="JJc-Ef-S8M" firstAttribute="leading" secondItem="heL-Cn-ZP1" secondAttribute="leading" constant="16" id="MFb-sg-4ni"/>
                             <constraint firstAttribute="trailing" secondItem="y2i-gL-Mps" secondAttribute="trailing" id="PdM-Gb-oeE"/>
-                            <constraint firstItem="VAs-vP-6ik" firstAttribute="bottom" secondItem="JJc-Ef-S8M" secondAttribute="bottom" id="Xg7-9a-DBn"/>
                             <constraint firstItem="Ge8-gJ-B9q" firstAttribute="leading" secondItem="JJc-Ef-S8M" secondAttribute="trailing" constant="10" id="Y8g-2V-Khn"/>
-                            <constraint firstItem="VAs-vP-6ik" firstAttribute="top" secondItem="JJc-Ef-S8M" secondAttribute="top" id="aEt-qr-S8e"/>
                             <constraint firstItem="Ge8-gJ-B9q" firstAttribute="leading" secondItem="y2i-gL-Mps" secondAttribute="leading" id="dqQ-ts-D2R"/>
                             <constraint firstAttribute="bottom" secondItem="y2i-gL-Mps" secondAttribute="bottom" id="w5P-jc-fiY"/>
                             <constraint firstItem="Ge8-gJ-B9q" firstAttribute="top" secondItem="heL-Cn-ZP1" secondAttribute="top" constant="12" id="y0Z-2V-SkH"/>
@@ -111,7 +101,6 @@
                 <outlet property="headImgView" destination="JJc-Ef-S8M" id="DTp-Sc-c70"/>
                 <outlet property="lblContent" destination="3ub-XD-rda" id="Hbl-fe-YgD"/>
                 <outlet property="lblName" destination="Nkh-mg-xda" id="QPy-ha-PfE"/>
-                <outlet property="lblNameJX" destination="VAs-vP-6ik" id="wz8-Po-5ib"/>
                 <outlet property="lblTime" destination="9ri-0a-Gmg" id="Ish-Lj-f9N"/>
             </connections>
             <point key="canvasLocation" x="-1047" y="-186"/>

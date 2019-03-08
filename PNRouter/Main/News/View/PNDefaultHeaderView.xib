@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1nA-df-bQm" customClass="PNDefaultHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_headportrait" translatesAutoresizingMaskIntoConstraints="NO" id="99X-bZ-L12">
+                    <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="GDe-Jy-Zx0"/>
+                        <constraint firstAttribute="width" constant="48" id="RfQ-Gz-hdw"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KZH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EeK-xo-FtX">
+                    <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="EeK-xo-FtX" firstAttribute="leading" secondItem="99X-bZ-L12" secondAttribute="leading" id="5cv-QR-rKR"/>
+                <constraint firstItem="1gw-Bm-Fqq" firstAttribute="bottom" secondItem="99X-bZ-L12" secondAttribute="bottom" id="8gp-uG-3iK"/>
+                <constraint firstItem="99X-bZ-L12" firstAttribute="top" secondItem="1nA-df-bQm" secondAttribute="top" id="JhA-4Q-ghG"/>
+                <constraint firstItem="99X-bZ-L12" firstAttribute="leading" secondItem="1nA-df-bQm" secondAttribute="leading" id="PZK-Gu-r9P"/>
+                <constraint firstItem="EeK-xo-FtX" firstAttribute="bottom" secondItem="99X-bZ-L12" secondAttribute="bottom" id="VCm-nP-tZh"/>
+                <constraint firstItem="1gw-Bm-Fqq" firstAttribute="trailing" secondItem="99X-bZ-L12" secondAttribute="trailing" id="dx2-SW-Fnl"/>
+                <constraint firstItem="EeK-xo-FtX" firstAttribute="trailing" secondItem="99X-bZ-L12" secondAttribute="trailing" id="nfY-lw-1f9"/>
+                <constraint firstItem="EeK-xo-FtX" firstAttribute="top" secondItem="99X-bZ-L12" secondAttribute="top" id="zgb-2e-8NV"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="1gw-Bm-Fqq"/>
+            <connections>
+                <outlet property="icon" destination="99X-bZ-L12" id="XS1-ia-N7w"/>
+                <outlet property="nameLab" destination="EeK-xo-FtX" id="VB8-a2-Ncc"/>
+            </connections>
+            <point key="canvasLocation" x="158.40000000000001" y="137.6311844077961"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_headportrait" width="40" height="40"/>
+    </resources>
+</document>

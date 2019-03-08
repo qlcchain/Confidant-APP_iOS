@@ -23,7 +23,7 @@ typedef void(^ContactShowCellBlock)(NSInteger headerSection);
 
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
-@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
+//@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 
 //@property (weak, nonatomic) IBOutlet UIImageView *selectImg;
 //@property (weak, nonatomic) IBOutlet UIButton *selectBtn;

@@ -433,6 +433,10 @@
         [SocketMessageUtil handleFileRename:receiveDic];
     } else if ([action isEqualToString:Action_FileForward]) { // 文件转发
          [SocketMessageUtil handleFileForward:receiveDic];
+    } else if ([action isEqualToString:Action_UploadAvatar]) { // 用户上传头像
+        [SocketMessageUtil handleUploadAvatar:receiveDic];
+    } else if ([action isEqualToString:Action_UpdateAvatar]) { // 更新好友头像
+        [SocketMessageUtil handleUpdateAvatar:receiveDic];
     }
 }
 
@@ -1303,6 +1307,40 @@
            
         } else if (retCode == 3) {
            
+        }
+    }
+}
+
++ (void)handleUploadAvatar:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:UploadAvatar_Success_Noti object:receiveDic];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"User id error"];
+        } else if (retCode == 2) {
+            [AppD.window showHint:@"Target file error"];
+        } else if (retCode == 3) {
+            [AppD.window showHint:@"Goal out of reach"];
+        } else if (retCode == 4) {
+            [AppD.window showHint:@"Other errors"];
+        }
+    }
+}
+
++ (void)handleUpdateAvatar:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:UpdateAvatar_Success_Noti object:receiveDic];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"User id error"];
+        } else if (retCode == 2) {
+            [AppD.window showHint:@"Avatars are up to date"];
         }
     }
 }

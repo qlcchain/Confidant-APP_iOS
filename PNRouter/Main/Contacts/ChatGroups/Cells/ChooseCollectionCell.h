@@ -11,6 +11,8 @@
 static NSString *ChooseCollectionCellReuse = @"ChooseCollectionCell";
 
 @interface ChooseCollectionCell : UICollectionViewCell
+
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UIImageView *headerImgV;
 
 @end

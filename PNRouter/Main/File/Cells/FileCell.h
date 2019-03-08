@@ -33,7 +33,8 @@ typedef void(^FileDownloadBlock)(void);
 @property (weak, nonatomic) IBOutlet UIButton *downloadBtn;
 @property (nonatomic, copy) FileDownloadBlock fileDownloadB;
 
-@property (weak, nonatomic) IBOutlet UILabel *spellLab;
+@property (weak, nonatomic) IBOutlet UIImageView *headerImgV;
+//@property (weak, nonatomic) IBOutlet UILabel *spellLab;
 @property (weak, nonatomic) IBOutlet UILabel *operationLab;
 @property (weak, nonatomic) IBOutlet UILabel *sizeLab;
 
