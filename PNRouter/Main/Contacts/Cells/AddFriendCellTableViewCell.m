@@ -11,8 +11,16 @@
 #import "NSDate+Category.h"
 #import "NSString+Base64.h"
 #import "PNDefaultHeaderView.h"
+#import "EntryModel.h"
 
 @implementation AddFriendCellTableViewCell
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
+    _headImgView.layer.cornerRadius = _headImgView.width/2.0;
+    _headImgView.layer.masksToBounds = YES;
+}
 
 - (IBAction)rightAction:(UIButton *)sender {
     if (self.rightBlcok) {
@@ -41,7 +49,8 @@
              _rightBackView.hidden = NO;
         }
     }
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:model.username]];
+    NSString *userKey = model.signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:model.username]];
     _headImgView.image = defaultImg;
 //    _lblTitle.text = [StringUtil getUserNameFirstWithName:model.username];
     NSString *msg = model.msg?:@"";

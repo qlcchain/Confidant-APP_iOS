@@ -28,6 +28,9 @@
     
     _backView.badgeBgColor = UIColorFromRGB(0xF7625F);
     _backView.badgeTextColor = [UIColor whiteColor];
+    
+    _headImgView.layer.cornerRadius = _headImgView.width/2.0;
+    _headImgView.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -48,8 +51,8 @@
     } else {
         [_backView clearBadge];
     }
-    
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:model.friendName]];
+    NSString *userKey = model.signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:model.friendName]];
     _headImgView.image = defaultImg;
 //    _lblNameJX.text = [StringUtil getUserNameFirstWithName:model.friendName];
     

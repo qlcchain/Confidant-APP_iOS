@@ -25,6 +25,13 @@
     return self;
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    _headImgView.layer.cornerRadius = _headImgView.width/2.0;
+    _headImgView.layer.masksToBounds = YES;
+}
+
 - (void)prepareForReuse {
     [super prepareForReuse];
     
@@ -37,7 +44,8 @@
 - (void)configHeaderWithModel:(ContactShowModel *)model {
     NSString *name = [model.Name base64DecodedString]?:model.Name;
     _lblName.text = model.showArrow?[NSString stringWithFormat:@"%@(%@)",name,@(model.routerArr.count)]:name;
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:_lblName.text]];
+    NSString *userKey = model.UserKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_lblName.text]];
     _headImgView.image = defaultImg;
 //    _lblTitle.text = [StringUtil getUserNameFirstWithName:_lblName.text];
     _arrowImg.hidden = !model.showArrow;

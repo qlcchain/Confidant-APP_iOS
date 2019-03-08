@@ -57,7 +57,8 @@ static NSString *Settings_Str = @"Settings";
 {
     
     self.myHeadView.lblName.text = [UserModel getUserModel].username;
-    [self.myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    [self.myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] userKey:userKey];
     
     UserModel *userM = [UserModel getUserModel];
     [SocketMessageUtil sendUserIsOnLine:userM.userId?:@""];
@@ -90,7 +91,8 @@ static NSString *Settings_Str = @"Settings";
         _myHeadView = [MyHeadView loadMyHeadView];
         _myHeadView.lblName.text = [UserModel getUserModel].username;
         _myHeadView.isMyHead = YES;
-        [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
+        NSString *userKey = [EntryModel getShareObject].signPublicKey;
+        [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] userKey:userKey];
         _myHeadView.lblContent.text = @"Add to my status";
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpDetailvc)];
         _myHeadView.userInteractionEnabled = YES;
@@ -249,7 +251,8 @@ static NSString *Settings_Str = @"Settings";
 #pragma mark - 通知
 - (void) userHeadChangeNoti:(NSNotification *) noti
 {
-    [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] userKey:userKey];
 }
 
 - (void)ownerOnLine:(NSNotification *)noti {

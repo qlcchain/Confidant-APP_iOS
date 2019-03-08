@@ -15,6 +15,7 @@
 #import "UserConfig.h"
 #import "NSString+Base64.h"
 #import "PNDefaultHeaderView.h"
+#import "EntryModel.h"
 
 @interface FileCell ()
 
@@ -25,6 +26,9 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    _headerImgV.layer.cornerRadius = _headerImgV.width/2.0;
+    _headerImgV.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -71,7 +75,8 @@
     }
     _operationIcon.image = [UIImage imageNamed:operationImgStr];
     _nameLab.text = nameStr;
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:nameStr] fontSize:18];
+    NSString *userKey = model.SenderKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:nameStr] fontSize:18];
     _headerImgV.image = defaultImg;
 //    _spellLab.text = [StringUtil getUserNameFirstWithName:nameStr];
     _operationLab.text = operationStr;

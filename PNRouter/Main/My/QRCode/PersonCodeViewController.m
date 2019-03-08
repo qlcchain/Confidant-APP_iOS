@@ -97,7 +97,11 @@
     }
     _lblNavTitle.text = self.userName;
     _lblName.text = self.userName;
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:self.userName]];
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:self.userName]];
+    _nameBtn.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    _nameBtn.layer.cornerRadius = _nameBtn.width/2.0;
+    _nameBtn.layer.masksToBounds = YES;
     [_nameBtn setImage:defaultImg forState:UIControlStateNormal];
 //    [_nameBtn setTitle:[StringUtil getUserNameFirstWithName:self.userName] forState:UIControlStateNormal];
     NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@,%@",self.userId,[self.userName base64EncodedString],self.signPublicKey?:@""];
@@ -143,15 +147,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

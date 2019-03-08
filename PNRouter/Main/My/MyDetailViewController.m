@@ -50,7 +50,6 @@
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileFinshNoti:) name:UPLOAD_HEAD_DATA_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadAvatarSuccessNoti:) name:UploadAvatar_Success_Noti object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAvatarSuccessNoti:) name:UpdateAvatar_Success_Noti object:nil];
     
 }
 
@@ -69,8 +68,6 @@
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableV registerNib:[UINib nibWithNibName:MyCellReuse bundle:nil] forCellReuseIdentifier:MyCellReuse];
-    
-    [self sendUpdateUserHeader];
 }
 
 #pragma mark - Action
@@ -79,16 +76,6 @@
 }
 
 #pragma mark - Operation
-- (void)sendUpdateUserHeader {
-    NSString *Fid = [UserModel getUserModel].userId?:@"";
-    NSString *Md5 = @"0";
-    NSString *userHeaderImg64Str = [UserModel getUserModel].headBaseStr;
-    if (userHeaderImg64Str) {
-        Md5 = [MD5Util md5WithData:[NSData dataWithBase64EncodedString:userHeaderImg64Str]];
-    }
-    [SendRequestUtil sendUpdateAvatarWithFid:Fid Md5:Md5 showHud:NO];
-}
-
 - (void)showPickPhoto {
     @weakify_self
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -126,7 +113,8 @@
                 [cell.subBtn setImage:[UIImage imageWithData:[UserModel getUserModel].headBaseStr.base64DecodedData] forState:UIControlStateNormal];
 //                [cell.subBtn setTitle:@"" forState:UIControlStateNormal];
             } else {
-                UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
+                NSString *userKey = [EntryModel getShareObject].signPublicKey;
+                UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username]];
                 [cell.subBtn setImage:defaultImg forState:UIControlStateNormal];
 //                [cell.subBtn setBackgroundImage:[UIImage imageNamed:@"detailHead"] forState:UIControlStateNormal];
 //                [cell.subBtn setTitle:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] forState:UIControlStateNormal];
@@ -299,13 +287,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_CHANGE_NOTI object:nil];
 }
 
-- (void)updateAvatarSuccessNoti:(NSNotification *)noti {
-    NSDictionary *receiveDic = noti.object;
-    NSDictionary *params = receiveDic[@"params"];
-
-    // 下载
-    
-}
 
 #pragma mark - layz
 - (NSMutableArray *)dataArray

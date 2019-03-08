@@ -23,6 +23,10 @@
 #import "UserConfig.h"
 #import "SystemUtil.h"
 #import "ChatModel.h"
+#import "MD5Util.h"
+#import "NSData+Base64.h"
+#import "UserHeadUtil.h"
+#import "UserHeaderModel.h"
 
 @interface FriendDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -32,9 +36,14 @@
 
 @implementation FriendDetailViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Observe
 - (void)observe {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFriendSuccess:) name:SOCKET_DELETE_FRIEND_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadDownloadSuccess:) name:USER_HEAD_DOWN_SUCCESS_NOTI object:nil];
 }
 
 - (IBAction)backAction:(id)sender {
@@ -42,14 +51,14 @@
 }
 
 #pragma mark -layz
-- (MyHeadView *)myHeadView
-{
+- (MyHeadView *)myHeadView {
     if (!_myHeadView) {
         _myHeadView = [MyHeadView loadMyHeadView];
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpDetailvc)];
         
         _myHeadView.lblName.text = self.friendModel.remarks;
-        [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:self.friendModel.username]];
+        NSString *userKey = self.friendModel.signPublicKey;
+        [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:self.friendModel.username] userKey:userKey];
         
         _myHeadView.userInteractionEnabled = YES;
         [_myHeadView addGestureRecognizer:gesture];
@@ -80,6 +89,7 @@
     [_tableV registerNib:[UINib nibWithNibName:UserInfoCellReuse bundle:nil] forCellReuseIdentifier:UserInfoCellReuse];
     [_tableV registerNib:[UINib nibWithNibName:BottonCellResue bundle:nil] forCellReuseIdentifier:BottonCellResue];
     
+    [self sendUpdateAvatar];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -87,6 +97,17 @@
     _lblNavTitle.text = self.friendModel.username;
     [_tableV reloadData];
     [super viewDidAppear:animated];
+}
+
+#pragma mark - Operation
+- (void)sendUpdateAvatar {
+    NSString *Fid = _friendModel.userId?:@"";
+    NSString *Md5 = @"0";
+    NSString *userHeaderImg64Str = [UserHeaderModel getUserHeaderImg64StrWithKey:_friendModel.signPublicKey];
+    if (userHeaderImg64Str) {
+        Md5 = [MD5Util md5WithData:[NSData dataWithBase64EncodedString:userHeaderImg64Str]];
+    }
+    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
 }
 
 #pragma mark - tableviewDataSourceDelegate
@@ -200,6 +221,8 @@
     // 删除未发送消息表
      [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"toId"),bg_sqlValue(_friendModel.userId)]];
     [SystemUtil removeDocmentFilePath:filePath];
+    // 删除好友头像数据库
+    [UserHeaderModel bg_delete:UserHeader_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"UserKey"),bg_sqlValue(_friendModel.signPublicKey)]];
     
     // 删除本地聊天记录
     //[ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(_friendModel.userId?:@"")]];
@@ -207,6 +230,12 @@
    // [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
     [self backAction:nil];
     
+}
+
+- (void)userHeadDownloadSuccess:(NSNotification *)noti {
+    UserHeaderModel *model = noti.object;
+    NSString *userKey = model.UserKey;
+    [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:self.friendModel.username] userKey:userKey];
 }
 
 - (void)didReceiveMemoryWarning {

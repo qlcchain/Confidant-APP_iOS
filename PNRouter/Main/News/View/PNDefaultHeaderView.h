@@ -12,8 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PNDefaultHeaderView : UIView
 
-+ (UIImage *)getImageWithName:(NSString *)name;
-+ (UIImage *)getImageWithName:(NSString *)name fontSize:(NSInteger)fontSize;
++ (UIImage *)getImageWithUserkey:(NSString *)userKey Name:(NSString *)name backFrame:(CGRect)backFrame;
++ (UIImage *)getImageWithUserkey:(NSString *)userKey Name:(NSString *)name;
++ (UIImage *)getImageWithUserkey:(NSString *)userKey Name:(NSString *)name fontSize:(NSInteger)fontSize;
 
 @end
 

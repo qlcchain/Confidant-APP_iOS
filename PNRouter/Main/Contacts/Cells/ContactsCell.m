@@ -11,6 +11,7 @@
 #import "NSString+Base64.h"
 #import "RouterUserModel.h"
 #import "PNDefaultHeaderView.h"
+#import "EntryModel.h"
 
 @implementation ContactsCell
 
@@ -30,7 +31,8 @@
     _descContraintW.constant = 0;
     _lblDesc.text = @"";
     _lblName.text = [model.username base64DecodedString]?:model.username;
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:_lblName.text]];
+    NSString *userKey = model.signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_lblName.text]];
     _headImgView.image = defaultImg;
 //    _lblTitle.text =[StringUtil getUserNameFirstWithName:_lblName.text];
 }
@@ -44,7 +46,8 @@
     }
     
     _lblName.text = model.NickName?:@"";
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:_lblName.text]];
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_lblName.text]];
     _headImgView.image = defaultImg;
 //    _lblTitle.text =[StringUtil getUserNameFirstWithName:model.NickName];
 }

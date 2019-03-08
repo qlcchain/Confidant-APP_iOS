@@ -73,7 +73,8 @@
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     ChooseCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ChooseCollectionCellReuse forIndexPath:indexPath];
     FriendModel *model = self.dataArray[indexPath.item];
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:model.username]];
+    NSString *userKey = model.signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:model.username]];
 //    cell.lblName.text = [StringUtil getUserNameFirstWithName:model.username];
     cell.headerImgV.image = defaultImg;
     return cell;

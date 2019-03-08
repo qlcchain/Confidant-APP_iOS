@@ -47,6 +47,8 @@
 #import "PNDocumentPickerViewController.h"
 #import "ChatModel.h"
 #import "PNDefaultHeaderView.h"
+#import "UserHeadUtil.h"
+#import "UserHeaderModel.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -59,8 +61,6 @@ typedef void(^PullMoreBlock)(NSArray *arr);
 CTInputViewProtocol,
 UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate>
-
-
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (weak, nonatomic) IBOutlet UIView *tabBackView;
@@ -142,6 +142,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryFriendSuccess:) name:REVER_QUERY_FRIEND_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterFore) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendingNoti:) name:FILE_SENDING_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadDownloadSuccess:) name:USER_HEAD_DOWN_SUCCESS_NOTI object:nil];
     
 }
 
@@ -215,6 +216,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
 
+    [self sendUpdateAvatar];
 //    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"1539912662170117"ofType:@"mp4"]];
 //    UIImage *img = [SystemUtil thumbnailImageForVideo:url];
 //    UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
@@ -236,6 +238,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 #pragma mark - Operation
+
+- (void)sendUpdateAvatar {
+    NSString *Fid = _friendModel.userId?:@"";
+    NSString *Md5 = @"0";
+    NSString *userHeaderImg64Str = [UserHeaderModel getUserHeaderImg64StrWithKey:_friendModel.signPublicKey];
+    if (userHeaderImg64Str) {
+        Md5 = [MD5Util md5WithData:[NSData dataWithBase64EncodedString:userHeaderImg64Str]];
+    }
+    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
+}
+
 - (void)pullMessageRequest {
     UserModel *userM = [UserModel getUserModel];
     NSString *MsgType = @"1"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
@@ -398,7 +411,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         mode.publicKey = self.friendModel.publicKey;
         mode.messageId = [NSString stringWithFormat:@"%d",msgid];;
         mode.willDisplayTime = YES;
-        mode.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:[UserModel getUserModel].username]];
+        NSString *userKey = [EntryModel getShareObject].signPublicKey;
+        mode.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:[UserModel getUserModel].username userKey:userKey]];
         mode.isLeft = NO;
         mode.audioSufix = @"amr";
         [self.listView addMessagesToBottom:@[mode]];
@@ -611,7 +625,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.publicKey = self.friendModel.publicKey;
     model.ctDataconfig = config;
     NSString *nkName = [UserModel getUserModel].username;
-    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
 //    [[SDImageCache sharedImageCache] storeImage:img forKey:model.messageId completion:nil];
     NSString *filePath = [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:mill];
     [imgData writeToFile:filePath atomically:YES];
@@ -957,7 +972,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     messageModel.publicKey = model.publicKey;
                     messageModel.ctDataconfig = config;
                     NSString *nkName = [UserModel getUserModel].username;
-                    messageModel.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+                    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+                    messageModel.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [weakSelf.listView addMessagesToBottom:@[messageModel]];
@@ -1098,7 +1114,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.publicKey = self.friendModel.publicKey;
     model.ctDataconfig = config;
     NSString *nkName = self.friendModel.username;
-    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+    NSString *userKey = self.friendModel.signPublicKey;
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
     [self.listView addMessagesToBottom:@[model]];
 }
 
@@ -1185,10 +1202,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.willDisplayTime = YES;
     model.ctDataconfig = config;
     NSString *nkName = [UserModel getUserModel].username;
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
     if (model.isLeft) {
         nkName = self.friendModel.username;
+        userKey = self.friendModel.signPublicKey;
     }
-    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
     [self.listView addMessagesToBottom:@[model]];
 }
 
@@ -1264,10 +1283,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
         model.ctDataconfig = config;
         NSString *nkName = [UserModel getUserModel].username;
+        NSString *userKey = [EntryModel getShareObject].signPublicKey;
         if (model.isLeft) {
             nkName = self.friendModel.username;
+            userKey = self.friendModel.signPublicKey;
         }
-        model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+        model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
         [messageModelArr addObject:model];
     }];
     
@@ -1291,7 +1312,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 model.ctDataconfig = config;
                 
                 NSString *nkName = [UserModel getUserModel].username;
-                model.userThumImage =  [SystemUtil genterViewToImage:[weakSelf getHeadViewWithName:nkName]];
+                NSString *userKey = [EntryModel getShareObject].signPublicKey;
+                model.userThumImage =  [SystemUtil genterViewToImage:[weakSelf getHeadViewWithName:nkName userKey:userKey]];
                 
                 if (model.msgType == 0) { // 文字
                     model.msg = chatModel.messageMsg;
@@ -1391,24 +1413,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
 }
 
-- (UIView *) getHeadViewWithName:(NSString *) name
-{
+- (void)userHeadDownloadSuccess:(NSNotification *)noti {
+//    UserHeaderModel *model = noti.object;
+    [_listView justReload];
+}
+
+- (UIView *) getHeadViewWithName:(NSString *)name userKey:(NSString *)userKey {
     UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     imgBackView.backgroundColor = [UIColor clearColor];
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:imgBackView.bounds];
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithName:[StringUtil getUserNameFirstWithName:name]];
-//    imgView.image = [UIImage imageNamed:@"icon_headportrait"];
+//    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:name]];
     imgView.image = defaultImg;
-//    UILabel *lblName = [[UILabel alloc] initWithFrame:imgBackView.bounds];
-//    lblName.textColor = [UIColor whiteColor];
-//    lblName.textAlignment = NSTextAlignmentCenter;
-//    lblName.font = [UIFont systemFontOfSize:16];
-//    lblName.text = [StringUtil getUserNameFirstWithName:name];
     [imgBackView addSubview:imgView];
-//    [imgBackView addSubview:lblName];
     return imgBackView;
 }
-
 
 
 - (void)pushTZImagePickerControllerWithIsSelectImgage:(BOOL) isImage {
@@ -1558,7 +1577,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             model.publicKey = weakSelf.friendModel.publicKey;
             model.ctDataconfig = config;
             NSString *nkName = [UserModel getUserModel].username;
-            model.userThumImage =  [SystemUtil genterViewToImage:[weakSelf getHeadViewWithName:nkName]];
+            NSString *userKey = [EntryModel getShareObject].signPublicKey;
+            model.userThumImage =  [SystemUtil genterViewToImage:[weakSelf getHeadViewWithName:nkName userKey:userKey]];
             NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:model.fileName];
             [imgData writeToFile:filePath atomically:YES];
             [weakSelf.listView addMessagesToBottom:@[model]];
@@ -1627,7 +1647,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.ctDataconfig = config;
     model.mediaImage = evImage;
     NSString *nkName = [UserModel getUserModel].username;
-    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
     [self.listView addMessagesToBottom:@[model]];
     
     NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
@@ -1688,7 +1709,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.ctDataconfig = config;
     model.mediaImage = evImage;
     NSString *nkName = [UserModel getUserModel].username;
-    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
     [self.listView addMessagesToBottom:@[model]];
     
     //    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
@@ -1781,7 +1803,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.publicKey = self.friendModel.publicKey;
         model.ctDataconfig = config;
         NSString *nkName = [UserModel getUserModel].username;
-        model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName]];
+        NSString *userKey = [EntryModel getShareObject].signPublicKey;
+        model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
         NSString *filePath = [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:model.fileName];
         [txtData writeToFile:filePath atomically:YES];
         [self.listView addMessagesToBottom:@[model]];

@@ -365,6 +365,9 @@
     [self scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
+- (void)justReload {
+    [self reloadData];
+}
 
 //-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
 //
