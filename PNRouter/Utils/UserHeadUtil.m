@@ -46,6 +46,9 @@
         NSString *fileNameBase58 = filePath.lastPathComponent;
         NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
         NSString *downloadFilePath = [SystemUtil getTempDownloadFilePath:fileName];
+        if ([SystemUtil filePathisExist:downloadFilePath]) {
+            [[NSFileManager defaultManager] removeItemAtPath:downloadFilePath error:nil];
+        }
         NSString *signPublicKey = parames[@"TargetKey"];
         NSString *toid = parames[@"TargetId"];
         
