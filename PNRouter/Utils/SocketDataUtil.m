@@ -66,8 +66,6 @@ struct ResultFile {
     char toid[77];
 };
 
-
-
 @interface SocketDataUtil ()
 {
     struct SendFile sendFile;
@@ -339,6 +337,9 @@ struct ResultFile {
     } else {
         sendData = [self.fileData subdataWithRange:NSMakeRange(offset, self.fileData.length-offset)];
     }
+    
+    //memset(sendFile.content,0,sizeof(char)*[sendData length]);
+    
     memcpy(sendFile.content,[sendData bytes],[sendData length]);
     // 结构体转data
     NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];

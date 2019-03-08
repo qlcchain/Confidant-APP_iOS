@@ -219,6 +219,7 @@
 		7303310B21C7A2FD007C4063 /* mysong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7303310921C7A2FD007C4063 /* mysong.mp3 */; };
 		7303310C21C7A2FD007C4063 /* RunInBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 7303310A21C7A2FD007C4063 /* RunInBackground.m */; };
 		7303310F21D22422007C4063 /* UserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7303310E21D22422007C4063 /* UserConfig.m */; };
+		730465FF2232433800EB6073 /* UserHeadUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 730465FE2232433800EB6073 /* UserHeadUtil.m */; };
 		73060528216F3572005A0E13 /* RequestService.m in Sources */ = {isa = PBXBuildFile; fileRef = 73060525216F3572005A0E13 /* RequestService.m */; };
 		73060529216F3572005A0E13 /* AFHTTPClientV2.m in Sources */ = {isa = PBXBuildFile; fileRef = 73060526216F3572005A0E13 /* AFHTTPClientV2.m */; };
 		7306054421748BD5005A0E13 /* VoiceConvert.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7306053A21748BD5005A0E13 /* VoiceConvert.mm */; };
@@ -937,6 +938,8 @@
 		7303310A21C7A2FD007C4063 /* RunInBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RunInBackground.m; sourceTree = "<group>"; };
 		7303310D21D22422007C4063 /* UserConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserConfig.h; sourceTree = "<group>"; };
 		7303310E21D22422007C4063 /* UserConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserConfig.m; sourceTree = "<group>"; };
+		730465FD2232433800EB6073 /* UserHeadUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserHeadUtil.h; sourceTree = "<group>"; };
+		730465FE2232433800EB6073 /* UserHeadUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserHeadUtil.m; sourceTree = "<group>"; };
 		73060524216F3572005A0E13 /* AFHTTPClientV2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClientV2.h; sourceTree = "<group>"; };
 		73060525216F3572005A0E13 /* RequestService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestService.m; sourceTree = "<group>"; };
 		73060526216F3572005A0E13 /* AFHTTPClientV2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClientV2.m; sourceTree = "<group>"; };
@@ -2935,6 +2938,8 @@
 				582BFE3D221A98D800D8C2C8 /* UnitUtil.m */,
 				7356429E2226752A00DC0BCB /* SendCacheChatUtil.h */,
 				7356429F2226752A00DC0BCB /* SendCacheChatUtil.m */,
+				730465FD2232433800EB6073 /* UserHeadUtil.h */,
+				730465FE2232433800EB6073 /* UserHeadUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -4101,6 +4106,7 @@
 				583B2B2D2231099F00E6238D /* PNDefaultHeaderView.m in Sources */,
 				737883FD21ACF2970033A189 /* OCTManagerConstants.m in Sources */,
 				737883F921ACF2970033A189 /* OCTVideoView.m in Sources */,
+				730465FF2232433800EB6073 /* UserHeadUtil.m in Sources */,
 				581FDF5521F024170068C120 /* friend_connection.m in Sources */,
 				736257842142143F00D7FD6B /* NSString+Base64Image.m in Sources */,
 				73D31B15217F08480034B2B9 /* TZPhotoPickerController.m in Sources */,

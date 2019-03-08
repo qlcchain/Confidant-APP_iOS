@@ -27,6 +27,7 @@
 #import "MD5Util.h"
 #import "PNDefaultHeaderView.h"
 #import "UserHeaderModel.h"
+#import "UserHeadUtil.h"
 
 @interface MyDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
@@ -305,8 +306,9 @@
 - (void)updateAvatarSuccessNoti:(NSNotification *)noti {
     NSDictionary *receiveDic = noti.object;
     NSDictionary *params = receiveDic[@"params"];
-    
+
     // 下载
+    
 }
 
 #pragma mark - layz
