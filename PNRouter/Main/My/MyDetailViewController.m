@@ -48,7 +48,7 @@
 }
 
 - (void)addObserve {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileFinshNoti:) name:FILE_UPLOAD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileFinshNoti:) name:UPLOAD_HEAD_DATA_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadAvatarSuccessNoti:) name:UploadAvatar_Success_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAvatarSuccessNoti:) name:UpdateAvatar_Success_Noti object:nil];
     
@@ -262,11 +262,11 @@
         [dataUtil sendFileId:ToId fileName:_uploadFileName fileData:_uploadImgData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
     } else { // tox
-        _uploadFileName = [NSString stringWithFormat:@"a:%@",_uploadFileName];
+        
         BOOL isSuccess = [_uploadImgData writeToFile:outputPath atomically:YES];
         if (isSuccess) {
             NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:_uploadFileName],@"FileMD5":[MD5Util md5WithPath:outputPath],@"FileSize":@(_uploadImgData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
-            [SendToxRequestUtil uploadFileWithFilePath:outputPath parames:parames fileData:_uploadImgData];
+            [SendToxRequestUtil sendFileWithFilePath:outputPath parames:parames];
         }
     }
 }
@@ -274,19 +274,15 @@
 #pragma mark - Noti
 - (void) uploadFileFinshNoti:(NSNotification *) noti {
     [AppD.window hideHud];
-    //  [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),self.fileName,self.fileData,@(self.fileType),self.srcKey]];
-    
+
     NSArray *resultArr = noti.object;
     if (resultArr && resultArr.count>0 && [resultArr[0] integerValue] == 0) { // 成功
         
-//        NSString *srckey = resultArr[4];
-//        NSInteger fileid = [[resultArr lastObject] integerValue];
-
         NSString *FileMd5 = [MD5Util md5WithData:_uploadImgData];
         [SendRequestUtil sendUploadAvatarWithFileName:_uploadFileName FileMd5:FileMd5 showHud:YES];
         
     } else { // 上传失败
-        
+        [AppD.window showHint:@"Failed to upload avatar."];
     }
 }
 

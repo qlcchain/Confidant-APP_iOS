@@ -370,8 +370,13 @@ struct ResultFile {
                 [[SocketManageUtil getShareObject] clearDisConnectSocket];
                 
                 if ([weakSelf.toid isEmptyString]) {
+                    if (weakSelf.fileType == 6) {
+                        
+                         [[NSNotificationCenter defaultCenter] postNotificationName:UPLOAD_HEAD_DATA_NOTI object:@[@(weakSelf.retCode),weakSelf.fileName,@"",@(weakSelf.fileType),weakSelf.srcKey,weakSelf.fileid]];
+                    } else {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),weakSelf.fileName,@"",@(weakSelf.fileType),weakSelf.srcKey,weakSelf.fileid]];
+                    }
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),weakSelf.fileName,@"",@(weakSelf.fileType),weakSelf.srcKey,weakSelf.fileid]];
                 } else {
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
@@ -415,8 +420,12 @@ struct ResultFile {
             sendFinsh = YES;
             [_fileUtil disconnect];
             if ([self.toid isEmptyString]) {
+                if (self.fileType == 6) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:UPLOAD_HEAD_DATA_NOTI object:@[@(self.retCode),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
+                }
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
             } else {
                 
                 // 添加到chatlist

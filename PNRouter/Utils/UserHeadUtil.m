@@ -68,10 +68,9 @@
         
         NSString *filePath = parames[@"FileName"];
         NSString *fileNameBase58 = filePath.lastPathComponent;
-        NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
-        NSString *toid = parames[@"ToId"];
-        
-    //    [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:toid fileName:fileNameBase58 msgId:@"" fileOwer:YES fileFrom:@"2"];
+       // NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    
+        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileNameBase58 msgId:@"" fileOwer:@"4" fileFrom:@"3"];
     }
 }
 
