@@ -143,7 +143,10 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
 
     NSString *fileName = [filePath lastPathComponent];
     NSString *toid = parames[@"ToId"];
-    if ([toid isEmptyString]) { // 上传文件
+    NSInteger fileType = [parames[@"FileType"] integerValue];
+    if ([toid isEmptyString] && fileType ==6 ) { // 上传头像
+        fileName = [NSString stringWithFormat:@"a:%@",parames[@"FileName"]];
+    } else if ([toid isEmptyString]) { //上传文件
         fileName = [NSString stringWithFormat:@"u:%@",parames[@"FileName"]];
     }
     NSError *error;
@@ -607,7 +610,13 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                     if (fileidNumber) {
                         fileid = [fileidNumber integerValue];
                     }
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize,@(fileid)]];
+                    if (fileType == 6) {
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:UPLOAD_HEAD_DATA_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize,@(fileid)]];
+                    } else {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize,@(fileid)]];
+                    }
+                    
                 } else { // 发送
                     NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:fileNumberValues[@"FileId"]];
                     if (![[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
