@@ -26,7 +26,9 @@
 #import "SystemUtil.h"
 #import "ToxPullFileTimerUtil.h"
 #import "FileData.h"
-
+#import "UserHeaderModel.h"
+#import "NSData+Base64.h"
+#import "ChatListDataUtil.h"
 
 #if TARGET_OS_IPHONE
 @import MobileCoreServices;
@@ -685,10 +687,10 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     
     [[ChatListDataUtil getShareObject].fileNameParames setObject:fileName forKey:[NSString stringWithFormat:@"%d",fileNumber]];
     
-    ToxPullFileTimerUtil *toxpull = [[ToxPullFileTimerUtil alloc] init];
-    toxpull.date = [NSDate date];
-    toxpull.fileKey = [NSString stringWithFormat:@"%d",fileNumber];
-    [[ChatListDataUtil getShareObject].pullTimerDic setObject:toxpull forKey:[NSString stringWithFormat:@"%d",fileNumber]];
+   // ToxPullFileTimerUtil *toxpull = [[ToxPullFileTimerUtil alloc] init];
+  //  toxpull.date = [NSDate date];
+   // toxpull.fileKey = [NSString stringWithFormat:@"%d",fileNumber];
+   // [[ChatListDataUtil getShareObject].pullTimerDic setObject:toxpull forKey:[NSString stringWithFormat:@"%d",fileNumber]];
     
     switch (kind) {
         case OCTToxFileKindData:
@@ -737,7 +739,23 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
             [self.dataSource.managerGetTox fileSendControlForFileNumber:fileNumber friendNumber:friendNumber control:OCTToxFileControlCancel error:nil];
             if ([optionType intValue] == 2) { // 文件列表下载
                 [[NSNotificationCenter defaultCenter] postNotificationName:TOX_PULL_FILE_SUCCESS_NOTI object:array];
-            } else {
+            }  else if ([optionType intValue] == 3){ // 头像下载
+               
+                
+                NSString *filePath = [[SystemUtil getTempBaseFilePath:array[0]] stringByAppendingPathComponent:fileName];
+                filePath = [filePath stringByAppendingString:[NSString stringWithFormat:@"%d",[array[2] intValue]]];
+                
+                NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+                UserHeaderModel *model = [UserHeaderModel new];
+                NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:array[0]];
+                model.UserKey = signPublickey;
+                model.UserHeaderImg64Str = [fileData base64EncodedString];
+                if (model.UserKey && model.UserKey.length > 0) {
+                    [UserHeaderModel saveOrUpdate:model];
+                     [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_DOWN_SUCCESS_NOTI object:model];
+                }
+               
+            }else {
                 [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_SUCCESS_NOTI object:array];
             }
         } else {
