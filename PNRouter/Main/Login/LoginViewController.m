@@ -24,6 +24,7 @@
 #import "FingetprintVerificationUtil.h"
 #import "NSString+Base64.h"
 #import "LibsodiumUtil.h"
+#import "UserHeadUtil.h"
 #import "EntryModel.h"
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate> {
@@ -480,6 +481,14 @@
 //    }
 //}
 
+- (void)updateUserHead {
+    if (_loginType == ImportType) {
+        NSString *Fid = [UserModel getUserModel].userId?:@"";
+        NSString *Md5 = @"0";
+        [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
+    }
+}
+
 #pragma mark - 通知回调
 // touch验证成功
 - (void) touchModifySuccess:(NSNotification *) noti
@@ -585,6 +594,7 @@
   
     NSInteger retCode = [noti.object integerValue];
     if (retCode == 0) {
+        [self updateUserHead];
         [AppD setRootTabbarWithManager:nil];
       //  [AppD.window showHint:@"Login Success"];
     } else if (retCode == 2) { // routeid不对
@@ -627,6 +637,8 @@
     [UserConfig getShareObject].usersn = userSn;
     [UserConfig getShareObject].dataFilePay = dataFilePay;
     [UserConfig getShareObject].dataFileVersion = dataFileVersion;
+    
+    [self updateUserHead];
     
     [AppD setRootTabbarWithManager:nil];
    //  [AppD.window showHint:@"Registered successfully"];
