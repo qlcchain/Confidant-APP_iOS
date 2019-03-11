@@ -68,10 +68,10 @@
     // 或者：设置图片渲染模式、设置tabBar文字
     //[[UITabBar appearance] setTintColor:[UIColor clearColor]];
     [[UITabBar appearance] setBarTintColor:[UIColor whiteColor]];
-//    [[UITabBar appearance] setBackgroundImage:[UIImage new]];
-    [[UITabBar appearance] setShadowImage:[UIImage new]];
+    [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:UIColorFromRGB(0xf5f5f5) size:CGSizeMake(SCREEN_WIDTH,0.5)]];
+//    [[UITabBar appearance] setShadowImage:[UIImage new]];
     [UITabBar appearance].translucent = NO;
-    //    [[UITabBar appearance] setBackgroundImage:[UIImage new]];
+//    [[UITabBar appearance] setBackgroundImage:[UIImage new]];
     // 添加阴影
 //    self.tabBar.layer.shadowColor = SHADOW_COLOR.CGColor;
 //    self.tabBar.layer.shadowOffset = CGSizeMake(0, -1);

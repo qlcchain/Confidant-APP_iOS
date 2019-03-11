@@ -132,7 +132,9 @@
             });
             
         } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.imageContent_left.image = nil;
+            });
             if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
                 return;
             }
