@@ -115,85 +115,86 @@
     self.imageContent_left.frame = bubbleRec;
     
     NSString *filePath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:data.fileName];
-    
-    if ([SystemUtil filePathisExist:filePath])
-    {
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-
-           // NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-            UIImage *image = [[UIImage alloc] initWithContentsOfFile:filePath];
+    @weakify_self
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+         UIImage *image = [[UIImage alloc] initWithContentsOfFile:filePath];
+        if (!image) {
+            [SystemUtil removeDocmentFilePath:filePath];
+        }
+        if ([SystemUtil filePathisExist:filePath])
+        {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.imageContent_left.image = image;
+                weakSelf.imageContent_left.image = image;
                 if ( data.msgState == CDMessageStateDownloading) {
                     data.msgState = CDMessageStateNormal;
-                    [self.tableView updateMessage:data];
+                    [weakSelf.tableView updateMessage:data];
                 }
             });
-        });
-    } else {
-         self.imageContent_left.image = nil;
-        if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
-            return;
-        }
-        if (data.isDown) {
-            return;
-        }
-        data.isDown = YES;
-        if ([SystemUtil isSocketConnect]) {
-            @weakify_self
-            [RequestService downFileWithBaseURLStr:data.filePath friendid:data.FromId progressBlock:^(CGFloat progress) {
-                
-            } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
-                data.isDown = NO;
-                if (data.dskey) {
-                    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                        NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
-                        NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                        
-                        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey];
-                        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-                        
-                        if (datakey && ![datakey isEmptyString]) {
-                            fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                            [SystemUtil removeDocmentFilePath:imgPath];
-                            if ( [fileData writeToFile:imgPath atomically:YES])
-                            {
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    data.msgState = CDMessageStateNormal;
-                                    [weakSelf.tableView updateMessage:data];
-                                    NSLog(@"下载成功! filePath = %@",filePath);
-                                });
-                                
+            
+        } else {
+            weakSelf.imageContent_left.image = nil;
+            if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
+                return;
+            }
+            if (data.isDown) {
+                return;
+            }
+            data.isDown = YES;
+            if ([SystemUtil isSocketConnect]) {
+                @weakify_self
+                [RequestService downFileWithBaseURLStr:data.filePath friendid:data.FromId progressBlock:^(CGFloat progress) {
+                    
+                } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
+                    data.isDown = NO;
+                    if (data.dskey) {
+                        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                            NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
+                            NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
+                            
+                            NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey];
+                            datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                            
+                            if (datakey && ![datakey isEmptyString]) {
+                                fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                                [SystemUtil removeDocmentFilePath:imgPath];
+                                if ( [fileData writeToFile:imgPath atomically:YES])
+                                {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        data.msgState = CDMessageStateNormal;
+                                        [weakSelf.tableView updateMessage:data];
+                                        NSLog(@"下载成功! filePath = %@",filePath);
+                                    });
+                                    
+                                } else {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        
+                                        NSLog(@"写入文件失败@");
+                                    });
+                                }
                             } else {
                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                    
-                                    NSLog(@"写入文件失败@");
+                                    data.msgState = CDMessageStateDownloadFaild;
+                                    [weakSelf.tableView updateMessage:data];
                                 });
                             }
-                        } else {
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                data.msgState = CDMessageStateDownloadFaild;
-                                [weakSelf.tableView updateMessage:data];
-                            });
-                        }
-                        
-                    });
-                }
-                
-            } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
-                data.isDown = NO;
-                [SystemUtil removeDocmentFileName:data.fileName friendid:data.FromId];
-                data.msgState = CDMessageStateDownloadFaild;
-                [weakSelf.tableView updateMessage:data];
-                NSLog(@"下载失败!");
-            }];
-        } else {
-             [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"2" fileFrom:@"1"];
+                            
+                        });
+                    }
+                    
+                } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
+                    data.isDown = NO;
+                    [SystemUtil removeDocmentFileName:data.fileName friendid:data.FromId];
+                    data.msgState = CDMessageStateDownloadFaild;
+                    [weakSelf.tableView updateMessage:data];
+                    NSLog(@"下载失败!");
+                }];
+            } else {
+                [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"2" fileFrom:@"1"];
+            }
+            
+            
         }
-        
-        
-    }
-    
+    });
 }
 
 -(void)configImage_Right:(CDChatMessage)data {
@@ -203,74 +204,84 @@
     self.imageContent_right.frame = bubbleRec;
     
     NSString *filePath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:data.fileName];
-   if ( [SystemUtil filePathisExist:filePath])
-    {
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-            UIImage *image = [UIImage imageWithData:fileData];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.imageContent_right.image = image;
-                if ( data.msgState == CDMessageStateDownloading) {
-                    data.msgState = CDMessageStateNormal;
-                    [self.tableView updateMessage:data];
-                }
-            });
-        });
-    } else {
-        self.imageContent_right.image = nil;
-        if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
-            return;
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        UIImage *image = [[UIImage alloc] initWithContentsOfFile:filePath];
+        if (!image) {
+             [SystemUtil removeDocmentFilePath:filePath];
         }
-        if (data.isDown) {
-            return;
-        }
-        data.isDown = YES;
-        if ([SystemUtil isSocketConnect]) {
-            @weakify_self
-            [RequestService downFileWithBaseURLStr:data.filePath friendid:data.ToId progressBlock:^(CGFloat progress) {
-                
-            } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
-                
-                if (data.srckey) {
-                    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                        NSString *imgPath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:filePath];
-                        NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                        
-                        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.srckey];
-                        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-                        
-                        if (datakey && ![datakey isEmptyString]) {
-                            fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                            [SystemUtil removeDocmentFilePath:imgPath];
-                            if ([fileData writeToFile:imgPath atomically:YES]) {
+        
+        if ( [SystemUtil filePathisExist:filePath])
+        {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.imageContent_right.image = image;
+                    if ( data.msgState == CDMessageStateDownloading) {
+                        data.msgState = CDMessageStateNormal;
+                        [self.tableView updateMessage:data];
+                    }
+                });
+           
+        } else {
+            self.imageContent_right.image = nil;
+            if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
+                return;
+            }
+            if (data.isDown) {
+                return;
+            }
+            data.isDown = YES;
+            if ([SystemUtil isSocketConnect]) {
+                @weakify_self
+                [RequestService downFileWithBaseURLStr:data.filePath friendid:data.ToId progressBlock:^(CGFloat progress) {
+                    
+                } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
+                    
+                    if (data.srckey) {
+                        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                            NSString *imgPath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:filePath];
+                            NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
+                            
+                            NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.srckey];
+                            datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                            
+                            if (datakey && ![datakey isEmptyString]) {
+                                fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                                [SystemUtil removeDocmentFilePath:imgPath];
+                                if ([fileData writeToFile:imgPath atomically:YES]) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        data.msgState = CDMessageStateNormal;
+                                        [weakSelf.tableView updateMessage:data];
+                                        NSLog(@"下载成功! filePath = %@",filePath);
+                                    });
+                                }
+                            } else {
                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                    data.msgState = CDMessageStateNormal;
+                                    data.msgState = CDMessageStateDownloadFaild;
                                     [weakSelf.tableView updateMessage:data];
-                                    NSLog(@"下载成功! filePath = %@",filePath);
                                 });
                             }
-                        } else {
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                data.msgState = CDMessageStateDownloadFaild;
-                                [weakSelf.tableView updateMessage:data];
-                            });
-                        }
-                        
-                    });
-                }
-                data.isDown = NO;
-                
-            } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
-                data.isDown = NO;
-                [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
-                data.msgState = CDMessageStateDownloadFaild;
-                [weakSelf.tableView updateMessage:data];
-                NSLog(@"下载失败!");
-            }];
-        } else {
-             [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"1" fileFrom:@"1"];
+                            
+                        });
+                    }
+                    data.isDown = NO;
+                    
+                } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         data.isDown = NO;
+                         [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
+                         data.msgState = CDMessageStateDownloadFaild;
+                         [weakSelf.tableView updateMessage:data];
+                         NSLog(@"下载失败!");
+                     });
+                    
+                }];
+            } else {
+                [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"1" fileFrom:@"1"];
+            }
         }
-    }
+    });
+    
+   
     
     /*
      else {
