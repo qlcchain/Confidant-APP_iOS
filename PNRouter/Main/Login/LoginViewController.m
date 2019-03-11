@@ -139,7 +139,9 @@
             // 删除所有路由
             [RouterModel delegateAllRouter];
             [weakSelf.showRouterArr removeAllObjects];
+            weakSelf.selectRouther = nil;
         } else {
+            [AppD.window showHint:@""];
              weakSelf.selectRouther = [RouterModel checkRoutherWithSn:usersn];
         }
         [weakSelf changeLogintStatu];
@@ -379,7 +381,7 @@
     
     if (AppD.showTouch) {
          AppD.showTouch = NO;
-//         [FingetprintVerificationUtil show];
+         [FingetprintVerificationUtil show];
     }
 }
 #pragma 第一次 广播完回调。验证是否走socket 还是 tox
@@ -401,6 +403,9 @@
         [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
         [RoutherConfig getRoutherConfig].currentRouterToxid = self.selectRouther.toxid;
         _lblRoutherName.text = self.selectRouther.name;
+    } else {
+        [RoutherConfig getRoutherConfig].currentRouterSn = @"";
+        [RoutherConfig getRoutherConfig].currentRouterToxid = @"";
     }
     if (self.selectRouther) {
         _loginBtn.enabled = YES;
