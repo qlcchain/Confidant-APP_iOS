@@ -159,7 +159,6 @@
 
 #pragma UIImagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-    
     //使用模态返回到软件界面
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     
@@ -175,8 +174,7 @@
                     self->checkCount ++;
                     if (self->checkCount == 1) {
                         [weakSelf.scanner stopScan];
-                        [weakSelf leftNavBarItemPressedWithPop:NO];
-                        weakSelf.completeBlcok(values.firstObject);
+                        [weakSelf performSelector:@selector(getBackAndBlock:) withObject:values.firstObject afterDelay:1];
                     }
                 } else {
                     [AppD.window showHint:@"no_code"];
@@ -195,6 +193,11 @@
     }
     
     
+}
+
+- (void)getBackAndBlock:(NSString *)str {
+    [self leftNavBarItemPressedWithPop:NO];
+    self.completeBlcok(str);
 }
 
 - (UIImage *)resizeImage:(UIImage *)image {
@@ -230,8 +233,9 @@
                 DDLogDebug(@"codeValue = %@",stringValue);
                 if (weakSelf.completeBlcok) {
                     [weakSelf.scanner stopScan];
-                    [weakSelf leftNavBarItemPressedWithPop:NO];
-                    weakSelf.completeBlcok(stringValue);
+                    [weakSelf getBackAndBlock:stringValue];
+//                    [weakSelf leftNavBarItemPressedWithPop:NO];
+//                    weakSelf.completeBlcok(stringValue);
                 } else {
                     // 完成回调
                     self->checkCount = 0;
