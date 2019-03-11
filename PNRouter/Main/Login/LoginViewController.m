@@ -25,6 +25,7 @@
 #import "NSString+Base64.h"
 #import "LibsodiumUtil.h"
 #import "UserHeadUtil.h"
+#import "EntryModel.h"
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate> {
     BOOL isLogin;
@@ -128,16 +129,18 @@
     }];
     @weakify_self
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *signpk = values[1];
         NSString *usersn = values[2];
-        weakSelf.selectRouther = [RouterModel checkRoutherWithSn:usersn];
-        if (!weakSelf.selectRouther) {
+        if (![signpk isEqualToString:[EntryModel getShareObject].signPrivateKey]) {
             // 更改私钥
             [LibsodiumUtil changeUserPrivater:values[1]];
             NSString *name = [values[3] base64DecodedString];
             [UserModel createUserLocalWithName:name];
-             // 删除所有路由
+            // 删除所有路由
             [RouterModel delegateAllRouter];
             [weakSelf.showRouterArr removeAllObjects];
+        } else {
+             weakSelf.selectRouther = [RouterModel checkRoutherWithSn:usersn];
         }
         [weakSelf changeLogintStatu];
     }];

@@ -200,13 +200,13 @@
 
 #pragma mark - 是否需要显示引导页
 - (void)checkGuidenPage {
+    _showTouch = YES;
     NSString *version = [HWUserdefault getObjectWithKey:VERSION_KEY];
     if (!version || ![version isEqualToString:APP_Version]) {
         [HWUserdefault updateObject:APP_Version withKey:VERSION_KEY];
         GuidePageViewController *pageVC = [[GuidePageViewController alloc] init];
         self.window.rootViewController = pageVC;
     } else {
-        _showTouch = YES;
         [self judgeLogin];
     }
     
