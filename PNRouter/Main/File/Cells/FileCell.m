@@ -57,11 +57,11 @@
     NSString *nameStr = @"";
     NSString *operationStr = @"";
     if (model.FileFrom == 1) { // 发出
-        operationImgStr = @"icon_file_sent_black";
+        operationImgStr = @"icon_share_gray";
         nameStr = [model.Sender base64DecodedString];
         operationStr = @"File Sent";
     } else if (model.FileFrom == 2) { // 接受
-        operationImgStr = @"icon_file_black";
+        operationImgStr = @"icon_receive_gray";
         nameStr = [model.Sender base64DecodedString];
         operationStr = @"File Received";
     } else if (model.FileFrom == 3) { // 上传

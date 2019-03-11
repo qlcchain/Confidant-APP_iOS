@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (Color)
+
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
 + (UIImage *)imageWithColor:(UIColor *)color;
 - (UIColor *)colorAtPoint:(CGPoint )point;
 //more accurate method ,colorAtPixel 1x1 pixel

@@ -357,7 +357,6 @@ struct ResultFile {
     memcpy(sendFile.filename, [fileName cStringUsingEncoding:NSASCIIStringEncoding],[fileName length]);
     memcpy(sendFile.fromid,[[UserConfig getShareObject].userId cStringUsingEncoding:NSASCIIStringEncoding],[[UserConfig getShareObject].userId length]);
     
-    
 //    if (![toid isEmptyString]) {
 //        memcpy(fileStruct->toid, [toid cStringUsingEncoding:NSASCIIStringEncoding],[toid length]);
 //    }
@@ -370,7 +369,8 @@ struct ResultFile {
 //
 //    memcpy(fileStruct->filename, [fileName cStringUsingEncoding:NSASCIIStringEncoding],[fileName length]);
 //    memcpy(fileStruct->fromid,[[UserConfig getShareObject].userId cStringUsingEncoding:NSASCIIStringEncoding],[[UserConfig getShareObject].userId length]);
-    
+    //memset(sendFile.content,0,sizeof(char)*[sendData length]);
+
     // 结构体转data
     NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
     NSMutableData *mutData = [NSMutableData dataWithData:myData];
@@ -418,7 +418,8 @@ struct ResultFile {
                          [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(weakSelf.messageid)]];
                     } else {
                         // 文件发送失败，更改发送状态
-                        [ChatModel bg_update:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"isSendFailed"),bg_sqlValue(@(1)),bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(weakSelf.messageid)]];
+                        BOOL updateB = [ChatModel bg_update:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"isSendFailed"),bg_sqlValue(@(1)),bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(weakSelf.messageid)]];
+                        NSLog(@"----文件发送失败，更改发送状态-------%@",@(updateB));
                     }
                     
                 }

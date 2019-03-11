@@ -83,19 +83,16 @@ const NSInteger timerTime = 10;
             } else {
                 // 如果是文件，发送失败则重发
                 if (model.isSendFailed) {
-                    // 更新状态为正在发送
-                    model.isSendFailed = NO;
-                    [model bg_saveOrUpdate];
                    // [weakSelf sendFileWithChatModel:model];
                      dispatch_async(dispatch_get_main_queue(), ^{
-                         
+                         [weakSelf performSelector:@selector(sendFileWithChatModel:) withObject:model afterDelay:0.2];
                     });
-                     [weakSelf performSelector:@selector(sendFileWithChatModel:) withObject:model afterDelay:0.2];
                 }
             }
         }];
     }
 }
+
 // 发送文件
 - (void) sendFileWithChatModel:(ChatModel *) model
 {
@@ -106,6 +103,9 @@ const NSInteger timerTime = 10;
         if (fileData) {
             fileData = aesEncryptData(fileData,msgKeyData);
             dispatch_async(dispatch_get_main_queue(), ^{
+                // 更新状态为正在发送
+                model.isSendFailed = NO;
+                [model bg_saveOrUpdate];
                 [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SENDING_NOTI object:@[model.toId,@(model.msgid)]];
                 SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
