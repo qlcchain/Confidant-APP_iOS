@@ -182,11 +182,14 @@
                     }
                     
                 } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
-                    data.isDown = NO;
-                    [SystemUtil removeDocmentFileName:data.fileName friendid:data.FromId];
-                    data.msgState = CDMessageStateDownloadFaild;
-                    [weakSelf.tableView updateMessage:data];
-                    NSLog(@"下载失败!");
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        data.isDown = NO;
+                        [SystemUtil removeDocmentFileName:data.fileName friendid:data.FromId];
+                        data.msgState = CDMessageStateDownloadFaild;
+                        [weakSelf.tableView updateMessage:data];
+                        NSLog(@"下载失败!");
+                    });
+                    
                 }];
             } else {
                 [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"2" fileFrom:@"1"];
