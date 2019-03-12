@@ -52,7 +52,9 @@ struct SendFile {
     char toid[77];
     char srcKey[256];
     char dstKey[256];
-    char content[1024*1024*2];
+    //char content[1024*1024*2];
+   // char content[0];
+   // char* content;
 };
 
 struct ResultFile {
@@ -247,6 +249,8 @@ struct ResultFile {
 - (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSInteger)fileid fileType:(uint32_t) fileType messageid:(NSString *)messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey
 {
     
+   // imgData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageHistory" ofType:@"json"]];
+    
     fileName = [Base58Util Base58EncodeWithCodeName:fileName];
     self.srcKey = srcKey;
     self.fileName = fileName;
@@ -278,15 +282,6 @@ struct ResultFile {
     HTONL(millFileid);
     HTONS(crc);
     
-    sendFile.magic = magic;
-    sendFile.action = action;
-    sendFile.segsize = sendFileSize;
-    sendFile.segseq = segseq;
-    sendFile.offset = offset;
-    sendFile.fileid = millFileid;
-    sendFile.crc = crc;
-    sendFile.segmore = segMoreBlg;
-    sendFile.cotinue = 0;
     
     if ([toid isEmptyString] && fileType !=6) // 上传文件
     {
@@ -317,6 +312,23 @@ struct ResultFile {
         }];
     }
     
+    NSData *sendData = nil;
+    if (segMoreBlg == 1) {
+        sendData = [self.fileData subdataWithRange:NSMakeRange(offset, sendFileSizeMax)];
+    } else {
+        sendData = [self.fileData subdataWithRange:NSMakeRange(offset, self.fileData.length-offset)];
+    }
+    
+    sendFile.magic = magic;
+    sendFile.action = action;
+    sendFile.segsize = sendFileSize;
+    sendFile.segseq = segseq;
+    sendFile.offset = offset;
+    sendFile.fileid = millFileid;
+    sendFile.crc = crc;
+    sendFile.segmore = segMoreBlg;
+    sendFile.cotinue = 0;
+    
     if (![toid isEmptyString]) {
         memcpy(sendFile.toid, [toid cStringUsingEncoding:NSASCIIStringEncoding],[toid length]);
     }
@@ -325,37 +337,29 @@ struct ResultFile {
         memcpy(sendFile.dstKey, [dstKey cStringUsingEncoding:NSASCIIStringEncoding],[dstKey length]);
     }
     
-    printf("srckey = %s , dskey = %s",sendFile.srcKey,sendFile.dstKey);
-
-      memcpy(sendFile.filename, [fileName cStringUsingEncoding:NSASCIIStringEncoding],[fileName length]);
-    // NSUTF8StringEncoding  NSASCIIStringEncoding
+   // printf("srckey = %s , dskey = %s",sendFile.srcKey,sendFile.dstKey);
+    memcpy(sendFile.filename, [fileName cStringUsingEncoding:NSASCIIStringEncoding],[fileName length]);
     memcpy(sendFile.fromid,[[UserConfig getShareObject].userId cStringUsingEncoding:NSASCIIStringEncoding],[[UserConfig getShareObject].userId length]);
-    
-    NSData *sendData = nil;
-    if (segMoreBlg == 1) {
-        sendData = [self.fileData subdataWithRange:NSMakeRange(offset, sendFileSizeMax)];
-    } else {
-        sendData = [self.fileData subdataWithRange:NSMakeRange(offset, self.fileData.length-offset)];
-    }
-    
-    //memset(sendFile.content,0,sizeof(char)*[sendData length]);
-    memcpy(sendFile.content,[sendData bytes],[sendData length]);
+
     // 结构体转data
     NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
-    uint16_t crc16 = [myData hexadecimalUint16];
+    NSMutableData *mutData = [NSMutableData dataWithData:myData];
+    [mutData appendData:sendData];
+    uint16_t crc16 = [mutData hexadecimalUint16];
     HTONS(crc16);
     sendFile.crc = crc16;
     // data转结构体
    // [myData getBytes:&newJoin length:sizeof(newJoin)];
     
-    NSLog(@"%s,%s",sendFile.filename,sendFile.toid);
     
     myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
+    mutData = [NSMutableData dataWithData:myData];
+    [mutData appendData:sendData];
     
     @weakify_self
     [_fileUtil setOnConnect:^{
         NSLog(@"%@--%@",[weakSelf.fileUtil class],weakSelf.fileUtil.socket);
-        [weakSelf sendFileData:myData];
+        [weakSelf sendFileData:mutData];
     }];
     
     [_fileUtil setOnDisconnect:^(NSError * error, NSString * url) {
@@ -496,8 +500,8 @@ struct ResultFile {
                 sendData = [self.fileData subdataWithRange:NSMakeRange(offset, self.fileData.length-offset)];
             }
             
-            memcpy(sendFile.content,[sendData bytes],[sendData length]);
-            
+            //memcpy(sendFile.content,[sendData bytes],[sendData length]);
+       // sendFile.content = [sendData bytes];
             
             HTONL(sendFileSize);
             HTONL(segseq);
@@ -511,12 +515,16 @@ struct ResultFile {
             
             // 结构体转data
             NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
+            NSMutableData *mutData = [NSMutableData dataWithData:myData];
+            [mutData appendData:sendData];
             uint16_t crc16 = [myData hexadecimalUint16];
             HTONS(crc16);
             sendFile.crc = crc16;
             
             myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
-            [self sendFileData:myData];
+            mutData = [NSMutableData dataWithData:myData];
+            [mutData appendData:sendData];
+            [self sendFileData:mutData];
     //    });
         
         
