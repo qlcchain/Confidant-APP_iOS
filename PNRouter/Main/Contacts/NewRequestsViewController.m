@@ -85,7 +85,7 @@
     if (sender.selected) {
         return;
     }
-    [self showUnreadWithBtn:sender];
+//    [self showUnreadWithBtn:sender];
     _addContactsBtn.selected = _addContactsBtn==sender?YES:NO;
     _groupChatsBtn.selected = _groupChatsBtn==sender?YES:NO;
     CGPoint offset = _addContactsBtn==sender?CGPointMake(0, 0):CGPointMake(SCREEN_WIDTH, 0);

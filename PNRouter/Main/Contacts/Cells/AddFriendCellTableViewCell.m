@@ -20,6 +20,8 @@
     
     _headImgView.layer.cornerRadius = _headImgView.width/2.0;
     _headImgView.layer.masksToBounds = YES;
+    _acceptBtn.layer.cornerRadius = 4;
+    _acceptBtn.layer.masksToBounds = YES;
 }
 
 - (void)prepareForReuse {
@@ -33,25 +35,30 @@
     }
 }
 
-
 - (void) setFriendModel:(FriendModel *) model{
     _lblName.text = model.username?:@"";
     _lblStatus.text = @"";
-    _rightBackView.hidden = YES;
+    _acceptBtn.hidden = YES;
+    UIColor *blackC = UIColorFromRGB(0x2C2C2C);
+    UIColor *grayC = UIColorFromRGB(0xBDBDBD);
     if (model.dealStaus == 1) {
         _lblStatus.text = @"Accepted";
+        _lblStatus.textColor = grayC;
     } else if (model.dealStaus == 2) {
         _lblStatus.text = @"Expired";
+        _lblStatus.textColor = grayC;
     } else if (model.dealStaus == 3) {
         _lblStatus.text = @"Pending";
+        _lblStatus.textColor = blackC;
     } else {
         NSInteger day = labs([model.requestTime daysAfterDate:[NSDate date]]);
         if (day > 7) {
             model.dealStaus = 2;
             _lblStatus.text = @"Expired";
+            _lblStatus.textColor = grayC;
             [model bg_saveOrUpdate];
         } else {
-             _rightBackView.hidden = NO;
+             _acceptBtn.hidden = NO;
         }
     }
     NSString *userKey = model.signPublicKey;
