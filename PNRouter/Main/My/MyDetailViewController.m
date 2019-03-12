@@ -48,8 +48,7 @@
 }
 
 - (void)addObserve {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileFinshNoti:) name:UPLOAD_HEAD_DATA_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadAvatarSuccessNoti:) name:UploadAvatar_Success_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadChangeNoti:) name:USER_HEAD_CHANGE_NOTI object:nil];
     
 }
 
@@ -203,7 +202,7 @@
     UIImage *resultImage = [info objectForKey:@"UIImagePickerControllerEditedImage"];
     if (resultImage) {
         NSData *imgData = [resultImage compressJPGImage:resultImage toMaxFileSize:User_Header_Size];
-        [self uploadHeader:imgData];
+        [[UserHeadUtil getUserHeadUtilShare] uploadHeader:imgData showToast:YES];
         
 ////        resultImage = [resultImage resizeImage:resultImage];
 //        UserModel *model = [UserModel getUserModel];
@@ -224,69 +223,10 @@
 //    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)uploadHeader:(NSData *)imgData {
-    // 上传文件
-//    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-//    _uploadFileName = [NSString stringWithFormat:@"%@__Avatar.jpg",timestamp];
-    NSData *signPublicKeyDecodeData = [NSData dataWithBase64EncodedString:[EntryModel getShareObject].signPublicKey];
-    _uploadFileName = [NSString stringWithFormat:@"%@__Avatar.jpg",[Base58Util Base58EncodeDataToStrWithData:signPublicKeyDecodeData]];
-    NSString *outputPath = [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:_uploadFileName];
-//    NSString *fileName = outputPath.lastPathComponent;
-    _uploadImgData = imgData;
-    int fileType = 6;
-    
-    long tempMsgid = [SocketCountUtil getShareObject].fileIDCount++;
-    tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
-    NSInteger fileId = tempMsgid;
-    
-    NSString *srcKey = @"";
-    NSString *ToId = @"";
-    
-    [AppD.window showHudInView:AppD.window hint:@"Uploading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
-    if ([SystemUtil isSocketConnect]) { // socket
-        SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-        dataUtil.srcKey = srcKey;
-        dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)fileId];
-        [dataUtil sendFileId:ToId fileName:_uploadFileName fileData:_uploadImgData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
-        [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
-    } else { // tox
-        
-        BOOL isSuccess = [_uploadImgData writeToFile:outputPath atomically:YES];
-        if (isSuccess) {
-            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:_uploadFileName],@"FileMD5":[MD5Util md5WithPath:outputPath],@"FileSize":@(_uploadImgData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
-            [SendToxRequestUtil sendFileWithFilePath:outputPath parames:parames];
-        }
-    }
-}
-
 #pragma mark - Noti
-- (void) uploadFileFinshNoti:(NSNotification *) noti {
-    [AppD.window hideHud];
-
-    NSArray *resultArr = noti.object;
-    if (resultArr && resultArr.count>0 && [resultArr[0] integerValue] == 0) { // 成功
-        
-        NSString *FileMd5 = [MD5Util md5WithData:_uploadImgData];
-        [SendRequestUtil sendUploadAvatarWithFileName:_uploadFileName FileMd5:FileMd5 showHud:YES];
-        
-    } else { // 上传失败
-        [AppD.window showHint:@"Failed to upload avatar."];
-    }
-}
-
-- (void)uploadAvatarSuccessNoti:(NSNotification *)noti {
-    NSDictionary *receiveDic = noti.object;
-    NSDictionary *params = receiveDic[@"params"];
-    
-    UserHeaderModel *model = [UserHeaderModel new];
-    model.UserKey = [EntryModel getShareObject].signPublicKey;
-    model.UserHeaderImg64Str = [_uploadImgData base64EncodedString];
-    [UserHeaderModel saveOrUpdate:model];
-    
+- (void)userHeadChangeNoti:(NSNotification *)noti {
     [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_CHANGE_NOTI object:nil];
 }
-
 
 #pragma mark - layz
 - (NSMutableArray *)dataArray

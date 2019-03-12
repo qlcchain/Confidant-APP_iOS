@@ -17,6 +17,11 @@
 + (instancetype)getInstance {
     PNBackgroundView *view = [[[NSBundle mainBundle] loadNibNamed:@"PNBackgroundView" owner:self options:nil] lastObject];
     view.isShow = NO;
+    
+    UITapGestureRecognizer *tapCancel = [[UITapGestureRecognizer alloc] init];
+    [view addGestureRecognizer:tapCancel];
+    [tapCancel addTarget:view action:@selector(tapCancelAction:)];
+    
     return view;
 }
 
@@ -53,6 +58,10 @@
     } completion:^(BOOL finished) {
 //        [weakSelf removeFromSuperview];
     }];
+}
+
+- (void)tapCancelAction:(UITapGestureRecognizer *)gr {
+    [self hide];
 }
 
 @end
