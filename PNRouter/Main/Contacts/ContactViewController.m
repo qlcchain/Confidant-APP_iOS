@@ -27,6 +27,7 @@
 #import "ContactShowModel.h"
 #import "ChatViewController.h"
 #import "NewRequestsViewController.h"
+#import "GroupChatsViewController.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource/*,SWTableViewCellDelegate*/,UITextFieldDelegate>
 
@@ -195,19 +196,22 @@
 
 #pragma mark - Action
 
-- (IBAction)addContactAction:(id)sender {
-    if (AppD.showHD) {
-        AppD.showHD = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
-//        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-        [self refreshAddContactHD];
+- (IBAction)addContactAction:(UIButton *)sender {
+    if (sender.tag == 10) { // new request
+        if (AppD.showHD) {
+            AppD.showHD = NO;
+            [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+            [self refreshAddContactHD];
+        }
+        NewRequestsViewController *vc = [NewRequestsViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+//        AddFriendViewController *vc = [[AddFriendViewController alloc] init];
+//        [self.navigationController pushViewController:vc animated:YES];
+    } else { // group_chats
+        GroupChatsViewController *vc = [[GroupChatsViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
-    
-    NewRequestsViewController *vc = [NewRequestsViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
-    
-//    AddFriendViewController *vc = [[AddFriendViewController alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - tableviewDataSourceDelegate

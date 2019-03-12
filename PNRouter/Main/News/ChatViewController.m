@@ -201,9 +201,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self observe];
     [self loadChatUI];
     _msgStartId = 0;
-   // [self.listView startRefresh];
+    [self.listView startRefresh];
      [SocketCountUtil getShareObject].chatToId = self.friendModel.userId;
-    [self pullMessageRequest];
+   // [self pullMessageRequest];
     
     // 当前消息置为已读
     [[ChatListDataUtil getShareObject] cancelChatHDWithFriendid:self.friendModel.userId];
@@ -1212,6 +1212,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 - (void)addMessageBefore:(NSNotification *)noti {
+    
+    [self.listView stopRefresh];
+    
     NSArray *messageArr = noti.object;
     NSMutableArray *msgArr = [NSMutableArray array];
     NSMutableArray *messageModelArr = [NSMutableArray array];

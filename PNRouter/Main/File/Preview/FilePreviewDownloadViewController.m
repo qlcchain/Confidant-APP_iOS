@@ -277,7 +277,17 @@ typedef enum : NSUInteger {
                 [_downloadTask cancel];
             }
         } else {
-            [SendToxRequestUtil cancelToxFileDownWithMsgid:[NSString stringWithFormat:@"%ld",(long)self.fileListM.MsgId]];
+            [SendToxRequestUtil cancelToxFileDownWithMsgid:[NSString stringWithFormat:@"%@",self.fileListM.MsgId]];
+            self.progressV.hidden = YES;
+            self.sizeLab.hidden = NO;
+            self.fileExistType = FileExistTypeNone;
+            [self.previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
+            [self.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+            [self.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+            
+            // 更新数据库
+            [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@,%@=%@ where %@=%@",bg_sqlKey(@"status"),bg_sqlValue(@(3)),bg_sqlKey(@"speedSize"),bg_sqlValue(@(0)),bg_sqlKey(@"backSeconds"),bg_sqlValue(@(0)),bg_sqlKey(@"msgId"),bg_sqlValue(_fileListM.MsgId)]];
+            
         }
         
     } else if (_fileExistType == FileExistTypeExistOrDownloaded) {
