@@ -39,6 +39,7 @@
 
 @property (nonatomic ,assign)  NSInteger currentRow;
 @property (nonatomic ,assign)  NSInteger currentTag;
+@property (nonatomic) BOOL scrollIsManual;
 
 @end
 
@@ -86,6 +87,7 @@
         return;
     }
 //    [self showUnreadWithBtn:sender];
+    _scrollIsManual = YES;
     _addContactsBtn.selected = _addContactsBtn==sender?YES:NO;
     _groupChatsBtn.selected = _groupChatsBtn==sender?YES:NO;
     CGPoint offset = _addContactsBtn==sender?CGPointMake(0, 0):CGPointMake(SCREEN_WIDTH, 0);
@@ -141,6 +143,12 @@
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == _mainScroll) {
+        if (_scrollIsManual == NO) {
+            CGPoint offset = scrollView.contentOffset;
+            _sliderV.centerX = offset.x/2+SCREEN_WIDTH/4;
+        }
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -152,6 +160,13 @@
         } else {
             [self menuSelectOperation:_addContactsBtn];
         }
+        _scrollIsManual = NO;
+    }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    if (scrollView == _mainScroll) {
+        _scrollIsManual = NO;
     }
 }
 
