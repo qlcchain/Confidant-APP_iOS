@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *groupChatsBtn;
 //@property (nonatomic) NewRequestsType newRequestsType;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scrollContentWidth;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScroll;
 @property (weak, nonatomic) IBOutlet UITableView *addContactsTable;
 @property (weak, nonatomic) IBOutlet UITableView *groupChatsTable;
@@ -72,6 +73,7 @@
     [_addContactsTable registerNib:[UINib nibWithNibName:AddFriendCellReuse bundle:nil] forCellReuseIdentifier:AddFriendCellReuse];
     [_groupChatsTable registerNib:[UINib nibWithNibName:AddFriendCellReuse bundle:nil] forCellReuseIdentifier:AddFriendCellReuse];
     
+    _scrollContentWidth.constant = SCREEN_WIDTH*2;
     _sliderV.frame = CGRectMake(0, 42, 96, 2);
     _sliderV.centerX = SCREEN_WIDTH/4;
     
@@ -142,9 +144,15 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    CGPoint offset = scrollView.contentOffset;
-    NSUInteger idx =  offset.x / scrollView.frame.size.width;
-    
+    if (scrollView == _mainScroll) {
+        CGPoint offset = scrollView.contentOffset;
+//        NSLog(@"offset = %@",NSStringFromCGPoint(offset));
+        if (offset.x >= SCREEN_WIDTH) {
+            [self menuSelectOperation:_groupChatsBtn];
+        } else {
+            [self menuSelectOperation:_addContactsBtn];
+        }
+    }
 }
 
 #pragma mark - tableviewDataSourceDelegate
@@ -182,6 +190,8 @@
             [weakSelf.view showHudInView:weakSelf.view hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
             [weakSelf sendAgreeFriendWithRow:row];
         }];
+        
+        return cell;
     } else if (tableView == _groupChatsTable) {
         AddFriendCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:AddFriendCellReuse];
         FriendModel *model = self.groupChatsSource[indexPath.row];
@@ -192,6 +202,8 @@
             [weakSelf.view showHudInView:weakSelf.view hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
             [weakSelf sendAgreeFriendWithRow:row];
         }];
+        
+        return cell;
     }
     
     return [UITableViewCell new];
