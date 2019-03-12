@@ -178,7 +178,18 @@
     NSDictionary *receiveDic = noti.object;
     NSDictionary *params = receiveDic[@"params"];
     
-    [self downUserHeadWithDic:params];
+    NSString *toid = params[@"TargetId"];
+    NSString *userId = [UserModel getUserModel].userId;
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    if ([userId isEqualToString:toid]) { // 自己头像
+        NSString *userHeaderImg64Str = [UserHeaderModel getUserHeaderImg64StrWithKey:userKey];
+        if (userHeaderImg64Str) { // 本地有头像
+        } else { // 本地没有头像
+            [self downUserHeadWithDic:params];
+        }
+    } else { // 好友头像
+        [self downUserHeadWithDic:params];
+    }
 }
 
 #pragma mark - 更新头像--文件不存在

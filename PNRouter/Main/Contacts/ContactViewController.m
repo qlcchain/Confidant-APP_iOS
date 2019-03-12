@@ -26,6 +26,7 @@
 #import "LibsodiumUtil.h"
 #import "ContactShowModel.h"
 #import "ChatViewController.h"
+#import "NewRequestsViewController.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource/*,SWTableViewCellDelegate*/,UITextFieldDelegate>
 
@@ -201,8 +202,12 @@
 //        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         [self refreshAddContactHD];
     }
-    AddFriendViewController *vc = [[AddFriendViewController alloc] init];
+    
+    NewRequestsViewController *vc = [NewRequestsViewController new];
     [self.navigationController pushViewController:vc animated:YES];
+    
+//    AddFriendViewController *vc = [[AddFriendViewController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - tableviewDataSourceDelegate
