@@ -381,7 +381,7 @@
     
     if (AppD.showTouch) {
          AppD.showTouch = NO;
-        [FingetprintVerificationUtil show];
+         [FingetprintVerificationUtil show];
     }
 }
 #pragma 第一次 广播完回调。验证是否走socket 还是 tox
@@ -482,11 +482,11 @@
 //}
 
 - (void)updateUserHead {
-    if (_loginType == ImportType) {
+//    if (_loginType == ImportType) {
         NSString *Fid = [UserModel getUserModel].userId?:@"";
         NSString *Md5 = @"0";
         [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
-    }
+//    }
 }
 
 #pragma mark - 通知回调

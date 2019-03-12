@@ -1344,6 +1344,7 @@
         } else if (retCode == 2) {
 //            [AppD.window showHint:@"Avatars are up to date"];
         } else if (retCode == 3) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:UpdateAvatar_FileNotExist_Noti object:receiveDic];
 //            [AppD.window showHint:@"The user profile does not exist"];
         } else if (retCode == 4) {
             [AppD.window showHint:@"Other errors"];
