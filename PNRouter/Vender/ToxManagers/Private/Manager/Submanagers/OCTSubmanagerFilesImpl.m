@@ -740,8 +740,6 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
             if ([optionType intValue] == 2) { // 文件列表下载
                 [[NSNotificationCenter defaultCenter] postNotificationName:TOX_PULL_FILE_SUCCESS_NOTI object:array];
             }  else if ([optionType intValue] == 3){ // 头像下载
-               
-                
                 NSString *filePath = [[SystemUtil getTempBaseFilePath:array[0]] stringByAppendingPathComponent:fileName];
                 filePath = [filePath stringByAppendingString:[NSString stringWithFormat:@"%d",[array[2] intValue]]];
                 

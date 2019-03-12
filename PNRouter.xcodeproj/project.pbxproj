@@ -240,6 +240,8 @@
 		7317447421F072110018BA50 /* EntryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7317447321F072110018BA50 /* EntryModel.m */; };
 		732DCEE1223788A300B2A2CA /* AddGroupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732DCEDF223788A300B2A2CA /* AddGroupMenuViewController.m */; };
 		732DCEE2223788A300B2A2CA /* AddGroupMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732DCEE0223788A300B2A2CA /* AddGroupMenuViewController.xib */; };
+		732DCEE6223796B800B2A2CA /* AddNewMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732DCEE4223796B800B2A2CA /* AddNewMemberViewController.m */; };
+		732DCEE7223796B800B2A2CA /* AddNewMemberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732DCEE5223796B800B2A2CA /* AddNewMemberViewController.xib */; };
 		7330F3502146102A00FF4EEC /* PNNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F34F2146102A00FF4EEC /* PNNavViewController.m */; };
 		7330F3712146118800FF4EEC /* UIImage+Blur.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F3532146118800FF4EEC /* UIImage+Blur.m */; };
 		7330F3722146118800FF4EEC /* UIImage+FileName.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F35A2146118800FF4EEC /* UIImage+FileName.m */; };
@@ -983,6 +985,9 @@
 		732DCEDE223788A300B2A2CA /* AddGroupMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddGroupMenuViewController.h; sourceTree = "<group>"; };
 		732DCEDF223788A300B2A2CA /* AddGroupMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddGroupMenuViewController.m; sourceTree = "<group>"; };
 		732DCEE0223788A300B2A2CA /* AddGroupMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddGroupMenuViewController.xib; sourceTree = "<group>"; };
+		732DCEE3223796B800B2A2CA /* AddNewMemberViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddNewMemberViewController.h; sourceTree = "<group>"; };
+		732DCEE4223796B800B2A2CA /* AddNewMemberViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddNewMemberViewController.m; sourceTree = "<group>"; };
+		732DCEE5223796B800B2A2CA /* AddNewMemberViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNewMemberViewController.xib; sourceTree = "<group>"; };
 		7330F34E2146102A00FF4EEC /* PNNavViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNNavViewController.h; sourceTree = "<group>"; };
 		7330F34F2146102A00FF4EEC /* PNNavViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNNavViewController.m; sourceTree = "<group>"; };
 		7330F351214610E700FF4EEC /* CustomMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomMacro.h; sourceTree = "<group>"; };
@@ -3476,6 +3481,9 @@
 				732DCEDE223788A300B2A2CA /* AddGroupMenuViewController.h */,
 				732DCEDF223788A300B2A2CA /* AddGroupMenuViewController.m */,
 				732DCEE0223788A300B2A2CA /* AddGroupMenuViewController.xib */,
+				732DCEE3223796B800B2A2CA /* AddNewMemberViewController.h */,
+				732DCEE4223796B800B2A2CA /* AddNewMemberViewController.m */,
+				732DCEE5223796B800B2A2CA /* AddNewMemberViewController.xib */,
 			);
 			path = ChatGroups;
 			sourceTree = "<group>";
@@ -3640,6 +3648,7 @@
 				583BF95021F809000078A2A8 /* FilePreviewViewController.xib in Resources */,
 				58BD2E6F2147B6CF0091A77D /* FileCell.xib in Resources */,
 				584B439521FEEF8C00D1F21A /* DiskDetailViewController.xib in Resources */,
+				732DCEE7223796B800B2A2CA /* AddNewMemberViewController.xib in Resources */,
 				7330F509214A71BC00FF4EEC /* AddFriendViewController.xib in Resources */,
 				584B43AA21FF0B9800D1F21A /* ConfigDiskCell.xib in Resources */,
 				7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */,
@@ -4123,6 +4132,7 @@
 				7330F512214A790400FF4EEC /* FriendModel.m in Sources */,
 				73625754213E8CA500D7FD6B /* SocketUtil.swift in Sources */,
 				737883F821ACF2970033A189 /* OCTPixelBufferPool.m in Sources */,
+				732DCEE6223796B800B2A2CA /* AddNewMemberViewController.m in Sources */,
 				7330F4FC2149147200FF4EEC /* AATAudioTool.m in Sources */,
 				73D00EC4216B59940013E20D /* NSData+CRC16.m in Sources */,
 				7330F4E72149147200FF4EEC /* CDCalculator.m in Sources */,

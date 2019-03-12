@@ -26,6 +26,7 @@
 #import "LibsodiumUtil.h"
 #import "ContactShowModel.h"
 #import "ChatViewController.h"
+#import "GroupChatsViewController.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource/*,SWTableViewCellDelegate*/,UITextFieldDelegate>
 
@@ -204,7 +205,8 @@
         AddFriendViewController *vc = [[AddFriendViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else { // group_chats
-        
+        GroupChatsViewController *vc = [[GroupChatsViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
     
 }

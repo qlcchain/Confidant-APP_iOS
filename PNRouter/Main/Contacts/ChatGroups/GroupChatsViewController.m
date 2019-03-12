@@ -7,6 +7,7 @@
 //
 
 #import "GroupChatsViewController.h"
+#import "AddGroupMenuViewController.h"
 
 @interface GroupChatsViewController ()<UITextFieldDelegate>
 {
@@ -27,6 +28,8 @@
     [self leftNavBarItemPressedWithPop:YES];
 }
 - (IBAction)rightAction:(id)sender {
+    AddGroupMenuViewController *vc = [[AddGroupMenuViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma -mark layz
 - (NSMutableArray *)dataArray

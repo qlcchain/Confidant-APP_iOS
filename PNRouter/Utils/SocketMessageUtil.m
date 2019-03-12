@@ -1009,6 +1009,7 @@
 
 + (void)handlePullMsg:(NSDictionary *)receiveDic {
     
+    
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     NSInteger MsgNum = [receiveDic[@"params"][@"MsgNum"] integerValue]; // 拉取的消息条数（默认10条，不能超过20条）
     NSString *Payload = receiveDic[@"params"][@"Payload"];
