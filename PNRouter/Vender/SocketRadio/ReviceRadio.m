@@ -21,6 +21,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import "SystemUtil.h"
 #import "AFHTTPClientV2.h"
+#import "FileConfig.h"
 
 #define MCAST_PORT 18000
 #define MCAST_ADDR "224.0.0.254"
@@ -246,6 +247,7 @@
                     [RoutherConfig getRoutherConfig].currentRouterIp = resultArr[0];
                     [RoutherConfig getRoutherConfig].currentRouterToxid = resultArr[1];
                     [RoutherConfig getRoutherConfig].currentRouterPort = @"18006";
+                    [FileConfig sharedFileConfig].uploadFileMaxSize = 1024*1024*2;
                     NSLog(@"---%@---%@",resultArr[0],resultArr[1]);
                     [AppD.window hideHud];
                     [[NSNotificationCenter defaultCenter] postNotificationName:GB_FINASH_NOTI object:nil];
@@ -272,9 +274,10 @@
 
 -(void)startListenAndNewThreadWithRouterid:(NSString *) routerid
 {
+    // 默认上传大小
+    [FileConfig sharedFileConfig].uploadFileMaxSize = 500*1024;
     
     AppD.isConnect = NO;
-    
     if ([SystemUtil isVPNOn]) {
         [self sendFailedNoti];
         return;

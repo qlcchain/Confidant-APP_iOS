@@ -451,6 +451,7 @@
 		7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392791421FAF356003AAD58 /* UploadFileManager.m */; };
 		73A4867021B94B220062C34F /* ConnectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A4866F21B94B220062C34F /* ConnectView.m */; };
 		73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A4867121B94B3A0062C34F /* ConnectView.xib */; };
+		73C4B55B22375C660018146C /* FileConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C4B55A22375C660018146C /* FileConfig.m */; };
 		73C4E35A219AC8B400EEFAC1 /* SendRequestUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C4E359219AC8B400EEFAC1 /* SendRequestUtil.m */; };
 		73D00E932159DADF0013E20D /* ChooseDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73D00E922159DADF0013E20D /* ChooseDownView.m */; };
 		73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73D00E942159DAE80013E20D /* ChooseDownView.xib */; };
@@ -1401,6 +1402,8 @@
 		73A4866E21B94B220062C34F /* ConnectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectView.h; sourceTree = "<group>"; };
 		73A4866F21B94B220062C34F /* ConnectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectView.m; sourceTree = "<group>"; };
 		73A4867121B94B3A0062C34F /* ConnectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectView.xib; sourceTree = "<group>"; };
+		73C4B55922375C660018146C /* FileConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileConfig.h; sourceTree = "<group>"; };
+		73C4B55A22375C660018146C /* FileConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileConfig.m; sourceTree = "<group>"; };
 		73C4E358219AC8B400EEFAC1 /* SendRequestUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendRequestUtil.h; sourceTree = "<group>"; };
 		73C4E359219AC8B400EEFAC1 /* SendRequestUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendRequestUtil.m; sourceTree = "<group>"; };
 		73D00E912159DADF0013E20D /* ChooseDownView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseDownView.h; sourceTree = "<group>"; };
@@ -2940,6 +2943,8 @@
 				7356429F2226752A00DC0BCB /* SendCacheChatUtil.m */,
 				730465FD2232433800EB6073 /* UserHeadUtil.h */,
 				730465FE2232433800EB6073 /* UserHeadUtil.m */,
+				73C4B55922375C660018146C /* FileConfig.h */,
+				73C4B55A22375C660018146C /* FileConfig.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3812,6 +3817,7 @@
 				581FDF5421F024170068C120 /* tox_api.m in Sources */,
 				7330F4F22149147200FF4EEC /* CDBaseMsgCell.m in Sources */,
 				580CFE492227B7FD00460B41 /* UITouch+MemoryLeak.m in Sources */,
+				73C4B55B22375C660018146C /* FileConfig.m in Sources */,
 				737883F221ACF2970033A189 /* OCTToxAVConstants.m in Sources */,
 				580CFE4E2227B7FD00460B41 /* UIViewController+MemoryLeak.m in Sources */,
 				581FDF4521F024170068C120 /* onion.m in Sources */,

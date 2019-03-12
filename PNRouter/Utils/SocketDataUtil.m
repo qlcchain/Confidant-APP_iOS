@@ -23,6 +23,7 @@
 #import "RouterModel.h"
 #import "ChatListDataUtil.h"
 #import "ChatModel.h"
+#import "FileConfig.h"
 
 #define NTOHL(x)    (x) = ntohl((__uint32_t)x) //转换成本地字节流
 #define NTOHS(x)    (x) = ntohs((__uint16_t)x) //转换成本地字节流
@@ -35,7 +36,7 @@
 static CGFloat request_time = 50.0f;
 //static NSString *Action_SendFile = @"SendFile";
 static NSString *Action_SendFileEnd = @"SendFileEnd";
-static int sendFileSizeMax = 1024*1024*2;
+
 
 struct SendFile {
     uint32_t magic;
@@ -74,6 +75,7 @@ struct ResultFile {
     struct ResultFile resultFile;
     uint32_t currentSegseq;
     BOOL sendFinsh;
+    int sendFileSizeMax;
 }
 
 @property (nonatomic ,strong) SocketFileUtil *fileUtil;
@@ -268,6 +270,7 @@ struct ResultFile {
     uint16_t crc = 0;
     uint32_t magic = 0x0dadc0de;
     
+    sendFileSizeMax = [FileConfig sharedFileConfig].uploadFileMaxSize;
     uint32_t sendFileSize = imgData.length>sendFileSizeMax?sendFileSizeMax:(uint32_t)imgData.length;
     uint8_t segMoreBlg = 0;
     if (imgData.length > sendFileSizeMax) {
