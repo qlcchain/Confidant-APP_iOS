@@ -58,6 +58,7 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileSuccessNoti:) name:TOX_PULL_FILE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileProgessNoti:) name:Tox_Down_File_Progess_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileRenameSuccessNoti:) name:FileRename_Success_Noti object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didToxDownFile:) name:DID_DOWN_FILE_NOTI object:nil];
 }
 - (void) addSocketDownObserve
 {
@@ -245,6 +246,7 @@ typedef enum : NSUInteger {
             });
         }];
     } else {
+        _previewBtn.hidden = YES;
         [[FileDownUtil getShareObject] toxDownFileModel:self.fileListM];
     }
 }
@@ -277,17 +279,18 @@ typedef enum : NSUInteger {
                 [_downloadTask cancel];
             }
         } else {
-            [SendToxRequestUtil cancelToxFileDownWithMsgid:[NSString stringWithFormat:@"%@",self.fileListM.MsgId]];
-            self.progressV.hidden = YES;
-            self.sizeLab.hidden = NO;
-            self.fileExistType = FileExistTypeNone;
-            [self.previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
-            [self.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
-            [self.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
-            
-            // 更新数据库
-            [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@,%@=%@ where %@=%@",bg_sqlKey(@"status"),bg_sqlValue(@(3)),bg_sqlKey(@"speedSize"),bg_sqlValue(@(0)),bg_sqlKey(@"backSeconds"),bg_sqlValue(@(0)),bg_sqlKey(@"msgId"),bg_sqlValue(_fileListM.MsgId)]];
-            
+           BOOL result = [SendToxRequestUtil cancelToxFileDownWithMsgid:[NSString stringWithFormat:@"%@",self.fileListM.MsgId]];
+            if (result) {
+                self.progressV.hidden = YES;
+                self.sizeLab.hidden = NO;
+                self.fileExistType = FileExistTypeNone;
+                [self.previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
+                [self.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
+                [self.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+                
+                // 更新数据库
+                [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@,%@=%@ where %@=%@",bg_sqlKey(@"status"),bg_sqlValue(@(3)),bg_sqlKey(@"speedSize"),bg_sqlValue(@(0)),bg_sqlKey(@"backSeconds"),bg_sqlValue(@(0)),bg_sqlKey(@"msgId"),bg_sqlValue(_fileListM.MsgId)]];
+            }
         }
         
     } else if (_fileExistType == FileExistTypeExistOrDownloaded) {
@@ -330,6 +333,7 @@ typedef enum : NSUInteger {
             weakSelf.sizeLab.hidden = NO;
             weakSelf.fileExistType = FileExistTypeNone;
             [weakSelf.previewBtn setTitle:@"Preview Download" forState:UIControlStateNormal];
+            weakSelf.previewBtn.hidden = NO;
             [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
             [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
         });
@@ -349,6 +353,7 @@ typedef enum : NSUInteger {
                 weakSelf.sizeLab.hidden = NO;
                 weakSelf.fileExistType = FileExistTypeExistOrDownloaded;
                 [weakSelf.previewBtn setTitle:@"File Preview" forState:UIControlStateNormal];
+                weakSelf.previewBtn.hidden = NO;
                 [weakSelf.previewBtn setBackgroundColor:UIColorFromRGB(0x2C2C2C)];
                 [weakSelf.previewBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
                 weakSelf.downloadFilePath = filePath;
@@ -441,4 +446,13 @@ typedef enum : NSUInteger {
     [self refreshFileName];
 }
 
+
+// tox文件正在下载
+- (void) didToxDownFile:(NSNotification *) noti
+{
+    NSString *msgid = noti.object;
+    if ([msgid intValue] == [_fileListM.MsgId intValue]) {
+        _previewBtn.hidden = NO;
+    }
+}
 @end
