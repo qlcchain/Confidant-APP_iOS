@@ -152,6 +152,10 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2u-8B-9PH">
                                                     <rect key="frame" x="261" y="21" width="40" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="cQ8-WU-nqT"/>
+                                                        <constraint firstAttribute="height" constant="40" id="coC-b2-buo"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <state key="normal" backgroundImage="icon_headportrait"/>
                                                 </button>

@@ -50,6 +50,8 @@
     
     NSString *userKey = [EntryModel getShareObject].signPublicKey;
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:self.routerUserModel.NickName]];
+    _UserHeadBtn.layer.cornerRadius = _UserHeadBtn.width/2.0;
+    _UserHeadBtn.layer.masksToBounds = YES;
     [_UserHeadBtn setImage:defaultImg forState:UIControlStateNormal];
 //    [_UserHeadBtn setTitle:[StringUtil getUserNameFirstWithName:self.routerUserModel.NickName] forState:UIControlStateNormal];
     if (self.routerUserModel.UserType == 2) {

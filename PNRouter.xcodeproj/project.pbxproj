@@ -27,6 +27,10 @@
 		580CFE4E2227B7FD00460B41 /* UIViewController+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 580CFE382227B7FD00460B41 /* UIViewController+MemoryLeak.m */; };
 		580CFE4F2227B7FD00460B41 /* UIApplication+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 580CFE3B2227B7FD00460B41 /* UIApplication+MemoryLeak.m */; };
 		580CFE502227B7FD00460B41 /* NSObject+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 580CFE3C2227B7FD00460B41 /* NSObject+MemoryLeak.m */; };
+		581DE4E22238D9D10056D4F8 /* CreateGroupChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581DE4E02238D9D10056D4F8 /* CreateGroupChatViewController.m */; };
+		581DE4E32238D9D10056D4F8 /* CreateGroupChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581DE4E12238D9D10056D4F8 /* CreateGroupChatViewController.xib */; };
+		581DE4E72238ED250056D4F8 /* GroupDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 581DE4E52238ED250056D4F8 /* GroupDetailsViewController.m */; };
+		581DE4E82238ED250056D4F8 /* GroupDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 581DE4E62238ED250056D4F8 /* GroupDetailsViewController.xib */; };
 		581FDF3521F024160068C120 /* vpx.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581FDEEA21F024160068C120 /* vpx.framework */; };
 		581FDF3621F024160068C120 /* msi.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEED21F024160068C120 /* msi.m */; };
 		581FDF3721F024160068C120 /* video.m in Sources */ = {isa = PBXBuildFile; fileRef = 581FDEEE21F024160068C120 /* video.m */; };
@@ -585,6 +589,12 @@
 		580CFE3C2227B7FD00460B41 /* NSObject+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MemoryLeak.m"; sourceTree = "<group>"; };
 		580CFE3D2227B7FD00460B41 /* UIView+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MemoryLeak.h"; sourceTree = "<group>"; };
 		580CFE3E2227B7FD00460B41 /* PTBPerformanceWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTBPerformanceWindow.h; sourceTree = "<group>"; };
+		581DE4DF2238D9D10056D4F8 /* CreateGroupChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateGroupChatViewController.h; sourceTree = "<group>"; };
+		581DE4E02238D9D10056D4F8 /* CreateGroupChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateGroupChatViewController.m; sourceTree = "<group>"; };
+		581DE4E12238D9D10056D4F8 /* CreateGroupChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateGroupChatViewController.xib; sourceTree = "<group>"; };
+		581DE4E42238ED250056D4F8 /* GroupDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupDetailsViewController.h; sourceTree = "<group>"; };
+		581DE4E52238ED250056D4F8 /* GroupDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupDetailsViewController.m; sourceTree = "<group>"; };
+		581DE4E62238ED250056D4F8 /* GroupDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupDetailsViewController.xib; sourceTree = "<group>"; };
 		581FDEEA21F024160068C120 /* vpx.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = vpx.framework; sourceTree = "<group>"; };
 		581FDEED21F024160068C120 /* msi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = msi.m; sourceTree = "<group>"; };
 		581FDEEE21F024160068C120 /* video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = video.m; sourceTree = "<group>"; };
@@ -3513,6 +3523,12 @@
 				732DCEE3223796B800B2A2CA /* AddNewMemberViewController.h */,
 				732DCEE4223796B800B2A2CA /* AddNewMemberViewController.m */,
 				732DCEE5223796B800B2A2CA /* AddNewMemberViewController.xib */,
+				581DE4DF2238D9D10056D4F8 /* CreateGroupChatViewController.h */,
+				581DE4E02238D9D10056D4F8 /* CreateGroupChatViewController.m */,
+				581DE4E12238D9D10056D4F8 /* CreateGroupChatViewController.xib */,
+				581DE4E42238ED250056D4F8 /* GroupDetailsViewController.h */,
+				581DE4E52238ED250056D4F8 /* GroupDetailsViewController.m */,
+				581DE4E62238ED250056D4F8 /* GroupDetailsViewController.xib */,
 				73F55A052238D398003155D2 /* InvitationQRCodeViewController.h */,
 				73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */,
 				73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */,
@@ -3692,7 +3708,9 @@
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
 				582BFE57221D3D2700D8C2C8 /* RouterAliasViewController.xib in Resources */,
 				73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */,
+				581DE4E32238D9D10056D4F8 /* CreateGroupChatViewController.xib in Resources */,
 				583B2B3722378E6600E6238D /* NewRequestsViewController.xib in Resources */,
+				581DE4E82238ED250056D4F8 /* GroupDetailsViewController.xib in Resources */,
 				583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
 				582BFE38221688C200D8C2C8 /* DiskAlertView.xib in Resources */,
@@ -4061,6 +4079,7 @@
 				73D31B20218025270034B2B9 /* RMDownloadIndicator.m in Sources */,
 				7362575B214213AA00D7FD6B /* NSDate+Category.m in Sources */,
 				73D00EBB215F792F0013E20D /* SocketManageUtil.m in Sources */,
+				581DE4E72238ED250056D4F8 /* GroupDetailsViewController.m in Sources */,
 				583B2B3222311F3300E6238D /* UserHeaderModel.m in Sources */,
 				7330F3CE21479AED00FF4EEC /* NewsCell.m in Sources */,
 				7360B85221FC3269008FB181 /* FileData.m in Sources */,
@@ -4079,6 +4098,7 @@
 				581FDF5221F024170068C120 /* friend_requests.m in Sources */,
 				7362574B213E8B3400D7FD6B /* main.m in Sources */,
 				73060528216F3572005A0E13 /* RequestService.m in Sources */,
+				581DE4E22238D9D10056D4F8 /* CreateGroupChatViewController.m in Sources */,
 				7330F4802148AADA00FF4EEC /* KeyChainUtil.swift in Sources */,
 				736257AE2142149300D7FD6B /* UIView+Visuals.m in Sources */,
 				5833F9C7221E57F400F7B63D /* ContactHeaderView.m in Sources */,
