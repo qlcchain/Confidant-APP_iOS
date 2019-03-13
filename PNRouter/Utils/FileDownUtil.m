@@ -328,6 +328,7 @@
         fileDataModel.fileType = [fileModel.FileType intValue];
         fileDataModel.msgId = [fileModel.MsgId intValue];
         fileDataModel.progess = 0.0f;
+        fileDataModel.didStart = 0;
         fileDataModel.fileName = fileName;
         fileDataModel.filePath = filePath;
         fileDataModel.fileFrom = fileModel.FileFrom;
@@ -337,12 +338,15 @@
         fileDataModel.optionTime = [formatter stringFromDate:[NSDate date]];
         fileDataModel.userId = [UserConfig getShareObject].userId;
         fileDataModel.srcKey = fileModel.UserKey;
-        [fileDataModel bg_saveOrUpdateAsync:nil];
+        [fileDataModel bg_saveOrUpdate];
+        
+        
+        NSString *fileOwer = [NSString stringWithFormat:@"%d",fileModel.FileFrom];
+        self->isTaskFile = YES;
+        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileModel.FileName.lastPathComponent msgId:[NSString stringWithFormat:@"%@",fileModel.MsgId ] fileOwer:fileOwer fileFrom:@"2"];
     }];
     
-    NSString *fileOwer = [NSString stringWithFormat:@"%d",fileModel.FileFrom];
-    isTaskFile = YES;
-    [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileModel.FileName.lastPathComponent msgId:[NSString stringWithFormat:@"%@",fileModel.MsgId ] fileOwer:fileOwer fileFrom:@"2"];
+   
     
 }
 
@@ -353,36 +357,39 @@
     
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(@(fileModel.msgId))] complete:^(NSArray * _Nullable array) {
         
-        NSLog(@"写入数据库");
-        FileData *fileDataModel = nil;
-        if (array && array.count > 0) {
-            fileDataModel = array[0];
-        } else {
-            fileDataModel = [[FileData alloc] init];
-            long tempMsgid = [SocketCountUtil getShareObject].fileIDCount++;
-            tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
-            fileDataModel.fileId = tempMsgid;
-            fileDataModel.bg_tableName = FILE_STATUS_TABNAME;
-        }
-       
-        fileDataModel.fileSize = fileModel.fileSize;
-        fileDataModel.fileType = fileModel.fileType;
-        fileDataModel.msgId = fileModel.msgId;
-        fileDataModel.progess = 0.0f;
-        fileDataModel.fileName = fileName;
-        fileDataModel.filePath = filePath;
-        fileDataModel.fileOptionType = 2;
-        fileDataModel.status = 2;
-        NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
-        fileDataModel.optionTime = [formatter stringFromDate:[NSDate date]];
-        fileDataModel.userId = [UserConfig getShareObject].userId;
-        fileDataModel.srcKey = fileModel.srcKey;
-        [fileDataModel bg_saveOrUpdateAsync:nil];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            NSLog(@"写入数据库");
+            FileData *fileDataModel = nil;
+            if (array && array.count > 0) {
+                fileDataModel = array[0];
+                fileDataModel.fileSize = fileModel.fileSize;
+                fileDataModel.fileType = fileModel.fileType;
+                fileDataModel.didStart = 0;
+                fileDataModel.msgId = fileModel.msgId;
+                fileDataModel.progess = 0.0f;
+                fileDataModel.fileName = fileName;
+                fileDataModel.filePath = filePath;
+                fileDataModel.fileOptionType = 2;
+                fileDataModel.status = 2;
+                NSDateFormatter *formatter = [NSDateFormatter defaultDateFormatter];
+                fileDataModel.optionTime = [formatter stringFromDate:[NSDate date]];
+                fileDataModel.userId = [UserConfig getShareObject].userId;
+                fileDataModel.srcKey = fileModel.srcKey;
+                [fileDataModel bg_saveOrUpdate];
+                
+                NSString *fileOwer = [NSString stringWithFormat:@"%d",fileModel.fileFrom];
+                self->isTaskFile = YES;
+                [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:fileName] msgId:[NSString stringWithFormat:@"%d",fileModel.msgId ] fileOwer:fileOwer fileFrom:@"2"];
+                
+            }
+            
+            
+        });
+        
     }];
 
-        NSString *fileOwer = [NSString stringWithFormat:@"%d",fileModel.fileFrom];
-        isTaskFile = YES;
-        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:fileName] msgId:[NSString stringWithFormat:@"%d",fileModel.msgId ] fileOwer:fileOwer fileFrom:@"2"];
     
 }
 

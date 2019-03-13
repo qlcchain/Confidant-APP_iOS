@@ -44,6 +44,9 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileProgessNoti:) name:File_Progess_Noti object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downFileProgessNoti:) name:Tox_Down_File_Progess_Noti object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadFaieldNoti:) name:File_Upload_Faield_Noti object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didToxDownFile:) name:DID_DOWN_FILE_NOTI object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didToxUploadFile:) name:DID_UPLOAD_FILE_NOTI object:nil];
+        
         
     }
    
@@ -74,7 +77,7 @@
   //  [FileData bg_drop:FILE_STATUS_TABNAME];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
-        NSArray *colums = @[bg_sqlKey(@"msgId"),bg_sqlKey(@"fileId"),bg_sqlKey(@"fileFrom"),bg_sqlKey(@"backSeconds"),bg_sqlKey(@"userId"),bg_sqlKey(@"toId"),bg_sqlKey(@"fileName"),bg_sqlKey(@"filePath"),bg_sqlKey(@"progess"),bg_sqlKey(@"speedSize"),bg_sqlKey(@"srcKey"),bg_sqlKey(@"optionTime"),bg_sqlKey(@"fileSize"),bg_sqlKey(@"status"),bg_sqlKey(@"fileType"),bg_sqlKey(@"fileOptionType")];
+        NSArray *colums = @[bg_sqlKey(@"msgId"),bg_sqlKey(@"fileId"),bg_sqlKey(@"fileFrom"),bg_sqlKey(@"backSeconds"),bg_sqlKey(@"userId"),bg_sqlKey(@"toId"),bg_sqlKey(@"fileName"),bg_sqlKey(@"filePath"),bg_sqlKey(@"progess"),bg_sqlKey(@"speedSize"),bg_sqlKey(@"srcKey"),bg_sqlKey(@"optionTime"),bg_sqlKey(@"fileSize"),bg_sqlKey(@"status"),bg_sqlKey(@"fileType"),bg_sqlKey(@"fileOptionType"),bg_sqlKey(@"didStart")];
   
         NSString *columString = [colums componentsJoinedByString:@","];
         NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ order by %@ desc limit 100",columString,FILE_STATUS_TABNAME,bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"optionTime")];
@@ -591,4 +594,36 @@
 {
     [self getAllTaskList];
 }
+
+// tox文件正在下载
+- (void) didToxDownFile:(NSNotification *) noti
+{
+    NSString *msgid = noti.object;
+    NSMutableArray *uploadArr = _sourceArr[0];
+    @weakify_self
+    [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FileData *model = obj;
+        model.didStart = 1;
+        if (model.msgId == [msgid intValue]) {
+            [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            *stop = YES;
+        }
+    }];
+}
+// tox文件正在上传
+- (void) didToxUploadFile:(NSNotification *) noti
+{
+    NSString *fileid = noti.object;
+    NSMutableArray *uploadArr = _sourceArr[0];
+    @weakify_self
+    [uploadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FileData *model = obj;
+        model.didStart = 1;
+        if (model.fileId == [fileid integerValue]) {
+            [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            *stop = YES;
+        }
+    }];
+}
+
 @end

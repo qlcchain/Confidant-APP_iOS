@@ -36,7 +36,9 @@
 @end
 
 @interface UploadFilesViewController () <UITableViewDelegate, UITableViewDataSource>
-
+{
+    NSInteger fileID;
+}
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property (weak, nonatomic) IBOutlet UIImageView *fileImg;
@@ -53,6 +55,7 @@
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileReqSuccessNoti:) name:UploadFileReq_Success_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseShareFriendNoti:) name:CHOOSE_Share_FRIEND_NOTI object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didToxUploadFile:) name:DID_UPLOAD_FILE_NOTI object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileReqSuccessNoti:) name:FILE_SEND_NOTI object:nil];
     
 }
@@ -284,7 +287,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             long tempMsgid = [SocketCountUtil getShareObject].fileIDCount++;
             tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
             NSInteger fileId = tempMsgid;
-   
+            self->fileID = fileId;
             // 生成32位对称密钥
             NSString *msgKey = [SystemUtil get32AESKey];
             if (weakSelf.isDoc) {
@@ -314,7 +317,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             }
         }
     }];
-    [self performSelector:@selector(jumpTaskListVC) withObject:self afterDelay:1.5];
+    if ([SystemUtil isSocketConnect]) { // socket
+        [self performSelector:@selector(jumpTaskListVC) withObject:self afterDelay:1.5];
+    }
+    
 }
 - (void) jumpTaskListVC
 {
@@ -332,6 +338,15 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
         FriendModel *friendM = obj;
         
     }];
+}
+
+// tox文件正在上传
+- (void) didToxUploadFile:(NSNotification *) noti
+{
+    NSString *fileid = noti.object;
+    if ([fileid integerValue] == fileID) {
+        [self jumpTaskListVC];
+    }
 }
 
 @end

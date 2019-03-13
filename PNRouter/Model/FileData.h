@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,assign) int status; // 1:完成 2:正在上传 3:上传失败
 @property (nonatomic ,assign) int fileType;
 @property (nonatomic ,assign) int fileOptionType; // 1:上传 2:下载
+@property (nonatomic ,assign) int didStart;
 
 @property (nonatomic, strong) NSURLSessionDownloadTask *downloadTask;
 @property (nonatomic, strong) NSString *downSavePath;

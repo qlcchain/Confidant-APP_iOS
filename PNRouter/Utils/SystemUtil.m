@@ -248,7 +248,7 @@
 + (NSString *)transformedValue:(CGFloat) convertedValue
 {
     int multiplyFactor = 0;
-    NSArray *tokens = [NSArray arrayWithObjects:@"bytes",@"KB",@"MB",@"GB",@"TB",nil];
+    NSArray *tokens = [NSArray arrayWithObjects:@"B",@"KB",@"MB",@"GB",@"TB",nil];
     
     while (convertedValue > 1024) {
         convertedValue /= 1024;
@@ -260,7 +260,7 @@
 + (NSString *)transformedZSValue:(int) convertedValue
 {
     int multiplyFactor = 0;
-    NSArray *tokens = [NSArray arrayWithObjects:@"bytes",@"KB",@"MB",@"GB",@"TB",nil];
+    NSArray *tokens = [NSArray arrayWithObjects:@"B",@"KB",@"MB",@"GB",@"TB",nil];
     
     while (convertedValue > 1024) {
         convertedValue /= 1024;

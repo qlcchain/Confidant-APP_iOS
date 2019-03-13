@@ -20,7 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) uploadFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames fileData:(NSData *) fileData;
 + (void) cancelToxFileUploadWithFileid:(NSString *) fileid;
 // 取消tox文件上传
-+ (void) cancelToxFileDownWithMsgid:(NSString *) msgid;
++ (BOOL) cancelToxFileDownWithMsgid:(NSString *) msgid;
++ (BOOL) check_can_be_canceled_downWithMsgid:(NSString *) msgid;
++ (BOOL) check_can_be_canceled_uploadWithFileid:(NSString *) fileid;
++ (void) deUploadFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames fileData:(NSData *) fileData;
 @end
 
 NS_ASSUME_NONNULL_END

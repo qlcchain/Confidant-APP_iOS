@@ -50,7 +50,7 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:self.fileModel.fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(self.fileModel.fileSize),@"FileType":@(self.fileModel.fileType),@"SrcKey":self.fileModel.srcKey,@"DstKey":@"",@"FileId":@(self.fileModel.fileId)};
-                [SendToxRequestUtil uploadFileWithFilePath:filePath parames:parames fileData:self.fileModel.fileData];
+                [SendToxRequestUtil deUploadFileWithFilePath:filePath parames:parames fileData:self.fileModel.fileData];
             });
             
         } else {
@@ -60,7 +60,7 @@
                 if (isSuccess) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:self.fileModel.fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(self.fileModel.fileSize),@"FileType":@(self.fileModel.fileType),@"SrcKey":self.fileModel.srcKey,@"DstKey":@"",@"FileId":@(self.fileModel.fileId)};
-                        [SendToxRequestUtil uploadFileWithFilePath:filePath parames:parames fileData:self.fileModel.fileData];
+                        [SendToxRequestUtil deUploadFileWithFilePath:filePath parames:parames fileData:self.fileModel.fileData];
                     });
                 }
             });
@@ -111,12 +111,32 @@
     self.fileModel.optionTime = [formatter stringFromDate:[NSDate date]];
 
     if (self.fileModel.status == 3) {
+        
         self.fileModel.status = 2;
         self.fileModel.speedSize = 0;
         self.fileModel.progess = 0;
+        if (![SystemUtil isSocketConnect]) {
+             self.optionBtn.hidden = YES;
+        }
+       
          _progess.progress = 0;
         [_optionBtn setImage:[UIImage imageNamed:@"icon_stop_gray"] forState:UIControlStateNormal];
+        
     } else {
+        
+//        if (![SystemUtil isSocketConnect]) {
+//            if (self.fileModel.fileOptionType == 1) // 上传
+//            {
+//                if (![SendToxRequestUtil check_can_be_canceled_uploadWithFileid:[NSString stringWithFormat:@"%ld",(long)_fileModel.fileId]]) {
+//                    return;
+//                }
+//            } else { // 下载
+//                if (![SendToxRequestUtil check_can_be_canceled_downWithMsgid:[NSString stringWithFormat:@"%d",_fileModel.msgId]]) {
+//                    return;
+//                }
+//            }
+//        }
+        
         self.fileModel.status = 3;
         self.fileModel.speedSize = 0;
         self.fileModel.progess = 0;
@@ -195,8 +215,15 @@
         } else {
             _lblProgess.text = [[SystemUtil transformedZSValue:model.speedSize] stringByAppendingString:@"/s"];
         }
-       
-        //_optionBtn.userInteractionEnabled = NO;
+        if (![SystemUtil isSocketConnect]) {
+            if (model.didStart == 0) {
+                _optionBtn.hidden = YES;
+            } else {
+                _optionBtn.hidden = NO;
+            }
+        }
+        
+        
     } else {
         [_optionBtn setImage:[UIImage imageNamed:@"icon_continue_gray"] forState:UIControlStateNormal];
         _lblProgess.text = @"0 KB/s";

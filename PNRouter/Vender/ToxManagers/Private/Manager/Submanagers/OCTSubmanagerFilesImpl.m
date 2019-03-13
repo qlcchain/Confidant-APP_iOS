@@ -29,6 +29,8 @@
 #import "UserHeaderModel.h"
 #import "NSData+Base64.h"
 #import "ChatListDataUtil.h"
+#import "UserConfig.h"
+#import "EntryModel.h"
 
 #if TARGET_OS_IPHONE
 @import MobileCoreServices;
@@ -200,6 +202,13 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
             NSString *fileId = [NSString stringWithFormat:@"%@",parames[@"FileId"]];
              // 通过fileid 绑定fileNumber
              [[ChatListDataUtil getShareObject].fileNumberParames setObject:[NSString stringWithFormat:@"%d",fileNumber] forKey:fileId];
+             
+             // 更新数据库
+            [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"didStart"),bg_sqlValue(@(1)),bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"fileId"),bg_sqlValue(fileId)]];
+             
+             
+             [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPLOAD_FILE_NOTI object:fileId];
+             
          }
         [[ChatListDataUtil getShareObject].fileParames setObject:parames forKey:[NSString stringWithFormat:@"%d",fileNumber]];
     }
@@ -682,6 +691,9 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     
     if ([optionType intValue] == 2) { // 上传
         [[ChatListDataUtil getShareObject].fileNumberParames setObject:[NSString stringWithFormat:@"%d",fileNumber] forKey:msgid];
+        // 更新数据库
+        [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"didStart"),bg_sqlValue(@(1)),bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(msgid)]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:DID_DOWN_FILE_NOTI object:msgid];
     }
     
     
@@ -745,7 +757,13 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                 
                 NSData *fileData = [NSData dataWithContentsOfFile:filePath];
                 UserHeaderModel *model = [UserHeaderModel new];
-                NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:array[0]];
+                NSString *signPublickey = @"";
+                NSString *userid = array[0];
+                if ([userid isEqualToString:[UserConfig getShareObject].userId]) {
+                    signPublickey = [EntryModel getShareObject].signPublicKey;
+                } else {
+                    signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:array[0]];
+                }
                 model.UserKey = signPublickey;
                 model.UserHeaderImg64Str = [fileData base64EncodedString];
                 if (model.UserKey && model.UserKey.length > 0) {

@@ -8,25 +8,49 @@
 
 #import "AddNewMemberViewController.h"
 
-@interface AddNewMemberViewController ()
+@interface AddNewMemberViewController ()<UITextFieldDelegate>
+
+@property (weak, nonatomic) IBOutlet UITextField *nameTF;
+@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 
 @end
 
 @implementation AddNewMemberViewController
+#pragma mark - action
+- (IBAction)backAction:(id)sender {
+    [self leftNavBarItemPressedWithPop:NO];
+}
+- (IBAction)nextAction:(id)sender {
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    _nextBtn.layer.cornerRadius = 3.0f;
+    _nextBtn.layer.masksToBounds = YES;
+    
+    _nameTF.delegate = self;
+    _nameTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
+    [_nameTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
+    
+}
+#pragma -mark uitextfeildchange
+- (void) textFieldTextChange:(UITextField *) tf
+{
+    if ([tf.text.trim isEmptyString]) {
+        _nextBtn.backgroundColor = RGB(213, 213, 213);
+        _nextBtn.enabled = NO;
+    } else {
+        _nextBtn.backgroundColor = MAIN_PURPLE_COLOR;
+        _nextBtn.enabled = YES;
+    }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma textfeild delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField endEditing:YES];
+    NSLog(@"textFieldShouldReturn");
+    return YES;
 }
-*/
-
 @end
