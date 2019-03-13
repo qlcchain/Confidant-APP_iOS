@@ -511,6 +511,8 @@
 		73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */; };
 		73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CC32159CD980048866B /* ChooseContactCell.m */; };
 		73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CC42159CD980048866B /* ChooseContactCell.xib */; };
+		73F55A082238D398003155D2 /* InvitationQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */; };
+		73F55A092238D398003155D2 /* InvitationQRCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */; };
 		73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806521DF87490047C3DA /* DebugLogViewController.m */; };
 		73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F8806721DF874A0047C3DA /* DebugLogViewController.xib */; };
 		73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806A21DF87AE0047C3DA /* DDLogUtil.m */; };
@@ -1518,6 +1520,9 @@
 		73EE8CC22159CD980048866B /* ChooseContactCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactCell.h; sourceTree = "<group>"; };
 		73EE8CC32159CD980048866B /* ChooseContactCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactCell.m; sourceTree = "<group>"; };
 		73EE8CC42159CD980048866B /* ChooseContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseContactCell.xib; sourceTree = "<group>"; };
+		73F55A052238D398003155D2 /* InvitationQRCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvitationQRCodeViewController.h; sourceTree = "<group>"; };
+		73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvitationQRCodeViewController.m; sourceTree = "<group>"; };
+		73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvitationQRCodeViewController.xib; sourceTree = "<group>"; };
 		73F8806521DF87490047C3DA /* DebugLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogViewController.m; sourceTree = "<group>"; };
 		73F8806621DF874A0047C3DA /* DebugLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogViewController.h; sourceTree = "<group>"; };
 		73F8806721DF874A0047C3DA /* DebugLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DebugLogViewController.xib; sourceTree = "<group>"; };
@@ -3524,6 +3529,9 @@
 				581DE4E42238ED250056D4F8 /* GroupDetailsViewController.h */,
 				581DE4E52238ED250056D4F8 /* GroupDetailsViewController.m */,
 				581DE4E62238ED250056D4F8 /* GroupDetailsViewController.xib */,
+				73F55A052238D398003155D2 /* InvitationQRCodeViewController.h */,
+				73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */,
+				73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */,
 			);
 			path = ChatGroups;
 			sourceTree = "<group>";
@@ -3735,6 +3743,7 @@
 				583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */,
 				73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */,
 				7330F3A9214679BF00FF4EEC /* ShareCollectionCell.xib in Resources */,
+				73F55A092238D398003155D2 /* InvitationQRCodeViewController.xib in Resources */,
 				582BFE4D221D26DF00D8C2C8 /* ImportAccountViewController.xib in Resources */,
 				582BFE48221D264200D8C2C8 /* CreateAccountViewController.xib in Resources */,
 				73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */,
@@ -3980,6 +3989,7 @@
 				737882A921ACF05E0033A189 /* WebSocket.swift in Sources */,
 				587C52B7215C7027006787FB /* RouterManagerViewController.m in Sources */,
 				7330F508214A71BC00FF4EEC /* AddFriendViewController.m in Sources */,
+				73F55A082238D398003155D2 /* InvitationQRCodeViewController.m in Sources */,
 				581FDF3E21F024160068C120 /* audio.m in Sources */,
 				73D00EA3215A24730013E20D /* ChooseCollectionCell.m in Sources */,
 				735642A02226752A00DC0BCB /* SendCacheChatUtil.m in Sources */,
