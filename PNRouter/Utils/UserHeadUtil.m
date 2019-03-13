@@ -179,11 +179,18 @@
     NSDictionary *params = receiveDic[@"params"];
     
     NSString *toid = params[@"TargetId"];
+    NSString *md5 = params[@"FileMD5"];
     NSString *userId = [UserModel getUserModel].userId;
     NSString *userKey = [EntryModel getShareObject].signPublicKey;
     if ([userId isEqualToString:toid]) { // 自己头像
         NSString *userHeaderImg64Str = [UserHeaderModel getUserHeaderImg64StrWithKey:userKey];
         if (userHeaderImg64Str) { // 本地有头像
+            NSString *localMd5 = [MD5Util md5WithData:[NSData dataWithBase64EncodedString:userHeaderImg64Str]];
+            if (![md5 isEqualToString:localMd5]) { // 路由器和本地头像md5不一样
+                // 上传
+                NSData *imgData = [NSData dataWithBase64EncodedString:userHeaderImg64Str];
+                [[UserHeadUtil getUserHeadUtilShare] uploadHeader:imgData showToast:NO];
+            }
         } else { // 本地没有头像
             [self downUserHeadWithDic:params];
         }

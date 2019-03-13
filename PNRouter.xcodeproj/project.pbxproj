@@ -103,6 +103,10 @@
 		583B2B3222311F3300E6238D /* UserHeaderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B3122311F3300E6238D /* UserHeaderModel.m */; };
 		583B2B3622378E6600E6238D /* NewRequestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B3422378E6600E6238D /* NewRequestsViewController.m */; };
 		583B2B3722378E6600E6238D /* NewRequestsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583B2B3522378E6600E6238D /* NewRequestsViewController.xib */; };
+		583B2B3B22389F5A00E6238D /* NewRequestsGroupChatsCell1.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B3922389F5A00E6238D /* NewRequestsGroupChatsCell1.m */; };
+		583B2B3C22389F5A00E6238D /* NewRequestsGroupChatsCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583B2B3A22389F5A00E6238D /* NewRequestsGroupChatsCell1.xib */; };
+		583B2B4022389F6600E6238D /* NewRequestsGroupChatsCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B3E22389F6600E6238D /* NewRequestsGroupChatsCell2.m */; };
+		583B2B4122389F6600E6238D /* NewRequestsGroupChatsCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583B2B3F22389F6600E6238D /* NewRequestsGroupChatsCell2.xib */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
 		583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */; };
@@ -718,6 +722,12 @@
 		583B2B3322378E6600E6238D /* NewRequestsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewRequestsViewController.h; sourceTree = "<group>"; };
 		583B2B3422378E6600E6238D /* NewRequestsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewRequestsViewController.m; sourceTree = "<group>"; };
 		583B2B3522378E6600E6238D /* NewRequestsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewRequestsViewController.xib; sourceTree = "<group>"; };
+		583B2B3822389F5A00E6238D /* NewRequestsGroupChatsCell1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewRequestsGroupChatsCell1.h; sourceTree = "<group>"; };
+		583B2B3922389F5A00E6238D /* NewRequestsGroupChatsCell1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewRequestsGroupChatsCell1.m; sourceTree = "<group>"; };
+		583B2B3A22389F5A00E6238D /* NewRequestsGroupChatsCell1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewRequestsGroupChatsCell1.xib; sourceTree = "<group>"; };
+		583B2B3D22389F6600E6238D /* NewRequestsGroupChatsCell2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewRequestsGroupChatsCell2.h; sourceTree = "<group>"; };
+		583B2B3E22389F6600E6238D /* NewRequestsGroupChatsCell2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewRequestsGroupChatsCell2.m; sourceTree = "<group>"; };
+		583B2B3F22389F6600E6238D /* NewRequestsGroupChatsCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewRequestsGroupChatsCell2.xib; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
 		583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskListViewController.m; sourceTree = "<group>"; };
 		583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskListViewController.xib; sourceTree = "<group>"; };
@@ -2530,6 +2540,12 @@
 				58BA8DA2221E73FF00E6DE95 /* ContactTableCell.h */,
 				58BA8DA3221E73FF00E6DE95 /* ContactTableCell.m */,
 				58BA8DA4221E73FF00E6DE95 /* ContactTableCell.xib */,
+				583B2B3822389F5A00E6238D /* NewRequestsGroupChatsCell1.h */,
+				583B2B3922389F5A00E6238D /* NewRequestsGroupChatsCell1.m */,
+				583B2B3A22389F5A00E6238D /* NewRequestsGroupChatsCell1.xib */,
+				583B2B3D22389F6600E6238D /* NewRequestsGroupChatsCell2.h */,
+				583B2B3E22389F6600E6238D /* NewRequestsGroupChatsCell2.m */,
+				583B2B3F22389F6600E6238D /* NewRequestsGroupChatsCell2.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3694,6 +3710,7 @@
 				7330F3AF21475A0600FF4EEC /* GroupCell.xib in Resources */,
 				73C4B560223783500018146C /* GroupChatsViewController.xib in Resources */,
 				73D31B12217F08480034B2B9 /* TZImagePickerController.bundle in Resources */,
+				583B2B4122389F6600E6238D /* NewRequestsGroupChatsCell2.xib in Resources */,
 				58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */,
 				737883EE21ACF2970033A189 /* nodes.json in Resources */,
 				73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */,
@@ -3702,6 +3719,7 @@
 				73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */,
 				5833F9C6221E57F400F7B63D /* ContactHeaderView.xib in Resources */,
 				58F178A4221FF376001CD0AF /* ChooseContactTableCell.xib in Resources */,
+				583B2B3C22389F5A00E6238D /* NewRequestsGroupChatsCell1.xib in Resources */,
 				582BFE43221AAA1100D8C2C8 /* DiskManagementMMCCell.xib in Resources */,
 				73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */,
 				583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */,
@@ -3858,6 +3876,7 @@
 				584B439E21FEFF1A00D1F21A /* ConfigDiskViewController.m in Sources */,
 				7330F3C8214771D900FF4EEC /* BottonCell.m in Sources */,
 				736257A72142149300D7FD6B /* UIView+Frame.m in Sources */,
+				583B2B3B22389F5A00E6238D /* NewRequestsGroupChatsCell1.m in Sources */,
 				584B439921FEF79300D1F21A /* DiskDetailCell.m in Sources */,
 				581FDF5421F024170068C120 /* tox_api.m in Sources */,
 				7330F4F22149147200FF4EEC /* CDBaseMsgCell.m in Sources */,
@@ -4152,6 +4171,7 @@
 				73625754213E8CA500D7FD6B /* SocketUtil.swift in Sources */,
 				737883F821ACF2970033A189 /* OCTPixelBufferPool.m in Sources */,
 				732DCEE6223796B800B2A2CA /* AddNewMemberViewController.m in Sources */,
+				583B2B4022389F6600E6238D /* NewRequestsGroupChatsCell2.m in Sources */,
 				7330F4FC2149147200FF4EEC /* AATAudioTool.m in Sources */,
 				73D00EC4216B59940013E20D /* NSData+CRC16.m in Sources */,
 				7330F4E72149147200FF4EEC /* CDCalculator.m in Sources */,
