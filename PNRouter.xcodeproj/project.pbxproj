@@ -101,6 +101,8 @@
 		583B2B2D2231099F00E6238D /* PNDefaultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B2C2231099F00E6238D /* PNDefaultHeaderView.m */; };
 		583B2B2F223109A900E6238D /* PNDefaultHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583B2B2E223109A900E6238D /* PNDefaultHeaderView.xib */; };
 		583B2B3222311F3300E6238D /* UserHeaderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B3122311F3300E6238D /* UserHeaderModel.m */; };
+		583B2B3622378E6600E6238D /* NewRequestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B2B3422378E6600E6238D /* NewRequestsViewController.m */; };
+		583B2B3722378E6600E6238D /* NewRequestsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583B2B3522378E6600E6238D /* NewRequestsViewController.xib */; };
 		583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */; };
 		583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */; };
 		583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583BF90421F6B4140078A2A8 /* UploadFilesViewController.m */; };
@@ -711,6 +713,9 @@
 		583B2B2E223109A900E6238D /* PNDefaultHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNDefaultHeaderView.xib; sourceTree = "<group>"; };
 		583B2B3022311F3300E6238D /* UserHeaderModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserHeaderModel.h; sourceTree = "<group>"; };
 		583B2B3122311F3300E6238D /* UserHeaderModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserHeaderModel.m; sourceTree = "<group>"; };
+		583B2B3322378E6600E6238D /* NewRequestsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewRequestsViewController.h; sourceTree = "<group>"; };
+		583B2B3422378E6600E6238D /* NewRequestsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewRequestsViewController.m; sourceTree = "<group>"; };
+		583B2B3522378E6600E6238D /* NewRequestsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewRequestsViewController.xib; sourceTree = "<group>"; };
 		583BF8FE21F6B3EE0078A2A8 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
 		583BF8FF21F6B3EE0078A2A8 /* TaskListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskListViewController.m; sourceTree = "<group>"; };
 		583BF90021F6B3EE0078A2A8 /* TaskListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskListViewController.xib; sourceTree = "<group>"; };
@@ -1939,6 +1944,9 @@
 				73FD079621D74979001B89CB /* FriendRequestViewController.h */,
 				73FD079721D74979001B89CB /* FriendRequestViewController.m */,
 				73FD079821D74979001B89CB /* FriendRequestViewController.xib */,
+				583B2B3322378E6600E6238D /* NewRequestsViewController.h */,
+				583B2B3422378E6600E6238D /* NewRequestsViewController.m */,
+				583B2B3522378E6600E6238D /* NewRequestsViewController.xib */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -3660,6 +3668,7 @@
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
 				582BFE57221D3D2700D8C2C8 /* RouterAliasViewController.xib in Resources */,
 				73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */,
+				583B2B3722378E6600E6238D /* NewRequestsViewController.xib in Resources */,
 				583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
 				582BFE38221688C200D8C2C8 /* DiskAlertView.xib in Resources */,
@@ -4171,6 +4180,7 @@
 				7378841321ACF2970033A189 /* OCTFileBaseOperation.m in Sources */,
 				587C52BC215C7050006787FB /* RouterDetailViewController.m in Sources */,
 				581FDF4F21F024170068C120 /* TCP_connection.m in Sources */,
+				583B2B3622378E6600E6238D /* NewRequestsViewController.m in Sources */,
 				7378840B21ACF2970033A189 /* OCTMessageText.m in Sources */,
 				583BF91521F6B4DF0078A2A8 /* MyFilesViewController.m in Sources */,
 				7330F4F72149147200FF4EEC /* CTinputHelper.m in Sources */,

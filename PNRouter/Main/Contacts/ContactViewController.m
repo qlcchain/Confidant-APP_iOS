@@ -26,6 +26,7 @@
 #import "LibsodiumUtil.h"
 #import "ContactShowModel.h"
 #import "ChatViewController.h"
+#import "NewRequestsViewController.h"
 #import "GroupChatsViewController.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource/*,SWTableViewCellDelegate*/,UITextFieldDelegate>
@@ -202,13 +203,15 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
             [self refreshAddContactHD];
         }
-        AddFriendViewController *vc = [[AddFriendViewController alloc] init];
+        NewRequestsViewController *vc = [NewRequestsViewController new];
         [self.navigationController pushViewController:vc animated:YES];
+        
+//        AddFriendViewController *vc = [[AddFriendViewController alloc] init];
+//        [self.navigationController pushViewController:vc animated:YES];
     } else { // group_chats
         GroupChatsViewController *vc = [[GroupChatsViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
 }
 
 #pragma mark - tableviewDataSourceDelegate
