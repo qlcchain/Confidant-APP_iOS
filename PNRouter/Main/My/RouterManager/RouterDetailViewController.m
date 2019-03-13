@@ -130,7 +130,7 @@
 - (IBAction)logoutAction:(id)sender {
     
     
-    NSString *alertMsg = _routerM.isConnected?@"Confirm to log out the router? Please be aware that your chatting history, files and contacts will be erased.":@"Determine whether to remove the current router.";
+    NSString *alertMsg = _routerM.isConnected?@"Confirm to log out the circle?":@"Determine whether to remove the current circle.";
     
     @weakify_self
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:alertMsg preferredStyle:UIAlertControllerStyleAlert];

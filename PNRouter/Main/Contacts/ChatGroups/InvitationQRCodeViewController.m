@@ -9,14 +9,27 @@
 #import "InvitationQRCodeViewController.h"
 
 @interface InvitationQRCodeViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UIImageView *codeImgView;
+@property (weak, nonatomic) IBOutlet UILabel *lblDesc;
+@property (weak, nonatomic) IBOutlet UIButton *userHeadBtn;
+@property (weak, nonatomic) IBOutlet UIView *backView;
 
 @end
 
 @implementation InvitationQRCodeViewController
+#pragma mark - action
+
+- (IBAction)backAction:(id)sender {
+    [self leftNavBarItemPressedWithPop:YES];
+}
+- (IBAction)shareAction:(id)sender {
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    _backView.layer.cornerRadius = 8.0f;
+    _backView.layer.masksToBounds = YES;
 }
 
 /*

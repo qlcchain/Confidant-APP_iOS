@@ -240,6 +240,12 @@
             vc.routerUserModel = model;
             [self.navigationController pushViewController:vc animated:YES];
         } else {
+            
+            RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];;
+            RouterUserCodeViewController *vc = [[RouterUserCodeViewController alloc] init];
+            vc.routerUserModel = model;
+            [self.navigationController pushViewController:vc animated:YES];
+            /*
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"Temporary accounts" message:@"fixed two-dimensional code sharing out, users scan the two-dimensional code can automatically generate a temporary account, login, temporary account does not support recovery, default to a router to support up to 20 temporary accounts." preferredStyle:UIAlertControllerStyleAlert];
             
             @weakify_self
@@ -254,6 +260,7 @@
             [alertVC addAction:okAction];
             [alertVC addAction:alertCancel];
             [self presentViewController:alertVC animated:YES completion:nil];
+             */
         }
         
     }
