@@ -12,7 +12,7 @@
 @class FileListModel;
 
 static NSString *FileCellReuse = @"FileCell";
-#define FileCellHeight 153
+#define FileCellHeight 171
 
 typedef void(^FileMoreBlock)(void);
 typedef void(^FileForwardBlock)(void);

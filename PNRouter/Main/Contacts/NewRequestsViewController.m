@@ -16,6 +16,8 @@
 #import "FriendRequestViewController.h"
 #import "UserHeaderModel.h"
 #import <WZLBadge/WZLBadgeImport.h>
+#import "NewRequestsGroupChatsCell1.h"
+#import "NewRequestsGroupChatsCell2.h"
 
 //typedef enum : NSUInteger {
 //    NewRequestsTypeAddContacts,
@@ -72,7 +74,8 @@
 
 - (void)viewInit {
     [_addContactsTable registerNib:[UINib nibWithNibName:AddFriendCellReuse bundle:nil] forCellReuseIdentifier:AddFriendCellReuse];
-    [_groupChatsTable registerNib:[UINib nibWithNibName:AddFriendCellReuse bundle:nil] forCellReuseIdentifier:AddFriendCellReuse];
+    [_groupChatsTable registerNib:[UINib nibWithNibName:NewRequestsGroupChatsCell1Reuse bundle:nil] forCellReuseIdentifier:NewRequestsGroupChatsCell1Reuse];
+    [_groupChatsTable registerNib:[UINib nibWithNibName:NewRequestsGroupChatsCell2Reuse bundle:nil] forCellReuseIdentifier:NewRequestsGroupChatsCell2Reuse];
     
     _scrollContentWidth.constant = SCREEN_WIDTH*2;
     _sliderV.frame = CGRectMake(0, 42, 96, 2);
@@ -130,7 +133,16 @@
 }
 
 - (IBAction)moreAction:(id)sender {
-    
+    @weakify_self
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *alertDelete = [UIAlertAction actionWithTitle:@"Delete All" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertC addAction:alertDelete];
+    UIAlertAction *alertCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertC addAction:alertCancel];
+    [self presentViewController:alertC animated:YES completion:nil];
 }
 
 - (IBAction)addContactsAction:(id)sender {
@@ -208,15 +220,7 @@
         
         return cell;
     } else if (tableView == _groupChatsTable) {
-        AddFriendCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:AddFriendCellReuse];
-        FriendModel *model = self.groupChatsSource[indexPath.row];
-        cell.tag = indexPath.row;
-        [cell setFriendModel:model];
-        @weakify_self
-        [cell setRightBlcok:^(NSInteger tag, NSInteger row) {
-            [weakSelf.view showHudInView:weakSelf.view hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
-            [weakSelf sendAgreeFriendWithRow:row];
-        }];
+        NewRequestsGroupChatsCell1 *cell = [tableView dequeueReusableCellWithIdentifier:NewRequestsGroupChatsCell1Reuse];
         
         return cell;
     }
