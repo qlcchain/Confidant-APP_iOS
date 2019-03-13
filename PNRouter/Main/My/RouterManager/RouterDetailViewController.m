@@ -130,7 +130,7 @@
 - (IBAction)logoutAction:(id)sender {
     
     
-    NSString *alertMsg = _routerM.isConnected?@"Confirm to log out the circle?":@"Determine whether to remove the current circle.";
+    NSString *alertMsg = _routerM.isConnected?@"Logout will not delete any data. You can still log in to this account with the invitation code.":@"Determine whether to remove the current circle.";
     
     @weakify_self
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:alertMsg preferredStyle:UIAlertControllerStyleAlert];
@@ -138,7 +138,7 @@
     }];
     [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
     [alertC addAction:alert1];
-    UIAlertAction *alert2 = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *alert2 = [UIAlertAction actionWithTitle:@"Log Out" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [weakSelf logout];
     }];
     [alert2 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
