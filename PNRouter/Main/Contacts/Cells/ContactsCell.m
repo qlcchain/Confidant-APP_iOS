@@ -49,7 +49,7 @@
     }
     
     _lblName.text = model.NickName?:@"";
-    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    NSString *userKey = model.UserKey;
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_lblName.text]];
     _headImgView.image = defaultImg;
 //    _lblTitle.text =[StringUtil getUserNameFirstWithName:model.NickName];
