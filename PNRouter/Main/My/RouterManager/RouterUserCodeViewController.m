@@ -48,7 +48,8 @@
     _delRightBtn.layer.cornerRadius = 5.0f;
     _lblUserName.text = self.routerUserModel.NickName;
     
-    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+//    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    NSString *userKey = _routerUserModel.UserKey;
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:self.routerUserModel.NickName]];
     _UserHeadBtn.layer.cornerRadius = _UserHeadBtn.width/2.0;
     _UserHeadBtn.layer.masksToBounds = YES;
