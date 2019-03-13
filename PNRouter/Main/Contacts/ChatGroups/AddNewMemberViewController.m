@@ -7,6 +7,7 @@
 //
 
 #import "AddNewMemberViewController.h"
+#import "InvitationQRCodeViewController.h"
 
 @interface AddNewMemberViewController ()<UITextFieldDelegate>
 
@@ -22,6 +23,10 @@
 }
 - (IBAction)nextAction:(id)sender {
     
+}
+- (IBAction)qrCodeAction:(id)sender {
+    InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)viewDidLoad {

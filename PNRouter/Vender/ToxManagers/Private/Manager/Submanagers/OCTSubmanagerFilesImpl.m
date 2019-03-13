@@ -198,7 +198,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     }
     NSLog(@"filepath = %@ fileNumber = %d",filePath,fileNumber);
     if (parames) {
-         if ([toid isEmptyString]) { // 上传文件
+         if ([toid isEmptyString] && fileType !=6) { // 上传文件
             NSString *fileId = [NSString stringWithFormat:@"%@",parames[@"FileId"]];
              // 通过fileid 绑定fileNumber
              [[ChatListDataUtil getShareObject].fileNumberParames setObject:[NSString stringWithFormat:@"%d",fileNumber] forKey:fileId];

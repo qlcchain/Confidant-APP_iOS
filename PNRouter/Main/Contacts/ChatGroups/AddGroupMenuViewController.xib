@@ -123,6 +123,9 @@
                                 </label>
                                 <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kjm-ea-Cd5">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                    <connections>
+                                        <action selector="clickMenuAction:" destination="-1" eventType="touchUpInside" id="Cx1-kv-SNw"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -160,6 +163,9 @@
                                 </label>
                                 <button opaque="NO" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qxG-eg-5to">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                    <connections>
+                                        <action selector="clickMenuAction:" destination="-1" eventType="touchUpInside" id="rey-50-mCp"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -197,6 +203,9 @@
                                 </label>
                                 <button opaque="NO" tag="40" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfj-vf-NqP">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                    <connections>
+                                        <action selector="clickMenuAction:" destination="-1" eventType="touchUpInside" id="xws-ZU-F9q"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

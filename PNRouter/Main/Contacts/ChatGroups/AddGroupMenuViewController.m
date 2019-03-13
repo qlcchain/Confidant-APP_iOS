@@ -7,6 +7,7 @@
 //
 
 #import "AddGroupMenuViewController.h"
+#import "AddNewMemberViewController.h"
 
 @interface AddGroupMenuViewController ()
 
@@ -27,7 +28,8 @@
     } else if (sender.tag == 30) { // share a contact card
         
     } else { // add a new member
-        
+        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] init];
+        [self presentModalVC:vc animated:YES];
     }
 }
 
