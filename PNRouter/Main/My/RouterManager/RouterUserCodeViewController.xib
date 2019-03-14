@@ -157,7 +157,9 @@
                                                         <constraint firstAttribute="height" constant="40" id="coC-b2-buo"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                    <state key="normal" backgroundImage="icon_headportrait"/>
+                                                    <connections>
+                                                        <action selector="headAction:" destination="-1" eventType="touchUpInside" id="611-Gl-d56"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="not Activated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eC-hX-yFx">
                                                     <rect key="frame" x="20" y="53" width="78" height="16"/>
@@ -265,7 +267,6 @@
     </objects>
     <resources>
         <image name="arrow-exit-h" width="24" height="24"/>
-        <image name="icon_headportrait" width="40" height="40"/>
         <image name="share" width="24" height="24"/>
     </resources>
 </document>
