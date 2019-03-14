@@ -95,6 +95,7 @@ static NSString *Settings_Str = @"Settings";
         [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] userKey:userKey];
         _myHeadView.lblContent.text = @"Add to my status";
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpDetailvc)];
+        
         _myHeadView.userInteractionEnabled = YES;
         [_myHeadView addGestureRecognizer:gesture];
     }

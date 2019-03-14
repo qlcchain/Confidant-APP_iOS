@@ -12,6 +12,7 @@
 #import "HMScanner.h"
 #import "PNDefaultHeaderView.h"
 #import "EntryModel.h"
+#import <YBImageBrowser/YBImageBrowser.h>
 
 @interface RouterUserCodeViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *UserHeadBtn;
@@ -40,6 +41,23 @@
 - (IBAction)shareAction:(id)sender {
     [self shareCode];
 }
+
+- (IBAction)headAction:(id)sender {
+    // 本地图片（推荐使用 YBImage）
+    YBImageBrowseCellData *data1 = [YBImageBrowseCellData new];
+    UIImage *resultImg = _UserHeadBtn.currentImage;
+    data1.imageBlock = ^__kindof UIImage * _Nullable{
+        return resultImg;
+    };
+    data1.sourceObject = _UserHeadBtn.imageView;
+    
+    // 设置数据源数组并展示
+    YBImageBrowser *browser = [YBImageBrowser new];
+    browser.dataSourceArray = @[data1];
+    browser.currentIndex = 0;
+    [browser show];
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
