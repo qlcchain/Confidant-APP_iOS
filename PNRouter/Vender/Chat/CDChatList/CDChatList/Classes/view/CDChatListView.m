@@ -261,12 +261,13 @@
     CGPoint contentOffset = self.contentOffset;
     BOOL needAdjust = cellOffset < contentOffset.y;
     
-    [self reloadData];
+    //[self reloadData];
+    [self reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:msgIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     
     if (needAdjust) {
         CGRect rect_new = [self rectForRowAtIndexPath:index]; // cell新的位置
         CGFloat adjust = rect_old.size.height - rect_new.size.height;
-//        [self setContentOffset:CGPointMake(0, self.contentOffset.y - adjust)];
+        [self setContentOffset:CGPointMake(0, self.contentOffset.y - adjust)];
     }
 }
 

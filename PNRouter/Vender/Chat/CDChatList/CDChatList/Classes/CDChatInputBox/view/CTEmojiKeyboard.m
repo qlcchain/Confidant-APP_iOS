@@ -164,22 +164,6 @@
         control.currentPageIndicatorTintColor = [UIColor blackColor];
         [conain addSubview:control];
         
-        // 选择按钮
-        UIButton *tabBut = [[UIButton alloc] initWithFrame:CGRectMake(60 * i, conain.frame.size.height, 60, bottomBarAeraH)];
-        tabBut.tag = i;
-        
-        [tabBut setTitle:CTinputHelper.share.emojiNameArrTitles[i] forState:UIControlStateNormal];
-        [tabBut addTarget:self action:@selector(containSelectsss:) forControlEvents:UIControlEventTouchUpInside];
-        [tabBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        if (i == 0) {
-            [tabBut setBackgroundColor:HexColor(0xF5F5F7)];
-        } else {
-            [tabBut setBackgroundColor:[UIColor whiteColor]];
-        }
-        [self addSubview:tabBut];
-        [tabButtons addObject:tabBut];
-        
-        
         [containers addObject:conain];
         [scrollViews addObject:scrol];
         [pageCtrs addObject:control];
@@ -193,10 +177,25 @@
         }
     }
     
+    // 选择按钮
+    UIButton *tabBut = [[UIButton alloc] initWithFrame:CGRectMake(0,self.frame.size.height - bottomBarAeraH, 60, bottomBarAeraH)];
+    [tabBut setImage:[UIImage imageNamed:@"File-n"] forState:UIControlStateNormal];
+    tabBut.userInteractionEnabled = NO;
+   // [tabBut addTarget:self action:@selector(containSelectsss:) forControlEvents:UIControlEventTouchUpInside];
+   // [tabBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    if (i == 0) {
+//        [tabBut setBackgroundColor:HexColor(0xF5F5F7)];
+//    } else {
+//        [tabBut setBackgroundColor:[UIColor whiteColor]];
+//    }
+    [self addSubview:tabBut];
+   
+    
     // 发送按钮
     sendButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width -100, self.frame.size.height - 44, 100, 44)];
     [sendButton setTitle:@"Send" forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    sendButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [sendButton addTarget:self action:@selector(emojiButtonTabedSend) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:sendButton];
     dispatch_async(dispatch_get_main_queue(), ^{

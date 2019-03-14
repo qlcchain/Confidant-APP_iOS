@@ -87,6 +87,7 @@ static UIColor *InputHexColor(int hexColor){
     // 配置
     CTInputConfiguration *config = CTinputHelper.share.config;
     
+    
     // 语音按钮
     UIButton *v1 = [[UIButton alloc] initWithFrame:config.voiceButtonRect];
     [v1 setImage:voice forState:UIControlStateNormal];
@@ -104,6 +105,9 @@ static UIColor *InputHexColor(int hexColor){
     self.textView.cornerRadius = 3.0f;
     self.textView.returnKeyType = UIReturnKeySend;
     self.textView.delegate = self;
+  
+    self.textView.contentInset = UIEdgeInsetsMake(3, self.textView.contentInset.left,0, self.textView.contentInset.right);
+    
     [self addSubview:textView];
     __weak __typeof__ (self) wself = self;
     [textView textValueDidChanged:^(NSString *text, CGFloat textHeight) {
@@ -116,7 +120,7 @@ static UIColor *InputHexColor(int hexColor){
     UILabel *labl = [[UILabel alloc] initWithFrame:v2.bounds];
     [v2 addSubview:labl];
     labl.textAlignment = NSTextAlignmentCenter;
-    labl.text = @"按住 说话";
+    labl.text = @"Hold to record";
     labl.textColor = InputHexColor(0x555555);
     v2.layer.borderColor = InputHexColor(0xC1C2C6).CGColor;
     v2.layer.borderWidth = 1;
@@ -429,6 +433,7 @@ static UIColor *InputHexColor(int hexColor){
 #pragma mark 适应输入框高度变化
 -(void)updateLayout:(CGFloat)newTextViewHight{
     
+   newTextViewHight = newTextViewHight < 40 ? 40:newTextViewHight;
     // 输入框默认位置
     CTInputConfiguration *config = CTinputHelper.share.config;
     

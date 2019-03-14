@@ -68,6 +68,8 @@
 @synthesize signKey;
 @synthesize nonceKey;
 @synthesize symmetKey;
+@synthesize fileWidth;
+@synthesize fileHeight;
 
 
 -(instancetype)init:(NSDictionary *)dic{

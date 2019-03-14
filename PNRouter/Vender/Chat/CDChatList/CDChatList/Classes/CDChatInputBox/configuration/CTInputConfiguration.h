@@ -9,10 +9,9 @@
 #import "CTInPutMacro.h"
 #import <UIKit/UIKit.h>
 
-static CGFloat CTInputViewHeight = 50.0f;
+static CGFloat CTInputViewHeight = 56.0f;
 
 @interface CTInputConfiguration : NSObject
-
 
 /**
  文本框位置

@@ -195,68 +195,59 @@ CGSize caculateImageSize140By140(UIImage *image, CDChatMessage msgData) {
     }
 }
 
+CGSize caculateFileSize140By140(CGSize size, CDChatMessage msgData) {
+    
+    // 图片将被限制在140*140的区域内，按比例显示
+    CGFloat width = size.width;
+    CGFloat height = size.height;
+    
+    CGFloat maxSide = MAX(width, height);
+    CGFloat miniSide = MIN(width, height);
+    
+    // 按比例缩小后的小边边长
+    CGFloat actuallMiniSide = 140 * miniSide / maxSide;
+    
+    // 防止长图，宽图，限制最小边 下限
+    if (actuallMiniSide < 80) {
+        actuallMiniSide = 80;
+    }
+    
+    // 返回的高度是图片高度，需加上消息内边距变成消息体高度
+    if (maxSide == width) {
+        return CGSizeMake(140, actuallMiniSide + msgData.chatConfig.messageMargin * 2);
+    } else {
+        return CGSizeMake(actuallMiniSide, 140 + msgData.chatConfig.messageMargin * 2);
+    }
+}
+
+
 -(CGSize) sizeForImageMessage: (CDChatMessage)msgData {
     
     // 获得本地缓存的图片
-    NSString *friendid = msgData.ToId;
-    if (msgData.isLeft) {
-        friendid = msgData.FromId;
-    }
-    NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:msgData.fileName];
-    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-    UIImage *image = nil;
-    if (fileData) {
-        image = [UIImage imageWithData:fileData];
-    }
+//    NSString *friendid = msgData.ToId;
+//    if (msgData.isLeft) {
+//        friendid = msgData.FromId;
+//    }
+//    NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:msgData.fileName];
+//    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+//    UIImage *image = nil;
+//    if (fileData) {
+//        image = [UIImage imageWithData:fileData];
+//    }
     // 如果本地存在图片，则通过图片计算
-    if (image) {
-        return caculateImageSize140By140(image,msgData);
+//    if (image) {
+//        return caculateImageSize140By140(image,msgData);
+//    } else {
+//
+//        CGSize defaulutSize = CGSizeMake(140, 140);
+//        return defaulutSize;
+//    }
+    
+    if (msgData.fileWidth > 0 && msgData.fileHeight > 0) {
+        return caculateFileSize140By140(CGSizeMake(msgData.fileWidth, msgData.fileHeight),msgData);
     } else {
-        
         CGSize defaulutSize = CGSizeMake(140, 140);
         return defaulutSize;
-        
-       /*
-        CGSize defaulutSize = CGSizeMake(140, 140);
-        if (msgData.msgState == CDMessageStateDownloading) {
-            return defaulutSize;
-        }
-        // 若不存在，则返回占位图大小，并下载
-        if (msgData.msgState != CDMessageStateDownloading) {
-            return defaulutSize;
-        }
-        
-        @weakify_self
-        [RequestService downFileWithBaseURLStr:msgData.filePath friendid:friendid progressBlock:^(CGFloat progress) {
-            
-        } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
-            
-            NSString *path = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:filePath];
-            NSData *downData = [NSData dataWithContentsOfFile:path];
-            UIImage *downImage = [UIImage imageWithData:downData];
-            NSLog(@"下载成功! filePath ===== %@",filePath);
-            
-            CGSize size = caculateImageSize140By140(downImage,msgData);
-            msgData.bubbleWidth = size.width;
-            // 加上可能显示的时间视图高度
-            CGFloat height = size.height;
-            msgData.cellHeight = height + (msgData.willDisplayTime ? msgData.chatConfig.msgTimeH : 0);
-            if (downImage) {
-                 msgData.msgState = CDMessageStateNormal;
-            } else {
-                 msgData.msgState = CDMessageStateDownloadFaild;
-            }
-           
-            [weakSelf.list updateMessage:msgData];
-            
-        } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
-            msgData.msgState = CDMessageStateDownloadFaild;
-            [weakSelf.list updateMessage:msgData];
-#ifdef DEBUG
-            NSLog(@"[CDChatList] 下载图片出现问题%@",error.localizedDescription);
-#endif
-        }];
-        return defaulutSize;*/
     }
     
 }
