@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype) getSendCacheChatUtilShare;
 - (void)start;
 - (void)stop;
+- (void) deleteCacheFileNollData;
 @end
 
 NS_ASSUME_NONNULL_END

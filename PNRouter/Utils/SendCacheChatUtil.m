@@ -28,6 +28,7 @@ const NSInteger timerTime = 10;
 @end
 
 @implementation SendCacheChatUtil
+
 + (instancetype) getSendCacheChatUtilShare
 {
     static SendCacheChatUtil *shareObject = nil;
@@ -59,6 +60,23 @@ const NSInteger timerTime = 10;
 - (void) stop {
     if (_timer) {
         dispatch_cancel(_timer);
+    }
+}
+
+// 删除文件已经不存在的文件
+- (void) deleteCacheFileNollData
+{
+    NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"msgType"),bg_sqlValue(@(0))]];
+    if (chats && chats.count > 0) {
+        
+        [chats enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ChatModel *model = obj;
+            NSString *filePath = [[SystemUtil getBaseFilePath:model.toId] stringByAppendingPathComponent:model.fileName];
+            if (![SystemUtil filePathisExist:filePath]) {
+                
+                [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"toId"),bg_sqlValue(model.toId),bg_sqlKey(@"msgid"),bg_sqlValue(@(model.msgid))]];
+            }
+        }];
     }
 }
 

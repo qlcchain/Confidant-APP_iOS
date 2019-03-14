@@ -118,7 +118,7 @@
     @weakify_self
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
          UIImage *image = [[UIImage alloc] initWithContentsOfFile:filePath];
-        if (!image) {
+        if (!image && !data.isDown) {
             [SystemUtil removeDocmentFilePath:filePath];
         }
         if ([SystemUtil filePathisExist:filePath])
@@ -151,6 +151,9 @@
                     if (data.dskey) {
                         dispatch_async(dispatch_get_global_queue(0, 0), ^{
                             NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
+                            if ([SystemUtil filePathisExist:imgPath]) {
+                                NSLog(@"----------");
+                            }
                             NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
                             
                             NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey];
@@ -212,7 +215,7 @@
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:filePath];
-        if (!image) {
+        if (!image && !data.isDown) {
              [SystemUtil removeDocmentFilePath:filePath];
         }
         

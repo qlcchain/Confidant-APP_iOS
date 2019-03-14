@@ -278,7 +278,7 @@
             [self.tableView updateMessage:data];
         }
     } else {
-        if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
+        if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal || data.msgState == CDMessageStateSending) {
             return;
         }
         if (data.isDown) {
