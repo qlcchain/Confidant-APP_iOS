@@ -108,10 +108,11 @@
         // 标签
         UILabel *powerlabel = [[UILabel alloc] init];
         powerlabel.frame = CGRectMake(5, self.bounds.size.height - 35, self.bounds.size.width - 10, 30);
-        powerlabel.text = @"手指上滑，取消发送";
+        powerlabel.text = @"Release to send Slide up to cancel";
+        powerlabel.numberOfLines = 2;
         powerlabel.textColor = [UIColor whiteColor];
         powerlabel.textAlignment = NSTextAlignmentCenter;
-        powerlabel.font = [UIFont systemFontOfSize:14];
+        powerlabel.font = [UIFont systemFontOfSize:12];
         [power addSubview:powerlabel];
         self.voicePower = power;
 
@@ -128,11 +129,11 @@
         // 标签
         UILabel *revoclabel = [[UILabel alloc] init];
         revoclabel.frame = CGRectMake(5, self.bounds.size.height - 35, self.bounds.size.width - 10, 30);
-        revoclabel.text = @"松开手指，取消发送";
+        revoclabel.text = @"Release to cancel";
         revoclabel.backgroundColor = HexColor(0x9D432C);
         revoclabel.textColor = [UIColor whiteColor];
         revoclabel.textAlignment = NSTextAlignmentCenter;
-        revoclabel.font = [UIFont systemFontOfSize:14];
+        revoclabel.font = [UIFont systemFontOfSize:12];
         [revoc addSubview:revoclabel];
 
         self.voiceRevocation = revoc;

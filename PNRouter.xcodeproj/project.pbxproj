@@ -3825,7 +3825,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\n";
+			shellScript = "
+";
 		};
 		73F8806E21EC82230047C3DA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3838,7 +3839,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\n";
+			shellScript = "
+";
 		};
 		EB8769ED3DB9A8774136A768 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

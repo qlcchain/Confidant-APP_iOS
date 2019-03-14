@@ -178,6 +178,9 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString *signKey;
 @property (nonatomic, copy) NSString *symmetKey;
 
+@property (nonatomic , assign) CGFloat fileWidth;
+@property (nonatomic , assign) CGFloat fileHeight;
+
 /**
  显示选择消息按钮（0：不显示   1：显示未选择   2：显示选择）
  */

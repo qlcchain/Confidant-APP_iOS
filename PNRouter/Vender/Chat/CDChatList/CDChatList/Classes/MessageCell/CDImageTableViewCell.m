@@ -113,6 +113,7 @@
     
     CGRect bubbleRec = self.bubbleImage_left.frame;
     self.imageContent_left.frame = bubbleRec;
+     self.imageContent_left.image = nil;
     
     NSString *filePath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:data.fileName];
     @weakify_self
@@ -126,6 +127,8 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.imageContent_left.image = image;
+                data.fileWidth = image.size.width;
+                data.fileHeight = image.size.height;
                 if ( data.msgState == CDMessageStateDownloading) {
                     data.msgState = CDMessageStateNormal;
                     [weakSelf.tableView updateMessage:data];
@@ -134,7 +137,7 @@
             
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.imageContent_left.image = nil;
+                weakSelf.imageContent_left.image = nil;
             });
             if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
                 return;
@@ -221,6 +224,8 @@
         {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.imageContent_right.image = image;
+                    data.fileWidth = image.size.width;
+                    data.fileHeight = image.size.height;
                     if ( data.msgState == CDMessageStateDownloading) {
                         data.msgState = CDMessageStateNormal;
                         [self.tableView updateMessage:data];
