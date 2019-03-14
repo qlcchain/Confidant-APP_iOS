@@ -37,6 +37,7 @@
 #import "SendCacheChatUtil.h"
 #import "SocketMessageUtil.h"
 #import "PNBackgroundView.h"
+#import "ChatModel.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate,UNUserNotificationCenterDelegate>
 {
@@ -54,6 +55,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     NSString *clearDataResult = [KeyCUtil getKeyValueWithKey:CLEAR_DATA];
+   // [ChatModel bg_drop:CHAT_CACHE_TABNAME];
     if (![[NSString getNotNullValue:clearDataResult] isEqualToString:@"2"]) {
         [KeyCUtil deleteAllKey];
         [FriendModel bg_drop:FRIEND_LIST_TABNAME];
@@ -79,6 +81,8 @@
     // 打开时改变文件上传下载状态
     [SystemUtil appFirstOpen];
     [self checkGuidenPage];
+    // 清除发送失败已经不存在图片
+    [[SendCacheChatUtil getSendCacheChatUtilShare] deleteCacheFileNollData];
   //  [RSAModel getRSAModel];
     // 得到签名，加密 公私钥对
    EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickey];
