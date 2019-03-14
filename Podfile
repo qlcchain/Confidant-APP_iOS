@@ -44,7 +44,7 @@ def demo_pods
     pod 'Bugly'
 #    pod 'JCDownloader'
 #    pod 'TYAttributedLabel'
-
+    pod 'YBImageBrowser'
 end
 
 

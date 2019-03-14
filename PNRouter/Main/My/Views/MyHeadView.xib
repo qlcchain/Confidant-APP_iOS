@@ -22,14 +22,16 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eh2-gt-nxM">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eh2-gt-nxM">
                     <rect key="frame" x="356" y="24" width="48" height="48"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="48" id="EuL-xY-kWi"/>
                         <constraint firstAttribute="height" constant="48" id="aeb-wu-0l4"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                    <state key="normal" backgroundImage="icon_base"/>
+                    <connections>
+                        <action selector="headAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="bvd-na-wRP"/>
+                    </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_qr_code" translatesAutoresizingMaskIntoConstraints="NO" id="wXR-bt-DcD">
                     <rect key="frame" x="16" y="53" width="17" height="17"/>
@@ -70,11 +72,10 @@
                 <outlet property="lblContent" destination="ibw-P7-rAA" id="vnu-sJ-pfp"/>
                 <outlet property="lblName" destination="BPS-wB-xq7" id="k8j-tA-DSJ"/>
             </connections>
-            <point key="canvasLocation" x="239" y="-18"/>
+            <point key="canvasLocation" x="626" y="-198"/>
         </view>
     </objects>
     <resources>
-        <image name="icon_base" width="140" height="140"/>
         <image name="icon_qr_code" width="17" height="17"/>
     </resources>
 </document>
