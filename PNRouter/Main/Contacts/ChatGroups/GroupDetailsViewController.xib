@@ -245,6 +245,9 @@
                                             <state key="normal" title="Dismiss the Group">
                                                 <color key="titleColor" red="0.96862745098039216" green="0.38431372549019605" blue="0.37254901960784315" alpha="1" colorSpace="deviceRGB"/>
                                             </state>
+                                            <connections>
+                                                <action selector="dismissAction:" destination="-1" eventType="touchUpInside" id="DMX-aY-ehZ"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -277,9 +280,12 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kq9-g6-68b">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                    <state key="normal" title="Dismiss the Group">
+                                    <state key="normal" title="Leave the Group">
                                         <color key="titleColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
+                                    <connections>
+                                        <action selector="leaveAction:" destination="-1" eventType="touchUpInside" id="DqK-sW-S2v"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
