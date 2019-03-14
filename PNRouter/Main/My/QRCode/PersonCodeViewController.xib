@@ -140,7 +140,9 @@
                                                         <constraint firstAttribute="width" constant="40" id="a34-rX-OBD"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                    <state key="normal" backgroundImage="icon_headportrait"/>
+                                                    <connections>
+                                                        <action selector="headAction:" destination="-1" eventType="touchUpInside" id="NDA-gr-PHj"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -241,7 +243,6 @@
     </objects>
     <resources>
         <image name="arrow-exit-h" width="24" height="24"/>
-        <image name="icon_headportrait" width="40" height="40"/>
         <image name="share" width="24" height="24"/>
     </resources>
 </document>

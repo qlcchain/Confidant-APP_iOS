@@ -13,6 +13,7 @@
 #import "NSString+Base64.h"
 #import "EntryModel.h"
 #import "PNDefaultHeaderView.h"
+#import <YBImageBrowser/YBImageBrowser.h>
 
 @interface PersonCodeViewController ()
 
@@ -40,6 +41,24 @@
    
     [self loadImageFinished: self.codeImgView.image];
 }
+
+- (IBAction)headAction:(id)sender {
+    // 本地图片（推荐使用 YBImage）
+    YBImageBrowseCellData *data1 = [YBImageBrowseCellData new];
+    UIImage *resultImg = _nameBtn.currentImage;
+    data1.imageBlock = ^__kindof UIImage * _Nullable{
+        return resultImg;
+    };
+    data1.sourceObject = _nameBtn.imageView;
+    
+    // 设置数据源数组并展示
+    YBImageBrowser *browser = [YBImageBrowser new];
+    browser.dataSourceArray = @[data1];
+    browser.currentIndex = 0;
+    [browser show];
+}
+
+
 - (void)loadImageFinished:(UIImage *)image
 {
     UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), (__bridge void *)self);
@@ -97,7 +116,8 @@
     }
     _lblNavTitle.text = self.userName;
     _lblName.text = self.userName;
-    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+//    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    NSString *userKey = self.signPublicKey;
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:self.userName]];
     _nameBtn.imageView.contentMode = UIViewContentModeScaleAspectFill;
     _nameBtn.layer.cornerRadius = _nameBtn.width/2.0;
