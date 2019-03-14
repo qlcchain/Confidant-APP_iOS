@@ -295,6 +295,7 @@
     }
     
     
+    
     NSString *friendid = self.msgModal.ToId;
     if (self.msgModal.isLeft) {
         friendid = self.msgModal.FromId;
@@ -306,6 +307,9 @@
             [self.tableView.msgDelegate clickFileCellWithMsgMode:self.msgModal withFilePath:filePath];
         }
     } else { // 下载视频
+        if (self.msgModal.msgState == CDMessageStateSending) {
+            return;
+        }
         self.msgModal.msgState = CDMessageStateDownloading;
         [self.tableView updateMessage:self.msgModal];
         

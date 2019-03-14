@@ -118,6 +118,7 @@
     @weakify_self
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
          UIImage *image = [[UIImage alloc] initWithContentsOfFile:filePath];
+         // 当图片正在下载时不能删子除路径
         if (!image && !data.isDown) {
             [SystemUtil removeDocmentFilePath:filePath];
         }
@@ -151,11 +152,7 @@
                     if (data.dskey) {
                         dispatch_async(dispatch_get_global_queue(0, 0), ^{
                             NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
-                            if ([SystemUtil filePathisExist:imgPath]) {
-                                NSLog(@"----------");
-                            }
                             NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                            
                             NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey];
                             datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                             
@@ -215,6 +212,7 @@
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:filePath];
+        // 当图片正在下载时不能删子除路径
         if (!image && !data.isDown) {
              [SystemUtil removeDocmentFilePath:filePath];
         }

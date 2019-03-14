@@ -192,9 +192,6 @@
 }
 
 -(void)longPressGes:(UILongPressGestureRecognizer *)recognizer{
-    
-    
-    
     CGPoint curPoint = [recognizer locationInView:self];
     if (!CGRectContainsPoint(self.bounds, curPoint)){
         return;
@@ -232,6 +229,7 @@
 
 -(void)tapGesture:(UITapGestureRecognizer *)ges{
     
+    // 正在下载不能点击
     if (self.msgModal.msgState == CDMessageStateDownloading) {
         return;
     }
@@ -273,6 +271,9 @@
         
         return;
     }
+    
+   
+    
     NSString *friendid = self.msgModal.ToId;
     NSString *msgkey = self.msgModal.srckey;
     if (self.msgModal.isLeft) {
@@ -286,6 +287,9 @@
             [self.tableView.msgDelegate clickFileCellWithMsgMode:self.msgModal withFilePath:filePath];
         }
     } else {
+        if (self.msgModal.msgState == CDMessageStateSending) {
+            return;
+        }
         self.msgModal.msgState = CDMessageStateDownloading;
         [self.tableView updateMessage:self.msgModal];
         
