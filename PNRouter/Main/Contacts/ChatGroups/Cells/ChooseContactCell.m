@@ -15,6 +15,9 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    _headerImgV.layer.cornerRadius = _headerImgV.width/2.0;
+    _headerImgV.layer.masksToBounds = YES;
 }
 
 - (void) setModeWithModel:(FriendModel *) model withLeftContraintV:(CGFloat)leftV

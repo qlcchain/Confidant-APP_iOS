@@ -25,6 +25,13 @@
     return self;
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    _headImgView.layer.cornerRadius = _headImgView.width/2.0;
+    _headImgView.layer.masksToBounds = YES;
+}
+
 - (void)prepareForReuse {
     [super prepareForReuse];
     
