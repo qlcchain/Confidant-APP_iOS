@@ -106,7 +106,8 @@ static UIColor *InputHexColor(int hexColor){
     self.textView.returnKeyType = UIReturnKeySend;
     self.textView.delegate = self;
   
-    self.textView.contentInset = UIEdgeInsetsMake(3, self.textView.contentInset.left,0, self.textView.contentInset.right);
+   // self.textView.contentInset = UIEdgeInsetsMake(3, self.textView.contentInset.left,0, self.textView.contentInset.right);
+  //  textView.contentOffset = CGPointMake(0, -4/2.0);
     
     [self addSubview:textView];
     __weak __typeof__ (self) wself = self;
@@ -453,6 +454,7 @@ static UIColor *InputHexColor(int hexColor){
     [UIView animateWithDuration:0.25f delay:0 options:7 animations:^{
         self.frame = newRect;
         self.textView.frame = newTextViewRect;
+       // self.textView.contentOffset = CGPointMake(0, -4/2.0);
     } completion:^(BOOL finished) {
         
     }];

@@ -82,6 +82,7 @@
     UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
     UIVisualEffectView *efView = [[UIVisualEffectView alloc] initWithEffect:effect];
     efView.frame = self.bounds;
+    efView.alpha = 0.6f;
     [self addSubview:efView];
     self.layer.cornerRadius = 5.0f;
     self.clipsToBounds = YES;
@@ -108,7 +109,7 @@
         // 标签
         UILabel *powerlabel = [[UILabel alloc] init];
         powerlabel.frame = CGRectMake(5, self.bounds.size.height - 35, self.bounds.size.width - 10, 30);
-        powerlabel.text = @"Release to send Slide up to cancel";
+        powerlabel.text = @"Release to send\nSlide up to cancel";
         powerlabel.numberOfLines = 2;
         powerlabel.textColor = [UIColor whiteColor];
         powerlabel.textAlignment = NSTextAlignmentCenter;

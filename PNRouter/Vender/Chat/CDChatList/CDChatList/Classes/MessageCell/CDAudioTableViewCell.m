@@ -274,7 +274,7 @@
     if ( [SystemUtil filePathisExist:filePath])
     {
         if ( data.msgState != CDMessageStateNormal) {
-            data.msgState = CDMessageStateNormal;
+             data.msgState = CDMessageStateNormal;
             [self.tableView updateMessage:data];
         }
     } else {
