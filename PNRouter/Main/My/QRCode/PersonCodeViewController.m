@@ -14,6 +14,8 @@
 #import "EntryModel.h"
 #import "PNDefaultHeaderView.h"
 #import <YBImageBrowser/YBImageBrowser.h>
+#import "UIView+Visuals.h"
+#import "UIImage+RoundedCorner.h"
 
 @interface PersonCodeViewController ()
 
@@ -26,6 +28,7 @@
 @property (nonatomic , copy) NSString *userName;
 @property (weak, nonatomic) IBOutlet UIButton *saveBtn;
 @property (weak, nonatomic) IBOutlet UIButton *shareBtn;
+@property (weak, nonatomic) IBOutlet UIView *codeBackView;
 
 @end
 
@@ -39,7 +42,7 @@
 }
 - (IBAction)savePhoneAction:(id)sender {
    
-    [self loadImageFinished: self.codeImgView.image];
+    [self loadImageFinished:[_codeBackView getImageFromView]];
 }
 
 - (IBAction)headAction:(id)sender {
@@ -125,8 +128,9 @@
     [_nameBtn setImage:defaultImg forState:UIControlStateNormal];
 //    [_nameBtn setTitle:[StringUtil getUserNameFirstWithName:self.userName] forState:UIControlStateNormal];
     NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@,%@",self.userId,[self.userName base64EncodedString],self.signPublicKey?:@""];
+    CGFloat cornt = defaultImg.size.height/7;
     @weakify_self
-    [HMScanner qrImageWithString:coderValue avatar:nil completion:^(UIImage *image) {
+    [HMScanner qrImageWithString:coderValue avatar:[defaultImg roundedCornerImage:cornt borderSize:10] completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;
     }];
 }
@@ -159,7 +163,8 @@
 #pragma mark -系统分享
 - (void) shareAction
 {
-    NSArray *images = @[_codeImgView.image];
+    ;
+    NSArray *images = @[[_codeBackView getImageFromView]];
     UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:images applicationActivities:nil];
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }

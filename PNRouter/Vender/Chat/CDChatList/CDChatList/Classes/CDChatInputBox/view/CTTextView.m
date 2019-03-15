@@ -139,9 +139,6 @@
         }
     }
     
-//    [self contentToVerticalCenter];
-//    NSLog(@"self.contentSize = %@",NSStringFromCGSize(self.contentSize));
-//    [self contentSizeToFit];
 }
 
 - (void)contentToVerticalCenter {

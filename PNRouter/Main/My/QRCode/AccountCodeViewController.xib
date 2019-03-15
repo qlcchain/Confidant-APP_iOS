@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountCodeViewController">
             <connections>
+                <outlet property="codeBackView" destination="LoD-KB-tSH" id="LVo-Ld-Muj"/>
                 <outlet property="codeImgView" destination="njD-vc-LeQ" id="1Np-W8-ao8"/>
                 <outlet property="lblName" destination="8bd-qO-0I0" id="kqg-aD-oDe"/>
                 <outlet property="saveBtn" destination="fM6-g0-x8q" id="Arz-gS-7lL"/>

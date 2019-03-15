@@ -11,18 +11,20 @@
 #import "HMScanner.h"
 #import "NSString+Base64.h"
 #import "EntryModel.h"
+#import "UIView+Visuals.h"
 
 @interface AccountCodeViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *codeImgView;
 @property (weak, nonatomic) IBOutlet UIButton *saveBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UIView *codeBackView;
 
 @end
 
 @implementation AccountCodeViewController
 - (IBAction)saveAction:(id)sender {
-    [self loadImageFinished: self.codeImgView.image];
+    [self loadImageFinished:[_codeBackView getImageFromView]];
 }
 - (IBAction)backAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
@@ -47,7 +49,7 @@
 #pragma mark -系统分享
 - (void) shareAction
 {
-    NSArray *images = @[_codeImgView.image];
+    NSArray *images = @[[_codeBackView getImageFromView]];
     UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:images applicationActivities:nil];
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }

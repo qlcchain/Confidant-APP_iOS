@@ -318,6 +318,7 @@ CGSize caculateAudioCellSize(CDChatMessage msg, NSString *path) {
     // res: 0.5...1 ,  从0.5 趋近于 1, 在audioTimeinSecs = 14秒左右res到达1 调整2.71828可控制速度
     float res = (1 / (0.14 + (pow(1.71828, -audioTimeinSecs))));
     msg.audioTime = audioTimeinSecs;
+    
     msg.audioTime = msg.audioTime > 0 ? msg.audioTime : 1;
     return CGSizeMake(cd_ScreenW() * 0.015 + res * 22, msg.chatConfig.messageContentH);
 }
@@ -341,8 +342,14 @@ CGSize caculateAudioCellSize(CDChatMessage msg, NSString *path) {
         msgkey = msgData.dskey;
     }
     NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:msgData.fileName];
+    
     if ([SystemUtil filePathisExist:filePath]) {
+        
         CGSize size = caculateAudioCellSize(msgData,filePath);
+        if (msgData.audioTime == 1) {
+            CGSize defaulutSize = CGSizeMake(50, msgData.chatConfig.messageContentH);
+            return defaulutSize;
+        }
         msgData.bubbleWidth = size.width;
         // 加上可能显示的时间视图高度
         CGFloat height = size.height;
@@ -351,7 +358,7 @@ CGSize caculateAudioCellSize(CDChatMessage msg, NSString *path) {
         msgData.cellHeight = height + (msgData.willDisplayTime ? msgData.chatConfig.msgTimeH : 0);
         return size;
     } else {
-        CGSize defaulutSize = CGSizeMake(cd_ScreenW() * 0.3, msgData.chatConfig.messageContentH);
+        CGSize defaulutSize = CGSizeMake(50, msgData.chatConfig.messageContentH);
         return defaulutSize;
         
     }
