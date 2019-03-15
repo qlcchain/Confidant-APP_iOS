@@ -106,7 +106,7 @@ static UIColor *InputHexColor(int hexColor){
     self.textView.returnKeyType = UIReturnKeySend;
     self.textView.delegate = self;
   
-    self.textView.contentInset = UIEdgeInsetsMake(3, self.textView.contentInset.left,0, self.textView.contentInset.right);
+//    self.textView.contentInset = UIEdgeInsetsMake(3, self.textView.contentInset.left,0, self.textView.contentInset.right);
     
     [self addSubview:textView];
     __weak __typeof__ (self) wself = self;
