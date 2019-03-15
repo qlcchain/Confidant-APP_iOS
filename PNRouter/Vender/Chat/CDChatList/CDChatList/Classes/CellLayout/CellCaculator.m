@@ -330,7 +330,10 @@ CGSize caculateAudioCellSize(CDChatMessage msg, NSString *path) {
     
     //  从本地取消息音频,如果是自己发的会通过messageId缓存
     // 获得本地缓存的图片
-    
+    if (msgData.fileHeight > 0 && msgData.fileWidth > 0) {
+     // CGFloat height =  msgData.fileHeight + (msgData.willDisplayTime ? msgData.chatConfig.msgTimeH : 0);
+        return CGSizeMake(msgData.fileWidth, msgData.fileHeight);
+    }
     NSString *friendid = msgData.ToId;
     NSString *msgkey = msgData.srckey;
     if (msgData.isLeft) {
@@ -343,6 +346,8 @@ CGSize caculateAudioCellSize(CDChatMessage msg, NSString *path) {
         msgData.bubbleWidth = size.width;
         // 加上可能显示的时间视图高度
         CGFloat height = size.height;
+        msgData.fileHeight = height;
+        msgData.fileWidth = size.width;
         msgData.cellHeight = height + (msgData.willDisplayTime ? msgData.chatConfig.msgTimeH : 0);
         return size;
     } else {

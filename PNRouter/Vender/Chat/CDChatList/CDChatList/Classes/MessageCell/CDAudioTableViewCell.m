@@ -177,6 +177,12 @@
         if ( data.msgState != CDMessageStateNormal) {
             data.msgState = CDMessageStateNormal;
             [self.tableView updateMessage:data];
+            
+            self.audioTimeLabel_left.text = [NSString stringWithFormat:@"%d\"",data.audioTime];
+            [self.audioTimeLabel_left setHidden: NO];
+            
+            [ self.indicator_left stopAnimating];
+            [ self.indicator_left setHidden: YES];
         }
     } else {
         if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
@@ -276,7 +282,14 @@
         if ( data.msgState != CDMessageStateNormal) {
              data.msgState = CDMessageStateNormal;
             [self.tableView updateMessage:data];
+            
+            self.audioTimeLabel_right.text = [NSString stringWithFormat:@"%d\"",data.audioTime];
+            [self.audioTimeLabel_right setHidden: NO];
+            
+            [ self.indicator_right stopAnimating];
+            [ self.indicator_right setHidden: YES];
         }
+       
     } else {
         if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal || data.msgState == CDMessageStateSending) {
             return;

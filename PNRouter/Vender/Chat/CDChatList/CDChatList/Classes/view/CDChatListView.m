@@ -252,21 +252,30 @@
     // 更新数据源
     NSMutableArray *mutableMsgArr = [NSMutableArray arrayWithArray:_msgArr];
     [mutableMsgArr replaceObjectAtIndex:msgIndex withObject:message];
-    self.msgArr = [mutableMsgArr copy];
-//    _msgArr = [mutableMsgArr copy];
+    _msgArr = [mutableMsgArr copy];
+   // [self reloadData];
+    NSIndexPath *index = [NSIndexPath indexPathForRow:msgIndex inSection:0];
+    CDBaseMsgCell *baseCell = [self cellForRowAtIndexPath:index];
+    NSLog(@"----%ld", [self visibleCells].count);
+    if (baseCell) {
+        [self reloadRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationNone];
+    } else {
+        NSLog(@"-44--");
+    }
+    
     
     // 若待更新的cell在屏幕上方，则可能造成屏幕抖动，需要手动调回contentoffset
-    NSIndexPath *index = [NSIndexPath indexPathForRow:msgIndex inSection:0];
-    CGRect rect_old = [self rectForRowAtIndexPath:index]; // cell所在位置
-    CGFloat cellOffset = rect_old.origin.y + rect_old.size.height;
-    CGPoint contentOffset = self.contentOffset;
-    BOOL needAdjust = cellOffset < contentOffset.y;
-    
-    if (needAdjust) {
-        CGRect rect_new = [self rectForRowAtIndexPath:index]; // cell新的位置
-        CGFloat adjust = rect_old.size.height - rect_new.size.height;
-       // [self setContentOffset:CGPointMake(0, self.contentOffset.y - adjust)];
-    }
+//    NSIndexPath *index = [NSIndexPath indexPathForRow:msgIndex inSection:0];
+//    CGRect rect_old = [self rectForRowAtIndexPath:index]; // cell所在位置
+//    CGFloat cellOffset = rect_old.origin.y + rect_old.size.height;
+//    CGPoint contentOffset = self.contentOffset;
+//    BOOL needAdjust = cellOffset < contentOffset.y;
+//
+//    if (needAdjust) {
+//        CGRect rect_new = [self rectForRowAtIndexPath:index]; // cell新的位置
+//        CGFloat adjust = rect_old.size.height - rect_new.size.height;
+//        [self setContentOffset:CGPointMake(0, self.contentOffset.y - adjust)];
+//    }
 }
 
 /**
@@ -281,10 +290,10 @@
     NSMutableArray *arr = [NSMutableArray arrayWithArray:_msgArr];
     [arr addObjectsFromArray:newBottomMsgArr];
     _msgArr = arr;
-    
-    [self configTableData:arr completeBlock:^(CGFloat totalHeight){
-        [self relayoutTable:NO];
-    }];
+    [self relayoutTable:NO];
+//    [self configTableData:arr completeBlock:^(CGFloat totalHeight){
+//        [self relayoutTable:NO];
+//    }];
     
 }
 
@@ -298,20 +307,22 @@
 -(void)configTableData: (CDChatMessageArray)msgArr
          completeBlock: (void(^)(CGFloat))callBack{
     
+   
+    
     [self mainAsyQueue:^{
         
         if (msgArr.count == 0) {
             self->_msgArr = msgArr;
-            //[self reloadData];
             callBack(0);
         } else {
-            dispatch_async(dispatch_get_global_queue(0, 0), ^{                
-                [self.caculator caculatorAllCellHeight:msgArr callBackOnMainThread:^(CGFloat totalHeight) {
-                    self->_msgArr = msgArr;
-                   /// [self reloadData];
-                    callBack(totalHeight);
-                }];
-            });
+            self->_msgArr = msgArr;
+            callBack(0);
+//            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//                [self.caculator caculatorAllCellHeight:msgArr callBackOnMainThread:^(CGFloat totalHeight) {
+//                    self->_msgArr = msgArr;
+//                    callBack(totalHeight);
+//                }];
+//            });
         }
     }];
 }
