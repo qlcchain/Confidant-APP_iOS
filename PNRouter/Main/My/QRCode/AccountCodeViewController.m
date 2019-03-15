@@ -13,20 +13,22 @@
 #import "EntryModel.h"
 #import "UIView+Visuals.h"
 #import "UIImage+RoundedCorner.h"
+#import <YBImageBrowser/YBImageBrowser.h>
+#import "PNDefaultHeaderView.h"
 
 @interface AccountCodeViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *codeImgView;
-@property (weak, nonatomic) IBOutlet UIButton *saveBtn;
+@property (weak, nonatomic) IBOutlet UIButton *nameBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UIView *codeBackView;
 
 @end
 
 @implementation AccountCodeViewController
-- (IBAction)saveAction:(id)sender {
-    [self loadImageFinished:[_codeBackView getImageFromView]];
-}
+//- (IBAction)saveAction:(id)sender {
+//    [self loadImageFinished:[_codeBackView getImageFromView]];
+//}
 - (IBAction)backAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
 }
@@ -34,10 +36,37 @@
      [self shareAction];
 }
 
+- (IBAction)headAction:(id)sender {
+    // 本地图片（推荐使用 YBImage）
+    YBImageBrowseCellData *data1 = [YBImageBrowseCellData new];
+    UIImage *resultImg = _nameBtn.currentImage;
+    data1.imageBlock = ^__kindof UIImage * _Nullable{
+        return resultImg;
+    };
+    data1.sourceObject = _nameBtn.imageView;
+    
+    // 设置数据源数组并展示
+    YBImageBrowser *browser = [YBImageBrowser new];
+    browser.dataSourceArray = @[data1];
+    browser.currentIndex = 0;
+    [browser show];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _saveBtn.layer.cornerRadius = RADIUS;
-    _saveBtn.layer.masksToBounds = YES;
+//    _saveBtn.layer.cornerRadius = RADIUS;
+//    _saveBtn.layer.masksToBounds = YES;
+    
+    NSString *userName = [UserModel getUserModel].username;
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:userName]];
+    _nameBtn.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    _nameBtn.layer.cornerRadius = _nameBtn.width/2.0;
+    _nameBtn.layer.masksToBounds = YES;
+    [_nameBtn setImage:defaultImg forState:UIControlStateNormal];
+    
+    _codeBackView.layer.cornerRadius = 8;
+    _codeImgView.layer.masksToBounds = YES;
     
     _lblName.text = [UserModel getUserModel].username;
     NSString *coderValue = [NSString stringWithFormat:@"type_3,%@,%@,%@",[EntryModel getShareObject].signPrivateKey,[UserModel getUserModel].userSn,[[UserModel getUserModel].username base64EncodedString]];
@@ -69,14 +98,5 @@
         [self.view showHint:@"Save Failed"];
     }
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
