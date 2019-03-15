@@ -1,6 +1,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define CTInputView_Height 40
+
 typedef void(^CM_textHeightChangedBlock)(NSString *text,CGFloat textHeight);
 
 // 输入框textview
@@ -40,5 +42,7 @@ typedef void(^CM_textHeightChangedBlock)(NSString *text,CGFloat textHeight);
 - (void)textValueDidChanged:(CM_textHeightChangedBlock)block;
 
 -(void)textDidChange;
+
+- (void)contentToVerticalCenter;
 
 @end
