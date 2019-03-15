@@ -9,6 +9,7 @@
 #import "RouterDetailViewController.h"
 #import "EditTextViewController.h"
 #import "RouterCodeViewController.h"
+#import "InvitationQRCodeViewController.h"
 #import "RouterModel.h"
 #import "PNRouter-Swift.h"
 #import "SystemUtil.h"
@@ -159,7 +160,7 @@
 }
 
 - (void)jumpToRouterCode {
-    RouterCodeViewController *vc = [[RouterCodeViewController alloc] init];
+    InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
     vc.routerM = _routerM;
     [self.navigationController pushViewController:vc animated:YES];
 }

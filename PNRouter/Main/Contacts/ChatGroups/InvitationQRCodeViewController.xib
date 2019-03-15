@@ -15,7 +15,7 @@
                 <outlet property="backView" destination="Q9A-Rd-AOl" id="70J-bb-7qS"/>
                 <outlet property="codeImgView" destination="EpS-iE-lnw" id="8Mw-zS-h0t"/>
                 <outlet property="lblDesc" destination="sUR-dV-Mb7" id="U6K-DJ-e7B"/>
-                <outlet property="lblName" destination="YGd-9H-plc" id="9Dq-Qq-0cY"/>
+                <outlet property="lblName" destination="WzK-to-YNg" id="v0i-Im-qOS"/>
                 <outlet property="userHeadBtn" destination="nVv-1A-ltn" id="qU4-5l-bcq"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -83,20 +83,14 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9AJ-d4-RxK">
                                             <rect key="frame" x="18" y="25" width="307" height="67"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ChenKei" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGd-9H-plc">
-                                                    <rect key="frame" x="123" y="0.0" width="61" height="19"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                                    <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sent you an invitation to join his circle " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RhT-ly-Ld3">
-                                                    <rect key="frame" x="17.5" y="24" width="272" height="19"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="an invitation to join this circle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RhT-ly-Ld3">
+                                                    <rect key="frame" x="50" y="20" width="207" height="19"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                     <color key="textColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="【Bay Area Biz Networking】" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WzK-to-YNg">
-                                                    <rect key="frame" x="42.5" y="47" width="222" height="20"/>
+                                                    <rect key="frame" x="42.5" y="43" width="222" height="20"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -104,12 +98,10 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="YGd-9H-plc" firstAttribute="top" secondItem="9AJ-d4-RxK" secondAttribute="top" id="1y8-jT-JTq"/>
                                                 <constraint firstItem="WzK-to-YNg" firstAttribute="centerX" secondItem="9AJ-d4-RxK" secondAttribute="centerX" id="JwB-tx-4CL"/>
-                                                <constraint firstItem="RhT-ly-Ld3" firstAttribute="top" secondItem="YGd-9H-plc" secondAttribute="bottom" constant="5" id="Nik-Do-64y"/>
+                                                <constraint firstItem="RhT-ly-Ld3" firstAttribute="top" secondItem="9AJ-d4-RxK" secondAttribute="top" constant="20" id="Rcp-z7-8e2"/>
                                                 <constraint firstItem="RhT-ly-Ld3" firstAttribute="centerX" secondItem="9AJ-d4-RxK" secondAttribute="centerX" id="ewB-0P-na8"/>
                                                 <constraint firstItem="WzK-to-YNg" firstAttribute="top" secondItem="RhT-ly-Ld3" secondAttribute="bottom" constant="4" id="gzf-5S-CLM"/>
-                                                <constraint firstItem="YGd-9H-plc" firstAttribute="centerX" secondItem="9AJ-d4-RxK" secondAttribute="centerX" id="psj-qc-ul0"/>
                                                 <constraint firstAttribute="height" constant="67" id="qLg-IA-A8P"/>
                                             </constraints>
                                         </view>
@@ -131,7 +123,6 @@
                                         <constraint firstAttribute="height" constant="56" id="E1T-mI-8qZ"/>
                                         <constraint firstAttribute="width" constant="56" id="kiv-4d-vze"/>
                                     </constraints>
-                                    <state key="normal" image="icon_group_head"/>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EpS-iE-lnw">
                                     <rect key="frame" x="74" y="194" width="195" height="195"/>
@@ -139,8 +130,11 @@
                                         <constraint firstAttribute="width" secondItem="EpS-iE-lnw" secondAttribute="height" multiplier="1:1" id="Re8-58-2Nf"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Never expose the QR code to anyone!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUR-dV-Mb7">
-                                    <rect key="frame" x="77.5" y="404" width="188" height="13"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Never expose the QR code to anyone!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUR-dV-Mb7">
+                                    <rect key="frame" x="16" y="404" width="311" height="13"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="v0t-pp-6hd"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                                     <color key="textColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -148,14 +142,14 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gL1-bd-FbP">
                                     <rect key="frame" x="16" y="453" width="311" height="39"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Never expose the QR code to anyone!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KYh-x1-OuJ">
-                                            <rect key="frame" x="78" y="13.5" width="171" height="12"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open the QR code with Confidant app to join the circle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KYh-x1-OuJ">
+                                            <rect key="frame" x="41" y="13.5" width="245.5" height="12"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
                                             <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_router_small" translatesAutoresizingMaskIntoConstraints="NO" id="lO0-jF-P85">
-                                            <rect key="frame" x="58" y="11.5" width="16" height="16"/>
+                                            <rect key="frame" x="21" y="11.5" width="16" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="IIQ-2i-hY0"/>
                                                 <constraint firstAttribute="width" constant="16" id="hzx-W4-D9p"/>
@@ -190,6 +184,7 @@
                                 <constraint firstItem="WjV-Ba-7YQ" firstAttribute="top" secondItem="Q9A-Rd-AOl" secondAttribute="top" id="A3F-g5-A6C"/>
                                 <constraint firstItem="gL1-bd-FbP" firstAttribute="top" secondItem="sUR-dV-Mb7" secondAttribute="bottom" constant="36" id="ASc-BT-746"/>
                                 <constraint firstItem="nVv-1A-ltn" firstAttribute="centerX" secondItem="Q9A-Rd-AOl" secondAttribute="centerX" id="BKd-hd-UxM"/>
+                                <constraint firstItem="sUR-dV-Mb7" firstAttribute="leading" secondItem="Q9A-Rd-AOl" secondAttribute="leading" constant="16" id="CTT-nx-bsu"/>
                                 <constraint firstItem="WjV-Ba-7YQ" firstAttribute="centerX" secondItem="Q9A-Rd-AOl" secondAttribute="centerX" id="Hj1-sC-nw3"/>
                                 <constraint firstItem="EpS-iE-lnw" firstAttribute="top" secondItem="nVv-1A-ltn" secondAttribute="bottom" constant="32" id="Hku-xZ-2Ik"/>
                                 <constraint firstItem="WjV-Ba-7YQ" firstAttribute="leading" secondItem="Q9A-Rd-AOl" secondAttribute="leading" id="KEB-Et-ZqW"/>
@@ -197,6 +192,7 @@
                                 <constraint firstItem="nVv-1A-ltn" firstAttribute="top" secondItem="WjV-Ba-7YQ" secondAttribute="bottom" constant="-28" id="UGj-3v-HzK"/>
                                 <constraint firstAttribute="trailing" secondItem="gL1-bd-FbP" secondAttribute="trailing" constant="16" id="ZO5-NI-MBe"/>
                                 <constraint firstItem="gL1-bd-FbP" firstAttribute="leading" secondItem="Q9A-Rd-AOl" secondAttribute="leading" constant="16" id="cZw-Ze-tKY"/>
+                                <constraint firstAttribute="trailing" secondItem="sUR-dV-Mb7" secondAttribute="trailing" constant="16" id="dev-IW-OFt"/>
                                 <constraint firstAttribute="trailing" secondItem="EpS-iE-lnw" secondAttribute="trailing" constant="74" id="jvZ-T5-RBi"/>
                                 <constraint firstAttribute="bottom" secondItem="gL1-bd-FbP" secondAttribute="bottom" id="plj-bM-EPJ"/>
                                 <constraint firstItem="EpS-iE-lnw" firstAttribute="leading" secondItem="Q9A-Rd-AOl" secondAttribute="leading" constant="74" id="w6O-SX-9gM"/>
@@ -222,12 +218,11 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="NSH-Lc-Hrl" secondAttribute="bottom" id="tJQ-E7-2uJ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="325.60000000000002" y="-105.69715142428787"/>
+            <point key="canvasLocation" x="374" y="-202"/>
         </view>
     </objects>
     <resources>
         <image name="arrow-exit-h" width="24" height="24"/>
-        <image name="icon_group_head" width="72" height="72"/>
         <image name="icon_router_small" width="24" height="24"/>
         <image name="invitation_background" width="343" height="134"/>
         <image name="share" width="24" height="24"/>

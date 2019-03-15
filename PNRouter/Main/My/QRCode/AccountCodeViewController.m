@@ -71,8 +71,9 @@
     _lblName.text = [UserModel getUserModel].username;
     NSString *coderValue = [NSString stringWithFormat:@"type_3,%@,%@,%@",[EntryModel getShareObject].signPrivateKey,[UserModel getUserModel].userSn,[[UserModel getUserModel].username base64EncodedString]];
     
+     CGFloat cornt = defaultImg.size.height/7;
     @weakify_self
-    [HMScanner qrImageWithString:coderValue avatar:nil completion:^(UIImage *image) {
+    [HMScanner qrImageWithString:coderValue avatar:[defaultImg roundedCornerImage:cornt borderSize:0] completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;
     }];
 }

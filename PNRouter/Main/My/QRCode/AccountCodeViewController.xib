@@ -118,24 +118,26 @@
                                                         <constraint firstAttribute="width" secondItem="njD-vc-LeQ" secondAttribute="height" multiplier="1:1" id="hXj-Pl-ro9"/>
                                                     </constraints>
                                                 </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_never_share" translatesAutoresizingMaskIntoConstraints="NO" id="GeG-c7-MHi">
+                                                    <rect key="frame" x="-29" y="78" width="337" height="64"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="337" id="3O7-Ri-3gf"/>
+                                                        <constraint firstAttribute="height" constant="64" id="HDF-57-nzk"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
+                                                <constraint firstItem="GeG-c7-MHi" firstAttribute="centerX" secondItem="LoD-KB-tSH" secondAttribute="centerX" id="9An-53-LPX"/>
                                                 <constraint firstAttribute="bottom" secondItem="njD-vc-LeQ" secondAttribute="bottom" constant="32" id="GuJ-Td-VJ1"/>
                                                 <constraint firstAttribute="trailing" secondItem="Jw0-Pr-pYE" secondAttribute="trailing" id="HoG-dj-pBa"/>
                                                 <constraint firstAttribute="height" constant="398" id="PJY-DJ-6ja"/>
                                                 <constraint firstItem="njD-vc-LeQ" firstAttribute="centerX" secondItem="LoD-KB-tSH" secondAttribute="centerX" id="VP7-pe-JAB"/>
                                                 <constraint firstItem="Jw0-Pr-pYE" firstAttribute="leading" secondItem="LoD-KB-tSH" secondAttribute="leading" id="kOM-Dn-ONr"/>
+                                                <constraint firstItem="GeG-c7-MHi" firstAttribute="top" secondItem="Jw0-Pr-pYE" secondAttribute="bottom" id="lIf-y4-xYy"/>
                                                 <constraint firstItem="Jw0-Pr-pYE" firstAttribute="top" secondItem="LoD-KB-tSH" secondAttribute="top" id="nuH-s2-1AN"/>
                                             </constraints>
                                         </view>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_never_share" translatesAutoresizingMaskIntoConstraints="NO" id="GeG-c7-MHi">
-                                            <rect key="frame" x="19" y="110" width="337" height="64"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="337" id="3O7-Ri-3gf"/>
-                                                <constraint firstAttribute="height" constant="64" id="HDF-57-nzk"/>
-                                            </constraints>
-                                        </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The configuration QR code is for re-logging in to your account or synchronizing your Confidant account on new devices." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MRP-do-ZDa">
                                             <rect key="frame" x="32" y="462" width="311" height="47"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -148,12 +150,10 @@
                                         <constraint firstItem="MRP-do-ZDa" firstAttribute="leading" secondItem="tBP-vk-tDa" secondAttribute="leading" constant="32" id="5f6-uw-Xyb"/>
                                         <constraint firstAttribute="trailing" secondItem="LoD-KB-tSH" secondAttribute="trailing" constant="48" id="Buj-gV-YSA"/>
                                         <constraint firstItem="MRP-do-ZDa" firstAttribute="top" secondItem="LoD-KB-tSH" secondAttribute="bottom" constant="32" id="FG0-KV-COe"/>
-                                        <constraint firstItem="GeG-c7-MHi" firstAttribute="centerX" secondItem="tBP-vk-tDa" secondAttribute="centerX" id="PCS-MV-42q"/>
                                         <constraint firstAttribute="trailing" secondItem="MRP-do-ZDa" secondAttribute="trailing" constant="32" id="Wlt-rQ-DY9"/>
                                         <constraint firstItem="LoD-KB-tSH" firstAttribute="top" secondItem="tBP-vk-tDa" secondAttribute="top" constant="32" id="eW3-MO-zlg"/>
                                         <constraint firstAttribute="height" constant="603" id="lTl-5F-sxl"/>
                                         <constraint firstItem="LoD-KB-tSH" firstAttribute="leading" secondItem="tBP-vk-tDa" secondAttribute="leading" constant="48" id="sMU-sd-9Xf"/>
-                                        <constraint firstItem="GeG-c7-MHi" firstAttribute="top" secondItem="tBP-vk-tDa" secondAttribute="top" constant="110" id="t7c-sz-fXA"/>
                                     </constraints>
                                 </view>
                             </subviews>
