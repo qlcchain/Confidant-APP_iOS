@@ -34,7 +34,8 @@
 
 -(instancetype)init{
     self = [super init];
-    inset = 8.0f;
+//    inset = 8.0f;
+    inset = 10.0f;
     hasVoice = NO;
     hasEmoji = NO;;
     hasMore = NO;;

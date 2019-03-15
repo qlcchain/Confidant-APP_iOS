@@ -252,7 +252,8 @@
     // 更新数据源
     NSMutableArray *mutableMsgArr = [NSMutableArray arrayWithArray:_msgArr];
     [mutableMsgArr replaceObjectAtIndex:msgIndex withObject:message];
-    _msgArr = [mutableMsgArr copy];
+    self.msgArr = [mutableMsgArr copy];
+//    _msgArr = [mutableMsgArr copy];
     
     // 若待更新的cell在屏幕上方，则可能造成屏幕抖动，需要手动调回contentoffset
     NSIndexPath *index = [NSIndexPath indexPathForRow:msgIndex inSection:0];
@@ -260,9 +261,6 @@
     CGFloat cellOffset = rect_old.origin.y + rect_old.size.height;
     CGPoint contentOffset = self.contentOffset;
     BOOL needAdjust = cellOffset < contentOffset.y;
-    
-   // [self reloadData];
-    [self reloadRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationNone];
     
     if (needAdjust) {
         CGRect rect_new = [self rectForRowAtIndexPath:index]; // cell新的位置
