@@ -11,18 +11,21 @@
 #import "HMScanner.h"
 #import "NSString+Base64.h"
 #import "EntryModel.h"
+#import "UIView+Visuals.h"
+#import "UIImage+RoundedCorner.h"
 
 @interface AccountCodeViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *codeImgView;
 @property (weak, nonatomic) IBOutlet UIButton *saveBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UIView *codeBackView;
 
 @end
 
 @implementation AccountCodeViewController
 - (IBAction)saveAction:(id)sender {
-    [self loadImageFinished: self.codeImgView.image];
+    [self loadImageFinished:[_codeBackView getImageFromView]];
 }
 - (IBAction)backAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
@@ -38,6 +41,7 @@
     
     _lblName.text = [UserModel getUserModel].username;
     NSString *coderValue = [NSString stringWithFormat:@"type_3,%@,%@,%@",[EntryModel getShareObject].signPrivateKey,[UserModel getUserModel].userSn,[[UserModel getUserModel].username base64EncodedString]];
+    
     @weakify_self
     [HMScanner qrImageWithString:coderValue avatar:nil completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;
@@ -47,7 +51,7 @@
 #pragma mark -系统分享
 - (void) shareAction
 {
-    NSArray *images = @[_codeImgView.image];
+    NSArray *images = @[[_codeBackView getImageFromView]];
     UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:images applicationActivities:nil];
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }

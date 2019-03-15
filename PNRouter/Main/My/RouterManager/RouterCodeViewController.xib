@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RouterCodeViewController">
             <connections>
+                <outlet property="codeBackView" destination="wVg-H4-O1q" id="lCN-oQ-Sx1"/>
                 <outlet property="codeImgView" destination="PAd-3C-l2g" id="fm6-0s-32H"/>
                 <outlet property="lblName" destination="PJn-3H-Vnp" id="CzC-7b-tL1"/>
                 <outlet property="lblNavTitle" destination="6Cq-cV-5LP" id="3DB-Hw-VOR"/>
@@ -231,7 +232,7 @@
                 <constraint firstItem="Jd4-kR-ur4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fhy-yH-FET"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-388" y="-94"/>
+            <point key="canvasLocation" x="-652" y="-121"/>
         </view>
     </objects>
     <resources>

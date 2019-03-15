@@ -435,6 +435,7 @@ static UIColor *InputHexColor(int hexColor){
 -(void)updateLayout:(CGFloat)newTextViewHight{
     
    newTextViewHight = newTextViewHight < CTInputView_Height ? CTInputView_Height:newTextViewHight;
+    
     // 输入框默认位置
     CTInputConfiguration *config = CTinputHelper.share.config;
     
@@ -454,8 +455,15 @@ static UIColor *InputHexColor(int hexColor){
     [UIView animateWithDuration:0.25f delay:0 options:7 animations:^{
         self.frame = newRect;
         self.textView.frame = newTextViewRect;
+        if (self.textView.frame.size.height <= newTextViewRect.size.height) {
+             [self.textView contentToVerticalCenter];
+        }
+       
+        
+        
     } completion:^(BOOL finished) {
-        [self.textView contentToVerticalCenter];
+       
+        
     }];
 }
 

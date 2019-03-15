@@ -13,6 +13,7 @@
 #import "PNDefaultHeaderView.h"
 #import "EntryModel.h"
 #import <YBImageBrowser/YBImageBrowser.h>
+#import "UIView+Visuals.h"
 
 @interface RouterUserCodeViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *UserHeadBtn;
@@ -20,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *delUserBtn;
 @property (weak, nonatomic) IBOutlet UIButton *delRightBtn;
 @property (weak, nonatomic) IBOutlet UIButton *invitaionBtn;
+@property (weak, nonatomic) IBOutlet UIView *codeBackView;
 
 @end
 
@@ -93,7 +95,7 @@
 }
 
 - (void)shareCode {
-    NSArray *images = @[_codeImage.image];
+    NSArray *images = @[[_codeBackView getImageFromView]];
     UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:images applicationActivities:nil];
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }

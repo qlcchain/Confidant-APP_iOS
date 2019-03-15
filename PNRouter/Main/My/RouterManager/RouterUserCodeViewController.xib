@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RouterUserCodeViewController">
             <connections>
                 <outlet property="UserHeadBtn" destination="X2u-8B-9PH" id="I54-vS-er7"/>
+                <outlet property="codeBackView" destination="1Ku-ZU-xAd" id="fJe-nh-whW"/>
                 <outlet property="codeImage" destination="h4Q-x6-23O" id="3jT-eV-BuR"/>
                 <outlet property="delRightBtn" destination="xet-Gp-ylV" id="jch-1n-AY3"/>
                 <outlet property="delUserBtn" destination="fbp-hZ-WOP" id="Ayd-aH-egc"/>
@@ -262,7 +263,7 @@
                 <constraint firstItem="N3k-Nc-K9i" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="gt0-Nb-RNy"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-977" y="48"/>
+            <point key="canvasLocation" x="-942" y="-58"/>
         </view>
     </objects>
     <resources>

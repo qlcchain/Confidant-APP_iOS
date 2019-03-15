@@ -64,4 +64,6 @@
        repeatCount: (CGFloat)repeatCount
     timingFunction: (CAMediaTimingFunction *)timingFunction;
 
+//获取截图
+- (UIImage *) getImageFromView;
 @end
