@@ -130,7 +130,7 @@
     NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@,%@",self.userId,[self.userName base64EncodedString],self.signPublicKey?:@""];
     CGFloat cornt = defaultImg.size.height/7;
     @weakify_self
-    [HMScanner qrImageWithString:coderValue avatar:[defaultImg roundedCornerImage:cornt borderSize:10] completion:^(UIImage *image) {
+    [HMScanner qrImageWithString:coderValue avatar:[defaultImg roundedCornerImage:cornt borderSize:0] completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;
     }];
 }

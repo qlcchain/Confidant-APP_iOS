@@ -13,6 +13,7 @@
 #import "RouterModel.h"
 #import "AESCipher.h"
 #import "UIView+Visuals.h"
+#import "UIImage+RoundedCorner.h"
 
 @interface RouterCodeViewController ()
 
@@ -88,8 +89,10 @@
     NSString *aesCode = [NSString stringWithFormat:@"%@%@%@",@"010001",_routerM.toxid?:@"",_routerM.userSn?:@""];
    aesCode = aesEncryptString(aesCode, AES_KEY);
     aesCode = [NSString stringWithFormat:@"type_1,%@",aesCode];
+    
+   UIImage *avatarImg =  [UIImage imageNamed:@"img_card_router"];
     @weakify_self
-    [HMScanner qrImageWithString:aesCode avatar:nil completion:^(UIImage *image) {
+    [HMScanner qrImageWithString:aesCode avatar:avatarImg completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;
     }];
 }
