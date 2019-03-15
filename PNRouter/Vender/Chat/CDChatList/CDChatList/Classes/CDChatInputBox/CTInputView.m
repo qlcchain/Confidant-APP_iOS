@@ -105,6 +105,9 @@ static UIColor *InputHexColor(int hexColor){
     self.textView.cornerRadius = 3.0f;
     self.textView.returnKeyType = UIReturnKeySend;
     self.textView.delegate = self;
+    
+//    textView.contentOffset = CGPointMake(0, -2);
+//    textView.contentSize = CGSizeMake(textView.contentSize.width,textView.contentSize.height - 4);
   
     [self addSubview:textView];
     __weak __typeof__ (self) wself = self;
@@ -431,7 +434,7 @@ static UIColor *InputHexColor(int hexColor){
 #pragma mark 适应输入框高度变化
 -(void)updateLayout:(CGFloat)newTextViewHight{
     
-   newTextViewHight = newTextViewHight < 40 ? 40:newTextViewHight;
+   newTextViewHight = newTextViewHight < CTInputView_Height ? CTInputView_Height:newTextViewHight;
     // 输入框默认位置
     CTInputConfiguration *config = CTinputHelper.share.config;
     
@@ -451,9 +454,8 @@ static UIColor *InputHexColor(int hexColor){
     [UIView animateWithDuration:0.25f delay:0 options:7 animations:^{
         self.frame = newRect;
         self.textView.frame = newTextViewRect;
-       // self.textView.contentOffset = CGPointMake(0, -4/2.0);
     } completion:^(BOOL finished) {
-        
+        [self.textView contentToVerticalCenter];
     }];
 }
 

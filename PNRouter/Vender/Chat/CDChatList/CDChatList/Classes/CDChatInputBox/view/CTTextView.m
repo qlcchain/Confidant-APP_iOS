@@ -113,6 +113,8 @@
     self.layer.borderColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0].CGColor;
     //实时监听textView值得改变
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange) name:UITextViewTextDidChangeNotification object:self];
+    
+    [self contentToVerticalCenter];
 }
 
 - (void)textDidChange
@@ -136,9 +138,19 @@
             _textChangedBlock(self.text,height);
         }
     }
+    
+//    [self contentToVerticalCenter];
+//    NSLog(@"self.contentSize = %@",NSStringFromCGSize(self.contentSize));
+//    [self contentSizeToFit];
 }
 
-
+- (void)contentToVerticalCenter {
+    if ([self contentSize].height == CTInputView_Height) {
+        CGFloat topCorrect = ([self bounds].size.height - (CTInputView_Height - 4));
+        topCorrect = (topCorrect <0.0 ?0.0 : topCorrect);
+        self.contentOffset = (CGPoint){.x =0, .y = -topCorrect/2};
+    }
+}
 
 - (void)dealloc
 {

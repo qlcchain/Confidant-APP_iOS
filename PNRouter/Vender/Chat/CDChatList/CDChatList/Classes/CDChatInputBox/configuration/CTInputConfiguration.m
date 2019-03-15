@@ -13,6 +13,7 @@
     BOOL hasEmoji;
     BOOL hasMore;
     CGFloat inset; // 内边距
+    CGFloat textViewInset; // 输入框内边距
     CGSize buttongSize; // 按钮大小
     CGFloat CTInputViewWidth;
     NSDictionary<NSString *,UIImage *> *moreInfo;
@@ -34,8 +35,8 @@
 
 -(instancetype)init{
     self = [super init];
-//    inset = 8.0f;
-    inset = 10.0f;
+    inset = 8.0f;
+    textViewInset = 8.0f;
     hasVoice = NO;
     hasEmoji = NO;;
     hasMore = NO;;
@@ -71,9 +72,11 @@
  */
 -(CGRect)inputViewRect{
     
-    CGFloat top = inset;
+//    CGFloat top = inset;
+    CGFloat top = textViewInset;
     CGFloat left = hasVoice ? inset * 2 + buttongSize.width : inset;
-    CGFloat bottom = inset;
+//    CGFloat bottom = inset;
+    CGFloat bottom = textViewInset;
     CGFloat right = inset + (hasEmoji ? buttongSize.width + inset : 0) + + (hasMore ? buttongSize.width + inset : 0);
     
     return CGRectMake(left, top, CTInputViewWidth - left - right, CTInputViewHeight - top - bottom);
