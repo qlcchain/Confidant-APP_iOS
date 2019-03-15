@@ -250,9 +250,20 @@
 
 #pragma mark - 配置DDLog
 - (void)configDDLog {
-    //开启DDLog 颜色
-    //    [[DDTTYLogger sharedInstance] setColorsEnabled:YES];
-    //    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor blueColor] backgroundColor:nil forFlag:DDLogFlagVerbose];
+    
+//    char *xcode_colors = getenv("XcodeColors");
+//    if (xcode_colors && (strcmp(xcode_colors, "YES") == 0))
+//    {
+//        // XcodeColors is installed and enabled!
+//    }
+//
+//    //开启DDLog 颜色
+//    // Enable XcodeColors
+//    setenv("XcodeColors", "YES", 0);
+//
+//    [[DDTTYLogger sharedInstance] setColorsEnabled:YES];
+//    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor blueColor] backgroundColor:[UIColor redColor] forFlag:DDLogFlagVerbose];
+//    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor redColor] backgroundColor:[UIColor whiteColor] forFlag:DDLogFlagDebug];
     
     //配置DDLog
     [DDLog addLogger:[DDTTYLogger sharedInstance]]; // TTY = Xcode console
