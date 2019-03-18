@@ -7,6 +7,7 @@
 //
 
 #import "DDLogUtil.h"
+#import "CSLogger.h"
 
 @implementation DDLogUtil
 
@@ -35,6 +36,36 @@
         // 拼接文件log
         [sortArr enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSString *logPath = [logDirectory stringByAppendingPathComponent:obj];
+            NSString *logStr = [[NSString alloc] initWithContentsOfFile:logPath encoding:NSUTF8StringEncoding error:nil];
+            result = [result stringByAppendingString:logStr];
+            result = [result stringByAppendingString:@"\n&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*\n"];
+        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (block) {
+                block(result);
+            }
+        });
+    });
+}
+
++ (void)getDDLogTest1000Str:(void (^)(NSString *text))block {
+    __block NSString *result = @"";
+//    CSFileLogger *fileLogger = [[CSFileLogger alloc] initWithFlag:CS_Test_1000];
+//    NSString *logsDirectory = [fileLogger.logFileManager logsDirectory];
+    NSString *logsDirectory = [CSFileLogger getLogsDir:CS_Test_1000];
+//    CSFileManagerDefault *defaultLogFileManager = [CSFileLogger getFileManager:logsDirectory];
+//    NSArray <NSString *>*logsNameArray = [defaultLogFileManager unsortedLogFileNames];
+    NSArray *logsNameArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:logsDirectory error:nil];
+//    NSArray <NSString *>*logsNameArray = [fileLogger.logFileManager sortedLogFileNames];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // log文件按时间排序
+        NSArray *sortArr = [logsNameArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            return NSOrderedDescending;
+        }];
+        
+        // 拼接文件log
+        [sortArr enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSString *logPath = [logsDirectory stringByAppendingPathComponent:obj];
             NSString *logStr = [[NSString alloc] initWithContentsOfFile:logPath encoding:NSUTF8StringEncoding error:nil];
             result = [result stringByAppendingString:logStr];
             result = [result stringByAppendingString:@"\n&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*\n"];

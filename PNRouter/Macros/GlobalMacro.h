@@ -94,6 +94,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 // home indicator
 #define HOME_INDICATOR_HEIGHT (IS_iPhoneX ? 34.f : 0.f)
 
+
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 #define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
 #define SAFE_RELEASE(x) [x release];x=nil

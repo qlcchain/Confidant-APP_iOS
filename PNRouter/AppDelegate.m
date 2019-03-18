@@ -38,6 +38,8 @@
 #import "SocketMessageUtil.h"
 #import "PNBackgroundView.h"
 #import "ChatModel.h"
+#import "CSLogger.h"
+#import "CSLogMacro.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate,UNUserNotificationCenterDelegate>
 {
@@ -95,7 +97,7 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-    
+    CSLOG_TEST_DDLOG(@"当前执行方法------%@",NSStringFromSelector(_cmd));
     [self.backgroundView show];
     if (self.backgroundView.isShow && _unlockView.isShow) {
         [self.window insertSubview:self.backgroundView belowSubview:self.unlockView];
@@ -129,7 +131,6 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-
     NSInteger seconds = [[HWUserdefault getObjectWithKey:BACK_TIME] integerValue];
     if (seconds == 0) {
         return;
@@ -156,7 +157,7 @@
 //    if (isBackendRun) {
 //        [[RunInBackground sharedBg] stopAudioPlay];
 //    }
-    
+    CSLOG_TEST_DDLOG(@"当前执行方法------%@",NSStringFromSelector(_cmd));
     [self.backgroundView hide];
 }
 
@@ -265,6 +266,8 @@
 //    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor blueColor] backgroundColor:[UIColor redColor] forFlag:DDLogFlagVerbose];
 //    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor redColor] backgroundColor:[UIColor whiteColor] forFlag:DDLogFlagDebug];
     
+    //分开logger不同的flag
+    [DDLog addLogger:[CSLoggerAssembler createCSFileLogger:CS_Test_1000]];
     //配置DDLog
     [DDLog addLogger:[DDTTYLogger sharedInstance]]; // TTY = Xcode console
        // [DDLog addLogger:[DDASLLogger sharedInstance]]; // ASL = Apple System Logs

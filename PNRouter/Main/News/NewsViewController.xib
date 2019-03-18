@@ -45,13 +45,28 @@
                                 <action selector="rightAction:" destination="-1" eventType="touchUpInside" id="lvF-rg-dpE"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ccj-Wr-IeO">
+                            <rect key="frame" x="0.0" y="0.0" width="46" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="x5g-xM-x9b"/>
+                            </constraints>
+                            <state key="normal" title="Log">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="leftAction:" destination="-1" eventType="touchUpInside" id="tRE-2e-GzV"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="16w-BJ-FFT"/>
+                        <constraint firstAttribute="bottom" secondItem="Ccj-Wr-IeO" secondAttribute="bottom" id="3No-vq-y7j"/>
                         <constraint firstAttribute="bottom" secondItem="Nz8-xU-gDh" secondAttribute="bottom" id="Cdx-I7-ixC"/>
                         <constraint firstItem="uhN-Qz-NxR" firstAttribute="centerX" secondItem="pvw-3y-TpM" secondAttribute="centerX" id="D1h-t7-8Ff"/>
                         <constraint firstAttribute="trailing" secondItem="Nz8-xU-gDh" secondAttribute="trailing" id="KAn-Cn-mvS"/>
+                        <constraint firstItem="Ccj-Wr-IeO" firstAttribute="leading" secondItem="pvw-3y-TpM" secondAttribute="leading" id="KSE-rL-bsb"/>
+                        <constraint firstItem="Ccj-Wr-IeO" firstAttribute="top" secondItem="pvw-3y-TpM" secondAttribute="top" id="ef2-bX-6iq"/>
                         <constraint firstItem="uhN-Qz-NxR" firstAttribute="centerY" secondItem="pvw-3y-TpM" secondAttribute="centerY" id="smn-9u-Mp1"/>
                         <constraint firstItem="Nz8-xU-gDh" firstAttribute="top" secondItem="pvw-3y-TpM" secondAttribute="top" id="yGE-mV-tHw"/>
                     </constraints>

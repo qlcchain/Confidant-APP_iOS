@@ -24,6 +24,7 @@
 #import "FriendRequestViewController.h"
 #import "UploadFileManager.h"
 #import "FileDownUtil.h"
+#import "DebugLogViewController.h"
 
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate> {
     BOOL isSearch;
@@ -85,6 +86,12 @@
 //    } completion:^(BOOL finished) {
 //
 //    }];
+}
+
+- (IBAction)leftAction:(id)sender {
+    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
+    vc.inputType = DebugLogTypeTest1000;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)rightAction:(id)sender {

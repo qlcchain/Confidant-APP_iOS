@@ -8,6 +8,13 @@
 
 #import "PNBaseViewController.h"
 
+typedef enum : NSUInteger {
+    DebugLogTypeSystem,
+    DebugLogTypeTest1000,
+} DebugLogType;
+
 @interface DebugLogViewController : PNBaseViewController
+
+@property (nonatomic) DebugLogType inputType;
 
 @end

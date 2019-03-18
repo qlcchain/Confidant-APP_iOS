@@ -33,7 +33,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jA-vp-bLq">
-                                    <rect key="frame" x="5" y="2" width="44" height="40"/>
+                                    <rect key="frame" x="0.0" y="2" width="44" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="Vhd-l3-rdW"/>
                                         <constraint firstAttribute="width" constant="44" id="sKB-KZ-aPs"/>
@@ -50,12 +50,12 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZeT-wz-kiS">
-                                    <rect key="frame" x="314" y="2" width="46" height="40"/>
+                                    <rect key="frame" x="321" y="2" width="46" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="frT-i9-pjM"/>
                                         <constraint firstAttribute="width" constant="46" id="l6h-5j-hw1"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="VAGRoundedBT-Regular" family="VAGRounded BT" pointSize="17"/>
+                                    <fontDescription key="fontDescription" name="VAGRoundedBT-Regular" family="VAGRounded BT" pointSize="14"/>
                                     <state key="normal" title="Clear">
                                         <color key="titleColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
                                     </state>
@@ -63,16 +63,32 @@
                                         <action selector="clearAction:" destination="-1" eventType="touchUpInside" id="bvb-nj-7Oo"/>
                                     </connections>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZa-4g-U52">
+                                    <rect key="frame" x="258" y="2" width="55" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="75J-pL-JK1"/>
+                                        <constraint firstAttribute="width" constant="55" id="wO4-BT-OSD"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="VAGRoundedBT-Regular" family="VAGRounded BT" pointSize="14"/>
+                                    <state key="normal" title="Update">
+                                        <color key="titleColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="updateAction:" destination="-1" eventType="touchUpInside" id="MoP-Sw-p59"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="ZeT-wz-kiS" secondAttribute="trailing" constant="15" id="9wo-hv-7sv"/>
+                                <constraint firstItem="ZeT-wz-kiS" firstAttribute="leading" secondItem="UZa-4g-U52" secondAttribute="trailing" constant="8" id="2lZ-wS-VxE"/>
+                                <constraint firstAttribute="trailing" secondItem="ZeT-wz-kiS" secondAttribute="trailing" constant="8" id="9wo-hv-7sv"/>
                                 <constraint firstItem="ZeT-wz-kiS" firstAttribute="centerY" secondItem="gmQ-qr-s9O" secondAttribute="centerY" id="AC3-WE-tr7"/>
                                 <constraint firstItem="4jA-vp-bLq" firstAttribute="centerY" secondItem="gmQ-qr-s9O" secondAttribute="centerY" id="JiC-gA-4Jz"/>
                                 <constraint firstItem="UPi-AU-H56" firstAttribute="centerY" secondItem="gmQ-qr-s9O" secondAttribute="centerY" id="Tgf-qk-dHZ"/>
                                 <constraint firstItem="UPi-AU-H56" firstAttribute="centerX" secondItem="gmQ-qr-s9O" secondAttribute="centerX" id="Xiq-mF-UI5"/>
-                                <constraint firstItem="4jA-vp-bLq" firstAttribute="leading" secondItem="gmQ-qr-s9O" secondAttribute="leading" constant="5" id="chb-x6-sks"/>
+                                <constraint firstItem="4jA-vp-bLq" firstAttribute="leading" secondItem="gmQ-qr-s9O" secondAttribute="leading" id="chb-x6-sks"/>
                                 <constraint firstAttribute="height" constant="44" id="gWk-ut-HtW"/>
+                                <constraint firstItem="UZa-4g-U52" firstAttribute="centerY" secondItem="gmQ-qr-s9O" secondAttribute="centerY" id="mIV-1Q-zHB"/>
                             </constraints>
                         </view>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="YF0-Uj-1BF">
