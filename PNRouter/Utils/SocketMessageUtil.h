@@ -56,8 +56,16 @@ static NSString *Action_Reboot = @"Reboot";
 static NSString *Action_ResetRouterName = @"ResetRouterName";
 static NSString *Action_UploadAvatar = @"UploadAvatar";
 static NSString *Action_UpdateAvatar = @"UpdateAvatar";
-
 static NSString *Action_FileRename = @"FileRename";
+// 群组的相关action
+static NSString *Action_CreateGroup = @"CreateGroup";
+static NSString *Action_GroupInvitePush = @"GroupInvitePush";
+static NSString *Action_InviteGroup = @"InviteGroup";
+static NSString *Action_GroupInviteDeal = @"GroupInviteDeal";
+static NSString *Action_GroupVerifyPush = @"GroupVerifyPush";
+static NSString *Action_GroupVerify = @"GroupVerify";
+static NSString *Action_GroupQuit = @"GroupQuit";
+static NSString *Action_GroupListPull = @"GroupListPull";
 
 @class FriendModel;
 

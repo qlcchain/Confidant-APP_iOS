@@ -56,7 +56,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vE4-EU-chn">
                             <rect key="frame" x="0.0" y="10" width="375" height="56"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_scan" translatesAutoresizingMaskIntoConstraints="NO" id="Pqj-DJ-Ceq">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_add_a" translatesAutoresizingMaskIntoConstraints="NO" id="Pqj-DJ-Ceq">
                                     <rect key="frame" x="16" y="10" width="36" height="36"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a Group" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZDz-7f-7r7">
@@ -106,7 +106,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M5a-vm-ztG">
                             <rect key="frame" x="0.0" y="66" width="375" height="56"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_scan" translatesAutoresizingMaskIntoConstraints="NO" id="Nml-Oj-9Yi">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scavenging_a" translatesAutoresizingMaskIntoConstraints="NO" id="Nml-Oj-9Yi">
                                     <rect key="frame" x="16" y="10" width="36" height="36"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan to add contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Mg-hL-Guf">
@@ -146,7 +146,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cJB-5O-CRl">
                             <rect key="frame" x="0.0" y="132" width="375" height="56"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_scan" translatesAutoresizingMaskIntoConstraints="NO" id="Jgk-V1-Hh2">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="business_a" translatesAutoresizingMaskIntoConstraints="NO" id="Jgk-V1-Hh2">
                                     <rect key="frame" x="16" y="10" width="36" height="36"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share a Contact Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4bW-tX-8Ti">
@@ -186,7 +186,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yID-tS-fuU">
                             <rect key="frame" x="0.0" y="198" width="375" height="56"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_scan" translatesAutoresizingMaskIntoConstraints="NO" id="dHM-K0-qtK">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Invitation_qr" translatesAutoresizingMaskIntoConstraints="NO" id="dHM-K0-qtK">
                                     <rect key="frame" x="16" y="10" width="36" height="36"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a New Member" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EXG-FE-pnw">
@@ -256,7 +256,10 @@
         </view>
     </objects>
     <resources>
+        <image name="Invitation_qr" width="36" height="36"/>
         <image name="arrow-exit-h" width="24" height="24"/>
-        <image name="group_scan" width="36" height="36"/>
+        <image name="business_a" width="36" height="36"/>
+        <image name="group_add_a" width="36" height="36"/>
+        <image name="scavenging_a" width="36" height="36"/>
     </resources>
 </document>

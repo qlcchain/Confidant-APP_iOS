@@ -28,6 +28,7 @@
 #import "ChatViewController.h"
 #import "NewRequestsViewController.h"
 #import "GroupChatsViewController.h"
+#import "AddGroupMenuViewController.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource/*,SWTableViewCellDelegate*/,UITextFieldDelegate>
 
@@ -67,30 +68,9 @@
 }
 
 - (IBAction)rightQRAction:(id)sender {
-    @weakify_self
-    QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
-        if (codeValue != nil && codeValue.length > 0) {
-            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
-            codeValue = codeValues[0];
-            if ([codeValue isEqualToString:@"type_0"]) {
-                codeValue = codeValues[1];
-                if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
-                    [AppD.window showHint:@"You cannot add yourself as a friend."];
-                } else if (codeValue.length != 76) {
-                    [AppD.window showHint:@"The two-dimensional code format is wrong."];
-                } else {
-                    NSString *nickName = @"";
-                    if (codeValues.count>2) {
-                        nickName = codeValues[2];
-                    }
-                    [weakSelf addFriendRequest:codeValue nickName:nickName signpk:codeValues[3]];
-                }
-            } else {
-                [weakSelf.view showHint:@"format error!"];
-            }
-        }
-    }];
-    [self presentModalVC:vc animated:YES];
+    
+    AddGroupMenuViewController *vc = [[AddGroupMenuViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark -layz
@@ -206,8 +186,6 @@
         NewRequestsViewController *vc = [NewRequestsViewController new];
         [self.navigationController pushViewController:vc animated:YES];
         
-//        AddFriendViewController *vc = [[AddFriendViewController alloc] init];
-//        [self.navigationController pushViewController:vc animated:YES];
     } else { // group_chats
         GroupChatsViewController *vc = [[GroupChatsViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
