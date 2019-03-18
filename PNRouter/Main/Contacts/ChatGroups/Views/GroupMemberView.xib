@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="peP-7v-1Fg" customClass="GroupMemberView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nVy-iQ-dzP">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKA-Sz-cMg">
+                            <rect key="frame" x="16" y="3" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="8ES-AD-LOW"/>
+                                <constraint firstAttribute="height" constant="32" id="G28-E4-AQh"/>
+                            </constraints>
+                            <state key="normal" image="icon_headportrait"/>
+                            <connections>
+                                <action selector="head1Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="oiu-Ov-mVT"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mrd-3v-T4i">
+                            <rect key="frame" x="58" y="3" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="lMP-6a-PDI"/>
+                                <constraint firstAttribute="height" constant="32" id="sT0-Z3-G6k"/>
+                            </constraints>
+                            <state key="normal" image="icon_headportrait"/>
+                            <connections>
+                                <action selector="head2Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="rBP-rf-H0b"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kmD-JD-BEu">
+                            <rect key="frame" x="100" y="3" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="aFH-ba-gNv"/>
+                                <constraint firstAttribute="height" constant="32" id="fgX-L0-xAW"/>
+                            </constraints>
+                            <state key="normal" image="icon_headportrait"/>
+                            <connections>
+                                <action selector="head3Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="rhl-SP-mTS"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YP5-OF-xlE">
+                            <rect key="frame" x="142" y="3" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="3zR-a2-hJ0"/>
+                                <constraint firstAttribute="height" constant="32" id="zvx-Fb-NSn"/>
+                            </constraints>
+                            <state key="normal" image="icon_headportrait"/>
+                            <connections>
+                                <action selector="head4Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="yO2-oe-TWr"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MiS-gT-LUf">
+                            <rect key="frame" x="184" y="3" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="YAz-pK-fGb"/>
+                                <constraint firstAttribute="width" constant="32" id="zLh-CI-5n6"/>
+                            </constraints>
+                            <state key="normal" image="icon_headportrait"/>
+                            <connections>
+                                <action selector="head5Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="fMY-7j-yxo"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="78w-8Y-Dct">
+                            <rect key="frame" x="226" y="3" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="ldB-95-nXw"/>
+                                <constraint firstAttribute="height" constant="32" id="mNa-Rg-gVl"/>
+                            </constraints>
+                            <state key="normal" image="icon_group_add"/>
+                            <connections>
+                                <action selector="addAction:" destination="peP-7v-1Fg" eventType="touchUpInside" id="FhH-aA-Qf6"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kzy-dm-r4d">
+                            <rect key="frame" x="268" y="3" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="jgY-5i-kF8"/>
+                                <constraint firstAttribute="height" constant="32" id="kHn-KU-T1y"/>
+                            </constraints>
+                            <state key="normal" image="icon_group_del"/>
+                            <connections>
+                                <action selector="delAction:" destination="peP-7v-1Fg" eventType="touchUpInside" id="9g7-EM-3ic"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="mrd-3v-T4i" firstAttribute="leading" secondItem="OKA-Sz-cMg" secondAttribute="trailing" constant="10" id="18Z-kT-u5x"/>
+                        <constraint firstItem="YP5-OF-xlE" firstAttribute="top" secondItem="kmD-JD-BEu" secondAttribute="top" id="4qq-mz-CkQ"/>
+                        <constraint firstItem="kmD-JD-BEu" firstAttribute="leading" secondItem="mrd-3v-T4i" secondAttribute="trailing" constant="10" id="9j3-pd-nAY"/>
+                        <constraint firstItem="YP5-OF-xlE" firstAttribute="leading" secondItem="kmD-JD-BEu" secondAttribute="trailing" constant="10" id="CcC-w2-m0u"/>
+                        <constraint firstItem="MiS-gT-LUf" firstAttribute="leading" secondItem="YP5-OF-xlE" secondAttribute="trailing" constant="10" id="Gkc-42-4bf"/>
+                        <constraint firstItem="MiS-gT-LUf" firstAttribute="top" secondItem="YP5-OF-xlE" secondAttribute="top" id="IM0-by-bgE"/>
+                        <constraint firstItem="kzy-dm-r4d" firstAttribute="top" secondItem="78w-8Y-Dct" secondAttribute="top" id="Lhe-2Y-SGM"/>
+                        <constraint firstItem="78w-8Y-Dct" firstAttribute="leading" secondItem="MiS-gT-LUf" secondAttribute="trailing" constant="10" id="UaN-uk-LMX"/>
+                        <constraint firstItem="OKA-Sz-cMg" firstAttribute="leading" secondItem="nVy-iQ-dzP" secondAttribute="leading" constant="16" id="cyP-nx-q3R"/>
+                        <constraint firstItem="OKA-Sz-cMg" firstAttribute="top" secondItem="nVy-iQ-dzP" secondAttribute="top" constant="3" id="dVn-r5-tfh"/>
+                        <constraint firstItem="78w-8Y-Dct" firstAttribute="top" secondItem="MiS-gT-LUf" secondAttribute="top" id="eaE-0f-zHA"/>
+                        <constraint firstItem="kmD-JD-BEu" firstAttribute="top" secondItem="mrd-3v-T4i" secondAttribute="top" id="ee7-IU-hXg"/>
+                        <constraint firstItem="kzy-dm-r4d" firstAttribute="leading" secondItem="78w-8Y-Dct" secondAttribute="trailing" constant="10" id="wUD-6l-f0z"/>
+                        <constraint firstItem="mrd-3v-T4i" firstAttribute="top" secondItem="OKA-Sz-cMg" secondAttribute="top" id="wlz-BS-J1h"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="nVy-iQ-dzP" secondAttribute="bottom" id="70e-Ua-a4z"/>
+                <constraint firstItem="nVy-iQ-dzP" firstAttribute="top" secondItem="peP-7v-1Fg" secondAttribute="top" id="GyY-Vd-PMI"/>
+                <constraint firstItem="nVy-iQ-dzP" firstAttribute="leading" secondItem="RPE-UW-KCX" secondAttribute="leading" id="Th6-a7-3rF"/>
+                <constraint firstItem="RPE-UW-KCX" firstAttribute="trailing" secondItem="nVy-iQ-dzP" secondAttribute="trailing" id="tXH-kd-gaV"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="RPE-UW-KCX"/>
+            <connections>
+                <outlet property="addBtn" destination="78w-8Y-Dct" id="sGm-96-H9t"/>
+                <outlet property="delBtn" destination="kzy-dm-r4d" id="zBA-XT-T0P"/>
+                <outlet property="head1Btn" destination="OKA-Sz-cMg" id="JVV-qF-csG"/>
+                <outlet property="head2Btn" destination="mrd-3v-T4i" id="AKt-h4-S8c"/>
+                <outlet property="head3Btn" destination="kmD-JD-BEu" id="Drv-2s-rZm"/>
+                <outlet property="head4Btn" destination="YP5-OF-xlE" id="Hh0-Wo-gWi"/>
+                <outlet property="head5Btn" destination="MiS-gT-LUf" id="gFS-Gv-b4T"/>
+            </connections>
+            <point key="canvasLocation" x="102" y="-52"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_group_add" width="32" height="32"/>
+        <image name="icon_group_del" width="32" height="32"/>
+        <image name="icon_headportrait" width="40" height="40"/>
+    </resources>
+</document>
