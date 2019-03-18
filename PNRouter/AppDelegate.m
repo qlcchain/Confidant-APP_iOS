@@ -32,7 +32,7 @@
 #import "UserModel.h"
 #import "EntryModel.h"
 #import "NSDate+Category.h"
-#import "FingetprintVerificationUtil.h"
+#import "FingerprintVerificationUtil.h"
 #import "PNUnlockView.h"
 #import "SendCacheChatUtil.h"
 #import "SocketMessageUtil.h"
@@ -90,6 +90,7 @@
    EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickey];
     [LibsodiumUtil changeUserPrivater:model.signPrivateKey];
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
