@@ -513,6 +513,7 @@
 		73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CC42159CD980048866B /* ChooseContactCell.xib */; };
 		73F55A082238D398003155D2 /* InvitationQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */; };
 		73F55A092238D398003155D2 /* InvitationQRCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */; };
+		73F55A0C223F3F69003155D2 /* GroupInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A0B223F3F69003155D2 /* GroupInfoModel.m */; };
 		73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806521DF87490047C3DA /* DebugLogViewController.m */; };
 		73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F8806721DF874A0047C3DA /* DebugLogViewController.xib */; };
 		73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806A21DF87AE0047C3DA /* DDLogUtil.m */; };
@@ -1523,6 +1524,8 @@
 		73F55A052238D398003155D2 /* InvitationQRCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvitationQRCodeViewController.h; sourceTree = "<group>"; };
 		73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvitationQRCodeViewController.m; sourceTree = "<group>"; };
 		73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvitationQRCodeViewController.xib; sourceTree = "<group>"; };
+		73F55A0A223F3F69003155D2 /* GroupInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupInfoModel.h; sourceTree = "<group>"; };
+		73F55A0B223F3F69003155D2 /* GroupInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupInfoModel.m; sourceTree = "<group>"; };
 		73F8806521DF87490047C3DA /* DebugLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogViewController.m; sourceTree = "<group>"; };
 		73F8806621DF874A0047C3DA /* DebugLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogViewController.h; sourceTree = "<group>"; };
 		73F8806721DF874A0047C3DA /* DebugLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DebugLogViewController.xib; sourceTree = "<group>"; };
@@ -2870,6 +2873,8 @@
 				58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */,
 				7356429B222630D800DC0BCB /* ChatModel.h */,
 				7356429C222630D800DC0BCB /* ChatModel.m */,
+				73F55A0A223F3F69003155D2 /* GroupInfoModel.h */,
+				73F55A0B223F3F69003155D2 /* GroupInfoModel.m */,
 			);
 			path = ContactModels;
 			sourceTree = "<group>";
@@ -3918,6 +3923,7 @@
 				73D00E9D215A1E490013E20D /* ChooseMutAlertView.m in Sources */,
 				58F4430B2149FF6200A94106 /* HeartBeatUtil.m in Sources */,
 				7330F520214B460A00FF4EEC /* NotifactionView.m in Sources */,
+				73F55A0C223F3F69003155D2 /* GroupInfoModel.m in Sources */,
 				58F1789B221FDFEC001CD0AF /* ChooseContactShowModel.m in Sources */,
 				5825A23C21FAAE5D00E6194B /* NSString+File.m in Sources */,
 				73899CC52152011000962B14 /* GuidePageView3.m in Sources */,

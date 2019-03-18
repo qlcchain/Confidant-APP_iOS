@@ -76,7 +76,13 @@
         FriendModel *model = obj;
         model.isSelect = NO;
     }];
-    [self leftNavBarItemPressedWithPop:NO];
+   
+    @weakify_self
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (weakSelf.selectArray.count > 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+        }
+    }];
 }
 - (IBAction)rightAction:(id)sender {
     isMutable = !isMutable;
@@ -331,7 +337,7 @@
         } else { // 直接跳转详情
             if (!self->isMutable) {
                 [weakSelf.selectArray addObject:[weakSelf getFriendModelWithContactShowModel:tempM contactRouterModel:tempM.routerArr.firstObject]];
-                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+               // [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
                 [weakSelf backVC];
             } else {
                 
@@ -414,7 +420,7 @@
                 }
             } else {
                 [self.selectArray addObject:friendModel];
-                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
+               // [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
                 [self backVC];
             }
            
@@ -468,7 +474,7 @@
 #pragma mark -uibutton_tag
 - (void) comfirmBtnAction {
     [self.selectArray addObjectsFromArray:[self getIsSelectRouter]];
-    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
+    //[[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
     [self backVC];
 }
 

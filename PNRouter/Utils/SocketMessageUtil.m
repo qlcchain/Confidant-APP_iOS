@@ -438,6 +438,8 @@
         [SocketMessageUtil handleUploadAvatar:receiveDic];
     } else if ([action isEqualToString:Action_UpdateAvatar]) { // 更新好友头像
         [SocketMessageUtil handleUpdateAvatar:receiveDic];
+    } else if ([action isEqualToString:Action_CreateGroup]) { // 创建群组
+        [SocketMessageUtil handleCreateGroup:receiveDic];
     }
 }
 
@@ -1353,6 +1355,27 @@
     }
 }
 
+#pragma mark --------------群组 ----------------
+
++ (void)handleCreateGroup:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:CREATE_GROUP_SUCCESS_NOTI object:receiveDic];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"User id error"];
+        } else if (retCode == 2) {
+            [AppD.window showHint:@"Input parameter error"];
+        } else if (retCode == 3) {
+           
+            [AppD.window showHint:@"The group has reached the upper limit"];
+        } else {
+            [AppD.window showHint:@"Other errors"];
+        }
+    }
+}
 #pragma mark - Base
 + (NSDictionary *)getBaseParams {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
