@@ -503,6 +503,8 @@
 		73F55A082238D398003155D2 /* InvitationQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */; };
 		73F55A092238D398003155D2 /* InvitationQRCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */; };
 		73F55A0C223F3F69003155D2 /* GroupInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A0B223F3F69003155D2 /* GroupInfoModel.m */; };
+		73F55A10223F78C4003155D2 /* GroupChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A0E223F78C4003155D2 /* GroupChatViewController.m */; };
+		73F55A11223F78C4003155D2 /* GroupChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F55A0F223F78C4003155D2 /* GroupChatViewController.xib */; };
 		73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806521DF87490047C3DA /* DebugLogViewController.m */; };
 		73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F8806721DF874A0047C3DA /* DebugLogViewController.xib */; };
 		73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806A21DF87AE0047C3DA /* DDLogUtil.m */; };
@@ -1496,6 +1498,9 @@
 		73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvitationQRCodeViewController.xib; sourceTree = "<group>"; };
 		73F55A0A223F3F69003155D2 /* GroupInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupInfoModel.h; sourceTree = "<group>"; };
 		73F55A0B223F3F69003155D2 /* GroupInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupInfoModel.m; sourceTree = "<group>"; };
+		73F55A0D223F78C4003155D2 /* GroupChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupChatViewController.h; sourceTree = "<group>"; };
+		73F55A0E223F78C4003155D2 /* GroupChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupChatViewController.m; sourceTree = "<group>"; };
+		73F55A0F223F78C4003155D2 /* GroupChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupChatViewController.xib; sourceTree = "<group>"; };
 		73F8806521DF87490047C3DA /* DebugLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogViewController.m; sourceTree = "<group>"; };
 		73F8806621DF874A0047C3DA /* DebugLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogViewController.h; sourceTree = "<group>"; };
 		73F8806721DF874A0047C3DA /* DebugLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DebugLogViewController.xib; sourceTree = "<group>"; };
@@ -3488,6 +3493,9 @@
 				73F55A052238D398003155D2 /* InvitationQRCodeViewController.h */,
 				73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */,
 				73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */,
+				73F55A0D223F78C4003155D2 /* GroupChatViewController.h */,
+				73F55A0E223F78C4003155D2 /* GroupChatViewController.m */,
+				73F55A0F223F78C4003155D2 /* GroupChatViewController.xib */,
 			);
 			path = ChatGroups;
 			sourceTree = "<group>";
@@ -3638,6 +3646,7 @@
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
+				73F55A11223F78C4003155D2 /* GroupChatViewController.xib in Resources */,
 				5886FB9821F5C2390052EDD0 /* UploadAlertView.xib in Resources */,
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
 				7330F3BF214769DF00FF4EEC /* FriendDetailViewController.xib in Resources */,
@@ -4062,6 +4071,7 @@
 				7330F4F82149147200FF4EEC /* CTInputBoxDrawer.m in Sources */,
 				73625762214213B300D7FD6B /* UILabel+Copy.m in Sources */,
 				583BF94921F70FBC0078A2A8 /* TaskCompletedCell.m in Sources */,
+				73F55A10223F78C4003155D2 /* GroupChatViewController.m in Sources */,
 				580CFE482227B7FD00460B41 /* UIView+MemoryLeak.m in Sources */,
 				73869111214CEAA3003CF6A3 /* ChatListDataUtil.m in Sources */,
 				7330F4FA2149147200FF4EEC /* CTInputView.m in Sources */,

@@ -35,7 +35,7 @@
     _nextBtn.layer.masksToBounds = YES;
     
     _nameTF.delegate = self;
-    _nameTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
+   // _nameTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
     [_nameTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
     
 }

@@ -143,7 +143,7 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 #define UpdateAvatar_FileNotExist_Noti @"UpdateAvatar_FileNotExist_Noti"
 // ---------------------群组----------------------
 #define CREATE_GROUP_SUCCESS_NOTI  @"CREATE_GROUP_SUCCESS_NOTI"
-
+#define CREATE_GROUP_SUCCESS_JUMP_NOTI  @"CREATE_GROUP_SUCCESS_JUMP_NOTI"
 
 
 // 删除文件成功通知
