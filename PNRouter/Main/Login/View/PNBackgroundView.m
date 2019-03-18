@@ -28,7 +28,7 @@
 
 - (void)show {
     if (!AppD.inLogin) {
-        CSLOG_TEST_DDLOG(@"**********************锁屏界面打开失败");
+//        CSLOG_TEST_DDLOG(@"**********************锁屏界面打开失败");
         return;
     }
     
@@ -37,7 +37,7 @@
         make.left.right.top.bottom.mas_equalTo(AppD.window).offset(0);
     }];
     
-    CSLOG_TEST_DDLOG(@"**********************锁屏界面打开成功");
+//    CSLOG_TEST_DDLOG(@"**********************锁屏界面打开成功");
     _isShow = YES;
     self.alpha = 0;
     @weakify_self
@@ -49,11 +49,11 @@
 
 - (void)hide {
     if (!_isShow) {
-        CSLOG_TEST_DDLOG(@"**********************锁屏界面关闭失败");
+//        CSLOG_TEST_DDLOG(@"**********************锁屏界面关闭失败");
         return;
     }
     
-    CSLOG_TEST_DDLOG(@"**********************锁屏界面关闭成功");
+//    CSLOG_TEST_DDLOG(@"**********************锁屏界面关闭成功");
     self.isShow = NO;
     self.alpha = 1;
     @weakify_self

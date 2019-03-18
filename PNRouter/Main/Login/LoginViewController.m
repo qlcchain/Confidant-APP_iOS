@@ -54,7 +54,7 @@
 @implementation LoginViewController
 
 - (void)dealloc {
-    CSLOG_TEST_DDLOG(@"Login View Controller dealloc***************************************************");
+//    CSLOG_TEST_DDLOG(@"Login View Controller dealloc***************************************************");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -349,7 +349,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    CSLOG_TEST_DDLOG(@"Login View Controller alloc***************************************************");
+//    CSLOG_TEST_DDLOG(@"Login View Controller alloc***************************************************");
     AppD.inLogin = NO;
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back!",[UserModel getUserModel].username];

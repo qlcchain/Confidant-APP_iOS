@@ -14,9 +14,12 @@
 #import "PersonCodeViewController.h"
 #import "ChooseContactViewController.h"
 #import "CreateGroupChatViewController.h"
-
+#import "ChatListDataUtil.h"
 #import "GroupChatViewController.h"
 #import "GroupInfoModel.h"
+#import "AddGroupMemberViewController.h"
+#import "RoutherConfig.h"
+#import "FriendModel.h"
 
 @interface AddGroupMenuViewController ()
 
@@ -32,7 +35,17 @@
     
     if (sender.tag == 10) { // create a group
         
-        ChooseContactViewController *vc = [[ChooseContactViewController alloc] init];
+        NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
+        // 过滤非当前路由的好友
+        NSString *currentToxid = [RoutherConfig getRoutherConfig].currentRouterToxid;
+        NSMutableArray *inputArr = [NSMutableArray array];
+        [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FriendModel *model = obj;
+            if ([model.RouteId isEqualToString:currentToxid]) {
+                [inputArr addObject:model];
+            }
+        }];
+        AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr];
         [self presentModalVC:vc animated:YES];
         
     } else if (sender.tag == 20) { // scan to add contacts

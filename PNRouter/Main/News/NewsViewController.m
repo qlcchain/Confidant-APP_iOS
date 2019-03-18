@@ -25,6 +25,9 @@
 #import "UploadFileManager.h"
 #import "FileDownUtil.h"
 #import "DebugLogViewController.h"
+#import "AddGroupMemberViewController.h"
+#import "RoutherConfig.h"
+#import "AddGroupMenuViewController.h"
 
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate> {
     BOOL isSearch;
@@ -43,19 +46,18 @@
 @end
 
 @implementation NewsViewController
-- (void)viewWillAppear:(BOOL)animated
-{
+
+- (void)viewWillAppear:(BOOL)animated {
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [super viewWillAppear:animated];
 }
-- (void) dealloc
-{
+
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark -layz
-- (UILabel *)lblTop
-{
+- (UILabel *)lblTop {
     CGFloat y = 0;
     if (IS_iPhoneX) {
         y = 24;
@@ -74,8 +76,8 @@
 
 - (IBAction)switchRouther:(id)sender {
 }
+
 - (IBAction)reload:(id)sender {
-    
     _connectBackView.hidden = YES;
     [SocketCountUtil getShareObject].reConnectCount = 0;
     [AppD.window showHudInView:AppD.window hint:@"connection..."];
@@ -88,39 +90,18 @@
 //    }];
 }
 
-- (IBAction)leftAction:(id)sender {
-    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
-    vc.inputType = DebugLogTypeTest1000;
-    [self.navigationController pushViewController:vc animated:YES];
-}
+//- (IBAction)leftAction:(id)sender {
+//    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
+//    vc.inputType = DebugLogTypeTest1000;
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
 
 - (IBAction)rightAction:(id)sender {
-    @weakify_self
-    QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
-        if (codeValue != nil && codeValue.length > 0) {
-            
-            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
-            codeValue = codeValues[0];
-            if ([codeValue isEqualToString:@"type_0"]) {
-                codeValue = codeValues[1];
-                if ([codeValue isEqualToString:[UserConfig getShareObject].userId]) {
-                    [AppD.window showHint:@"You cannot add yourself as a friend."];
-                } else if (codeValue.length != 76) {
-                    [AppD.window showHint:@"The two-dimensional code format is wrong."];
-                } else {
-                    NSString *nickName = @"";
-                    if (codeValues.count>2) {
-                        nickName = codeValues[2];
-                    }
-                    [weakSelf addFriendRequest:codeValue nickName:nickName singpk:codeValues[3]];
-                }
-            } else {
-                [weakSelf.view showHint:@"format error!"];
-            }
-        }
-    }];
-     [self presentModalVC:vc animated:YES];
+    [self jumpToAddGroupMenu];
+//    [self jumpToAddGroupMember];
+//    [self jumpToScan];
 }
+
 #pragma mark -Operation-
 - (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName singpk:(NSString *) signpk{
     FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
@@ -355,6 +336,55 @@
                                                  icon:[UIImage imageNamed:@"icon_delete"]];
     
     return rightUtilityButtons;
+}
+
+#pragma mark - Transition
+- (void)jumpToScan {
+    @weakify_self
+    QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
+        if (codeValue != nil && codeValue.length > 0) {
+            
+            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
+            codeValue = codeValues[0];
+            if ([codeValue isEqualToString:@"type_0"]) {
+                codeValue = codeValues[1];
+                if ([codeValue isEqualToString:[UserConfig getShareObject].userId]) {
+                    [AppD.window showHint:@"You cannot add yourself as a friend."];
+                } else if (codeValue.length != 76) {
+                    [AppD.window showHint:@"The two-dimensional code format is wrong."];
+                } else {
+                    NSString *nickName = @"";
+                    if (codeValues.count>2) {
+                        nickName = codeValues[2];
+                    }
+                    [weakSelf addFriendRequest:codeValue nickName:nickName singpk:codeValues[3]];
+                }
+            } else {
+                [weakSelf.view showHint:@"format error!"];
+            }
+        }
+    }];
+    [self presentModalVC:vc animated:YES];
+}
+
+- (void)jumpToAddGroupMember {
+    NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
+    // 过滤非当前路由的好友
+    NSString *currentToxid = [RoutherConfig getRoutherConfig].currentRouterToxid;
+    NSMutableArray *inputArr = [NSMutableArray array];
+    [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if ([model.RouteId isEqualToString:currentToxid]) {
+            [inputArr addObject:model];
+        }
+    }];
+    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr];
+    [self presentModalVC:vc animated:YES];
+}
+
+- (void)jumpToAddGroupMenu {
+    AddGroupMenuViewController *vc = [[AddGroupMenuViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - noti

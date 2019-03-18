@@ -10,24 +10,15 @@
 
 @implementation ChooseDownView
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
     _confirmBackView.layer.cornerRadius = 3.0f;
     _confirmBackView.layer.masksToBounds = YES;
 }
 
-+ (instancetype) loadChooseDownView
-{
++ (instancetype) loadChooseDownView {
     ChooseDownView *view = [[[NSBundle mainBundle] loadNibNamed:@"ChooseDownView" owner:self options:nil] lastObject];
     return view;
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 @end

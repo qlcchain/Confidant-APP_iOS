@@ -98,7 +98,7 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-    CSLOG_TEST_DDLOG(@"当前执行方法------%@",NSStringFromSelector(_cmd));
+//    CSLOG_TEST_DDLOG(@"当前执行方法------%@",NSStringFromSelector(_cmd));
     [self.backgroundView show];
     if (self.backgroundView.isShow && _unlockView.isShow) {
         [self.window insertSubview:self.backgroundView belowSubview:self.unlockView];
@@ -158,14 +158,14 @@
 //    if (isBackendRun) {
 //        [[RunInBackground sharedBg] stopAudioPlay];
 //    }
-    CSLOG_TEST_DDLOG(@"当前执行方法------%@",NSStringFromSelector(_cmd));
+//    CSLOG_TEST_DDLOG(@"当前执行方法------%@",NSStringFromSelector(_cmd));
     [self.backgroundView hide];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
-    CSLOG_TEST_DDLOG(@"\n\n\n\n");
+//    CSLOG_TEST_DDLOG(@"\n\n\n\n");
     
     [SystemUtil configureAPPTerminate];
     [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
