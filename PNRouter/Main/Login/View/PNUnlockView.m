@@ -7,7 +7,7 @@
 //
 
 #import "PNUnlockView.h"
-#import "FingetprintVerificationUtil.h"
+#import "FingerprintVerificationUtil.h"
 
 #define UnlockAnimateTime 0.6
 
@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 
 @property (weak, nonatomic) IBOutlet UIButton *unlockBtn;
-@property (nonatomic, strong) FingetprintVerificationUtil *fingerprintUtil;
+@property (nonatomic, strong) FingerprintVerificationUtil *fingerprintUtil;
 @property (nonatomic, copy) UnlockOKBlock okBlock;
 
 @end
@@ -111,7 +111,7 @@
 
 - (void)showFingetprintVerification {
     @weakify_self
-    _fingerprintUtil = [[FingetprintVerificationUtil alloc] init];
+    _fingerprintUtil = [[FingerprintVerificationUtil alloc] init];
     [_fingerprintUtil backShowWithComplete:^(BOOL success, NSError * _Nullable error) {
         if (success) {
             [weakSelf hideAnimate];

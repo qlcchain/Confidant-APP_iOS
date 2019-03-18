@@ -145,7 +145,7 @@
 		584A447F21460AFE00608122 /* FileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584A447D21460AFE00608122 /* FileViewController.xib */; };
 		584A448321460B0800608122 /* NewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A448121460B0800608122 /* NewsViewController.m */; };
 		584A448421460B0800608122 /* NewsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584A448221460B0800608122 /* NewsViewController.xib */; };
-		584A449E21464D4800608122 /* FingetprintVerificationUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A449D21464D4800608122 /* FingetprintVerificationUtil.m */; };
+		584A449E21464D4800608122 /* FingerprintVerificationUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 584A449D21464D4800608122 /* FingerprintVerificationUtil.m */; };
 		584B438F21FEE11D00D1F21A /* DiskManagementCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B438D21FEE11D00D1F21A /* DiskManagementCell.m */; };
 		584B439021FEE11D00D1F21A /* DiskManagementCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584B438E21FEE11D00D1F21A /* DiskManagementCell.xib */; };
 		584B439421FEEF8C00D1F21A /* DiskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B439221FEEF8C00D1F21A /* DiskDetailViewController.m */; };
@@ -800,8 +800,8 @@
 		584A4499214643E500608122 /* Helvetica Neue CE 55 Roman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Helvetica Neue CE 55 Roman.ttf"; sourceTree = "<group>"; };
 		584A449A214643E500608122 /* Helvetica Narrow_0.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Helvetica Narrow_0.ttf"; sourceTree = "<group>"; };
 		584A449B214643E500608122 /* Helvetica Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Helvetica Narrow.ttf"; sourceTree = "<group>"; };
-		584A449C21464D4800608122 /* FingetprintVerificationUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FingetprintVerificationUtil.h; sourceTree = "<group>"; };
-		584A449D21464D4800608122 /* FingetprintVerificationUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FingetprintVerificationUtil.m; sourceTree = "<group>"; };
+		584A449C21464D4800608122 /* FingerprintVerificationUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FingerprintVerificationUtil.h; sourceTree = "<group>"; };
+		584A449D21464D4800608122 /* FingerprintVerificationUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FingerprintVerificationUtil.m; sourceTree = "<group>"; };
 		584A44A4214654D400608122 /* AvenirLTStd-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Heavy.otf"; sourceTree = "<group>"; };
 		584A44A5214654D400608122 /* AvenirLTStd-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Medium.otf"; sourceTree = "<group>"; };
 		584A44A6214654D500608122 /* AvenirLTStd-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Black.otf"; sourceTree = "<group>"; };
@@ -2958,8 +2958,8 @@
 				585AEE5821421DD70098A070 /* SocketMessageUtil.m */,
 				736257BF2142247F00D7FD6B /* SystemUtil.h */,
 				736257C02142247F00D7FD6B /* SystemUtil.m */,
-				584A449C21464D4800608122 /* FingetprintVerificationUtil.h */,
-				584A449D21464D4800608122 /* FingetprintVerificationUtil.m */,
+				584A449C21464D4800608122 /* FingerprintVerificationUtil.h */,
+				584A449D21464D4800608122 /* FingerprintVerificationUtil.m */,
 				58BD2E5C21475E010091A77D /* HWUserdefault.h */,
 				58BD2E5D21475E010091A77D /* HWUserdefault.m */,
 				7330F4792147DBB800FF4EEC /* StringUtil.h */,
@@ -4097,7 +4097,7 @@
 				587C52D7215CBA9A006787FB /* QRViewController.m in Sources */,
 				58F178A0221FF333001CD0AF /* ChooseContactHeaderView.m in Sources */,
 				7378841421ACF2970033A189 /* OCTFileDownloadOperation.m in Sources */,
-				584A449E21464D4800608122 /* FingetprintVerificationUtil.m in Sources */,
+				584A449E21464D4800608122 /* FingerprintVerificationUtil.m in Sources */,
 				7330F39E214666E400FF4EEC /* PersonCodeViewController.m in Sources */,
 				7330F3B321475A3E00FF4EEC /* ContactsCell.m in Sources */,
 				581FDF3F21F024170068C120 /* group.m in Sources */,

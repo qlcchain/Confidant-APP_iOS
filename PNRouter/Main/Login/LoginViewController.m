@@ -21,7 +21,7 @@
 #import "OCTSubmanagerFriends.h"
 #import "ConnectView.h"
 #import "UserConfig.h"
-#import "FingetprintVerificationUtil.h"
+#import "FingerprintVerificationUtil.h"
 #import "NSString+Base64.h"
 #import "LibsodiumUtil.h"
 #import "UserHeadUtil.h"
@@ -382,7 +382,8 @@
     
     if (AppD.showTouch) {
          AppD.showTouch = NO;
-        // [FingetprintVerificationUtil show];
+         [FingetprintVerificationUtil show];
+
     }
 }
 #pragma 第一次 广播完回调。验证是否走socket 还是 tox

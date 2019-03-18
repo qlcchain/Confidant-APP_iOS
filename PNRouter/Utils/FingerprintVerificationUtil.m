@@ -6,16 +6,16 @@
 //  Copyright © 2018年 旷自辉. All rights reserved.
 //
 
-#import "FingetprintVerificationUtil.h"
+#import "FingerprintVerificationUtil.h"
 #import <LocalAuthentication/LocalAuthentication.h>
 
-@interface FingetprintVerificationUtil ()
+@interface FingerprintVerificationUtil ()
 
 @property (nonatomic, strong) LAContext *unlockContext;
 
 @end
 
-@implementation FingetprintVerificationUtil
+@implementation FingerprintVerificationUtil
 
 
 //+ (void)show {
@@ -124,6 +124,7 @@
 - (LAContext *)unlockContext {
     if (!_unlockContext) {
         _unlockContext = [[LAContext alloc] init];
+        _unlockContext.localizedFallbackTitle = @"Enter Password";
     }
     
     return _unlockContext;
@@ -139,6 +140,7 @@
                 if (error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证失败");
+                        [FingerprintVerificationUtil handleError:error];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -153,6 +155,8 @@
                     }
                 });
             }];
+        } else {
+            [FingerprintVerificationUtil showNotSupport:@"Touch ID and Face ID are not supported on the current device"];
         }
     });
 }
@@ -169,6 +173,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         DDLogDebug(@"开始解锁");
         LAContext *myContext = [[LAContext alloc] init];
+        myContext.localizedFallbackTitle = @"Enter Password";
         NSError *error = nil;
         if( [myContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error])
         {
@@ -176,7 +181,7 @@
                 if (error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证失败");
-                        [FingetprintVerificationUtil exitAPP];
+                        [FingerprintVerificationUtil handleError:error];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -184,23 +189,25 @@
                     });
                 }
             }];
+        } else {
+            [FingerprintVerificationUtil showNotSupport:@"Touch ID and Face ID are not supported on the current device"];
         }
     });
 }
 
-+ (void) show
-{
++ (void)show {
     dispatch_async(dispatch_get_main_queue(), ^{
         DDLogDebug(@"开始解锁");
         LAContext *myContext = [[LAContext alloc] init];
+        myContext.localizedFallbackTitle = @"Enter Password";
         NSError *error = nil;
-        if( [myContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error])
+        if([myContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error])
         {
             [myContext evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"Use the fingerprint to continue." reply:^(BOOL success, NSError * _Nullable error) {
                 if (error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证失败");
-                         [FingetprintVerificationUtil exitAPP];
+                        [FingerprintVerificationUtil handleError:error];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -209,16 +216,93 @@
                     });
                 }
             }];
+        } else {
+            [FingerprintVerificationUtil showNotSupport:@"Touch ID and Face ID are not supported on the current device"];
         }
     });
 }
-+ (void)showNotSupport {
-    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"当前设备不支持TouchID" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *alertConfirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [FingetprintVerificationUtil exitAPP];
-    }];
-    [alertC addAction:alertConfirm];
-    [AppD.window.rootViewController presentViewController:alertC animated:YES completion:nil];
+
++ (void)handleError:(NSError *)error {
+    //失败操作
+    LAError errorCode = error.code;
+    switch (errorCode) {
+        case LAErrorAuthenticationFailed:
+        {
+            NSLog(@"授权失败"); // -1 连续三次指纹识别错误
+            [FingerprintVerificationUtil exitAPP];
+        }
+            break;
+        case LAErrorUserCancel: // Authentication was canceled by user (e.g. tapped Cancel button)
+        {
+            NSLog(@"用户取消验证Touch ID"); // -2 在TouchID对话框中点击了取消按钮
+            [FingerprintVerificationUtil exitAPP];
+        }
+            break;
+        case LAErrorUserFallback: // Authentication was canceled, because the user tapped the fallback button (Enter Password)
+        {
+            NSLog(@"用户选择输入密码，切换主线程处理"); // -3 在TouchID对话框中点击了输入密码按钮
+//            [FingerprintVerificationUtil exitAPP];
+        }
+            break;
+        case LAErrorSystemCancel: // Authentication was canceled by system (e.g. another application went to foreground)
+        {
+            NSLog(@"取消授权，如其他应用切入"); // -4 TouchID对话框被系统取消，例如按下Home或者电源键
+            [FingerprintVerificationUtil exitAPP];
+        }
+            break;
+        case LAErrorPasscodeNotSet: // Authentication could not start, because passcode is not set on the device.
+        {
+            NSLog(@"设备系统未设置密码"); // -5
+            [FingerprintVerificationUtil showNotSupport:@"The device doesn't have a password"];
+        }
+            break;
+        case LAErrorTouchIDNotAvailable: // Authentication could not start, because Touch ID is not available on the device
+        {
+            NSLog(@"设备未设置Touch ID"); // -6
+            [FingerprintVerificationUtil showNotSupport:@"Touch ID is not set on the device"];
+        }
+            break;
+        case LAErrorTouchIDNotEnrolled: // Authentication could not start, because Touch ID has no enrolled fingers
+        {
+            NSLog(@"用户未录入指纹"); // -7
+            [FingerprintVerificationUtil showNotSupport:@"No fingerprint was recorded on the device"];
+        }
+            break;
+        case LAErrorTouchIDLockout: //Authentication was not successful, because there were too many failed Touch ID attempts and Touch ID is now locked. Passcode is required to unlock Touch ID, e.g. evaluating LAPolicyDeviceOwnerAuthenticationWithBiometrics will ask for passcode as a prerequisite 用户连续多次进行Touch ID验证失败，Touch ID被锁，需要用户输入密码解锁，先Touch ID验证密码
+        {
+            NSLog(@"Touch ID被锁，需要用户输入密码解锁"); // -8 连续五次指纹识别错误，TouchID功能被锁定，下一次需要输入系统密码
+//            [FingerprintVerificationUtil exitAPP];
+        }
+            break;
+        case LAErrorAppCancel: // Authentication was canceled by application (e.g. invalidate was called while authentication was in progress) 如突然来了电话，电话应用进入前台，APP被挂起啦");
+        {
+            NSLog(@"用户不能控制情况下APP被挂起"); // -9
+            [FingerprintVerificationUtil exitAPP];
+        }
+            break;
+        case LAErrorInvalidContext: // LAContext passed to this call has been previously invalidated.
+        {
+            NSLog(@"LAContext传递给这个调用之前已经失效"); // -10
+            [FingerprintVerificationUtil exitAPP];
+        }
+            break;
+        case LAErrorNotInteractive: {
+            NSLog(@"///////////");
+            [FingerprintVerificationUtil exitAPP];
+            break;
+        }
+    }
+}
+
++ (void)showNotSupport:(NSString *)message {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *alertConfirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [FingerprintVerificationUtil exitAPP];
+        }];
+        [alertC addAction:alertConfirm];
+        [AppD.window.rootViewController presentViewController:alertC animated:YES completion:nil];
+    });
 }
 
 + (void)exitAPP {
@@ -227,7 +311,5 @@
          exit(0);
     });
 }
-
-
 
 @end
