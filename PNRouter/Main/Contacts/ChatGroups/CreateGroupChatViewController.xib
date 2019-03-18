@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="createBtn" destination="9wB-cA-ljL" id="Ux7-xJ-yon"/>
                 <outlet property="lblPerosnCount" destination="fCB-uw-8Kn" id="i0Q-cb-LzH"/>
+                <outlet property="memberBackView" destination="Vzv-Xx-6wH" id="HvP-YF-GMk"/>
                 <outlet property="nameTF" destination="uGT-ou-Q2h" id="pq3-qx-gIi"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -88,7 +89,7 @@
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nfI-Fs-UHX">
                                     <rect key="frame" x="55.5" y="128" width="264" height="1"/>
-                                    <color key="backgroundColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="deviceRGB"/>
+                                    <color key="backgroundColor" red="0.83529411760000005" green="0.83529411760000005" blue="0.83529411760000005" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="WjF-JT-Vlx"/>
                                     </constraints>
@@ -183,7 +184,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Switch on if you would like to approve before new members are invited to your group by any group member." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6cB-Ez-aJm">
-                            <rect key="frame" x="16" y="381" width="343" height="28"/>
+                            <rect key="frame" x="16" y="382" width="343" height="28"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                             <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>

@@ -14,16 +14,21 @@
 #import "LibsodiumUtil.h"
 #import "EntryModel.h"
 #import "GroupInfoModel.h"
+#import "GroupMemberView.h"
+
 
 
 @interface CreateGroupChatViewController ()<UITextFieldDelegate>
 {
     BOOL isInvacation;
 }
+@property (weak, nonatomic) IBOutlet GroupMemberView *memberBackView;
 @property (nonatomic , strong) NSMutableArray *persons;
 @property (weak, nonatomic) IBOutlet UITextField *nameTF;
 @property (weak, nonatomic) IBOutlet UIButton *createBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblPerosnCount;
+
+@property (nonatomic ,strong) GroupMemberView *memberView;
 @end
 
 @implementation CreateGroupChatViewController
@@ -52,6 +57,16 @@
     _createBtn.layer.masksToBounds = YES;
     _nameTF.delegate = self;
     _lblPerosnCount.text = [NSString stringWithFormat:@"%lu people",(unsigned long)self.persons.count];
+    
+    self.memberView = [GroupMemberView getInstance];
+    self.memberView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 48);
+    [_memberView updateConstraintWithPersonCount:self.persons];
+    [_memberBackView addSubview:_memberView];
+    @weakify_self
+    [_memberView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.top.mas_equalTo(weakSelf.memberBackView).offset(0);
+    }];
+    
     [self addNoti];
 }
 
@@ -64,7 +79,7 @@
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
-    [self leftNavBarItemPressedWithPop:YES];
+    [self leftNavBarItemPressedWithPop:NO];
 }
 
 - (IBAction)approveSwitchAction:(UISwitch *)sender {

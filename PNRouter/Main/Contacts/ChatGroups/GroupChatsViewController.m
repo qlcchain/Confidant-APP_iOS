@@ -8,8 +8,13 @@
 
 #import "GroupChatsViewController.h"
 #import "AddGroupMenuViewController.h"
+#import "GroupInfoModel.h"
+#import <MJRefresh/MJRefresh.h>
+#import <MJRefresh/MJRefreshStateHeader.h>
+#import <MJRefresh/MJRefreshHeader.h>
+#import "GroupListCell.h"
 
-@interface GroupChatsViewController ()<UITextFieldDelegate>
+@interface GroupChatsViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     BOOL isSearch;
 }
@@ -55,7 +60,52 @@
     _searchTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
     _searchTF.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self addTargetMethod];
+    
+    _mainTab.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    _mainTab.delegate = self;
+    _mainTab.dataSource = self;
+    [_mainTab registerNib:[UINib nibWithNibName:GroupListCellReuse bundle:nil] forCellReuseIdentifier:GroupListCellReuse];
+    _mainTab.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(pullGroupList)];
+    // Hide the time
+    ((MJRefreshStateHeader *)_mainTab.mj_header).lastUpdatedTimeLabel.hidden = YES;
+    // Hide the status
+    ((MJRefreshStateHeader *)_mainTab.mj_header).stateLabel.hidden = YES;
+    [_mainTab.mj_header beginRefreshing];
 }
+
+#pragma mark - 拉取群组
+- (void) pullGroupList
+{
+    [SendRequestUtil sendPullGroupListWithShowHud:NO];
+}
+
+#pragma mark - tableviewDataSourceDelegate
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return isSearch?self.searchDataArray.count : self.dataArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return GroupListCellHeight;
+}
+
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
+    GroupListCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupListCellReuse];
+    GroupInfoModel *model = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
+    [cell setModeWithGroupModel:model];
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+}
+
 
 #pragma mark - 直接添加监听方法
 -(void)addTargetMethod{

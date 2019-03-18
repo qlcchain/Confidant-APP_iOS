@@ -108,7 +108,7 @@
 {
     NSArray *mutContacts = noti.object;
     if (mutContacts && mutContacts.count > 0) {
-        CreateGroupChatViewController *vc = [[CreateGroupChatViewController alloc] init];
+        CreateGroupChatViewController *vc = [[CreateGroupChatViewController alloc] initWithContacts:mutContacts];
         [self presentModalVC:vc animated:YES];
     }
 }

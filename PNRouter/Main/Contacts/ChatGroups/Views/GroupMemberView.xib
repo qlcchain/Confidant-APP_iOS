@@ -41,7 +41,7 @@
                                 <action selector="head2Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="rBP-rf-H0b"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kmD-JD-BEu">
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kmD-JD-BEu">
                             <rect key="frame" x="100" y="3" width="32" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="32" id="aFH-ba-gNv"/>
@@ -52,7 +52,7 @@
                                 <action selector="head3Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="rhl-SP-mTS"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YP5-OF-xlE">
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YP5-OF-xlE">
                             <rect key="frame" x="142" y="3" width="32" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="32" id="3zR-a2-hJ0"/>
@@ -63,7 +63,7 @@
                                 <action selector="head4Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="yO2-oe-TWr"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MiS-gT-LUf">
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MiS-gT-LUf">
                             <rect key="frame" x="184" y="3" width="32" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="YAz-pK-fGb"/>
@@ -127,6 +127,13 @@
             <viewLayoutGuide key="safeArea" id="RPE-UW-KCX"/>
             <connections>
                 <outlet property="addBtn" destination="78w-8Y-Dct" id="sGm-96-H9t"/>
+                <outlet property="contarintV3" destination="CcC-w2-m0u" id="l4A-P0-Km5"/>
+                <outlet property="contarintWidth5" destination="zLh-CI-5n6" id="BU5-DF-oDB"/>
+                <outlet property="contraintV4" destination="Gkc-42-4bf" id="tnq-8i-k09"/>
+                <outlet property="contraintV5" destination="UaN-uk-LMX" id="Lz6-MP-XZK"/>
+                <outlet property="contraintWidth4" destination="3zR-a2-hJ0" id="qw7-YG-fyh"/>
+                <outlet property="contraintWidthSub" destination="jgY-5i-kF8" id="VBF-eA-83A"/>
+                <outlet property="contranitWith3" destination="aFH-ba-gNv" id="q7Z-Ur-jn5"/>
                 <outlet property="delBtn" destination="kzy-dm-r4d" id="zBA-XT-T0P"/>
                 <outlet property="head1Btn" destination="OKA-Sz-cMg" id="JVV-qF-csG"/>
                 <outlet property="head2Btn" destination="mrd-3v-T4i" id="AKt-h4-S8c"/>
@@ -134,7 +141,7 @@
                 <outlet property="head4Btn" destination="YP5-OF-xlE" id="Hh0-Wo-gWi"/>
                 <outlet property="head5Btn" destination="MiS-gT-LUf" id="gFS-Gv-b4T"/>
             </connections>
-            <point key="canvasLocation" x="102" y="-52"/>
+            <point key="canvasLocation" x="5" y="-75"/>
         </view>
     </objects>
     <resources>

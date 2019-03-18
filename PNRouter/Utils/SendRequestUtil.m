@@ -320,5 +320,13 @@
     NSDictionary *params = @{@"Action":Action_CreateGroup,@"UserId":userM.userId?:@"",@"GroupName":groupName?:@"",@"UserKey":userKey?:@"",@"VerifyMode":verifyMode,@"FriendId":friendId,@"FriendKey":friendKey?:@""};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
-    
++ (void) sendPullGroupListWithShowHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_GroupListPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"TargetNum":@"0",@"StartId":@"0"};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 @end
