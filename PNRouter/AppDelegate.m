@@ -163,6 +163,9 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    CSLOG_TEST_DDLOG(@"\n\n\n\n");
+    
     [SystemUtil configureAPPTerminate];
     [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
 }

@@ -25,12 +25,12 @@
 
 #pragma mark - Override methods
 
-- (NSString *)newLogFileName {
-    //重写文件名称
-    NSDateFormatter *dateFormatter = [self logFileDateFormatter];
-    NSString *formattedDate = [dateFormatter stringFromDate:[NSDate date]];
-    return [NSString stringWithFormat:@"%@-%@.log", self.fileName, formattedDate];
-}
+//- (NSString *)newLogFileName {
+//    //重写文件名称
+//    NSDateFormatter *dateFormatter = [self logFileDateFormatter];
+//    NSString *formattedDate = [dateFormatter stringFromDate:[NSDate date]];
+//    return [NSString stringWithFormat:@"%@-%@.log", self.fileName, formattedDate];
+//}
 
 - (NSDateFormatter *)logFileDateFormatter {
     

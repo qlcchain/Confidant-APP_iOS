@@ -113,7 +113,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C2D-RA-j5I">
-                            <rect key="frame" x="0.0" y="202" width="375" height="103"/>
+                            <rect key="frame" x="0.0" y="202" width="375" height="104"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hH5-iu-j8J">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
@@ -141,7 +141,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vzv-Xx-6wH">
-                                    <rect key="frame" x="0.0" y="56" width="375" height="47"/>
+                                    <rect key="frame" x="0.0" y="56" width="375" height="48"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
@@ -154,11 +154,11 @@
                                 <constraint firstItem="Vzv-Xx-6wH" firstAttribute="leading" secondItem="C2D-RA-j5I" secondAttribute="leading" id="UNw-Xh-fVa"/>
                                 <constraint firstItem="hH5-iu-j8J" firstAttribute="top" secondItem="C2D-RA-j5I" secondAttribute="top" id="WCD-e9-Fcz"/>
                                 <constraint firstAttribute="trailing" secondItem="hH5-iu-j8J" secondAttribute="trailing" id="jwf-3X-L8p"/>
-                                <constraint firstAttribute="height" constant="103" id="qn7-xX-YNR"/>
+                                <constraint firstAttribute="height" constant="104" id="qn7-xX-YNR"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1vb-2x-Wio">
-                            <rect key="frame" x="0.0" y="315" width="375" height="56"/>
+                            <rect key="frame" x="0.0" y="316" width="375" height="56"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Approve Invitations" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="65W-ab-gog">
                                     <rect key="frame" x="16" y="18.5" width="138" height="19"/>

@@ -192,6 +192,8 @@
 		58A23A77223BC43F0098AED5 /* CSFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A23A6D223BC43F0098AED5 /* CSFileLogger.m */; };
 		58A23A78223BC43F0098AED5 /* CSLoggerAssembler.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A23A6F223BC43F0098AED5 /* CSLoggerAssembler.m */; };
 		58A23A79223BC43F0098AED5 /* DDLog+CSLoggerExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A23A72223BC43F0098AED5 /* DDLog+CSLoggerExtension.m */; };
+		58A23A7C223F6BB20098AED5 /* GroupMemberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A23A7B223F6BB20098AED5 /* GroupMemberView.m */; };
+		58A23A7E223F6BC00098AED5 /* GroupMemberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58A23A7D223F6BC00098AED5 /* GroupMemberView.xib */; };
 		58B41EEA21F98845004676CA /* PNDocumentPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B41EE821F98845004676CA /* PNDocumentPickerViewController.m */; };
 		58BA8DA0221E73AC00E6DE95 /* ContactsHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58BA8D9D221E73AB00E6DE95 /* ContactsHeadView.xib */; };
 		58BA8DA1221E73AC00E6DE95 /* ContactsHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BA8D9E221E73AB00E6DE95 /* ContactsHeadView.m */; };
@@ -907,6 +909,9 @@
 		58A23A73223BC43F0098AED5 /* CSLogMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLogMacro.h; sourceTree = "<group>"; };
 		58A23A74223BC43F0098AED5 /* CSFileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSFileLogger.h; sourceTree = "<group>"; };
 		58A23A75223BC43F0098AED5 /* CSLoggerAssembler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLoggerAssembler.h; sourceTree = "<group>"; };
+		58A23A7A223F6BB20098AED5 /* GroupMemberView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupMemberView.h; sourceTree = "<group>"; };
+		58A23A7B223F6BB20098AED5 /* GroupMemberView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupMemberView.m; sourceTree = "<group>"; };
+		58A23A7D223F6BC00098AED5 /* GroupMemberView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupMemberView.xib; sourceTree = "<group>"; };
 		58B41EE721F98845004676CA /* PNDocumentPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNDocumentPickerViewController.h; sourceTree = "<group>"; };
 		58B41EE821F98845004676CA /* PNDocumentPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNDocumentPickerViewController.m; sourceTree = "<group>"; };
 		58BA8D9D221E73AB00E6DE95 /* ContactsHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsHeadView.xib; sourceTree = "<group>"; };
@@ -3452,6 +3457,9 @@
 				73D00E9B215A1E490013E20D /* ChooseMutAlertView.h */,
 				73D00E9C215A1E490013E20D /* ChooseMutAlertView.m */,
 				73D00E9E215A1E510013E20D /* ChooseMutAlertView.xib */,
+				58A23A7A223F6BB20098AED5 /* GroupMemberView.h */,
+				58A23A7B223F6BB20098AED5 /* GroupMemberView.m */,
+				58A23A7D223F6BC00098AED5 /* GroupMemberView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3666,6 +3674,7 @@
 				584B43AA21FF0B9800D1F21A /* ConfigDiskCell.xib in Resources */,
 				7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */,
 				73899CC62152011000962B14 /* GuidePageView1.xib in Resources */,
+				58A23A7E223F6BC00098AED5 /* GroupMemberView.xib in Resources */,
 				583BF92C21F6E4940078A2A8 /* UploadFilesCell.xib in Resources */,
 				584A447F21460AFE00608122 /* FileViewController.xib in Resources */,
 				73899CC42152011000962B14 /* GuidePageView2.xib in Resources */,
@@ -4034,6 +4043,7 @@
 				7330F4ED2149147200FF4EEC /* SDImageCache+ChatCaculator.m in Sources */,
 				736257A42142149300D7FD6B /* UIView+Debug.m in Sources */,
 				7330F4F12149147200FF4EEC /* CDSystemTableViewCell.m in Sources */,
+				58A23A7C223F6BB20098AED5 /* GroupMemberView.m in Sources */,
 				581FDF4921F024170068C120 /* logger.m in Sources */,
 				73A4867021B94B220062C34F /* ConnectView.m in Sources */,
 				7330F4F02149147200FF4EEC /* CDAudioTableViewCell.m in Sources */,
