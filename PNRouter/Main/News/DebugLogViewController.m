@@ -8,6 +8,7 @@
 
 #import "DebugLogViewController.h"
 #import "DDLogUtil.h"
+#import "CSLogger.h"
 
 @interface DebugLogViewController ()
 
@@ -24,12 +25,20 @@
     [self refreshLog];
 }
 
+
 - (void)refreshLog {
     @weakify_self
-    [DDLogUtil getDDLogStr:^(NSString *text) {
-        weakSelf.mainTextV.text = text;
-        [weakSelf scrollToBottom];
-    }];
+    if (_inputType == DebugLogTypeSystem) {
+        [DDLogUtil getDDLogStr:^(NSString *text) {
+            weakSelf.mainTextV.text = text;
+            [weakSelf scrollToBottom];
+        }];
+    } else if (_inputType == DebugLogTypeTest1000) {
+        [DDLogUtil getDDLogTest1000Str:^(NSString *text) {
+            weakSelf.mainTextV.text = text;
+            [weakSelf scrollToBottom];
+        }];
+    }
 }
 
 - (void)scrollToBottom {
@@ -41,6 +50,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (IBAction)updateAction:(id)sender {
+    [self refreshLog];
+}
+
 - (IBAction)backAction:(id)sender {
     [self back];
 }
@@ -48,9 +61,18 @@
 - (IBAction)clearAction:(id)sender {
 //    [[DDLog sharedInstance] removeAllLoggers]; // 移除log
     
-    DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
-    NSString *logDirectory = [fileLogger.logFileManager logsDirectory];
-    NSArray <NSString *>*logsNameArray = [fileLogger.logFileManager sortedLogFileNames];
+    NSArray <NSString *>*logsNameArray = [NSArray array];
+    NSString *logsDirectory = nil;
+    if (_inputType == DebugLogTypeSystem) {
+        DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
+        //    DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
+        logsDirectory = [fileLogger.logFileManager logsDirectory];
+        logsNameArray = [fileLogger.logFileManager sortedLogFileNames];
+    } else if (_inputType == DebugLogTypeTest1000) {
+        logsDirectory = [CSFileLogger getLogsDir:CS_Test_1000];
+        logsNameArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:logsDirectory error:nil];
+    }
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // log文件按时间排序
         NSArray *sortArr = [logsNameArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
@@ -59,7 +81,7 @@
         
         // log文件路径
         [sortArr enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSString *logPath = [logDirectory stringByAppendingPathComponent:obj];
+            NSString *logPath = [logsDirectory stringByAppendingPathComponent:obj];
             BOOL removeSuccess = [[NSFileManager defaultManager] removeItemAtPath:logPath error:nil];
             NSLog(@"removeSuccess=%@",@(removeSuccess));
         }];
@@ -74,15 +96,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -45,6 +45,7 @@ def demo_pods
 #    pod 'JCDownloader'
 #    pod 'TYAttributedLabel'
     pod 'YBImageBrowser'
+    pod 'TZImagePickerController' #iOS8 and later
 end
 
 

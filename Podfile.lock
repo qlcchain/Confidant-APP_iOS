@@ -21,8 +21,8 @@ PODS:
     - BGFMDB/FMDB
   - BGFMDB/FMDB (2.0.13)
   - Bugly (2.5.0)
-  - CocoaLumberjack/Core (3.5.1)
-  - CocoaLumberjack/Swift (3.5.1):
+  - CocoaLumberjack/Core (3.5.2)
+  - CocoaLumberjack/Swift (3.5.2):
     - CocoaLumberjack/Core
   - FBRetainCycleDetector (0.1.4)
   - FLAnimatedImage (1.0.12)
@@ -49,6 +49,7 @@ PODS:
     - SDWebImage/Core
   - SWTableViewCell (0.3.7)
   - TPCircularBuffer (0.0.1)
+  - TZImagePickerController (3.2.0)
   - WZLBadge (1.2.6)
   - YBImageBrowser (2.1.4):
     - SDWebImage
@@ -78,6 +79,7 @@ DEPENDENCIES:
   - SDWebImage/GIF
   - SWTableViewCell
   - TPCircularBuffer (~> 0.0.1)
+  - TZImagePickerController
   - WZLBadge
   - YBImageBrowser
   - YYImage
@@ -103,6 +105,7 @@ SPEC REPOS:
     - SDWebImage
     - SWTableViewCell
     - TPCircularBuffer
+    - TZImagePickerController
     - WZLBadge
     - YBImageBrowser
     - YYImage
@@ -120,7 +123,7 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   BGFMDB: 48e6823027232402a678acc7f71484b1fc9171d0
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
-  CocoaLumberjack: 2101f8a5508197a305e737d16c5c2e9e2157628c
+  CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
   FBRetainCycleDetector: 46f8179bbb1c587deee3ea838a1a3ee02acf5015
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   GDPerformanceView: d70d646bf7022a3dfd64222e4966f403bfffef19
@@ -137,10 +140,11 @@ SPEC CHECKSUMS:
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   SWTableViewCell: 2a94aadc9d47b2b611fa064566bf57948b95b579
   TPCircularBuffer: 949e9632b9fb99b7274d7b2296ee22bff5841e35
+  TZImagePickerController: 7850b158d025065b162a1a963d445040b828abc9
   WZLBadge: 9ec779dcfd94c825518b395e8315fccaabff1bfa
   YBImageBrowser: e3c514dd3bdc6efef379eabd57988eae3c109e38
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
 
-PODFILE CHECKSUM: 51310b5999e639ed0cbbf320a495174666287321
+PODFILE CHECKSUM: d42cbf61eab9db56ae4206918de975d49863a15f
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

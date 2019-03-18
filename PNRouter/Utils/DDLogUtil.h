@@ -12,5 +12,6 @@
 
 + (void)getDDLog;
 + (void)getDDLogStr:(void (^)(NSString *text))block;
++ (void)getDDLogTest1000Str:(void (^)(NSString *text))block;
 
 @end
