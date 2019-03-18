@@ -15,6 +15,9 @@
 #import "ChooseContactViewController.h"
 #import "CreateGroupChatViewController.h"
 
+#import "GroupChatViewController.h"
+#import "GroupInfoModel.h"
+
 @interface AddGroupMenuViewController ()
 
 @end
@@ -84,6 +87,7 @@
 - (void) addNotifcation
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseContactNoti:) name:CHOOSE_FRIEND_NOTI object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
 }
 
 #pragma mark --通知回调
@@ -92,7 +96,7 @@
     NSArray *mutContacts = noti.object;
     if (mutContacts && mutContacts.count > 0) {
         CreateGroupChatViewController *vc = [[CreateGroupChatViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
+        [self presentModalVC:vc animated:YES];
     }
 }
 
@@ -104,5 +108,11 @@
     
 }
 
-
+#pragma mark -通知回调
+- (void) jumpGroupChatNoti:(NSNotification *) noti
+{
+    GroupInfoModel *model = noti.object;
+    GroupChatViewController *vc = [[GroupChatViewController alloc] initWihtGroupMode:model];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 @end

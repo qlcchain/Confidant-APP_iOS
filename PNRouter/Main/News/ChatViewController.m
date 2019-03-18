@@ -443,6 +443,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 
+
+
 //调用系统相册
 - (void)selectImage{
     
