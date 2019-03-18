@@ -112,12 +112,17 @@
     
     _shareBtn.layer.cornerRadius = RADIUS;
     _shareBtn.layer.masksToBounds = YES;
+    
+    _codeBackView.layer.cornerRadius = 5.0f;
+    _codeBackView.layer.masksToBounds = YES;
+    
+    
     if (!self.userId || [self.userId isEmptyString]) {
         self.userName =  [UserModel getUserModel].username;
         self.userId = [UserModel getUserModel].userId;
         self.signPublicKey = [EntryModel getShareObject].signPublicKey;
     }
-    _lblNavTitle.text = self.userName;
+   // _lblNavTitle.text = self.userName;
     _lblName.text = self.userName;
 //    NSString *userKey = [EntryModel getShareObject].signPublicKey;
     NSString *userKey = self.signPublicKey;
@@ -134,6 +139,8 @@
         weakSelf.codeImgView.image = image;
     }];
 }
+
+
 
 #pragma mark -自定义方法
 - (void) clickCollectionWithItem:(NSInteger) item

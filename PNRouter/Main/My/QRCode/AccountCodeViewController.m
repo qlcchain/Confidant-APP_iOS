@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *nameBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UIView *codeBackView;
+@property (weak, nonatomic) IBOutlet UIView *codeBackGroupView;
 
 @end
 
@@ -66,13 +67,17 @@
     [_nameBtn setImage:defaultImg forState:UIControlStateNormal];
     
     _codeBackView.layer.cornerRadius = 8;
-    _codeImgView.layer.masksToBounds = YES;
+    _codeBackView.layer.masksToBounds = YES;
+    
+    _codeBackGroupView.layer.cornerRadius = 8;
+    _codeBackGroupView.layer.masksToBounds = YES;
     
     _lblName.text = [UserModel getUserModel].username;
     NSString *coderValue = [NSString stringWithFormat:@"type_3,%@,%@,%@",[EntryModel getShareObject].signPrivateKey,[UserModel getUserModel].userSn,[[UserModel getUserModel].username base64EncodedString]];
     
+     CGFloat cornt = defaultImg.size.height/7;
     @weakify_self
-    [HMScanner qrImageWithString:coderValue avatar:nil completion:^(UIImage *image) {
+    [HMScanner qrImageWithString:coderValue avatar:[defaultImg roundedCornerImage:cornt borderSize:0] completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;
     }];
 }
@@ -80,7 +85,7 @@
 #pragma mark -系统分享
 - (void) shareAction
 {
-    NSArray *images = @[[_codeBackView getImageFromView]];
+    NSArray *images = @[[_codeBackGroupView getImageFromView]];
     UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:images applicationActivities:nil];
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }

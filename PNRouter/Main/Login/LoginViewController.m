@@ -382,7 +382,7 @@
     
     if (AppD.showTouch) {
          AppD.showTouch = NO;
-         //[FingetprintVerificationUtil show];
+         [FingetprintVerificationUtil show];
     }
 }
 #pragma 第一次 广播完回调。验证是否走socket 还是 tox

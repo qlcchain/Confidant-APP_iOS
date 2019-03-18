@@ -7,11 +7,17 @@
 //
 
 #import "PNBaseViewController.h"
+@class RouterModel;
+@class RouterUserModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface InvitationQRCodeViewController : PNBaseViewController
 
+@property (nonatomic,assign) NSInteger userManageType;
+
+@property (nonatomic, strong) RouterModel *routerM;
+@property (nonatomic , strong) RouterUserModel *routerUserModel;
 @end
 
 NS_ASSUME_NONNULL_END

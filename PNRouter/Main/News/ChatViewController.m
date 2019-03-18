@@ -197,7 +197,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+    self.view.backgroundColor = RGB(246, 246, 246);
     _lblNavTitle.text = self.friendModel.username;
     [self observe];
     [self loadChatUI];
