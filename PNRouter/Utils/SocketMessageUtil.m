@@ -40,6 +40,7 @@
 #import "ChatModel.h"
 #import "SendCacheChatUtil.h"
 #import "UserHeadUtil.h"
+#import "GroupInfoModel.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -440,6 +441,8 @@
         [SocketMessageUtil handleUpdateAvatar:receiveDic];
     } else if ([action isEqualToString:Action_CreateGroup]) { // 创建群组
         [SocketMessageUtil handleCreateGroup:receiveDic];
+    } else if ([action isEqualToString:Action_GroupListPull]) { // 拉取群组
+        [SocketMessageUtil handleGroupListPull:receiveDic];
     }
 }
 
@@ -1362,7 +1365,7 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:CREATE_GROUP_SUCCESS_NOTI object:receiveDic];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CREATE_GROUP_SUCCESS_NOTI object:receiveDic[@"params"]];
     } else {
         if (retCode == 1) {
             [AppD.window showHint:@"User id error"];
@@ -1376,6 +1379,31 @@
         }
     }
 }
+// 拉取群组
++ (void) handleGroupListPull:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        NSString *Payload = receiveDic[@"params"][@"Payload"];
+        NSArray *payloadArr = [GroupInfoModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_SUCCESS_NOTI object:payloadArr];
+    } else {
+       
+        [AppD.window showHint:@"Other errors"];
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
 #pragma mark - Base
 + (NSDictionary *)getBaseParams {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];

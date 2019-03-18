@@ -471,6 +471,8 @@
 		7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392791421FAF356003AAD58 /* UploadFileManager.m */; };
 		73A4867021B94B220062C34F /* ConnectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A4866F21B94B220062C34F /* ConnectView.m */; };
 		73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A4867121B94B3A0062C34F /* ConnectView.xib */; };
+		73AC8F50223F9E64000E60D5 /* GroupListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC8F4E223F9E64000E60D5 /* GroupListCell.m */; };
+		73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */; };
 		73C4B55B22375C660018146C /* FileConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C4B55A22375C660018146C /* FileConfig.m */; };
 		73C4B55F223783500018146C /* GroupChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C4B55D223783500018146C /* GroupChatsViewController.m */; };
 		73C4B560223783500018146C /* GroupChatsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C4B55E223783500018146C /* GroupChatsViewController.xib */; };
@@ -1448,6 +1450,9 @@
 		73A4866E21B94B220062C34F /* ConnectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectView.h; sourceTree = "<group>"; };
 		73A4866F21B94B220062C34F /* ConnectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectView.m; sourceTree = "<group>"; };
 		73A4867121B94B3A0062C34F /* ConnectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectView.xib; sourceTree = "<group>"; };
+		73AC8F4D223F9E64000E60D5 /* GroupListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupListCell.h; sourceTree = "<group>"; };
+		73AC8F4E223F9E64000E60D5 /* GroupListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupListCell.m; sourceTree = "<group>"; };
+		73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupListCell.xib; sourceTree = "<group>"; };
 		73C4B55922375C660018146C /* FileConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileConfig.h; sourceTree = "<group>"; };
 		73C4B55A22375C660018146C /* FileConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileConfig.m; sourceTree = "<group>"; };
 		73C4B55C223783500018146C /* GroupChatsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupChatsViewController.h; sourceTree = "<group>"; };
@@ -3520,6 +3525,9 @@
 				73D00EA0215A24730013E20D /* ChooseCollectionCell.h */,
 				73D00EA1215A24730013E20D /* ChooseCollectionCell.m */,
 				73D00EA2215A24730013E20D /* ChooseCollectionCell.xib */,
+				73AC8F4D223F9E64000E60D5 /* GroupListCell.h */,
+				73AC8F4E223F9E64000E60D5 /* GroupListCell.m */,
+				73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3663,6 +3671,7 @@
 				580CFE132224DD8E00460B41 /* PNUnlockView.xib in Resources */,
 				583BF91621F6B4DF0078A2A8 /* MyFilesViewController.xib in Resources */,
 				58BA8DA0221E73AC00E6DE95 /* ContactsHeadView.xib in Resources */,
+				73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
 				584B43A421FF0AE700D1F21A /* ConfigDiskHeaderView.xib in Resources */,
@@ -4134,6 +4143,7 @@
 				73899CC72152011000962B14 /* GuidePageViewController.m in Sources */,
 				73D00EB5215F17670013E20D /* FileModel.m in Sources */,
 				58F178A5221FF376001CD0AF /* ChooseContactTableCell.m in Sources */,
+				73AC8F50223F9E64000E60D5 /* GroupListCell.m in Sources */,
 				7378841521ACF2970033A189 /* NSError+OCTFile.m in Sources */,
 				7330F3772146118800FF4EEC /* UIImage+Rotate.m in Sources */,
 				58BD2E722148E3170091A77D /* ToastUtil.m in Sources */,

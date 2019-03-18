@@ -88,6 +88,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
     return self;
 }
+- (IBAction)backAction:(id)sender {
+}
+- (IBAction)rightAction:(id)sender {
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self addNoti];

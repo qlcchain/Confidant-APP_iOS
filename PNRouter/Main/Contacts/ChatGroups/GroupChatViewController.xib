@@ -32,6 +32,9 @@
                                 <constraint firstAttribute="width" constant="44" id="bnn-mL-hhd"/>
                             </constraints>
                             <state key="normal" image="arrow-exit-h"/>
+                            <connections>
+                                <action selector="backAction:" destination="-1" eventType="touchUpInside" id="5dE-OF-QBq"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KKK" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhM-mp-m9T">
                             <rect key="frame" x="54" y="11.5" width="267" height="21"/>
@@ -45,6 +48,9 @@
                                 <constraint firstAttribute="width" constant="44" id="NWH-Ob-gQR"/>
                             </constraints>
                             <state key="normal" image="group_more"/>
+                            <connections>
+                                <action selector="rightAction:" destination="-1" eventType="touchUpInside" id="ghB-nd-qFI"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

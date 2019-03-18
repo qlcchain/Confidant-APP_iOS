@@ -67,22 +67,24 @@
             }];
         }
     } else {
-         [self backVC];
+         [self backVCWithSendNoti:NO];
     }
 }
-- (void) backVC
+- (void) backVCWithSendNoti:(BOOL) isSend
 {
     [self.selectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;
         model.isSelect = NO;
     }];
-   
-    @weakify_self
-    [self dismissViewControllerAnimated:YES completion:^{
-        if (weakSelf.selectArray.count > 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
-        }
-    }];
+    if (isSend) {
+        @weakify_self
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (weakSelf.selectArray.count > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+            }
+        }];
+    }
+    
 }
 - (IBAction)rightAction:(id)sender {
     isMutable = !isMutable;
@@ -338,7 +340,7 @@
             if (!self->isMutable) {
                 [weakSelf.selectArray addObject:[weakSelf getFriendModelWithContactShowModel:tempM contactRouterModel:tempM.routerArr.firstObject]];
                // [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
-                [weakSelf backVC];
+                [weakSelf backVCWithSendNoti:YES];
             } else {
                 
                 model.isSelect = !model.isSelect;
@@ -421,7 +423,7 @@
             } else {
                 [self.selectArray addObject:friendModel];
                // [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
-                [self backVC];
+                [self backVCWithSendNoti:YES];
             }
            
         } else if (indexPath.section == 0) {
@@ -475,7 +477,7 @@
 - (void) comfirmBtnAction {
     [self.selectArray addObjectsFromArray:[self getIsSelectRouter]];
     //[[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:self.selectArray];
-    [self backVC];
+    [self backVCWithSendNoti:YES];
 }
 
 - (void)didReceiveMemoryWarning {

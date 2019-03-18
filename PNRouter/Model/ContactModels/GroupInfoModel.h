@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *GAdmin;
 @property (nonatomic, strong) NSString *GId;
 @property (nonatomic, strong) NSString *GName;
+@property (nonatomic, strong) NSString *Remark;
+@property (nonatomic, strong) NSString *UserKey;
+
 @end
 
 NS_ASSUME_NONNULL_END
