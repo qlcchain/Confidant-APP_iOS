@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 
-- (void) setModeWithGroupModel:()
+- (void) setModeWithGroupModel:(GroupInfoModel *) model;
 
 @end
 

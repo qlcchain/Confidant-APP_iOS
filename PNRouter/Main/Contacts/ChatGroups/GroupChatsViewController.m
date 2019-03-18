@@ -13,6 +13,7 @@
 #import <MJRefresh/MJRefreshStateHeader.h>
 #import <MJRefresh/MJRefreshHeader.h>
 #import "GroupListCell.h"
+#import "NSString+Base64.h"
 
 @interface GroupChatsViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 {
@@ -120,14 +121,15 @@
         [self.searchDataArray removeAllObjects];
         @weakify_self
         [self.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            ChatListModel *model = obj;
-//            NSString *userName = [model.friendName lowercaseString];
-//            if ([userName containsString:[tf.text.trim lowercaseString]]) {
-//                [weakSelf.searchDataArray addObject:model];
-//            }
+            GroupInfoModel *model = obj;
+            NSString *gname = model.GName? [model.GName base64DecodedString]:@"";
+            NSString *userName = [gname lowercaseString];
+            if ([userName containsString:[tf.text.trim lowercaseString]]) {
+                [weakSelf.searchDataArray addObject:model];
+            }
         }];
     }
-  //  [_tableV reloadData];
+    [_mainTab reloadData];
 }
 
 #pragma textfeild delegate
