@@ -7,6 +7,8 @@
 //
 
 #import "GroupListCell.h"
+#import "NSString+Base64.h"
+#import "GroupInfoModel.h"
 
 @implementation GroupListCell
 
@@ -19,6 +21,11 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void) setModeWithGroupModel:(GroupInfoModel *) model
+{
+    _lblName.text = model.GName? [model.GName base64DecodedString]:@"";
 }
 
 @end
