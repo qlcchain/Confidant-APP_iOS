@@ -194,6 +194,8 @@
 		58A23A79223BC43F0098AED5 /* DDLog+CSLoggerExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A23A72223BC43F0098AED5 /* DDLog+CSLoggerExtension.m */; };
 		58A23A7C223F6BB20098AED5 /* GroupMemberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A23A7B223F6BB20098AED5 /* GroupMemberView.m */; };
 		58A23A7E223F6BC00098AED5 /* GroupMemberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58A23A7D223F6BC00098AED5 /* GroupMemberView.xib */; };
+		58A23A82223F936D0098AED5 /* AddGroupMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A23A80223F936D0098AED5 /* AddGroupMemberViewController.m */; };
+		58A23A83223F936D0098AED5 /* AddGroupMemberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58A23A81223F936D0098AED5 /* AddGroupMemberViewController.xib */; };
 		58B41EEA21F98845004676CA /* PNDocumentPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B41EE821F98845004676CA /* PNDocumentPickerViewController.m */; };
 		58BA8DA0221E73AC00E6DE95 /* ContactsHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58BA8D9D221E73AB00E6DE95 /* ContactsHeadView.xib */; };
 		58BA8DA1221E73AC00E6DE95 /* ContactsHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BA8D9E221E73AB00E6DE95 /* ContactsHeadView.m */; };
@@ -912,6 +914,9 @@
 		58A23A7A223F6BB20098AED5 /* GroupMemberView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupMemberView.h; sourceTree = "<group>"; };
 		58A23A7B223F6BB20098AED5 /* GroupMemberView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupMemberView.m; sourceTree = "<group>"; };
 		58A23A7D223F6BC00098AED5 /* GroupMemberView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupMemberView.xib; sourceTree = "<group>"; };
+		58A23A7F223F936C0098AED5 /* AddGroupMemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddGroupMemberViewController.h; sourceTree = "<group>"; };
+		58A23A80223F936D0098AED5 /* AddGroupMemberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddGroupMemberViewController.m; sourceTree = "<group>"; };
+		58A23A81223F936D0098AED5 /* AddGroupMemberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddGroupMemberViewController.xib; sourceTree = "<group>"; };
 		58B41EE721F98845004676CA /* PNDocumentPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNDocumentPickerViewController.h; sourceTree = "<group>"; };
 		58B41EE821F98845004676CA /* PNDocumentPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNDocumentPickerViewController.m; sourceTree = "<group>"; };
 		58BA8D9D221E73AB00E6DE95 /* ContactsHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsHeadView.xib; sourceTree = "<group>"; };
@@ -3480,6 +3485,9 @@
 			children = (
 				73D00E902159DABF0013E20D /* Views */,
 				73EE8CC12159CD4F0048866B /* Cells */,
+				58A23A7F223F936C0098AED5 /* AddGroupMemberViewController.h */,
+				58A23A80223F936D0098AED5 /* AddGroupMemberViewController.m */,
+				58A23A81223F936D0098AED5 /* AddGroupMemberViewController.xib */,
 				73EE8CBB2154E5330048866B /* ChooseContactViewController.h */,
 				73EE8CBC2154E5330048866B /* ChooseContactViewController.m */,
 				73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */,
@@ -3684,6 +3692,7 @@
 				73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */,
 				581DE4E32238D9D10056D4F8 /* CreateGroupChatViewController.xib in Resources */,
 				583B2B3722378E6600E6238D /* NewRequestsViewController.xib in Resources */,
+				58A23A83223F936D0098AED5 /* AddGroupMemberViewController.xib in Resources */,
 				581DE4E82238ED250056D4F8 /* GroupDetailsViewController.xib in Resources */,
 				583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
@@ -4225,6 +4234,7 @@
 				736257C5214225FD00D7FD6B /* getgateway.c in Sources */,
 				582BFE4C221D26DF00D8C2C8 /* ImportAccountViewController.m in Sources */,
 				584A447E21460AFE00608122 /* FileViewController.m in Sources */,
+				58A23A82223F936D0098AED5 /* AddGroupMemberViewController.m in Sources */,
 				583BF93021F6EDB80078A2A8 /* MyFilesCell.m in Sources */,
 				580CFE462227B7FD00460B41 /* UINavigationController+MemoryLeak.m in Sources */,
 				73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */,
