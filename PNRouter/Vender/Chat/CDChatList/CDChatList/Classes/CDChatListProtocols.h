@@ -174,7 +174,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString *publicKey;
 @property (nonatomic , assign) NSInteger messageStatu;
 @property(nonatomic, assign) BOOL isDown;
-
+@property(nonatomic, assign) BOOL isGroup;
 @property (nonatomic, copy) NSString *nonceKey;
 @property (nonatomic, copy) NSString *signKey;
 @property (nonatomic, copy) NSString *symmetKey;
