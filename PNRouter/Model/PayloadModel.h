@@ -11,6 +11,7 @@
 @interface PayloadModel : BBaseModel
 
 @property (nonatomic, strong) NSString *MsgId;
+@property (nonatomic, strong) NSString *FileInfo;
 @property (nonatomic) NSInteger MsgType;
 @property (nonatomic) NSInteger TimeStatmp;
 @property (nonatomic, copy) NSString *Msg;

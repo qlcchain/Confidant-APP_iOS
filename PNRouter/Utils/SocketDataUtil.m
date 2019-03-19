@@ -285,7 +285,6 @@ struct ResultFile {
     HTONL(millFileid);
     HTONS(crc);
     
-    
     if ([toid isEmptyString] && fileType !=6) // 上传文件
     {
         [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srcKey),bg_sqlKey(@"fileId"),bg_sqlValue(@(fileid))] complete:^(NSArray * _Nullable array) {

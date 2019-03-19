@@ -616,6 +616,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.msgType = CDMessageTypeImage;
     model.msg = info[UIImagePickerControllerMediaURL];
     model.fileID = msgid;
+    model.fileWidth = img.size.width;
+    model.fileHeight = img.size.height;
     model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
     model.FromId = [UserConfig getShareObject].userId;
     model.ToId = self.friendModel.userId;
@@ -662,7 +664,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void) sendFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey msgKey:(NSString *) msgKey
 {
     if ([SystemUtil isSocketConnect]) {
-        
         ChatModel *chatModel = [[ChatModel alloc] init];
         chatModel.fromId = [UserConfig getShareObject].userId;
         chatModel.toId = toId;
@@ -967,6 +968,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     messageModel.FromId = [UserConfig getShareObject].userId;
                     messageModel.ToId = model.userId;
                     messageModel.fileSize = fileDatas.length;
+                    messageModel.fileWidth = weakSelf.selectMessageModel.fileWidth;
+                    messageModel.fileWidth = weakSelf.selectMessageModel.fileHeight;
                     messageModel.msgState = CDMessageStateSending;
                     messageModel.messageId = [NSString stringWithFormat:@"%d",msgid];
                     messageModel.fileID = msgid;
@@ -1236,6 +1239,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             model.ToId = userId?:@"";
             model.FromId = self.friendModel.userId;
         }
+        //model.fileWidth = 0;
         model.messageStatu = payloadModel.Status;
         model.publicKey = self.friendModel.publicKey;
         model.messageId = [NSString stringWithFormat:@"%@",payloadModel.MsgId];
@@ -1565,12 +1569,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 [AppD.window showHint:@"Image cannot be larger than 100MB"];
                 return;
             }
-            
             NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
             NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
             int msgid = [mill intValue];
             CDMessageModel *model = [[CDMessageModel alloc] init];
             model.msgType = CDMessageTypeImage;
+            model.fileWidth = img.size.width;
+            model.fileHeight = img.size.height;
             model.msg = @"";
             model.fileID = msgid;
             model.FromId = [UserConfig getShareObject].userId;
@@ -1644,6 +1649,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     CDMessageModel *model = [[CDMessageModel alloc] init];
     model.msgType = CDMessageTypeMedia;
     model.messageStatu = -1;
+    model.fileWidth = evImage.size.width;
+    model.fileHeight = evImage.size.height;
     model.FromId = [UserConfig getShareObject].userId;
     model.ToId = self.friendModel.userId;
     model.msgState = CDMessageStateSending;

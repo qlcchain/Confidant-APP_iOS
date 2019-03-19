@@ -31,6 +31,13 @@
                         <color key="textColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fJ9-2r-Njo">
+                        <rect key="frame" x="65.5" y="55" width="254.5" height="0.5"/>
+                        <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="xug-qu-vzP"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Ftl-zh-cnO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="2EM-pl-4NN"/>
@@ -38,6 +45,9 @@
                     <constraint firstItem="Oc5-2X-JrP" firstAttribute="leading" secondItem="Ftl-zh-cnO" secondAttribute="trailing" constant="10" id="FkR-Yt-7d1"/>
                     <constraint firstItem="Ftl-zh-cnO" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="NJq-Vb-KxR"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Oc5-2X-JrP" secondAttribute="trailing" constant="10" id="Onz-zn-dGn"/>
+                    <constraint firstItem="fJ9-2r-Njo" firstAttribute="leading" secondItem="Oc5-2X-JrP" secondAttribute="leading" id="d8f-WU-8Yj"/>
+                    <constraint firstAttribute="trailing" secondItem="fJ9-2r-Njo" secondAttribute="trailing" id="hwi-3S-pUx"/>
+                    <constraint firstAttribute="bottom" secondItem="fJ9-2r-Njo" secondAttribute="bottom" id="nem-W5-e28"/>
                     <constraint firstAttribute="bottom" secondItem="Ftl-zh-cnO" secondAttribute="bottom" constant="8" id="tG5-xa-as8"/>
                     <constraint firstItem="Ftl-zh-cnO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="xBv-dF-CBX"/>
                 </constraints>
@@ -47,7 +57,7 @@
                 <outlet property="headImgView" destination="Ftl-zh-cnO" id="mwh-D7-rqn"/>
                 <outlet property="lblName" destination="Oc5-2X-JrP" id="jms-xr-vkO"/>
             </connections>
-            <point key="canvasLocation" x="-195" y="57"/>
+            <point key="canvasLocation" x="-195.19999999999999" y="56.671664167916049"/>
         </tableViewCell>
     </objects>
     <resources>

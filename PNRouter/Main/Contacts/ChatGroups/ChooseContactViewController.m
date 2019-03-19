@@ -76,14 +76,16 @@
         FriendModel *model = obj;
         model.isSelect = NO;
     }];
-    if (isSend) {
+   
         @weakify_self
-        [self dismissViewControllerAnimated:YES completion:^{
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (isSend) {
             if (weakSelf.selectArray.count > 0) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
             }
-        }];
-    }
+        }
+    }];
+    
     
 }
 - (IBAction)rightAction:(id)sender {

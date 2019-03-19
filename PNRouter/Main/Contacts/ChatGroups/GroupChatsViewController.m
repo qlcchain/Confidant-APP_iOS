@@ -29,7 +29,10 @@
 
 @implementation GroupChatsViewController
 #pragma -mark Action
-
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (IBAction)backAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
 }
@@ -72,8 +75,14 @@
     // Hide the status
     ((MJRefreshStateHeader *)_mainTab.mj_header).stateLabel.hidden = YES;
     [_mainTab.mj_header beginRefreshing];
+    
+    [self addNoti];
 }
-
+#pragma mark --添加通知
+- (void) addNoti
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullGroupSucess:) name:PULL_GROUP_SUCCESS_NOTI object:nil];
+}
 #pragma mark - 拉取群组
 - (void) pullGroupList
 {
@@ -129,6 +138,18 @@
             }
         }];
     }
+    [_mainTab reloadData];
+}
+
+#pragma mark --通知回调
+- (void) pullGroupSucess:(NSNotification *) noti
+{
+    [_mainTab.mj_header endRefreshing];
+    NSArray *groups = noti.object;
+    if (self.dataArray.count > 0) {
+        [self.dataArray removeAllObjects];
+    }
+    [self.dataArray addObjectsFromArray:groups];
     [_mainTab reloadData];
 }
 

@@ -25,7 +25,11 @@
 
 - (void) setModeWithGroupModel:(GroupInfoModel *) model
 {
-    _lblName.text = model.GName? [model.GName base64DecodedString]:@"";
+    NSString *name = model.GName;
+    if (model.Remark && model.Remark.length > 0) {
+        name = model.Remark;
+    }
+    _lblName.text = name? [name base64DecodedString]:@"";
 }
 
 @end
