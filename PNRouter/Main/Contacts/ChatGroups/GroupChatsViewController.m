@@ -19,6 +19,7 @@
 #import "FriendModel.h"
 #import "AddGroupMemberViewController.h"
 #import "GroupChatViewController.h"
+#import "CreateGroupChatViewController.h"
 
 @interface GroupChatsViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 {
@@ -98,6 +99,7 @@
 - (void) addNoti
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullGroupSucess:) name:PULL_GROUP_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseContactNoti:) name:CHOOSE_FRIEND_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
 }
 #pragma mark - 拉取群组
@@ -171,7 +173,14 @@
     [self.dataArray addObjectsFromArray:groups];
     [_mainTab reloadData];
 }
-
+- (void) chooseContactNoti:(NSNotification *) noti
+{
+    NSArray *mutContacts = noti.object;
+    if (mutContacts && mutContacts.count > 0) {
+        CreateGroupChatViewController *vc = [[CreateGroupChatViewController alloc] initWithContacts:mutContacts];
+        [self presentModalVC:vc animated:YES];
+    }
+}
 - (void) jumpGroupChatNoti:(NSNotification *) noti
 {
     [self pullGroupList];

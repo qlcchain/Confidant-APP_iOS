@@ -127,11 +127,12 @@
         FriendModel *model = obj;
         if (idx == weakSelf.persons.count-1) {
             friendids = [friendids stringByAppendingString:model.userId];
-            friendKeys = [friendids stringByAppendingString:[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey]];
+            friendKeys = [friendKeys stringByAppendingString:[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey]];
         } else {
             friendids = [friendids stringByAppendingString:model.userId];
             friendids = [friendids stringByAppendingString:@","];
-            friendKeys = [friendids stringByAppendingString:[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey]];
+            
+            friendKeys = [friendKeys stringByAppendingString:[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey]];
             friendKeys = [friendKeys stringByAppendingString:@","];
         }
     }];
