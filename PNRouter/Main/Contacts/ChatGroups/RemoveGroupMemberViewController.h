@@ -10,8 +10,17 @@
 
 @class FriendModel;
 
+typedef void(^RemoveGroupMemberCompleteBlock)(NSArray *memberArr);
+
+typedef enum : NSUInteger {
+    RemoveGroupMemberTypeInCreate, // 创建时删除
+    RemoveGroupMemberTypeJustRemove, // 群聊详情中删除
+} RemoveGroupMemberType;
+
 @interface RemoveGroupMemberViewController : PNBaseViewController
 
-- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr;
+@property (nonatomic, copy) RemoveGroupMemberCompleteBlock removeCompleteB;
+
+- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr type:(RemoveGroupMemberType)type;
 
 @end

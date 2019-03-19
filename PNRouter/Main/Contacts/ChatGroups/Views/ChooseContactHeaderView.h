@@ -32,6 +32,7 @@ typedef void(^ChooseContactShowCellBlock)(NSInteger headerSection);
 //@property (weak, nonatomic) IBOutlet UILabel *titleLab;
 //@property (weak, nonatomic) IBOutlet UILabel *detailLab;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImg;
+@property (weak, nonatomic) IBOutlet UIView *coverView;
 
 //@property (nonatomic, copy) ContactSelectBlock selectB;
 @property (nonatomic, copy) ChooseContactShowCellBlock showCellB;

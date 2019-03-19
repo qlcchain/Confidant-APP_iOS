@@ -24,12 +24,13 @@
 @property (nonatomic ,strong) NSMutableArray *dataArray;
 @property (nonatomic ,strong) NSMutableArray *searchDataArray;
 //@property (nonatomic ,strong) NSArray *groupArray;
-@property (nonatomic ,strong) NSMutableArray *selectArray;
+@property (nonatomic ,strong) NSMutableArray *notSelectArray;
 @property (weak, nonatomic) IBOutlet UIButton *leftBtn;
 @property (weak, nonatomic) IBOutlet UILabel *selectLab;
 @property (weak, nonatomic) IBOutlet UIButton *confrimBtn;
 
 @property (nonatomic) BOOL isSearch;
+@property (nonatomic) RemoveGroupMemberType removeType;
 
 @end
 
@@ -41,18 +42,16 @@
 }
 
 - (IBAction)confirmAction:(id)sender {
-    [self.selectArray addObjectsFromArray:[self getIsSelectRouter]];
+    [self.notSelectArray addObjectsFromArray:[self getNotSelectRouter]];
     
-    if (self.selectArray.count <= 0) {
-        [AppD.window showHint:@"Please select group member"];
-        return;
+    if (_removeType == RemoveGroupMemberTypeInCreate) {
+        if (_removeCompleteB) {
+            _removeCompleteB(self.notSelectArray);
+        }
     }
     
-    @weakify_self
     [self dismissViewControllerAnimated:YES completion:^{
-        if (weakSelf.selectArray.count > 0) {
-//            [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
-        }
+        
     }];
 }
 
@@ -187,20 +186,18 @@
 
 #pragma mark - Lazy
 
-- (NSMutableArray *)searchDataArray
-{
+- (NSMutableArray *)searchDataArray {
     if (!_searchDataArray) {
         _searchDataArray = [NSMutableArray array];
     }
     return _searchDataArray;
 }
 
-- (NSMutableArray *)selectArray
-{
-    if (!_selectArray) {
-        _selectArray = [NSMutableArray array];
+- (NSMutableArray *)notSelectArray {
+    if (!_notSelectArray) {
+        _notSelectArray = [NSMutableArray array];
     }
-    return _selectArray;
+    return _notSelectArray;
 }
 
 #pragma mark - UITextFeildDelegate
@@ -210,8 +207,9 @@
 }
 
 #pragma mark - Init
-- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr {
+- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr type:(RemoveGroupMemberType)type {
     if (self = [super init]) {
+        _removeType = type;
         _dataArray = [NSMutableArray array];
         [_dataArray addObjectsFromArray:[self handleShowData:arr]];
     }
@@ -256,12 +254,18 @@
         if (showModel.isSelect) {
             [array addObject:[weakSelf getFriendModelWithContactShowModel:showModel contactRouterModel:showModel.routerArr.firstObject]];
         }
-        [showModel.routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ChooseContactRouterModel *routerModel = obj;
-            if (routerModel.isSelect) {
-                [array addObject:[weakSelf getFriendModelWithContactShowModel:showModel contactRouterModel:routerModel]];
-            }
-        }];
+    }];
+    return array;
+}
+
+- (NSMutableArray *)getNotSelectRouter {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    @weakify_self
+    [_dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ChooseContactShowModel *showModel = obj;
+        if (!showModel.isSelect) {
+            [array addObject:[weakSelf getFriendModelWithContactShowModel:showModel contactRouterModel:showModel.routerArr.firstObject]];
+        }
     }];
     return array;
 }

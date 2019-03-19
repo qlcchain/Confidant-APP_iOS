@@ -25,6 +25,8 @@
 @property (nonatomic ,strong) NSMutableArray *searchDataArray;
 //@property (nonatomic ,strong) NSArray *groupArray;
 @property (nonatomic ,strong) NSMutableArray *selectArray;
+@property (nonatomic, strong) NSMutableArray *originArr;
+
 @property (weak, nonatomic) IBOutlet UIButton *leftBtn;
 @property (weak, nonatomic) IBOutlet UILabel *selectLab;
 @property (weak, nonatomic) IBOutlet UIButton *confrimBtn;
@@ -45,13 +47,19 @@
     [self.selectArray addObjectsFromArray:[self getIsSelectRouter]];
     
     if (self.selectArray.count <= 0) {
-        [AppD.window showHint:@"Please select group member"];
+        [AppD.window showHint:@"Please select group members"];
         return;
     }
     
     @weakify_self
+    if (_addType == AddGroupMemberTypeInCreate) {
+        if (_addCompleteB) {
+            _addCompleteB(weakSelf.selectArray);
+        }
+    }
+    
     [self dismissViewControllerAnimated:YES completion:^{
-        if (weakSelf.addType == AddGroupMemberTypeToCreate) {
+        if (weakSelf.addType == AddGroupMemberTypeBeforeCreate) {
             if (weakSelf.selectArray.count > 0) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
             }
@@ -89,7 +97,6 @@
 }
 
 - (NSArray *)handleShowData:(NSArray<FriendModel *> *)arr {
-    //    NSMutableArray *tempArr = [NSMutableArray arrayWithArray:arr];
     NSMutableArray *contactShowArr = [NSMutableArray array];
     @weakify_self
     [arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -98,6 +105,7 @@
         BOOL isExist = [resultArr[0] boolValue];
         if (!isExist) { // 不存在则创建
             ChooseContactShowModel *showM = [ChooseContactShowModel new];
+            showM.userInterfaceOff = [weakSelf getUserInterfaceOff:friendM.signPublicKey];
             showM.showSelect = NO;
             showM.isSelect = NO;
             showM.showCell = [weakSelf getOldShowCellStatus:friendM.signPublicKey];
@@ -135,6 +143,18 @@
     }];
     
     return [self sortWith:contactShowArr];
+}
+
+- (BOOL)getUserInterfaceOff:(NSString *)key {
+    __block BOOL userInterfaceOff = NO;
+    [_originArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *tempM = obj;
+        if ([key isEqualToString:tempM.signPublicKey]) {
+            userInterfaceOff = YES;
+            *stop = YES;
+        }
+    }];
+    return userInterfaceOff;
 }
 
 - (BOOL)getOldShowCellStatus:(NSString *)userKey {
@@ -215,11 +235,13 @@
 }
 
 #pragma mark - Init
-- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr type:(AddGroupMemberType)type {
+- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)memberArr originArr:(NSArray<FriendModel *> *)originArr type:(AddGroupMemberType)type {
     if (self = [super init]) {
         _addType = type;
+        _originArr = [NSMutableArray array];
+        [_originArr addObjectsFromArray:originArr];
         _dataArray = [NSMutableArray array];
-        [_dataArray addObjectsFromArray:[self handleShowData:arr]];
+        [_dataArray addObjectsFromArray:[self handleShowData:memberArr]];
     }
     return self;
 }

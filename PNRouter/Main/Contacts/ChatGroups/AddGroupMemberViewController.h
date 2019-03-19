@@ -10,13 +10,18 @@
 
 @class FriendModel;
 
+typedef void(^AddGroupMemberCompleteBlock)(NSArray *addArr);
+
 typedef enum : NSUInteger {
-    AddGroupMemberTypeToCreate, // 添加成员来创建群组
+    AddGroupMemberTypeBeforeCreate, // 添加成员来创建群组
+    AddGroupMemberTypeInCreate, // 在创建群组里面来添加成员
     AddGroupMemberTypeJustAdd, // 仅添加成员
 } AddGroupMemberType;
 
 @interface AddGroupMemberViewController : PNBaseViewController
 
-- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr type:(AddGroupMemberType)type;
+@property (nonatomic, copy) AddGroupMemberCompleteBlock addCompleteB;
+
+- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)memberArr originArr:(NSArray<FriendModel *> *)originArr type:(AddGroupMemberType)type;
 
 @end
