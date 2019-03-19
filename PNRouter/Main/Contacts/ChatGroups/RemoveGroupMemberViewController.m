@@ -6,7 +6,7 @@
 //  Copyright © 2018年 旷自辉. All rights reserved.
 //
 
-#import "AddGroupMemberViewController.h"
+#import "RemoveGroupMemberViewController.h"
 #import "ChooseDownView.h"
 #import "ChatListDataUtil.h"
 #import "ChooseContactShowModel.h"
@@ -15,7 +15,7 @@
 #import "ChooseContactHeaderView.h"
 #import "FriendModel.h"
 
-@interface AddGroupMemberViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface RemoveGroupMemberViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
@@ -30,11 +30,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *confrimBtn;
 
 @property (nonatomic) BOOL isSearch;
-@property (nonatomic) AddGroupMemberType addType;
 
 @end
 
-@implementation AddGroupMemberViewController
+@implementation RemoveGroupMemberViewController
 
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
@@ -51,12 +50,8 @@
     
     @weakify_self
     [self dismissViewControllerAnimated:YES completion:^{
-        if (weakSelf.addType == AddGroupMemberTypeToCreate) {
-            if (weakSelf.selectArray.count > 0) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
-            }
-        } else if (weakSelf.addType == AddGroupMemberTypeJustAdd) {
-            
+        if (weakSelf.selectArray.count > 0) {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
         }
     }];
 }
@@ -215,9 +210,8 @@
 }
 
 #pragma mark - Init
-- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr type:(AddGroupMemberType)type {
+- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr {
     if (self = [super init]) {
-        _addType = type;
         _dataArray = [NSMutableArray array];
         [_dataArray addObjectsFromArray:[self handleShowData:arr]];
     }

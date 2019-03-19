@@ -45,7 +45,7 @@
                 [inputArr addObject:model];
             }
         }];
-        AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr];
+        AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr type:AddGroupMemberTypeToCreate];
         [self presentModalVC:vc animated:YES];
         
     } else if (sender.tag == 20) { // scan to add contacts
