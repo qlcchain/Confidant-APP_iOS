@@ -41,6 +41,7 @@
 #import "SendCacheChatUtil.h"
 #import "UserHeadUtil.h"
 #import "GroupInfoModel.h"
+#import "GroupMembersModel.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -443,6 +444,8 @@
         [SocketMessageUtil handleCreateGroup:receiveDic];
     } else if ([action isEqualToString:Action_GroupListPull]) { // 拉取群组
         [SocketMessageUtil handleGroupListPull:receiveDic];
+    } else if ([action isEqualToString:Action_GroupUserPull]) { // 拉取群好友信息
+        [SocketMessageUtil handleGroupUserPull:receiveDic];
     }
 }
 
@@ -1394,6 +1397,24 @@
         
     }
 }
+
+#pragma mark - 拉取群好友信息
++ (void)handleGroupUserPull:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        NSString *Payload = receiveDic[@"params"][@"Payload"];
+        NSArray *payloadArr = [GroupMembersModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupUserPull_SUCCESS_NOTI object:payloadArr];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"Other errors"];
+        }        
+    }
+}
+
+
 
 
 
