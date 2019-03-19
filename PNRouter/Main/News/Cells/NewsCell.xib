@@ -30,18 +30,18 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ge8-gJ-B9q">
-                                <rect key="frame" x="74" y="12" width="230" height="39.5"/>
+                                <rect key="frame" x="74" y="13" width="230" height="36.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KKK" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nkh-mg-xda">
                                         <rect key="frame" x="0.0" y="0.0" width="150" height="19"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                        <color key="textColor" red="0.24705882352941178" green="0.24705882352941178" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't hesitate to ping me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ub-XD-rda">
-                                        <rect key="frame" x="0.0" y="23.5" width="214" height="16"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
-                                        <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                        <rect key="frame" x="0.0" y="22.5" width="214" height="14"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                        <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:23 PM" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ri-0a-Gmg">
@@ -50,7 +50,7 @@
                                             <constraint firstAttribute="width" constant="80" id="H8E-cL-9Po"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                        <color key="textColor" red="0.70196078431372544" green="0.70196078431372544" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -78,13 +78,13 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Ge8-gJ-B9q" secondAttribute="trailing" constant="16" id="7Hl-hN-dm2"/>
                             <constraint firstItem="JJc-Ef-S8M" firstAttribute="top" secondItem="heL-Cn-ZP1" secondAttribute="top" constant="8" id="G9V-60-Q54"/>
-                            <constraint firstAttribute="bottom" secondItem="Ge8-gJ-B9q" secondAttribute="bottom" constant="12" id="JOR-tK-Ts9"/>
+                            <constraint firstAttribute="bottom" secondItem="Ge8-gJ-B9q" secondAttribute="bottom" constant="14" id="JOR-tK-Ts9"/>
                             <constraint firstItem="JJc-Ef-S8M" firstAttribute="leading" secondItem="heL-Cn-ZP1" secondAttribute="leading" constant="16" id="MFb-sg-4ni"/>
                             <constraint firstAttribute="trailing" secondItem="y2i-gL-Mps" secondAttribute="trailing" id="PdM-Gb-oeE"/>
                             <constraint firstItem="Ge8-gJ-B9q" firstAttribute="leading" secondItem="JJc-Ef-S8M" secondAttribute="trailing" constant="10" id="Y8g-2V-Khn"/>
                             <constraint firstItem="Ge8-gJ-B9q" firstAttribute="leading" secondItem="y2i-gL-Mps" secondAttribute="leading" id="dqQ-ts-D2R"/>
                             <constraint firstAttribute="bottom" secondItem="y2i-gL-Mps" secondAttribute="bottom" id="w5P-jc-fiY"/>
-                            <constraint firstItem="Ge8-gJ-B9q" firstAttribute="top" secondItem="heL-Cn-ZP1" secondAttribute="top" constant="12" id="y0Z-2V-SkH"/>
+                            <constraint firstItem="Ge8-gJ-B9q" firstAttribute="top" secondItem="heL-Cn-ZP1" secondAttribute="top" constant="13" id="y0Z-2V-SkH"/>
                         </constraints>
                     </view>
                 </subviews>

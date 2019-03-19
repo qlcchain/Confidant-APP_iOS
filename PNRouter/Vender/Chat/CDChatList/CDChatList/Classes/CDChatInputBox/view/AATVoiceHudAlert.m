@@ -134,7 +134,7 @@
         revoclabel.backgroundColor = HexColor(0x9D432C);
         revoclabel.textColor = [UIColor whiteColor];
         revoclabel.textAlignment = NSTextAlignmentCenter;
-        revoclabel.font = [UIFont systemFontOfSize:12];
+        revoclabel.font = [UIFont systemFontOfSize:14];
         [revoc addSubview:revoclabel];
 
         self.voiceRevocation = revoc;

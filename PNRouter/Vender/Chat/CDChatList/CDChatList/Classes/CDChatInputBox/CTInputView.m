@@ -122,6 +122,7 @@ static UIColor *InputHexColor(int hexColor){
     [v2 addSubview:labl];
     labl.textAlignment = NSTextAlignmentCenter;
     labl.text = @"Hold to record";
+    labl.font = [UIFont systemFontOfSize:16];
     labl.textColor = InputHexColor(0x555555);
     v2.layer.borderColor = InputHexColor(0xC1C2C6).CGColor;
     v2.layer.borderWidth = 1;
