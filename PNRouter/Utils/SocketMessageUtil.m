@@ -1485,10 +1485,8 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:payloadArr];
         }
         
-    } else if (retCode == 1) { // 1：用户没权限
-        
-    } else if (retCode == 2) { // 2：其他错误
-        
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
     }
 }
 

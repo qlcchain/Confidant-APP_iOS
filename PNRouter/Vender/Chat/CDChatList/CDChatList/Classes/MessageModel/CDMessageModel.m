@@ -71,7 +71,7 @@
 @synthesize fileWidth;
 @synthesize fileHeight;
 @synthesize fileMd5;
-
+@synthesize isGroup;
 
 -(instancetype)init:(NSDictionary *)dic{
     self = [super init];

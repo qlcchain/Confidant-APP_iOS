@@ -120,6 +120,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void) addNoti
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMessageSuccessNoti:) name:GROUP_MESSAGE_SEND_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullMessageListSuccessNoti:) name:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
+    
 }
 
 #pragma mark ---pull message
@@ -128,8 +130,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *MsgType = @"1"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
     NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(_msgStartId)]; // 从这个消息号往前（不包含该消息），为0表示默认从最新的消息回溯
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
-   // NSDictionary *params = @{@"Action":Action_PullMsg,@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
-   // [SocketMessageUtil sendVersion3WithParams:params];
+    [SendRequestUtil sendPullGroupMessageListWithGId:self.groupModel.GId MsgType:MsgType msgStartId:MsgStartId msgNum:MsgNum];
 }
 - (void) pullGroupFriend
 
@@ -542,6 +543,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
         model.messageId = [NSString stringWithFormat:@"%ld",(long)tempMsgid];
         model.msg = string;
+        model.isGroup = YES;
         model.msgState = CDMessageStateNormal;
       
         model.messageStatu = -1;
@@ -584,21 +586,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     } else {
         model.isLeft = YES;
     }
+    
+    NSString *signPK = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:model.FromId];
+    NSString *nickName = model.userName?:@"";
     CTDataConfig config = [CTData defaultConfig];
+    
     if (!model.isLeft) {
         // config.textColor = MAIN_PURPLE_COLOR.CGColor;
         config.isOwner = YES;
+        signPK = [EntryModel getShareObject].signPublicKey;
+        nickName = [UserConfig getShareObject].userName;
     }
-    model.publicKey = self.groupModel.UserKey;
     model.willDisplayTime = YES;
     model.ctDataconfig = config;
-    NSString *nkName = [UserModel getUserModel].username;
-    NSString *userKey = [EntryModel getShareObject].signPublicKey;
-    if (model.isLeft) {
-       // nkName = self.friendModel.username;
-       // userKey = self.friendModel.signPublicKey;
-    }
-    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
+   
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nickName userKey:signPK]];
     [self.listView addMessagesToBottom:@[model]];
 }
 #pragma mark - 当输入框frame变化是，会回调此方法
@@ -947,6 +949,137 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 }
             }];
         }
+    }
+}
+- (void) pullMessageListSuccessNoti:(NSNotification *) noti
+{
+    [self.listView stopRefresh];
+    
+    NSArray *messageArr = noti.object;
+    if (!messageArr || messageArr.count == 0) {
+        return;
+    }
+    NSMutableArray *msgArr = [NSMutableArray array];
+    NSMutableArray *messageModelArr = [NSMutableArray array];
+    [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        PayloadModel *payloadModel = obj;
+        CDMessageModel *model = [[CDMessageModel alloc] init];
+        NSString *userId = [UserConfig getShareObject].userId;
+        if (payloadModel.From && payloadModel.From.length>0) {
+            model.FromId = payloadModel.From;
+            model.userName = [payloadModel.UserName base64DecodedString]?:@"";
+            model.isLeft = YES;
+        } else {
+            model.FromId = userId?:@"";
+            model.isLeft = NO;
+        }
+        model.ToId = self.groupModel.GId;
+        model.isGroup = YES;
+        
+        if (payloadModel.FileInfo && payloadModel.FileInfo.length>0) {
+            NSArray *whs = [payloadModel.FileInfo componentsSeparatedByString:@"*"];
+            model.fileWidth = [whs[0] floatValue];
+            model.fileHeight = [whs[1] floatValue];
+        }
+        
+        model.messageStatu = payloadModel.Status;
+        model.messageId = [NSString stringWithFormat:@"%@",payloadModel.MsgId];
+        model.TimeStatmp = payloadModel.TimeStatmp;
+        model.msgType = payloadModel.MsgType;
+        if (model.msgType >=1 && model.msgType !=5 && model.msgType !=4) { // 图片
+            model.msgState = CDMessageStateDownloading;
+        }
+        if (payloadModel.FileName) {
+            model.fileName = [Base58Util Base58DecodeWithCodeName:payloadModel.FileName];
+        }
+        model.fileMd5 = payloadModel.FileMD5;
+        model.filePath = payloadModel.FilePath;
+        model.fileSize = payloadModel.FileSize;
+        
+        if (!model.isLeft) {
+           [msgArr addObject:model.messageId];
+        }
+        
+        // 自己私钥解密
+        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
+        // 截取前16位
+        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+      
+        if (model.msgType == 0) { // 文字
+           model.msg = aesDecryptString(payloadModel.Msg, datakey);
+        }
+        NSString *signPK = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:model.FromId];
+        NSString *nickName = model.userName?:@"";
+        CTDataConfig config = [CTData defaultConfig];
+        if (!model.isLeft) {
+            config.isOwner = YES;
+            signPK = [EntryModel getShareObject].signPublicKey;
+            nickName = [UserConfig getShareObject].userName;
+        }
+        model.ctDataconfig = config;
+      
+        model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nickName userKey:signPK]];
+        [messageModelArr addObject:model];
+    }];
+    
+    if (_msgStartId == 0) { // 第一次自动加载
+        /*
+        NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"toId"),bg_sqlValue(self.friendModel.userId)]];
+        if (chats && chats.count > 0) {
+            @weakify_self
+            [chats enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                ChatModel *chatModel = obj;
+                
+                CDMessageModel *model = [[CDMessageModel alloc] init];
+                model.FromId = chatModel.fromId;
+                model.ToId = chatModel.toId;
+                model.msgType = chatModel.msgType;
+                model.publicKey = weakSelf.friendModel.publicKey;
+                model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+                model.messageId = [NSString stringWithFormat:@"%ld",(long)chatModel.msgid];
+                CTDataConfig config = [CTData defaultConfig];
+                config.isOwner = YES;
+                model.ctDataconfig = config;
+                
+                NSString *nkName = [UserModel getUserModel].username;
+                NSString *userKey = [EntryModel getShareObject].signPublicKey;
+                model.userThumImage =  [SystemUtil genterViewToImage:[weakSelf getHeadViewWithName:nkName userKey:userKey]];
+                
+                if (model.msgType == 0) { // 文字
+                    model.msg = chatModel.messageMsg;
+                    model.msgState = CDMessageStateNormal;
+                    //                model.nonceKey = nonceString;
+                    //                model.signKey = signString;
+                    //                model.symmetKey = enSymmetString;
+                    model.messageStatu = -1;
+                } else {
+                    model.fileSize = chatModel.fileSize;
+                    model.msgState = CDMessageStateSending;
+                    model.fileID = (int)chatModel.msgid;
+                    model.messageStatu = -1;
+                    model.fileName = chatModel.fileName;
+                }
+                [messageModelArr addObject:model];
+            }];
+            
+        }
+         */
+        self.listView.msgArr = messageModelArr;
+        
+    } else { // 下拉刷新
+        if (_pullMoreB) {
+            _pullMoreB(messageModelArr);
+        }
+    }
+    // 发送已读
+    if (msgArr.count > 0) {
+       // NSString *allMsgid = [msgArr componentsJoinedByString:@","];
+       // [self sendRedMsgWithMsgId:allMsgid];
+    }
+    
+    
+    if (messageArr && messageArr.count > 0) { // 更新最开始的消息id
+        _msgStartId = [((PayloadModel *)messageArr.firstObject).MsgId integerValue];
     }
 }
 @end
