@@ -10,8 +10,13 @@
 
 @class FriendModel;
 
+typedef enum : NSUInteger {
+    AddGroupMemberTypeToCreate, // 添加成员来创建群组
+    AddGroupMemberTypeJustAdd, // 仅添加成员
+} AddGroupMemberType;
+
 @interface AddGroupMemberViewController : PNBaseViewController
 
-- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr;
+- (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)arr type:(AddGroupMemberType)type;
 
 @end
