@@ -70,6 +70,7 @@
 @synthesize symmetKey;
 @synthesize fileWidth;
 @synthesize fileHeight;
+@synthesize fileMd5;
 
 
 -(instancetype)init:(NSDictionary *)dic{

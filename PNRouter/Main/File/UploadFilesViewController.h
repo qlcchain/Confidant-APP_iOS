@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UploadFilesViewController : PNBaseViewController
 
 @property (nonatomic, strong) NSArray *urlArr;
+@property (nonatomic, strong) NSString *fileInfo;
 @property (nonatomic, assign) BOOL isDoc;
 @property (nonatomic) DocumentPickerType documentType;
 

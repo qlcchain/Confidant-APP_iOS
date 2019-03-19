@@ -174,14 +174,14 @@
                 [AppD.window showHint:@"Image cannot be larger than 100MB"];
                 return;
             }
-            
+            NSString *fileInfo = [NSString stringWithFormat:@"%f,%f",img.size.width,img.size.height];
             NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
             NSString *outputPath = [NSString stringWithFormat:@"%@.jpg",mills];
             outputPath =  [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:outputPath];
             NSURL *url = [NSURL fileURLWithPath:outputPath];
             BOOL success = [imgData writeToURL:url atomically:YES];
             if (success) {
-                [weakSelf jumpToUploadFiles:@[url] isDoc:NO];
+                [weakSelf jumpToUploadFiles:@[url] fileInfo:fileInfo isDoc:NO];
             }
         }
     }];
@@ -220,11 +220,11 @@
     NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
     outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
     NSURL *url = [NSURL fileURLWithPath:outputPath];
-    
+    NSString *fileInfo = [NSString stringWithFormat:@"%f,%f",evImage.size.width,evImage.size.height];
     BOOL result = [[NSFileManager defaultManager] copyItemAtURL:asset.URL toURL:url error:nil];
     if (result) {
       //  [AppD.window hideHud];
-        [self jumpToUploadFiles:@[url] isDoc:NO];
+        [self jumpToUploadFiles:@[url] fileInfo:fileInfo isDoc:NO];
     } else {
       //  [AppD.window hideHud];
         [self.currentVC.view showHint:@"The current video format is not supported"];
@@ -265,7 +265,7 @@
     
     //    NSURL *first = urls.firstObject;
     
-    [self jumpToUploadFiles:urls isDoc:YES];
+    [self jumpToUploadFiles:urls fileInfo:@"" isDoc:YES];
 }
 
 // called if the user dismisses the document picker without selecting a document (using the Cancel button)
@@ -281,14 +281,15 @@
         [AppD.window showHint:@"File cannot be larger than 100MB"];
         return;
     }
-    [self jumpToUploadFiles:@[url] isDoc:YES];
+    [self jumpToUploadFiles:@[url] fileInfo:@"" isDoc:YES];
 }
 
 #pragma mark - Transition
-- (void)jumpToUploadFiles:(NSArray *)urlArr isDoc:(BOOL) isDoc {
+- (void)jumpToUploadFiles:(NSArray *)urlArr fileInfo:(NSString *) fileInfo isDoc:(BOOL) isDoc {
     UploadFilesViewController *vc = [[UploadFilesViewController alloc] init];
     vc.documentType = self.pickerType;
     vc.isDoc = isDoc;
+    vc.fileInfo = fileInfo;
     vc.urlArr = urlArr;
     [self.currentVC.navigationController pushViewController:vc animated:YES];
 }

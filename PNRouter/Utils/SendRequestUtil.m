@@ -282,9 +282,9 @@
 }
 
 #pragma mark -转发
-+ (void) sendFileForwardMsgid:(NSString *) msgid toid:(NSString *) toid fileName:(NSString *) fileName filekey:(NSString *) filekey
++ (void) sendFileForwardMsgid:(NSString *) msgid toid:(NSString *) toid fileName:(NSString *) fileName filekey:(NSString *) filekey fileInfo:(NSString *) fileInfo
 {
-    NSDictionary *params = @{@"Action":Action_FileForward,@"MsgId":msgid?:@"",@"FromId":[UserConfig getShareObject].userId?:@"",@"ToId":toid,@"FileName":fileName?:@"",@"FileKey":filekey?:@""};
+    NSDictionary *params = @{@"Action":Action_FileForward,@"MsgId":msgid?:@"",@"FromId":[UserConfig getShareObject].userId?:@"",@"ToId":toid,@"FileName":fileName?:@"",@"FileKey":filekey?:@"",@"FileInfo":fileInfo?:@""};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 

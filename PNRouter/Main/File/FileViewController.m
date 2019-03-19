@@ -416,7 +416,7 @@ typedef enum : NSUInteger {
          // 好友公钥加密对称密钥
         NSString *fileKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:datakey enPK:model.publicKey];
         
-        [SendRequestUtil sendFileForwardMsgid:[NSString stringWithFormat:@"%@",weakSelf.selectModel.MsgId] toid:model.userId?:@"" fileName:weakSelf.selectModel.FileName filekey:fileKey?:@""];
+        [SendRequestUtil sendFileForwardMsgid:[NSString stringWithFormat:@"%@",weakSelf.selectModel.MsgId] toid:model.userId?:@"" fileName:weakSelf.selectModel.FileName filekey:fileKey?:@"" fileInfo:weakSelf.selectModel.FileInfo];
     }];
 }
 - (void)pullFileListCompleteNoti:(NSNotification *)noti {
