@@ -12,7 +12,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GroupDetailsViewController : PNBaseViewController
+
 - (instancetype) initWithGroupInfo:(GroupInfoModel *) model;
+
 @end
 
 NS_ASSUME_NONNULL_END

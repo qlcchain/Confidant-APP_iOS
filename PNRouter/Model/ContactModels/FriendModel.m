@@ -22,11 +22,11 @@
              };
 }
 
-+ (NSString *)getSignPublicKeyWithUserId:(NSString *)userId {
++ (NSString *)getSignPublicKeyWithToxId:(NSString *)toxId {
     __block NSString *signPublicKey = @"";
     [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;
-        if ([model.userId isEqualToString:userId]) {
+        if ([model.RouteId isEqualToString:toxId]) {
             signPublicKey = model.signPublicKey;
             *stop = YES;
         }

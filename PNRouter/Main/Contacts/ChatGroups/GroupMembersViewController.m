@@ -37,6 +37,10 @@
 }
 
 #pragma mark - Life Cycle
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [super viewWillAppear:animated];
@@ -45,6 +49,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self addObserve];
+    
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
     
@@ -52,6 +58,8 @@
     _searchTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
     _searchTF.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self addTargetMethod];
+    
+    _dataArray = [NSMutableArray array];
     
     _tableV.delegate = self;
     _tableV.dataSource = self;
@@ -159,6 +167,11 @@
 #pragma mark - Noti
 - (void)groupUserPullSuccessNoti:(NSNotification *)noti {
     NSArray *arr = noti.object;
+    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        GroupMembersModel *model1 = obj1;
+        GroupMembersModel *model2 = obj2;
+        return [model1.Type compare:model2.Type];
+    }];
     [_dataArray removeAllObjects];
     [_dataArray addObjectsFromArray:arr];
     [_tableV reloadData];

@@ -43,11 +43,11 @@
 
 - (void)configHeaderWithModel:(GroupMembersModel *)model {
     _detailLab.text = [model.Type integerValue] == 0?@"Group Owner":nil;
-    NSString *showName = model.Remarks?:model.Nickname;
+    NSString *showName = model.Remarks&&model.Remarks.length>0?model.Remarks:model.Nickname;
     NSString *name = [showName base64DecodedString]?:showName;
     _nameLab.text = name;
 //    NSString *userKey = model.UserKey;
-    NSString *userKey = [FriendModel getSignPublicKeyWithUserId:[NSString stringWithFormat:@"%@",model.Id]];
+    NSString *userKey = [FriendModel getSignPublicKeyWithToxId:model.ToxId];
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:name]];
     _headImg.image = defaultImg;
 }

@@ -12,11 +12,14 @@
 
 
 @interface GroupDetailsViewController ()
+
 @property (weak, nonatomic) IBOutlet UIButton *headImgView;
 @property (nonatomic ,strong) GroupInfoModel *groupModel;
+
 @end
 
 @implementation GroupDetailsViewController
+
 - (instancetype) initWithGroupInfo:(GroupInfoModel *) model
 {
     if (self = [super init]) {
@@ -24,12 +27,17 @@
     }
     return self;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
 }
 
 #pragma mark - Action
+
+- (IBAction)backAction:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (IBAction)leaveAction:(id)sender {
     @weakify_self
@@ -68,7 +76,7 @@
 #pragma mark - Transition
 - (void)jumpToGroupMembers {
     GroupMembersViewController *vc = [GroupMembersViewController new];
-    vc.inputGId = @"";
+    vc.inputGId = _groupModel.GId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

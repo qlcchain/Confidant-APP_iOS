@@ -94,11 +94,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self leftNavBarItemPressedWithPop:YES];
     [SocketCountUtil getShareObject].groupChatId = @"";
 }
+
 - (IBAction)rightAction:(id)sender {
-    
-    GroupDetailsViewController *vc = [[GroupDetailsViewController alloc] init];
+    GroupDetailsViewController *vc = [[GroupDetailsViewController alloc] initWithGroupInfo:_groupModel];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self addNoti];
@@ -114,7 +115,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.listView startRefresh];
     [SocketCountUtil getShareObject].groupChatId = self.groupModel.GId;
 }
-
 
 #pragma mark ----添加通知
 - (void) addNoti

@@ -10,13 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner">
-            <connections>
-                <outlet property="detailLab" destination="Lwc-it-nRf" id="2sJ-5C-kHp"/>
-                <outlet property="headImg" destination="4fE-QR-6vg" id="Jzy-IV-bWb"/>
-                <outlet property="nameLab" destination="H6K-tu-24m" id="vK6-ds-T7l"/>
-            </connections>
-        </placeholder>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="mRu-Ez-Vhg" customClass="GroupMembersHeaderView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
@@ -75,6 +69,11 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="2nm-CF-gPQ"/>
+            <connections>
+                <outlet property="detailLab" destination="Lwc-it-nRf" id="Roq-5f-dPa"/>
+                <outlet property="headImg" destination="4fE-QR-6vg" id="FV1-gG-g0G"/>
+                <outlet property="nameLab" destination="H6K-tu-24m" id="Gdy-jD-Nmr"/>
+            </connections>
             <point key="canvasLocation" x="1044" y="35"/>
         </view>
     </objects>
