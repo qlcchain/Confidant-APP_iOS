@@ -170,6 +170,8 @@
 		585AEE542140D2280098A070 /* HMScanner.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 585AEE4E2140D2280098A070 /* HMScanner.bundle */; };
 		585AEE5921421DD70098A070 /* SocketMessageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE5821421DD70098A070 /* SocketMessageUtil.m */; };
 		58664CC72176EA8900EDC696 /* AESCipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 58664CC52176EA8900EDC696 /* AESCipher.m */; };
+		586837FE224092B600B8ACB8 /* ChooseRemindMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 586837FC224092B600B8ACB8 /* ChooseRemindMemberViewController.m */; };
+		586837FF224092B600B8ACB8 /* ChooseRemindMemberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 586837FD224092B600B8ACB8 /* ChooseRemindMemberViewController.xib */; };
 		5875E4C4216C8B7000B1A9A6 /* YWFilePreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5875E4C1216C8B7000B1A9A6 /* YWFilePreviewController.m */; };
 		5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5875E4C2216C8B7000B1A9A6 /* YWFilePreviewView.xib */; };
 		5875E4C6216C8B7000B1A9A6 /* YWFilePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5875E4C3216C8B7000B1A9A6 /* YWFilePreviewView.m */; };
@@ -876,6 +878,9 @@
 		585AEE5821421DD70098A070 /* SocketMessageUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketMessageUtil.m; sourceTree = "<group>"; };
 		58664CC52176EA8900EDC696 /* AESCipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESCipher.m; sourceTree = "<group>"; };
 		58664CC62176EA8900EDC696 /* AESCipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESCipher.h; sourceTree = "<group>"; };
+		586837FB224092B600B8ACB8 /* ChooseRemindMemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseRemindMemberViewController.h; sourceTree = "<group>"; };
+		586837FC224092B600B8ACB8 /* ChooseRemindMemberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseRemindMemberViewController.m; sourceTree = "<group>"; };
+		586837FD224092B600B8ACB8 /* ChooseRemindMemberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseRemindMemberViewController.xib; sourceTree = "<group>"; };
 		5875E4BF216C8B7000B1A9A6 /* YWFilePreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFilePreviewController.h; sourceTree = "<group>"; };
 		5875E4C0216C8B7000B1A9A6 /* YWFilePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFilePreviewView.h; sourceTree = "<group>"; };
 		5875E4C1216C8B7000B1A9A6 /* YWFilePreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFilePreviewController.m; sourceTree = "<group>"; };
@@ -3495,6 +3500,9 @@
 			children = (
 				73D00E902159DABF0013E20D /* Views */,
 				73EE8CC12159CD4F0048866B /* Cells */,
+				586837FB224092B600B8ACB8 /* ChooseRemindMemberViewController.h */,
+				586837FC224092B600B8ACB8 /* ChooseRemindMemberViewController.m */,
+				586837FD224092B600B8ACB8 /* ChooseRemindMemberViewController.xib */,
 				58A23A84223FA9F60098AED5 /* RemoveGroupMemberViewController.h */,
 				58A23A85223FA9F70098AED5 /* RemoveGroupMemberViewController.m */,
 				58A23A86223FA9F70098AED5 /* RemoveGroupMemberViewController.xib */,
@@ -3675,6 +3683,7 @@
 			files = (
 				587C52B8215C7027006787FB /* RouterManagerViewController.xib in Resources */,
 				583BF90721F6B4140078A2A8 /* UploadFilesViewController.xib in Resources */,
+				586837FF224092B600B8ACB8 /* ChooseRemindMemberViewController.xib in Resources */,
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
@@ -4213,6 +4222,7 @@
 				73060529216F3572005A0E13 /* AFHTTPClientV2.m in Sources */,
 				580CFE4D2227B7FD00460B41 /* MLeaksMessenger.m in Sources */,
 				582BFE42221AAA1100D8C2C8 /* DiskManagementMMCCell.m in Sources */,
+				586837FE224092B600B8ACB8 /* ChooseRemindMemberViewController.m in Sources */,
 				58C62707214BC81E0051AFD0 /* PayloadModel.m in Sources */,
 				7362573D213E8B3200D7FD6B /* AppDelegate.m in Sources */,
 				73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */,
