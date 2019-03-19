@@ -329,4 +329,15 @@
     NSDictionary *params = @{@"Action":Action_GroupListPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"TargetNum":@"0",@"StartId":@"0"};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
+
+#pragma mark - 拉取群好友信息
++ (void)sendGroupUserPullWithGId:(NSString *)GId TargetNum:(NSNumber *)TargetNum StartId:(NSString *)StartId showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_GroupUserPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":GId,@"TargetNum":TargetNum,@"StartId":StartId};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+
 @end

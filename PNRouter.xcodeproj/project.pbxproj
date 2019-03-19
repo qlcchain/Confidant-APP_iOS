@@ -170,6 +170,13 @@
 		585AEE542140D2280098A070 /* HMScanner.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 585AEE4E2140D2280098A070 /* HMScanner.bundle */; };
 		585AEE5921421DD70098A070 /* SocketMessageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE5821421DD70098A070 /* SocketMessageUtil.m */; };
 		58664CC72176EA8900EDC696 /* AESCipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 58664CC52176EA8900EDC696 /* AESCipher.m */; };
+		586837FE224092B600B8ACB8 /* ChooseRemindMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 586837FC224092B600B8ACB8 /* ChooseRemindMemberViewController.m */; };
+		586837FF224092B600B8ACB8 /* ChooseRemindMemberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 586837FD224092B600B8ACB8 /* ChooseRemindMemberViewController.xib */; };
+		586838032240959500B8ACB8 /* GroupMembersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 586838002240959500B8ACB8 /* GroupMembersViewController.xib */; };
+		586838042240959500B8ACB8 /* GroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 586838022240959500B8ACB8 /* GroupMembersViewController.m */; };
+		5868380822409A1400B8ACB8 /* GroupMembersHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5868380522409A1300B8ACB8 /* GroupMembersHeaderView.m */; };
+		5868380922409A1400B8ACB8 /* GroupMembersHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5868380622409A1300B8ACB8 /* GroupMembersHeaderView.xib */; };
+		5868380C22409E8700B8ACB8 /* GroupMembersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5868380B22409E8700B8ACB8 /* GroupMembersModel.m */; };
 		5875E4C4216C8B7000B1A9A6 /* YWFilePreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5875E4C1216C8B7000B1A9A6 /* YWFilePreviewController.m */; };
 		5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5875E4C2216C8B7000B1A9A6 /* YWFilePreviewView.xib */; };
 		5875E4C6216C8B7000B1A9A6 /* YWFilePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5875E4C3216C8B7000B1A9A6 /* YWFilePreviewView.m */; };
@@ -876,6 +883,17 @@
 		585AEE5821421DD70098A070 /* SocketMessageUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketMessageUtil.m; sourceTree = "<group>"; };
 		58664CC52176EA8900EDC696 /* AESCipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESCipher.m; sourceTree = "<group>"; };
 		58664CC62176EA8900EDC696 /* AESCipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESCipher.h; sourceTree = "<group>"; };
+		586837FB224092B600B8ACB8 /* ChooseRemindMemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseRemindMemberViewController.h; sourceTree = "<group>"; };
+		586837FC224092B600B8ACB8 /* ChooseRemindMemberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseRemindMemberViewController.m; sourceTree = "<group>"; };
+		586837FD224092B600B8ACB8 /* ChooseRemindMemberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseRemindMemberViewController.xib; sourceTree = "<group>"; };
+		586838002240959500B8ACB8 /* GroupMembersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupMembersViewController.xib; sourceTree = "<group>"; };
+		586838012240959500B8ACB8 /* GroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupMembersViewController.h; sourceTree = "<group>"; };
+		586838022240959500B8ACB8 /* GroupMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMembersViewController.m; sourceTree = "<group>"; };
+		5868380522409A1300B8ACB8 /* GroupMembersHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMembersHeaderView.m; sourceTree = "<group>"; };
+		5868380622409A1300B8ACB8 /* GroupMembersHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupMembersHeaderView.xib; sourceTree = "<group>"; };
+		5868380722409A1300B8ACB8 /* GroupMembersHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupMembersHeaderView.h; sourceTree = "<group>"; };
+		5868380A22409E8700B8ACB8 /* GroupMembersModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupMembersModel.h; sourceTree = "<group>"; };
+		5868380B22409E8700B8ACB8 /* GroupMembersModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupMembersModel.m; sourceTree = "<group>"; };
 		5875E4BF216C8B7000B1A9A6 /* YWFilePreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFilePreviewController.h; sourceTree = "<group>"; };
 		5875E4C0216C8B7000B1A9A6 /* YWFilePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFilePreviewView.h; sourceTree = "<group>"; };
 		5875E4C1216C8B7000B1A9A6 /* YWFilePreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFilePreviewController.m; sourceTree = "<group>"; };
@@ -2887,6 +2905,8 @@
 				7356429C222630D800DC0BCB /* ChatModel.m */,
 				73F55A0A223F3F69003155D2 /* GroupInfoModel.h */,
 				73F55A0B223F3F69003155D2 /* GroupInfoModel.m */,
+				5868380A22409E8700B8ACB8 /* GroupMembersModel.h */,
+				5868380B22409E8700B8ACB8 /* GroupMembersModel.m */,
 			);
 			path = ContactModels;
 			sourceTree = "<group>";
@@ -3460,6 +3480,9 @@
 		73D00E902159DABF0013E20D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5868380722409A1300B8ACB8 /* GroupMembersHeaderView.h */,
+				5868380522409A1300B8ACB8 /* GroupMembersHeaderView.m */,
+				5868380622409A1300B8ACB8 /* GroupMembersHeaderView.xib */,
 				58F1789E221FF333001CD0AF /* ChooseContactHeaderView.h */,
 				58F1789D221FF333001CD0AF /* ChooseContactHeaderView.m */,
 				58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */,
@@ -3495,6 +3518,12 @@
 			children = (
 				73D00E902159DABF0013E20D /* Views */,
 				73EE8CC12159CD4F0048866B /* Cells */,
+				586838012240959500B8ACB8 /* GroupMembersViewController.h */,
+				586838022240959500B8ACB8 /* GroupMembersViewController.m */,
+				586838002240959500B8ACB8 /* GroupMembersViewController.xib */,
+				586837FB224092B600B8ACB8 /* ChooseRemindMemberViewController.h */,
+				586837FC224092B600B8ACB8 /* ChooseRemindMemberViewController.m */,
+				586837FD224092B600B8ACB8 /* ChooseRemindMemberViewController.xib */,
 				58A23A84223FA9F60098AED5 /* RemoveGroupMemberViewController.h */,
 				58A23A85223FA9F70098AED5 /* RemoveGroupMemberViewController.m */,
 				58A23A86223FA9F70098AED5 /* RemoveGroupMemberViewController.xib */,
@@ -3675,6 +3704,7 @@
 			files = (
 				587C52B8215C7027006787FB /* RouterManagerViewController.xib in Resources */,
 				583BF90721F6B4140078A2A8 /* UploadFilesViewController.xib in Resources */,
+				586837FF224092B600B8ACB8 /* ChooseRemindMemberViewController.xib in Resources */,
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
@@ -3769,6 +3799,7 @@
 				73121A75219C26E900510B48 /* LoginViewController.xib in Resources */,
 				73E03B4C21DDF88A005DF993 /* DHTnodes.json in Resources */,
 				585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */,
+				586838032240959500B8ACB8 /* GroupMembersViewController.xib in Resources */,
 				583BF94A21F70FBC0078A2A8 /* TaskCompletedCell.xib in Resources */,
 				581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */,
 				581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */,
@@ -3790,6 +3821,7 @@
 				7330F3C9214771D900FF4EEC /* BottonCell.xib in Resources */,
 				73780F08221EA9A400D2DDCF /* AccountCodeViewController.xib in Resources */,
 				5825A24021FAC03700E6194B /* ChooseShareContactViewController.xib in Resources */,
+				5868380922409A1400B8ACB8 /* GroupMembersHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3884,6 +3916,7 @@
 				584B43AE21FFEE0600D1F21A /* ReconfigDiskViewController.m in Sources */,
 				736257B02142149300D7FD6B /* UIView+Constraints.m in Sources */,
 				7306055B21771CEA005A0E13 /* VPNFileUtil.m in Sources */,
+				5868380C22409E8700B8ACB8 /* GroupMembersModel.m in Sources */,
 				73D00E9A215A05960013E20D /* ChooseRecipientAlertView.m in Sources */,
 				73121A68219AD4FC00510B48 /* RegiterViewController.m in Sources */,
 				737882A821ACF05E0033A189 /* SSLSecurity.swift in Sources */,
@@ -4120,6 +4153,7 @@
 				7330F3B321475A3E00FF4EEC /* ContactsCell.m in Sources */,
 				581FDF3F21F024170068C120 /* group.m in Sources */,
 				581FDF6C21F19FEA0068C120 /* AccountManagementViewController.m in Sources */,
+				5868380822409A1400B8ACB8 /* GroupMembersHeaderView.m in Sources */,
 				738677A121AFDC25003A8568 /* SendToxRequestUtil.m in Sources */,
 				58A23A78223BC43F0098AED5 /* CSLoggerAssembler.m in Sources */,
 				7330F4FE2149147200FF4EEC /* CTEmojiKeyboard.m in Sources */,
@@ -4213,6 +4247,7 @@
 				73060529216F3572005A0E13 /* AFHTTPClientV2.m in Sources */,
 				580CFE4D2227B7FD00460B41 /* MLeaksMessenger.m in Sources */,
 				582BFE42221AAA1100D8C2C8 /* DiskManagementMMCCell.m in Sources */,
+				586837FE224092B600B8ACB8 /* ChooseRemindMemberViewController.m in Sources */,
 				58C62707214BC81E0051AFD0 /* PayloadModel.m in Sources */,
 				7362573D213E8B3200D7FD6B /* AppDelegate.m in Sources */,
 				73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */,
@@ -4241,6 +4276,7 @@
 				7330F4FD2149147200FF4EEC /* CTMoreKeyBoard.m in Sources */,
 				7330F3822146120C00FF4EEC /* PNTabbarViewController.m in Sources */,
 				737883F121ACF2970033A189 /* OCTToxOptions.m in Sources */,
+				586838042240959500B8ACB8 /* GroupMembersViewController.m in Sources */,
 				580CFE442227B7FD00460B41 /* PTBPerformanceWindow.m in Sources */,
 				7330F50D214A74FA00FF4EEC /* AddFriendCellTableViewCell.m in Sources */,
 				581FDF6721F173AC0068C120 /* ModifyRouterPWViewController.m in Sources */,

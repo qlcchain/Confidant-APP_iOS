@@ -66,6 +66,7 @@ static NSString *Action_GroupVerifyPush = @"GroupVerifyPush";
 static NSString *Action_GroupVerify = @"GroupVerify";
 static NSString *Action_GroupQuit = @"GroupQuit";
 static NSString *Action_GroupListPull = @"GroupListPull";
+static NSString *Action_GroupUserPull = @"GroupUserPull";
 
 @class FriendModel;
 
