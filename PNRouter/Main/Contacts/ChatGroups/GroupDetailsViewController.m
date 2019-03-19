@@ -7,6 +7,7 @@
 //
 
 #import "GroupDetailsViewController.h"
+#import "GroupMembersViewController.h"
 
 @interface GroupDetailsViewController ()
 
@@ -51,6 +52,15 @@
     [self presentViewController:alertC animated:YES completion:nil];
 }
 
+- (IBAction)groupMembersAction:(id)sender {
+    [self jumpToGroupMembers];
+}
 
+#pragma mark - Transition
+- (void)jumpToGroupMembers {
+    GroupMembersViewController *vc = [GroupMembersViewController new];
+    vc.inputGId = @"";
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 @end
