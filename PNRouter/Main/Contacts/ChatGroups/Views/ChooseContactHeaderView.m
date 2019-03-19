@@ -61,7 +61,7 @@
     } else {
         _selectImgView.image = [UIImage imageNamed:@"icon_unselectmsg"];
     }
-    
+    _coverView.hidden = !model.userInterfaceOff;
     
 //    _selectBtn.selected = model.isSelect;
 //    _selectImg.hidden = !_selectBtn.selected;

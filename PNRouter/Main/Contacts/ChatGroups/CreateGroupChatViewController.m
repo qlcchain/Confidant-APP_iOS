@@ -16,6 +16,10 @@
 #import "GroupInfoModel.h"
 #import "GroupMemberView.h"
 #import "GroupChatViewController.h"
+#import "RemoveGroupMemberViewController.h"
+#import "AddGroupMemberViewController.h"
+#import "ChatListDataUtil.h"
+#import "RoutherConfig.h"
 
 
 @interface CreateGroupChatViewController ()<UITextFieldDelegate>
@@ -36,6 +40,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 - (instancetype)initWithContacts:(NSArray *)contacts
 {
     if (self = [super init]) {
@@ -56,18 +61,33 @@
     _createBtn.layer.cornerRadius = 4.0f;
     _createBtn.layer.masksToBounds = YES;
     _nameTF.delegate = self;
-    _lblPerosnCount.text = [NSString stringWithFormat:@"%lu people",(unsigned long)self.persons.count];
+
+    [self addNoti];
     
+    [self groupMemberViewInit];
+}
+
+#pragma mark - Operation
+- (void)groupMemberViewInit {
     self.memberView = [GroupMemberView getInstance];
     self.memberView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 48);
-    [_memberView updateConstraintWithPersonCount:self.persons];
-    [_memberBackView addSubview:_memberView];
     @weakify_self
+    _memberView.delB = ^{
+        [weakSelf jumpToRemoveGroupMember];
+    };
+    _memberView.addB = ^{
+        [weakSelf jumpToAddGroupMember];
+    };
+    [self refreshMemberView];
+    [_memberBackView addSubview:_memberView];
     [_memberView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.top.mas_equalTo(weakSelf.memberBackView).offset(0);
     }];
-    
-    [self addNoti];
+}
+
+- (void)refreshMemberView {
+    [_memberView updateConstraintWithPersonCount:self.persons];
+    _lblPerosnCount.text = [NSString stringWithFormat:@"%lu people",(unsigned long)self.persons.count];
 }
 
 #pragma mark ---添加通知
@@ -132,9 +152,41 @@
 
 
 #pragma mark --------- textfeild delegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField endEditing:YES];
     return YES;
 }
+
+#pragma mark - Transition
+- (void)jumpToRemoveGroupMember {
+    RemoveGroupMemberViewController *vc = [[RemoveGroupMemberViewController alloc] initWithMemberArr:self.persons type:RemoveGroupMemberTypeInCreate];
+    @weakify_self
+    vc.removeCompleteB = ^(NSArray *memberArr) {
+        [weakSelf.persons removeAllObjects];
+        [weakSelf.persons addObjectsFromArray:memberArr];
+        [weakSelf refreshMemberView];
+    };
+    [self presentModalVC:vc animated:YES];
+}
+
+- (void)jumpToAddGroupMember {
+    NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
+    // 过滤非当前路由的好友
+    NSString *currentToxid = [RoutherConfig getRoutherConfig].currentRouterToxid;
+    NSMutableArray *inputArr = [NSMutableArray array];
+    [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if ([model.RouteId isEqualToString:currentToxid]) {
+            [inputArr addObject:model];
+        }
+    }];
+    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr originArr:self.persons type:AddGroupMemberTypeInCreate];
+    @weakify_self
+    vc.addCompleteB = ^(NSArray *addArr) {
+        [weakSelf.persons addObjectsFromArray:addArr];
+        [weakSelf refreshMemberView];
+    };
+    [self presentModalVC:vc animated:YES];
+}
+
 @end

@@ -127,12 +127,15 @@
             <viewLayoutGuide key="safeArea" id="RPE-UW-KCX"/>
             <connections>
                 <outlet property="addBtn" destination="78w-8Y-Dct" id="sGm-96-H9t"/>
+                <outlet property="contarintV2" destination="18Z-kT-u5x" id="a3l-Gm-AVe"/>
                 <outlet property="contarintV3" destination="CcC-w2-m0u" id="l4A-P0-Km5"/>
                 <outlet property="contarintWidth5" destination="zLh-CI-5n6" id="BU5-DF-oDB"/>
                 <outlet property="contraintV4" destination="Gkc-42-4bf" id="tnq-8i-k09"/>
                 <outlet property="contraintV5" destination="UaN-uk-LMX" id="Lz6-MP-XZK"/>
                 <outlet property="contraintWidth4" destination="3zR-a2-hJ0" id="qw7-YG-fyh"/>
                 <outlet property="contraintWidthSub" destination="jgY-5i-kF8" id="VBF-eA-83A"/>
+                <outlet property="contraintWith1" destination="8ES-AD-LOW" id="bTA-mW-40D"/>
+                <outlet property="contraintWith2" destination="lMP-6a-PDI" id="djd-pC-HbR"/>
                 <outlet property="contranitWith3" destination="aFH-ba-gNv" id="q7Z-Ur-jn5"/>
                 <outlet property="delBtn" destination="kzy-dm-r4d" id="zBA-XT-T0P"/>
                 <outlet property="head1Btn" destination="OKA-Sz-cMg" id="JVV-qF-csG"/>

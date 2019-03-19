@@ -378,7 +378,7 @@
             [inputArr addObject:model];
         }
     }];
-    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr type:AddGroupMemberTypeToCreate];
+    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr originArr:@[] type:AddGroupMemberTypeBeforeCreate];
     [self presentModalVC:vc animated:YES];
 }
 
