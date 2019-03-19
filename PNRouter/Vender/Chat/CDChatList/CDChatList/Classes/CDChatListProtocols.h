@@ -161,6 +161,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString *FromId;
 @property (nonatomic, copy) NSString *ToId;
 @property (nonatomic, copy) NSString *fileName;
+@property (nonatomic, copy) NSString *fileMd5;
 @property (nonatomic, copy) NSString *filePath;
 @property (nonatomic, assign) int fileID;
 @property (nonatomic, strong) UIImage *mediaImage;

@@ -10,6 +10,7 @@
 
 @interface FileModel : BBaseModel
 @property (nonatomic ,strong) NSString *FromId;
+@property (nonatomic ,strong) NSString *FileInfo;
 @property (nonatomic ,strong) NSString *ToId;
 @property (nonatomic ,assign) NSInteger RetCode;
 @property (nonatomic ,strong) NSString *FilePath;
@@ -21,4 +22,5 @@
 @property (nonatomic ,strong) NSString *SrcKey;
 @property (nonatomic ,strong) NSString *DstKey;
 @property (nonatomic ,assign) NSInteger timestamp;
+
 @end

@@ -175,7 +175,6 @@
     
     if ([SystemUtil filePathisExist:fileUrl])
     {
-        
         AVURLAsset *audioAsset=[AVURLAsset assetWithURL:[NSURL fileURLWithPath:fileUrl]];
         CMTime durationTime = audioAsset.duration;
         float reultTime = [[NSString stringWithFormat:@"%.2f",CMTimeGetSeconds(durationTime)] floatValue];
@@ -213,12 +212,13 @@
         [RequestService downFileWithBaseURLStr:data.filePath friendid:data.FromId progressBlock:^(CGFloat progress) {
             
         } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
-            
+            data.isDown = NO;
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
+                if ([[MD5Util md5WithPath:imgPath] isEqualToString:data.fileMd5]) {
+                    NSLog(@"-------------------");
+                }
                 NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
-                
-                
                 NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey];
                 datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                 
@@ -232,7 +232,7 @@
                             NSLog(@"下载语音成功! filePath = %@",filePath);
                         });
                     }
-                    data.isDown = NO;
+                    
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         data.isDown = NO;

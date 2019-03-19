@@ -436,7 +436,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         data = aesEncryptData(data,msgKeyData);
         
 
-        [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:data fileId:msgid fileType:2 messageId:mode.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey];
+        [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:data fileId:msgid fileType:2 messageId:mode.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey fileInfo:@""];
         
     }else{
         NSLog(@"wav转amr失败");
@@ -653,7 +653,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
     imgData = aesEncryptData(imgData,msgKeyData);
     
-    [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey];
+    [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
@@ -661,7 +661,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 #pragma mark -发送文件
-- (void) sendFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey msgKey:(NSString *) msgKey
+- (void) sendFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey msgKey:(NSString *) msgKey fileInfo:(NSString *) fileInfo
 {
     if ([SystemUtil isSocketConnect]) {
         ChatModel *chatModel = [[ChatModel alloc] init];
@@ -679,16 +679,26 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         chatModel.msgKey = msgKey;
         chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
         [chatModel bg_save];
-        
+        NSString *fileNameInfo = fileName;
+        if (fileInfo && fileInfo.length>0) {
+            fileNameInfo = [NSString stringWithFormat:@"%@,%@",fileNameInfo,fileInfo];
+        }
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-        [dataUtil sendFileId:toId fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:messageId srcKey:srcKey dstKey:dsKey];
+        [dataUtil sendFileId:toId fileName:fileNameInfo fileData:fileData fileid:fileId fileType:fileType messageid:messageId srcKey:srcKey dstKey:dsKey];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
     } else {
         NSString *filePath = [[SystemUtil getTempBaseFilePath:toId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:fileName]];
         
         if ([fileData writeToFile:filePath atomically:YES]) {
-            NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":toId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":messageId};
-            [SendToxRequestUtil sendFileWithFilePath:filePath parames:parames];
+            
+            if (fileInfo && fileInfo.length > 0) {
+                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":toId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":messageId,@"FileInfo":fileInfo};
+                [SendToxRequestUtil sendFileWithFilePath:filePath parames:parames];
+            } else {
+                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":toId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":messageId};
+                [SendToxRequestUtil sendFileWithFilePath:filePath parames:parames];
+            }
+           
             [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
         }
     }
@@ -1006,7 +1016,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
                 NSData *enData = aesEncryptData(fileDatas,msgKeyData);
                 
-                [self sendFileWithToid:model.userId fileName:weakSelf.selectMessageModel.fileName fileData:enData fileId:msgid fileType:weakSelf.selectMessageModel.msgType messageId:[NSString stringWithFormat:@"%d",msgid] srcKey:srcKey dsKey:dsKey publicKey:model.publicKey msgKey:msgKey];
+                NSString *fileInfo = @"";
+                if (weakSelf.selectMessageModel.fileWidth > 0 && weakSelf.selectMessageModel.fileHeight > 0) {
+                    fileInfo = [NSString stringWithFormat:@"%f*%f",weakSelf.selectMessageModel.fileWidth,weakSelf.selectMessageModel.fileHeight];
+                }
+                
+                [self sendFileWithToid:model.userId fileName:weakSelf.selectMessageModel.fileName fileData:enData fileId:msgid fileType:weakSelf.selectMessageModel.msgType messageId:[NSString stringWithFormat:@"%d",msgid] srcKey:srcKey dsKey:dsKey publicKey:model.publicKey msgKey:msgKey fileInfo:fileInfo];
                 
             });
         }
@@ -1109,7 +1124,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
          model.msgState = CDMessageStateDownloading;
     }
     model.fileSize = fileModel.FileSize;
+    if (fileModel.FileInfo && fileModel.FileInfo.length > 0) {
+        NSArray *whs = [fileModel.FileInfo componentsSeparatedByString:@"*"];
+        model.fileWidth = [whs[0] floatValue];
+        model.fileHeight = [whs[1] floatValue];
+    }
     model.fileName = [Base58Util Base58DecodeWithCodeName:fileModel.FileName];
+    model.fileMd5 = fileModel.FileMD5;
     model.messageId = [NSString stringWithFormat:@"%@",fileModel.MsgId];
     model.FromId = fileModel.FromId;
     model.ToId = fileModel.ToId;
@@ -1239,7 +1260,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             model.ToId = userId?:@"";
             model.FromId = self.friendModel.userId;
         }
-        //model.fileWidth = 0;
+        if (payloadModel.FileInfo && payloadModel.FileInfo.length>0) {
+            NSArray *whs = [payloadModel.FileInfo componentsSeparatedByString:@"*"];
+            model.fileWidth = [whs[0] floatValue];
+            model.fileHeight = [whs[1] floatValue];
+        }
+        
         model.messageStatu = payloadModel.Status;
         model.publicKey = self.friendModel.publicKey;
         model.messageId = [NSString stringWithFormat:@"%@",payloadModel.MsgId];
@@ -1251,7 +1277,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         if (payloadModel.FileName) {
              model.fileName = [Base58Util Base58DecodeWithCodeName:payloadModel.FileName];
         }
-       
+        model.fileMd5 = payloadModel.FileMD5;
         model.filePath = payloadModel.FilePath;
         model.fileSize = payloadModel.FileSize;
        
@@ -1610,7 +1636,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
             imgData = aesEncryptData(imgData,msgKeyData);
             
-            [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey];
+            [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
         }
     }];
      // 你可以通过block或者代理，来得到用户选择的视频.
@@ -1695,7 +1721,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             mediaData = aesEncryptData(mediaData,msgKeyData);
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self sendFileWithToid:self.friendModel.userId fileName:model.fileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey];
+                [self sendFileWithToid:self.friendModel.userId fileName:model.fileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
             });
         });
     } else {
@@ -1839,7 +1865,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         txtData = aesEncryptData(txtData,msgKeyData);
         
         
-        [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:txtData fileId:msgid fileType:5 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey];
+        [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:txtData fileId:msgid fileType:5 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey fileInfo:@""];
     }
 }
 

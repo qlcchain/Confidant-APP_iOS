@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSString *MsgId;
 @property (nonatomic, strong) NSString *FileInfo;
+@property (nonatomic, strong) NSString *FileMD5;
 @property (nonatomic) NSInteger MsgType;
 @property (nonatomic) NSInteger TimeStatmp;
 @property (nonatomic, copy) NSString *Msg;

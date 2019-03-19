@@ -252,8 +252,16 @@ struct ResultFile {
 {
     
    // imgData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageHistory" ofType:@"json"]];
-    
-    fileName = [Base58Util Base58EncodeWithCodeName:fileName];
+    NSArray *fileinfos = [fileName componentsSeparatedByString:@","];
+    if (fileinfos && fileinfos.count>=2) {
+       NSString *info = [fileinfos lastObject];
+        fileName = [fileName substringWithRange:NSMakeRange(0, fileName.length-info.length-1)];
+        fileName = [Base58Util Base58EncodeWithCodeName:fileName];
+        fileName = [NSString stringWithFormat:@"%@,%@",fileName,info];
+    } else {
+        fileName = [Base58Util Base58EncodeWithCodeName:fileName];
+    }
+
     self.srcKey = srcKey;
     self.fileName = fileName;
     self.messageid = messageid;

@@ -253,11 +253,7 @@ CGSize caculateFileSize140By140(CGSize size, CDChatMessage msgData) {
 }
 #pragma mark -视频size
 - (CGSize) sizeForMediaMessage: (CDChatMessage)msgData {
-    // 获得本地缓存的图片
-    NSString *friendid = msgData.ToId;
-    if (msgData.isLeft) {
-        friendid = msgData.FromId;
-    }
+    
     CGSize defaulutSize = CGSizeMake(140, 140);
     if (msgData.mediaImage) {
         return caculateImageSize140By140(msgData.mediaImage,msgData);

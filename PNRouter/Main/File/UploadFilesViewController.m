@@ -302,17 +302,30 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             fileData = aesEncryptData(fileData,msgKeyData);
             
             
+            
             if ([SystemUtil isSocketConnect]) { // socket
                 SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
                 dataUtil.srcKey = srcKey;
                 dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)fileId];
-                [dataUtil sendFileId:@"" fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
+                NSString *fileNameInfo = @"";
+                if (weakSelf.fileInfo && weakSelf.fileInfo.length>0) {
+                    fileNameInfo = [NSString stringWithFormat:@"%@,%@",fileName,weakSelf.fileInfo];
+                } else {
+                    fileNameInfo = fileName;
+                }
+                [dataUtil sendFileId:@"" fileName:fileNameInfo fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
             } else { // tox
                BOOL isSuccess = [fileData writeToFile:fileUrl.path atomically:YES];
                 if (isSuccess) {
-                    NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:fileUrl.path],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
-                    [SendToxRequestUtil uploadFileWithFilePath:fileUrl.path parames:parames fileData:fileData];
+                    if (weakSelf.fileInfo && weakSelf.fileInfo.length > 0) {
+                        NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:fileUrl.path],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId),@"FileInfo":weakSelf.fileInfo};
+                        [SendToxRequestUtil uploadFileWithFilePath:fileUrl.path parames:parames fileData:fileData];
+                    } else {
+                        NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":@"",@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:fileUrl.path],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":@"",@"FileId":@(fileId)};
+                        [SendToxRequestUtil uploadFileWithFilePath:fileUrl.path parames:parames fileData:fileData];
+                    }
+                    
                 }
             }
         }
