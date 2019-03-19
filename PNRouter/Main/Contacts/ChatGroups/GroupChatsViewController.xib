@@ -44,11 +44,14 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UhH-Hj-3Qp">
-                            <rect key="frame" x="329" y="0.0" width="46" height="44"/>
+                            <rect key="frame" x="319" y="0.0" width="46" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="6Ux-ga-E5I"/>
                             </constraints>
-                            <state key="normal" image="group_add_a"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <state key="normal" title="create">
+                                <color key="titleColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
+                            </state>
                             <connections>
                                 <action selector="rightAction:" destination="-1" eventType="touchUpInside" id="zVu-tW-2BZ"/>
                             </connections>
@@ -56,7 +59,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="UhH-Hj-3Qp" secondAttribute="trailing" id="7UA-XJ-z6z"/>
+                        <constraint firstAttribute="trailing" secondItem="UhH-Hj-3Qp" secondAttribute="trailing" constant="10" id="7UA-XJ-z6z"/>
                         <constraint firstAttribute="height" constant="44" id="Q6D-Ls-5aT"/>
                         <constraint firstItem="UhH-Hj-3Qp" firstAttribute="top" secondItem="bW4-nE-ztO" secondAttribute="top" id="g9K-YJ-Ke5"/>
                         <constraint firstItem="hpl-fR-lqu" firstAttribute="leading" secondItem="bW4-nE-ztO" secondAttribute="leading" constant="5" id="kkd-vv-0cz"/>
@@ -128,7 +131,6 @@
     </objects>
     <resources>
         <image name="arrow-exit-h" width="24" height="24"/>
-        <image name="group_add_a" width="36" height="36"/>
         <image name="icon_search" width="14" height="13.5"/>
     </resources>
 </document>

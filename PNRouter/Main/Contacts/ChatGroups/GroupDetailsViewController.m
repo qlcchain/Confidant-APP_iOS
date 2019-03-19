@@ -7,16 +7,24 @@
 //
 
 #import "GroupDetailsViewController.h"
+#import "GroupInfoModel.h"
 
 @interface GroupDetailsViewController ()
-
+@property (weak, nonatomic) IBOutlet UIButton *headImgView;
+@property (nonatomic ,strong) GroupInfoModel *groupModel;
 @end
 
 @implementation GroupDetailsViewController
-
+- (instancetype) initWithGroupInfo:(GroupInfoModel *) model
+{
+    if (self = [super init]) {
+        self.groupModel = model;
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
 }
 
 #pragma mark - Action

@@ -759,6 +759,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
 }
 
+
 #pragma mark - 当输入框frame变化是，会回调此方法
 - (void)inputViewWillUpdateFrame:(CGRect)newFrame animateDuration:(double)duration animateOption:(NSInteger)opti {
     //  当输入框因为多行文本变高时，listView需要做响应变化

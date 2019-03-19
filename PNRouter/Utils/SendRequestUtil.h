@@ -55,7 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendPullGroupListWithShowHud:(BOOL)showHud;
 
 + (void)sendGroupUserPullWithGId:(NSString *)GId TargetNum:(NSNumber *)TargetNum StartId:(NSString *)StartId showHud:(BOOL)showHud;
-
++ (void) sendAddGroupWithGId:(NSString *) gid friendId:(NSString *) friendids friendKey:(NSString *) friendkeys showHud:(BOOL)showHud;
++ (void) sendGroupMessageWithGid:(NSString *) gid point:(NSString *) point msg:(NSString *) msg msgid:(NSString *) msgid;
 @end
 
 NS_ASSUME_NONNULL_END

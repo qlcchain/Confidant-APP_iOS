@@ -15,7 +15,7 @@
 #import "EntryModel.h"
 #import "GroupInfoModel.h"
 #import "GroupMemberView.h"
-
+#import "GroupChatViewController.h"
 
 
 @interface CreateGroupChatViewController ()<UITextFieldDelegate>
@@ -107,11 +107,11 @@
         FriendModel *model = obj;
         if (idx == weakSelf.persons.count-1) {
             friendids = [friendids stringByAppendingString:model.userId];
-            friendKeys = [friendids stringByAppendingString:model.signPublicKey];
+            friendKeys = [friendids stringByAppendingString:[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey]];
         } else {
             friendids = [friendids stringByAppendingString:model.userId];
             friendids = [friendids stringByAppendingString:@","];
-            friendKeys = [friendids stringByAppendingString:model.signPublicKey];
+            friendKeys = [friendids stringByAppendingString:[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey]];
             friendKeys = [friendKeys stringByAppendingString:@","];
         }
     }];
@@ -128,6 +128,8 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:CREATE_GROUP_SUCCESS_JUMP_NOTI object:model];
     }];
 }
+
+
 
 #pragma mark --------- textfeild delegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

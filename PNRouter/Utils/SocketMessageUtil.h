@@ -67,6 +67,8 @@ static NSString *Action_GroupVerify = @"GroupVerify";
 static NSString *Action_GroupQuit = @"GroupQuit";
 static NSString *Action_GroupListPull = @"GroupListPull";
 static NSString *Action_GroupUserPull = @"GroupUserPull";
+static NSString *Action_GroupSendMsg = @"GroupSendMsg";
+static NSString *Action_GroupMsgPull = @"GroupMsgPull";
 
 @class FriendModel;
 
@@ -94,6 +96,7 @@ static NSString *Action_GroupUserPull = @"GroupUserPull";
  重新发送文本聊天消息 ->msgid
  */
 + (void)sendChatTextWithParams:(NSDictionary *)params withSendMsgId:(NSString *) msgid;
++ (void)sendGroupChatTextWithParams:(NSDictionary *)params withSendMsgId:(NSString *) msgid;
 // -设备管理员修改设备昵称
 + (void) sendUpdateRourerNickName:(NSString *) nickName showHud:(BOOL)showHud;
 

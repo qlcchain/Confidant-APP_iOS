@@ -205,6 +205,23 @@
 }
 
 /**
+ 发送群组消息文本聊天消息 ->msgid
+ */
++ (void)sendGroupChatTextWithParams:(NSDictionary *)params withSendMsgId:(NSString *) msgid {
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRecevieBaseParams4:[msgid integerValue]]];
+    //    NSString *paramsJson = params.mj_JSONString;
+    //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
+    [muDic setObject:params forKey:@"params"];
+    NSString *text = muDic.mj_JSONString;
+    
+    if (AppD.manager) {
+        [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
+    } else {
+        [SocketUtil.shareInstance sendWithText:text];
+    }
+}
+
+/**
  发送文本消息  app->router
  */
 + (void)sendRecevieMessageWithParams:(NSDictionary *)params tempmsgid:(NSInteger) msgid{
@@ -446,6 +463,12 @@
         [SocketMessageUtil handleGroupListPull:receiveDic];
     } else if ([action isEqualToString:Action_GroupUserPull]) { // 拉取群好友信息
         [SocketMessageUtil handleGroupUserPull:receiveDic];
+    } else if ([action isEqualToString:Action_InviteGroup]) { // 加入群聊
+        [SocketMessageUtil handleInviteGroup:receiveDic];
+    } else if ([action isEqualToString:Action_GroupSendMsg]) { // 发送消息
+        [SocketMessageUtil handleGroupSendMsg:receiveDic];
+    } else if ([action isEqualToString:Action_GroupMsgPull]) { // 拉取群聊消息
+         [SocketMessageUtil handleGroupMsgPull:receiveDic];
     }
 }
 
@@ -1413,7 +1436,61 @@
         }        
     }
 }
-
+#pragma mark - 加入群聊
++ (void)handleInviteGroup:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:ADD_GROUP_SUCCESS_NOTI object:nil];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@" The target group does not exist."];
+        } else {
+             [AppD.window showHint:@"Other errors."];
+        }
+    }
+}
+#pragma mark - 发送群聊消息
++ (void)handleGroupSendMsg:(NSDictionary *)receiveDic {
+   
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    NSString *MsgId = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"MsgId"]];
+    NSString *Msg = receiveDic[@"params"][@"Msg"];
+    NSString *gId = receiveDic[@"params"][@"GId"];
+    NSString *ToId = receiveDic[@"params"][@"ToId"];
+    NSString *Repeat = receiveDic[@"params"][@"Repeat"];
+    NSString *sendMsgID = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
+    if (retCode == 0) {
+       
+    } else {
+        
+    }
+     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_MESSAGE_SEND_SUCCESS_NOTI object:@[@(retCode),gId,MsgId,sendMsgID]];
+}
+#pragma mark ---拉取群聊消息列表
++ (void)handleGroupMsgPull:(NSDictionary *)receiveDic {
+    
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    NSString *Payload = receiveDic[@"params"][@"Payload"];
+    
+    NSString *GId = receiveDic[@"params"][@"GId"];
+   
+    
+    if (retCode == 0) { // 0：消息拉取成功
+        
+        
+        if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:GId])) {
+            NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:payloadArr];
+        }
+        
+    } else if (retCode == 1) { // 1：用户没权限
+        
+    } else if (retCode == 2) { // 2：其他错误
+        
+    }
+}
 
 
 

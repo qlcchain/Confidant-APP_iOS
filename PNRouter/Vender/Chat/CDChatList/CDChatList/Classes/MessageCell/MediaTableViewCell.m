@@ -326,33 +326,33 @@
             } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
                 
                 NSString *path = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:filePath];
-                NSData *data = [NSData dataWithContentsOfFile:path];
-                NSLog(@"下载文件成功! filePath ===== %@",filePath);
-                if (data.length > 0) {
-                    if (msgkey) {
-                        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
-                        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-                        if (datakey && ![datakey isEmptyString]) {
-                            data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                            [SystemUtil removeDocmentFilePath:path];
-                            [data writeToFile:path atomically:YES];
-                            weakSelf.msgModal.msgState = CDMessageStateNormal;
-                        } else {
+                 if ([[MD5Util md5WithPath:path] isEqualToString:[NSString getNotNullValue:weakSelf.msgModal.fileMd5]]) {
+                      NSLog(@"下载文件成功! filePath ===== %@",filePath);
+                      NSData *data = [NSData dataWithContentsOfFile:path];
+                     if (msgkey) {
+                         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
+                         datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                         if (datakey && ![datakey isEmptyString]) {
+                             data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                             [SystemUtil removeDocmentFilePath:path];
+                             [data writeToFile:path atomically:YES];
+                             weakSelf.msgModal.msgState = CDMessageStateNormal;
+                         } else {
                              weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
-                        }
-                        
-                    } else {
+                             [SystemUtil removeDocmentFilePath:path];
+                         }
+                         
+                     } else {
                          weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
-                    }
-                   
-                } else {
-                    weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
-                }
-                
+                         [SystemUtil removeDocmentFilePath:path];
+                     }
+                 }
+               
                 [weakSelf.tableView updateMessage:weakSelf.msgModal];
                 
             } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
                 weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+                [SystemUtil removeDocmentFilePath:filePath];
                 [weakSelf.tableView updateMessage:weakSelf.msgModal];
 #ifdef DEBUG
                 NSLog(@"[CDChatList] 下载文件出现问题%@",error.localizedDescription);

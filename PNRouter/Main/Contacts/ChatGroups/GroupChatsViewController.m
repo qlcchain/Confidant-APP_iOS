@@ -14,6 +14,11 @@
 #import <MJRefresh/MJRefreshHeader.h>
 #import "GroupListCell.h"
 #import "NSString+Base64.h"
+#import "ChatListDataUtil.h"
+#import "RoutherConfig.h"
+#import "FriendModel.h"
+#import "AddGroupMemberViewController.h"
+#import "GroupChatViewController.h"
 
 @interface GroupChatsViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 {
@@ -37,8 +42,19 @@
     [self leftNavBarItemPressedWithPop:YES];
 }
 - (IBAction)rightAction:(id)sender {
-    AddGroupMenuViewController *vc = [[AddGroupMenuViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
+    // 过滤非当前路由的好友
+    NSString *currentToxid = [RoutherConfig getRoutherConfig].currentRouterToxid;
+    NSMutableArray *inputArr = [NSMutableArray array];
+    [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if ([model.RouteId isEqualToString:currentToxid]) {
+            [inputArr addObject:model];
+        }
+    }];
+    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr type:AddGroupMemberTypeToCreate];
+    [self presentModalVC:vc animated:YES];
 }
 #pragma -mark layz
 - (NSMutableArray *)dataArray
@@ -82,6 +98,7 @@
 - (void) addNoti
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullGroupSucess:) name:PULL_GROUP_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
 }
 #pragma mark - 拉取群组
 - (void) pullGroupList
@@ -113,7 +130,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    GroupInfoModel *model = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
+    GroupChatViewController *vc = [[GroupChatViewController alloc] initWihtGroupMode:model];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -151,6 +170,14 @@
     }
     [self.dataArray addObjectsFromArray:groups];
     [_mainTab reloadData];
+}
+
+- (void) jumpGroupChatNoti:(NSNotification *) noti
+{
+    [self pullGroupList];
+    GroupInfoModel *model = noti.object;
+    GroupChatViewController *vc = [[GroupChatViewController alloc] initWihtGroupMode:model];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma textfeild delegate

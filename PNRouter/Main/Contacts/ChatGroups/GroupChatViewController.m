@@ -50,6 +50,7 @@
 #import "UserHeadUtil.h"
 #import "UserHeaderModel.h"
 #import "GroupInfoModel.h"
+#import "GroupDetailsViewController.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -89,12 +90,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     return self;
 }
 - (IBAction)backAction:(id)sender {
+    
+    [self leftNavBarItemPressedWithPop:YES];
+    [SocketCountUtil getShareObject].groupChatId = @"";
 }
 - (IBAction)rightAction:(id)sender {
+    
+    GroupDetailsViewController *vc = [[GroupDetailsViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self addNoti];
+    
+    // 拉取群好友
+    [self pullGroupFriend];
     
     self.view.backgroundColor = RGB(246, 246, 246);
     _lblNavTitle.text = [self.groupModel.GName base64DecodedString];
@@ -105,10 +115,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [SocketCountUtil getShareObject].groupChatId = self.groupModel.GId;
 }
 
+
 #pragma mark ----添加通知
 - (void) addNoti
 {
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMessageSuccessNoti:) name:GROUP_MESSAGE_SEND_SUCCESS_NOTI object:nil];
 }
 
 #pragma mark ---pull message
@@ -120,7 +131,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
    // NSDictionary *params = @{@"Action":Action_PullMsg,@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
    // [SocketMessageUtil sendVersion3WithParams:params];
 }
+- (void) pullGroupFriend
 
+{
+   // [SendRequestUtil sendGroupUserPullWithGId:self.groupModel.GId TargetNum:@(0) StartId:@"" showHud:NO];
+}
 
 #pragma mark ------loadui
 - (void) loadChatUI
@@ -515,60 +530,77 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 // 输入框输出文字
 - (void)inputViewPopSttring:(NSString *)string {
-    /*
+    
     if (string && ![string isEmptyString]) {
-        UserModel *userM = [UserModel getUserModel];
-        // 生成签名
-        NSString *signString = [LibsodiumUtil getOwenrSignPrivateKeySignOwenrTempPublickKey];
-        // 生成nonce
-        NSString *nonceString = [LibsodiumUtil getGenterSysmetryNonce];
-        // 生成对称密钥
-        NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].tempPrivateKey publicKey:self.friendModel.publicKey];
-        // 加密消息
-        NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:string nonce:nonceString];
-        // 加密对称密钥
-        NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
-        //DDLogDebug(@"临时公钥：%@   对称密钥：%@",[EntryModel getShareObject].tempPublicKey,symmetryString);
-        
+      
         CDMessageModel *model = [[CDMessageModel alloc] init];
         model.FromId = [UserConfig getShareObject].userId;
-        model.ToId = self.friendModel.userId;
-        model.publicKey = self.friendModel.publicKey;
+        model.ToId = self.groupModel.GId;
+        model.publicKey = self.groupModel.UserKey;
         model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         long tempMsgid = (long)[ChatListDataUtil getShareObject].tempMsgId++;
         tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
         model.messageId = [NSString stringWithFormat:@"%ld",(long)tempMsgid];
         model.msg = string;
         model.msgState = CDMessageStateNormal;
-        model.nonceKey = nonceString;
-        model.signKey = signString;
-        model.symmetKey = enSymmetString;
+      
         model.messageStatu = -1;
         [self addMessagesToList:model];
+        // 自己私钥解密
+        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
+        // 截取前16位
+        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+        // aes加密
+        NSString *enMsg = aesEncryptString(string, datakey);
+        // 发送消息
+        [SendRequestUtil sendGroupMessageWithGid:self.groupModel.GId point:@"" msg:enMsg msgid:model.messageId];
         
-        if ([SystemUtil isSocketConnect]) {
-            ChatModel *chatModel = [[ChatModel alloc] init];
-            chatModel.fromId = model.FromId;
-            chatModel.toId = model.ToId;
-            chatModel.toPublicKey = model.publicKey;
-            chatModel.msgType = 0;
-            chatModel.msgid = tempMsgid;
-            chatModel.messageMsg = string;
-            chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
-            chatModel.bg_tableName = CHAT_CACHE_TABNAME;
-            [chatModel bg_save];
-        }
+//        if ([SystemUtil isSocketConnect]) {
+//            ChatModel *chatModel = [[ChatModel alloc] init];
+//            chatModel.fromId = model.FromId;
+//            chatModel.toId = model.ToId;
+//            chatModel.toPublicKey = model.publicKey;
+//            chatModel.msgType = 0;
+//            chatModel.msgid = tempMsgid;
+//            chatModel.messageMsg = string;
+//            chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
+//            chatModel.bg_tableName = CHAT_CACHE_TABNAME;
+//            [chatModel bg_save];
+//        }
         
-        NSDictionary *params = @{@"Action":@"SendMsg",@"To":_friendModel.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
-        [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:model.messageId];
-        
-        if (![SystemUtil isSocketConnect]) {
-            [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
-        }
+       
+       
     }
-    */
 }
-
+#pragma mark -得到一条文字消息 并添加到listview
+- (void) addMessagesToList:(CDMessageModel *) model
+{
+    NSString *userId = [UserConfig getShareObject].userId;
+    if (![model.ToId isEqualToString:self.groupModel.GId]) {
+        return;
+    }
+    if ([model.FromId isEqualToString:userId]) {
+        model.isLeft = NO;
+    } else {
+        model.isLeft = YES;
+    }
+    CTDataConfig config = [CTData defaultConfig];
+    if (!model.isLeft) {
+        // config.textColor = MAIN_PURPLE_COLOR.CGColor;
+        config.isOwner = YES;
+    }
+    model.publicKey = self.groupModel.UserKey;
+    model.willDisplayTime = YES;
+    model.ctDataconfig = config;
+    NSString *nkName = [UserModel getUserModel].username;
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    if (model.isLeft) {
+       // nkName = self.friendModel.username;
+       // userKey = self.friendModel.signPublicKey;
+    }
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
+    [self.listView addMessagesToBottom:@[model]];
+}
 #pragma mark - 当输入框frame变化是，会回调此方法
 - (void)inputViewWillUpdateFrame:(CGRect)newFrame animateDuration:(double)duration animateOption:(NSInteger)opti {
     //  当输入框因为多行文本变高时，listView需要做响应变化
@@ -888,4 +920,33 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
      */
 }
 
+
+
+#pragma mark ---消息回调
+- (void) sendMessageSuccessNoti:(NSNotification *) noti
+{
+    NSArray *resultArr = noti.object;
+    if (resultArr && resultArr.count == 4) {
+        if ([resultArr[1] isEqualToString: self.groupModel.GId]) {
+            
+            NSString *sendMsgid = resultArr[3];
+            NSString *msgid = resultArr[2];
+       
+            @weakify_self
+            [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                CDMessageModel *model = (id)obj;
+                if ([model.messageId integerValue] == [sendMsgid integerValue]) {
+                    if ([resultArr[0] integerValue] == 0) { // 发送成功
+                        model.messageId = msgid;
+                        model.msgState = CDMessageStateNormal;
+                        model.messageStatu = 1;
+                        [weakSelf.listView updateMessage:model];
+                    }
+                
+                    *stop = YES;
+                }
+            }];
+        }
+    }
+}
 @end

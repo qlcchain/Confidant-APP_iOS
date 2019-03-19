@@ -339,5 +339,27 @@
     NSDictionary *params = @{@"Action":Action_GroupUserPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":GId,@"TargetNum":TargetNum,@"StartId":StartId};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
-
+#pragma mark ---拉取好友进群
++ (void) sendAddGroupWithGId:(NSString *) gid friendId:(NSString *) friendids friendKey:(NSString *) friendkeys showHud:(BOOL)showHud{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_InviteGroup,@"UserId":userM.userId?:@"",@"FriendId":friendids?:@"",@"GId":gid,@"FriendKey":friendkeys};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+#pragma mark ---发送群组文字消息
++ (void) sendGroupMessageWithGid:(NSString *) gid point:(NSString *) point msg:(NSString *) msg msgid:(NSString *) msgid
+{
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_GroupSendMsg,@"UserId":userM.userId?:@"",@"Point":point?:@"",@"GId":gid,@"Msg":msg};
+    [SocketMessageUtil sendGroupChatTextWithParams:params withSendMsgId:msgid];
+}
+#pragma mark --拉取群消息列表
++ (void) sendPullGroupMessageListWithGId:(NSString *) gid MsgType:(NSString *) msgType msgStartId:(NSString *) msgStartId msgNum:(NSString *) msgNum
+{
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 @end
