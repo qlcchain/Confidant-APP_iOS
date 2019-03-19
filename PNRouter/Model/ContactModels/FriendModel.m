@@ -7,6 +7,7 @@
 //
 
 #import "FriendModel.h"
+#import "ChatListDataUtil.h"
 
 @implementation FriendModel
 
@@ -19,6 +20,19 @@
               @"signPublicKey" : @"UserKey",
               @"onLineStatu" : @"Status"
              };
+}
+
++ (NSString *)getSignPublicKeyWithUserId:(NSString *)userId {
+    __block NSString *signPublicKey = @"";
+    [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if ([model.userId isEqualToString:userId]) {
+            signPublicKey = model.signPublicKey;
+            *stop = YES;
+        }
+    }];
+    
+    return signPublicKey;
 }
 
 @end

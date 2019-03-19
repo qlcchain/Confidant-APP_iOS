@@ -10,6 +10,7 @@
 #import "GroupMembersModel.h"
 #import "NSString+Base64.h"
 #import "PNDefaultHeaderView.h"
+#import "FriendModel.h"
 
 @interface GroupMembersHeaderView ()
 
@@ -41,11 +42,14 @@
 }
 
 - (void)configHeaderWithModel:(GroupMembersModel *)model {
-//    NSString *name = [model.Name base64DecodedString]?:model.Name;
-//    _lblName.text = model.showArrow?[NSString stringWithFormat:@"%@(%@)",name,@(model.routerArr.count)]:name;
+    _detailLab.text = [model.Type integerValue] == 0?@"Group Owner":nil;
+    NSString *showName = model.Remarks?:model.Nickname;
+    NSString *name = [showName base64DecodedString]?:showName;
+    _nameLab.text = name;
 //    NSString *userKey = model.UserKey;
-//    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_lblName.text]];
-//    _headImg.image = defaultImg;
+    NSString *userKey = [FriendModel getSignPublicKeyWithUserId:[NSString stringWithFormat:@"%@",model.Id]];
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:name]];
+    _headImg.image = defaultImg;
 }
 
 @end
