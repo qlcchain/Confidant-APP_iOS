@@ -362,4 +362,12 @@
     NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
+#pragma mark ---群组发送文件预处理
++ (void) sendGroupFilePretreatmentWithGID:(NSString *) gid fileName:(NSString *) fileName fileSize:(NSNumber *) fileSize fileType:(NSNumber *) fileType
+{
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_GroupSendFilePre,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":gid,@"FileName":fileName,@"FileSize":fileSize,@"FileType":fileType};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+
 @end

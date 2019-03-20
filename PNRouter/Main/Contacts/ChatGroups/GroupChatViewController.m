@@ -121,6 +121,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMessageSuccessNoti:) name:GROUP_MESSAGE_SEND_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullMessageListSuccessNoti:) name:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedMessgePushNoti:) name:RECEVIED_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
+    
     
 }
 
@@ -1004,7 +1006,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
         // 截取前16位
         datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-      
+        if (!datakey || datakey.length == 0) {
+            return ;
+        }
         if (model.msgType == 0) { // 文字
            model.msg = aesDecryptString(payloadModel.Msg, datakey);
         }
@@ -1081,5 +1085,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (messageArr && messageArr.count > 0) { // 更新最开始的消息id
         _msgStartId = [((PayloadModel *)messageArr.firstObject).MsgId integerValue];
     }
+}
+- (void) receivedMessgePushNoti:(NSNotification *) noti
+{
+    
 }
 @end
