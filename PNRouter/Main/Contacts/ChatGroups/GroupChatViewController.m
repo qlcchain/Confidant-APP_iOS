@@ -987,6 +987,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         model.messageStatu = payloadModel.Status;
         model.messageId = [NSString stringWithFormat:@"%@",payloadModel.MsgId];
+        model.publicKey = payloadModel.UserKey;
         model.TimeStatmp = payloadModel.TimeStatmp;
         model.msgType = payloadModel.MsgType;
         if (model.msgType >=1 && model.msgType !=5 && model.msgType !=4) { // 图片
@@ -1128,7 +1129,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (model.msgType == 0) { // 文字
         model.msg = aesDecryptString(payloadModel.Msg, datakey);
     }
-    NSString *signPK = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:model.FromId];
+    NSString *signPK = payloadModel.UserKey;
     NSString *nickName = model.userName?:@"";
     CTDataConfig config = [CTData defaultConfig];
     if (!model.isLeft) {
@@ -1151,11 +1152,38 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *To = receiveDic[@"To"];
     NSInteger MsgId =receiveDic[@"MsgId"]? [receiveDic[@"MsgId"] integerValue]:-1;
     NSString *Name = receiveDic[@"Name"];
+    NSString *FromUserName = receiveDic[@"FromUserName"];
+    NSString *ToUserName = receiveDic[@"ToUserName"];
    
-    if (Type == 1) { //群名称修改
+    if (Type == 0x01) { //群名称修改
         CDMessageModel *messageModel = [[CDMessageModel alloc] init];
         messageModel.msgType = 3;
-        messageModel.msg = @"You are not his (her) friend, please send him (her) friend request.";
+        messageModel.msg = [NSString stringWithFormat:@"Change the group name to \"%@\"",[Name base64DecodedString]];
+        [self.listView addMessagesToBottom:@[messageModel]];
+    } else if (Type == 0x03) { //撤回某条消息
+        CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+        messageModel.msgType = 3;
+        messageModel.msg = [NSString stringWithFormat:@"\"%@\" retracted a message",[FromUserName base64DecodedString]];
+        [self.listView addMessagesToBottom:@[messageModel]];
+    } else if (Type == 0xF1) { //新用户入群
+        CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+        messageModel.msgType = 3;
+        messageModel.msg = [NSString stringWithFormat:@"\"%@\" invites \"%@\" to join the group chat",[FromUserName base64DecodedString],[ToUserName base64DecodedString]];
+        [self.listView addMessagesToBottom:@[messageModel]];
+    } else if (Type == 0xF2) { //用户退群
+        CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+        messageModel.msgType = 3;
+        messageModel.msg = [NSString stringWithFormat:@"\"%@\" quit group chat",[FromUserName base64DecodedString]];
+        [self.listView addMessagesToBottom:@[messageModel]];
+    }  else if (Type == 0xF3) { //有用户被踢出群
+        // 自己被踢出群聊
+        if ([To isEqualToString:[UserConfig getShareObject].userId]) {
+            
+        }
+        
+        CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+        messageModel.msgType = 3;
+        messageModel.msg = [NSString stringWithFormat:@"\"%@\" invites \"%@\" to join the group chat",[FromUserName base64DecodedString],[ToUserName base64DecodedString]];
         [self.listView addMessagesToBottom:@[messageModel]];
     }
     /*
