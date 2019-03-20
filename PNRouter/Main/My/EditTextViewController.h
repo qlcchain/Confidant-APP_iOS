@@ -14,7 +14,8 @@ typedef enum : NSUInteger {
     EditPosition,
     EditLocation,
     EditAlis,
-    EditFriendAlis
+    EditFriendAlis,
+    EditGroupAlias,
 } EditType;
 
 @class RouterModel;
@@ -26,5 +27,6 @@ typedef enum : NSUInteger {
 
 - (instancetype) initWithType:(EditType) type;
 - (instancetype) initWithType:(EditType) type friendModel:(FriendModel *) friendModel;
+- (instancetype) initWithType:(EditType) type inputAlias:(NSString *)inputAlias;
 
 @end

@@ -17,10 +17,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (weak, nonatomic) IBOutlet UITextField *nameTF;
 @property (nonatomic ,strong) FriendModel *friendModel;
+@property (nonatomic, strong) NSString *inputAlias;
 
 @end
 
 @implementation EditTextViewController
+
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -84,11 +86,25 @@
              [self leftNavBarItemPressedWithPop:YES];
         }
             break;
+        case EditGroupAlias:
+        {
+            if ([_inputAlias isEqualToString:_nameTF.text]) {
+                [AppD.window showHint:@"Please enter a different alias."];
+            } else {
+                [SendRequestUtil sendGroupConfigWithGId:<#(nonnull NSString *)#> Type:<#(nonnull NSNumber *)#> ToId:<#(nonnull NSString *)#> Name:<#(nonnull NSString *)#> NeedVerify:<#(nonnull NSNumber *)#> showHud:YES];
+            }
+        }
+            break;
         default:
             break;
     }
     
    
+}
+
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_NICKNAME_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_FRIEND_NICKNAME_SUCCESS_NOTI object:nil];
 }
 
 - (instancetype) initWithType:(EditType) type
@@ -107,8 +123,19 @@
     return self;
 }
 
+- (instancetype) initWithType:(EditType) type inputAlias:(NSString *)inputAlias {
+    if (self = [super init]) {
+        self.editType = type;
+        self.inputAlias = inputAlias;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self addObserve];
+    
     switch (self.editType) {
         case EditName:
             _lblNavTitle.text = @"EditName";
@@ -140,13 +167,19 @@
             _nameTF.placeholder = @"Edit alias";
             _nameTF.text = self.friendModel.username;
             break;
+        case EditGroupAlias:
+        {
+            _lblNavTitle.text = @"Alias";
+            _nameTF.placeholder = @"Edit Group Alias";
+            _nameTF.text = self.inputAlias;
+        }
+            break;
         default:
             break;
     }
     
     [self performSelector:@selector(beginFirst) withObject:self afterDelay:0.7];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_NICKNAME_SUCCESS_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_FRIEND_NICKNAME_SUCCESS_NOTI object:nil];
+    
 }
 
 - (void) beginFirst

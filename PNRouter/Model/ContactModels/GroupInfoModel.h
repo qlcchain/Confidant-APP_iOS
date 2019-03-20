@@ -17,8 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *GName;
 @property (nonatomic, strong) NSString *Remark;
 @property (nonatomic, strong) NSString *UserKey;
-
-@property (nonatomic) BOOL isOwner;
+@property (nonatomic, strong) NSNumber *Verify; // 是否需要群主审核0：不需要1：需要 N
 
 @end
 

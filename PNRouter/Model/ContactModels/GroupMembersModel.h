@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *RId;
 @property (nonatomic, strong) NSString *Nickname;
 @property (nonatomic, strong) NSString *Remarks;
-
+@property (nonatomic, strong) NSString *UserKey;
 
 @end
 

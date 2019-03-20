@@ -370,4 +370,15 @@
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 
+#pragma mark - 77.    群属性设置
++ (void)sendGroupConfigWithGId:(NSString *)GId Type:(NSNumber *)Type ToId:(NSString *)ToId Name:(NSString *)Name NeedVerify:(NSNumber *)NeedVerify showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_GroupConfig,@"UserId":userM.userId?:@"",@"GId":GId,@"Type":Type,@"ToId":ToId,@"Name":Name,@"NeedVerify":NeedVerify};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+
+
 @end

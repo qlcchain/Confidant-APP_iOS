@@ -11,6 +11,8 @@
 #import "GroupMembersViewController.h"
 #import "GroupMemberView.h"
 #import "GroupMembersModel.h"
+#import "NSString+Base64.h"
+#import "EditTextViewController.h"
 
 @interface GroupDetailsViewController ()
 
@@ -65,7 +67,7 @@
 }
 
 - (void)viewInit {
-    if (_groupModel.isOwner) {
+    if (_groupModel.UserType == 0) { // 群主
         _normalBottomHeight.constant = 0;
         _ownerBottomHeight.constant = 168;
     } else {
@@ -74,9 +76,9 @@
     }
     [self groupMemberViewInit];
     
-    _groupNameTF.text = _groupModel.GName;
-    _groupAliasLab.text = _groupModel.Remark;
-    
+    _groupNameTF.text = [_groupModel.GName base64DecodedString];
+    _groupAliasLab.text = [_groupModel.Remark base64DecodedString];
+    _approveSwitch.on = [_groupModel.Verify boolValue];
 }
 
 - (void)groupMemberViewInit {
@@ -97,7 +99,15 @@
 }
 
 - (void)refreshMemberView {
-    [_memberView updateConstraintWithPersonCount:self.membersArr];
+    NSMutableArray *arr = [NSMutableArray array];
+    [self.membersArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        GroupMembersModel *model = obj;
+        GroupMemberShowModel *showM = [GroupMemberShowModel new];
+        showM.userKey = model.UserKey;
+        showM.userName = [model.Nickname base64DecodedString];
+        [arr addObject:showM];
+    }];
+    [_memberView updateConstraintWithPersonCount:arr];
     _gorupMembersNumLab.text = [NSString stringWithFormat:@"%lu people",(unsigned long)self.membersArr.count];
 }
 
@@ -159,6 +169,11 @@
 - (void)jumpToGroupMembers {
     GroupMembersViewController *vc = [GroupMembersViewController new];
     vc.inputGId = _groupModel.GId;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToEditGroupAlias {
+    EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditGroupAlias];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -473,6 +473,8 @@
         [SocketMessageUtil handleGroupSendFilePre:receiveDic];
     } else if ([action isEqualToString:Action_GroupMsgPush]) { // 群消息推送
          [SocketMessageUtil handleGroupMsgPush:receiveDic];
+    } else if ([action isEqualToString:Action_GroupConfig]) { // 77.    群属性设置
+        [SocketMessageUtil handleGroupConfig:receiveDic];
     }
 }
 
@@ -1528,6 +1530,22 @@
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
 }
+
+#pragma mark - 77.    群属性设置
++ (void)handleGroupConfig:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:GroupConfig_SUCCESS_NOTI object:nil];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"Configuration failed"];
+        }
+    }
+}
+
+
 
 
 
