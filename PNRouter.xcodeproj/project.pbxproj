@@ -219,6 +219,7 @@
 		58BD2E722148E3170091A77D /* ToastUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BD2E712148E3170091A77D /* ToastUtil.m */; };
 		58C62704214BA7170051AFD0 /* MessageListUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C62703214BA7170051AFD0 /* MessageListUtil.m */; };
 		58C62707214BC81E0051AFD0 /* PayloadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C62706214BC81E0051AFD0 /* PayloadModel.m */; };
+		58E3A5762242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E3A5752242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m */; };
 		58F1789B221FDFEC001CD0AF /* ChooseContactShowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */; };
 		58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */; };
 		58F178A0221FF333001CD0AF /* ChooseContactHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F1789D221FF333001CD0AF /* ChooseContactHeaderView.m */; };
@@ -966,6 +967,8 @@
 		58C62703214BA7170051AFD0 /* MessageListUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListUtil.m; sourceTree = "<group>"; };
 		58C62705214BC81E0051AFD0 /* PayloadModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayloadModel.h; sourceTree = "<group>"; };
 		58C62706214BC81E0051AFD0 /* PayloadModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PayloadModel.m; sourceTree = "<group>"; };
+		58E3A5742242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpdateGroupMemberAvatarUtil.h; sourceTree = "<group>"; };
+		58E3A5752242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpdateGroupMemberAvatarUtil.m; sourceTree = "<group>"; };
 		58F17899221FDFEC001CD0AF /* ChooseContactShowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactShowModel.h; sourceTree = "<group>"; };
 		58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactShowModel.m; sourceTree = "<group>"; };
 		58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseContactHeaderView.xib; sourceTree = "<group>"; };
@@ -3036,6 +3039,8 @@
 				730465FE2232433800EB6073 /* UserHeadUtil.m */,
 				73C4B55922375C660018146C /* FileConfig.h */,
 				73C4B55A22375C660018146C /* FileConfig.m */,
+				58E3A5742242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.h */,
+				58E3A5752242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -4152,6 +4157,7 @@
 				7330F39E214666E400FF4EEC /* PersonCodeViewController.m in Sources */,
 				7330F3B321475A3E00FF4EEC /* ContactsCell.m in Sources */,
 				581FDF3F21F024170068C120 /* group.m in Sources */,
+				58E3A5762242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m in Sources */,
 				581FDF6C21F19FEA0068C120 /* AccountManagementViewController.m in Sources */,
 				5868380822409A1400B8ACB8 /* GroupMembersHeaderView.m in Sources */,
 				738677A121AFDC25003A8568 /* SendToxRequestUtil.m in Sources */,

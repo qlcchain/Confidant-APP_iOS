@@ -250,7 +250,6 @@
     // 发送更新chatlist列表通知
    // [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
     [self backAction:nil];
-    
 }
 
 - (void)userHeadDownloadSuccess:(NSNotification *)noti {

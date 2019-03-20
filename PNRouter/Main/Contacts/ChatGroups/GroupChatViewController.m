@@ -51,6 +51,7 @@
 #import "UserHeaderModel.h"
 #import "GroupInfoModel.h"
 #import "GroupDetailsViewController.h"
+#import "UpdateGroupMemberAvatarUtil.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -125,7 +126,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedMessgePushNoti:) name:RECEVIED_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedSysMessgePushNoti:) name:RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedDelMessgePushNoti:) name:RECEVIED_Del_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadDownloadSuccess:) name:USER_HEAD_DOWN_SUCCESS_NOTI object:nil];
     
     
 }
@@ -1087,7 +1088,22 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (messageArr && messageArr.count > 0) { // 更新最开始的消息id
         _msgStartId = [((PayloadModel *)messageArr.firstObject).MsgId integerValue];
     }
+    
+#pragma mark - 查找暂无头像的用户 更新头像
+    NSMutableArray *userIdArr = [NSMutableArray array];
+    [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        PayloadModel *model = obj;
+        if (model.From && model.From.length) {
+            NSString *userHeaderImg64Str = [UserHeaderModel getUserHeaderImg64StrWithKey:model.UserKey];
+            if (!userHeaderImg64Str) { // 如果没有头像
+                [userIdArr addObject:model.From];
+            }
+        }
+    }];
+    [UpdateGroupMemberAvatarUtil updateAvatar:userIdArr];
 }
+
+
 - (void) receivedMessgePushNoti:(NSNotification *) noti
 {
     PayloadModel *payloadModel = noti.object;
@@ -1181,6 +1197,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [SystemUtil removeDocmentFileName:self.selectMessageModel.fileName friendid:self.groupModel.GId];
         }
     }
+}
+
+- (void)userHeadDownloadSuccess:(NSNotification *)noti {
+    [_listView reloadData];
 }
 
 
