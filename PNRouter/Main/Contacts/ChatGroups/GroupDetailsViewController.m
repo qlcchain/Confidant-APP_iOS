@@ -179,7 +179,7 @@
 #pragma mark - Transition
 - (void)jumpToGroupMembers {
     GroupMembersViewController *vc = [GroupMembersViewController new];
-    vc.inputGId = _groupModel.GId;
+    vc.groupInfoM = _groupModel;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

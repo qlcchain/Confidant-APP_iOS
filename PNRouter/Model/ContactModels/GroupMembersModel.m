@@ -10,4 +10,11 @@
 
 @implementation GroupMembersModel
 
+- (NSString *)showName {
+    if (!_Remarks && _Remarks.length > 0) {
+        return _Remarks;
+    }
+    return _Nickname;
+}
+
 @end
