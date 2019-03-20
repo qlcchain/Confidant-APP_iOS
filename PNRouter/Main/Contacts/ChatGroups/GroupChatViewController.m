@@ -108,7 +108,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self pullGroupFriend];
     
     self.view.backgroundColor = RGB(246, 246, 246);
-    _lblNavTitle.text = [self.groupModel.GName base64DecodedString];
+    NSString *showTitle = _groupModel.Remark&&_groupModel.Remark.length>0?_groupModel.Remark:_groupModel.GName;
+    _lblNavTitle.text = [showTitle base64DecodedString];
     
     [self loadChatUI];
     _msgStartId = 0;
