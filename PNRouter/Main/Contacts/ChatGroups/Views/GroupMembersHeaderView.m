@@ -43,8 +43,8 @@
 
 - (void)configHeaderWithModel:(GroupMembersModel *)model {
     _detailLab.text = [model.Type integerValue] == 0?@"Group Owner":nil;
-    NSString *showName = model.Remarks&&model.Remarks.length>0?model.Remarks:model.Nickname;
-    NSString *name = [showName base64DecodedString]?:showName;
+//    NSString *showName = model.Remarks&&model.Remarks.length>0?model.Remarks:model.Nickname;
+    NSString *name = [model.showName base64DecodedString]?:model.showName;
     _nameLab.text = name;
     NSString *userKey = model.UserKey;
 //    NSString *userKey = [FriendModel getSignPublicKeyWithToxId:model.ToxId];

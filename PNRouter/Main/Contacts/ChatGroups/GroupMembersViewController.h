@@ -8,8 +8,10 @@
 
 #import "PNBaseViewController.h"
 
+@class GroupInfoModel;
+
 @interface GroupMembersViewController : PNBaseViewController
 
-@property (nonatomic, strong) NSString *inputGId;
+@property (nonatomic, strong) GroupInfoModel *groupInfoM;
 
 @end

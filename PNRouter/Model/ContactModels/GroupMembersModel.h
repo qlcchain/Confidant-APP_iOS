@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *Remarks;
 @property (nonatomic, strong) NSString *UserKey;
 
+@property (nonatomic, strong) NSString *showName;
+
 @end
 
 NS_ASSUME_NONNULL_END
