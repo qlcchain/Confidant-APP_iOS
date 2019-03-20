@@ -52,44 +52,69 @@
     @synchronized (self) {
         // 加锁操作
         // 在好友列表中遍历赋值
-        [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            FriendModel *friendModel = (FriendModel *)obj;
-            if ([friendModel.userId isEqualToString:model.friendID]) {
-                NSString *nickName = friendModel.username?:@"";
-                nickName = [nickName base64DecodedString];
-                if (nickName && ![nickName isEmptyString]) {
-                    model.friendName = nickName;
-                } else {
-                    model.friendName = friendModel.username;
+        if (model.isGroup) {
+            NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(model.groupID),bg_sqlKey(@"myID"),bg_sqlValue(model.myID)]];
+            if (friends && friends.count > 0) {
+                ChatListModel *model1 = friends[0];
+                model1.friendName = model.friendName;
+                model1.isHD = model.isHD;
+                model1.unReadNum = model.isHD?@([model1.unReadNum integerValue] + 1):model1.unReadNum;
+                model1.isDraft = model.isDraft;
+                if (!model1.isDraft) {
+                    model1.lastMessage = model.lastMessage;
+                    model1.chatTime = model.chatTime;
                 }
-                model.publicKey = friendModel.publicKey;
-                model.signPublicKey = friendModel.signPublicKey;
-                model.routerName = [friendModel.RouteName base64DecodedString]?[friendModel.RouteName base64DecodedString]:friendModel.RouteName;
-                *stop = YES;
+                model1.draftMessage = model.draftMessage;
+                model1.routerName = model.routerName;
+                [model1 bg_saveOrUpdate];
+            } else {
+                model.unReadNum = model.isHD?@(1):@(0);
+                model.bg_tableName = FRIEND_CHAT_TABNAME;
+                if (model.groupUserkey && ![model.groupUserkey isEmptyString]) {
+                    [model bg_save];
+                }
             }
-        }];
-        
-        NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(model.friendID),bg_sqlKey(@"myID"),bg_sqlValue(model.myID)]];
-        if (friends && friends.count > 0) {
-            ChatListModel *model1 = friends[0];
-            model1.friendName = model.friendName;
-            model1.isHD = model.isHD;
-            model1.unReadNum = model.isHD?@([model1.unReadNum integerValue] + 1):model1.unReadNum;
-            model1.isDraft = model.isDraft;
-            if (!model1.isDraft) {
-                 model1.lastMessage = model.lastMessage;
-                model1.chatTime = model.chatTime;
-            }
-            model1.draftMessage = model.draftMessage;
-            model1.routerName = model.routerName;
-            [model1 bg_saveOrUpdate];
         } else {
-            model.unReadNum = model.isHD?@(1):@(0);
-            model.bg_tableName = FRIEND_CHAT_TABNAME;
-            if (model.publicKey && ![model.publicKey isEmptyString]) {
-                [model bg_save];
+            [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                FriendModel *friendModel = (FriendModel *)obj;
+                if ([friendModel.userId isEqualToString:model.friendID]) {
+                    NSString *nickName = friendModel.username?:@"";
+                    nickName = [nickName base64DecodedString];
+                    if (nickName && ![nickName isEmptyString]) {
+                        model.friendName = nickName;
+                    } else {
+                        model.friendName = friendModel.username;
+                    }
+                    model.publicKey = friendModel.publicKey;
+                    model.signPublicKey = friendModel.signPublicKey;
+                    model.routerName = [friendModel.RouteName base64DecodedString]?[friendModel.RouteName base64DecodedString]:friendModel.RouteName;
+                    *stop = YES;
+                }
+            }];
+            
+            NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(model.friendID),bg_sqlKey(@"myID"),bg_sqlValue(model.myID)]];
+            if (friends && friends.count > 0) {
+                ChatListModel *model1 = friends[0];
+                model1.friendName = model.friendName;
+                model1.isHD = model.isHD;
+                model1.unReadNum = model.isHD?@([model1.unReadNum integerValue] + 1):model1.unReadNum;
+                model1.isDraft = model.isDraft;
+                if (!model1.isDraft) {
+                    model1.lastMessage = model.lastMessage;
+                    model1.chatTime = model.chatTime;
+                }
+                model1.draftMessage = model.draftMessage;
+                model1.routerName = model.routerName;
+                [model1 bg_saveOrUpdate];
+            } else {
+                model.unReadNum = model.isHD?@(1):@(0);
+                model.bg_tableName = FRIEND_CHAT_TABNAME;
+                if (model.publicKey && ![model.publicKey isEmptyString]) {
+                    [model bg_save];
+                }
             }
         }
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
     }
     

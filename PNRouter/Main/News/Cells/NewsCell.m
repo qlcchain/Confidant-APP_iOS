@@ -67,7 +67,16 @@
         //设置颜色
         [_lblContent setAttributedText:noteStr];
     } else {
-        _lblContent.text = model.lastMessage?:@"";
+        if (model.isGroup) {
+            if (model.friendName && model.friendName.length>0) {
+                _lblContent.text =[NSString stringWithFormat:@"%@: %@",model.friendName,model.lastMessage?:@""];
+            } else {
+                _lblContent.text = model.lastMessage?:@"";
+            }
+        } else {
+            _lblContent.text = model.lastMessage?:@"";
+        }
+        
     }
    
     _lblTime.text = [model.chatTime minuteDescription];
