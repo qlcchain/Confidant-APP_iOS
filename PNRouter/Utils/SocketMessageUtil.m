@@ -469,6 +469,10 @@
         [SocketMessageUtil handleGroupSendMsg:receiveDic];
     } else if ([action isEqualToString:Action_GroupMsgPull]) { // 拉取群聊消息
          [SocketMessageUtil handleGroupMsgPull:receiveDic];
+    } else if ([action isEqualToString:Action_GroupSendFilePre]){ // 发送群聊文件预处理
+        [SocketMessageUtil handleGroupSendFilePre:receiveDic];
+    } else if ([action isEqualToString:Action_GroupMsgPush]) { // 群消息推送
+         [SocketMessageUtil handleGroupMsgPush:receiveDic];
     }
 }
 
@@ -1489,8 +1493,41 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
     }
 }
-
-
+#pragma mark ----发送群聊文件预处理
++ (void)handleGroupSendFilePre:(NSDictionary *)receiveDic {
+    
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    NSString *Payload = receiveDic[@"params"][@"Payload"];
+    
+    NSString *GId = receiveDic[@"params"][@"GId"];
+    
+    
+    if (retCode == 0) { // 0：消息拉取成功
+        
+        
+        if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:GId])) {
+            NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:payloadArr];
+        }
+        
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
+    }
+}
+#pragma mark -群消息推送
++ (void)handleGroupMsgPush:(NSDictionary *)receiveDic {
+    
+   PayloadModel *messageModel = [PayloadModel mj_objectWithKeyValues:receiveDic[@"params"]];
+    
+    if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:messageModel.GId])) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_MESSAGE_SUCCESS_NOTI object:messageModel];
+    }
+    // 回复router
+    NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
+    NSDictionary *params = @{@"Action":Action_GroupMsgPush,@"Retcode":retcode,@"Msg":@"",@"ToId":messageModel.To};
+    NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
+    [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
+}
 
 
 

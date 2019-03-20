@@ -17,6 +17,9 @@
 @property (nonatomic, strong) NSString *UserName;
 @property (nonatomic, assign) int Point;
 @property (nonatomic, strong) NSString *From;
+@property (nonatomic, strong) NSString *To;
+@property (nonatomic, strong) NSString *GId;
+@property (nonatomic, strong) NSString *GroupName;
 @property (nonatomic) NSInteger MsgType;
 @property (nonatomic) NSInteger TimeStatmp;
 @property (nonatomic, copy) NSString *Msg;

@@ -69,6 +69,8 @@ static NSString *Action_GroupListPull = @"GroupListPull";
 static NSString *Action_GroupUserPull = @"GroupUserPull";
 static NSString *Action_GroupSendMsg = @"GroupSendMsg";
 static NSString *Action_GroupMsgPull = @"GroupMsgPull";
+static NSString *Action_GroupSendFilePre = @"GroupSendFilePre";
+static NSString *Action_GroupMsgPush = @"GroupMsgPush";
 
 @class FriendModel;
 
