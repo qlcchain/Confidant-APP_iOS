@@ -91,7 +91,7 @@
             if ([_inputAlias isEqualToString:_nameTF.text]) {
                 [AppD.window showHint:@"Please enter a different alias."];
             } else {
-                [SendRequestUtil sendGroupConfigWithGId:<#(nonnull NSString *)#> Type:<#(nonnull NSNumber *)#> ToId:<#(nonnull NSString *)#> Name:<#(nonnull NSString *)#> NeedVerify:<#(nonnull NSNumber *)#> showHud:YES];
+//                [SendRequestUtil sendGroupConfigWithGId:<#(nonnull NSString *)#> Type:<#(nonnull NSNumber *)#> ToId:<#(nonnull NSString *)#> Name:<#(nonnull NSString *)#> NeedVerify:<#(nonnull NSNumber *)#> showHud:YES];
             }
         }
             break;
