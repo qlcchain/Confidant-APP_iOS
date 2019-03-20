@@ -66,8 +66,8 @@
     // 昵称
     _userName_left = [[UILabel alloc] initWithFrame:CGRectZero];
     _userName_left.textAlignment = NSTextAlignmentLeft;
-    _userName_left.textColor = CDHexColor(0x787878);
-    _userName_left.font = [UIFont systemFontOfSize:12];
+    _userName_left.textColor = RGB(128, 128, 128);
+    _userName_left.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
     [_msgContent_left addSubview:_userName_left];
     
     // 气泡
@@ -129,8 +129,8 @@
     // 昵称
     _userName_right = [[UILabel alloc] initWithFrame:CGRectZero];
     _userName_right.textAlignment = NSTextAlignmentRight;
-    _userName_right.textColor = CDHexColor(0x787878);
-    _userName_right.font = [UIFont systemFontOfSize:12];
+    _userName_right.textColor = RGB(102, 102, 102);
+    _userName_right.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
     [_msgContent_right addSubview:_userName_right];
     
     // 气泡
@@ -204,8 +204,8 @@
     _headImage_left.layer.masksToBounds = YES;
     
     // 昵称
-    _userName_left.frame = CGRectMake(data.chatConfig.messageMargin + _headImage_left.cd_width + data.chatConfig.bubbleShareAngleWidth, 0, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);
-    _userName_left.textColor = data.chatConfig.nickNameColor;
+//    _userName_left.frame = CGRectMake(data.chatConfig.messageMargin + _headImage_left.cd_width + data.chatConfig.bubbleShareAngleWidth, 0, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);
+    _userName_left.frame = CGRectMake(data.chatConfig.messageMargin + _headImage_left.cd_width + data.chatConfig.bubbleShareAngleWidth+2, 0, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);
     
     // 左侧
     // 设置消息内容的总高度

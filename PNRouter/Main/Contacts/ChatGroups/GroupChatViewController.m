@@ -1141,6 +1141,23 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.listView addMessagesToBottom:@[model]];
 }
 - (void) receivedSysMessgePushNoti:(NSNotification *) noti {
+    
+    NSDictionary *receiveDic = noti.object;
+    
+    NSString *UserId = receiveDic[@"UserId"];
+    NSString *GId = receiveDic[@"GId"];
+    int Type = [receiveDic[@"Type"] intValue];
+    NSString *From = receiveDic[@"From"];
+    NSString *To = receiveDic[@"To"];
+    NSInteger MsgId =receiveDic[@"MsgId"]? [receiveDic[@"MsgId"] integerValue]:-1;
+    NSString *Name = receiveDic[@"Name"];
+   
+    if (Type == 1) { //群名称修改
+        CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+        messageModel.msgType = 3;
+        messageModel.msg = @"You are not his (her) friend, please send him (her) friend request.";
+        [self.listView addMessagesToBottom:@[messageModel]];
+    }
     /*
      群系统推送类型：
      0x01：群名称修改
