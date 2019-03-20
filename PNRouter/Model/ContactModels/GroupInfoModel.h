@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GroupInfoModel : BBaseModel
 
 @property (nonatomic, strong) NSString *GAdmin;
+@property (nonatomic, assign) int UserType;
 @property (nonatomic, strong) NSString *GId;
 @property (nonatomic, strong) NSString *GName;
 @property (nonatomic, strong) NSString *Remark;

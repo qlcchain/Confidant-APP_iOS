@@ -12,6 +12,10 @@
 
 @property (nonatomic ,strong) NSString *friendID;
 @property (nonatomic ,strong) NSString *myID;
+@property (nonatomic ,strong) NSString *groupID;
+@property (nonatomic ,strong) NSString *groupUserID;
+@property (nonatomic ,strong) NSString *groupName;
+@property (nonatomic ,strong) NSString *groupUserkey;
 @property (nonatomic ,strong) NSString *publicKey;
 @property (nonatomic ,strong) NSString *signPublicKey;
 @property (nonatomic ,strong) NSString *friendName;
@@ -19,6 +23,7 @@
 @property (nonatomic ,strong) NSDate *chatTime;
 @property (nonatomic , assign) BOOL isHD;
 @property (nonatomic , assign) BOOL isDraft;
+@property (nonatomic , assign) BOOL isGroup;
 @property (nonatomic ,strong) NSString *draftMessage;
 @property (nonatomic ,strong) NSString *routerName;
 @property (nonatomic, strong) NSNumber *unReadNum;
