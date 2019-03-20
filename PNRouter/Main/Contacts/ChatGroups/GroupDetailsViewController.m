@@ -129,7 +129,7 @@
 }
 
 - (IBAction)approveSwitchAction:(id)sender {
-    [SendRequestUtil sendGroupConfigWithGId:_groupModel.GId Type:@(2) ToId:nil Name:nil NeedVerify:@(_approveSwitch.on) showHud:YES];
+    [SendRequestUtil sendGroupConfigWithGId:_groupModel.GId Type:@(2) ToId:nil Name:nil NeedVerify:_approveSwitch.on?@(1):@(0) showHud:YES];
 }
 
 - (IBAction)setGroupAliasAction:(id)sender {
@@ -202,6 +202,7 @@
 }
 
 - (void)groupQuitSuccessNoti:(NSNotification *)noti {
+    [self moveNavgationBackOneViewController];
     [self backAction:nil];
 }
 
