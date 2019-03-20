@@ -159,6 +159,13 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 #define RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI @"RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI"
 // 修改群别名成功通知
 #define Revise_Group_Alias_SUCCESS_NOTI @"Revise_Group_Alias_SUCCESS_NOTI"
+// 用户退群成功通知
+#define GroupQuit_SUCCESS_NOTI @"GroupQuit_SUCCESS_NOTI"
+// 设置审核邀请成功通知
+#define Set_Approve_Invitations_SUCCESS_NOTI @"Set_Approve_Invitations_SUCCESS_NOTI"
+// 设置审核邀请失败通知
+#define Set_Approve_Invitations_FAIL_NOTI @"Set_Approve_Invitations_FAIL_NOTI"
+
 
 
 // 删除文件成功通知

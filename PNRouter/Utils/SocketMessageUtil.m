@@ -42,6 +42,7 @@
 #import "UserHeadUtil.h"
 #import "GroupInfoModel.h"
 #import "GroupMembersModel.h"
+#import "NSString+HexStr.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -477,6 +478,8 @@
         [SocketMessageUtil handleGroupConfig:receiveDic];
     } else if ([action isEqualToString:Action_GroupSysPush]) { // 群消息系统推送
         [SocketMessageUtil handleGroupSysPush:receiveDic];
+    } else if ([action isEqualToString:Action_GroupQuit]) { // 68.    用户退群
+        [SocketMessageUtil handleGroupQuit:receiveDic];
     }
 }
 
@@ -1554,25 +1557,29 @@
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
-    NSString *Type = receiveDic[@"params"][@"Type"];
-    if ([Type isEqualToString:@"01"]) { // 修改群名称，只有群管理员有权限
+    NSNumber *Type = receiveDic[@"params"][@"Type"];
+    if ([Type integerValue] == 1) { // 修改群名称，只有群管理员有权限
         
-    } else if ([Type isEqualToString:@"02"]) { // 设置是否需要群管理审核入群，只有管理员有权限
+    } else if ([Type integerValue] == 2) { // 设置是否需要群管理审核入群，只有管理员有权限
+        if (retCode == 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:Set_Approve_Invitations_SUCCESS_NOTI object:nil];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:Set_Approve_Invitations_FAIL_NOTI object:nil];
+        }
+    } else if ([Type integerValue] == 3) { // 踢出某个用户，只有管理员有权限
         
-    } else if ([Type isEqualToString:@"03"]) { // 踢出某个用户，只有管理员有权限
-        
-    } else if ([Type isEqualToString:@"F1"]) { // 修改群别名
+    } else if ([Type integerValue] == [NSString numberWithHexString:@"F1"]) { // 修改群别名
         if (retCode == 0) {
             [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Alias_SUCCESS_NOTI object:nil];
-        } else {
-            if (retCode == 1) {
-                [AppD.window showHint:@"Configuration failed"];
-            }
         }
-    } else if ([Type isEqualToString:@"F2"]) { // 修改群友别名
+    } else if ([Type integerValue] == [[NSString stringFromHexString:@"F2"] integerValue]) { // 修改群友别名
         
-    } else if ([Type isEqualToString:@"F3"]) { // 设置自己群中显示的别名
+    } else if ([Type integerValue] == [[NSString stringFromHexString:@"F3"] integerValue]) { // 设置自己群中显示的别名
         
+    }
+    
+    if (retCode == 1) {
+        [AppD.window showHint:@"Configuration failed"];
     }
     
 }
@@ -1612,6 +1619,21 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI object:@(Type)];
     }
 }
+
+#pragma mark - 68.    用户退群
++ (void)handleGroupQuit:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupQuit_SUCCESS_NOTI object:nil];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"Refund group fail."];
+        }
+    }
+}
+
 
 
 

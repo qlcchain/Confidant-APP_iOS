@@ -180,4 +180,20 @@
     return hexStr;
 }
 
+// 十六进制字符串转数字
++ (NSInteger)numberWithHexString:(NSString *)hexString {
+    const char *hexChar = [hexString cStringUsingEncoding:NSUTF8StringEncoding];
+    int hexNumber;
+    sscanf(hexChar, "%x", &hexNumber);
+    return (NSInteger)hexNumber;
+}
+
+// 数字转十六进制字符串
++ (NSString *)stringWithHexNumber:(NSUInteger)hexNumber {
+    char hexChar[6];
+    sprintf(hexChar, "%x", (int)hexNumber);
+    NSString *hexString = [NSString stringWithCString:hexChar encoding:NSUTF8StringEncoding];
+    return hexString;
+}
+
 @end

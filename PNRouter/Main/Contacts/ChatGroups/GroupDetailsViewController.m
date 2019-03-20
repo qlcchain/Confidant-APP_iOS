@@ -45,6 +45,10 @@
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupUserPullSuccessNoti:) name:GroupUserPull_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupQuitSuccessNoti:) name:GroupQuit_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(approveInvitationsSuccessNoti:) name:Set_Approve_Invitations_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(approveInvitationsFailNoti:) name:Set_Approve_Invitations_FAIL_NOTI object:nil];
+    
 }
 
 #pragma mark - Life Cycle
@@ -125,7 +129,7 @@
 }
 
 - (IBAction)approveSwitchAction:(id)sender {
-    
+    [SendRequestUtil sendGroupConfigWithGId:_groupModel.GId Type:@(2) ToId:nil Name:nil NeedVerify:@(_approveSwitch.on) showHud:YES];
 }
 
 - (IBAction)setGroupAliasAction:(id)sender {
@@ -141,7 +145,7 @@
     [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
     [alertC addAction:alert1];
     UIAlertAction *alert2 = [UIAlertAction actionWithTitle:@"Leave" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        [SendRequestUtil sendGroupQuitWithGId:weakSelf.groupModel.GId GroupName:nil showHud:YES];
     }];
     [alert2 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
     [alertC addAction:alert2];
@@ -156,7 +160,7 @@
     [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
     [alertC addAction:alert1];
     UIAlertAction *alert2 = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        [SendRequestUtil sendGroupQuitWithGId:weakSelf.groupModel.GId GroupName:nil showHud:YES];
     }];
     [alert2 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
     [alertC addAction:alert2];
@@ -195,6 +199,19 @@
     [_membersArr removeAllObjects];
     [_membersArr addObjectsFromArray:arr];
     [self refreshMemberView];
+}
+
+- (void)groupQuitSuccessNoti:(NSNotification *)noti {
+    [self backAction:nil];
+}
+
+- (void)approveInvitationsSuccessNoti:(NSNotification *)noti {
+    _groupModel.Verify = _approveSwitch.on?@(1):@(0);
+    _approveSwitch.on = [_groupModel.Verify boolValue];
+}
+
+- (void)approveInvitationsFailNoti:(NSNotification *)noti {
+    _approveSwitch.on = [_groupModel.Verify boolValue];
 }
 
 @end

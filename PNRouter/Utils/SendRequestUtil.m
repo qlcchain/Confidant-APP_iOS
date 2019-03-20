@@ -371,7 +371,7 @@
 }
 
 #pragma mark - 77.    群属性设置
-+ (void)sendGroupConfigWithGId:(NSString *)GId Type:(NSString *)Type ToId:(nullable NSString *)ToId Name:(nullable NSString *)Name NeedVerify:(nullable NSNumber *)NeedVerify showHud:(BOOL)showHud {
++ (void)sendGroupConfigWithGId:(NSString *)GId Type:(NSNumber *)Type ToId:(nullable NSString *)ToId Name:(nullable NSString *)Name NeedVerify:(nullable NSNumber *)NeedVerify showHud:(BOOL)showHud {
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
@@ -379,6 +379,17 @@
     NSDictionary *params = @{@"Action":Action_GroupConfig,@"UserId":userM.userId?:@"",@"GId":GId,@"Type":Type,@"ToId":ToId?:@"",@"Name":Name?:@"",@"NeedVerify":NeedVerify?:@(-1)};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
+
+#pragma mark - 68.    用户退群
++ (void)sendGroupQuitWithGId:(NSString *)GId GroupName:(nullable NSString *)GroupName showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_GroupQuit,@"UserId":userM.userId?:@"",@"GId":GId,@"GroupName":GroupName?:@""};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+
 
 
 @end

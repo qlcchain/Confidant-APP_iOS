@@ -25,4 +25,7 @@
 + (NSString *)convertDataToHexStr:(NSData *)data;
 +(NSString *) parseByteArray2HexString:(Byte[]) bytes;
 
++ (NSInteger)numberWithHexString:(NSString *)hexString;
++ (NSString *)stringWithHexNumber:(NSUInteger)hexNumber;
+
 @end

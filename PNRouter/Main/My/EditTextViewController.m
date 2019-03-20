@@ -13,6 +13,7 @@
 #import "UserConfig.h"
 #import "GroupInfoModel.h"
 #import "NSString+Base64.h"
+#import "NSString+HexStr.h"
 
 @interface EditTextViewController ()
 
@@ -91,10 +92,15 @@
         case EditGroupAlias:
         {
             NSString *alias = [_groupInfoM.Remark base64DecodedString]?:@"";
-            if ([alias isEqualToString:_nameTF.text]) {
-                [AppD.window showHint:@"Please enter a different alias."];
+            if (!_nameTF.text || _nameTF.text.length <= 0) {
+                [AppD.window showHint:@"Please enter alias."];
             } else {
-                [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@"F1" ToId:nil Name:_nameTF.text?:@"" NeedVerify:nil showHud:YES];
+                if ([alias isEqualToString:_nameTF.text]) {
+                    [AppD.window showHint:@"Please enter a different alias."];
+                } else {
+                    NSString *base64Name = [_nameTF.text base64EncodedString];
+                    [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@([NSString numberWithHexString:@"F1"]) ToId:nil Name:base64Name NeedVerify:nil showHud:YES];
+                }
             }
         }
             break;
