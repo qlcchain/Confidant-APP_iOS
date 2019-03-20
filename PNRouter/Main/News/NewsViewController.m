@@ -127,7 +127,7 @@
         __block BOOL isexit = NO;
         [weakSelf.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             ChatListModel *model1 = obj;
-            if ([model.friendID isEqualToString:model1.friendID]) {
+            if (!model.isGroup && [model.friendID isEqualToString:model1.friendID]) {
                 isexit = YES;
                 *stop = YES;
             }
