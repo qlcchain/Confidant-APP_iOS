@@ -310,8 +310,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(msgId)]];
         }
         
-        
-        if (self.selectMessageModel.fileID > 0) { // 是文件
+        if (self.selectMessageModel.fileID > 0 && self.selectMessageModel.msgState == CDMessageStateSending) { // 是文件
             [self deleteMsg:msgId];
             if ([SystemUtil isSocketConnect]) {
                 @weakify_self

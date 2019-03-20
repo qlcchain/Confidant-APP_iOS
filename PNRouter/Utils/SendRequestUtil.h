@@ -59,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendGroupMessageWithGid:(NSString *) gid point:(NSString *) point msg:(NSString *) msg msgid:(NSString *) msgid;
 + (void) sendPullGroupMessageListWithGId:(NSString *) gid MsgType:(NSString *) msgType msgStartId:(NSString *) msgStartId msgNum:(NSString *) msgNum;
 + (void) sendGroupFilePretreatmentWithGID:(NSString *) gid fileName:(NSString *) fileName fileSize:(NSNumber *) fileSize fileType:(NSNumber *) fileType;
++ (void) sendDelGroupMessageWithType:(NSNumber *) type GId:(NSString *) gid MsgId:(NSString *) msgid FromID:(NSString *) formID;
 @end
 
 NS_ASSUME_NONNULL_END

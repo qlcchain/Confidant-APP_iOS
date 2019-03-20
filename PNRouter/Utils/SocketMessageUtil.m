@@ -475,6 +475,8 @@
          [SocketMessageUtil handleGroupMsgPush:receiveDic];
     } else if ([action isEqualToString:Action_GroupSysPush]) { // 群消息系统推送
         [SocketMessageUtil handleGroupSysPush:receiveDic];
+    } else if ([action isEqualToString:Action_GroupDelMsg]) { // 删除群消息
+        [SocketMessageUtil handleGroupDelMsg:receiveDic];
     }
 }
 
@@ -1465,14 +1467,37 @@
     NSString *Msg = receiveDic[@"params"][@"Msg"];
     NSString *gId = receiveDic[@"params"][@"GId"];
     NSString *ToId = receiveDic[@"params"][@"ToId"];
+    NSString *UserKey = receiveDic[@"params"][@"UserKey"];
+    NSString *GName = receiveDic[@"params"][@"Gname"];
     NSString *Repeat = receiveDic[@"params"][@"Repeat"];
     NSString *sendMsgID = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
+    
+     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_MESSAGE_SEND_SUCCESS_NOTI object:@[@(retCode),gId,MsgId,sendMsgID]];
+    
     if (retCode == 0) {
-       
+        // 添加到chatlist
+        ChatListModel *chatListModel = [[ChatListModel alloc] init];
+        chatListModel.myID = ToId;
+        chatListModel.isGroup = YES;
+        chatListModel.friendID = [UserConfig getShareObject].userId;
+        chatListModel.groupID = gId;
+        chatListModel.groupName = [GName base64DecodedString];
+        chatListModel.groupUserkey = UserKey;
+        chatListModel.chatTime = [NSDate date];
+        chatListModel.isHD = NO;
+        // 解密消息
+        // 自己私钥解密
+        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:UserKey];
+        // 截取前16位
+        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+        if (datakey) {
+            chatListModel.lastMessage = aesDecryptString(Msg, datakey);
+            [[ChatListDataUtil getShareObject] addFriendModel:chatListModel];
+        }
     } else {
         
     }
-     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_MESSAGE_SEND_SUCCESS_NOTI object:@[@(retCode),gId,MsgId,sendMsgID]];
+    
 }
 #pragma mark ---拉取群聊消息列表
 + (void)handleGroupMsgPull:(NSDictionary *)receiveDic {
@@ -1523,7 +1548,7 @@
     
     // 回复router
     NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
-    NSDictionary *params = @{@"Action":Action_GroupMsgPush,@"Retcode":retcode,@"Msg":@"",@"ToId":messageModel.To};
+    NSDictionary *params = @{@"Action":Action_GroupMsgPush,@"Retcode":retcode,@"Msg":@"",@"ToId":messageModel.To,@"GId":messageModel.GId};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
     
@@ -1545,6 +1570,42 @@
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_MESSAGE_SUCCESS_NOTI object:messageModel];
     }
+    
+    // 添加到chatlist
+    ChatListModel *chatListModel = [[ChatListModel alloc] init];
+    chatListModel.myID = [UserConfig getShareObject].userId;
+    chatListModel.friendID = messageModel.From;
+    chatListModel.isGroup = YES;
+    chatListModel.groupID = messageModel.GId;
+    chatListModel.groupName = [messageModel.GroupName base64DecodedString];
+    chatListModel.friendName = [messageModel.UserName base64DecodedString];
+    chatListModel.groupUserkey = messageModel.SelfKey;
+    chatListModel.chatTime = [NSDate date];
+    chatListModel.isHD = ![messageModel.GId isEqualToString:[SocketCountUtil getShareObject].groupChatId];
+    
+    if (messageModel.MsgType== 0) {
+        // 解密消息
+        // 自己私钥解密
+        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:messageModel.SelfKey];
+        // 截取前16位
+        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+        if (datakey) {
+            chatListModel.lastMessage = aesDecryptString(messageModel.Msg, datakey);
+        }
+    } else {
+        
+        if (messageModel.MsgType == 1) {
+            chatListModel.lastMessage = @"[photo]";
+        } else if (messageModel.MsgType == 2) {
+            chatListModel.lastMessage = @"[voice]";
+        } else if (messageModel.MsgType == 5){
+            chatListModel.lastMessage = @"[file]";
+        } else if (messageModel.MsgType == 4) {
+            chatListModel.lastMessage = @"[video]";
+        }
+    }
+     [[ChatListDataUtil getShareObject] addFriendModel:chatListModel];
+    
 }
 #pragma makr -群系统消息推送
 + (void)handleGroupSysPush:(NSDictionary *)receiveDic {
@@ -1581,7 +1642,29 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI object:@(Type)];
     }
 }
-
+#pragma mark ----删除群消息
++ (void)handleGroupDelMsg:(NSDictionary *)receiveDic {
+    
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    NSString *GId = receiveDic[@"params"][@"GId"];
+    NSInteger msgId = [receiveDic[@"params"][@"MsgId"] integerValue];
+    
+    
+    if (retCode == 0) { // 0：消息拉取成功
+        
+        
+        if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:GId])) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_Del_GROUP_MESSAGE_SUCCESS_NOTI object:@(msgId)];
+        }
+        
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"No permission to withdraw"];
+        } else {
+            [AppD.window showHint:@"Other error"];
+        }
+    }
+}
 
 
 

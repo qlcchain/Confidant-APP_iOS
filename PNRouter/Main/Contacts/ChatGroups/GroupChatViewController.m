@@ -123,6 +123,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullMessageListSuccessNoti:) name:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedMessgePushNoti:) name:RECEVIED_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedSysMessgePushNoti:) name:RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedDelMessgePushNoti:) name:RECEVIED_Del_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
+    
     
     
 }
@@ -192,8 +194,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(msgId)]];
         }
         
-        
-        if (self.selectMessageModel.fileID > 0) { // 是文件
+        if (self.selectMessageModel.fileID > 0 && self.selectMessageModel.msgState == CDMessageStateSending) { // 是文件
             [self deleteMsg:msgId];
             if ([SystemUtil isSocketConnect]) {
                 @weakify_self
@@ -213,9 +214,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         } else {
             _deleteMsgId = msgId;
             UserModel *userM = [UserModel getUserModel];
-            
-          //  NSDictionary *params = @{@"Action":@"DelMsg",@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgId":msgId};
-          //  [SocketMessageUtil sendVersion1WithParams:params];
+            [SendRequestUtil sendDelGroupMessageWithType:@(0) GId:self.groupModel.GId MsgId:msgId FromID:userM.userId];
         }
         
     }
@@ -632,7 +631,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         __block NSInteger index = 0;
         [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             CDMessageModel *model = (id)obj;
-            //        if ([model.messageId isEqualToString:MsgId]) {
             if ([model.messageId integerValue] == [MsgId integerValue]) {
                 isExist = YES;
                 index = idx;
@@ -1155,4 +1153,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
      
      */
 }
+- (void) receivedDelMessgePushNoti:(NSNotification *) noti
+{
+    NSString *msgid = [NSString stringWithFormat:@"%@",noti.object];
+    [self deleteMsg:msgid];
+    if (self.selectMessageModel) {
+        if (self.selectMessageModel.fileName && ![self.selectMessageModel.fileName isBlankString]) {
+            // 删除本的文件
+            [SystemUtil removeDocmentFileName:self.selectMessageModel.fileName friendid:self.groupModel.GId];
+        }
+    }
+}
+
+
 @end

@@ -13,7 +13,6 @@
 @property (nonatomic ,strong) NSString *friendID;
 @property (nonatomic ,strong) NSString *myID;
 @property (nonatomic ,strong) NSString *groupID;
-@property (nonatomic ,strong) NSString *groupUserID;
 @property (nonatomic ,strong) NSString *groupName;
 @property (nonatomic ,strong) NSString *groupUserkey;
 @property (nonatomic ,strong) NSString *publicKey;

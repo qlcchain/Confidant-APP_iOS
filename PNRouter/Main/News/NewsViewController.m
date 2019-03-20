@@ -28,6 +28,8 @@
 #import "AddGroupMemberViewController.h"
 #import "RoutherConfig.h"
 #import "AddGroupMenuViewController.h"
+#import "GroupInfoModel.h"
+#import "GroupChatViewController.h"
 
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate> {
     BOOL isSearch;
@@ -230,31 +232,35 @@
 {
     if (!tableView.isEditing) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        FriendModel *model = [[FriendModel alloc] init];
+        
         ChatListModel *chatModel = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
-        model.userId = chatModel.friendID;
-        model.owerId = [UserConfig getShareObject].userId;
-        model.username = chatModel.friendName;
-        model.publicKey = chatModel.publicKey;
-        model.signPublicKey = chatModel.signPublicKey;
+        
         if (chatModel.isHD) {
             chatModel.isHD = NO;
-            
-//            NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(chatModel.friendID)]];
-//            if (finfAlls && finfAlls.count > 0) {
-//               ChatListModel *findModel = [finfAlls firstObject];
-//                findModel.isHD = NO;
-//                [findModel bg_saveOrUpdate];
-//            }
-            
             [chatModel bg_saveOrUpdate];
-            
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CHATS_HD_NOTI object:nil];
         }
+        if (chatModel.isGroup) {
+            GroupInfoModel *model = [[GroupInfoModel alloc] init];
+            model.GId = chatModel.groupID;
+            model.GName = [chatModel.groupName base64EncodedString];
+            model.UserKey = chatModel.groupUserkey;
+            
+            GroupChatViewController *vc = [[GroupChatViewController alloc] initWihtGroupMode:model];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            FriendModel *model = [[FriendModel alloc] init];
+            model.userId = chatModel.friendID;
+            model.owerId = [UserConfig getShareObject].userId;
+            model.username = chatModel.friendName;
+            model.publicKey = chatModel.publicKey;
+            model.signPublicKey = chatModel.signPublicKey;
+            
+            ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:model];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
         
-        ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:model];
-        [self.navigationController pushViewController:vc animated:YES];
     }
     
 }

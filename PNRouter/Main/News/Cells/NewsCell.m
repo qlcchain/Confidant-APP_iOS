@@ -51,10 +51,13 @@
     } else {
         [_backView clearBadge];
     }
-    NSString *userKey = model.signPublicKey;
-    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:model.friendName]];
-    _headImgView.image = defaultImg;
-//    _lblNameJX.text = [StringUtil getUserNameFirstWithName:model.friendName];
+    if (model.isGroup) {
+        _headImgView.image = [UIImage imageNamed:@"icon_group_head"];
+    } else {
+        NSString *userKey = model.signPublicKey;
+        UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:model.friendName]];
+        _headImgView.image = defaultImg;
+    }
     
     if (model.isDraft) {
         NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[Drafts] %@",model.draftMessage?:@""]];
@@ -68,19 +71,21 @@
     }
    
     _lblTime.text = [model.chatTime minuteDescription];
-    
-    NSString *friendName = model.friendName;
-    NSString *joinStr = @" - ";
-    NSString *routerName = model.routerName?:@"";
-    NSString *str = [[friendName stringByAppendingString:joinStr] stringByAppendingString:routerName];
-    if (routerName.length <= 0) {
-        str = friendName;
+    if (model.isGroup) {
+        _lblName.text =  model.groupName;
+    } else {
+        NSString *friendName = model.friendName;
+        NSString *joinStr = @" - ";
+        NSString *routerName = model.routerName?:@"";
+        NSString *str = [[friendName stringByAppendingString:joinStr] stringByAppendingString:routerName];
+        if (routerName.length <= 0) {
+            str = friendName;
+        }
+        NSMutableAttributedString *strAtt = [[NSMutableAttributedString alloc] initWithString:str];
+        [strAtt setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:UIColorFromRGB(0x2B2B2B)} range:NSMakeRange(0, str.length)];
+        [strAtt setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:UIColorFromRGB(0x2B2B2B)} range:NSMakeRange(0, friendName.length)];
+        _lblName.attributedText = strAtt;
     }
-    NSMutableAttributedString *strAtt = [[NSMutableAttributedString alloc] initWithString:str];
-    [strAtt setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:UIColorFromRGB(0x2B2B2B)} range:NSMakeRange(0, str.length)];
-    [strAtt setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:UIColorFromRGB(0x2B2B2B)} range:NSMakeRange(0, friendName.length)];
-    _lblName.attributedText = strAtt;
-//    _lblName.text =  model.friendName;
 }
 
 @end

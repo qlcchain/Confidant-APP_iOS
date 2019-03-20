@@ -369,5 +369,10 @@
     NSDictionary *params = @{@"Action":Action_GroupSendFilePre,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":gid,@"FileName":fileName,@"FileSize":fileSize,@"FileType":fileType};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
-
+#pragma mark --删除群消息
++ (void) sendDelGroupMessageWithType:(NSNumber *) type GId:(NSString *) gid MsgId:(NSString *) msgid FromID:(NSString *) formID
+{
+    NSDictionary *params = @{@"Action":Action_GroupDelMsg,@"Type":type,@"From":formID?:@"",@"GId":gid,@"MsgId":msgid};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 @end
