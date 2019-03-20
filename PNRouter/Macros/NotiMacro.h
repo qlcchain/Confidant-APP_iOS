@@ -167,6 +167,9 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 #define Set_Approve_Invitations_SUCCESS_NOTI @"Set_Approve_Invitations_SUCCESS_NOTI"
 // 设置审核邀请失败通知
 #define Set_Approve_Invitations_FAIL_NOTI @"Set_Approve_Invitations_FAIL_NOTI"
+// 踢出某个用户成功通知
+#define Remove_Group_Member_SUCCESS_NOTI @"Remove_Group_Member_SUCCESS_NOTI"
+
 
 
 

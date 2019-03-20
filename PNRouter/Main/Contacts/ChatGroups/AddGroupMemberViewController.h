@@ -8,19 +8,20 @@
 
 #import "PNBaseViewController.h"
 
-@class FriendModel;
+@class FriendModel,GroupInfoModel;
 
 typedef void(^AddGroupMemberCompleteBlock)(NSArray *addArr);
 
 typedef enum : NSUInteger {
     AddGroupMemberTypeBeforeCreate, // 添加成员来创建群组
     AddGroupMemberTypeInCreate, // 在创建群组里面来添加成员
-    AddGroupMemberTypeJustAdd, // 仅添加成员
+    AddGroupMemberTypeInGroupDetail, // 在群详情页添加成员
 } AddGroupMemberType;
 
 @interface AddGroupMemberViewController : PNBaseViewController
 
 @property (nonatomic, copy) AddGroupMemberCompleteBlock addCompleteB;
+@property (nonatomic, strong) GroupInfoModel *groupInfoM;
 
 - (instancetype)initWithMemberArr:(NSArray<FriendModel *> *)memberArr originArr:(NSArray<FriendModel *> *)originArr type:(AddGroupMemberType)type;
 

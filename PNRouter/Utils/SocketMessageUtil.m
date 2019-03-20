@@ -1626,12 +1626,25 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:Set_Approve_Invitations_SUCCESS_NOTI object:nil];
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:Set_Approve_Invitations_FAIL_NOTI object:nil];
+            if (retCode == 1) {
+                [AppD.window showHint:@"Configuration Failed."];
+            }
         }
     } else if ([Type integerValue] == 3) { // 踢出某个用户，只有管理员有权限
-        
+        if (retCode == 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:Remove_Group_Member_SUCCESS_NOTI object:nil];
+        } else {
+            if (retCode == 1) {
+                [AppD.window showHint:@"Remove group member Failed."];
+            }
+        }
     } else if ([Type integerValue] == [NSString numberWithHexString:@"F1"]) { // 修改群别名
         if (retCode == 0) {
             [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Alias_SUCCESS_NOTI object:nil];
+        } else {
+            if (retCode == 1) {
+                [AppD.window showHint:@"Revise group alias Failed."];
+            }
         }
     } else if ([Type integerValue] == [[NSString stringFromHexString:@"F2"] integerValue]) { // 修改群友别名
         
@@ -1639,9 +1652,7 @@
         
     }
     
-    if (retCode == 1) {
-        [AppD.window showHint:@"Configuration failed"];
-    }
+    
     
 }
 
