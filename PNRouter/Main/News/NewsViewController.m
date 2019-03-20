@@ -399,7 +399,6 @@
     if (self.dataArray.count >0) {
         [self.dataArray removeAllObjects];
     }
-    
     NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].userId)]];
     NSMutableArray *tempArr = [NSMutableArray array];
     if (finfAlls && finfAlls.count > 0) {
