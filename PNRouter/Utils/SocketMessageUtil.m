@@ -478,13 +478,10 @@
         [SocketMessageUtil handleGroupConfig:receiveDic];
     } else if ([action isEqualToString:Action_GroupSysPush]) { // 群消息系统推送
         [SocketMessageUtil handleGroupSysPush:receiveDic];
-<<<<<<< HEAD
     } else if ([action isEqualToString:Action_GroupDelMsg]) { // 删除群消息
         [SocketMessageUtil handleGroupDelMsg:receiveDic];
-=======
     } else if ([action isEqualToString:Action_GroupQuit]) { // 68.    用户退群
         [SocketMessageUtil handleGroupQuit:receiveDic];
->>>>>>> b4925c6f3a38bacfc633416063d253f7e210d2a7
     }
 }
 
@@ -1683,7 +1680,6 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI object:@(Type)];
     }
 }
-<<<<<<< HEAD
 #pragma mark ----删除群消息
 + (void)handleGroupDelMsg:(NSDictionary *)receiveDic {
     
@@ -1707,7 +1703,6 @@
         }
     }
 }
-=======
 
 #pragma mark - 68.    用户退群
 + (void)handleGroupQuit:(NSDictionary *)receiveDic {
@@ -1722,13 +1717,6 @@
         }
     }
 }
-
-
->>>>>>> b4925c6f3a38bacfc633416063d253f7e210d2a7
-
-
-
-
 
 
 #pragma mark - Base
