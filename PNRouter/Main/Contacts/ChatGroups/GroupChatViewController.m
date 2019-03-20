@@ -122,6 +122,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMessageSuccessNoti:) name:GROUP_MESSAGE_SEND_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullMessageListSuccessNoti:) name:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedMessgePushNoti:) name:RECEVIED_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedSysMessgePushNoti:) name:RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI object:nil];
     
     
 }
@@ -957,7 +958,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 {
     [self.listView stopRefresh];
     
-    NSArray *messageArr = noti.object;
+    NSArray *resultArr = noti.object;
+    NSArray *messageArr = resultArr[0];
+    self.groupModel.UserType = [resultArr[1] intValue];
     if (!messageArr || messageArr.count == 0) {
         return;
     }
@@ -1088,6 +1091,68 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 - (void) receivedMessgePushNoti:(NSNotification *) noti
 {
+    PayloadModel *payloadModel = noti.object;
+    CDMessageModel *model = [[CDMessageModel alloc] init];
     
+    model.FromId = payloadModel.From;
+    model.userName = [payloadModel.UserName base64DecodedString]?:@"";
+    model.isLeft = YES;
+    model.ToId = self.groupModel.GId;
+    model.isGroup = YES;
+    
+    if (payloadModel.FileInfo && payloadModel.FileInfo.length>0) {
+        NSArray *whs = [payloadModel.FileInfo componentsSeparatedByString:@"*"];
+        model.fileWidth = [whs[0] floatValue];
+        model.fileHeight = [whs[1] floatValue];
+    }
+    
+    model.messageStatu = payloadModel.Status;
+    model.messageId = [NSString stringWithFormat:@"%@",payloadModel.MsgId];
+    model.TimeStatmp = payloadModel.TimeStatmp;
+    model.msgType = payloadModel.MsgType;
+    if (model.msgType >=1 && model.msgType !=5 && model.msgType !=4) { // 图片
+        model.msgState = CDMessageStateDownloading;
+    }
+    if (payloadModel.FileName) {
+        model.fileName = [Base58Util Base58DecodeWithCodeName:payloadModel.FileName];
+    }
+    model.fileMd5 = payloadModel.FileMD5;
+    model.filePath = payloadModel.FilePath;
+    model.fileSize = payloadModel.FileSize;
+    
+    // 自己私钥解密
+    NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
+    // 截取前16位
+    datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+    if (!datakey || datakey.length == 0) {
+        return ;
+    }
+    if (model.msgType == 0) { // 文字
+        model.msg = aesDecryptString(payloadModel.Msg, datakey);
+    }
+    NSString *signPK = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:model.FromId];
+    NSString *nickName = model.userName?:@"";
+    CTDataConfig config = [CTData defaultConfig];
+    if (!model.isLeft) {
+        config.isOwner = YES;
+        signPK = [EntryModel getShareObject].signPublicKey;
+        nickName = [UserConfig getShareObject].userName;
+    }
+    model.ctDataconfig = config;
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nickName userKey:signPK]];
+    [self.listView addMessagesToBottom:@[model]];
+}
+- (void) receivedSysMessgePushNoti:(NSNotification *) noti {
+    /*
+     群系统推送类型：
+     0x01：群名称修改
+     0x02：群审核权限变更
+     0x03: 撤回某条消息
+     0x04:群主删除某条消息
+     0xF1:新用户入群
+     0xF2:有用户退群
+     0xF3:有用户被踢出群
+     
+     */
 }
 @end

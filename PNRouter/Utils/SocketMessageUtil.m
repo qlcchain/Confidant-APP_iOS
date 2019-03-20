@@ -475,6 +475,8 @@
          [SocketMessageUtil handleGroupMsgPush:receiveDic];
     } else if ([action isEqualToString:Action_GroupConfig]) { // 77.    群属性设置
         [SocketMessageUtil handleGroupConfig:receiveDic];
+    } else if ([action isEqualToString:Action_GroupSysPush]) { // 群消息系统推送
+        [SocketMessageUtil handleGroupSysPush:receiveDic];
     }
 }
 
@@ -1481,14 +1483,14 @@
     NSString *Payload = receiveDic[@"params"][@"Payload"];
     
     NSString *GId = receiveDic[@"params"][@"GId"];
-   
+    int userType = [receiveDic[@"params"][@"UserType"] intValue];
     
     if (retCode == 0) { // 0：消息拉取成功
         
         
         if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:GId])) {
             NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
-            [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:payloadArr];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:@[payloadArr,@(userType)]];
         }
         
     } else {
@@ -1521,14 +1523,30 @@
     
    PayloadModel *messageModel = [PayloadModel mj_objectWithKeyValues:receiveDic[@"params"]];
     
-    if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:messageModel.GId])) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_MESSAGE_SUCCESS_NOTI object:messageModel];
-    }
     // 回复router
     NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
     NSDictionary *params = @{@"Action":Action_GroupMsgPush,@"Retcode":retcode,@"Msg":@"",@"ToId":messageModel.To};
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
+    
+    
+    if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:messageModel.GId])) {
+        // 判断时间 间隔10秒 收到好友消息播放系统声音
+        NSString *formatDate = [HWUserdefault getObjectWithKey:PLAY_KEY];
+        NSDateFormatter *format =[NSDateFormatter defaultDateFormatter];
+        if (formatDate) {
+            NSDate *date = [format dateFromString:formatDate];
+            NSTimeInterval timeInterval =  [[NSDate date] timeIntervalSinceDate:date];
+            if (timeInterval >PLAY_TIME) {
+                [SystemUtil playSystemSound];
+                [HWUserdefault updateObject:[format stringFromDate:[NSDate date]] withKey:PLAY_KEY];
+            }
+        } else {
+            [SystemUtil playSystemSound];
+            [HWUserdefault updateObject:[format stringFromDate:[NSDate date]] withKey:PLAY_KEY];
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_MESSAGE_SUCCESS_NOTI object:messageModel];
+    }
 }
 
 #pragma mark - 77.    群属性设置
@@ -1537,7 +1555,7 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:GroupConfig_SUCCESS_NOTI object:nil];
+        //        [[NSNotificationCenter defaultCenter] postNotificationName:GroupConfig_SUCCESS_NOTI object:nil];
     } else {
         if (retCode == 1) {
             [AppD.window showHint:@"Configuration failed"];
@@ -1545,9 +1563,41 @@
     }
 }
 
+#pragma makr -群系统消息推送
++ (void)handleGroupSysPush:(NSDictionary *)receiveDic {
+    
+    NSString *UserId = receiveDic[@"params"][@"UserId"];
+    NSString *GId = receiveDic[@"params"][@"GId"];
+    int Type = [receiveDic[@"params"][@"Type"] intValue];
+    NSString *From = receiveDic[@"params"][@"From"];
+    NSString *To = receiveDic[@"params"][@"To"];
+    NSInteger MsgId = [receiveDic[@"params"][@"MsgId"] integerValue];
+    NSString *Name = receiveDic[@"params"][@"Name"];
+    int NeedVerify = [receiveDic[@"params"][@"NeedVerify"] intValue];
+    
+    // 回复router
+    NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
+    NSDictionary *params = @{@"Action":Action_GroupSysPush,@"Retcode":retcode,@"ToId":UserId};
+    NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
+    [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
+    
+    /*
+     群系统推送类型：
+     0x01：群名称修改
+     0x02：群审核权限变更
+     0x03: 撤回某条消息
+     0x04:群主删除某条消息
+     0xF1:新用户入群
+     0xF2:有用户退群
+     0xF3:有用户被踢出群
 
+     */
+    
+    if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:GId])) {
 
-
+        [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI object:@(Type)];
+    }
+}
 
 
 
