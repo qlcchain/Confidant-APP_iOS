@@ -90,10 +90,10 @@
     self.memberView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 48);
     @weakify_self
     _memberView.delB = ^{
-//        [weakSelf jumpToRemoveGroupMember];
+        [weakSelf jumpToRemoveGroupMember];
     };
     _memberView.addB = ^{
-//        [weakSelf jumpToAddGroupMember];
+        [weakSelf jumpToAddGroupMember];
     };
     [self refreshMemberView];
     [_memberView showDelBtn:_groupModel.UserType == 0?YES:NO];
