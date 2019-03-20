@@ -40,6 +40,7 @@ typedef void(^GroupMemberAddBlock)(void);
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contranitWith3;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contraintWidth4;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contarintWidth5;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contraintWidthSub;
 
 @property (nonatomic, copy) GroupMemberDelBlock delB;
@@ -47,6 +48,7 @@ typedef void(^GroupMemberAddBlock)(void);
 
 + (instancetype)getInstance;
 - (void) updateConstraintWithPersonCount:(NSArray<GroupMemberShowModel *> *)arr;
+- (void)showDelBtn:(BOOL)show;
 
 @end
 

@@ -1554,13 +1554,27 @@
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
-    if (retCode == 0) {
-        //        [[NSNotificationCenter defaultCenter] postNotificationName:GroupConfig_SUCCESS_NOTI object:nil];
-    } else {
-        if (retCode == 1) {
-            [AppD.window showHint:@"Configuration failed"];
+    NSString *Type = receiveDic[@"params"][@"Type"];
+    if ([Type isEqualToString:@"01"]) { // 修改群名称，只有群管理员有权限
+        
+    } else if ([Type isEqualToString:@"02"]) { // 设置是否需要群管理审核入群，只有管理员有权限
+        
+    } else if ([Type isEqualToString:@"03"]) { // 踢出某个用户，只有管理员有权限
+        
+    } else if ([Type isEqualToString:@"F1"]) { // 修改群别名
+        if (retCode == 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Alias_SUCCESS_NOTI object:nil];
+        } else {
+            if (retCode == 1) {
+                [AppD.window showHint:@"Configuration failed"];
+            }
         }
+    } else if ([Type isEqualToString:@"F2"]) { // 修改群友别名
+        
+    } else if ([Type isEqualToString:@"F3"]) { // 设置自己群中显示的别名
+        
     }
+    
 }
 
 #pragma makr -群系统消息推送

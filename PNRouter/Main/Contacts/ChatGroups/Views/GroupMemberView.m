@@ -68,6 +68,10 @@
     }
 }
 
+- (void)showDelBtn:(BOOL)show {
+    _contraintWidthSub.constant = show?32:0;
+}
+
 - (void) updateConstraintWithPersonCount:(NSArray<GroupMemberShowModel *> *)arr {
     CGFloat V_val0 = 0;
     CGFloat V_val10 = 10;

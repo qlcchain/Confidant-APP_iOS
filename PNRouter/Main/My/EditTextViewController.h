@@ -18,15 +18,18 @@ typedef enum : NSUInteger {
     EditGroupAlias,
 } EditType;
 
-@class RouterModel;
-@class FriendModel;
+@class RouterModel,FriendModel,GroupInfoModel;
+
+typedef void(^ReviseSuccessBlock)(NSString *alias);
+
 @interface EditTextViewController : PNBaseViewController
 
 @property (nonatomic, strong) RouterModel *routerM;
 @property (nonatomic ,assign) EditType editType;
+@property (nonatomic, copy) ReviseSuccessBlock reviseSuccessB;
 
 - (instancetype) initWithType:(EditType) type;
 - (instancetype) initWithType:(EditType) type friendModel:(FriendModel *) friendModel;
-- (instancetype) initWithType:(EditType) type inputAlias:(NSString *)inputAlias;
+- (instancetype) initWithType:(EditType) type groupInfoM:(GroupInfoModel *)groupInfoM;
 
 @end

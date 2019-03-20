@@ -11,13 +11,15 @@
 #import "RouterModel.h"
 #import "FriendModel.h"
 #import "UserConfig.h"
+#import "GroupInfoModel.h"
+#import "NSString+Base64.h"
 
 @interface EditTextViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (weak, nonatomic) IBOutlet UITextField *nameTF;
 @property (nonatomic ,strong) FriendModel *friendModel;
-@property (nonatomic, strong) NSString *inputAlias;
+@property (nonatomic, strong) GroupInfoModel *groupInfoM;
 
 @end
 
@@ -88,10 +90,11 @@
             break;
         case EditGroupAlias:
         {
-            if ([_inputAlias isEqualToString:_nameTF.text]) {
+            NSString *alias = [_groupInfoM.Remark base64DecodedString]?:@"";
+            if ([alias isEqualToString:_nameTF.text]) {
                 [AppD.window showHint:@"Please enter a different alias."];
             } else {
-//                [SendRequestUtil sendGroupConfigWithGId:<#(nonnull NSString *)#> Type:<#(nonnull NSNumber *)#> ToId:<#(nonnull NSString *)#> Name:<#(nonnull NSString *)#> NeedVerify:<#(nonnull NSNumber *)#> showHud:YES];
+                [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@"F1" ToId:nil Name:_nameTF.text?:@"" NeedVerify:nil showHud:YES];
             }
         }
             break;
@@ -105,6 +108,7 @@
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_NICKNAME_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_FRIEND_NICKNAME_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reviseGroupAliasSuccessNoti:) name:Revise_Group_Alias_SUCCESS_NOTI object:nil];
 }
 
 - (instancetype) initWithType:(EditType) type
@@ -123,10 +127,10 @@
     return self;
 }
 
-- (instancetype) initWithType:(EditType) type inputAlias:(NSString *)inputAlias {
+- (instancetype) initWithType:(EditType) type groupInfoM:(GroupInfoModel *)groupInfoM {
     if (self = [super init]) {
         self.editType = type;
-        self.inputAlias = inputAlias;
+        self.groupInfoM = groupInfoM;
     }
     return self;
 }
@@ -171,7 +175,7 @@
         {
             _lblNavTitle.text = @"Alias";
             _nameTF.placeholder = @"Edit Group Alias";
-            _nameTF.text = self.inputAlias;
+            _nameTF.text = [self.groupInfoM.Remark base64DecodedString];
         }
             break;
         default:
@@ -197,6 +201,13 @@
         model.username = _nameTF.text.trim?:@"";
         [UserConfig getShareObject].userName = _nameTF.text.trim?:@"";
         [model saveUserModeToKeyChain];
+    }
+    [self leftNavBarItemPressedWithPop:YES];
+}
+
+- (void)reviseGroupAliasSuccessNoti:(NSNotification *)noti {
+    if (_reviseSuccessB) {
+        _reviseSuccessB(_nameTF.text);
     }
     [self leftNavBarItemPressedWithPop:YES];
 }

@@ -92,6 +92,7 @@
 //        [weakSelf jumpToAddGroupMember];
     };
     [self refreshMemberView];
+    [_memberView showDelBtn:_groupModel.UserType == 0?YES:NO];
     [_memberBackView addSubview:_memberView];
     [_memberView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.top.mas_equalTo(weakSelf.memberBackView).offset(0);
@@ -109,6 +110,7 @@
     }];
     [_memberView updateConstraintWithPersonCount:arr];
     _gorupMembersNumLab.text = [NSString stringWithFormat:@"%lu people",(unsigned long)self.membersArr.count];
+    
 }
 
 #pragma mark - Request
@@ -127,7 +129,7 @@
 }
 
 - (IBAction)setGroupAliasAction:(id)sender {
-    
+    [self jumpToEditGroupAlias];
 }
 
 
@@ -173,7 +175,12 @@
 }
 
 - (void)jumpToEditGroupAlias {
-    EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditGroupAlias];
+    EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditGroupAlias groupInfoM:_groupModel];
+    @weakify_self
+    vc.reviseSuccessB = ^(NSString *alias) {
+        weakSelf.groupModel.Remark = [alias base64EncodedString];
+        weakSelf.groupAliasLab.text = [weakSelf.groupModel.Remark base64DecodedString];
+    };
     [self.navigationController pushViewController:vc animated:YES];
 }
 

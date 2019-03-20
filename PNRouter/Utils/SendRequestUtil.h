@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendPullGroupMessageListWithGId:(NSString *) gid MsgType:(NSString *) msgType msgStartId:(NSString *) msgStartId msgNum:(NSString *) msgNum;
 + (void) sendGroupFilePretreatmentWithGID:(NSString *) gid fileName:(NSString *) fileName fileSize:(NSNumber *) fileSize fileType:(NSNumber *) fileType;
 
-+ (void)sendGroupConfigWithGId:(NSString *)GId Type:(NSNumber *)Type ToId:(NSString *)ToId Name:(NSString *)Name NeedVerify:(NSNumber *)NeedVerify showHud:(BOOL)showHud;
++ (void)sendGroupConfigWithGId:(NSString *)GId Type:(NSString *)Type ToId:(nullable NSString *)ToId Name:(nullable NSString *)Name NeedVerify:(nullable NSNumber *)NeedVerify showHud:(BOOL)showHud;
 
 @end
 
