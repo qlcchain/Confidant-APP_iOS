@@ -13,6 +13,11 @@
 #import "GroupMembersModel.h"
 #import "NSString+Base64.h"
 #import "EditTextViewController.h"
+#import "RemoveGroupMemberViewController.h"
+#import "AddGroupMemberViewController.h"
+#import "ChatListDataUtil.h"
+#import "RoutherConfig.h"
+#import "FriendModel.h"
 
 @interface GroupDetailsViewController ()
 
@@ -186,6 +191,61 @@
         weakSelf.groupAliasLab.text = [weakSelf.groupModel.Remark base64DecodedString];
     };
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToRemoveGroupMember {
+    NSMutableArray *inputMemberArr = [NSMutableArray array];
+    [self.membersArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        GroupMembersModel *groupMembersM = obj;
+        FriendModel *friendM = [FriendModel new];
+        friendM.userId = [NSString stringWithFormat:@"%@",groupMembersM.Id];
+        friendM.RouteId = groupMembersM.ToxId;
+        friendM.username = groupMembersM.Nickname;
+        friendM.signPublicKey = groupMembersM.UserKey;
+        [inputMemberArr addObject:friendM];
+    }];
+    RemoveGroupMemberViewController *vc = [[RemoveGroupMemberViewController alloc] initWithMemberArr:inputMemberArr type:RemoveGroupMemberTypeInGroupDetail];
+    vc.groupInfoM = _groupModel;
+    @weakify_self
+    vc.removeCompleteB = ^(NSArray *memberArr) {
+//        [weakSelf.persons removeAllObjects];
+//        [weakSelf.persons addObjectsFromArray:memberArr];
+//        [weakSelf refreshMemberView];
+        [weakSelf sendGroupUserPull];
+    };
+    [self presentModalVC:vc animated:YES];
+}
+
+- (void)jumpToAddGroupMember {
+    NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
+    // 过滤非当前路由的好友
+    NSString *currentToxid = [RoutherConfig getRoutherConfig].currentRouterToxid;
+    NSMutableArray *inputArr = [NSMutableArray array];
+    [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if ([model.RouteId isEqualToString:currentToxid]) {
+            [inputArr addObject:model];
+        }
+    }];
+    NSMutableArray *originArr = [NSMutableArray array];
+    [self.membersArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        GroupMembersModel *groupMembersM = obj;
+        FriendModel *friendM = [FriendModel new];
+        friendM.userId = [NSString stringWithFormat:@"%@",groupMembersM.Id];
+        friendM.RouteId = groupMembersM.ToxId;
+        friendM.username = groupMembersM.Nickname;
+        friendM.signPublicKey = groupMembersM.UserKey;
+        [originArr addObject:friendM];
+    }];
+    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr originArr:originArr type:AddGroupMemberTypeInGroupDetail];
+    vc.groupInfoM = _groupModel;
+    @weakify_self
+    vc.addCompleteB = ^(NSArray *addArr) {
+//        [weakSelf.persons addObjectsFromArray:addArr];
+//        [weakSelf refreshMemberView];
+        [weakSelf sendGroupUserPull];
+    };
+    [self presentModalVC:vc animated:YES];
 }
 
 #pragma mark - Noti

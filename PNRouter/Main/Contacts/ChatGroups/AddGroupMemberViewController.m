@@ -14,6 +14,9 @@
 #import "ChooseContactTableCell.h"
 #import "ChooseContactHeaderView.h"
 #import "FriendModel.h"
+#import "GroupInfoModel.h"
+#import "LibsodiumUtil.h"
+#import "NSData+Base64.h"
 
 @interface AddGroupMemberViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 
@@ -38,6 +41,15 @@
 
 @implementation AddGroupMemberViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addGroupSuccessNoti:) name:ADD_GROUP_SUCCESS_NOTI object:nil];
+}
+
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -51,22 +63,40 @@
         return;
     }
     
-    @weakify_self
-    if (_addType == AddGroupMemberTypeInCreate) {
-        if (_addCompleteB) {
-            _addCompleteB(weakSelf.selectArray);
-        }
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        if (weakSelf.addType == AddGroupMemberTypeBeforeCreate) {
-            if (weakSelf.selectArray.count > 0) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+    if (_addType == AddGroupMemberTypeInGroupDetail) {
+        __block NSString *friendIds = @"";
+        __block NSString *friendKeys = @"";
+        NSInteger count = self.selectArray.count;
+        // 自己私钥解密
+        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupInfoM.UserKey];
+        NSData *symmetData =[datakey dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *symmetKey = [symmetData base64EncodedString];
+        [self.selectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FriendModel *model = obj;
+            friendIds = [friendIds stringByAppendingString:model.userId];
+            friendKeys = [friendKeys stringByAppendingString:[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey]];
+            if (idx < count - 1) {
+                friendIds = [friendIds stringByAppendingString:@","];
+                friendKeys = [friendKeys stringByAppendingString:@","];
             }
-        } else if (weakSelf.addType == AddGroupMemberTypeJustAdd) {
-            
+        }];
+        [SendRequestUtil sendAddGroupWithGId:_groupInfoM.GId friendId:friendIds friendKey:friendKeys showHud:YES];
+    } else {
+        @weakify_self
+        if (_addType == AddGroupMemberTypeInCreate) {
+            if (_addCompleteB) {
+                _addCompleteB(weakSelf.selectArray);
+            }
         }
-    }];
+        
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (weakSelf.addType == AddGroupMemberTypeBeforeCreate) {
+                if (weakSelf.selectArray.count > 0) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+                }
+            }
+        }];
+    }
 }
 
 #pragma mark - Operation
@@ -145,6 +175,7 @@
     return [self sortWith:contactShowArr];
 }
 
+// 判断是否是传过来的好友
 - (BOOL)getUserInterfaceOff:(NSString *)key {
     __block BOOL userInterfaceOff = NO;
     [_originArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -254,6 +285,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self addObserve];
     
     _confrimBtn.layer.cornerRadius = 4.0f;
     _confrimBtn.layer.masksToBounds = YES;
@@ -391,6 +424,15 @@
         }];
     }
     [_tableV reloadData];
+}
+
+#pragma mark - Noti
+- (void)addGroupSuccessNoti:(NSNotification *)noti {
+    if (_addCompleteB) {
+        _addCompleteB(self.selectArray);
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

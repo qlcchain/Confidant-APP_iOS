@@ -14,6 +14,7 @@
 #import "ChooseContactTableCell.h"
 #import "ChooseContactHeaderView.h"
 #import "FriendModel.h"
+#import "GroupInfoModel.h"
 
 @interface RemoveGroupMemberViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 
@@ -25,6 +26,7 @@
 @property (nonatomic ,strong) NSMutableArray *searchDataArray;
 //@property (nonatomic ,strong) NSArray *groupArray;
 @property (nonatomic ,strong) NSMutableArray *notSelectArray;
+@property (nonatomic ,strong) NSMutableArray *isSelectArray;
 @property (weak, nonatomic) IBOutlet UIButton *leftBtn;
 @property (weak, nonatomic) IBOutlet UILabel *selectLab;
 @property (weak, nonatomic) IBOutlet UIButton *confrimBtn;
@@ -36,6 +38,15 @@
 
 @implementation RemoveGroupMemberViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeGroupMemberSuccessNoti:) name:Remove_Group_Member_SUCCESS_NOTI object:nil];
+}
+
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -43,16 +54,29 @@
 
 - (IBAction)confirmAction:(id)sender {
     [self.notSelectArray addObjectsFromArray:[self getNotSelectRouter]];
+    [self.isSelectArray addObjectsFromArray:[self getIsSelectRouter]];
     
-    if (_removeType == RemoveGroupMemberTypeInCreate) {
-        if (_removeCompleteB) {
-            _removeCompleteB(self.notSelectArray);
+    if (_removeType == RemoveGroupMemberTypeInGroupDetail) {
+        __block NSString *toId = @"";
+        NSInteger count = self.isSelectArray.count;
+        [self.isSelectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FriendModel *model = obj;
+            toId = [toId stringByAppendingString:model.userId];
+            if (idx < count - 1) {
+                toId = [toId stringByAppendingString:@","];
+            }
+        }];
+        [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@(3) ToId:toId Name:nil NeedVerify:nil showHud:YES];
+    } else {
+        if (_removeType == RemoveGroupMemberTypeInCreate) {
+            if (_removeCompleteB) {
+                _removeCompleteB(self.notSelectArray);
+            }
         }
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:^{
         
-    }];
+        [self dismissViewControllerAnimated:YES completion:^{
+        }];
+    }
 }
 
 #pragma mark - Operation
@@ -200,6 +224,13 @@
     return _notSelectArray;
 }
 
+- (NSMutableArray *)isSelectArray {
+    if (!_isSelectArray) {
+        _isSelectArray = [NSMutableArray array];
+    }
+    return _isSelectArray;
+}
+
 #pragma mark - UITextFeildDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     NSLog(@"textFieldShouldReturn");
@@ -224,6 +255,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self addObserve];
     
     _confrimBtn.layer.cornerRadius = 4.0f;
     _confrimBtn.layer.masksToBounds = YES;
@@ -367,6 +400,14 @@
         }];
     }
     [_tableV reloadData];
+}
+
+#pragma mark - Noti
+- (void)removeGroupMemberSuccessNoti:(NSNotification *)noti {
+    if (_removeCompleteB) {
+        _removeCompleteB(self.isSelectArray);
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

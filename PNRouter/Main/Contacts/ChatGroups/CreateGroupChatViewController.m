@@ -182,14 +182,19 @@
     NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
     // 过滤非当前路由的好友
     NSString *currentToxid = [RoutherConfig getRoutherConfig].currentRouterToxid;
-    NSMutableArray *inputArr = [NSMutableArray array];
+    NSMutableArray *memberArr = [NSMutableArray array];
     [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;
         if ([model.RouteId isEqualToString:currentToxid]) {
-            [inputArr addObject:model];
+            [memberArr addObject:model];
         }
     }];
-    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr originArr:self.persons type:AddGroupMemberTypeInCreate];
+    NSMutableArray *originArr = [NSMutableArray array];
+    [self.persons enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        [originArr addObject:model.signPublicKey];
+    }];
+    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:memberArr originArr:originArr type:AddGroupMemberTypeInCreate];
     @weakify_self
     vc.addCompleteB = ^(NSArray *addArr) {
         [weakSelf.persons addObjectsFromArray:addArr];
