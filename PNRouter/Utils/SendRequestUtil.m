@@ -359,7 +359,7 @@
 + (void) sendPullGroupMessageListWithGId:(NSString *) gid MsgType:(NSString *) msgType msgStartId:(NSString *) msgStartId msgNum:(NSString *) msgNum
 {
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum};
+    NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum,@"MsgStartId":msgStartId};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark ---群组发送文件预处理

@@ -262,6 +262,7 @@
 }
 
 - (void)groupQuitSuccessNoti:(NSNotification *)noti {
+//    NSString *GId = noti.object;
     [self moveNavgationBackOneViewController];
     [self backAction:nil];
 }

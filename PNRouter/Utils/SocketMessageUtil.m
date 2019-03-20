@@ -1721,7 +1721,7 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GroupQuit_SUCCESS_NOTI object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupQuit_SUCCESS_NOTI object:receiveDic[@"params"][@"GId"]];
     } else {
         if (retCode == 1) {
             [AppD.window showHint:@"Refund group fail."];

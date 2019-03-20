@@ -110,6 +110,36 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)updateData {
+    if (self.dataArray.count >0) {
+        [self.dataArray removeAllObjects];
+    }
+    
+    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].userId)]];
+    NSMutableArray *tempArr = [NSMutableArray array];
+    if (finfAlls && finfAlls.count > 0) {
+        [tempArr addObjectsFromArray:finfAlls];
+        tempArr = [self sortWith:tempArr];
+    }
+    @weakify_self
+    [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ChatListModel *model = obj;
+        __block BOOL isexit = NO;
+        [weakSelf.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ChatListModel *model1 = obj;
+            if (!model.isGroup && [model.friendID isEqualToString:model1.friendID]) {
+                isexit = YES;
+                *stop = YES;
+            }
+        }];
+        if (!isexit) {
+            [weakSelf.dataArray addObject:model];
+        }
+    }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CHATS_HD_NOTI object:self.dataArray];
+    [_tableV reloadData];
+}
+
 #pragma mark -layz
 - (NSMutableArray *)dataArray
 {
@@ -136,6 +166,7 @@
 {
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:ADD_MESSAGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecketFaieldNoti:) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupQuitSuccessNoti:) name:GroupQuit_SUCCESS_NOTI object:nil];
 }
 
 - (void)viewDidLoad {
@@ -396,71 +427,7 @@
 #pragma mark - noti
 - (void) chatMessageChangeNoti:(NSNotification *) noti
 {
-    if (self.dataArray.count >0) {
-        [self.dataArray removeAllObjects];
-    }
-    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].userId)]];
-    NSMutableArray *tempArr = [NSMutableArray array];
-    if (finfAlls && finfAlls.count > 0) {
-        [tempArr addObjectsFromArray:finfAlls];
-        tempArr = [self sortWith:tempArr];
-    }
-    
-    @weakify_self
-    [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        ChatListModel *model = obj;
-        __block BOOL isexit = NO;
-        [weakSelf.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ChatListModel *model1 = obj;
-            if (!model.isGroup && [model.friendID isEqualToString:model1.friendID]) {
-                isexit = YES;
-                *stop = YES;
-            }
-        }];
-        if (!isexit) {
-            [weakSelf.dataArray addObject:model];
-        }
-    }];
-     [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CHATS_HD_NOTI object:self.dataArray];
-    [_tableV reloadData];
-    /*
-    if (finfAlls && finfAlls.count > 0) {
-        [self.dataArray addObjectsFromArray:finfAlls];
-        @weakify_self
-        [[ChatListDataUtil getShareObject].dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ChatListModel *model = obj;
-
-           __block BOOL isExit = NO;
-            [finfAlls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                ChatListModel *model1 = obj;
-                if ([model.friendID isEqualToString:model1.friendID]) {
-                    model1.lastMessage = model.lastMessage;
-                    model1.friendName = model.friendName;
-                    model1.chatTime = model.chatTime;
-                    model1.isHD = model.isHD;
-                    isExit = YES;
-                    [model1 bg_saveOrUpdate];
-                    *stop = YES;
-                }
-            }];
-            if (!isExit) {
-                model.bg_tableName = FRIEND_CHAT_TABNAME;
-                if (model.publicKey && ![model.publicKey isEmptyString]) {
-                    [model bg_save];
-                    [weakSelf.dataArray addObject:model];
-                }
-            }
-        }];
-    } else {
-        @weakify_self
-        [[ChatListDataUtil getShareObject].dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ChatListModel *model = obj;
-            model.bg_tableName = FRIEND_CHAT_TABNAME;
-            [model bg_save];
-            [weakSelf.dataArray addObject:model];
-        }];
-    }*/
-    
+    [self updateData];
 }
 
 //根据时间排序
@@ -496,8 +463,18 @@
             // _connectBackView.hidden = YES;
         }
     }
+}
+
+- (void)groupQuitSuccessNoti:(NSNotification *)noti {
+    NSString *GId = noti.object;
+    // 删除群组下面所有文件
+    NSString *gPath = [SystemUtil getBaseFilePath:GId];
+    [SystemUtil removeDocmentFilePath:gPath];
     
+    // 删除群列表的记录
+    [ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(GId)]];
     
+    [self updateData];
 }
 
 - (void)didReceiveMemoryWarning {
