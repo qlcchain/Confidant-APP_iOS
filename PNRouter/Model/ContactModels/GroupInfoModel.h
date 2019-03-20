@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *Remark;
 @property (nonatomic, strong) NSString *UserKey;
 
+@property (nonatomic) BOOL isOwner;
+
 @end
 
 NS_ASSUME_NONNULL_END
