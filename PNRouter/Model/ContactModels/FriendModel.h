@@ -30,6 +30,6 @@
 @property (nonatomic, strong) NSString *RouteName;
 @property (nonatomic, strong) NSString *Index;
 
-+ (NSString *)getSignPublicKeyWithToxId:(NSString *)toxId;
+//+ (NSString *)getSignPublicKeyWithToxId:(NSString *)toxId;
 
 @end

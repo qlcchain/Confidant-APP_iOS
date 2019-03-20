@@ -86,7 +86,15 @@
 }
 
 - (void)refreshMemberView {
-    [_memberView updateConstraintWithPersonCount:self.persons];
+    NSMutableArray *arr = [NSMutableArray array];
+    [self.persons enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        GroupMemberShowModel *showM = [GroupMemberShowModel new];
+        showM.userKey = model.signPublicKey;
+        showM.userName = model.username;
+        [arr addObject:showM];
+    }];
+    [_memberView updateConstraintWithPersonCount:arr];
     _lblPerosnCount.text = [NSString stringWithFormat:@"%lu people",(unsigned long)self.persons.count];
 }
 

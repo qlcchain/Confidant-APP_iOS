@@ -10,6 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface GroupMemberShowModel : NSObject
+
+@property (nonatomic, strong) NSString *userKey;
+@property (nonatomic, strong) NSString *userName;
+
+@end
+
 typedef void(^GroupMemberDelBlock)(void);
 typedef void(^GroupMemberAddBlock)(void);
 
@@ -33,13 +40,15 @@ typedef void(^GroupMemberAddBlock)(void);
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contranitWith3;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contraintWidth4;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contarintWidth5;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contraintWidthSub;
 
 @property (nonatomic, copy) GroupMemberDelBlock delB;
 @property (nonatomic, copy) GroupMemberAddBlock addB;
 
 + (instancetype)getInstance;
-- (void) updateConstraintWithPersonCount:(NSArray *) persons;
+- (void) updateConstraintWithPersonCount:(NSArray<GroupMemberShowModel *> *)arr;
+- (void)showDelBtn:(BOOL)show;
 
 @end
 

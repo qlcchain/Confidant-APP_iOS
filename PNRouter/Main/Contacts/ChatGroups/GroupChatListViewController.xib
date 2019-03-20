@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GroupChatsViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GroupChatListViewController">
             <connections>
                 <outlet property="mainTab" destination="WC3-Tw-XxQ" id="TIZ-G8-uKC"/>
                 <outlet property="searchBackView" destination="QBY-0u-u6p" id="f06-zF-BB0"/>
@@ -49,7 +49,7 @@
                                 <constraint firstAttribute="width" constant="46" id="6Ux-ga-E5I"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <state key="normal" title="create">
+                            <state key="normal" title="Create">
                                 <color key="titleColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                             </state>
                             <connections>

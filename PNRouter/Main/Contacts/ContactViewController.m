@@ -27,7 +27,7 @@
 #import "ContactShowModel.h"
 #import "ChatViewController.h"
 #import "NewRequestsViewController.h"
-#import "GroupChatsViewController.h"
+#import "GroupChatListViewController.h"
 #import "AddGroupMenuViewController.h"
 
 @interface ContactViewController ()<UITableViewDelegate,UITableViewDataSource/*,SWTableViewCellDelegate*/,UITextFieldDelegate>
@@ -187,7 +187,7 @@
         [self.navigationController pushViewController:vc animated:YES];
         
     } else { // group_chats
-        GroupChatsViewController *vc = [[GroupChatsViewController alloc] init];
+        GroupChatListViewController *vc = [[GroupChatListViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

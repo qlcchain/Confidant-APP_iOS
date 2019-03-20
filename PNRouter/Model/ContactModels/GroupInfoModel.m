@@ -11,10 +11,5 @@
 
 @implementation GroupInfoModel
 
-- (void)setGAdmin:(NSString *)GAdmin {
-    _GAdmin = GAdmin;
-    UserModel *userM = [UserModel getUserModel];
-    _isOwner = [userM.userId isEqualToString:GAdmin]?YES:NO;
-}
 
 @end

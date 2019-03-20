@@ -22,17 +22,17 @@
              };
 }
 
-+ (NSString *)getSignPublicKeyWithToxId:(NSString *)toxId {
-    __block NSString *signPublicKey = @"";
-    [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        FriendModel *model = obj;
-        if ([model.RouteId isEqualToString:toxId]) {
-            signPublicKey = model.signPublicKey;
-            *stop = YES;
-        }
-    }];
-    
-    return signPublicKey;
-}
+//+ (NSString *)getSignPublicKeyWithToxId:(NSString *)toxId {
+//    __block NSString *signPublicKey = @"";
+//    [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        FriendModel *model = obj;
+//        if ([model.RouteId isEqualToString:toxId]) {
+//            signPublicKey = model.signPublicKey;
+//            *stop = YES;
+//        }
+//    }];
+//
+//    return signPublicKey;
+//}
 
 @end

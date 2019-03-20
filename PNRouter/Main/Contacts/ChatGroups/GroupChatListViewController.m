@@ -6,7 +6,7 @@
 //  Copyright © 2019 旷自辉. All rights reserved.
 //
 
-#import "GroupChatsViewController.h"
+#import "GroupChatListViewController.h"
 #import "AddGroupMenuViewController.h"
 #import "GroupInfoModel.h"
 #import <MJRefresh/MJRefresh.h>
@@ -21,7 +21,7 @@
 #import "GroupChatViewController.h"
 #import "CreateGroupChatViewController.h"
 
-@interface GroupChatsViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface GroupChatListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     BOOL isSearch;
 }
@@ -33,7 +33,7 @@
 
 @end
 
-@implementation GroupChatsViewController
+@implementation GroupChatListViewController
 #pragma -mark Action
 - (void)dealloc
 {
@@ -71,6 +71,12 @@
         _searchDataArray = [NSMutableArray array];
     }
     return _searchDataArray;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self pullGroupList];
 }
 
 - (void)viewDidLoad {

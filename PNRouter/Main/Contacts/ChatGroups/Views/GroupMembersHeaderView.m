@@ -46,8 +46,8 @@
     NSString *showName = model.Remarks&&model.Remarks.length>0?model.Remarks:model.Nickname;
     NSString *name = [showName base64DecodedString]?:showName;
     _nameLab.text = name;
-//    NSString *userKey = model.UserKey;
-    NSString *userKey = [FriendModel getSignPublicKeyWithToxId:model.ToxId];
+    NSString *userKey = model.UserKey;
+//    NSString *userKey = [FriendModel getSignPublicKeyWithToxId:model.ToxId];
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:name]];
     _headImg.image = defaultImg;
 }
