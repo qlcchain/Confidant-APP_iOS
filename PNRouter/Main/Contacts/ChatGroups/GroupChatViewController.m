@@ -309,7 +309,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         // 自己私钥解密
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
-        NSData *msgKeyData =[[datakey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+        NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
         data = aesEncryptData(data,msgKeyData);
         
         [self sendFileWithToid:self.groupModel.GId fileName:uploadFileName fileData:data fileId:msgid fileType:2 messageId:mode.messageId srcKey:@"" dsKey:@"" publicKey:@"" msgKey:@"" fileInfo:@""];
@@ -449,7 +450,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
     // 自己私钥解密
     NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
-    NSData *msgKeyData =[[datakey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+    NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
     imgData = aesEncryptData(imgData,msgKeyData);
     
     [self sendFileWithToid:self.groupModel.GId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:@"" dsKey:@"" publicKey:@"" msgKey:@"" fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
@@ -793,7 +795,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
             // 自己私钥解密
             NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
-            NSData *msgKeyData =[[datakey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+            NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
             imgData = aesEncryptData(imgData,msgKeyData);
             
             [self sendFileWithToid:self.groupModel.GId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:@"" dsKey:@"" publicKey:@"" msgKey:@"" fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
@@ -875,7 +878,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             model.fileName = [[outputPath componentsSeparatedByString:@"/"] lastObject];
             // 自己私钥解密
             NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
-            NSData *msgKeyData =[[datakey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+            NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
             mediaData = aesEncryptData(mediaData,msgKeyData);
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -947,7 +951,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         // 自己私钥解密
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
-        NSData *msgKeyData =[[datakey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+        NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
         txtData = aesEncryptData(txtData,msgKeyData);
         
         
