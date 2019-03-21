@@ -520,6 +520,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         // 自己私钥解密
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
         // 截取前16位
+        if (!datakey || datakey.length == 0) {
+            return;
+        }
         datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
         // aes加密
         NSString *enMsg = aesEncryptString(string, datakey);
@@ -1036,11 +1039,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         // 自己私钥解密
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
-        // 截取前16位
-        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
         if (!datakey || datakey.length == 0) {
             return ;
         }
+        // 截取前16位
+        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+        
         if (model.msgType == 0) { // 文字
            model.msg = aesDecryptString(payloadModel.Msg, datakey);
         }

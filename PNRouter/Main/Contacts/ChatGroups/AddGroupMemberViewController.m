@@ -69,8 +69,8 @@
         NSInteger count = self.selectArray.count;
         // 自己私钥解密
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupInfoM.UserKey];
-        NSData *symmetData =[datakey dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *symmetKey = [symmetData base64EncodedString];
+        NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+        
         [self.selectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *model = obj;
             friendIds = [friendIds stringByAppendingString:model.userId];
