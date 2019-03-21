@@ -65,7 +65,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(friendListChangeNoti:) name:FRIEND_LIST_CHANGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendGetFriendNoti) name:FRIEND_DELETE_MY_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFriendListNoti:) name:GET_FRIEND_LIST_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:REQEUST_ADD_FRIEND_NOTI object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:REQEUST_ADD_FRIEND_NOTI object:nil];
 }
 
 - (IBAction)rightQRAction:(id)sender {
@@ -172,18 +172,14 @@
 }
 
 - (void)refreshAddContactHD {
-    _hdBackView.hidden = AppD.showNewFriendAddRequestRedDot?NO:YES;
+    _hdBackView.hidden = AppD.showNewFriendAddRequestRedDot||AppD.showNewGroupAddRequestRedDot?NO:YES;
 }
 
 #pragma mark - Action
 
 - (IBAction)addContactAction:(UIButton *)sender {
     if (sender.tag == 10) { // new request
-        if (AppD.showNewFriendAddRequestRedDot) {
-            AppD.showNewFriendAddRequestRedDot = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
-            [self refreshAddContactHD];
-        }
+        
         NewRequestsViewController *vc = [NewRequestsViewController new];
         [self.navigationController pushViewController:vc animated:YES];
         
@@ -381,19 +377,19 @@
 - (void) friendListChangeNoti:(NSNotification *)noti {
     [self sendGetFriendNoti];
 }
-// 有人请求加你为好友的红点通知
-- (void) requestAddFriendNoti:(NSNotification *) noti
-{
-    if (![[self.navigationController.viewControllers lastObject] isKindOfClass:[NewRequestsViewController class]]) {
-//        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-        [self refreshAddContactHD];
-        // 通知tabbar 红点显示通知
-    } else {
-        AppD.showNewFriendAddRequestRedDot = NO;
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
-    
-}
+
+//// 有人请求加你为好友的红点通知
+//- (void) requestAddFriendNoti:(NSNotification *) noti {
+//    if (![[self.navigationController.viewControllers lastObject] isKindOfClass:[NewRequestsViewController class]]) {
+////        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//        [self refreshAddContactHD];
+//        // 通知tabbar 红点显示通知
+//    } else {
+//        AppD.showNewFriendAddRequestRedDot = NO;
+//    }
+//    [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+//    
+//}
 
 - (void) getFriendListNoti:(NSNotification *) noti {
     

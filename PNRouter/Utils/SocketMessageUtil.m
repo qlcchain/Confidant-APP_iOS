@@ -1757,6 +1757,19 @@
         model.bg_tableName = Group_New_Requests_TABNAME;
         [model bg_saveOrUpdate];
         [[NSNotificationCenter defaultCenter] postNotificationName:GroupVerify_Push_NOTI object:model];
+        
+        // 弹出群组邀请入群审核推送
+        NSString *toName = [model.ToName base64DecodedString]?:model.ToName;
+        NSString *gName = [model.Gname base64DecodedString]?:model.Gname;
+        NSString *fromName = [model.FromName base64DecodedString]?:model.FromName;
+        NotifactionView *notiView = [NotifactionView loadNotifactionView];
+        notiView.lblTtile.text = [NSString stringWithFormat:@"\"%@\" Requested to join \"%@\" invited by \"%@\"",toName,gName,fromName];
+        [notiView show];
+        // 播放系统声音
+        [SystemUtil playSystemSound];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+        
     } else {
         if (retCode == 1) {
 //            [AppD.window showHint:@"The user does not have permission to audit."];

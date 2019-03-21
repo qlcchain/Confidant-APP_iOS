@@ -46,7 +46,7 @@
 @property (nonatomic ,assign)  NSInteger currentAddContactsRow;
 @property (nonatomic ,assign)  NSInteger currentAddContactsTag;
 @property (nonatomic) BOOL scrollIsManual; // 用户滑动
-@property (nonatomic, strong) NSNumber *currentOperateGroupID; // 审核人同意入群model_id
+@property (nonatomic, strong) GroupVerifyModel *currentOperateGroupM; // 审核人同意入群model_id
 
 @end
 
@@ -59,10 +59,11 @@
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(realFriendNoti:) name:DEAL_FRIEND_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:FRIEND_ACCEPED_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(friendAcceptedNoti:) name:FRIEND_ACCEPED_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadDownloadSuccess:) name:USER_HEAD_DOWN_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupVerifyPushNoti:) name:GroupVerify_Push_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupVerifySuccessNoti:) name:GroupVerify_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:REQEUST_ADD_FRIEND_NOTI object:nil];
     
 }
 
@@ -93,6 +94,7 @@
     _addContactsBtn.selected = YES;
     _groupChatsBtn.selected = NO;
     [self handleAddContactAllRead];
+    
 }
 
 - (void)menuSelectOperation:(UIButton *)sender {
@@ -161,6 +163,10 @@
         }
     }];
     [self hideUnreadWithBtn:_addContactsBtn];
+    if (AppD.showNewFriendAddRequestRedDot) {
+        AppD.showNewFriendAddRequestRedDot = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+    }
 }
 
 - (void)handleGroupChatsAllRead {
@@ -172,6 +178,10 @@
         }
     }];
     [self hideUnreadWithBtn:_groupChatsBtn];
+    if (AppD.showNewGroupAddRequestRedDot) {
+        AppD.showNewGroupAddRequestRedDot = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+    }
 }
 
 #pragma mark - Request
@@ -303,6 +313,7 @@
         NewRequestsGroupChatsCell1 *cell = [tableView dequeueReusableCellWithIdentifier:NewRequestsGroupChatsCell1Reuse];
         
         GroupVerifyModel *model = self.groupChatsSource[indexPath.row];
+        cell.currentRow = indexPath.row;
         [cell configCellWithModel:model];
         @weakify_self
         cell.acceptB = ^(NSInteger currentRow) {
@@ -333,8 +344,7 @@
 }
 
 - (void)groupAcceptAction:(GroupVerifyModel *)model {
-    _currentOperateGroupID = model.bg_id;
-    
+    _currentOperateGroupM = model;
     [SendRequestUtil sendGroupVerifyWithFrom:model.From?:@"" To:model.To?:@"" Aduit:model.Aduit?:@"" GId:model.GId?:@"" GName:model.Gname?:@"" Result:@(0) UserKey:model.UserGroupKey?:@"" showHud:YES]; // 0：允许  1：拒绝入群
 }
 
@@ -357,7 +367,7 @@
     }
 }
 
-- (void) requestAddFriendNoti:(NSNotification *) noti {
+- (void) friendAcceptedNoti:(NSNotification *) noti {
     NSString *userId = noti.object;
     [self.addContactsSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *moodel = obj;
@@ -384,13 +394,18 @@
     @weakify_self
     [self.groupChatsSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         GroupVerifyModel *model = obj;
-        if ([weakSelf.currentOperateGroupID integerValue] == [model.bg_id integerValue]) {
+        if ([model.From isEqualToString:weakSelf.currentOperateGroupM.From] && [model.To isEqualToString:weakSelf.currentOperateGroupM.To] && [model.Aduit isEqualToString:weakSelf.currentOperateGroupM.Aduit] && [model.GId isEqualToString:weakSelf.currentOperateGroupM.GId]) {
             model.status = 1; // 已同意
             [model bg_saveOrUpdate];
             *stop = YES;
         }
     }];
     [self.groupChatsTable reloadData];
+}
+
+// 加好友通知
+- (void)requestAddFriendNoti:(NSNotification *)noti {
+    [self checkDataOfAddContacts];
 }
 
 #pragma -mark layz
