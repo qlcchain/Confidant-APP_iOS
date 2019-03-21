@@ -88,6 +88,7 @@
         } else {
             FriendModel *model = [[FriendModel alloc] init];
             model.bg_tableName = FRIEND_REQUEST_TABNAME;
+            model.isUnRead = YES;
             model.requestTime = [NSDate date];
             model.owerId = [UserConfig getShareObject].userId;
             model.userId = self.userId;

@@ -256,12 +256,12 @@
         if (showModel.isSelect) {
             [array addObject:[weakSelf getFriendModelWithContactShowModel:showModel contactRouterModel:showModel.routerArr.firstObject]];
         }
-        [showModel.routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ChooseContactRouterModel *routerModel = obj;
-            if (routerModel.isSelect) {
-                [array addObject:[weakSelf getFriendModelWithContactShowModel:showModel contactRouterModel:routerModel]];
-            }
-        }];
+//        [showModel.routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            ChooseContactRouterModel *routerModel = obj;
+//            if (routerModel.isSelect) {
+//                [array addObject:[weakSelf getFriendModelWithContactShowModel:showModel contactRouterModel:routerModel]];
+//            }
+//        }];
     }];
     return array;
 }

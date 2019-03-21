@@ -43,6 +43,7 @@
 #import "GroupInfoModel.h"
 #import "GroupMembersModel.h"
 #import "NSString+HexStr.h"
+#import "GroupVerifyModel.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -482,6 +483,10 @@
         [SocketMessageUtil handleGroupDelMsg:receiveDic];
     } else if ([action isEqualToString:Action_GroupQuit]) { // 68.    用户退群
         [SocketMessageUtil handleGroupQuit:receiveDic];
+    } else if ([action isEqualToString:Action_GroupVerifyPush]) { // 65.    邀请用户入群审核推送
+        [SocketMessageUtil handleGroupVerifyPush:receiveDic];
+    } else if ([action isEqualToString:Action_GroupVerify]) { // 66.    邀请用户入群审核处理
+        [SocketMessageUtil handleGroupVerify:receiveDic];
     }
 }
 
@@ -724,6 +729,7 @@
     model.signPublicKey= receiveDic[@"params"][@"UserKey"];
     model.msg= receiveDic[@"params"][@"Msg"];
     model.requestTime = [NSDate date];
+    model.isUnRead = YES;
     model.bg_createTime = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"timestamp"]];
     model.owerId = [UserConfig getShareObject].userId;
     model.bg_tableName = FRIEND_REQUEST_TABNAME;
@@ -748,7 +754,7 @@
             [notiView show];
             // 播放系统声音
             [SystemUtil playSystemSound];
-            AppD.showHD = YES;
+            AppD.showNewFriendAddRequestRedDot = YES;
             [model bg_saveOrUpdate];
             [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:REQEUST_ADD_FRIEND_NOTI object:nil];
@@ -764,7 +770,7 @@
             [notiView show];
             // 播放系统声音
             [SystemUtil playSystemSound];
-            AppD.showHD = YES;
+            AppD.showNewFriendAddRequestRedDot = YES;
             [model1 bg_saveOrUpdate];
             [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:REQEUST_ADD_FRIEND_NOTI object:nil];
@@ -1732,13 +1738,72 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GroupQuit_SUCCESS_NOTI object:receiveDic[@"params"][@"GId"]];
+        NSString *GId = receiveDic[@"params"][@"GId"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupQuit_SUCCESS_NOTI object:GId];
     } else {
         if (retCode == 1) {
             [AppD.window showHint:@"Refund group fail."];
         }
     }
 }
+
+#pragma mark - 65.    邀请用户入群审核推送
++ (void)handleGroupVerifyPush:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSString *Aduit = receiveDic[@"params"][@"Aduit"]; // 审核人
+    // 回复router
+    UserModel *userM = [UserModel getUserModel];
+    NSInteger retCode = [userM.userId isEqualToString:Aduit]?0:1; // 0：成功   1：用户没有审核权限
+    NSDictionary *params = @{@"Action":Action_GroupVerifyPush,@"Retcode":@(retCode),@"ToId":userM.userId?:@"",@"Msg":@""};
+    NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
+    [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
+    
+    if (retCode == 0) {
+        GroupVerifyModel *model = [GroupVerifyModel getObjectWithKeyValues:receiveDic[@"params"]];
+        model.requestTime = [NSDate date];
+        model.isUnRead = YES;
+        AppD.showNewGroupAddRequestRedDot = YES;
+        model.status = 0; // 新的邀请需要审核人同意
+        model.userId = [UserModel getUserModel].userId;
+        model.bg_tableName = Group_New_Requests_TABNAME;
+        [model bg_saveOrUpdate];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupVerify_Push_NOTI object:model];
+        
+        // 弹出群组邀请入群审核推送
+        NSString *toName = [model.ToName base64DecodedString]?:model.ToName;
+        NSString *gName = [model.Gname base64DecodedString]?:model.Gname;
+        NSString *fromName = [model.FromName base64DecodedString]?:model.FromName;
+        NotifactionView *notiView = [NotifactionView loadNotifactionView];
+        notiView.lblTtile.text = [NSString stringWithFormat:@"\"%@\" Requested to join \"%@\" invited by \"%@\"",toName,gName,fromName];
+        [notiView show];
+        // 播放系统声音
+        [SystemUtil playSystemSound];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+        
+    } else {
+        if (retCode == 1) {
+//            [AppD.window showHint:@"The user does not have permission to audit."];
+        }
+    }
+}
+
+#pragma mark - 66.    邀请用户入群审核处理
++ (void)handleGroupVerify:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        NSString *GId = receiveDic[@"params"][@"GId"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupVerify_SUCCESS_NOTI object:GId];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"The user does not have permission to audit."];
+        }
+    }
+}
+
+
 
 
 #pragma mark - Base

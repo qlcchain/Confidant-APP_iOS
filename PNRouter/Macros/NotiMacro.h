@@ -172,6 +172,10 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 // 群组文件发送成功或失败通知
 #define GROUP_FILE_SEND_FAIELD_NOTI @"GROUP_FILE_SEND_FAIELD_NOTI"
 #define GROUP_FILE_SEND_SUCCESS_NOTI @"GROUP_FILE_SEND_SUCCESS_NOTI"
+// 65.    邀请用户入群审核推送通知
+#define GroupVerify_Push_NOTI @"GroupVerify_Push_NOTI"
+// 66.    邀请用户入群审核处理----成功通知
+#define GroupVerify_SUCCESS_NOTI @"GroupVerify_SUCCESS_NOTI"
 
 
 

@@ -395,4 +395,15 @@
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 
+#pragma mark - 66.    邀请用户入群审核处理
++ (void)sendGroupVerifyWithFrom:(NSString *)From To:(NSString *)To Aduit:(NSString *)Aduit GId:(NSString *)GId GName:(nullable NSString *)GName Result:(NSNumber *)Result UserKey:(nullable NSString *)UserKey showHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_GroupVerify,@"From":From,@"To":To,@"Aduit":Aduit,@"GId":GId,@"GName":GName?:@"",@"Result":Result,@"UserKey":UserKey};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+
+
+
 @end

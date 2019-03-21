@@ -33,6 +33,7 @@
 
 @property (nonatomic) BOOL isSearch;
 @property (nonatomic) RemoveGroupMemberType removeType;
+@property (nonatomic) NSInteger removeSuccessCount;
 
 @end
 
@@ -57,16 +58,23 @@
     [self.isSelectArray addObjectsFromArray:[self getIsSelectRouter]];
     
     if (_removeType == RemoveGroupMemberTypeInGroupDetail) {
-        __block NSString *toId = @"";
-        NSInteger count = self.isSelectArray.count;
+//        __block NSString *toId = @"";
+//        NSInteger count = self.isSelectArray.count;
+//        [self.isSelectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            FriendModel *model = obj;
+//            toId = [toId stringByAppendingString:model.userId];
+//            if (idx < count - 1) {
+//                toId = [toId stringByAppendingString:@","];
+//            }
+//        }];
+//        [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@(3) ToId:toId Name:nil NeedVerify:nil showHud:YES];
+        @weakify_self
+        _removeSuccessCount = 0;
         [self.isSelectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *model = obj;
-            toId = [toId stringByAppendingString:model.userId];
-            if (idx < count - 1) {
-                toId = [toId stringByAppendingString:@","];
-            }
+            NSString *toId = model.userId;
+            [SendRequestUtil sendGroupConfigWithGId:weakSelf.groupInfoM.GId Type:@(3) ToId:toId Name:nil NeedVerify:nil showHud:YES];
         }];
-        [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@(3) ToId:toId Name:nil NeedVerify:nil showHud:YES];
     } else {
         if (_removeType == RemoveGroupMemberTypeInCreate) {
             if (_removeCompleteB) {
@@ -338,6 +346,14 @@
         ChooseContactShowModel *tempM = arr[headerSection];
         tempM.isSelect = !tempM.isSelect;
         
+        // 暂时只支持删除一个
+        NSArray *selectArr = [weakSelf getIsSelectRouter];
+        if (selectArr.count > 1) {
+            tempM.isSelect = !tempM.isSelect;
+            [AppD.window showHint:@"Delete only one User is supported for now"];
+            return;
+        }
+        
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
         [weakSelf refreshSelectLab];
     };
@@ -404,6 +420,10 @@
 
 #pragma mark - Noti
 - (void)removeGroupMemberSuccessNoti:(NSNotification *)noti {
+    _removeSuccessCount = _removeSuccessCount + 1;
+    if (_removeSuccessCount < self.isSelectArray.count) {
+        return;
+    }
     if (_removeCompleteB) {
         _removeCompleteB(self.isSelectArray);
     }

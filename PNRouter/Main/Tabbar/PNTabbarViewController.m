@@ -297,7 +297,7 @@
 - (void) contactHDShow
 {
     UITabBarItem *item1 = self.tabBar.items[2];
-    if (AppD.showHD) {
+    if (AppD.showNewFriendAddRequestRedDot || AppD.showNewGroupAddRequestRedDot) {
         item1.badgeBgColor = TABBAR_RED_COLOR;
         [item1 showBadge];
     } else {

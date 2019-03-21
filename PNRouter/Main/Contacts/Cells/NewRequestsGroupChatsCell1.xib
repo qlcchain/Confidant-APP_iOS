@@ -36,19 +36,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="'Chefs Lounge at Bay Area' group " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iv9-6R-MYX">
-                                <rect key="frame" x="66" y="45" width="200.5" height="15.5"/>
+                                <rect key="frame" x="66" y="47" width="200.5" height="15.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                 <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invited by " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOR-95-zLJ">
-                                <rect key="frame" x="66" y="63.5" width="51" height="13"/>
+                                <rect key="frame" x="66" y="66.5" width="51" height="13"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                                 <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mo Chun" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bpC-ZT-lUC">
-                                <rect key="frame" x="66" y="79.5" width="53.5" height="15.5"/>
+                                <rect key="frame" x="66" y="83.5" width="53.5" height="15.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                 <color key="textColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -68,9 +68,12 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <state key="normal" title="Accept"/>
+                                <connections>
+                                    <action selector="acceptAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Cic-jb-6Yz"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Requested to join " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeN-pT-euR">
-                                <rect key="frame" x="66" y="29" width="90" height="13"/>
+                                <rect key="frame" x="66" y="30" width="90" height="13"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                                 <color key="textColor" red="0.49803921568627452" green="0.50196078431372548" blue="0.49803921568627452" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -89,14 +92,14 @@
                             <constraint firstItem="Iv9-6R-MYX" firstAttribute="leading" secondItem="NeN-pT-euR" secondAttribute="leading" id="DDG-h9-ZWY"/>
                             <constraint firstItem="NeN-pT-euR" firstAttribute="leading" secondItem="dXB-hR-Vzg" secondAttribute="leading" id="Doh-Kn-XpL"/>
                             <constraint firstItem="OuJ-7T-3id" firstAttribute="leading" secondItem="Zk4-lk-skl" secondAttribute="leading" constant="16" id="Fhq-Uu-t4V"/>
-                            <constraint firstItem="NeN-pT-euR" firstAttribute="top" secondItem="dXB-hR-Vzg" secondAttribute="bottom" constant="3" id="JJG-a5-tLy"/>
+                            <constraint firstItem="NeN-pT-euR" firstAttribute="top" secondItem="dXB-hR-Vzg" secondAttribute="bottom" constant="4" id="JJG-a5-tLy"/>
                             <constraint firstItem="uLd-Ne-swM" firstAttribute="leading" secondItem="Zk4-lk-skl" secondAttribute="leading" constant="66" id="KFz-Pr-oVm"/>
                             <constraint firstItem="wxa-ah-US3" firstAttribute="top" secondItem="2w2-08-S1h" secondAttribute="top" id="Ldw-Fy-gAm"/>
-                            <constraint firstItem="GOR-95-zLJ" firstAttribute="top" secondItem="Iv9-6R-MYX" secondAttribute="bottom" constant="3" id="MVA-wT-hWj"/>
+                            <constraint firstItem="GOR-95-zLJ" firstAttribute="top" secondItem="Iv9-6R-MYX" secondAttribute="bottom" constant="4" id="MVA-wT-hWj"/>
                             <constraint firstItem="OuJ-7T-3id" firstAttribute="top" secondItem="Zk4-lk-skl" secondAttribute="top" constant="12" id="Ss0-wJ-yUa"/>
                             <constraint firstItem="wxa-ah-US3" firstAttribute="leading" secondItem="2w2-08-S1h" secondAttribute="leading" id="Xhu-Ht-dzN"/>
-                            <constraint firstItem="Iv9-6R-MYX" firstAttribute="top" secondItem="NeN-pT-euR" secondAttribute="bottom" constant="3" id="aTs-qc-hpv"/>
-                            <constraint firstItem="bpC-ZT-lUC" firstAttribute="top" secondItem="GOR-95-zLJ" secondAttribute="bottom" constant="3" id="diz-Rf-F1o"/>
+                            <constraint firstItem="Iv9-6R-MYX" firstAttribute="top" secondItem="NeN-pT-euR" secondAttribute="bottom" constant="4" id="aTs-qc-hpv"/>
+                            <constraint firstItem="bpC-ZT-lUC" firstAttribute="top" secondItem="GOR-95-zLJ" secondAttribute="bottom" constant="4" id="diz-Rf-F1o"/>
                             <constraint firstItem="wxa-ah-US3" firstAttribute="bottom" secondItem="2w2-08-S1h" secondAttribute="bottom" id="fJp-TO-6Md"/>
                             <constraint firstItem="dXB-hR-Vzg" firstAttribute="top" secondItem="Zk4-lk-skl" secondAttribute="top" constant="7" id="fc0-QY-Uld"/>
                             <constraint firstItem="dXB-hR-Vzg" firstAttribute="leading" secondItem="OuJ-7T-3id" secondAttribute="trailing" constant="10" id="iU9-to-hKt"/>
@@ -117,6 +120,14 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="acceptBtn" destination="2w2-08-S1h" id="kZm-Kb-Nr1"/>
+                <outlet property="fromNameLab" destination="bpC-ZT-lUC" id="0DS-z7-4IO"/>
+                <outlet property="gNameLab" destination="Iv9-6R-MYX" id="Cc5-nd-kdx"/>
+                <outlet property="headImgV" destination="OuJ-7T-3id" id="dIu-LN-bgV"/>
+                <outlet property="statusLab" destination="wxa-ah-US3" id="d66-ra-vUn"/>
+                <outlet property="toNameLab" destination="dXB-hR-Vzg" id="L06-mw-M6m"/>
+            </connections>
             <point key="canvasLocation" x="137.59999999999999" y="124.13793103448276"/>
         </tableViewCell>
     </objects>
