@@ -170,8 +170,11 @@
     self.media_left.frame = bubbleRec;
     self.filedIndicator_left.center = self.bubbleImage_left.center;
     self.imageContent_left.image = data.mediaImage;
-    
-    NSString *filePath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:data.fileName];
+    NSString *friendID = data.FromId;
+    if (data.isGroup) {
+        friendID = data.ToId;
+    }
+    NSString *filePath = [[SystemUtil getBaseFilePath:friendID] stringByAppendingPathComponent:data.fileName];
 
     if ([SystemUtil filePathisExist:filePath]) {
         
@@ -278,7 +281,7 @@
         if ([SystemUtil isSocketConnect]) {
             
             SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:4 messageid:self.msgModal.messageId srcKey:(NSString *)srcKey dstKey:dsKey];
+            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:4 messageid:self.msgModal.messageId srcKey:(NSString *)srcKey dstKey:dsKey isGroup:self.msgModal.isGroup];
             [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
             
         } else {
@@ -297,7 +300,7 @@
     
     
     NSString *friendid = self.msgModal.ToId;
-    if (self.msgModal.isLeft) {
+    if (self.msgModal.isLeft && !self.msgModal.isGroup) {
         friendid = self.msgModal.FromId;
     }
     NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:self.msgModal.fileName];
@@ -313,10 +316,8 @@
         self.msgModal.msgState = CDMessageStateDownloading;
         [self.tableView updateMessage:self.msgModal];
         
-        NSString *friendid = self.msgModal.ToId;
         NSString *msgkey = self.msgModal.srckey;
         if (self.msgModal.isLeft) {
-            friendid = self.msgModal.FromId;
             msgkey = self.msgModal.dskey;
         }
         if ([SystemUtil isSocketConnect]) {
@@ -379,7 +380,7 @@
         case UIGestureRecognizerStateBegan:
         {
             NSString *friendid = self.msgModal.ToId;
-            if (self.msgModal.isLeft) {
+            if (self.msgModal.isLeft && !self.msgModal.isGroup) {
                 friendid = self.msgModal.FromId;
             }
             NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:self.msgModal.fileName];

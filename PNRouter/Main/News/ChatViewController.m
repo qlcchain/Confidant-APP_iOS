@@ -683,7 +683,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             fileNameInfo = [NSString stringWithFormat:@"%@,%@",fileNameInfo,fileInfo];
         }
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-        [dataUtil sendFileId:toId fileName:fileNameInfo fileData:fileData fileid:fileId fileType:fileType messageid:messageId srcKey:srcKey dstKey:dsKey];
+        [dataUtil sendFileId:toId fileName:fileNameInfo fileData:fileData fileid:fileId fileType:fileType messageid:messageId srcKey:srcKey dstKey:dsKey isGroup:NO];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
     } else {
         NSString *filePath = [[SystemUtil getTempBaseFilePath:toId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:fileName]];
@@ -1269,7 +1269,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.messageStatu = payloadModel.Status;
         model.publicKey = self.friendModel.publicKey;
         model.messageId = [NSString stringWithFormat:@"%@",payloadModel.MsgId];
-        model.TimeStatmp = payloadModel.TimeStatmp;
+        model.TimeStatmp = payloadModel.TimeStamp;
         model.msgType = payloadModel.MsgType;
         if (model.msgType >=1 && model.msgType !=5 && model.msgType !=4) { // 图片
             model.msgState = CDMessageStateDownloading;

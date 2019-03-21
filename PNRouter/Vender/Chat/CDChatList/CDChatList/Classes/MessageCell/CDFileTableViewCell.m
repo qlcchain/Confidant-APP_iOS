@@ -201,7 +201,7 @@
         case UIGestureRecognizerStateBegan:
         {
             NSString *friendid = self.msgModal.ToId;
-            if (self.msgModal.isLeft) {
+            if (self.msgModal.isLeft && !self.msgModal.isGroup) {
                 friendid = self.msgModal.FromId;
             }
             NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:self.msgModal.fileName];
@@ -255,7 +255,7 @@
         if ([SystemUtil isSocketConnect]) {
             
             SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:5 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey];
+            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:5 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey isGroup:NO];
             [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
             
         } else {
@@ -276,7 +276,7 @@
     
     NSString *friendid = self.msgModal.ToId;
     NSString *msgkey = self.msgModal.srckey;
-    if (self.msgModal.isLeft) {
+    if (self.msgModal.isLeft && !self.msgModal.isGroup) {
         friendid = self.msgModal.FromId;
         msgkey = self.msgModal.dskey;
     }

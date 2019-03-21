@@ -13,10 +13,12 @@
 
 @property (nonatomic ,assign) BOOL isComplete;
 @property (nonatomic ,assign) BOOL isCancel;
+@property (nonatomic ,strong) NSString *fileInfo;
 @property (nonatomic ,strong) NSString *fileid;
 @property (nonatomic ,strong) NSString *srcKey;
-
-
+@property (nonatomic ,assign) BOOL isGroup;
+@property (nonatomic ,strong) NSString *groupName;
+@property (nonatomic ,strong) NSString *groupUserKey;
 - (void) disSocketConnect;
 
 
@@ -25,5 +27,5 @@
 
 + (NSDictionary *) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData;
 
-- (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSInteger) fileid fileType:(uint32_t) fileType messageid:(NSString *) messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey;
+- (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSInteger) fileid fileType:(uint32_t) fileType messageid:(NSString *) messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey isGroup:(BOOL) isGroup;
 @end

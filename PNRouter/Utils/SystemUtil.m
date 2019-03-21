@@ -124,6 +124,7 @@
     return connectURL;
 }
 
+
 + (NSString *) getBaseFilePath:(NSString *) friendid
 {
    NSFileManager *manage = [NSFileManager defaultManager];

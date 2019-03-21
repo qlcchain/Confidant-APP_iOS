@@ -22,7 +22,7 @@
 @property (nonatomic, strong) NSString *GId;
 @property (nonatomic, strong) NSString *GroupName;
 @property (nonatomic) NSInteger MsgType;
-@property (nonatomic) NSInteger TimeStatmp;
+@property (nonatomic) NSInteger TimeStamp;
 @property (nonatomic, copy) NSString *Msg;
 @property (nonatomic, copy) NSString *FileName;
 @property (nonatomic, copy) NSString *FilePath;

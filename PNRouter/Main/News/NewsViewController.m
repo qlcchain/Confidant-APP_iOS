@@ -268,6 +268,7 @@
         
         if (chatModel.isHD) {
             chatModel.isHD = NO;
+            chatModel.unReadNum = @(0);
             [chatModel bg_saveOrUpdate];
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CHATS_HD_NOTI object:nil];
@@ -327,8 +328,12 @@
             [_tableV beginUpdates];
             isSearch? [self.searchDataArray removeObject:chatModel] : [self.dataArray removeObject:chatModel];
             // 删除本地聊天记录
-            [[ChatListDataUtil getShareObject] removeChatModelWithFriendID:chatModel.friendID?:@""];
-            //[ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(chatModel.friendID?:@"")]];
+            if (chatModel.isGroup) {
+                [[ChatListDataUtil getShareObject] removeGroupChatModelWithGID:chatModel.groupID?:@""];
+            } else {
+                [[ChatListDataUtil getShareObject] removeChatModelWithFriendID:chatModel.friendID?:@""];
+            }
+            
             [_tableV deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cell.tag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             [_tableV endUpdates];
             break;

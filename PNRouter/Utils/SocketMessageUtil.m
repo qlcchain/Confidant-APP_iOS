@@ -470,7 +470,7 @@
         [SocketMessageUtil handleGroupSendMsg:receiveDic];
     } else if ([action isEqualToString:Action_GroupMsgPull]) { // 拉取群聊消息
          [SocketMessageUtil handleGroupMsgPull:receiveDic];
-    } else if ([action isEqualToString:Action_GroupSendFilePre]){ // 发送群聊文件预处理
+    } else if ([action isEqualToString:Action_GroupSendFileDone]){ // 发送群聊文件成功
         [SocketMessageUtil handleGroupSendFilePre:receiveDic];
     } else if ([action isEqualToString:Action_GroupMsgPush]) { // 群消息推送
          [SocketMessageUtil handleGroupMsgPush:receiveDic];
@@ -1529,21 +1529,18 @@
 + (void)handleGroupSendFilePre:(NSDictionary *)receiveDic {
     
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
-    NSString *Payload = receiveDic[@"params"][@"Payload"];
-    
+    NSDictionary *resultDic = receiveDic[@"params"];
     NSString *GId = receiveDic[@"params"][@"GId"];
+    NSString *fileID = receiveDic[@"params"][@"FileId"];
     
-    
-    if (retCode == 0) { // 0：消息拉取成功
-        
+    if (retCode == 0) { // 0：文件发送成功
         
         if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:GId])) {
-            NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
-            [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:payloadArr];
+            [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_FILE_SEND_SUCCESS_NOTI object:resultDic];
         }
         
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_FILE_SEND_FAIELD_NOTI object:@[@(retCode),GId?:@"",fileID?:@""]];
     }
 }
 #pragma mark -群消息推送
@@ -1667,6 +1664,7 @@
     NSInteger MsgId = [receiveDic[@"params"][@"MsgId"] integerValue];
     NSString *Name = receiveDic[@"params"][@"Name"];
     int NeedVerify = [receiveDic[@"params"][@"NeedVerify"] intValue];
+    NSString *FromUserName = receiveDic[@"params"][@"FromUserName"];
     
     // 回复router
     NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
@@ -1683,11 +1681,24 @@
      0xF1:新用户入群
      0xF2:有用户退群
      0xF3:有用户被踢出群
+     0xF4:有用户被踢出群
 
      */
+    if (Type == 0xF3) {
+        // 自己被踢出群聊
+        if ([To isEqualToString:[UserConfig getShareObject].userId]) {
+            [AppD.window showHint:[NSString stringWithFormat:@"\"%@\" removed you from the group",FromUserName]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:GroupQuit_SUCCESS_NOTI object:GId];
+        }
+    } else if (Type == 0xF4) {
+        
+        [AppD.window showHint:[NSString stringWithFormat:@"\"%@\" dissolves \"%@\"",[FromUserName base64DecodedString],[Name base64DecodedString]]];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupQuit_SUCCESS_NOTI object:GId];
+    }
     
     if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:GId])) {
-
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_SYSMSG_SUCCESS_NOTI object:receiveDic[@"params"]];
     }
 }

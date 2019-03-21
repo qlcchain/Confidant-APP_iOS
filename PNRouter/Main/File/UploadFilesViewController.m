@@ -313,7 +313,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
                 } else {
                     fileNameInfo = fileName;
                 }
-                [dataUtil sendFileId:@"" fileName:fileNameInfo fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
+                [dataUtil sendFileId:@"" fileName:fileNameInfo fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@"" isGroup:NO];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
             } else { // tox
                BOOL isSuccess = [fileData writeToFile:fileUrl.path atomically:YES];

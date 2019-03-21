@@ -170,8 +170,11 @@
     } else if (data.msgState == CDMessageStateDownloading) {
         [self.audioTimeLabel_left setHidden: YES];
     }
-    
-    NSString *fileUrl = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:data.fileName];
+    NSString *friendID = data.FromId;
+    if (data.isGroup) {
+        friendID = data.ToId;
+    }
+    NSString *fileUrl = [[SystemUtil getBaseFilePath:friendID] stringByAppendingPathComponent:data.fileName];
     
     if ([SystemUtil filePathisExist:fileUrl])
     {
@@ -214,7 +217,11 @@
         } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
             data.isDown = NO;
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                NSString *imgPath = [[SystemUtil getBaseFilePath:data.FromId] stringByAppendingPathComponent:filePath];
+                NSString *friendID = data.FromId;
+                if (data.isGroup) {
+                    friendID = data.ToId;
+                }
+                NSString *imgPath = [[SystemUtil getBaseFilePath:friendID] stringByAppendingPathComponent:filePath];
                 if ([[MD5Util md5WithPath:imgPath] isEqualToString:[NSString getNotNullValue:data.fileMd5]]) {
                     
                     NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
@@ -416,7 +423,7 @@
         case UIGestureRecognizerStateBegan:
         {
             NSString *friendid = self.msgModal.ToId;
-            if (self.msgModal.isLeft) {
+            if (self.msgModal.isLeft && !self.msgModal.isGroup) {
                 friendid = self.msgModal.FromId;
             }
              NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:self.msgModal.fileName];
@@ -477,10 +484,9 @@
         
         if ([SystemUtil isSocketConnect]) {
             SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:2 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey];
+            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:2 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey isGroup:self.msgModal.isGroup];
             [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
         } else {
-            
             NSString *dataPath = [[SystemUtil getTempBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName]];
             
             if ([fileData writeToFile:dataPath atomically:YES]) {
@@ -495,7 +501,7 @@
     }
     
     NSString *friendid = self.msgModal.ToId;
-    if (self.msgModal.isLeft) {
+    if (self.msgModal.isLeft && !self.msgModal.isGroup) {
         friendid = self.msgModal.FromId;
     }
    NSString *jFileName = [[self.msgModal.fileName componentsSeparatedByString:@"."] firstObject];

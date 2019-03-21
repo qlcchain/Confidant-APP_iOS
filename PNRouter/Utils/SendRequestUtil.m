@@ -362,11 +362,11 @@
     NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum,@"MsgStartId":msgStartId};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
-#pragma mark ---群组发送文件预处理
-+ (void) sendGroupFilePretreatmentWithGID:(NSString *) gid fileName:(NSString *) fileName fileSize:(NSNumber *) fileSize fileType:(NSNumber *) fileType
+#pragma mark ---群组发送文件成功
++ (void) sendGroupFilePretreatmentWithGID:(NSString *) gid fileName:(NSString *) fileName fileSize:(NSNumber *) fileSize fileType:(NSNumber *) fileType fileMD5:(NSString *) fileMd5 fileInfo:(NSString *) fileInfo fileId:(NSString *) fileId
 {
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_GroupSendFilePre,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":gid,@"FileName":fileName,@"FileSize":fileSize,@"FileType":fileType};
+    NSDictionary *params = @{@"Action":Action_GroupSendFileDone,@"UserId":userM.userId?:@"",@"FileMD5":fileMd5?:@"",@"GId":gid,@"FileName":fileName,@"FileSize":fileSize,@"FileType":fileType,@"FileInfo":fileInfo,@"FileId":fileId};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark --删除群消息

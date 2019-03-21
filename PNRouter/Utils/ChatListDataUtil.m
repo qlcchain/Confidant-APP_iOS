@@ -57,6 +57,7 @@
             if (friends && friends.count > 0) {
                 ChatListModel *model1 = friends[0];
                 model1.friendName = model.friendName;
+                model1.groupName = model.groupName;
                 model1.isHD = model.isHD;
                 model1.unReadNum = model.isHD?@([model1.unReadNum integerValue] + 1):model1.unReadNum;
                 model1.isDraft = model.isDraft;
@@ -143,6 +144,12 @@
 - (void) removeChatModelWithFriendID:(NSString *) friendID
 {
     [ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(friendID?:@""),bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].userId)]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
+}
+
+- (void) removeGroupChatModelWithGID:(NSString *) gID
+{
+    [ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(gID?:@""),bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].userId)]];
     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_NOTI object:nil];
 }
 

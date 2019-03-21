@@ -53,6 +53,8 @@ struct SendFile {
     char toid[77];
     char srcKey[256];
     char dstKey[256];
+    char porperty[1];
+    char Pad[1];
     //char content[1024*1024*2];
    // char content[0];
    // char* content;
@@ -118,43 +120,7 @@ struct ResultFile {
     }
     return self;
 }
-/*#pragma mark -发送文件校验
-- (void) sendFileWithParames:(NSDictionary *) parames fileData:(NSData *)data
-{
-    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams]];
-    [muDic setObject:parames forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
-    self.fileTextConnent = text;
-    self.fileData = data;
-    @weakify_self
-    [_fileUtil setOnConnect:^{
-        NSLog(@"%@--%@",[weakSelf.fileUtil class],weakSelf.fileUtil.socket);
-        [weakSelf.fileUtil sendWithText:text];
-    }];
-    
-    [_fileUtil setOnDisconnect:^(NSError * error, NSString * url) {
-        if (weakSelf.isComplete) {
-            [[SocketManageUtil getShareObject] clearDisConnectSocket];
-        } else {
-            if (![url isEqualToString:SOCKET_FILEURL_DEFAULT]) {
-                [weakSelf.fileUtil connectWithUrl:SOCKET_FILEURL_DEFAULT];
-            } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),weakSelf.fileid?:@"",weakSelf.toid?:@"",@(weakSelf.fileType),weakSelf.messageid?:@""]];
-            }
-        }
-    }];
-    [_fileUtil setReceiveFileText:^(NSString * fileMsg) {
-        [weakSelf receiveFileText:fileMsg];
-    }];
-    [_fileUtil setReceiveFileData:^(NSData * fileData) {
-        [weakSelf receiveFileData:fileData];
-    }];
-     //如果超过10秒没收到确认消息，则文件传输失败，需要重新发起发送文件流程
-    [_fileUtil setSendFileComplete:^{
-        [weakSelf performSelector:@selector(checkFileIsComplete) withObject:weakSelf afterDelay:request_time];
-    }];
-   
-}*/
+
 #pragma mark - Router 响应APP
 - (void) receiveFileText:(NSString *) text
 {
@@ -248,7 +214,7 @@ struct ResultFile {
 //    return parames;
 //}
 
-- (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSInteger)fileid fileType:(uint32_t) fileType messageid:(NSString *)messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey
+- (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSInteger)fileid fileType:(uint32_t) fileType messageid:(NSString *)messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey isGroup:(BOOL)isGroup
 {
     
    // imgData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageHistory" ofType:@"json"]];
@@ -263,6 +229,7 @@ struct ResultFile {
     }
 
     self.srcKey = srcKey;
+    self.isGroup = isGroup;
     self.fileName = fileName;
     self.messageid = messageid;
     self.fileType = fileType;
@@ -346,7 +313,11 @@ struct ResultFile {
     if (![dstKey isEmptyString]) {
         memcpy(sendFile.dstKey, [dstKey cStringUsingEncoding:NSASCIIStringEncoding],[dstKey length]);
     }
-    
+    NSString *porpertyType = @"0";
+    if (isGroup) {
+        porpertyType = @"1";
+    }
+    memcpy(sendFile.porperty, [porpertyType cStringUsingEncoding:NSASCIIStringEncoding],[porpertyType length]);
    // printf("srckey = %s , dskey = %s",sendFile.srcKey,sendFile.dstKey);
     memcpy(sendFile.filename, [fileName cStringUsingEncoding:NSASCIIStringEncoding],[fileName length]);
     memcpy(sendFile.fromid,[[UserConfig getShareObject].userId cStringUsingEncoding:NSASCIIStringEncoding],[[UserConfig getShareObject].userId length]);
@@ -391,8 +362,13 @@ struct ResultFile {
                     }
                     
                 } else {
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
+                    if (self.isGroup) {
+
+                        [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_FILE_SEND_FAIELD_NOTI object:@[@(weakSelf.retCode),weakSelf.toid,weakSelf.messageid?:@""]];
+                    } else {
+                         [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(weakSelf.retCode),weakSelf.fileid,weakSelf.toid,@(weakSelf.fileType),weakSelf.messageid?:@""]];
+                    }
+                   
                     if (weakSelf.retCode == 5) { //对方不是好友了,删除未读消息
                          [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(weakSelf.messageid)]];
                     } else {
@@ -402,8 +378,6 @@ struct ResultFile {
                     }
                     
                 }
-                
-                
             }
         }
     }];
@@ -441,7 +415,6 @@ struct ResultFile {
                 }
                 
             } else {
-                
                 // 添加到chatlist
                 ChatListModel *chatModel = [[ChatListModel alloc] init];
                 chatModel.myID = [UserConfig getShareObject].userId;
@@ -449,6 +422,12 @@ struct ResultFile {
                 chatModel.chatTime = [NSDate date];
                 chatModel.isHD = NO;
                 NSInteger msgType = self.fileType;
+                if (self.isGroup) {
+                     chatModel.friendID = [UserConfig getShareObject].userId;
+                    chatModel.groupID = self.toid;
+                    chatModel.groupName = _groupName;
+                    chatModel.groupUserkey = _groupUserKey;
+                }
                 if (msgType == 1) {
                     chatModel.lastMessage = @"[photo]";
                 } else if (msgType == 2) {
@@ -459,8 +438,13 @@ struct ResultFile {
                     chatModel.lastMessage = @"[video]";
                 }
                 [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+                if (self.isGroup) {
+                   // 群组文件发送成功
+                    [SendRequestUtil sendGroupFilePretreatmentWithGID:self.toid fileName:self.fileName fileSize:@(self.fileData.length) fileType:@(self.fileType) fileMD5:[MD5Util md5WithData:self.fileData] fileInfo:self.fileInfo fileId:self.messageid];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
+                }
                 
-                 [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
                 
                  // 文件发送成功，删除记录
                  [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(self.messageid)]];
@@ -482,14 +466,6 @@ struct ResultFile {
             fileDataModel.fileId = [self.fileid integerValue];
             [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
             
-//            [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(self.srcKey)] complete:^(NSArray * _Nullable array) {
-//                if (array && array.count > 0) {
-//                    FileData *fileModel = array[0];
-//                    fileModel.progess = progess;
-//                    [fileModel bg_saveOrUpdateAsync:nil];
-//                    [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileModel];
-//                }
-//            }];
         }
         
       //  dispatch_async(dispatch_get_global_queue(0, 0), ^{

@@ -28,6 +28,7 @@
 + (instancetype) getShareObject;
 - (void) addFriendModel:(ChatListModel *) model;
 - (void) removeChatModelWithFriendID:(NSString *) friendID;
+- (void) removeGroupChatModelWithGID:(NSString *) gID;
 - (void) cancelChatHDWithFriendid:(NSString *) friendid;
 - (NSString *) getFriendSignPublickeyWithFriendid:(NSString *) fid;
 

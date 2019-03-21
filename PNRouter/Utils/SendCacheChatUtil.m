@@ -127,7 +127,7 @@ const NSInteger timerTime = 10;
                 [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SENDING_NOTI object:@[model.toId,@(model.msgid)]];
                 SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
-                [dataUtil sendFileId:model.toId fileName:model.fileName fileData:fileData fileid:(int)model.msgid fileType:model.msgType messageid:[NSString stringWithFormat:@"%ld",model.msgid] srcKey:model.srcKey dstKey:model.dsKey];
+                [dataUtil sendFileId:model.toId fileName:model.fileName fileData:fileData fileid:(int)model.msgid fileType:model.msgType messageid:[NSString stringWithFormat:@"%ld",model.msgid] srcKey:model.srcKey dstKey:model.dsKey isGroup:NO];
             });
         }
     });

@@ -130,7 +130,7 @@
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
         dataUtil.srcKey = srcKey;
         dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)fileId];
-        [dataUtil sendFileId:ToId fileName:_uploadFileName fileData:_uploadImgData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@""];
+        [dataUtil sendFileId:ToId fileName:_uploadFileName fileData:_uploadImgData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@"" isGroup:NO];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
     } else { // tox
         

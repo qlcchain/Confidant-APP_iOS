@@ -40,7 +40,7 @@
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
         dataUtil.srcKey = self.fileModel.srcKey;
         dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)self.fileModel.fileId];
-        [dataUtil sendFileId:@"" fileName:self.fileModel.fileName fileData:self.fileModel.fileData fileid:self.fileModel.fileId fileType:self.fileModel.fileType messageid:@"" srcKey:self.fileModel.srcKey dstKey:@""];
+        [dataUtil sendFileId:@"" fileName:self.fileModel.fileName fileData:self.fileModel.fileData fileid:self.fileModel.fileId fileType:self.fileModel.fileType messageid:@"" srcKey:self.fileModel.srcKey dstKey:@"" isGroup:NO];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
     } else { // tox
         NSString *fileMd5 = @"";
