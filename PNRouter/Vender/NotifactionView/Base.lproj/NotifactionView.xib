@@ -24,8 +24,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYc-KJ-fm9">
                     <rect key="frame" x="10" y="0.0" width="355" height="80"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXj-j4-oNl">
-                            <rect key="frame" x="12" y="31" width="38.5" height="18"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXj-j4-oNl">
+                            <rect key="frame" x="12" y="31" width="331" height="18"/>
                             <fontDescription key="fontDescription" name=".SFUIText" family=".SF UI Text" pointSize="15"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -35,7 +35,7 @@
                     <constraints>
                         <constraint firstItem="ZXj-j4-oNl" firstAttribute="centerY" secondItem="cYc-KJ-fm9" secondAttribute="centerY" id="AEG-Eg-kxZ"/>
                         <constraint firstItem="ZXj-j4-oNl" firstAttribute="leading" secondItem="cYc-KJ-fm9" secondAttribute="leading" constant="12" id="CH0-WU-Ipx"/>
-                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ZXj-j4-oNl" secondAttribute="trailing" constant="20" symbolic="YES" id="KEj-IL-kTl"/>
+                        <constraint firstAttribute="trailing" secondItem="ZXj-j4-oNl" secondAttribute="trailing" constant="12" id="KEj-IL-kTl"/>
                     </constraints>
                 </view>
             </subviews>

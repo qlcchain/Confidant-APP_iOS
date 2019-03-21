@@ -76,10 +76,17 @@
     [self dataInit];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self handleUnread];
+}
+
 #pragma mark - Operation
 - (void)dataInit {
     [self checkDataOfAddContacts];
     [self checkDataOfGroupChats];
+    
 }
 
 - (void)viewInit {
