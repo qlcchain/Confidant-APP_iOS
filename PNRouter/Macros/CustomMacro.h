@@ -23,6 +23,8 @@
 
 #define OperationRecord_Table @"OperationRecord_Table"
 #define UserHeader_Table @"UserHeader_Table"
+// 群组请求通知表
+#define Group_New_Requests_TABNAME  @"Group_New_Requests_TABNAME"
 
 // 请求超时时间
 #define REQEUST_TIME  20

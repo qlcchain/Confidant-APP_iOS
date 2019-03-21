@@ -15,7 +15,8 @@
 #import "SocketMessageUtil.h"
 #import "QRViewController.h"
 #import "FriendModel.h"
-#import "AddFriendViewController.h"
+//#import "AddFriendViewController.h"
+#import "NewRequestsViewController.h"
 #import "RSAModel.h"
 #import "ChatListDataUtil.h"
 #import "NSString+Base64.h"
@@ -171,15 +172,15 @@
 }
 
 - (void)refreshAddContactHD {
-    _hdBackView.hidden = AppD.showHD?NO:YES;
+    _hdBackView.hidden = AppD.showNewFriendAddRequestRedDot?NO:YES;
 }
 
 #pragma mark - Action
 
 - (IBAction)addContactAction:(UIButton *)sender {
     if (sender.tag == 10) { // new request
-        if (AppD.showHD) {
-            AppD.showHD = NO;
+        if (AppD.showNewFriendAddRequestRedDot) {
+            AppD.showNewFriendAddRequestRedDot = NO;
             [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
             [self refreshAddContactHD];
         }
@@ -383,12 +384,12 @@
 // 有人请求加你为好友的红点通知
 - (void) requestAddFriendNoti:(NSNotification *) noti
 {
-    if (![[self.navigationController.viewControllers lastObject] isKindOfClass:[AddFriendViewController class]]) {
+    if (![[self.navigationController.viewControllers lastObject] isKindOfClass:[NewRequestsViewController class]]) {
 //        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         [self refreshAddContactHD];
         // 通知tabbar 红点显示通知
     } else {
-        AppD.showHD = NO;
+        AppD.showNewFriendAddRequestRedDot = NO;
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
     

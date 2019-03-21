@@ -22,13 +22,14 @@
 @property (nonatomic, copy) NSString *owerId;
 @property (nonatomic, copy) NSString *msg;
 @property (nonatomic, strong) NSDate *requestTime;
-@property (nonatomic , assign) NSInteger dealStaus;
+@property (nonatomic , assign) NSInteger dealStaus; // 0:同意  1：已同意  2：过期  3：等待
 @property (nonatomic , assign) NSInteger onLineStatu;
 @property (nonatomic ,assign) BOOL isSelect;
 
 @property (nonatomic, strong) NSString *RouteId;
 @property (nonatomic, strong) NSString *RouteName;
 @property (nonatomic, strong) NSString *Index;
+@property (nonatomic) BOOL isUnRead;
 
 //+ (NSString *)getSignPublicKeyWithToxId:(NSString *)toxId;
 

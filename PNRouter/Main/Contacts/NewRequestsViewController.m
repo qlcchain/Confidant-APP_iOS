@@ -18,6 +18,10 @@
 #import <WZLBadge/WZLBadgeImport.h>
 #import "NewRequestsGroupChatsCell1.h"
 #import "NewRequestsGroupChatsCell2.h"
+#import "GroupVerifyModel.h"
+#import "LibsodiumUtil.h"
+#import "NSData+Base64.h"
+#import "NSString+Base64.h"
 
 //typedef enum : NSUInteger {
 //    NewRequestsTypeAddContacts,
@@ -39,9 +43,10 @@
 @property (nonatomic ,strong) NSMutableArray *addContactsSource;
 @property (nonatomic ,strong) NSMutableArray *groupChatsSource;
 
-@property (nonatomic ,assign)  NSInteger currentRow;
-@property (nonatomic ,assign)  NSInteger currentTag;
-@property (nonatomic) BOOL scrollIsManual;
+@property (nonatomic ,assign)  NSInteger currentAddContactsRow;
+@property (nonatomic ,assign)  NSInteger currentAddContactsTag;
+@property (nonatomic) BOOL scrollIsManual; // 用户滑动
+@property (nonatomic, strong) NSNumber *currentOperateGroupID; // 审核人同意入群model_id
 
 @end
 
@@ -56,6 +61,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(realFriendNoti:) name:DEAL_FRIEND_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:FRIEND_ACCEPED_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadDownloadSuccess:) name:USER_HEAD_DOWN_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupVerifyPushNoti:) name:GroupVerify_Push_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupVerifySuccessNoti:) name:GroupVerify_SUCCESS_NOTI object:nil];
+    
 }
 
 - (void)viewDidLoad {
@@ -70,6 +78,7 @@
 #pragma mark - Operation
 - (void)dataInit {
     [self checkDataOfAddContacts];
+    [self checkDataOfGroupChats];
 }
 
 - (void)viewInit {
@@ -83,13 +92,13 @@
     
     _addContactsBtn.selected = YES;
     _groupChatsBtn.selected = NO;
+    [self handleAddContactAllRead];
 }
 
 - (void)menuSelectOperation:(UIButton *)sender {
     if (sender.selected) {
         return;
     }
-//    [self showUnreadWithBtn:sender];
     _scrollIsManual = YES;
     _addContactsBtn.selected = _addContactsBtn==sender?YES:NO;
     _groupChatsBtn.selected = _groupChatsBtn==sender?YES:NO;
@@ -113,6 +122,58 @@
     [sender clearBadge];
 }
 
+- (void)handleUnread {
+    __block BOOL addContactsUnread = NO;
+    [self.addContactsSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if (model.isUnRead) {
+            addContactsUnread = YES;
+            *stop = YES;
+        }
+    }];
+    if (addContactsUnread) {
+        [self showUnreadWithBtn:_addContactsBtn];
+    } else {
+        [self hideUnreadWithBtn:_addContactsBtn];
+    }
+    
+    __block BOOL groupChatsUnread = NO;
+    [self.groupChatsSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        GroupVerifyModel *model = obj;
+        if (model.isUnRead) {
+            groupChatsUnread = YES;
+            *stop = YES;
+        }
+    }];
+    if (groupChatsUnread) {
+        [self showUnreadWithBtn:_groupChatsBtn];
+    } else {
+        [self hideUnreadWithBtn:_groupChatsBtn];
+    }
+}
+
+- (void)handleAddContactAllRead {
+    [self.addContactsSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if (model.isUnRead) {
+            model.isUnRead = YES;
+            [model bg_saveOrUpdate];
+        }
+    }];
+    [self hideUnreadWithBtn:_addContactsBtn];
+}
+
+- (void)handleGroupChatsAllRead {
+    [self.groupChatsSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        GroupVerifyModel *model = obj;
+        if (model.isUnRead) {
+            model.isUnRead = YES;
+            [model bg_saveOrUpdate];
+        }
+    }];
+    [self hideUnreadWithBtn:_groupChatsBtn];
+}
+
 #pragma mark - Request
 #pragma mark -查询好友请求数据库
 - (void)checkDataOfAddContacts {
@@ -126,6 +187,17 @@
     [_addContactsTable reloadData];
 }
 
+- (void)checkDataOfGroupChats {
+    if (self.groupChatsSource.count > 0) {
+        [self.groupChatsSource removeAllObjects];
+    }
+    NSArray *finfAlls = [GroupVerifyModel bg_find:Group_New_Requests_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId)]];
+    if (finfAlls && finfAlls.count > 0) {
+        [self.groupChatsSource addObjectsFromArray:finfAlls];
+    }
+    [_groupChatsTable reloadData];
+}
+
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
@@ -136,7 +208,13 @@
     @weakify_self
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *alertDelete = [UIAlertAction actionWithTitle:@"Delete All" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        if (weakSelf.addContactsBtn.selected) {
+            [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
+            [weakSelf checkDataOfAddContacts];
+        } else if (weakSelf.groupChatsBtn.selected) {
+            [GroupVerifyModel bg_drop:Group_New_Requests_TABNAME];
+            [weakSelf checkDataOfGroupChats];
+        }
     }];
     [alertC addAction:alertDelete];
     UIAlertAction *alertCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -146,10 +224,12 @@
 }
 
 - (IBAction)addContactsAction:(id)sender {
+    [self handleAddContactAllRead];
     [self menuSelectOperation:_addContactsBtn];
 }
 
 - (IBAction)groupChatsAction:(id)sender {
+    [self handleGroupChatsAllRead];
     [self menuSelectOperation:_groupChatsBtn];
 }
 
@@ -200,7 +280,7 @@
     if (tableView == _addContactsTable) {
         return AddFriendCellHeight;
     } else if (tableView == _groupChatsTable) {
-        return AddFriendCellHeight;
+        return NewRequestsGroupChatsCell1Height;
     }
     return 0;
 }
@@ -222,16 +302,18 @@
     } else if (tableView == _groupChatsTable) {
         NewRequestsGroupChatsCell1 *cell = [tableView dequeueReusableCellWithIdentifier:NewRequestsGroupChatsCell1Reuse];
         
+        GroupVerifyModel *model = self.groupChatsSource[indexPath.row];
+        [cell configCellWithModel:model];
+        @weakify_self
+        cell.acceptB = ^(NSInteger currentRow) {
+            GroupVerifyModel *tempM = weakSelf.groupChatsSource[currentRow];
+            [weakSelf groupAcceptAction:tempM];
+        };
+        
         return cell;
     }
     
     return [UITableViewCell new];
-}
-
-- (void) sendAgreeFriendWithRow:(NSInteger) row {
-    self.currentRow = row;
-    FriendModel *models = self.addContactsSource[row];
-    [SocketMessageUtil sendAgreedOrRefusedWithFriendMode:models withType:[NSString stringWithFormat:@"%d",0]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -244,17 +326,29 @@
     }
 }
 
+- (void) sendAgreeFriendWithRow:(NSInteger) row {
+    self.currentAddContactsRow = row;
+    FriendModel *models = self.addContactsSource[row];
+    [SocketMessageUtil sendAgreedOrRefusedWithFriendMode:models withType:[NSString stringWithFormat:@"%d",0]];
+}
+
+- (void)groupAcceptAction:(GroupVerifyModel *)model {
+    _currentOperateGroupID = model.bg_id;
+    
+    [SendRequestUtil sendGroupVerifyWithFrom:model.From?:@"" To:model.To?:@"" Aduit:model.Aduit?:@"" GId:model.GId?:@"" GName:model.Gname?:@"" Result:@(0) UserKey:model.UserGroupKey?:@"" showHud:YES]; // 0：允许  1：拒绝入群
+}
+
 #pragma mark - NOTI
 - (void) realFriendNoti:(NSNotification *) noti {
     [self.view hideHud];
     NSString *statu = (NSString *)noti.object;
-    FriendModel *friendModel = (FriendModel *)self.addContactsSource[self.currentRow];
+    FriendModel *friendModel = (FriendModel *)self.addContactsSource[self.currentAddContactsRow];
     if ([statu isEqualToString:@"0"]) { // 服务器处理失败
         [AppD.window showHint:@"处理失败"];
     } else {
         friendModel.dealStaus = 1;
-        [_addContactsTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-        if (_currentTag == 1) { // 同意
+        [_addContactsTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentAddContactsRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        if (_currentAddContactsTag == 1) { // 同意
             [[NSNotificationCenter defaultCenter] postNotificationName:FRIEND_LIST_CHANGE_NOTI object:nil];
         } else { // 拒绝
             
@@ -278,6 +372,25 @@
 - (void)userHeadDownloadSuccess:(NSNotification *)noti {
 //    UserHeaderModel *model = noti.object;
     [_addContactsTable reloadData];
+}
+
+// 添加群组审核
+- (void)groupVerifyPushNoti:(NSNotification *)noti {
+    [self checkDataOfGroupChats];
+}
+
+// 群组审核同意成功
+- (void)groupVerifySuccessNoti:(NSNotification *)noti {
+    @weakify_self
+    [self.groupChatsSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        GroupVerifyModel *model = obj;
+        if ([weakSelf.currentOperateGroupID integerValue] == [model.bg_id integerValue]) {
+            model.status = 1; // 已同意
+            [model bg_saveOrUpdate];
+            *stop = YES;
+        }
+    }];
+    [self.groupChatsTable reloadData];
 }
 
 #pragma -mark layz

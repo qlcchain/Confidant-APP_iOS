@@ -20,7 +20,7 @@
 #import "AddGroupMemberViewController.h"
 #import "ChatListDataUtil.h"
 #import "RoutherConfig.h"
-
+#import "UserModel.h"
 
 @interface CreateGroupChatViewController ()<UITextFieldDelegate>
 {
@@ -61,6 +61,8 @@
     _createBtn.layer.cornerRadius = 4.0f;
     _createBtn.layer.masksToBounds = YES;
     _nameTF.delegate = self;
+    
+    isInvacation = YES;
 
     [self addNoti];
     
@@ -168,7 +170,15 @@
 
 #pragma mark - Transition
 - (void)jumpToRemoveGroupMember {
-    RemoveGroupMemberViewController *vc = [[RemoveGroupMemberViewController alloc] initWithMemberArr:self.persons type:RemoveGroupMemberTypeInCreate];
+    UserModel *userM = [UserModel getUserModel];
+    NSMutableArray *tempArr = [NSMutableArray array];
+    [self.persons enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if (![model.userId isEqualToString:userM.userId]) { // 不是自己
+            [tempArr addObject:model];
+        }
+    }];
+    RemoveGroupMemberViewController *vc = [[RemoveGroupMemberViewController alloc] initWithMemberArr:tempArr type:RemoveGroupMemberTypeInCreate];
     @weakify_self
     vc.removeCompleteB = ^(NSArray *memberArr) {
         [weakSelf.persons removeAllObjects];

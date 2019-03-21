@@ -10,10 +10,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class GroupVerifyModel;
+
 static NSString *NewRequestsGroupChatsCell1Reuse = @"NewRequestsGroupChatsCell1";
 #define NewRequestsGroupChatsCell1Height 110
 
+typedef void(^GroupChatsRequestAcceptBlock)(NSInteger currentRow);
+
 @interface NewRequestsGroupChatsCell1 : UITableViewCell
+
+@property (weak, nonatomic) IBOutlet UIImageView *headImgV;
+@property (weak, nonatomic) IBOutlet UILabel *toNameLab;
+@property (weak, nonatomic) IBOutlet UILabel *fromNameLab;
+@property (weak, nonatomic) IBOutlet UILabel *gNameLab;
+@property (weak, nonatomic) IBOutlet UIButton *acceptBtn;
+@property (weak, nonatomic) IBOutlet UILabel *statusLab;
+
+@property (nonatomic) NSInteger currentRow;
+@property (nonatomic, copy) GroupChatsRequestAcceptBlock acceptB;
+
+- (void)configCellWithModel:(GroupVerifyModel *)model;
 
 @end
 

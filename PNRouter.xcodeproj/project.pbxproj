@@ -220,6 +220,7 @@
 		58C62704214BA7170051AFD0 /* MessageListUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C62703214BA7170051AFD0 /* MessageListUtil.m */; };
 		58C62707214BC81E0051AFD0 /* PayloadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C62706214BC81E0051AFD0 /* PayloadModel.m */; };
 		58E3A5762242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E3A5752242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m */; };
+		58E3A5792243366E00F9D9E7 /* GroupVerifyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E3A5782243366E00F9D9E7 /* GroupVerifyModel.m */; };
 		58F1789B221FDFEC001CD0AF /* ChooseContactShowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */; };
 		58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */; };
 		58F178A0221FF333001CD0AF /* ChooseContactHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F1789D221FF333001CD0AF /* ChooseContactHeaderView.m */; };
@@ -969,6 +970,8 @@
 		58C62706214BC81E0051AFD0 /* PayloadModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PayloadModel.m; sourceTree = "<group>"; };
 		58E3A5742242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpdateGroupMemberAvatarUtil.h; sourceTree = "<group>"; };
 		58E3A5752242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpdateGroupMemberAvatarUtil.m; sourceTree = "<group>"; };
+		58E3A5772243366E00F9D9E7 /* GroupVerifyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupVerifyModel.h; sourceTree = "<group>"; };
+		58E3A5782243366E00F9D9E7 /* GroupVerifyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupVerifyModel.m; sourceTree = "<group>"; };
 		58F17899221FDFEC001CD0AF /* ChooseContactShowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactShowModel.h; sourceTree = "<group>"; };
 		58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactShowModel.m; sourceTree = "<group>"; };
 		58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseContactHeaderView.xib; sourceTree = "<group>"; };
@@ -2910,6 +2913,8 @@
 				73F55A0B223F3F69003155D2 /* GroupInfoModel.m */,
 				5868380A22409E8700B8ACB8 /* GroupMembersModel.h */,
 				5868380B22409E8700B8ACB8 /* GroupMembersModel.m */,
+				58E3A5772243366E00F9D9E7 /* GroupVerifyModel.h */,
+				58E3A5782243366E00F9D9E7 /* GroupVerifyModel.m */,
 			);
 			path = ContactModels;
 			sourceTree = "<group>";
@@ -3931,6 +3936,7 @@
 				7378840821ACF2970033A189 /* OCTObject.m in Sources */,
 				5825A24721FB0B8E00E6194B /* FileListModel.m in Sources */,
 				73060558217719A5005A0E13 /* VPNFileInputView.m in Sources */,
+				58E3A5792243366E00F9D9E7 /* GroupVerifyModel.m in Sources */,
 				7360B85521FC632A008FB181 /* FileDownUtil.m in Sources */,
 				736257AB2142149300D7FD6B /* UIView+HUD.m in Sources */,
 				584B439E21FEFF1A00D1F21A /* ConfigDiskViewController.m in Sources */,

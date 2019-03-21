@@ -18,6 +18,7 @@
 #import "ChatListDataUtil.h"
 #import "RoutherConfig.h"
 #import "FriendModel.h"
+#import "UserModel.h"
 
 @interface GroupDetailsViewController ()
 
@@ -194,15 +195,19 @@
 }
 
 - (void)jumpToRemoveGroupMember {
+    UserModel *userM = [UserModel getUserModel];
     NSMutableArray *inputMemberArr = [NSMutableArray array];
     [self.membersArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         GroupMembersModel *groupMembersM = obj;
         FriendModel *friendM = [FriendModel new];
-        friendM.userId = [NSString stringWithFormat:@"%@",groupMembersM.Id];
-        friendM.RouteId = groupMembersM.ToxId;
+//        friendM.userId = [NSString stringWithFormat:@"%@",groupMembersM.Id];
+//        friendM.RouteId = groupMembersM.ToxId;
+        friendM.userId = groupMembersM.ToxId;
         friendM.username = groupMembersM.Nickname;
         friendM.signPublicKey = groupMembersM.UserKey;
-        [inputMemberArr addObject:friendM];
+        if (![friendM.userId isEqualToString:userM.userId]) { // 不是自己
+            [inputMemberArr addObject:friendM];
+        }
     }];
     RemoveGroupMemberViewController *vc = [[RemoveGroupMemberViewController alloc] initWithMemberArr:inputMemberArr type:RemoveGroupMemberTypeInGroupDetail];
     vc.groupInfoM = _groupModel;
