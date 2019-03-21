@@ -66,6 +66,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendGetFriendNoti) name:FRIEND_DELETE_MY_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFriendListNoti:) name:GET_FRIEND_LIST_NOTI object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:REQEUST_ADD_FRIEND_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactHDShow:) name:TABBAR_CONTACT_HD_NOTI object:nil];
 }
 
 - (IBAction)rightQRAction:(id)sender {
@@ -172,7 +173,11 @@
 }
 
 - (void)refreshAddContactHD {
-    _hdBackView.hidden = AppD.showNewFriendAddRequestRedDot||AppD.showNewGroupAddRequestRedDot?NO:YES;
+    if (AppD.showNewFriendAddRequestRedDot || AppD.showNewGroupAddRequestRedDot) {
+        _hdBackView.hidden = NO;
+    } else {
+        _hdBackView.hidden = YES;
+    }
 }
 
 #pragma mark - Action
@@ -442,6 +447,10 @@
 //    [_tableV reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
 }
 
+- (void)contactHDShow:(NSNotification *)noti {
+    [self refreshAddContactHD];
+}
+
 //获取其拼音
 - (NSString *)huoqushouzimuWithString:(NSString *)string{
     if (!string || [string isEmptyString]) {
@@ -544,7 +553,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-#pragma mark -UITableViewDatasource
 
 @end
