@@ -1685,7 +1685,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:Remove_Group_Member_SUCCESS_NOTI object:nil];
         } else {
             if (retCode == 1) {
-                [AppD.window showHint:@"Remove group member Failed."];
+                [AppD.window showHint:@"Remove Group Member Failed."];
             }
         }
     } else if ([Type integerValue] == [NSString numberWithHexString:@"F1"]) { // 修改群别名

@@ -85,7 +85,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [super viewDidAppear:animated];
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
     NSString *showTitle = _groupModel.Remark&&_groupModel.Remark.length>0?_groupModel.Remark:_groupModel.GName;
-    _lblNavTitle.text = [showTitle base64DecodedString];
+    _lblNavTitle.text = [showTitle base64DecodedString]?:showTitle;
     isGroupChatViewController = YES;
 }
 
