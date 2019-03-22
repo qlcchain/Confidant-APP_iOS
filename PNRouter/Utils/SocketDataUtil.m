@@ -415,29 +415,29 @@ struct ResultFile {
                 }
                 
             } else {
-                // 添加到chatlist
-                ChatListModel *chatModel = [[ChatListModel alloc] init];
-                chatModel.myID = [UserConfig getShareObject].userId;
-                chatModel.friendID = self.toid;
-                chatModel.chatTime = [NSDate date];
-                chatModel.isHD = NO;
-                NSInteger msgType = self.fileType;
-                if (self.isGroup) {
-                     chatModel.friendID = [UserConfig getShareObject].userId;
-                    chatModel.groupID = self.toid;
-                    chatModel.groupName = _groupName;
-                    chatModel.groupUserkey = _groupUserKey;
+                
+                if (!self.isGroup) {
+                    // 添加到chatlist
+                    ChatListModel *chatModel = [[ChatListModel alloc] init];
+                    chatModel.myID = [UserConfig getShareObject].userId;
+                    chatModel.friendID = self.toid;
+                    chatModel.chatTime = [NSDate date];
+                    chatModel.isHD = NO;
+                    NSInteger msgType = self.fileType;
+                    
+                    if (msgType == 1) {
+                        chatModel.lastMessage = @"[photo]";
+                    } else if (msgType == 2) {
+                        chatModel.lastMessage = @"[voice]";
+                    } else if (msgType == 5){
+                        chatModel.lastMessage = @"[file]";
+                    } else if (msgType == 4){
+                        chatModel.lastMessage = @"[video]";
+                    }
+                    [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
                 }
-                if (msgType == 1) {
-                    chatModel.lastMessage = @"[photo]";
-                } else if (msgType == 2) {
-                    chatModel.lastMessage = @"[voice]";
-                } else if (msgType == 5){
-                    chatModel.lastMessage = @"[file]";
-                } else if (msgType == 4){
-                    chatModel.lastMessage = @"[video]";
-                }
-                [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+                
+                
                 if (self.isGroup) {
                    // 群组文件发送成功
                     [SendRequestUtil sendGroupFilePretreatmentWithGID:self.toid fileName:self.fileName fileSize:@(self.fileData.length) fileType:@(self.fileType) fileMD5:[MD5Util md5WithData:self.fileData] fileInfo:self.fileInfo fileId:self.messageid];

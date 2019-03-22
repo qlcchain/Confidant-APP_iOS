@@ -1554,8 +1554,33 @@
     NSDictionary *resultDic = receiveDic[@"params"];
     NSString *GId = receiveDic[@"params"][@"GId"];
     NSString *fileID = receiveDic[@"params"][@"FileId"];
-    
+     NSString *GName = receiveDic[@"params"][@"Gname"];
+     int fileType = [receiveDic[@"params"][@"FileType"] intValue];
+     NSString *Userkey = receiveDic[@"params"][@"Userkey"];
     if (retCode == 0) { // 0：文件发送成功
+        
+        
+        // 添加到chatlist
+        ChatListModel *chatModel = [[ChatListModel alloc] init];
+        chatModel.myID = [UserConfig getShareObject].userId;
+        chatModel.chatTime = [NSDate date];
+        chatModel.isHD = NO;
+        NSInteger msgType = fileType;
+        chatModel.friendID = [UserConfig getShareObject].userId;
+        chatModel.isGroup = YES;
+        chatModel.groupID = GId;
+        chatModel.groupName = [GName base64DecodedString];
+        chatModel.groupUserkey = Userkey;
+        if (msgType == 1) {
+            chatModel.lastMessage = @"[photo]";
+        } else if (msgType == 2) {
+            chatModel.lastMessage = @"[voice]";
+        } else if (msgType == 5){
+            chatModel.lastMessage = @"[file]";
+        } else if (msgType == 4){
+            chatModel.lastMessage = @"[video]";
+        }
+        [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
         
         if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:GId])) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_FILE_SEND_SUCCESS_NOTI object:resultDic];

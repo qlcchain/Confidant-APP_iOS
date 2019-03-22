@@ -17,8 +17,7 @@
 @property (nonatomic ,strong) NSString *fileid;
 @property (nonatomic ,strong) NSString *srcKey;
 @property (nonatomic ,assign) BOOL isGroup;
-@property (nonatomic ,strong) NSString *groupName;
-@property (nonatomic ,strong) NSString *groupUserKey;
+
 - (void) disSocketConnect;
 
 

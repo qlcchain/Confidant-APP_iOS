@@ -148,7 +148,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 #pragma mark ---pull message
 - (void)pullMessageRequest {
-    NSString *MsgType = @"1"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
+    NSString *MsgType = @"0"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
     NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(_msgStartId)]; // 从这个消息号往前（不包含该消息），为0表示默认从最新的消息回溯
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
     [SendRequestUtil sendPullGroupMessageListWithGId:self.groupModel.GId MsgType:MsgType msgStartId:MsgStartId msgNum:MsgNum];
@@ -484,8 +484,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         */
         
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-        dataUtil.groupName = _lblNavTitle.text;
-        dataUtil.groupUserKey = self.groupModel.UserKey;
         dataUtil.fileInfo = fileInfo;
         [dataUtil sendFileId:toId fileName:fileName fileData:fileData fileid:fileId fileType:fileType messageid:messageId srcKey:srcKey dstKey:dsKey isGroup:YES];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
@@ -543,9 +541,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 //            chatModel.bg_tableName = CHAT_CACHE_TABNAME;
 //            [chatModel bg_save];
 //        }
-        
-       
-       
     }
 }
 #pragma mark -得到一条文字消息 并添加到listview
@@ -1166,7 +1161,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (model.msgType >=1 && model.msgType !=5 && model.msgType !=4) { // 图片
         model.msgState = CDMessageStateDownloading;
     }
-    if (payloadModel.FileName) {
+    if (payloadModel.FileName && payloadModel.FileName >0) {
         model.fileName = [Base58Util Base58DecodeWithCodeName:payloadModel.FileName];
     }
     model.fileMd5 = payloadModel.FileMD5;
