@@ -1496,6 +1496,7 @@
     NSString *ToId = receiveDic[@"params"][@"ToId"];
     NSString *UserKey = receiveDic[@"params"][@"UserKey"];
     NSString *GName = receiveDic[@"params"][@"Gname"];
+    NSString *Remark = receiveDic[@"params"][@"Gname"];
     NSString *Repeat = receiveDic[@"params"][@"Repeat"];
     NSString *sendMsgID = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
     
@@ -1508,7 +1509,8 @@
         chatListModel.isGroup = YES;
         chatListModel.friendID = [UserConfig getShareObject].userId;
         chatListModel.groupID = gId;
-        chatListModel.groupName = [GName base64DecodedString];
+        chatListModel.groupName = [GName base64DecodedString]?:GName;
+        chatListModel.groupAlias = [Remark base64DecodedString]?:Remark;
         chatListModel.groupUserkey = UserKey;
         chatListModel.chatTime = [NSDate date];
         chatListModel.isHD = NO;
@@ -1555,6 +1557,7 @@
     NSString *GId = receiveDic[@"params"][@"GId"];
     NSString *fileID = receiveDic[@"params"][@"FileId"];
      NSString *GName = receiveDic[@"params"][@"Gname"];
+    NSString *Remark = receiveDic[@"params"][@"Gname"];
      int fileType = [receiveDic[@"params"][@"FileType"] intValue];
      NSString *Userkey = receiveDic[@"params"][@"Userkey"];
     if (retCode == 0) { // 0：文件发送成功
@@ -1569,7 +1572,8 @@
         chatModel.friendID = [UserConfig getShareObject].userId;
         chatModel.isGroup = YES;
         chatModel.groupID = GId;
-        chatModel.groupName = [GName base64DecodedString];
+        chatModel.groupName = [GName base64DecodedString]?:GName;
+        chatModel.groupAlias = [Remark base64DecodedString]?:Remark;
         chatModel.groupUserkey = Userkey;
         if (msgType == 1) {
             chatModel.lastMessage = @"[photo]";
@@ -1626,7 +1630,8 @@
     chatListModel.friendID = messageModel.From;
     chatListModel.isGroup = YES;
     chatListModel.groupID = messageModel.GId;
-    chatListModel.groupName = [messageModel.GroupName base64DecodedString];
+    chatListModel.groupName = [messageModel.GroupName base64DecodedString]?:messageModel.GroupName;
+    chatListModel.groupAlias = [messageModel.GroupName base64DecodedString]?:messageModel.GroupName;
     chatListModel.friendName = [messageModel.UserName base64DecodedString];
     chatListModel.groupUserkey = messageModel.SelfKey;
     chatListModel.chatTime = [NSDate date];
@@ -1662,6 +1667,7 @@
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
+    NSString *GId = receiveDic[@"params"][@"GId"];
     NSNumber *Type = receiveDic[@"params"][@"Type"];
     if ([Type integerValue] == 1) { // 修改群名称，只有群管理员有权限
         
@@ -1684,10 +1690,10 @@
         }
     } else if ([Type integerValue] == [NSString numberWithHexString:@"F1"]) { // 修改群别名
         if (retCode == 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Alias_SUCCESS_NOTI object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Alias_SUCCESS_NOTI object:GId];
         } else {
             if (retCode == 1) {
-                [AppD.window showHint:@"Revise group alias Failed."];
+                [AppD.window showHint:@"Revise Group Alias Failed."];
             }
         }
     } else if ([Type integerValue] == [[NSString stringFromHexString:@"F2"] integerValue]) { // 修改群友别名

@@ -10,4 +10,11 @@
 
 @implementation ChatListModel
 
+- (NSString *)groupShowName {
+    if (_groupAlias && _groupAlias.length > 0) {
+        return _groupAlias;
+    }
+    return _groupName;
+}
+
 @end

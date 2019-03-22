@@ -58,50 +58,46 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark -layz
-- (UILabel *)lblTop {
-    CGFloat y = 0;
-    if (IS_iPhoneX) {
-        y = 24;
-    }
-    if (!_lblTop) {
-        _lblTop = [[UILabel alloc] initWithFrame:CGRectMake(0,y, SCREEN_WIDTH, 20)];
-        _lblTop.textColor = [UIColor whiteColor];
-        _lblTop.backgroundColor = RGB(48, 145, 242);
-        _lblTop.font = [UIFont systemFontOfSize:11];
-        _lblTop.textAlignment = NSTextAlignmentCenter;
-        _lblTop.text = @"Connecting you to the circle";
-        [AppD.window addSubview:_lblTop];
-    }
-    return _lblTop;
+- (void) addNoti
+{
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:ADD_MESSAGE_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecketFaieldNoti:) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupQuitSuccessNoti:) name:GroupQuit_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageListUpdateNoti:) name:MessageList_Update_Noti object:nil];
+    
 }
 
-- (IBAction)switchRouther:(id)sender {
-}
-
-- (IBAction)reload:(id)sender {
-    _connectBackView.hidden = YES;
-    [SocketCountUtil getShareObject].reConnectCount = 0;
-    [AppD.window showHudInView:AppD.window hint:@"connection..."];
-    NSString *connectURL = [SystemUtil connectUrl];
-    [SocketUtil.shareInstance connectWithUrl:connectURL];
-//    [UIView animateWithDuration:0.3 animations:^{
-//        self->_connectBackView.alpha = 0.0f;
-//    } completion:^(BOOL finished) {
-//
-//    }];
-}
-
-//- (IBAction)leftAction:(id)sender {
-//    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
-//    vc.inputType = DebugLogTypeTest1000;
-//    [self.navigationController pushViewController:vc animated:YES];
-//}
-
-- (IBAction)rightAction:(id)sender {
-    [self jumpToAddGroupMenu];
-//    [self jumpToAddGroupMember];
-//    [self jumpToScan];
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+     [UploadFileManager getShareObject];
+     [FileDownUtil getShareObject];
+    
+     self.view.backgroundColor = MAIN_PURPLE_COLOR;
+    _searchBackView.layer.cornerRadius = 3.0f;
+    _searchBackView.layer.masksToBounds = YES;
+    _switchRoutherBtn.layer.cornerRadius = 5.0f;
+    _reloadBtn.layer.cornerRadius = 5.0f;
+    _searchTF.delegate = self;
+    _searchTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
+    _searchTF.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [self addTargetMethod];
+    
+    [UserConfig getShareObject].userId = [UserModel getUserModel].userId;
+    [UserConfig getShareObject].userName = [UserModel getUserModel].username;
+    [UserConfig getShareObject].passWord = [UserModel getUserModel].pass;
+    
+    _tableV.delegate = self;
+    _tableV.dataSource = self;
+    _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_tableV registerNib:[UINib nibWithNibName:NewsCellResue bundle:nil] forCellReuseIdentifier:NewsCellResue];
+    
+   
+    NSLog(@"userid = %@",[UserModel getUserModel].userId);
+    [self chatMessageChangeNoti:nil];
+    [self showSocketStatu];
+    [self addNoti];
 }
 
 #pragma mark -Operation-
@@ -140,72 +136,11 @@
     [_tableV reloadData];
 }
 
-#pragma mark -layz
-- (NSMutableArray *)dataArray
-{
-    if (!_dataArray) {
-        _dataArray = [NSMutableArray array];
-    }
-    return _dataArray;
-}
-- (NSMutableArray *)searchDataArray
-{
-    if (!_searchDataArray) {
-        _searchDataArray = [NSMutableArray array];
-    }
-    return _searchDataArray;
-}
-#pragma textfeild delegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField endEditing:YES];
-    NSLog(@"textFieldShouldReturn");
-    return YES;
-}
-- (void) addNoti
-{
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:ADD_MESSAGE_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecketFaieldNoti:) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupQuitSuccessNoti:) name:GroupQuit_SUCCESS_NOTI object:nil];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-     [UploadFileManager getShareObject];
-     [FileDownUtil getShareObject];
-    
-     self.view.backgroundColor = MAIN_PURPLE_COLOR;
-    _searchBackView.layer.cornerRadius = 3.0f;
-    _searchBackView.layer.masksToBounds = YES;
-    _switchRoutherBtn.layer.cornerRadius = 5.0f;
-    _reloadBtn.layer.cornerRadius = 5.0f;
-    _searchTF.delegate = self;
-    _searchTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
-    _searchTF.clearButtonMode = UITextFieldViewModeWhileEditing;
-    [self addTargetMethod];
-    
-    [UserConfig getShareObject].userId = [UserModel getUserModel].userId;
-    [UserConfig getShareObject].userName = [UserModel getUserModel].username;
-    [UserConfig getShareObject].passWord = [UserModel getUserModel].pass;
-    
-    _tableV.delegate = self;
-    _tableV.dataSource = self;
-    _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [_tableV registerNib:[UINib nibWithNibName:NewsCellResue bundle:nil] forCellReuseIdentifier:NewsCellResue];
-    
-   
-    NSLog(@"userid = %@",[UserModel getUserModel].userId);
-    [self chatMessageChangeNoti:nil];
-    [self showSocketStatu];
-    [self addNoti];
-}
-
 #pragma mark - 直接添加监听方法
 -(void)addTargetMethod{
     [_searchTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
 }
+
 - (void) textFieldTextChange:(UITextField *) tf
 {
     if ([tf.text.trim isEmptyString]) {
@@ -225,6 +160,14 @@
     [_tableV reloadData];
 }
 
+#pragma textfeild delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField endEditing:YES];
+    NSLog(@"textFieldShouldReturn");
+    return YES;
+}
+
 - (void) showSocketStatu
 {
     if (![SystemUtil isSocketConnect]) {
@@ -235,6 +178,35 @@
             _connectBackView.hidden = YES;
         }
     }
+}
+
+#pragma mark - Action
+- (IBAction)switchRouther:(id)sender {
+}
+
+- (IBAction)reload:(id)sender {
+    _connectBackView.hidden = YES;
+    [SocketCountUtil getShareObject].reConnectCount = 0;
+    [AppD.window showHudInView:AppD.window hint:@"connection..."];
+    NSString *connectURL = [SystemUtil connectUrl];
+    [SocketUtil.shareInstance connectWithUrl:connectURL];
+    //    [UIView animateWithDuration:0.3 animations:^{
+    //        self->_connectBackView.alpha = 0.0f;
+    //    } completion:^(BOOL finished) {
+    //
+    //    }];
+}
+
+//- (IBAction)leftAction:(id)sender {
+//    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
+//    vc.inputType = DebugLogTypeTest1000;
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
+
+- (IBAction)rightAction:(id)sender {
+    [self jumpToAddGroupMenu];
+    //    [self jumpToAddGroupMember];
+    //    [self jumpToScan];
 }
 
 #pragma mark - tableviewDataSourceDelegate
@@ -276,7 +248,8 @@
         if (chatModel.isGroup) {
             GroupInfoModel *model = [[GroupInfoModel alloc] init];
             model.GId = chatModel.groupID;
-            model.GName = [chatModel.groupName base64EncodedString];
+            model.GName = [chatModel.groupName base64EncodedString]?:chatModel.groupName;
+            model.Remark = [chatModel.groupAlias base64DecodedString]?:chatModel.groupAlias;
             model.UserKey = chatModel.groupUserkey;
             
             GroupChatViewController *vc = [[GroupChatViewController alloc] initWihtGroupMode:model];
@@ -480,6 +453,44 @@
     [ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(GId)]];
     
     [self updateData];
+}
+
+- (void)messageListUpdateNoti:(NSNotification *)noti {
+    [self updateData];
+}
+
+#pragma mark - Layz
+- (UILabel *)lblTop {
+    CGFloat y = 0;
+    if (IS_iPhoneX) {
+        y = 24;
+    }
+    if (!_lblTop) {
+        _lblTop = [[UILabel alloc] initWithFrame:CGRectMake(0,y, SCREEN_WIDTH, 20)];
+        _lblTop.textColor = [UIColor whiteColor];
+        _lblTop.backgroundColor = RGB(48, 145, 242);
+        _lblTop.font = [UIFont systemFontOfSize:11];
+        _lblTop.textAlignment = NSTextAlignmentCenter;
+        _lblTop.text = @"Connecting you to the circle";
+        [AppD.window addSubview:_lblTop];
+    }
+    return _lblTop;
+}
+
+- (NSMutableArray *)dataArray
+{
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
+
+- (NSMutableArray *)searchDataArray
+{
+    if (!_searchDataArray) {
+        _searchDataArray = [NSMutableArray array];
+    }
+    return _searchDataArray;
 }
 
 - (void)didReceiveMemoryWarning {

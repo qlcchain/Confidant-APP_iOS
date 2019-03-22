@@ -81,7 +81,8 @@
    
     _lblTime.text = [model.chatTime minuteDescription];
     if (model.isGroup) {
-        _lblName.text =  model.groupName;
+//        _lblName.text =  model.groupName;
+        _lblName.text = model.groupShowName;
     } else {
         NSString *friendName = model.friendName;
         NSString *joinStr = @" - ";

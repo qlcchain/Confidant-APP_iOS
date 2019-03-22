@@ -180,6 +180,8 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 #define GroupVerify_Push_NOTI @"GroupVerify_Push_NOTI"
 // 66.    邀请用户入群审核处理----成功通知
 #define GroupVerify_SUCCESS_NOTI @"GroupVerify_SUCCESS_NOTI"
+// 更新消息列表数据通知
+#define MessageList_Update_Noti @"MessageList_Update_Noti"
 
 
 
