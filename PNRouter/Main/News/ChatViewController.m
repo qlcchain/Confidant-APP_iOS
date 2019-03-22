@@ -815,43 +815,46 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             if ([obj.fileName isEqualToString:fileName]) { // 收到tox文件
                 dispatch_async(dispatch_get_global_queue(0, 0), ^{
                     
-                    if (array.count > 2) {
-                        obj.msgState = CDMessageStateDownloadFaild;
-                        obj.isDown = NO;
-                        [weakSelf.listView updateMessage:obj];
-                        *stop = YES;
-                        NSLog(@"下载文件失败! ");
-                    } else {
-                        NSString *tempPath = [[SystemUtil getTempBaseFilePath:array[0]] stringByAppendingPathComponent:array[1]];
-                         tempPath = [tempPath stringByAppendingString:[NSString stringWithFormat:@"%d",[array[2] intValue]]];
-                        NSString *docPath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:fileName];
-                        if ([SystemUtil filePathisExist:docPath]) {
-                            [SystemUtil removeDocmentFilePath:docPath];
-                        }
-                        NSData *fileData = [NSData dataWithContentsOfFile:tempPath];
-                        NSString *msgkey = @"";
-                        if (obj.isLeft) {
-                             msgkey = obj.dskey;
-                        } else {
-                             msgkey = obj.srckey;
-                        }
-                        
-                        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
-                        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-                        
-                        fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                        [SystemUtil removeDocmentFilePath:tempPath];
-                        
-                        if ([fileData writeToFile:docPath atomically:YES]) {
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                obj.msgState = CDMessageStateNormal;
-                                obj.isDown = NO;
-                                [weakSelf.listView updateMessage:obj];
-                                *stop = YES;
-                                NSLog(@"下载文件成功! filePath = %@",docPath);
-                            });
-                        }
+                    
+                    NSString *tempPath = [[SystemUtil getTempBaseFilePath:array[0]] stringByAppendingPathComponent:array[1]];
+                    tempPath = [tempPath stringByAppendingString:[NSString stringWithFormat:@"%d",[array[2] intValue]]];
+                    NSString *docPath = [[SystemUtil getBaseFilePath:weakSelf.friendModel.userId] stringByAppendingPathComponent:fileName];
+                    if ([SystemUtil filePathisExist:docPath]) {
+                        [SystemUtil removeDocmentFilePath:docPath];
                     }
+                    NSData *fileData = [NSData dataWithContentsOfFile:tempPath];
+                    NSString *msgkey = @"";
+                    if (obj.isLeft) {
+                        msgkey = obj.dskey;
+                    } else {
+                        msgkey = obj.srckey;
+                    }
+                    
+                    NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
+                    datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                    
+                    fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                    [SystemUtil removeDocmentFilePath:tempPath];
+                    
+                    if ([fileData writeToFile:docPath atomically:YES]) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            obj.msgState = CDMessageStateNormal;
+                            obj.isDown = NO;
+                            [weakSelf.listView updateMessage:obj];
+                            *stop = YES;
+                            NSLog(@"下载文件成功! filePath = %@",docPath);
+                        });
+                    }
+                    
+//                    if (array.count > 2) {
+//                        obj.msgState = CDMessageStateDownloadFaild;
+//                        obj.isDown = NO;
+//                        [weakSelf.listView updateMessage:obj];
+//                        *stop = YES;
+//                        NSLog(@"下载文件失败! ");
+//                    } else {
+//
+//                    }
                 });
             }
         }];
