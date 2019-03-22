@@ -762,6 +762,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
 //        }
         
         NSArray *array = [fileValues componentsSeparatedByString:@":"];
+        NSString *userName = array[0];
         NSString *fileName = array[1];
         NSString *msgid = array[2];
         NSString *optionType = array[3];
@@ -791,10 +792,13 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                      [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_DOWN_SUCCESS_NOTI object:model];
                 }
                
-            } else if ([optionType intValue] == 5) { // 群组下载
-                [[NSNotificationCenter defaultCenter] postNotificationName:REVER_GROUP_FILE_PULL_SUCCESS_NOTI object:array];
-            } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_SUCCESS_NOTI object:array];
+            }  else {
+                
+                if ([userName containsString:@"group"]) {
+                     [[NSNotificationCenter defaultCenter] postNotificationName:REVER_GROUP_FILE_PULL_SUCCESS_NOTI object:array];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_SUCCESS_NOTI object:array];
+                }
             }
         } else {
             

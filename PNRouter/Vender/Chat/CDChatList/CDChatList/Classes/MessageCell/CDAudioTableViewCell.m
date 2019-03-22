@@ -270,7 +270,7 @@
         }];
     } else {
         if (data.isGroup) {
-            [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"1" fileFrom:@"5"];
+            [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
         } else {
              [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"2" fileFrom:@"1"];
         }
@@ -400,7 +400,7 @@
         }];
     } else {
         if (data.isGroup) {
-             [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"1" fileFrom:@"5"];
+             [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
         } else {
              [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"1" fileFrom:@"1"];
         }
