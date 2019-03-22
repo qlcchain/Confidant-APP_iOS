@@ -11,6 +11,8 @@
 #import "NSString+Base64.h"
 #import "RouterUserCodeViewController.h"
 
+#pragma mark - 已废弃*********************************
+
 
 @interface CreateRouterUserViewController ()<UITextFieldDelegate>
 
