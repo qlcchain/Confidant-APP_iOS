@@ -100,10 +100,15 @@
     NSDictionary *params = @{@"Action":@"UserInfoUpdate",@"UserId":userM.userId,@"NickName":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
-#pragma mark -sendfile tox
+#pragma mark -sendfile tox 单聊
 + (void) sendToxSendFileWithParames:(NSDictionary *) parames
 {
     [SocketMessageUtil sendVersion1WithParams:parames];
+}
+#pragma mark -sendfile tox 群聊
++ (void) sendToxSendGroupFileWithParames:(NSDictionary *) parames
+{
+    [SocketMessageUtil sendVersion4WithParams:parames];
 }
 
 #pragma mark tox_拉取文件
