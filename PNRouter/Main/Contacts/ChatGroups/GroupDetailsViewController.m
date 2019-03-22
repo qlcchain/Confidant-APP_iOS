@@ -255,6 +255,10 @@
 
 #pragma mark - Noti
 - (void)groupUserPullSuccessNoti:(NSNotification *)noti {
+    NSNumber *Verify = noti.userInfo[@"Verify"];
+    _groupModel.Verify = Verify;
+    _approveSwitch.on = [_groupModel.Verify boolValue];
+    
     NSArray *arr = noti.object;
     arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         GroupMembersModel *model1 = obj1;
