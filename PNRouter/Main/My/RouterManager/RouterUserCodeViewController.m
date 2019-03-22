@@ -15,6 +15,8 @@
 #import <YBImageBrowser/YBImageBrowser.h>
 #import "UIView+Visuals.h"
 
+#pragma mark - 已废弃*********************************
+
 @interface RouterUserCodeViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *UserHeadBtn;
 @property (weak, nonatomic) IBOutlet UIImageView *codeImage;

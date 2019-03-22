@@ -18,6 +18,7 @@
 #import "PNDefaultHeaderView.h"
 
 @interface InvitationQRCodeViewController ()
+
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UIImageView *codeImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblDesc;
