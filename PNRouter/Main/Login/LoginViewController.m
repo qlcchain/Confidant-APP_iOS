@@ -8,7 +8,7 @@
 
 #import "LoginViewController.h"
 #import "RouterModel.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "RegiterViewController.h"
 #import "UserModel.h"
 #import "PNRouter-Swift.h"
@@ -74,7 +74,7 @@
 - (instancetype) initWithLoginType:(LoginType)type {
     if (self = [super init]) {
         self.loginType = type;
-        [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
+        [RouterConfig getRouterConfig].currentRouterMAC = @"";
     }
     return self;
 }
@@ -87,14 +87,14 @@
 }
 
 - (IBAction)loginAction:(id)sender {
-    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterToxid] isEmptyString]) {
+    if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterToxid] isEmptyString]) {
         [self.view showHint:@"Please select the circle."];
         return;
     }
     sendCount = 0;
     isConnectSocket = YES;
     resultLogin = NO;
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
         
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
         if (connectStatu == socketConnectStatusConnected) {
@@ -160,22 +160,22 @@
 {
     if (isMac) {
         [self loadHudView];
-        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterMAC];
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterMAC];
     } else {
-        RouterModel *routherM = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
+        RouterModel *routherM = [RouterModel checkRoutherWithSn:[RouterConfig getRouterConfig].currentRouterSn];
         if (routherM) {
             AppD.isScaner = NO;
             self.selectRouther = routherM;
-            [RoutherConfig getRoutherConfig].currentRouterIp = @"";
-            [RoutherConfig getRoutherConfig].currentRouterToxid = routherM.toxid;
-            [RoutherConfig getRoutherConfig].currentRouterSn = routherM.userSn;
+            [RouterConfig getRouterConfig].currentRouterIp = @"";
+            [RouterConfig getRouterConfig].currentRouterToxid = routherM.toxid;
+            [RouterConfig getRouterConfig].currentRouterSn = routherM.userSn;
             
             //[self loadHudView];
-            //[[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+            //[[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRouterConfig].currentRouterToxid];
             _lblRoutherName.text = self.selectRouther.name;
         }
         [self loadHudView];
-        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
     }
 }
 #pragma mark -连接socket_tox
@@ -184,7 +184,7 @@
     isConnectSocket = YES;
     
     // 当前是在局域网
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString])
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString])
     {
         AppD.manager = nil;
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
@@ -211,7 +211,7 @@
 {
     if (isFind) {
         isFind = NO;
-        [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
+        [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
     } else if (isLogin) {
         isLogin = NO;
         sendCount = 0;
@@ -251,11 +251,11 @@
 - (void) addRouterFriend
 {
     
-   // [RoutherConfig getRoutherConfig].currentRouterToxid = @"A1DA6FFE24611BDE1D14B55B02F180961A3DFB8C9C9B2A572EB274896B7EAC30B4CDCDCE68B8";
-    if (![AppD.manager.friends friendIsExitWithFriend:[RoutherConfig getRoutherConfig].currentRouterToxid]) {
+   // [RoutherConfig getRouterConfig].currentRouterToxid = @"A1DA6FFE24611BDE1D14B55B02F180961A3DFB8C9C9B2A572EB274896B7EAC30B4CDCDCE68B8";
+    if (![AppD.manager.friends friendIsExitWithFriend:[RouterConfig getRouterConfig].currentRouterToxid]) {
         // 添加好友
         [self showConnectServerLoad];
-        BOOL result = [AppD.manager.friends sendFriendRequestToAddress:[RoutherConfig getRoutherConfig].currentRouterToxid message:@"" error:nil];
+        BOOL result = [AppD.manager.friends sendFriendRequestToAddress:[RouterConfig getRouterConfig].currentRouterToxid message:@"" error:nil];
         if (!result) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideConnectServerLoad];
@@ -299,7 +299,7 @@
         [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
         isLogin = NO;
     } else if (isFind) {
-        [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
+        [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
         isFind = NO;
     }
    
@@ -324,7 +324,7 @@
 - (void) sendGB
 {
     [self loadHudView];
-    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
 }
 - (void) getCurrentSelectRouter
 {
@@ -388,8 +388,8 @@
 #pragma 第一次 广播完回调。验证是否走socket 还是 tox
 - (void) checkConnectStyle
 {
-    NSLog(@"ip = %@",[RoutherConfig getRoutherConfig].currentRouterIp);
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+    NSLog(@"ip = %@",[RouterConfig getRouterConfig].currentRouterIp);
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
             [self connectSocketWithIsShowHud:YES];
     } else {
        //[self connectTox];
@@ -401,12 +401,12 @@
 {
     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back!",[UserModel getUserModel].username]?:@"";
     if (self.selectRouther) {
-        [RoutherConfig getRoutherConfig].currentRouterSn = self.selectRouther.userSn;
-        [RoutherConfig getRoutherConfig].currentRouterToxid = self.selectRouther.toxid;
+        [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
+        [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
         _lblRoutherName.text = self.selectRouther.name;
     } else {
-        [RoutherConfig getRoutherConfig].currentRouterSn = @"";
-        [RoutherConfig getRoutherConfig].currentRouterToxid = @"";
+        [RouterConfig getRouterConfig].currentRouterSn = @"";
+        [RouterConfig getRouterConfig].currentRouterToxid = @"";
     }
     if (self.selectRouther) {
         _loginBtn.enabled = YES;
@@ -435,14 +435,14 @@
     isLogin = NO;
     isFind = NO;
     
-    if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterSn] isEqualToString:routeM.userSn]) {
+    if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterSn] isEqualToString:routeM.userSn]) {
         return;
     }
     self.selectRouther = routeM;
     
-    [RoutherConfig getRoutherConfig].currentRouterIp = @"";
-    [RoutherConfig getRoutherConfig].currentRouterToxid = routeM.toxid;
-    [RoutherConfig getRoutherConfig].currentRouterSn = routeM.userSn;
+    [RouterConfig getRouterConfig].currentRouterIp = @"";
+    [RouterConfig getRouterConfig].currentRouterToxid = routeM.toxid;
+    [RouterConfig getRouterConfig].currentRouterSn = routeM.userSn;
     
     _lblRoutherName.text = self.selectRouther.name;
 }
@@ -515,15 +515,15 @@
 - (void) gbFinashNoti:(NSNotification *) noti
 {
      [AppD.window hideHud];
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
-        if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterMAC] isEmptyString]) {
+        if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
             [self.view showHint:@"Unable to connect to server."];
         } else {
             [self jumpToLoginDevice];
         }
         
     } else {
-//        RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
+//        RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RoutherConfig getRouterConfig].currentRouterSn];
 //        if (routerModel) {
 //            self.selectRouther = routerModel;
 //            _lblRoutherName.text = self.selectRouther.name;
@@ -535,7 +535,7 @@
 //            [self connectSocketWithIsShowHud:YES];
 //        }
         
-        RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
+        RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RouterConfig getRouterConfig].currentRouterSn];
         if (routerModel) {
             self.selectRouther = routerModel;
             _lblRoutherName.text = self.selectRouther.name;

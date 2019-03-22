@@ -16,7 +16,7 @@
 #include <netinet/in.h>
 #import  <arpa/inet.h>
 #import "AESCipher.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "RouterModel.h"
 #import <AFNetworking/AFNetworking.h>
 #import "SystemUtil.h"
@@ -108,13 +108,13 @@
             NSArray *resultArr = [result componentsSeparatedByString:@";"];
             if (resultArr && resultArr.count == 2) {
                 
-                if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterToxid] isEmptyString]) {
+                if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterToxid] isEmptyString]) {
                     
-                    if ([resultArr[1] isEqualToString:[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterToxid]]) {
+                    if ([resultArr[1] isEqualToString:[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterToxid]]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [[RoutherConfig getRoutherConfig] addRoutherWithArray:resultArr];
-                            [RoutherConfig getRoutherConfig].currentRouterIp = resultArr[0];
-                            [RoutherConfig getRoutherConfig].currentRouterToxid = resultArr[1];
+                            [[RouterConfig getRouterConfig] addRoutherWithArray:resultArr];
+                            [RouterConfig getRouterConfig].currentRouterIp = resultArr[0];
+                            [RouterConfig getRouterConfig].currentRouterToxid = resultArr[1];
                             NSLog(@"---%@---%@",resultArr[0],resultArr[1]);
                             [AppD.window hideHud];
                             [[NSNotificationCenter defaultCenter] postNotificationName:GB_FINASH_NOTI object:nil];
@@ -125,9 +125,9 @@
                     BOOL isexit = [RouterModel routerIsExitsWithToxid:resultArr[1]];
                     if (isexit) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [[RoutherConfig getRoutherConfig] addRoutherWithArray:resultArr];
-                            [RoutherConfig getRoutherConfig].currentRouterIp = resultArr[0];
-                             [RoutherConfig getRoutherConfig].currentRouterToxid = resultArr[1];
+                            [[RouterConfig getRouterConfig] addRoutherWithArray:resultArr];
+                            [RouterConfig getRouterConfig].currentRouterIp = resultArr[0];
+                             [RouterConfig getRouterConfig].currentRouterToxid = resultArr[1];
                             NSLog(@"---%@---%@",resultArr[0],resultArr[1]);
                             [AppD.window hideHud];
                             [[NSNotificationCenter defaultCenter] postNotificationName:GB_FINASH_NOTI object:nil];
@@ -243,10 +243,10 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     AppD.isWifiConnect = YES;
-                    [[RoutherConfig getRoutherConfig] addRoutherWithArray:resultArr];
-                    [RoutherConfig getRoutherConfig].currentRouterIp = resultArr[0];
-                    [RoutherConfig getRoutherConfig].currentRouterToxid = resultArr[1];
-                    [RoutherConfig getRoutherConfig].currentRouterPort = @"18006";
+                    [[RouterConfig getRouterConfig] addRoutherWithArray:resultArr];
+                    [RouterConfig getRouterConfig].currentRouterIp = resultArr[0];
+                    [RouterConfig getRouterConfig].currentRouterToxid = resultArr[1];
+                    [RouterConfig getRouterConfig].currentRouterPort = @"18006";
                     [FileConfig sharedFileConfig].uploadFileMaxSize = 1024*1024*2;
                     NSLog(@"---%@---%@",resultArr[0],resultArr[1]);
                     [AppD.window hideHud];
@@ -326,10 +326,10 @@
   
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterMAC] isEmptyString]) {
          [self sendGBFinsh];
     } else {
-         [self sendRequestWithRid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+         [self sendRequestWithRid:[RouterConfig getRouterConfig].currentRouterToxid];
     }
 }
 
@@ -342,7 +342,7 @@
 - (void) sendGBWithRouterId:(NSString *) routerid
 {
      [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
-    [[RoutherConfig getRoutherConfig].routherArray removeAllObjects];
+    [[RouterConfig getRouterConfig].routherArray removeAllObjects];
     [NSThread detachNewThreadSelector:@selector(sendRadionMessageWithRouterid:) toTarget:self withObject:routerid];
 }
 
@@ -359,10 +359,10 @@
             NSString *routerIp = responseObject[@"ServerHost"];
             NSString *routerPort = [NSString stringWithFormat:@"%@",responseObject[@"ServerPort"]];
             NSString *routerId = [NSString stringWithFormat:@"%@",responseObject[@"Rid"]];
-            [RoutherConfig getRoutherConfig].currentRouterPort = routerPort;
-            [[RoutherConfig getRoutherConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
-            [RoutherConfig getRoutherConfig].currentRouterIp = routerIp;
-            [RoutherConfig getRoutherConfig].currentRouterToxid = routerId;
+            [RouterConfig getRouterConfig].currentRouterPort = routerPort;
+            [[RouterConfig getRouterConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
+            [RouterConfig getRouterConfig].currentRouterIp = routerIp;
+            [RouterConfig getRouterConfig].currentRouterToxid = routerId;
             NSLog(@"---%@---%@",routerIp,routerId);
         }
         NSLog(@"----successBlock-----");

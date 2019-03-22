@@ -16,7 +16,7 @@
 #import "ChatListDataUtil.h"
 #import "UserManagerViewController.h"
 #import "HeartBeatUtil.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "DiskManagerViewController.h"
 #import "SocketManageUtil.h"
 #import "FileDownUtil.h"
@@ -65,8 +65,7 @@
     NSString *logTtile = _routerM.isConnected?@"Log Out":@"Delete";
     [_logOutBtn setTitle:logTtile forState:UIControlStateNormal];
     
-     NSString *userType = [_routerM.userSn substringWithRange:NSMakeRange(0, 2)];
-    
+    NSString *userType = [_routerM.userSn substringWithRange:NSMakeRange(0, 2)];
     if (![userType isEqualToString:@"01"]) {
         _userManagerContraintH.constant = 0;
         _diskHeight.constant = 0; // 显示磁盘管理
@@ -129,8 +128,6 @@
 }
 
 - (IBAction)logoutAction:(id)sender {
-    
-    
     NSString *alertMsg = _routerM.isConnected?@"Logout will not delete any data. You can still log in to this account with the invitation code.":@"Determine whether to remove the current circle.";
     
     @weakify_self
@@ -175,7 +172,7 @@
     [HeartBeatUtil stop];
     AppD.inLogin = NO;
     if ([SystemUtil isSocketConnect]) {
-        [RoutherConfig getRoutherConfig].currentRouterIp = @"";
+        [RouterConfig getRouterConfig].currentRouterIp = @"";
         [[SocketUtil shareInstance] disconnect];
         // 清除所有正在发送文件
         [[SocketManageUtil getShareObject] clearAllConnectSocket];

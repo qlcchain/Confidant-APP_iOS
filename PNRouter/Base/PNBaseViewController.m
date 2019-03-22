@@ -9,7 +9,7 @@
 #import "PNBaseViewController.h"
 #import "PNNavViewController.h"
 #import "QRViewController.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "PNRouter-Swift.h"
 #import "AESCipher.h"
 #import "OCTManagerConfiguration.h"
@@ -177,7 +177,7 @@
 }
 
 - (void)setRootVCWithVC:(PNBaseViewController *) vc {
-    [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
+    [RouterConfig getRouterConfig].currentRouterMAC = @"";
     AppD.isLoginMac = NO;
     [AppD addTransitionAnimation];
     AppD.window.rootViewController = vc;
@@ -238,7 +238,7 @@
 
 #pragma mark - Transition
 - (void)jumpToQR {
-    [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
+    [RouterConfig getRouterConfig].currentRouterMAC = @"";
     @weakify_self
     QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
         if (codeValue != nil && codeValue.length > 0) {
@@ -253,12 +253,12 @@
                     
                     NSString *toxid = [result substringWithRange:NSMakeRange(6, 76)];
                     NSString *sn = [result substringWithRange:NSMakeRange(result.length-32, 32)];
-                    NSLog(@"%@",[RoutherConfig getRoutherConfig].currentRouterSn);
+                    NSLog(@"%@",[RouterConfig getRouterConfig].currentRouterSn);
                  
                     AppD.isScaner = YES;
-                    [RoutherConfig getRoutherConfig].currentRouterToxid = toxid;
-                    [RoutherConfig getRoutherConfig].currentRouterSn = sn;
-                    [RoutherConfig getRoutherConfig].currentRouterIp = @"";
+                    [RouterConfig getRouterConfig].currentRouterToxid = toxid;
+                    [RouterConfig getRouterConfig].currentRouterSn = sn;
+                    [RouterConfig getRouterConfig].currentRouterIp = @"";
                     
                     [weakSelf scanSuccessfulWithIsMacd:NO];
                 } else {
@@ -269,7 +269,7 @@
                     NSString *result = aesDecryptString(codeValues[1],AES_KEY);
                     result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
                     AppD.isScaner = YES;
-                    [RoutherConfig getRoutherConfig].currentRouterMAC = result;
+                    [RouterConfig getRouterConfig].currentRouterMAC = result;
                     [weakSelf scanSuccessfulWithIsMacd:YES];
                 
             } else if ([[NSString getNotNullValue:type] isEqualToString:@"type_3"]) {

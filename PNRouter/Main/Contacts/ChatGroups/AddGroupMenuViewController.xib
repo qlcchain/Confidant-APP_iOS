@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddGroupMenuViewController">
             <connections>
+                <outlet property="addNewMemberHeight" destination="Z89-um-3Nk" id="UWi-lh-0ht"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -183,7 +184,7 @@
                                 <constraint firstItem="Mjh-y3-8sm" firstAttribute="top" secondItem="4bW-tX-8Ti" secondAttribute="bottom" constant="3" id="xVb-A8-QTI"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yID-tS-fuU">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yID-tS-fuU">
                             <rect key="frame" x="0.0" y="198" width="375" height="56"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Invitation_qr" translatesAutoresizingMaskIntoConstraints="NO" id="dHM-K0-qtK">

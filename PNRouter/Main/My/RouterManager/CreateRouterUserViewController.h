@@ -12,8 +12,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CreateRouterUserViewController : PNBaseViewController
+
 - (instancetype) initWithRid:(NSString *) rid;
-@property (nonatomic , assign) NSInteger userType;
+
+@property (nonatomic , assign) NSInteger userType; // 0：
+
 @end
 
 NS_ASSUME_NONNULL_END

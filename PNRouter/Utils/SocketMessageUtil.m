@@ -36,7 +36,7 @@
 #import "EntryModel.h"
 #import "LibsodiumUtil.h"
 #import "FileDownUtil.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "ChatModel.h"
 #import "SendCacheChatUtil.h"
 #import "UserHeadUtil.h"
@@ -1892,13 +1892,13 @@
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"Load..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"Name":[nickName base64EncodedString]};
+    NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"Name":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark -新用户注册
 + (void) sendUserRegisterSn:(NSString *) sn code:(NSString *) code nickName:(NSString *) nickName
 {
-    NSDictionary *params = @{@"Action":Action_Register,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":sn,@"IdentifyCode":code,@"Sign":@"",@"UserKey":[EntryModel getShareObject].publicKey,@"NickName":[nickName base64EncodedString]};
+    NSDictionary *params = @{@"Action":Action_Register,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":sn,@"IdentifyCode":code,@"Sign":@"",@"UserKey":[EntryModel getShareObject].publicKey,@"NickName":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 

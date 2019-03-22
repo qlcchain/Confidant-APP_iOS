@@ -13,7 +13,8 @@
 #import "ContactsHeadView.h"
 #import "NSString+Base64.h"
 #import "ContactsCell.h"
-#import "CreateRouterUserViewController.h"
+//#import "CreateRouterUserViewController.h"
+#import "AddNewMemberViewController.h"
 #import "RouterUserCodeViewController.h"
 #import "RouterModel.h"
 #import <MJRefresh/MJRefresh.h>
@@ -93,7 +94,7 @@
     [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
     [_tableV registerNib:[UINib nibWithNibName:ContactsCellReuse bundle:nil] forCellReuseIdentifier:ContactsCellReuse];
     //[self.dataArray addObject:@[@"Create user accounts",@"Create temporary accounts"]];
-    [self.dataArray addObject:@[@"Create user accounts"]];
+    [self.dataArray addObject:@[@"Create User Accounts"]];
     [self addObserver];
     // 拉取用户
     [SendRequestUtil sendPullUserList];
@@ -113,7 +114,7 @@
     } else {
         isSearch = YES;
         [self.searchDataArray removeAllObjects];
-        [self.searchDataArray addObject:@[@"Create user accounts"]];
+        [self.searchDataArray addObject:@[@"Create User Accounts"]];
         
         __block NSMutableArray *ptArray = [NSMutableArray array];
         __block NSMutableArray *tempArray = [NSMutableArray array];
@@ -231,9 +232,10 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
-        CreateRouterUserViewController *vc = [[CreateRouterUserViewController alloc] initWithRid:self.rid];
-        vc.userType = indexPath.row;
-        [self.navigationController pushViewController:vc animated:YES];
+        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:self.rid];
+        [self presentModalVC:vc animated:YES];
+//        vc.userType = indexPath.row;
+//        [self.navigationController pushViewController:vc animated:YES];
     } else {
         if (indexPath.section == 1) {
             RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];;
@@ -278,7 +280,7 @@
         [self.dataArray removeAllObjects];
         userCount = 0;
         tempCount = 0;
-        [self.dataArray addObject:@[@"Create user accounts"]];
+        [self.dataArray addObject:@[@"Create Aser Accounts"]];
     }
     
     NSArray *playod = noti.object;

@@ -6,12 +6,12 @@
 //  Copyright © 2018 旷自辉. All rights reserved.
 //
 
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 
-@implementation RoutherConfig
-+ (instancetype) getRoutherConfig
+@implementation RouterConfig
++ (instancetype) getRouterConfig
 {
-    static RoutherConfig *shareObject = nil;
+    static RouterConfig *shareObject = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         shareObject = [[self alloc] init];
@@ -23,7 +23,7 @@
 - (void) addRoutherWithArray:(NSArray *)arr
 {
     __block BOOL isexit = NO;
-    [[RoutherConfig getRoutherConfig].routherArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [[RouterConfig getRouterConfig].routherArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSArray *array = obj;
         if ([arr[1] isEqualToString:array[1]]) {
             isexit = YES;
@@ -31,7 +31,7 @@
         }
     }];
     if (!isexit) {
-       [[RoutherConfig getRoutherConfig].routherArray addObject:arr];
+       [[RouterConfig getRouterConfig].routherArray addObject:arr];
     }
 }
 
@@ -39,7 +39,7 @@
 {
     __block NSInteger index = 0;
     __block BOOL isexit = NO;
-    [[RoutherConfig getRoutherConfig].routherArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [[RouterConfig getRouterConfig].routherArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSArray *array = obj;
         if ([toxid isEqualToString:array[1]]) {
             isexit = YES;
@@ -48,7 +48,7 @@
         }
     }];
     if (isexit) {
-        return [RoutherConfig getRoutherConfig].routherArray[index];
+        return [RouterConfig getRouterConfig].routherArray[index];
     }
     return nil;
 }

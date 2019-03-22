@@ -10,7 +10,7 @@
 #import "HMScanner.h"
 #import "ModifyRouterPWViewController.h"
 #import "ModifyActivateCodeViewController.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "PNRouter-Swift.h"
 #import "SendRequestUtil.h"
 #import "SystemUtil.h"
@@ -100,7 +100,7 @@
 //    if (routherM) {
 //        [RouterModel updateRouterConnectStatusWithSn:_UserSn];
 //        AppD.isLoginMac = NO;
-//        [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
+//        [RoutherConfig getRouterConfig].currentRouterMAC = @"";
 //        [AppD setRootLogin];
 //    } else {
 //        NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
@@ -116,8 +116,8 @@
 - (void) sendfindRouterRequest
 {
    // [SendRequestUtil sendUserFindWithToxid:_RouterId?:@"" usesn:_UserSn?:@""];
-    [RoutherConfig getRoutherConfig].currentRouterToxid = _RouterId;
-    [RoutherConfig getRoutherConfig].currentRouterSn = _UserSn;
+    [RouterConfig getRouterConfig].currentRouterToxid = _RouterId;
+    [RouterConfig getRouterConfig].currentRouterSn = _UserSn;
     [AppD setRootLoginWithType:MacType];
 }
 
@@ -138,7 +138,7 @@
     if (routherM) {
         [RouterModel updateRouterConnectStatusWithSn:_UserSn];
         AppD.isLoginMac = NO;
-        [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
+        [RouterConfig getRouterConfig].currentRouterMAC = @"";
         [AppD setRootLoginWithType:RouterType];
     } else {
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];

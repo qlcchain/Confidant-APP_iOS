@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RoutherConfig : NSObject
+@interface RouterConfig : NSObject
 
-+ (instancetype) getRoutherConfig;
++ (instancetype) getRouterConfig;
 
 @property (nonatomic, strong) NSMutableArray *routherArray;
 @property (nonatomic, copy) NSString *currentRouterIp;

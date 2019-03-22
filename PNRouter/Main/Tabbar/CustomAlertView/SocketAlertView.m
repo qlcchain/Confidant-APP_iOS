@@ -10,7 +10,7 @@
 #import "PNRouter-Swift.h"
 #import "SystemUtil.h"
 #import "SocketCountUtil.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 
 @implementation SocketAlertView
 + (instancetype) loadSocketAlertView
@@ -35,7 +35,7 @@
     }];
     [SocketCountUtil getShareObject].reConnectCount = 0;
     [AppD.window showHudInView:AppD.window hint:@"connection..."];
-    NSString *connectURL = [NSString stringWithFormat:@"https://%@:18006",[RoutherConfig getRoutherConfig].currentRouterIp];
+    NSString *connectURL = [NSString stringWithFormat:@"https://%@:18006",[RouterConfig getRouterConfig].currentRouterIp];
     [SocketUtil.shareInstance connectWithUrl:connectURL];
 }
 

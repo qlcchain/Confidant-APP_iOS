@@ -18,10 +18,14 @@
 #import "GroupChatViewController.h"
 #import "GroupInfoModel.h"
 #import "AddGroupMemberViewController.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "FriendModel.h"
+#import "RouterModel.h"
 
 @interface AddGroupMenuViewController ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *addNewMemberHeight; // 56
+
 
 @end
 
@@ -31,13 +35,14 @@
 - (IBAction)backAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
 }
+
 - (IBAction)clickMenuAction:(UIButton *)sender {
     
     if (sender.tag == 10) { // create a group
         
         NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
         // 过滤非当前路由的好友
-        NSString *currentToxid = [RoutherConfig getRoutherConfig].currentRouterToxid;
+        NSString *currentToxid = [RouterConfig getRouterConfig].currentRouterToxid;
         NSMutableArray *inputArr = [NSMutableArray array];
         [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *model = obj;
@@ -80,30 +85,51 @@
         PersonCodeViewController *vc = [[PersonCodeViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
         
-    } else { // add a new member
-        
-        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] init];
+    } else if (sender.tag == 40) { // add a new member
+        NSString *rid = [RouterConfig getRouterConfig].currentRouterToxid;
+        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:rid];
         [self presentModalVC:vc animated:YES];
-        
     }
 }
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self addNotifcation];
+    [self showAddNewMember];
 }
-#pragma mark -- 添加通知
 
+#pragma mark - Operation
+- (void)showAddNewMember {
+    NSString *currentRouterSn = [RouterConfig getRouterConfig].currentRouterSn;
+    NSString *userType = [currentRouterSn substringWithRange:NSMakeRange(0, 2)];
+    if ([userType isEqualToString:@"01"]) { // 01:admin
+        _addNewMemberHeight.constant = 56;
+    } else {
+        _addNewMemberHeight.constant = 0;
+    }
+}
+
+#pragma mark -- 添加通知
 - (void) addNotifcation
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseContactNoti:) name:CHOOSE_FRIEND_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
 }
 
-#pragma mark --通知回调
+#pragma mark - Transition
+- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk{
+    
+    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+#pragma mark - 通知回调
 - (void) chooseContactNoti:(NSNotification *) noti
 {
     NSArray *mutContacts = noti.object;
@@ -113,15 +139,6 @@
     }
 }
 
-#pragma mark -Operation-
-- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk{
-    
-    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
-    [self.navigationController pushViewController:vc animated:YES];
-    
-}
-
-#pragma mark -通知回调
 - (void) jumpGroupChatNoti:(NSNotification *) noti
 {
     GroupInfoModel *model = noti.object;

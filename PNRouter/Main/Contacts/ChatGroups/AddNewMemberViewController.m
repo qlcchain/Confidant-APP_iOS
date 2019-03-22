@@ -8,29 +8,41 @@
 
 #import "AddNewMemberViewController.h"
 #import "InvitationQRCodeViewController.h"
+#import "RouterUserCodeViewController.h"
+#import "RouterUserModel.h"
+#import "NSString+Base64.h"
 
 @interface AddNewMemberViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *nameTF;
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
+@property (nonatomic ,strong) NSString *rid;
 
 @end
 
 @implementation AddNewMemberViewController
-#pragma mark - action
-- (IBAction)backAction:(id)sender {
-    [self leftNavBarItemPressedWithPop:NO];
+
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-- (IBAction)nextAction:(id)sender {
-    
+
+#pragma mark - Observe
+- (void)addObserve {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createUserSuccess:) name:CREATE_USER_SUCCESS_NOTI object:nil];
 }
-- (IBAction)qrCodeAction:(id)sender {
-    InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+
+- (instancetype)initWithRid:(NSString *)rid {
+    if (self = [super init]) {
+        self.rid = rid;
+    }
+    return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self addObserve];
+    
     _nextBtn.layer.cornerRadius = 3.0f;
     _nextBtn.layer.masksToBounds = YES;
     
@@ -39,6 +51,26 @@
     [_nameTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
     
 }
+
+#pragma mark - action
+- (IBAction)backAction:(id)sender {
+    [self leftNavBarItemPressedWithPop:NO];
+}
+
+- (IBAction)nextAction:(id)sender {
+    [self.view endEditing:YES];
+    if ([_nameTF.text.trim isEmptyString]) {
+        [self.view showHint:@"The Contact Name Cannot Be Empty"];
+        return;
+    }
+    
+    [SendRequestUtil createRouterUserWithRouterId:self.rid mnemonic:[_nameTF.text.trim base64EncodedString]];
+}
+
+- (IBAction)qrCodeAction:(id)sender {
+    
+}
+
 #pragma -mark uitextfeildchange
 - (void) textFieldTextChange:(UITextField *) tf
 {
@@ -52,10 +84,35 @@
 }
 
 #pragma textfeild delegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField endEditing:YES];
     NSLog(@"textFieldShouldReturn");
     return YES;
 }
+
+#pragma mark - Transition
+- (void)jumpToTempQR {
+    RouterUserModel *model = nil;
+    InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
+    vc.routerUserModel = model;
+    vc.userManageType = 1;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark -NOTI
+- (void) createUserSuccess:(NSNotification *) noti {
+    NSString *qrCode = noti.object;
+    [AppD.window showHint:@"Add a New Member Successful."];
+    RouterUserCodeViewController *vc = [[RouterUserCodeViewController alloc] init];
+    RouterUserModel *model = [[RouterUserModel alloc] init];
+    model.UserType = 2;
+    model.Active = 0;
+    model.Qrcode = qrCode;
+    model.NickName = _nameTF.text.trim;
+//    model.IdentifyCode = _codeTF.text.trim;
+    vc.routerUserModel = model;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
 @end

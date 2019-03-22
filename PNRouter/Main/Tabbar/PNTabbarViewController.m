@@ -26,7 +26,7 @@
 #import "NSString+SHA256.h"
 #import "UserConfig.h"
 #import "HeartBeatUtil.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "LibsodiumUtil.h"
 #import <AFNetworking/AFNetworking.h>
 #import "AFHTTPClientV2.h"
@@ -146,7 +146,7 @@
     AppD.inLogin = NO;
     [HeartBeatUtil stop];
     if ([SystemUtil isSocketConnect]) {
-        [RoutherConfig getRoutherConfig].currentRouterIp = @"";
+        [RouterConfig getRouterConfig].currentRouterIp = @"";
         [[SocketUtil shareInstance] disconnect];
         // 清除所有正在发送文件
         [[SocketManageUtil getShareObject] clearAllConnectSocket];
@@ -224,7 +224,7 @@
 {
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     if (AppD.isWifiConnect && is4g) {
-         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
     } else {
         [self performSelector:@selector(connectSocket) withObject:nil afterDelay:1.0f];
     }
@@ -255,10 +255,10 @@
 //            NSString *routerIp = responseObject[@"ServerHost"];
 //            NSString *routerPort = [NSString stringWithFormat:@"%@",responseObject[@"ServerPort"]];
 //            NSString *routerId = [NSString stringWithFormat:@"%@",responseObject[@"Rid"]];
-//            [RoutherConfig getRoutherConfig].currentRouterPort = routerPort;
-//            [[RoutherConfig getRoutherConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
-//            [RoutherConfig getRoutherConfig].currentRouterIp = routerIp;
-//            [RoutherConfig getRoutherConfig].currentRouterToxid = routerId;
+//            [RoutherConfig getRouterConfig].currentRouterPort = routerPort;
+//            [[RoutherConfig getRouterConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
+//            [RoutherConfig getRouterConfig].currentRouterIp = routerIp;
+//            [RoutherConfig getRouterConfig].currentRouterToxid = routerId;
 //
 //            [weakSelf connectSocket];
 //        }

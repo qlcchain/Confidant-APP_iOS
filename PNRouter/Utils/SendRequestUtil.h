@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendPullUserList;
 + (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg;
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId;
-+ (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic code:(NSString *) code;
++ (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic;
 + (void) sendRedMsgWithFriendId:(NSString *) friendId msgid:(NSString *) msgId;
 + (void) sendUpdateWithNickName:(NSString *) nickName;
 + (void) sendLogOut;
