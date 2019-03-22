@@ -1462,7 +1462,7 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     
     if (retCode == 0) {
-        NSNumber *Verify = receiveDic[@"params"][@"Verify"];
+        NSNumber *Verify = receiveDic[@"params"][@"Verify"]?:@(0);
         NSString *Payload = receiveDic[@"params"][@"Payload"];
         NSArray *payloadArr = [GroupMembersModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
         [[NSNotificationCenter defaultCenter] postNotificationName:GroupUserPull_SUCCESS_NOTI object:payloadArr userInfo:@{@"Verify":Verify}];
