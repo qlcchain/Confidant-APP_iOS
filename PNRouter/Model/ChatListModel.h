@@ -14,6 +14,7 @@
 @property (nonatomic ,strong) NSString *myID;
 @property (nonatomic ,strong) NSString *groupID;
 @property (nonatomic ,strong) NSString *groupName;
+@property (nonatomic, strong) NSString *groupAlias;
 @property (nonatomic ,strong) NSString *groupUserkey;
 @property (nonatomic ,strong) NSString *publicKey;
 @property (nonatomic ,strong) NSString *signPublicKey;
@@ -26,5 +27,7 @@
 @property (nonatomic ,strong) NSString *draftMessage;
 @property (nonatomic ,strong) NSString *routerName;
 @property (nonatomic, strong) NSNumber *unReadNum;
+
+@property (nonatomic, strong) NSString *groupShowName;
 
 @end

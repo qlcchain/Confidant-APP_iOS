@@ -14,6 +14,7 @@
 #import "GroupInfoModel.h"
 #import "NSString+Base64.h"
 #import "NSString+HexStr.h"
+#import "ChatListModel.h"
 
 @interface EditTextViewController ()
 
@@ -212,6 +213,16 @@
 }
 
 - (void)reviseGroupAliasSuccessNoti:(NSNotification *)noti {
+    NSString *GId = noti.object;
+    // 更新消息列表数据库中群别名
+    NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(GId)]];
+    if (friends && friends.count > 0) {
+        ChatListModel *model = friends[0];
+        model.groupAlias = _nameTF.text;
+        [model bg_saveOrUpdate];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:MessageList_Update_Noti object:nil];
+    
     if (_reviseSuccessB) {
         _reviseSuccessB(_nameTF.text);
     }

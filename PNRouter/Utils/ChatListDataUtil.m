@@ -58,6 +58,7 @@
                 ChatListModel *model1 = friends[0];
                 model1.friendName = model.friendName;
                 model1.groupName = model.groupName;
+                model1.groupAlias = model.groupAlias;
                 model1.isHD = model.isHD;
                 model1.unReadNum = model.isHD?@([model1.unReadNum integerValue] + 1):model1.unReadNum;
                 model1.isDraft = model.isDraft;
