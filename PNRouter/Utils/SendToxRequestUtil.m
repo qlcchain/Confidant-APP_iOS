@@ -39,15 +39,13 @@
             
             NSLog(@"文件发送失败 = %@",error.description);
             
-           [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_SEND_FAIELD_NOTI object:parames];
+           [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_FILE_SEND_FAIELD_NOTI object:@[@(1),parames[@"GId"],parames[@"FileId"]?:@""]];
         }];
     });
 }
 
 + (void) deUploadFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames fileData:(NSData *) fileData
 {
-    
-    
     NSString *srcKey = parames[@"SrcKey"];
     NSInteger fileid = [parames[@"FileId"] integerValue];
 

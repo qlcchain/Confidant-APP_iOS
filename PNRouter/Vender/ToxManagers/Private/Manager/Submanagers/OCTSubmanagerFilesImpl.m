@@ -147,12 +147,19 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
 
     NSString *fileName = [filePath lastPathComponent];
     NSString *toid = parames[@"ToId"];
+    NSString *gid = parames[@"GId"];
     NSInteger fileType = [parames[@"FileType"] integerValue];
-    if ([toid isEmptyString] && fileType ==6 ) { // 上传头像
-        fileName = [NSString stringWithFormat:@"a:%@",parames[@"FileName"]];
-    } else if ([toid isEmptyString]) { //上传文件
-        fileName = [NSString stringWithFormat:@"u:%@",parames[@"FileName"]];
+    if (gid && gid.length>0) {
+        NSArray *separateds = [gid componentsSeparatedByString:@"_"];
+        fileName = [NSString stringWithFormat:@"%@:%@",separateds[0],parames[@"FileName"]];
+    } else {
+        if ([toid isEmptyString] && fileType ==6 ) { // 上传头像
+            fileName = [NSString stringWithFormat:@"a:%@",parames[@"FileName"]];
+        } else if ([toid isEmptyString]) { //上传文件
+            fileName = [NSString stringWithFormat:@"u:%@",parames[@"FileName"]];
+        }
     }
+    
     NSError *error;
     
     if (moveToUploads) {
@@ -198,18 +205,22 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     }
     NSLog(@"filepath = %@ fileNumber = %d",filePath,fileNumber);
     if (parames) {
-         if ([toid isEmptyString] && fileType !=6) { // 上传文件
-            NSString *fileId = [NSString stringWithFormat:@"%@",parames[@"FileId"]];
-             // 通过fileid 绑定fileNumber
-             [[ChatListDataUtil getShareObject].fileNumberParames setObject:[NSString stringWithFormat:@"%d",fileNumber] forKey:fileId];
-             
-             // 更新数据库
-            [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"didStart"),bg_sqlValue(@(1)),bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"fileId"),bg_sqlValue(fileId)]];
-             
-             
-             [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPLOAD_FILE_NOTI object:fileId];
-             
-         }
+        if (!gid || gid.length == 0) { // 不是群组发送
+            if ([toid isEmptyString] && fileType !=6) { // 上传文件
+                
+                NSString *fileId = [NSString stringWithFormat:@"%@",parames[@"FileId"]];
+                // 通过fileid 绑定fileNumber
+                [[ChatListDataUtil getShareObject].fileNumberParames setObject:[NSString stringWithFormat:@"%d",fileNumber] forKey:fileId];
+                
+                // 更新数据库
+                [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"didStart"),bg_sqlValue(@(1)),bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"fileId"),bg_sqlValue(fileId)]];
+                
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPLOAD_FILE_NOTI object:fileId];
+                
+            }
+        }
+        
         [[ChatListDataUtil getShareObject].fileParames setObject:parames forKey:[NSString stringWithFormat:@"%d",fileNumber]];
     }
     //OCTRealmManager *realmManager = [self.dataSource managerGetRealmManager];
@@ -574,7 +585,6 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
           length:(size_t)length
 {
     OCTFileBaseOperation *operation = [self operationWithFileNumber:fileNumber friendNumber:friendNumber];
-
     BOOL isCancel = NO;
     if ([operation isKindOfClass:[OCTFileUploadOperation class]]) {
     
@@ -593,24 +603,20 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
         
         [(OCTFileUploadOperation *)operation chunkRequestWithPosition:position length:length cancel:isCancel];
         
-       
-        
         NSLog(@"length = %zu",length);
         
         if (fileNumberValues) {
             NSString *toid = fileNumberValues[@"ToId"];
-            if (isCancel && [toid isEmptyString]) {
+            if (toid && isCancel && [toid isEmptyString]) { // 不是群组
                 return;
             }
         }
         
         if (length == 0) {
             NSLog(@"file 发送成功-----------%d",fileNumber);
-            
             if (fileNumberValues) {
                 NSString *toid = fileNumberValues[@"ToId"];
-                if ([toid isEmptyString]) { // 上传
-                    
+                if (toid && [toid isEmptyString]) { // 上传
                     int fileType = [fileNumberValues[@"FileType"] intValue];
                     NSString *fileName = fileNumberValues[@"FileName"];
                     NSString *srcKey = fileNumberValues[@"SrcKey"];
@@ -631,7 +637,11 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                 } else { // 发送
                     NSString *cancelValue = [[ChatListDataUtil getShareObject].fileCancelParames objectForKey:fileNumberValues[@"FileId"]];
                     if (![[NSString getNotNullValue:cancelValue] isEqualToString:@"1"]) {
-                        [SendRequestUtil sendToxSendFileWithParames:fileNumberValues];
+                        if (toid) { // 单聊
+                            [SendRequestUtil sendToxSendFileWithParames:fileNumberValues];
+                        } else { // 群组
+                            [SendRequestUtil sendToxSendGroupFileWithParames:fileNumberValues];
+                        }
                     }
                 }
             }
@@ -639,7 +649,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
             if (fileNumberValues) {
                 
                 NSString *toid = fileNumberValues[@"ToId"];
-                if ([toid isEmptyString]) {
+                if (toid && [toid isEmptyString]) {
                     int fileSize = [fileNumberValues[@"FileSize"] intValue];
                     NSString *srcKey = fileNumberValues[@"SrcKey"];
                     CGFloat progess = (position*1.0)/fileSize;

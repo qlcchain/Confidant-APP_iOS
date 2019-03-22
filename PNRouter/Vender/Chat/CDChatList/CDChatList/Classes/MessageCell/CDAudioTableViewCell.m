@@ -501,9 +501,14 @@
             NSString *dataPath = [[SystemUtil getTempBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName]];
             
             if ([fileData writeToFile:dataPath atomically:YES]) {
-                
-                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":self.msgModal.FromId,@"ToId":self.msgModal.ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName],@"FileMD5":[MD5Util md5WithPath:dataPath],@"FileSize":@(fileData.length),@"FileType":@(self.msgModal.msgType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":self.msgModal.messageId};
-                [SendToxRequestUtil sendFileWithFilePath:dataPath parames:parames];
+                if (self.msgModal.isGroup) {
+                    NSDictionary *parames = @{@"Action":@"GroupSendFileDone",@"FromId":self.msgModal.FromId,@"GId":self.msgModal.ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName],@"FileMD5":[MD5Util md5WithPath:dataPath],@"FileSize":@(fileData.length),@"FileType":@(self.msgModal.msgType),@"DstKey":@"",@"FileId":self.msgModal.messageId,@"FileInfo":@""};
+                    [SendToxRequestUtil sendFileWithFilePath:dataPath parames:parames];
+                } else {
+                    NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":self.msgModal.FromId,@"ToId":self.msgModal.ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName],@"FileMD5":[MD5Util md5WithPath:dataPath],@"FileSize":@(fileData.length),@"FileType":@(self.msgModal.msgType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":self.msgModal.messageId,@"FileInfo":@""};
+                    [SendToxRequestUtil sendFileWithFilePath:dataPath parames:parames];
+                }
+               
             }
         }
         
