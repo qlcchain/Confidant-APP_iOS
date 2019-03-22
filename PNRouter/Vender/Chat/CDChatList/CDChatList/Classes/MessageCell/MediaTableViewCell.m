@@ -266,24 +266,35 @@
         NSString *filePath = [[SystemUtil getBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:self.msgModal.fileName];
         NSData *fileData = [NSData dataWithContentsOfFile:filePath];
         
-        // 生成32位对称密钥
-        NSString *msgKey = [SystemUtil get32AESKey];
-        NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *symmetKey = [symmetData base64EncodedString];
-        // 好友公钥加密对称密钥
-        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:self.msgModal.publicKey];
-        // 自己公钥加密对称密钥
-        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+        NSString *dsKey = @"";
+        NSString *srcKey = @"";
+        if (self.msgModal.isGroup) {
+            // 自己私钥解密
+            NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.msgModal.dskey];
+            NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+            NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+            fileData = aesEncryptData(fileData,msgKeyData);
+        } else {
+            // 生成32位对称密钥
+            NSString *msgKey = [SystemUtil get32AESKey];
+            NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *symmetKey = [symmetData base64EncodedString];
+            // 好友公钥加密对称密钥
+            dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:self.msgModal.publicKey];
+            // 自己公钥加密对称密钥
+            srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+            
+            NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+            fileData = aesEncryptData(fileData,msgKeyData);
+        }
         
-        NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-        fileData = aesEncryptData(fileData,msgKeyData);
         
         if ([SystemUtil isSocketConnect]) {
             
             SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+            dataUtil.fileInfo = [NSString stringWithFormat:@"%f*%f",self.msgModal.fileWidth,self.msgModal.fileHeight];
             [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:4 messageid:self.msgModal.messageId srcKey:(NSString *)srcKey dstKey:dsKey isGroup:self.msgModal.isGroup];
             [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
-            
         } else {
             NSString *dataPath = [[SystemUtil getTempBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName]];
             
