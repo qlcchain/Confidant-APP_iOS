@@ -255,7 +255,7 @@
 
 #pragma mark - Noti
 - (void)groupUserPullSuccessNoti:(NSNotification *)noti {
-    NSNumber *Verify = noti.userInfo[@"Verify"];
+    NSNumber *Verify = @([noti.userInfo[@"Verify"] integerValue]);
     _groupModel.Verify = Verify;
     _approveSwitch.on = [_groupModel.Verify boolValue];
     
