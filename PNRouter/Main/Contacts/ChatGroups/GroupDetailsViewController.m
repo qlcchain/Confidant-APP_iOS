@@ -31,6 +31,9 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *normalBottomHeight; // 56
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ownerBottomHeight; // 168
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *groupAliasHeight; // 56
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *groupAliasTop; // 10
+
 
 @property (nonatomic ,strong) GroupInfoModel *groupModel;
 @property (nonatomic, strong) GroupMemberView *memberView;
@@ -80,9 +83,13 @@
     if (_groupModel.UserType == 0) { // 群主
         _normalBottomHeight.constant = 0;
         _ownerBottomHeight.constant = 168;
+        _groupAliasHeight.constant = 56;
+        _groupAliasTop.constant = 10;
     } else {
         _normalBottomHeight.constant = 56;
         _ownerBottomHeight.constant = 0;
+        _groupAliasHeight.constant = 0;
+        _groupAliasTop.constant = 0;
     }
     [self groupMemberViewInit];
     
