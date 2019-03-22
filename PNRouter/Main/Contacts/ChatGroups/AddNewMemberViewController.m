@@ -8,7 +8,7 @@
 
 #import "AddNewMemberViewController.h"
 #import "InvitationQRCodeViewController.h"
-#import "RouterUserCodeViewController.h"
+//#import "RouterUserCodeViewController.h"
 #import "RouterUserModel.h"
 #import "NSString+Base64.h"
 
@@ -29,6 +29,8 @@
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createUserSuccess:) name:CREATE_USER_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullTmpAccountSuccessNoti:) name:PullTmpAccount_Success_Noti object:nil];
+    
 }
 
 - (instancetype)initWithRid:(NSString *)rid {
@@ -68,7 +70,7 @@
 }
 
 - (IBAction)qrCodeAction:(id)sender {
-    
+    [SendRequestUtil sendPullTmpAccountWithShowHud:YES];
 }
 
 #pragma -mark uitextfeildchange
@@ -91,8 +93,7 @@
 }
 
 #pragma mark - Transition
-- (void)jumpToTempQR {
-    RouterUserModel *model = nil;
+- (void)jumpToTempQR:(RouterUserModel *)model {
     InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
     vc.routerUserModel = model;
     vc.userManageType = 1;
@@ -102,17 +103,30 @@
 #pragma mark -NOTI
 - (void) createUserSuccess:(NSNotification *) noti {
     NSString *qrCode = noti.object;
+    
     [AppD.window showHint:@"Add a New Member Successful."];
-    RouterUserCodeViewController *vc = [[RouterUserCodeViewController alloc] init];
+    
     RouterUserModel *model = [[RouterUserModel alloc] init];
     model.UserType = 2;
     model.Active = 0;
     model.Qrcode = qrCode;
     model.NickName = _nameTF.text.trim;
-//    model.IdentifyCode = _codeTF.text.trim;
-    vc.routerUserModel = model;
-    [self.navigationController pushViewController:vc animated:YES];
+    [self jumpToTempQR:model];
+}
+
+- (void)pullTmpAccountSuccessNoti:(NSNotification *)noti {
+    NSDictionary *params = noti.object;
+    NSString *ToId = params[@"ToId"];
+    NSString *UserSN = params[@"UserSN"];
+    NSString *Qrcode = params[@"Qrcode"];
     
+    RouterUserModel *model = [[RouterUserModel alloc] init];
+    model.UserType = 3;
+    model.Active = 0;
+    model.Qrcode = Qrcode;
+    model.UserSN = UserSN;
+    model.NickName = @"TEMP USER";
+    [self jumpToTempQR:model];
 }
 
 @end

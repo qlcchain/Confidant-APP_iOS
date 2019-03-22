@@ -487,6 +487,8 @@
         [SocketMessageUtil handleGroupVerifyPush:receiveDic];
     } else if ([action isEqualToString:Action_GroupVerify]) { // 66.    邀请用户入群审核处理
         [SocketMessageUtil handleGroupVerify:receiveDic];
+    } else if ([action isEqualToString:Action_PullTmpAccount]) { // 拉取临时通信二维码
+        [SocketMessageUtil handlePullTmpAccount:receiveDic];
     }
 }
 
@@ -1402,6 +1404,20 @@
         }
     }
 }
+
++ (void)handlePullTmpAccount:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PullTmpAccount_Success_Noti object:receiveDic[@"params"]];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"Other errors"];
+        }
+    }
+}
+
 
 #pragma mark --------------群组 ----------------
 

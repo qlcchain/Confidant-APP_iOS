@@ -48,9 +48,10 @@
     
 }
 #pragma mark -派生类拉取用户
-+ (void) sendPullUserList
-{
-    [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
++ (void) sendPullUserListWithShowLoad:(BOOL)show {
+    if (show) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
     NSDictionary *params = @{@"Action":Action_PullUserList,@"UserType":@(0),@"UserNum":@(0),@"UserStartSN":@"0"};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
@@ -307,6 +308,17 @@
     NSDictionary *params = @{@"Action":Action_UpdateAvatar,@"Uid":userM.userId?:@"",@"Fid":Fid,@"Md5":Md5};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
+
+#pragma mark - 拉取临时通信二维码
++ (void)sendPullTmpAccountWithShowHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_PullTmpAccount,@"UserId":userM.userId?:@""};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+
 
 
 
