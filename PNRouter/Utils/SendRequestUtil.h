@@ -15,10 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn;
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code;
 + (void) sendUserLoginWithPass:(NSString *) usersn userid:(NSString *) userid showHud:(BOOL) showHud;
-+ (void) sendPullUserList;
++ (void) sendPullUserListWithShowLoad:(BOOL)show;
 + (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg;
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId;
-+ (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic code:(NSString *) code;
++ (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic;
 + (void) sendRedMsgWithFriendId:(NSString *) friendId msgid:(NSString *) msgId;
 + (void) sendUpdateWithNickName:(NSString *) nickName;
 + (void) sendLogOut;
@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendDelFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName showHud:(BOOL)showHud;
 + (void)sendPullSharedFriendWithUserId:(NSString *)UserId showHud:(BOOL)showHud;
 + (void)sendShareFileWithFromId:(NSString *)FromId ToId:(NSString *)ToId FileName:(NSString *)FileName DstKey:(NSString *)DstKey showHud:(BOOL)showHud;
+
++ (void)sendPullTmpAccountWithShowHud:(BOOL)showHud;
 
 + (void)sendGetDiskTotalInfoWithShowHud:(BOOL)showHud;
 + (void)sendGetDiskDetailInfoWithSlot:(NSNumber *)Slot showHud:(BOOL)showHud;

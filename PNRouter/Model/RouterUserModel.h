@@ -13,8 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RouterUserModel : BBaseModel
 
 @property (nonatomic , strong) NSString *UserSN;
-// 用户类型：0：所有账户类型1.管理派生账户；2.普通账户；3.临时账户；
-@property (nonatomic , assign) NSInteger UserType;
+@property (nonatomic , assign) NSInteger UserType; // 用户类型：0：所有账户类型1.管理派生账户；2.普通账户；3.临时账户；
 @property (nonatomic , assign) NSInteger Active;
 @property (nonatomic , strong) NSString *NickName;
 @property (nonatomic , strong) NSString *IdentifyCode;

@@ -262,7 +262,7 @@
 		730605622179B3C0005A0E13 /* MediaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 730605612179B3C0005A0E13 /* MediaTableViewCell.m */; };
 		73121A68219AD4FC00510B48 /* RegiterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A66219AD4FC00510B48 /* RegiterViewController.m */; };
 		73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73121A67219AD4FC00510B48 /* RegiterViewController.xib */; };
-		73121A6C219BB59B00510B48 /* RoutherConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6B219BB59B00510B48 /* RoutherConfig.m */; };
+		73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6B219BB59B00510B48 /* RouterConfig.m */; };
 		73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6E219BF4E900510B48 /* NSString+SHA256.m */; };
 		73121A74219C26E900510B48 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A72219C26E900510B48 /* LoginViewController.m */; };
 		73121A75219C26E900510B48 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73121A73219C26E900510B48 /* LoginViewController.xib */; };
@@ -1043,8 +1043,8 @@
 		73121A65219AD4FC00510B48 /* RegiterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegiterViewController.h; sourceTree = "<group>"; };
 		73121A66219AD4FC00510B48 /* RegiterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegiterViewController.m; sourceTree = "<group>"; };
 		73121A67219AD4FC00510B48 /* RegiterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegiterViewController.xib; sourceTree = "<group>"; };
-		73121A6A219BB59B00510B48 /* RoutherConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutherConfig.h; sourceTree = "<group>"; };
-		73121A6B219BB59B00510B48 /* RoutherConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoutherConfig.m; sourceTree = "<group>"; };
+		73121A6A219BB59B00510B48 /* RouterConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterConfig.h; sourceTree = "<group>"; };
+		73121A6B219BB59B00510B48 /* RouterConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterConfig.m; sourceTree = "<group>"; };
 		73121A6D219BF4E900510B48 /* NSString+SHA256.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SHA256.h"; sourceTree = "<group>"; };
 		73121A6E219BF4E900510B48 /* NSString+SHA256.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+SHA256.m"; sourceTree = "<group>"; };
 		73121A71219C26E900510B48 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -3022,8 +3022,8 @@
 				73001A2221912890003D07CC /* RSAUtil.m */,
 				73C4E358219AC8B400EEFAC1 /* SendRequestUtil.h */,
 				73C4E359219AC8B400EEFAC1 /* SendRequestUtil.m */,
-				73121A6A219BB59B00510B48 /* RoutherConfig.h */,
-				73121A6B219BB59B00510B48 /* RoutherConfig.m */,
+				73121A6A219BB59B00510B48 /* RouterConfig.h */,
+				73121A6B219BB59B00510B48 /* RouterConfig.m */,
 				7386779F21AFDC24003A8568 /* SendToxRequestUtil.h */,
 				738677A021AFDC24003A8568 /* SendToxRequestUtil.m */,
 				738677A221B168C7003A8568 /* MutManagerUtil.h */,
@@ -3931,7 +3931,7 @@
 				73121A68219AD4FC00510B48 /* RegiterViewController.m in Sources */,
 				737882A821ACF05E0033A189 /* SSLSecurity.swift in Sources */,
 				583BF94421F70FAC0078A2A8 /* TaskOngoingCell.m in Sources */,
-				73121A6C219BB59B00510B48 /* RoutherConfig.m in Sources */,
+				73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */,
 				737883FF21ACF2970033A189 /* OCTCall.m in Sources */,
 				7378840821ACF2970033A189 /* OCTObject.m in Sources */,
 				5825A24721FB0B8E00E6194B /* FileListModel.m in Sources */,

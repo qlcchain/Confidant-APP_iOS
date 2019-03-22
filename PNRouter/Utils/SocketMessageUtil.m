@@ -36,7 +36,7 @@
 #import "EntryModel.h"
 #import "LibsodiumUtil.h"
 #import "FileDownUtil.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "ChatModel.h"
 #import "SendCacheChatUtil.h"
 #import "UserHeadUtil.h"
@@ -487,6 +487,8 @@
         [SocketMessageUtil handleGroupVerifyPush:receiveDic];
     } else if ([action isEqualToString:Action_GroupVerify]) { // 66.    邀请用户入群审核处理
         [SocketMessageUtil handleGroupVerify:receiveDic];
+    } else if ([action isEqualToString:Action_PullTmpAccount]) { // 拉取临时通信二维码
+        [SocketMessageUtil handlePullTmpAccount:receiveDic];
     }
 }
 
@@ -1403,6 +1405,20 @@
     }
 }
 
++ (void)handlePullTmpAccount:(NSDictionary *)receiveDic {
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PullTmpAccount_Success_Noti object:receiveDic[@"params"]];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"Other errors"];
+        }
+    }
+}
+
+
 #pragma mark --------------群组 ----------------
 
 + (void)handleCreateGroup:(NSDictionary *)receiveDic {
@@ -1917,13 +1933,13 @@
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"Load..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"Name":[nickName base64EncodedString]};
+    NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"Name":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark -新用户注册
 + (void) sendUserRegisterSn:(NSString *) sn code:(NSString *) code nickName:(NSString *) nickName
 {
-    NSDictionary *params = @{@"Action":Action_Register,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":sn,@"IdentifyCode":code,@"Sign":@"",@"UserKey":[EntryModel getShareObject].publicKey,@"NickName":[nickName base64EncodedString]};
+    NSDictionary *params = @{@"Action":Action_Register,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":sn,@"IdentifyCode":code,@"Sign":@"",@"UserKey":[EntryModel getShareObject].publicKey,@"NickName":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 

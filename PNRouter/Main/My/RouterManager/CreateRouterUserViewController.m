@@ -13,6 +13,7 @@
 
 
 @interface CreateRouterUserViewController ()<UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *nameTF;
 @property (weak, nonatomic) IBOutlet UITextField *codeTF;
 @property (weak, nonatomic) IBOutlet UIButton *createBtn;
@@ -55,7 +56,7 @@
         }
     }
    
-    [SendRequestUtil createRouterUserWithRouterId:self.rid mnemonic:[_nameTF.text.trim base64EncodedString] code:_codeTF.text.trim?:@""];
+    [SendRequestUtil createRouterUserWithRouterId:self.rid mnemonic:[_nameTF.text.trim base64EncodedString]];
 }
 
 - (void)viewDidLoad {

@@ -18,7 +18,7 @@
 #include <sys/socket.h>
 #import <AFNetworking/AFNetworking.h>
 #import <AVFoundation/AVFoundation.h>
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "NSDateFormatter+Category.h"
 #import "ChatListDataUtil.h"
 #import "FriendModel.h"
@@ -109,8 +109,8 @@
 + (NSString *) connectUrl
 {
     NSString *connectURL = @"";
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
-        connectURL = [NSString stringWithFormat:@"https://%@:%@",[RoutherConfig getRoutherConfig].currentRouterIp,[RoutherConfig getRoutherConfig].currentRouterPort];
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
+        connectURL = [NSString stringWithFormat:@"https://%@:%@",[RouterConfig getRouterConfig].currentRouterIp,[RouterConfig getRouterConfig].currentRouterPort];
     }
     return connectURL;
 }
@@ -118,8 +118,8 @@
 + (NSString *) connectFileUrl
 {
     NSString *connectURL = @"";
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
-        connectURL = [NSString stringWithFormat:@"https://%@:%d",[RoutherConfig getRoutherConfig].currentRouterIp,[[RoutherConfig getRoutherConfig].currentRouterPort integerValue]+1];
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
+        connectURL = [NSString stringWithFormat:@"https://%@:%d",[RouterConfig getRouterConfig].currentRouterIp,[[RouterConfig getRouterConfig].currentRouterPort integerValue]+1];
     }
     return connectURL;
 }
@@ -332,7 +332,7 @@
     
 }
 + (BOOL) isSocketConnect {
-    return  ![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString];
+    return  ![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString];
 }
 
 + (NSString *)getIPAddress {

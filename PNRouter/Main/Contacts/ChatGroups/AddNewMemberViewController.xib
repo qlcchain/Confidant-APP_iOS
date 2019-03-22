@@ -78,6 +78,9 @@
                             <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="R6d-AP-OJA"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l9x-mH-0Xh">
                             <rect key="frame" x="0.0" y="51.5" width="343" height="0.5"/>
@@ -114,19 +117,19 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whA-cu-0Qx">
-                    <rect key="frame" x="55" y="336" width="265" height="30"/>
+                    <rect key="frame" x="85.5" y="336" width="204.5" height="30"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send the Temporary Account QR Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eW-CA-CcM">
-                            <rect key="frame" x="0.0" y="0.0" width="245" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temporary Account QR Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eW-CA-CcM">
+                            <rect key="frame" x="0.0" y="0.0" width="184.5" height="30"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                             <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="right_jd" translatesAutoresizingMaskIntoConstraints="NO" id="VJh-8t-AxY">
-                            <rect key="frame" x="245" y="9" width="20" height="12"/>
+                            <rect key="frame" x="184.5" y="9" width="20" height="12"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucp-I7-d3z">
-                            <rect key="frame" x="0.0" y="0.0" width="265" height="30"/>
+                            <rect key="frame" x="0.0" y="0.0" width="204.5" height="30"/>
                             <connections>
                                 <action selector="qrCodeAction:" destination="-1" eventType="touchUpInside" id="5zP-ZJ-7cm"/>
                             </connections>

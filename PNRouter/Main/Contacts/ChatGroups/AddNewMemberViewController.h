@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AddNewMemberViewController : PNBaseViewController
 
+- (instancetype)initWithRid:(NSString *)rid;
+
 @end
 
 NS_ASSUME_NONNULL_END

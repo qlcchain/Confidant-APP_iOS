@@ -10,7 +10,7 @@
 #import "SendRequestUtil.h"
 #import "NSString+SHA256.h"
 #import "AccountManagementViewController.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "PNRouter-Swift.h"
 #import "SystemUtil.h"
 #import "RouterAliasViewController.h"
@@ -71,7 +71,7 @@
 }
 
 - (void)sendLogin {
-    NSString *mac = [RoutherConfig getRoutherConfig].currentRouterMAC?:@"";
+    NSString *mac = [RouterConfig getRouterConfig].currentRouterMAC?:@"";
     NSString *loginKey = [_devicePWTF.text.trim SHA256];
     [SendRequestUtil sendRouterLoginWithMac:mac loginKey:loginKey showHud:YES];
 }
@@ -80,8 +80,8 @@
 
 - (IBAction)backAction:(id)sender {
     AppD.isLoginMac = NO;
-    [RoutherConfig getRoutherConfig].currentRouterIp = @"";
-    [RoutherConfig getRoutherConfig].currentRouterMAC = @"";
+    [RouterConfig getRouterConfig].currentRouterIp = @"";
+    [RouterConfig getRouterConfig].currentRouterMAC = @"";
     [[NSNotificationCenter defaultCenter] postNotificationName:CANCEL_LOGINMAC_NOTI object:nil];
    [self leftNavBarItemPressedWithPop:NO];
 }
@@ -108,7 +108,7 @@
     NSString *UserSn = receiveDic[@"params"][@"UserSn"];
     NSString *RouterName = receiveDic[@"params"][@"RouterName"];
 
-    [RoutherConfig getRoutherConfig].currentRouterSn = UserSn;
+    [RouterConfig getRouterConfig].currentRouterSn = UserSn;
 
     AccountManagementViewController *vc = [[AccountManagementViewController alloc] init];
     vc.RouterId = RouterId;
@@ -126,7 +126,7 @@
     NSString *IdentifyCode = receiveDic[@"params"][@"IdentifyCode"];
     NSString *UserSn = receiveDic[@"params"][@"UserSn"];
     
-    [RoutherConfig getRoutherConfig].currentRouterSn = UserSn;
+    [RouterConfig getRouterConfig].currentRouterSn = UserSn;
     
     RouterAliasViewController *vc = [[RouterAliasViewController alloc] init];
     vc.RouterId = RouterId;

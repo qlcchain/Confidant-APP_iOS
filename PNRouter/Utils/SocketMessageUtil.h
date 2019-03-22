@@ -57,6 +57,8 @@ static NSString *Action_ResetRouterName = @"ResetRouterName";
 static NSString *Action_UploadAvatar = @"UploadAvatar";
 static NSString *Action_UpdateAvatar = @"UpdateAvatar";
 static NSString *Action_FileRename = @"FileRename";
+static NSString *Action_PullTmpAccount = @"PullTmpAccount";
+
 // 群组的相关action
 static NSString *Action_CreateGroup = @"CreateGroup";
 static NSString *Action_GroupInvitePush = @"GroupInvitePush";

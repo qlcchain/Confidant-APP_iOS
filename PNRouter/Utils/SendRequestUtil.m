@@ -8,7 +8,7 @@
 
 #import "SendRequestUtil.h"
 #import "SocketMessageUtil.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "UserModel.h"
 #import "NSString+Base64.h"
 #import "RSAModel.h"
@@ -30,7 +30,7 @@
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code
 {
     [AppD.window showHudInView:AppD.window hint:@"Register..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
-    NSDictionary *params = @{@"Action":@"Register",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@"",@"Sign":@"",@"Pubkey":[EntryModel getShareObject].signPublicKey,@"NickName":userName};
+    NSDictionary *params = @{@"Action":@"Register",@"RouteId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":[RouterConfig getRouterConfig].currentRouterSn?:@"",@"Sign":@"",@"Pubkey":[EntryModel getShareObject].signPublicKey,@"NickName":userName};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark - 用户登陆
@@ -39,27 +39,28 @@
     if (showHud) {
        [AppD.window showHudInView:AppD.window hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSString *loginUsersn = [RoutherConfig getRoutherConfig].currentRouterSn;
+    NSString *loginUsersn = [RouterConfig getRouterConfig].currentRouterSn;
     if (![[NSString getNotNullValue:usersn] isEmptyString]) {
         loginUsersn = usersn;
     }
-    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":loginUsersn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion],@"NickName":[[UserModel getUserModel].username base64EncodedString]};
+    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":loginUsersn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion],@"NickName":[[UserModel getUserModel].username base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
     
 }
 #pragma mark -派生类拉取用户
-+ (void) sendPullUserList
-{
-    [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
++ (void) sendPullUserListWithShowLoad:(BOOL)show {
+    if (show) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
     NSDictionary *params = @{@"Action":Action_PullUserList,@"UserType":@(0),@"UserNum":@(0),@"UserStartSN":@"0"};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 #pragma mark -创建帐户
-+ (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic code:(NSString *) code
++ (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic
 {
     [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":@"CreateNormalUser",@"RouterId":routerId,@"AdminUserId":userM.userId,@"Mnemonic":mnemonic,@"IdentifyCode":code};
+    NSDictionary *params = @{@"Action":Action_CreateNormalUser,@"RouterId":routerId,@"AdminUserId":userM.userId,@"Mnemonic":mnemonic,@"IdentifyCode":@""};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 + (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg
@@ -88,7 +89,7 @@
 + (void) sendLogOut
 {
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":@"LogOut",@"UserId":userM.userId,@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"UserSn":[RoutherConfig getRoutherConfig].currentRouterSn?:@""};
+    NSDictionary *params = @{@"Action":@"LogOut",@"UserId":userM.userId,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":[RouterConfig getRouterConfig].currentRouterSn?:@""};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 #pragma mark -修改昵称
@@ -116,9 +117,9 @@
 + (void) sendRegidReqeust
 {
     if (AppD.regId && ![AppD.regId isEmptyString]) {
-      //  NSDictionary *params = @{@"os":@"1",@"appversion":APP_Version,@"regid":AppD.regId,@"topicid":@"",@"routerid":[RoutherConfig getRoutherConfig].currentRouterToxid,@"userid":[UserModel getUserModel].userId?:@"",@"usersn":[UserModel getUserModel].userSn?:@""};
+      //  NSDictionary *params = @{@"os":@"1",@"appversion":APP_Version,@"regid":AppD.regId,@"topicid":@"",@"routerid":[RoutherConfig getRouterConfig].currentRouterToxid,@"userid":[UserModel getUserModel].userId?:@"",@"usersn":[UserModel getUserModel].userSn?:@""};
         
-         NSDictionary *params = @{@"os":@"1",@"appversion":APP_Version,@"regid":AppD.regId,@"routerid":[RoutherConfig getRoutherConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
+         NSDictionary *params = @{@"os":@"1",@"appversion":APP_Version,@"regid":AppD.regId,@"routerid":[RouterConfig getRouterConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
        
         [AFHTTPClientV2 requestWithBaseURLStr:PUSH_ONLINE_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
             int retCode = [responseObject[@"Ret"] intValue];
@@ -308,6 +309,17 @@
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 
+#pragma mark - 拉取临时通信二维码
++ (void)sendPullTmpAccountWithShowHud:(BOOL)showHud {
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_PullTmpAccount,@"UserId":userM.userId?:@""};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
+
+
 
 
 #pragma mark ------------group chat---------------
@@ -326,7 +338,7 @@
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_GroupListPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"TargetNum":@"0",@"StartId":@"0"};
+    NSDictionary *params = @{@"Action":Action_GroupListPull,@"UserId":userM.userId?:@"",@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"TargetNum":@"0",@"StartId":@"0"};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 
@@ -336,7 +348,7 @@
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_GroupUserPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":GId,@"TargetNum":TargetNum,@"StartId":StartId};
+    NSDictionary *params = @{@"Action":Action_GroupUserPull,@"UserId":userM.userId?:@"",@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"GId":GId,@"TargetNum":TargetNum,@"StartId":StartId};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark ---拉取好友进群
@@ -359,7 +371,7 @@
 + (void) sendPullGroupMessageListWithGId:(NSString *) gid MsgType:(NSString *) msgType msgStartId:(NSString *) msgStartId msgNum:(NSString *) msgNum
 {
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RoutherConfig getRoutherConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum,@"MsgStartId":msgStartId};
+    NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum,@"MsgStartId":msgStartId};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark ---群组发送文件成功

@@ -13,7 +13,8 @@
 #import "ContactsHeadView.h"
 #import "NSString+Base64.h"
 #import "ContactsCell.h"
-#import "CreateRouterUserViewController.h"
+//#import "CreateRouterUserViewController.h"
+#import "AddNewMemberViewController.h"
 #import "RouterUserCodeViewController.h"
 #import "RouterModel.h"
 #import <MJRefresh/MJRefresh.h>
@@ -93,19 +94,27 @@
     [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
     [_tableV registerNib:[UINib nibWithNibName:ContactsCellReuse bundle:nil] forCellReuseIdentifier:ContactsCellReuse];
     //[self.dataArray addObject:@[@"Create user accounts",@"Create temporary accounts"]];
-    [self.dataArray addObject:@[@"Create user accounts"]];
+    [self.dataArray addObject:@[@"Create User Accounts"]];
     [self addObserver];
-    // 拉取用户
-    [SendRequestUtil sendPullUserList];
+    
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // 拉取用户
+    [SendRequestUtil sendPullUserListWithShowLoad:NO];
+}
+
 - (void) refreshHeaderAction {
-     [SendRequestUtil sendPullUserList];
+    [SendRequestUtil sendPullUserListWithShowLoad:YES];
 }
 
 #pragma mark - 直接添加监听方法
 -(void)addTargetMethod{
     [_searchTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
 }
+
 - (void) textFieldTextChange:(UITextField *) tf
 {
     if ([tf.text.trim isEmptyString]) {
@@ -113,7 +122,7 @@
     } else {
         isSearch = YES;
         [self.searchDataArray removeAllObjects];
-        [self.searchDataArray addObject:@[@"Create user accounts"]];
+        [self.searchDataArray addObject:@[@"Create User Accounts"]];
         
         __block NSMutableArray *ptArray = [NSMutableArray array];
         __block NSMutableArray *tempArray = [NSMutableArray array];
@@ -231,9 +240,10 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
-        CreateRouterUserViewController *vc = [[CreateRouterUserViewController alloc] initWithRid:self.rid];
-        vc.userType = indexPath.row;
-        [self.navigationController pushViewController:vc animated:YES];
+        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:self.rid];
+        [self presentModalVC:vc animated:YES];
+//        vc.userType = indexPath.row;
+//        [self.navigationController pushViewController:vc animated:YES];
     } else {
         if (indexPath.section == 1) {
             RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];;
@@ -248,22 +258,6 @@
             vc.routerUserModel = model;
             vc.userManageType = 1;
             [self.navigationController pushViewController:vc animated:YES];
-            /*
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"Temporary accounts" message:@"fixed two-dimensional code sharing out, users scan the two-dimensional code can automatically generate a temporary account, login, temporary account does not support recovery, default to a router to support up to 20 temporary accounts." preferredStyle:UIAlertControllerStyleAlert];
-            
-            @weakify_self
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                RouterUserModel *model = self->isSearch? weakSelf.searchDataArray[indexPath.section][indexPath.row] :  weakSelf.dataArray[indexPath.section][indexPath.row];;
-                RouterUserCodeViewController *vc = [[RouterUserCodeViewController alloc] init];
-                vc.routerUserModel = model;
-                [weakSelf.navigationController pushViewController:vc animated:YES];
-            }];
-            UIAlertAction *alertCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            }];
-            [alertVC addAction:okAction];
-            [alertVC addAction:alertCancel];
-            [self presentViewController:alertVC animated:YES completion:nil];
-             */
         }
         
     }
@@ -278,7 +272,7 @@
         [self.dataArray removeAllObjects];
         userCount = 0;
         tempCount = 0;
-        [self.dataArray addObject:@[@"Create user accounts"]];
+        [self.dataArray addObject:@[@"Create User Accounts"]];
     }
     
     NSArray *playod = noti.object;

@@ -21,7 +21,7 @@
 #import "VPNFileInputView.h"
 #import "ReviceRadio.h"
 #import "RouterModel.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import <Bugly/Bugly.h>
 #import "MiPushSDK.h"
 #import "RunInBackground.h"
@@ -245,7 +245,7 @@
         AppD.manager = nil;
     }
     // 设置当前路由
-   // [RouterModel updateRouterConnectStatusWithSn:[RoutherConfig getRoutherConfig].currentRouterSn];
+   // [RouterModel updateRouterConnectStatusWithSn:[RoutherConfig getRouterConfig].currentRouterSn];
     // 我们要把系统windown的rootViewController替换掉
     PNTabbarViewController  *tabbarC = [[PNTabbarViewController alloc] initWithManager:manager];
     [AppD addTransitionAnimation];

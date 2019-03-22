@@ -15,7 +15,7 @@
 #import "GroupListCell.h"
 #import "NSString+Base64.h"
 #import "ChatListDataUtil.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "FriendModel.h"
 #import "AddGroupMemberViewController.h"
 #import "GroupChatViewController.h"
@@ -46,7 +46,7 @@
     
     NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
     // 过滤非当前路由的好友
-    NSString *currentToxid = [RoutherConfig getRoutherConfig].currentRouterToxid;
+    NSString *currentToxid = [RouterConfig getRouterConfig].currentRouterToxid;
     NSMutableArray *inputArr = [NSMutableArray array];
     [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;

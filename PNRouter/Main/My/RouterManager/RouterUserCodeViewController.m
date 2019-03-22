@@ -76,10 +76,10 @@
     [_UserHeadBtn setImage:defaultImg forState:UIControlStateNormal];
 //    [_UserHeadBtn setTitle:[StringUtil getUserNameFirstWithName:self.routerUserModel.NickName] forState:UIControlStateNormal];
     if (self.routerUserModel.UserType == 2) {
-        _lblNavTitle.text = @"User details";
+        _lblNavTitle.text = @"User Details";
         _delUserBtn.hidden = YES;
     } else {
-        _lblNavTitle.text = @"Temporary User details";
+        _lblNavTitle.text = @"Temporary User Details";
         _delUserBtn.hidden = NO;
     }
     if (self.routerUserModel.Active == 1) {

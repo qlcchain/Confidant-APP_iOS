@@ -19,7 +19,7 @@
 #import "RemoveGroupMemberViewController.h"
 #import "AddGroupMemberViewController.h"
 #import "ChatListDataUtil.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "UserModel.h"
 
 @interface CreateGroupChatViewController ()<UITextFieldDelegate>
@@ -191,7 +191,7 @@
 - (void)jumpToAddGroupMember {
     NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
     // 过滤非当前路由的好友
-    NSString *currentToxid = [RoutherConfig getRoutherConfig].currentRouterToxid;
+    NSString *currentToxid = [RouterConfig getRouterConfig].currentRouterToxid;
     NSMutableArray *memberArr = [NSMutableArray array];
     [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;
@@ -202,7 +202,7 @@
     NSMutableArray *originArr = [NSMutableArray array];
     [self.persons enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;
-        [originArr addObject:model.signPublicKey];
+        [originArr addObject:model];
     }];
     AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:memberArr originArr:originArr type:AddGroupMemberTypeInCreate];
     @weakify_self

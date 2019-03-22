@@ -11,7 +11,7 @@
 #import "NSString+SHA256.h"
 #import "NSString+Base64.h"
 #import "SendRequestUtil.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "LoginViewController.h"
 #import "RouterModel.h"
 #import "UserModel.h"
@@ -91,7 +91,7 @@
         return;
     }
     
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString])
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString])
     {
         NSString *shaPass = [_passwordTF.text.trim SHA256];
         NSString *userName = [_userNameTF.text.trim base64EncodedString];
@@ -123,9 +123,9 @@
 {
     [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
     if (isMac) {
-        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterMAC];
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterMAC];
     } else {
-        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
     }
     
 }
@@ -187,7 +187,7 @@
 - (void) connectSocketWithIsShowHud:(BOOL) isShow
 {
     // 当前是在局域网
-    if (![[RoutherConfig getRoutherConfig].currentRouterIp isEmptyString])
+    if (![[RouterConfig getRouterConfig].currentRouterIp isEmptyString])
     {
         AppD.manager = nil;
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
@@ -218,11 +218,11 @@
 
 - (void) addRouterFriend
 {
-    if (![AppD.manager.friends friendIsExitWithFriend:[RoutherConfig getRoutherConfig].currentRouterToxid]) {
+    if (![AppD.manager.friends friendIsExitWithFriend:[RouterConfig getRouterConfig].currentRouterToxid]) {
         // 添加好友
         [self showConnectServerLoad];
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            BOOL result = [AppD.manager.friends sendFriendRequestToAddress:[RoutherConfig getRoutherConfig].currentRouterToxid message:@"" error:nil];
+            BOOL result = [AppD.manager.friends sendFriendRequestToAddress:[RouterConfig getRouterConfig].currentRouterToxid message:@"" error:nil];
             if (!result) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self hideConnectServerLoad];
@@ -250,7 +250,7 @@
         [SendRequestUtil sendUserRegisterWithUserPass:shaPass username:userName code:_codeTF.text.trim?:@""];
     } else if (isFind) {
         isFind = NO;
-        [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
+        [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
     }
 }
 
@@ -282,8 +282,8 @@
     NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
      NSString *shaPass = _passwordTF.text.trim;
     // 保存路由
-    [RouterModel addRouterWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn userid:userid];
-    [RouterModel updateRouterPassWithSn:[RoutherConfig getRoutherConfig].currentRouterSn pass:shaPass];
+    [RouterModel addRouterWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn userid:userid];
+    [RouterModel updateRouterPassWithSn:[RouterConfig getRouterConfig].currentRouterSn pass:shaPass];
     // 保存用户
     [UserModel createUserLocalWithName:[_userNameTF.text.trim base64EncodedString] userid:userid version:dataFileVersion filePay:dataFilePay userpass:shaPass userSn:userSn hashid:hashid];
     
@@ -312,7 +312,7 @@
         // 发送注册请求
         [SendRequestUtil sendUserRegisterWithUserPass:shaPass username:userName code:_codeTF.text.trim?:@""];
     } else {
-         [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
+         [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
     }
    
 }
@@ -363,8 +363,8 @@
 }
 - (void) gbFinashNoti:(NSNotification *) noti
 {
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
-        if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterMAC] isEmptyString]) {
+        if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
             [self.view showHint:@"Unable to connect to server."];
         } else {
             [self jumpToLoginDevice];

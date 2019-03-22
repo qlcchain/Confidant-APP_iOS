@@ -15,7 +15,7 @@
 #import "AESCipher.h"
 #import "LoginViewController.h"
 #import "RegiterViewController.h"
-#import "RoutherConfig.h"
+#import "RouterConfig.h"
 #import "PNRouter-Swift.h"
 #import "RouterModel.h"
 #import "ReviceRadio.h"
@@ -114,9 +114,9 @@
 - (void)scanSuccessfulWithIsMacd:(BOOL)isMac {
     [AppD.window showHudInView:AppD.window hint:@"Check Circle..."];
     if (isMac) {
-         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterMAC];
+         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterMAC];
     } else {
-        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRoutherConfig].currentRouterToxid];
+        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
     }
 }
 
@@ -140,7 +140,7 @@
     }
     
     [AppD.window hideHud];
-    [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
+    [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
 }
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
@@ -155,8 +155,8 @@
 
 - (void) gbFinashNoti:(NSNotification *) noti
 {
-    if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterMAC] isEmptyString]) {
-        if ([[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString]) {
+    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterMAC] isEmptyString]) {
+        if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
             [self.view showHint:@"Unable to connect to server."];
         } else {
             [self jumpToLoginDevice];
@@ -164,7 +164,7 @@
     } else {
         isFind = YES;
         // 当前是在局域网
-        if (![[NSString getNotNullValue:[RoutherConfig getRoutherConfig].currentRouterIp] isEmptyString])
+        if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString])
         {
             AppD.manager = nil;
             [self connectSocket];
@@ -183,13 +183,13 @@
 - (void)toxLoginSuccessWithManager:(id<OCTManager>)manager
 {
     
-  //  [RoutherConfig getRoutherConfig].currentRouterToxid = @"A1DA6FFE24611BDE1D14B55B02F180961A3DFB8C9C9B2A572EB274896B7EAC30B4CDCDCE68B8";
+  //  [RoutherConfig getRouterConfig].currentRouterToxid = @"A1DA6FFE24611BDE1D14B55B02F180961A3DFB8C9C9B2A572EB274896B7EAC30B4CDCDCE68B8";
     
-    if (![manager.friends friendIsExitWithFriend:[RoutherConfig getRoutherConfig].currentRouterToxid]) {
+    if (![manager.friends friendIsExitWithFriend:[RouterConfig getRouterConfig].currentRouterToxid]) {
         // 添加好友
         [self showConnectServerLoad];
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            BOOL result = [manager.friends sendFriendRequestToAddress:[RoutherConfig getRoutherConfig].currentRouterToxid message:@"" error:nil];
+            BOOL result = [manager.friends sendFriendRequestToAddress:[RouterConfig getRouterConfig].currentRouterToxid message:@"" error:nil];
             if (!result) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self hideConnectServerLoad];
@@ -215,7 +215,7 @@
 {
     if (isFind) {
         isFind = NO;
-        [SendRequestUtil sendUserFindWithToxid:[RoutherConfig getRoutherConfig].currentRouterToxid usesn:[RoutherConfig getRoutherConfig].currentRouterSn];
+        [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
     }
 }
 
