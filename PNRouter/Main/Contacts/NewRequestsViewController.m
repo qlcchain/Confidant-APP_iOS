@@ -165,7 +165,7 @@
     [self.addContactsSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;
         if (model.isUnRead) {
-            model.isUnRead = YES;
+            model.isUnRead = NO;
             [model bg_saveOrUpdate];
         }
     }];
@@ -180,7 +180,7 @@
     [self.groupChatsSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         GroupVerifyModel *model = obj;
         if (model.isUnRead) {
-            model.isUnRead = YES;
+            model.isUnRead = NO;
             [model bg_saveOrUpdate];
         }
     }];
