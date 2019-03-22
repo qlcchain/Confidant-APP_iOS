@@ -1809,6 +1809,10 @@
     
     if (retCode == 0) {
         GroupVerifyModel *model = [GroupVerifyModel getObjectWithKeyValues:receiveDic[@"params"]];
+        NSArray *finfAlls = [GroupVerifyModel bg_find:Group_New_Requests_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"From"),bg_sqlValue(model.From),bg_sqlKey(@"To"),bg_sqlValue(model.To),bg_sqlKey(@"GId"),bg_sqlValue(model.GId)]];
+        if (finfAlls && finfAlls.count > 0) { // 如果数据库有直接更新
+            model = finfAlls.firstObject;
+        }
         model.requestTime = [NSDate date];
         model.isUnRead = YES;
         AppD.showNewGroupAddRequestRedDot = YES;
