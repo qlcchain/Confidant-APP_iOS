@@ -142,6 +142,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userHeadDownloadSuccess:) name:USER_HEAD_DOWN_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupFileSendSuccess:) name:GROUP_FILE_SEND_SUCCESS_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupFileSendFaield:) name:GROUP_FILE_SEND_FAIELD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxDownFileSuccess:) name:REVER_GROUP_FILE_PULL_SUCCESS_NOTI object:nil];
+    
     
     
 }
@@ -492,7 +494,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         NSString *filePath = [[SystemUtil getTempBaseFilePath:toId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:fileName]];
         
         if ([fileData writeToFile:filePath atomically:YES]) {
-            NSDictionary *parames = @{@"Action":@"GroupSendFileDone",@"FromId":[UserConfig getShareObject].userId,@"GId":toId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"DstKey":dsKey,@"FileId":messageId,@"FileInfo":fileInfo};
+            NSDictionary *parames = @{@"Action":@"GroupSendFileDone",@"UserId":[UserConfig getShareObject].userId,@"GId":toId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"DstKey":dsKey,@"FileId":messageId,@"FileInfo":fileInfo};
             [SendToxRequestUtil sendFileWithFilePath:filePath parames:parames];
           //  [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
         }
@@ -1162,7 +1164,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (model.msgType >=1 && model.msgType !=5 && model.msgType !=4) { // 图片
         model.msgState = CDMessageStateDownloading;
     }
-    if (payloadModel.FileName && payloadModel.FileName >0) {
+    if (payloadModel.FileName && payloadModel.FileName.length >0) {
         model.fileName = [Base58Util Base58DecodeWithCodeName:payloadModel.FileName];
     }
     model.fileMd5 = payloadModel.FileMD5;
@@ -1343,6 +1345,59 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 
+#pragma mark ---tox下载文件成功
+- (void) toxDownFileSuccess:(NSNotification *) noti
+{
+    NSArray *array = noti.object;
+    if (array && array.count>0) {
+        __block NSString *fileName = [Base58Util Base58DecodeWithCodeName:array[1]];
+        @weakify_self
+        [weakSelf.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj.fileName isEqualToString:fileName]) { // 收到tox文件
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    
+                    if (array.count > 2) {
+                        obj.msgState = CDMessageStateDownloadFaild;
+                        obj.isDown = NO;
+                        [weakSelf.listView updateMessage:obj];
+                        *stop = YES;
+                        NSLog(@"下载文件失败! ");
+                    } else {
+                        NSString *tempPath = [[SystemUtil getTempBaseFilePath:array[0]] stringByAppendingPathComponent:array[1]];
+                        tempPath = [tempPath stringByAppendingString:[NSString stringWithFormat:@"%d",[array[2] intValue]]];
+                        NSString *docPath = [[SystemUtil getBaseFilePath:weakSelf.groupModel.GId] stringByAppendingPathComponent:fileName];
+                        if ([SystemUtil filePathisExist:docPath]) {
+                            [SystemUtil removeDocmentFilePath:docPath];
+                        }
+                        NSData *fileData = [NSData dataWithContentsOfFile:tempPath];
+                        NSString *msgkey = @"";
+                        if (obj.isLeft) {
+                            msgkey = obj.dskey;
+                        } else {
+                            msgkey = obj.srckey;
+                        }
+                        
+                        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
+                        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                        
+                        fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                        [SystemUtil removeDocmentFilePath:tempPath];
+                        
+                        if ([fileData writeToFile:docPath atomically:YES]) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                obj.msgState = CDMessageStateNormal;
+                                obj.isDown = NO;
+                                [weakSelf.listView updateMessage:obj];
+                                *stop = YES;
+                                NSLog(@"下载文件成功! filePath = %@",docPath);
+                            });
+                        }
+                    }
+                });
+            }
+        }];
+    }
+}
 
 - (void)userHeadDownloadSuccess:(NSNotification *)noti {
     [_listView reloadData];

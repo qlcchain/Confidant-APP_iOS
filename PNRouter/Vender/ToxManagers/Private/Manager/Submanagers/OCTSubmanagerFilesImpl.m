@@ -195,7 +195,16 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                                                                                      fileId:nil
                                                                                    fileName:fileName
                                                                                       error:&error];
-
+    
+    if (parames) {
+        [[ChatListDataUtil getShareObject].fileParames setObject:parames forKey:[NSString stringWithFormat:@"%d",fileNumber]];
+        
+        //         NSDictionary *fileNumberValues = [[ChatListDataUtil getShareObject].fileParames objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
+        //
+        //        NSLog(@"----------");
+    }
+   
+    
     if (fileNumber == kOCTToxFileNumberFailure) {
         NSLog(@"cannot send file %@", error);
         if (failureBlock) {
@@ -221,7 +230,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
             }
         }
         
-        [[ChatListDataUtil getShareObject].fileParames setObject:parames forKey:[NSString stringWithFormat:@"%d",fileNumber]];
+        
     }
     //OCTRealmManager *realmManager = [self.dataSource managerGetRealmManager];
     /*OCTMessageAbstract *message = [realmManager addMessageWithFileNumber:fileNumber
@@ -700,6 +709,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     NSString *optionType = array[3];
     
     if ([optionType intValue] == 2) { // 上传
+        
         [[ChatListDataUtil getShareObject].fileNumberParames setObject:[NSString stringWithFormat:@"%d",fileNumber] forKey:msgid];
         // 更新数据库
         [FileData bg_update:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"didStart"),bg_sqlValue(@(1)),bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(msgid)]];
@@ -746,10 +756,10 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
     if (fileValues) {
         
         // 更新本次接受时间
-        ToxPullFileTimerUtil *timeUtil = [[ChatListDataUtil getShareObject].pullTimerDic objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
-        if (timeUtil) {
-            timeUtil.date = [NSDate date];
-        }
+//        ToxPullFileTimerUtil *timeUtil = [[ChatListDataUtil getShareObject].pullTimerDic objectForKey:[NSString stringWithFormat:@"%d",fileNumber]];
+//        if (timeUtil) {
+//            timeUtil.date = [NSDate date];
+//        }
         
         NSArray *array = [fileValues componentsSeparatedByString:@":"];
         NSString *fileName = array[1];
@@ -781,7 +791,9 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                      [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_DOWN_SUCCESS_NOTI object:model];
                 }
                
-            }else {
+            } else if ([optionType intValue] == 5) { // 群组下载
+                [[NSNotificationCenter defaultCenter] postNotificationName:REVER_GROUP_FILE_PULL_SUCCESS_NOTI object:array];
+            } else {
                 [[NSNotificationCenter defaultCenter] postNotificationName:REVER_FILE_PULL_SUCCESS_NOTI object:array];
             }
         } else {

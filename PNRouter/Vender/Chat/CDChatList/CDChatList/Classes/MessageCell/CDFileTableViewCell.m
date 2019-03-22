@@ -19,6 +19,7 @@
 #import "MD5Util.h"
 #import "LibsodiumUtil.h"
 #import "EntryModel.h"
+#import "UserConfig.h"
 
 @interface CDFileTableViewCell()
 @property (nonatomic ,strong) UIImageView *file_leftImgView;
@@ -277,7 +278,7 @@
             if ([fileData writeToFile:dataPath atomically:YES]) {
                 
                 if (self.msgModal.isGroup) {
-                    NSDictionary *parames = @{@"Action":@"GroupSendFileDone",@"FromId":self.msgModal.FromId,@"GId":self.msgModal.ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName],@"FileMD5":[MD5Util md5WithPath:dataPath],@"FileSize":@(fileData.length),@"FileType":@(self.msgModal.msgType),@"DstKey":@"",@"FileId":self.msgModal.messageId,@"FileInfo":@""};
+                    NSDictionary *parames = @{@"Action":@"GroupSendFileDone",@"UserId":self.msgModal.FromId,@"GId":self.msgModal.ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName],@"FileMD5":[MD5Util md5WithPath:dataPath],@"FileSize":@(fileData.length),@"FileType":@(self.msgModal.msgType),@"DstKey":@"",@"FileId":self.msgModal.messageId,@"FileInfo":@""};
                     [SendToxRequestUtil sendFileWithFilePath:dataPath parames:parames];
                 } else {
                     NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":self.msgModal.FromId,@"ToId":self.msgModal.ToId,@"FileName":[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName],@"FileMD5":[MD5Util md5WithPath:dataPath],@"FileSize":@(fileData.length),@"FileType":@(self.msgModal.msgType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":self.msgModal.messageId,@"FileInfo":@""};
@@ -352,7 +353,11 @@
             }];
             
         } else {
-            if (self.msgModal.isLeft) {
+            if (self.msgModal.isGroup) {
+                
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"1" fileFrom:@"5"];
+                
+            } else if (self.msgModal.isLeft) {
                 [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.FromId toid:self.msgModal.ToId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"2" fileFrom:@"1"];
             } else {
                 [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:self.msgModal.FromId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"1" fileFrom:@"1"];

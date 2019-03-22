@@ -1636,13 +1636,15 @@
         // 解密消息
         // 自己私钥解密
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:messageModel.SelfKey];
-        // 截取前16位
-        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-        if (datakey) {
-            chatListModel.lastMessage = aesDecryptString(messageModel.Msg, datakey);
+        if (datakey && datakey.length>0) {
+            // 截取前16位
+            datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+            if (datakey) {
+                chatListModel.lastMessage = aesDecryptString(messageModel.Msg, datakey);
+            }
         }
-    } else {
         
+    } else {
         if (messageModel.MsgType == 1) {
             chatListModel.lastMessage = @"[photo]";
         } else if (messageModel.MsgType == 2) {
@@ -1653,7 +1655,7 @@
             chatListModel.lastMessage = @"[video]";
         }
     }
-     [[ChatListDataUtil getShareObject] addFriendModel:chatListModel];
+    [[ChatListDataUtil getShareObject] addFriendModel:chatListModel];
     
 }
 

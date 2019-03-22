@@ -68,8 +68,11 @@
         __block NSString *friendKeys = @"";
         NSInteger count = self.selectArray.count;
         // 自己私钥解密
-        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupInfoM.UserKey];
-        NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+        NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupInfoM.UserKey];
+//        NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+//        NSData *symmetData =[symmetKey dataUsingEncoding:NSUTF8StringEncoding];
+//        symmetKey = [symmetData base64EncodedString];
+        
         
         [self.selectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *model = obj;

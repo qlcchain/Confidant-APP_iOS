@@ -333,7 +333,7 @@ CGSize caculateAudioCellSize(CDChatMessage msg, NSString *path) {
     }
     NSString *friendid = msgData.ToId;
     NSString *msgkey = msgData.srckey;
-    if (msgData.isLeft) {
+    if (msgData.isLeft && !msgData.isGroup) {
         friendid = msgData.FromId;
         msgkey = msgData.dskey;
     }
