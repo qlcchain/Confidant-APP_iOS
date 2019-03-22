@@ -202,7 +202,7 @@
     NSMutableArray *originArr = [NSMutableArray array];
     [self.persons enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;
-        [originArr addObject:model.signPublicKey];
+        [originArr addObject:model];
     }];
     AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:memberArr originArr:originArr type:AddGroupMemberTypeInCreate];
     @weakify_self
