@@ -1510,7 +1510,7 @@
         chatListModel.friendID = [UserConfig getShareObject].userId;
         chatListModel.groupID = gId;
         chatListModel.groupName = [GName base64DecodedString]?:GName;
-        chatListModel.groupAlias = [Remark base64DecodedString]?:Remark;
+//        chatListModel.groupAlias = [Remark base64DecodedString]?:Remark;
         chatListModel.groupUserkey = UserKey;
         chatListModel.chatTime = [NSDate date];
         chatListModel.isHD = NO;
@@ -1573,7 +1573,7 @@
         chatModel.isGroup = YES;
         chatModel.groupID = GId;
         chatModel.groupName = [GName base64DecodedString]?:GName;
-        chatModel.groupAlias = [Remark base64DecodedString]?:Remark;
+//        chatModel.groupAlias = [Remark base64DecodedString]?:Remark;
         chatModel.groupUserkey = Userkey;
         if (msgType == 1) {
             chatModel.lastMessage = @"[photo]";
@@ -1631,7 +1631,7 @@
     chatListModel.isGroup = YES;
     chatListModel.groupID = messageModel.GId;
     chatListModel.groupName = [messageModel.GroupName base64DecodedString]?:messageModel.GroupName;
-    chatListModel.groupAlias = [messageModel.GroupName base64DecodedString]?:messageModel.GroupName;
+//    chatListModel.groupAlias = [messageModel.GroupName base64DecodedString]?:messageModel.GroupName;
     chatListModel.friendName = [messageModel.UserName base64DecodedString];
     chatListModel.groupUserkey = messageModel.SelfKey;
     chatListModel.chatTime = [NSDate date];

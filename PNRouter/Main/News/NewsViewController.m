@@ -248,8 +248,8 @@
         if (chatModel.isGroup) {
             GroupInfoModel *model = [[GroupInfoModel alloc] init];
             model.GId = chatModel.groupID;
-            model.GName = [chatModel.groupName base64EncodedString]?:chatModel.groupName;
-            model.Remark = [chatModel.groupAlias base64DecodedString]?:chatModel.groupAlias;
+            model.GName = chatModel.groupName;
+            model.Remark = chatModel.groupAlias;
             model.UserKey = chatModel.groupUserkey;
             
             GroupChatViewController *vc = [[GroupChatViewController alloc] initWihtGroupMode:model];
