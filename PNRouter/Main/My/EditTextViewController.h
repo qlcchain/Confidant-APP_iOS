@@ -16,11 +16,12 @@ typedef enum : NSUInteger {
     EditAlis,
     EditFriendAlis,
     EditGroupAlias,
+    EditGroupName,
 } EditType;
 
 @class RouterModel,FriendModel,GroupInfoModel;
 
-typedef void(^ReviseSuccessBlock)(NSString *alias);
+typedef void(^ReviseSuccessBlock)(NSString *text);
 
 @interface EditTextViewController : PNBaseViewController
 

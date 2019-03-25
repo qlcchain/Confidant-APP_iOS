@@ -1681,7 +1681,13 @@
     NSString *GId = receiveDic[@"params"][@"GId"];
     NSNumber *Type = receiveDic[@"params"][@"Type"];
     if ([Type integerValue] == 1) { // 修改群名称，只有群管理员有权限
-        
+        if (retCode == 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Name_SUCCESS_NOTI object:GId];
+        } else {
+            if (retCode == 1) {
+                [AppD.window showHint:@"Revise Group Name Failed."];
+            }
+        }
     } else if ([Type integerValue] == 2) { // 设置是否需要群管理审核入群，只有管理员有权限
         if (retCode == 0) {
             [[NSNotificationCenter defaultCenter] postNotificationName:Set_Approve_Invitations_SUCCESS_NOTI object:nil];

@@ -14,9 +14,7 @@
             <connections>
                 <outlet property="approveSwitch" destination="oQA-cq-xRE" id="ZzF-Od-Ygy"/>
                 <outlet property="gorupMembersNumLab" destination="7Tg-UV-LQY" id="7ds-Ab-Gh8"/>
-                <outlet property="groupAliasHeight" destination="f0W-O5-ktf" id="gQl-p6-DYQ"/>
                 <outlet property="groupAliasLab" destination="aJj-cg-laH" id="dBa-Bb-m6s"/>
-                <outlet property="groupAliasTop" destination="dgB-Kf-T5o" id="AeX-xL-Dqi"/>
                 <outlet property="groupNameTF" destination="o3m-oz-irl" id="2kw-xj-7nX"/>
                 <outlet property="headImgView" destination="lgq-kD-UHh" id="ryE-Xg-Nht"/>
                 <outlet property="memberBackView" destination="qL0-KU-fcQ" id="yNc-OJ-hl4"/>
@@ -92,6 +90,12 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="drX-oC-xz1">
+                                                    <rect key="frame" x="55.5" y="92" width="264" height="36"/>
+                                                    <connections>
+                                                        <action selector="reviseGroupNameAction:" destination="-1" eventType="touchUpInside" id="iif-sm-krc"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -99,10 +103,14 @@
                                                 <constraint firstAttribute="height" constant="148" id="2H2-x6-B2J"/>
                                                 <constraint firstItem="o3m-oz-irl" firstAttribute="centerX" secondItem="rj0-6z-HaY" secondAttribute="centerX" id="4s9-TS-wGf"/>
                                                 <constraint firstItem="lgq-kD-UHh" firstAttribute="bottom" secondItem="4H3-H2-Vxt" secondAttribute="bottom" id="6UF-JG-CTw"/>
+                                                <constraint firstItem="drX-oC-xz1" firstAttribute="bottom" secondItem="o3m-oz-irl" secondAttribute="bottom" id="KSf-yN-iWR"/>
+                                                <constraint firstItem="drX-oC-xz1" firstAttribute="leading" secondItem="o3m-oz-irl" secondAttribute="leading" id="Khm-YX-Yuj"/>
                                                 <constraint firstItem="lgq-kD-UHh" firstAttribute="trailing" secondItem="4H3-H2-Vxt" secondAttribute="trailing" id="Nhl-KY-4e0"/>
                                                 <constraint firstItem="lgq-kD-UHh" firstAttribute="leading" secondItem="4H3-H2-Vxt" secondAttribute="leading" id="Obr-rm-G0O"/>
                                                 <constraint firstItem="4H3-H2-Vxt" firstAttribute="centerX" secondItem="rj0-6z-HaY" secondAttribute="centerX" id="T7V-bs-T2M"/>
                                                 <constraint firstItem="o3m-oz-irl" firstAttribute="top" secondItem="4H3-H2-Vxt" secondAttribute="bottom" constant="8" id="TqY-Ca-RwG"/>
+                                                <constraint firstItem="drX-oC-xz1" firstAttribute="trailing" secondItem="o3m-oz-irl" secondAttribute="trailing" id="Xob-N1-X6r"/>
+                                                <constraint firstItem="drX-oC-xz1" firstAttribute="top" secondItem="o3m-oz-irl" secondAttribute="top" id="hw4-dg-7Nh"/>
                                                 <constraint firstItem="4H3-H2-Vxt" firstAttribute="top" secondItem="rj0-6z-HaY" secondAttribute="top" constant="12" id="up7-v6-8Fr"/>
                                             </constraints>
                                         </view>

@@ -1,57 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="55" id="KGk-i7-Jjw" customClass="RouterManagementCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="56" id="KGk-i7-Jjw" customClass="RouterManagementCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="54.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="55.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gmA-sf-No3">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="54.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="55.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h3f-EK-oud">
-                                <rect key="frame" x="32" y="54" width="288" height="0.5"/>
-                                <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="16" y="55" width="304" height="0.5"/>
+                                <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.5" id="rYL-zw-nJM"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rotuer 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gcs-4b-e2d">
-                                <rect key="frame" x="32" y="17" width="69" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <color key="textColor" red="0.24705882352941178" green="0.24705882352941178" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="56" y="18" width="62" height="19.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_enter" translatesAutoresizingMaskIntoConstraints="NO" id="ghc-GD-K6j">
-                                <rect key="frame" x="297" y="20.5" width="8" height="14"/>
+                                <rect key="frame" x="296" y="21" width="8" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="8" id="Yg4-Yj-5HN"/>
                                     <constraint firstAttribute="height" constant="14" id="iss-pL-J6g"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KDt-6Y-Wjp">
+                                <rect key="frame" x="16" y="12" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="oPL-0F-Tae"/>
+                                    <constraint firstAttribute="width" constant="32" id="qQF-aJ-VDW"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="gcs-4b-e2d" firstAttribute="centerY" secondItem="gmA-sf-No3" secondAttribute="centerY" id="0Mk-MF-h3z"/>
-                            <constraint firstItem="gcs-4b-e2d" firstAttribute="leading" secondItem="gmA-sf-No3" secondAttribute="leading" constant="32" id="TN3-aP-jFT"/>
+                            <constraint firstItem="KDt-6Y-Wjp" firstAttribute="centerY" secondItem="gmA-sf-No3" secondAttribute="centerY" id="53O-Ib-QmP"/>
+                            <constraint firstItem="KDt-6Y-Wjp" firstAttribute="leading" secondItem="gmA-sf-No3" secondAttribute="leading" constant="16" id="M9i-xa-GN7"/>
                             <constraint firstItem="ghc-GD-K6j" firstAttribute="centerY" secondItem="gmA-sf-No3" secondAttribute="centerY" id="XW9-rC-Y4g"/>
                             <constraint firstAttribute="bottom" secondItem="h3f-EK-oud" secondAttribute="bottom" id="aMO-ft-EyP"/>
-                            <constraint firstItem="h3f-EK-oud" firstAttribute="leading" secondItem="gmA-sf-No3" secondAttribute="leading" constant="32" id="hT5-ao-Zmo"/>
+                            <constraint firstItem="gcs-4b-e2d" firstAttribute="leading" secondItem="KDt-6Y-Wjp" secondAttribute="trailing" constant="8" id="cfg-rB-4Hr"/>
+                            <constraint firstItem="h3f-EK-oud" firstAttribute="leading" secondItem="gmA-sf-No3" secondAttribute="leading" constant="16" id="hT5-ao-Zmo"/>
                             <constraint firstAttribute="trailing" secondItem="h3f-EK-oud" secondAttribute="trailing" id="ibN-2e-m1y"/>
-                            <constraint firstAttribute="trailing" secondItem="ghc-GD-K6j" secondAttribute="trailing" constant="15" id="xne-Cf-1v8"/>
+                            <constraint firstAttribute="trailing" secondItem="ghc-GD-K6j" secondAttribute="trailing" constant="16" id="xne-Cf-1v8"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -64,9 +73,10 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="icon" destination="KDt-6Y-Wjp" id="aZS-3c-HAC"/>
                 <outlet property="nameLab" destination="gcs-4b-e2d" id="RiQ-4y-5v0"/>
             </connections>
-            <point key="canvasLocation" x="274" y="57"/>
+            <point key="canvasLocation" x="273.60000000000002" y="56.671664167916049"/>
         </tableViewCell>
     </objects>
     <resources>

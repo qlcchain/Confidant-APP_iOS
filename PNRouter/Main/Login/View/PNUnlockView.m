@@ -41,6 +41,11 @@
 }
 
 - (void)showWithUnlockOK:(UnlockOKBlock)block {
+    NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
+    if ([screenLock boolValue] == NO) {
+        return;
+    }
+    
     _okBlock = block;
     [AppD.window addSubview:self];
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -61,6 +66,11 @@
 }
 
 - (void)hide {
+    NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
+    if ([screenLock boolValue] == NO) {
+        return;
+    }
+    
     [self removeFromSuperview];
     _isShow = NO;
     if (_okBlock) {

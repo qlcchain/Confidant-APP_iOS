@@ -31,9 +31,8 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *normalBottomHeight; // 56
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ownerBottomHeight; // 168
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *groupAliasHeight; // 56
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *groupAliasTop; // 10
-
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *groupAliasHeight; // 56
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *groupAliasTop; // 10
 
 @property (nonatomic ,strong) GroupInfoModel *groupModel;
 @property (nonatomic, strong) GroupMemberView *memberView;
@@ -83,13 +82,9 @@
     if (_groupModel.UserType == 0) { // 群主
         _normalBottomHeight.constant = 0;
         _ownerBottomHeight.constant = 168;
-        _groupAliasHeight.constant = 56;
-        _groupAliasTop.constant = 10;
     } else {
         _normalBottomHeight.constant = 56;
         _ownerBottomHeight.constant = 0;
-        _groupAliasHeight.constant = 0;
-        _groupAliasTop.constant = 0;
     }
     [self groupMemberViewInit];
     
@@ -141,6 +136,12 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (IBAction)reviseGroupNameAction:(id)sender {
+    if (_groupModel.UserType == 0) { // 群主
+        [self jumpToEditGroupName];
+    }
+}
+
 - (IBAction)approveSwitchAction:(id)sender {
     [SendRequestUtil sendGroupConfigWithGId:_groupModel.GId Type:@(2) ToId:nil Name:nil NeedVerify:_approveSwitch.on?@(1):@(0) showHud:YES];
 }
@@ -148,7 +149,6 @@
 - (IBAction)setGroupAliasAction:(id)sender {
     [self jumpToEditGroupAlias];
 }
-
 
 - (IBAction)leaveAction:(id)sender {
     @weakify_self
@@ -191,11 +191,21 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)jumpToEditGroupName {
+    EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditGroupName groupInfoM:_groupModel];
+    @weakify_self
+    vc.reviseSuccessB = ^(NSString *text) {
+        weakSelf.groupModel.GName = [text base64EncodedString];
+        weakSelf.groupNameTF.text = [weakSelf.groupModel.GName base64DecodedString];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)jumpToEditGroupAlias {
     EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditGroupAlias groupInfoM:_groupModel];
     @weakify_self
-    vc.reviseSuccessB = ^(NSString *alias) {
-        weakSelf.groupModel.Remark = [alias base64EncodedString];
+    vc.reviseSuccessB = ^(NSString *text) {
+        weakSelf.groupModel.Remark = [text base64EncodedString];
         weakSelf.groupAliasLab.text = [weakSelf.groupModel.Remark base64DecodedString];
     };
     [self.navigationController pushViewController:vc animated:YES];
