@@ -144,7 +144,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupFileSendFaield:) name:GROUP_FILE_SEND_FAIELD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxDownFileSuccess:) name:REVER_GROUP_FILE_PULL_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendingNoti:) name:FILE_SENDING_NOTI object:nil];
-    
 }
 
 #pragma mark ---pull message
