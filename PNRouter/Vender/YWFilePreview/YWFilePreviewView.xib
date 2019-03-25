@@ -73,19 +73,33 @@
                     <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="beU-Fb-CTu">
+                    <rect key="frame" x="326" y="69" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="ZWi-xb-2A4"/>
+                        <constraint firstAttribute="width" constant="44" id="g5o-d6-d9e"/>
+                    </constraints>
+                    <state key="normal" image="icon_download_black"/>
+                    <connections>
+                        <action selector="downloadAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="Xc6-PJ-Gzw"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.92549020049999997" green="0.92549020049999997" blue="0.92549020049999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="8By-XK-H0h" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4S3-Vo-Lxw"/>
                 <constraint firstAttribute="bottom" secondItem="dnf-O1-mf5" secondAttribute="bottom" id="8Hs-Du-zgG"/>
+                <constraint firstItem="beU-Fb-CTu" firstAttribute="top" secondItem="8By-XK-H0h" secondAttribute="bottom" constant="5" id="EOw-iX-njt"/>
                 <constraint firstItem="8By-XK-H0h" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="MTt-93-c7J"/>
                 <constraint firstItem="dnf-O1-mf5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="X4h-46-sA1"/>
+                <constraint firstAttribute="trailing" secondItem="beU-Fb-CTu" secondAttribute="trailing" constant="5" id="YFd-jY-Y0M"/>
                 <constraint firstItem="dnf-O1-mf5" firstAttribute="top" secondItem="8By-XK-H0h" secondAttribute="bottom" id="YdH-RO-LgA"/>
                 <constraint firstAttribute="trailing" secondItem="8By-XK-H0h" secondAttribute="trailing" id="l3i-wm-QnA"/>
                 <constraint firstAttribute="trailing" secondItem="dnf-O1-mf5" secondAttribute="trailing" id="zAh-RQ-zz1"/>
             </constraints>
             <connections>
                 <outlet property="backView" destination="dnf-O1-mf5" id="V6A-8s-nle"/>
+                <outlet property="downloadBtn" destination="beU-Fb-CTu" id="jzn-fp-9pk"/>
                 <outlet property="lblTitle" destination="3gO-T7-e9g" id="DUR-rh-4TU"/>
                 <outlet property="navContraintH" destination="oyz-7g-7c0" id="Bz6-1B-i76"/>
             </connections>
@@ -94,5 +108,6 @@
     </objects>
     <resources>
         <image name="arrow-exit-h" width="24" height="24"/>
+        <image name="icon_download_black" width="24" height="24"/>
     </resources>
 </document>

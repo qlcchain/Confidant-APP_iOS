@@ -561,6 +561,12 @@
         UIMenuItem *item1 = [[UIMenuItem alloc] initWithTitle:@"Withdraw" action:@selector(selectWithdrawItem:)];
         [itmes addObject:item1];
     }
+    
+    if (self.msgModal.msgType == CDMessageTypeImage || self.msgModal.msgType == CDMessageTypeMedia) {
+        UIMenuItem *item = [[UIMenuItem alloc] initWithTitle:@"Save" action:@selector(selectDownloadItem:)];
+        [itmes addObject:item];
+    }
+    
     if (itmes.count > 0) {
         UIMenuController *menu = [UIMenuController sharedMenuController];
          [menu setMenuItems:itmes];
@@ -574,8 +580,7 @@
             itemY += self.msgModal.chatConfig.msgTimeH;
         }
         
-        CGRect rec = CGRectMake(itemx
-                                ,itemY, 10, 10);
+        CGRect rec = CGRectMake(itemx ,itemY, 10, 10);
         [menu setTargetRect:rec inView:self.msgContent_left];
         [menu setMenuVisible:YES animated:YES];
     }
@@ -598,6 +603,12 @@
 {
     if (self.tableView.msgDelegate) {
         [self.tableView.msgDelegate clickChatMenuItem:@"Forward" withMsgMode:self.msgModal];
+    }
+}
+
+- (void)selectDownloadItem:(UIMenuController *)item {
+    if (self.tableView.msgDelegate) {
+        [self.tableView.msgDelegate clickChatMenuItem:@"Save" withMsgMode:self.msgModal];
     }
 }
 

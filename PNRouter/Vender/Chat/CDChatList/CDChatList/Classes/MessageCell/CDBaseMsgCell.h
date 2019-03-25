@@ -40,4 +40,6 @@
 
 - (void) selectWithdrawItem:(UIMenuController *) item;
 - (void) selectForwardItem:(UIMenuController *) item;
+- (void)selectDownloadItem:(UIMenuController *)item;
+
 @end

@@ -8,7 +8,7 @@
 
 #import "YWFilePreviewView.h"
 #import <QuickLook/QuickLook.h>
-
+#import "CDChatListProtocols.h"
 
 #define YWKeyWindow [UIApplication sharedApplication].keyWindow
 #define YWS_W YWKeyWindow.bounds.size.width
@@ -21,11 +21,12 @@
 @property (nonatomic, assign) BOOL hindNav;
 @property (nonatomic, strong) QLPreviewController *previewController;
 @property (nonatomic, strong) NSArray *filePathArr;
-@property (nonatomic, strong) NSString *fileName;
-@property (nonatomic, assign) NSInteger fileType;
+@property (nonatomic, strong) NSArray *fileNameArr;
+@property (nonatomic, strong) NSArray *fileTypeArr;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *navContraintH;
 @property (weak, nonatomic) IBOutlet UIView *backView;
+@property (weak, nonatomic) IBOutlet UIButton *downloadBtn;
 
 @end
 
@@ -36,9 +37,11 @@
     [super awakeFromNib];
     self.frame = YWKeyWindow.bounds;
 }
+
 - (void) updateFileName {
-    self.lblTitle.text = self.fileName;
+    self.lblTitle.text = self.fileNameArr[_previewController.currentPreviewItemIndex];
 }
+
 -(void)layoutSubviews{
     CGFloat viewY = IS_iPhoneX? YW_NAV_Hight+20:YW_NAV_Hight;
     _navContraintH.constant = viewY;
@@ -57,9 +60,15 @@
 {
     YWFilePreviewView *previewView = [[NSBundle mainBundle] loadNibNamed:@"YWFilePreviewView" owner:nil options:nil].lastObject;
     previewView.filePathArr = @[filePath];
-    previewView.fileName = fileName;
-    previewView.fileType = fileType;
+    previewView.fileNameArr = @[fileName];
+    previewView.fileTypeArr = @[@(fileType)];
     [previewView updateFileName];
+    previewView.downloadBtn.hidden = YES;
+//    if (fileType == CDMessageTypeImage || fileType == CDMessageTypeMedia) {
+//        previewView.downloadBtn.hidden = NO;
+//    } else {
+//        previewView.downloadBtn.hidden = YES;
+//    }
     
     previewView.previewController = [[QLPreviewController alloc] init];
     [previewView.backView addSubview:previewView.previewController.view];
@@ -116,6 +125,16 @@
     
 }
 
+- (IBAction)downloadAction:(id)sender {
+//    NSInteger fileType = [_fileTypeArr[_previewController.currentPreviewItemIndex] integerValue];
+//    NSString *filePath = _filePathArr[_previewController.currentPreviewItemIndex];
+//    if (fileType == CDMessageTypeImage) {
+//        UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+//        [self saveImage:img];
+//    } else if (fileType == CDMessageTypeMedia) {
+//        [self saveVideo:filePath];
+//    }
+}
 
 #pragma mark - getters and setters
 

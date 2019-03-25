@@ -473,7 +473,7 @@
 #pragma mark 菜单相关方法
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
     
-    if (action == @selector(selectWithdrawItem:) || action == @selector(selectForwardItem:)) {
+    if (action == @selector(selectWithdrawItem:) || action == @selector(selectForwardItem:) || action == @selector(selectDownloadItem:)) {
         return YES;
     }
     return NO;

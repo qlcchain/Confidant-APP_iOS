@@ -298,9 +298,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     self.selectMessageModel = (CDMessageModel *)msgModel;
     NSString *msgId = [NSString stringWithFormat:@"%@",self.selectMessageModel.messageId];
     NSLog(@"%@",itemTitle);
-    if ([itemTitle isEqualToString:@"Save"]) {
-        
-    } else if ([itemTitle isEqualToString:@"Forward"]){ // 转发
+    if ([itemTitle isEqualToString:@"Forward"]){ // 转发
         ChooseContactViewController *vc = [[ChooseContactViewController alloc] init];
         [self presentModalVC:vc animated:YES];
     }  else if ([itemTitle isEqualToString:@"Withdraw"]){ // 删除
@@ -335,6 +333,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [SocketMessageUtil sendVersion1WithParams:params];
         }
         
+    } else if ([itemTitle isEqualToString:@"Save"]) { // 保存到相册
+        NSString *friendid = msgModel.ToId;
+        if (msgModel.isLeft && !msgModel.isGroup) {
+            friendid = msgModel.FromId;
+        }
+        NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:msgModel.fileName];
+        if (msgModel.msgType == CDMessageTypeImage) {
+            UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+            [self saveImage:img];
+        } else if (msgModel.msgType == CDMessageTypeMedia) {
+            [self saveVideo:filePath];
+        }
     }
 }
 //cell 的点击事件
@@ -1879,6 +1889,48 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:txtData fileId:msgid fileType:5 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey fileInfo:@""];
     }
+}
+
+#pragma mark - 保存图片视频
+// 保存图片到相册
+- (void)saveImage:(UIImage *)image{
+    if (image) {
+        UIImageWriteToSavedPhotosAlbum(image, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+// 保存视频到相册
+- (void)saveVideo:(NSString *)videoPath{
+    if (videoPath) {
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoPath)) {
+            //保存相册核心代码
+            UISaveVideoAtPathToSavedPhotosAlbum(videoPath, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+        }
+    }
+}
+
+
+//保存图片完成后调用的方法
+- (void) savedPhotoImage:(UIImage*)image didFinishSavingWithError: (NSError *)error contextInfo: (void *)contextInfo {
+    if (error) {
+        NSLog(@"保存图片出错%@", error.localizedDescription);
+    }
+    else {
+        NSLog(@"保存图片成功");
+        [AppD.window showHint:@"Save success."];
+    }
+}
+
+//保存视频完成之后的回调
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    if (error) {
+        NSLog(@"保存视频失败%@", error.localizedDescription);
+    }
+    else {
+        NSLog(@"保存视频成功");
+        [AppD.window showHint:@"Save success."];
+    }
+    
 }
 
 @end
