@@ -17,6 +17,9 @@
 #import "SocketManageUtil.h"
 #import "AESCipher.h"
 #import "SystemUtil.h"
+#import "NSData+Base64.h"
+#import "NSString+Base64.h"
+#import "SocketCountUtil.h"
 
 const NSInteger sendTime = 10;
 const NSInteger timerTime = 10;
@@ -89,10 +92,9 @@ const NSInteger timerTime = 10;
             ChatModel *model = obj;
             if (model.msgType == 0) { // 文字
                NSDate *sendDate = [NSDate dateWithTimeIntervalSince1970:model.sendTime];
-              NSInteger secons = [sendDate millesAfterDate:[NSDate date]];
+               NSInteger secons = [sendDate millesAfterDate:[NSDate date]];
                 if (labs(secons) >= sendTime) {
                     // 如果 10s 没有发送成功，就重发
-                   // [weakSelf sendTextMessageWithChatModel:model];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [weakSelf performSelector:@selector(sendTextMessageWithChatModel:) withObject:model afterDelay:0.2];
                     });
@@ -114,44 +116,97 @@ const NSInteger timerTime = 10;
 // 发送文件
 - (void) sendFileWithChatModel:(ChatModel *) model
 {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSData *msgKeyData =[[model.msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *filePath = [[SystemUtil getBaseFilePath:model.toId] stringByAppendingPathComponent:model.fileName];
-        NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-        if (fileData) {
-            fileData = aesEncryptData(fileData,msgKeyData);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // 更新状态为正在发送
-                model.isSendFailed = NO;
-                [model bg_saveOrUpdate];
-                [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SENDING_NOTI object:@[model.toId,@(model.msgid)]];
-                SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
-                [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
-                [dataUtil sendFileId:model.toId fileName:model.fileName fileData:fileData fileid:(int)model.msgid fileType:model.msgType messageid:[NSString stringWithFormat:@"%ld",model.msgid] srcKey:model.srcKey dstKey:model.dsKey isGroup:NO];
-            });
-        }
-    });
+     if ([model.toId containsString:@"group"]) { // 是群聊
+         dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            
+             NSString *filePath = [[SystemUtil getBaseFilePath:model.toId] stringByAppendingPathComponent:model.fileName];
+             NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+             
+             // 自己私钥解密
+             NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:model.toPublicKey];
+             if (!datakey) {
+                 return;
+             }
+             NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+             NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+             
+             if (fileData) {
+                 fileData = aesEncryptData(fileData,msgKeyData);
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     // 更新状态为正在发送
+                     model.isSendFailed = NO;
+                     [model bg_saveOrUpdate];
+                     if ([SocketCountUtil getShareObject].groupChatId && [SocketCountUtil getShareObject].groupChatId.length > 0) {
+                          [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SENDING_NOTI object:@[model.toId,@(model.msgid)]];
+                     }
+                     SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+                     dataUtil.fileInfo = model.fileInfo;
+                     [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+                     [dataUtil sendFileId:model.toId fileName:model.fileName fileData:fileData fileid:(int)model.msgid fileType:model.msgType messageid:[NSString stringWithFormat:@"%ld",model.msgid] srcKey:model.srcKey dstKey:model.dsKey isGroup:YES];
+                 });
+             }
+         });
+     } else {
+         dispatch_async(dispatch_get_global_queue(0, 0), ^{
+             NSData *msgKeyData =[[model.msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+             NSString *filePath = [[SystemUtil getBaseFilePath:model.toId] stringByAppendingPathComponent:model.fileName];
+             NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+             if (fileData) {
+                 fileData = aesEncryptData(fileData,msgKeyData);
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     // 更新状态为正在发送
+                     model.isSendFailed = NO;
+                     [model bg_saveOrUpdate];
+                     if ([SocketCountUtil getShareObject].chatToId && [SocketCountUtil getShareObject].chatToId.length > 0) {
+                         [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SENDING_NOTI object:@[model.toId,@(model.msgid)]];
+                     }
+                     SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+                     [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+                     [dataUtil sendFileId:model.toId fileName:model.fileName fileData:fileData fileid:(int)model.msgid fileType:model.msgType messageid:[NSString stringWithFormat:@"%ld",model.msgid] srcKey:model.srcKey dstKey:model.dsKey isGroup:NO];
+                 });
+             }
+         });
+     }
+    
 }
 
 // 发送文字消息
 - (void) sendTextMessageWithChatModel:(ChatModel *) model
 {
-    // 生成签名
-    NSString *signString = [LibsodiumUtil getOwenrSignPrivateKeySignOwenrTempPublickKey];
-    // 生成nonce
-    NSString *nonceString = [LibsodiumUtil getGenterSysmetryNonce];
-    // 生成对称密钥
-    NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].tempPrivateKey publicKey:model.toPublicKey];
-    // 加密消息
-    NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:model.messageMsg?:@"" nonce:nonceString];
-    // 加密对称密钥
-    NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
+    if ([model.toId containsString:@"group"]) { // 是群聊
+        // 自己私钥解密
+        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:model.toPublicKey];
+        // 截取前16位
+        if (!datakey || datakey.length == 0) {
+            return;
+        }
+        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+        // aes加密
+        NSString *enMsg = aesEncryptString(model.messageMsg, datakey);
+        // 发送消息
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SendRequestUtil sendGroupMessageWithGid:model.toId point:@"" msg:enMsg msgid:[NSString stringWithFormat:@"%ld",model.msgid]];
+        });
+        
+    } else {
+        // 生成签名
+        NSString *signString = [LibsodiumUtil getOwenrSignPrivateKeySignOwenrTempPublickKey];
+        // 生成nonce
+        NSString *nonceString = [LibsodiumUtil getGenterSysmetryNonce];
+        // 生成对称密钥
+        NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].tempPrivateKey publicKey:model.toPublicKey];
+        // 加密消息
+        NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:model.messageMsg?:@"" nonce:nonceString];
+        // 加密对称密钥
+        NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
+        
+        NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.toId?:@"",@"From":model.fromId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:[NSString stringWithFormat:@"%ld",model.msgid]];
+        });
+    }
     
-    NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.toId?:@"",@"From":model.fromId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:[NSString stringWithFormat:@"%ld",model.msgid]];
-    });
     
 }
 

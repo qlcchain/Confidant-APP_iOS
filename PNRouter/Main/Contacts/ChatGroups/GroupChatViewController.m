@@ -143,8 +143,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupFileSendSuccess:) name:GROUP_FILE_SEND_SUCCESS_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupFileSendFaield:) name:GROUP_FILE_SEND_FAIELD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxDownFileSuccess:) name:REVER_GROUP_FILE_PULL_SUCCESS_NOTI object:nil];
-    
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendingNoti:) name:FILE_SENDING_NOTI object:nil];
     
 }
 
@@ -467,11 +466,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void) sendFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey msgKey:(NSString *) msgKey fileInfo:(NSString *) fileInfo
 {
     if ([SystemUtil isSocketConnect]) {
-        /*
+        
         ChatModel *chatModel = [[ChatModel alloc] init];
         chatModel.fromId = [UserConfig getShareObject].userId;
         chatModel.toId = toId;
-        chatModel.toPublicKey = publicKey;
+        chatModel.fileInfo = fileInfo;
+        chatModel.toPublicKey = self.groupModel.UserKey;
         chatModel.msgType = fileType;
         chatModel.fileSize = fileData.length;
         chatModel.msgid = (long)[messageId integerValue];
@@ -483,7 +483,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         chatModel.msgKey = msgKey;
         chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
         [chatModel bg_save];
-        */
+        
         
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
         dataUtil.fileInfo = fileInfo;
@@ -532,18 +532,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         // 发送消息
         [SendRequestUtil sendGroupMessageWithGid:self.groupModel.GId point:@"" msg:enMsg msgid:model.messageId];
         
-//        if ([SystemUtil isSocketConnect]) {
-//            ChatModel *chatModel = [[ChatModel alloc] init];
-//            chatModel.fromId = model.FromId;
-//            chatModel.toId = model.ToId;
-//            chatModel.toPublicKey = model.publicKey;
-//            chatModel.msgType = 0;
-//            chatModel.msgid = tempMsgid;
-//            chatModel.messageMsg = string;
-//            chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
-//            chatModel.bg_tableName = CHAT_CACHE_TABNAME;
-//            [chatModel bg_save];
-//        }
+        if ([SystemUtil isSocketConnect]) {
+            ChatModel *chatModel = [[ChatModel alloc] init];
+            chatModel.fromId = model.FromId;
+            chatModel.toId = model.ToId;
+            chatModel.toPublicKey = model.publicKey;
+            chatModel.msgType = 0;
+            chatModel.msgid = tempMsgid;
+            chatModel.messageMsg = string;
+            chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
+            chatModel.bg_tableName = CHAT_CACHE_TABNAME;
+            [chatModel bg_save];
+        }
     }
 }
 #pragma mark -得到一条文字消息 并添加到listview
@@ -1066,8 +1066,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }];
     
     if (_msgStartId == 0) { // 第一次自动加载
-        /*
-        NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"toId"),bg_sqlValue(self.friendModel.userId)]];
+        
+        NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"toId"),bg_sqlValue(self.groupModel.GId)]];
         if (chats && chats.count > 0) {
             @weakify_self
             [chats enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -1075,11 +1075,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 
                 CDMessageModel *model = [[CDMessageModel alloc] init];
                 model.FromId = chatModel.fromId;
+                model.isGroup = YES;
                 model.ToId = chatModel.toId;
                 model.msgType = chatModel.msgType;
-                model.publicKey = weakSelf.friendModel.publicKey;
+                model.publicKey = weakSelf.groupModel.UserKey;
                 model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
                 model.messageId = [NSString stringWithFormat:@"%ld",(long)chatModel.msgid];
+                model.dskey = self.groupModel.UserKey;
+                model.srckey = self.groupModel.UserKey;
                 CTDataConfig config = [CTData defaultConfig];
                 config.isOwner = YES;
                 model.ctDataconfig = config;
@@ -1091,9 +1094,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 if (model.msgType == 0) { // 文字
                     model.msg = chatModel.messageMsg;
                     model.msgState = CDMessageStateNormal;
-                    //                model.nonceKey = nonceString;
-                    //                model.signKey = signString;
-                    //                model.symmetKey = enSymmetString;
                     model.messageStatu = -1;
                 } else {
                     model.fileSize = chatModel.fileSize;
@@ -1101,12 +1101,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     model.fileID = (int)chatModel.msgid;
                     model.messageStatu = -1;
                     model.fileName = chatModel.fileName;
+                    if (chatModel.fileInfo && chatModel.fileInfo.length > 0) {
+                       NSArray *whs = [chatModel.fileInfo componentsSeparatedByString:@"*"];
+                        if (whs.count >=2) {
+                            model.fileWidth = [whs[0] floatValue];
+                            model.fileHeight = [whs[1] floatValue];
+                        }
+                    }
                 }
                 [messageModelArr addObject:model];
             }];
             
         }
-         */
         self.listView.msgArr = messageModelArr;
         
     } else { // 下拉刷新
@@ -1402,7 +1408,20 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }];
     }
 }
-
+#pragma mark -- 未发成功文件发送中通知
+- (void) fileSendingNoti:(NSNotification *) noti
+{
+    NSArray *resultArr = noti.object;
+    @weakify_self
+    [weakSelf.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([resultArr[0] isEqualToString:weakSelf.groupModel.GId]) {
+            if ([resultArr[1] integerValue] == [obj.messageId integerValue]) {
+                obj.msgState = CDMessageStateSending;
+                [weakSelf.listView updateMessage:obj];
+            }
+        }
+    }];
+}
 - (void)userHeadDownloadSuccess:(NSNotification *)noti {
     [_listView reloadData];
 }

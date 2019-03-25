@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *toPublicKey;
 @property (nonatomic, strong) NSString *fileName;
 @property (nonatomic, strong) NSString *filePath;
+@property (nonatomic, strong) NSString *fileInfo;
 @property (nonatomic, assign) int msgType;
 @property (nonatomic, strong) NSString *dsKey;
 @property (nonatomic, strong) NSString *srcKey;

@@ -48,12 +48,11 @@
 }
 - (void) addFriendModel:(ChatListModel *) model
 {
-
     @synchronized (self) {
         // 加锁操作
         // 在好友列表中遍历赋值
         if (model.isGroup) {
-            NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(model.groupID),bg_sqlKey(@"myID"),bg_sqlValue(model.myID)]];
+            NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(model.groupID),bg_sqlKey(@"myID"),bg_sqlValue(model.myID),bg_sqlKey(@"isGroup"),bg_sqlValue(@(1))]];
             if (friends && friends.count > 0) {
                 ChatListModel *model1 = friends[0];
                 model1.friendName = model.friendName;
@@ -94,7 +93,7 @@
                 }
             }];
             
-            NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(model.friendID),bg_sqlKey(@"myID"),bg_sqlValue(model.myID)]];
+            NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(model.friendID),bg_sqlKey(@"myID"),bg_sqlValue(model.myID),bg_sqlKey(@"isGroup"),bg_sqlValue(@(0))]];
             if (friends && friends.count > 0) {
                 ChatListModel *model1 = friends[0];
                 model1.friendName = model.friendName;

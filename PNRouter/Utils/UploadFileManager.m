@@ -71,14 +71,14 @@
         if (![SystemUtil isSocketConnect]) {
             NSString *srckey = resultArr[4];
             // 保存到本地
-           
+            NSString *fileInfo = [resultArr lastObject];
             DDLogDebug(@"上传成功:%@",fileName);
            // NSString *uploadDocPath = [SystemUtil getOwerUploadFilePathWithFileName:fileName];
             //  [fileData writeToFile:uploadDocPath atomically:YES];
             
             NSString *fileMd5 =  resultArr[5];
             NSNumber *fileSize = resultArr[6];
-            [SendRequestUtil sendUploadFileWithUserId:[UserConfig getShareObject].userId FileName:[Base58Util Base58EncodeWithCodeName:fileName] FileMD5:fileMd5 FileSize:fileSize FileType:fileType UserKey:srckey showHud:NO];
+            [SendRequestUtil sendUploadFileWithUserId:[UserConfig getShareObject].userId FileName:[Base58Util Base58EncodeWithCodeName:fileName] FileMD5:fileMd5 FileSize:fileSize FileType:fileType UserKey:srckey fileInfo:fileInfo showHud:NO];
         }
         
         // 上传成功-保存操作记录

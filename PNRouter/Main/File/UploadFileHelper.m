@@ -174,7 +174,7 @@
                 [AppD.window showHint:@"Image cannot be larger than 100MB"];
                 return;
             }
-            NSString *fileInfo = [NSString stringWithFormat:@"%f,%f",img.size.width,img.size.height];
+            NSString *fileInfo = [NSString stringWithFormat:@"%f*%f",img.size.width,img.size.height];
             NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
             NSString *outputPath = [NSString stringWithFormat:@"%@.jpg",mills];
             outputPath =  [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:outputPath];
@@ -220,7 +220,7 @@
     NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
     outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
     NSURL *url = [NSURL fileURLWithPath:outputPath];
-    NSString *fileInfo = [NSString stringWithFormat:@"%f,%f",evImage.size.width,evImage.size.height];
+    NSString *fileInfo = [NSString stringWithFormat:@"%f*%f",evImage.size.width,evImage.size.height];
     BOOL result = [[NSFileManager defaultManager] copyItemAtURL:asset.URL toURL:url error:nil];
     if (result) {
       //  [AppD.window hideHud];
