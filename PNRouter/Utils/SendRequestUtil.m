@@ -206,11 +206,11 @@
 }
 
 #pragma mark - 上传文件
-+ (void)sendUploadFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName FileMD5:(NSString *)FileMD5 FileSize:(NSNumber *)FileSize FileType:(NSNumber *)FileType UserKey:(NSString *)UserKey showHud:(BOOL)showHud {
++ (void)sendUploadFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName FileMD5:(NSString *)FileMD5 FileSize:(NSNumber *)FileSize FileType:(NSNumber *)FileType UserKey:(NSString *)UserKey fileInfo:(NSString *) fileInfo showHud:(BOOL)showHud {
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_UploadFile,@"UserId":UserId?:@"",@"FileName":FileName?:@"",@"FileMD5":FileMD5?:@"",@"FileSize":FileSize?:@"",@"FileType":FileType?:@"",@"UserKey":UserKey?:@""};
+    NSDictionary *params = @{@"Action":Action_UploadFile,@"UserId":UserId?:@"",@"FileName":FileName?:@"",@"FileMD5":FileMD5?:@"",@"FileSize":FileSize?:@"",@"FileType":FileType?:@"",@"UserKey":UserKey?:@"",@"FileInfo":fileInfo};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 

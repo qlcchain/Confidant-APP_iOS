@@ -629,6 +629,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                     int fileType = [fileNumberValues[@"FileType"] intValue];
                     NSString *fileName = fileNumberValues[@"FileName"];
                     NSString *srcKey = fileNumberValues[@"SrcKey"];
+                    NSString *fileInfo = fileNumberValues[@"FileInfo"];
                     NSString *FileMD5 = fileNumberValues[@"FileMD5"];
                     NSNumber *FileSize = fileNumberValues[@"FileSize"];
                     NSNumber *fileidNumber = fileNumberValues[@"FileId"];
@@ -640,7 +641,7 @@ static NSString *const kMessageIdentifierKey = @"kMessageIdentifierKey";
                         
                         [[NSNotificationCenter defaultCenter] postNotificationName:UPLOAD_HEAD_DATA_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize,@(fileid)]];
                     } else {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize,@(fileid)]];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),fileName,@"",@(fileType),srcKey,FileMD5,FileSize,@(fileid),fileInfo?:@""]];
                     }
                     
                 } else { // 发送

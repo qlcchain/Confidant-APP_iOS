@@ -230,7 +230,7 @@ struct ResultFile {
 
     self.srcKey = srcKey;
     self.isGroup = isGroup;
-    self.fileName = fileName;
+    self.fileName = [Base58Util Base58EncodeWithCodeName:fileinfos[0]];
     self.messageid = messageid;
     self.fileType = fileType;
     self.fileData = imgData;
@@ -279,7 +279,7 @@ struct ResultFile {
                 fileModel.fileData = imgData;
                 fileModel.fileType = fileType;
                 fileModel.progess = 0.0f;
-                fileModel.fileName = [Base58Util Base58DecodeWithCodeName:fileName];
+                fileModel.fileName = fileinfos[0];
                 fileModel.fileOptionType = 1;
                 fileModel.status = 2;
                 fileModel.userId = [UserConfig getShareObject].userId;
@@ -443,11 +443,12 @@ struct ResultFile {
                     [SendRequestUtil sendGroupFilePretreatmentWithGID:self.toid fileName:self.fileName fileSize:@(self.fileData.length) fileType:@(self.fileType) fileMD5:[MD5Util md5WithData:self.fileData] fileInfo:self.fileInfo fileId:self.messageid];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_SEND_NOTI object:@[@(0),self.fileid,self.toid,@(self.fileType),self.messageid?:@"",self.fileMessageId]];
+                    // 文件发送成功，删除记录
+                    [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(self.messageid)]];
                 }
                 
                 
-                 // 文件发送成功，删除记录
-                 [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(self.messageid)]];
+                
             }
             return;
         }

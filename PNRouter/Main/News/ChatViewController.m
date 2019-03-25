@@ -677,11 +677,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         chatModel.dsKey = dsKey;
         chatModel.msgKey = msgKey;
         chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
-        [chatModel bg_save];
+       
         NSString *fileNameInfo = fileName;
         if (fileInfo && fileInfo.length>0) {
             fileNameInfo = [NSString stringWithFormat:@"%@,%@",fileNameInfo,fileInfo];
+            chatModel.fileName = fileNameInfo;
         }
+        [chatModel bg_save];
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
         [dataUtil sendFileId:toId fileName:fileNameInfo fileData:fileData fileid:fileId fileType:fileType messageid:messageId srcKey:srcKey dstKey:dsKey isGroup:NO];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
@@ -792,7 +794,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }
     }];
-    
 }
 - (void) queryFriendSuccess:(NSNotification *) noti
 {
@@ -1361,16 +1362,24 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 if (model.msgType == 0) { // 文字
                     model.msg = chatModel.messageMsg;
                     model.msgState = CDMessageStateNormal;
-                    //                model.nonceKey = nonceString;
-                    //                model.signKey = signString;
-                    //                model.symmetKey = enSymmetString;
                     model.messageStatu = -1;
                 } else {
                     model.fileSize = chatModel.fileSize;
                     model.msgState = CDMessageStateSending;
                     model.fileID = (int)chatModel.msgid;
                     model.messageStatu = -1;
-                    model.fileName = chatModel.fileName;
+                    NSArray *nameInfos = [chatModel.fileName componentsSeparatedByString:@","];
+                    if (nameInfos.count >=2) {
+                        model.fileName = nameInfos[0];
+                       NSArray *whs = [[nameInfos lastObject] componentsSeparatedByString:@"*"];
+                        model.fileWidth = [whs[0] floatValue];
+                        model.fileHeight = [whs[1] floatValue];
+                    } else {
+                        model.fileName = chatModel.fileName;
+                    }
+                    
+                    
+                    
                 }
                 [messageModelArr addObject:model];
             }];

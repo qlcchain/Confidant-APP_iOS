@@ -923,7 +923,7 @@
         [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SEND_CHATMESSAGE_SUCCESS_NOTI object:@[@(retCode),MsgId,sendMsgID?:@""]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SEND_CHATMESSAGE_SUCCESS_NOTI object:@[@(0),MsgId,sendMsgID?:@""]];
 }
 
 + (void)handlePushMsg:(NSDictionary *)receiveDic {
@@ -1511,6 +1511,7 @@
         chatListModel.friendID = [UserConfig getShareObject].userId;
         chatListModel.groupID = gId;
         chatListModel.groupName = [GName base64DecodedString]?:GName;
+        chatListModel.friendName = @"";
 //        chatListModel.groupAlias = [Remark base64DecodedString]?:Remark;
         chatListModel.groupUserkey = UserKey;
         chatListModel.chatTime = [NSDate date];
@@ -1527,6 +1528,9 @@
     } else {
         
     }
+    
+    // 发送成功，删除记录.
+    [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"toId"),bg_sqlValue(gId),bg_sqlKey(@"msgid"),bg_sqlValue(sendMsgID)]];
     
 }
 #pragma mark ---拉取群聊消息列表
@@ -1563,7 +1567,6 @@
      NSString *Userkey = receiveDic[@"params"][@"Userkey"];
     if (retCode == 0) { // 0：文件发送成功
         
-        
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
         chatModel.myID = [UserConfig getShareObject].userId;
@@ -1591,8 +1594,13 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_FILE_SEND_SUCCESS_NOTI object:resultDic];
         }
         
+         [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"toId"),bg_sqlValue(GId),bg_sqlKey(@"msgid"),bg_sqlValue(fileID)]];
+        
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_FILE_SEND_FAIELD_NOTI object:@[@(retCode),GId?:@"",fileID?:@""]];
+        // 文件发送失败，更改发送状态
+        BOOL updateB = [ChatModel bg_update:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@ and %@=%@",bg_sqlKey(@"isSendFailed"),bg_sqlValue(@(1)),bg_sqlKey(@"toId"),bg_sqlValue(GId),bg_sqlKey(@"msgid"),bg_sqlValue(fileID)]];
+        NSLog(@"----文件发送失败，更改发送状态-------%@",@(updateB));
     }
 }
 #pragma mark -群消息推送
