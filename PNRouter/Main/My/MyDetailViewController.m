@@ -104,6 +104,7 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     MyCell *cell = [tableView dequeueReusableCellWithIdentifier:MyCellReuse];
+    cell.iconWidth.constant = 0;
     cell.lblContent.text = self.dataArray[indexPath.row];
     if (indexPath.row == 0 || indexPath.row == 2) {
         cell.lblSubContent.hidden = YES;

@@ -12,6 +12,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    
     _subBtn.hidden = YES;
     _lblSubContent.hidden = YES;
     _subBtn.layer.cornerRadius = 15;

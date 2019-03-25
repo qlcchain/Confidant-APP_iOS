@@ -48,8 +48,12 @@
                         <color key="textColor" red="0.52156862745098043" green="0.52156862745098043" blue="0.52156862745098043" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share app" translatesAutoresizingMaskIntoConstraints="NO" id="mUP-XD-PHv">
-                        <rect key="frame" x="16" y="16.5" width="16" height="14"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_management_circle" translatesAutoresizingMaskIntoConstraints="NO" id="mUP-XD-PHv">
+                        <rect key="frame" x="16" y="15.5" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="16" id="nUl-8b-6EF"/>
+                            <constraint firstAttribute="height" constant="16" id="vgm-nQ-sJz"/>
+                        </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wy8-Cg-UUl">
                         <rect key="frame" x="44" y="14.5" width="37" height="17.5"/>
@@ -81,6 +85,7 @@
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="iconImageView" destination="mUP-XD-PHv" id="ntb-UK-uZa"/>
+                <outlet property="iconWidth" destination="nUl-8b-6EF" id="muP-4D-nc0"/>
                 <outlet property="lblContent" destination="wy8-Cg-UUl" id="Q1Y-o4-NWu"/>
                 <outlet property="lblSubContent" destination="jDX-ph-KvW" id="K4D-JQ-53f"/>
                 <outlet property="rightJD" destination="jSf-WQ-HxL" id="9Sb-1z-rfx"/>
@@ -91,6 +96,6 @@
     </objects>
     <resources>
         <image name="icon_arrive" width="8" height="14"/>
-        <image name="share app" width="16" height="14"/>
+        <image name="icon_management_circle" width="16" height="16"/>
     </resources>
 </document>

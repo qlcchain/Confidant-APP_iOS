@@ -221,6 +221,8 @@
 		58C62707214BC81E0051AFD0 /* PayloadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C62706214BC81E0051AFD0 /* PayloadModel.m */; };
 		58E3A5762242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E3A5752242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m */; };
 		58E3A5792243366E00F9D9E7 /* GroupVerifyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E3A5782243366E00F9D9E7 /* GroupVerifyModel.m */; };
+		58E3A57D2248711E00F9D9E7 /* SettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E3A57B2248711E00F9D9E7 /* SettingCell.m */; };
+		58E3A57E2248711E00F9D9E7 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58E3A57C2248711E00F9D9E7 /* SettingCell.xib */; };
 		58F1789B221FDFEC001CD0AF /* ChooseContactShowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */; };
 		58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */; };
 		58F178A0221FF333001CD0AF /* ChooseContactHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F1789D221FF333001CD0AF /* ChooseContactHeaderView.m */; };
@@ -972,6 +974,9 @@
 		58E3A5752242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpdateGroupMemberAvatarUtil.m; sourceTree = "<group>"; };
 		58E3A5772243366E00F9D9E7 /* GroupVerifyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupVerifyModel.h; sourceTree = "<group>"; };
 		58E3A5782243366E00F9D9E7 /* GroupVerifyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupVerifyModel.m; sourceTree = "<group>"; };
+		58E3A57A2248711E00F9D9E7 /* SettingCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingCell.h; sourceTree = "<group>"; };
+		58E3A57B2248711E00F9D9E7 /* SettingCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingCell.m; sourceTree = "<group>"; };
+		58E3A57C2248711E00F9D9E7 /* SettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
 		58F17899221FDFEC001CD0AF /* ChooseContactShowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactShowModel.h; sourceTree = "<group>"; };
 		58F1789A221FDFEC001CD0AF /* ChooseContactShowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactShowModel.m; sourceTree = "<group>"; };
 		58F1789C221FF333001CD0AF /* ChooseContactHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseContactHeaderView.xib; sourceTree = "<group>"; };
@@ -2538,6 +2543,9 @@
 				7330F3A5214679BF00FF4EEC /* ShareCollectionCell.h */,
 				7330F3A6214679BF00FF4EEC /* ShareCollectionCell.m */,
 				7330F3A7214679BF00FF4EEC /* ShareCollectionCell.xib */,
+				58E3A57A2248711E00F9D9E7 /* SettingCell.h */,
+				58E3A57B2248711E00F9D9E7 /* SettingCell.m */,
+				58E3A57C2248711E00F9D9E7 /* SettingCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3791,6 +3799,7 @@
 				5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */,
 				7330F3CF21479AED00FF4EEC /* NewsCell.xib in Resources */,
 				584B439021FEE11D00D1F21A /* DiskManagementCell.xib in Resources */,
+				58E3A57E2248711E00F9D9E7 /* SettingCell.xib in Resources */,
 				58F5E4C2222CD46E00695F0A /* PNBackgroundView.xib in Resources */,
 				7330F51F214B460A00FF4EEC /* NotifactionView.xib in Resources */,
 				7330F3A4214671C000FF4EEC /* ShareView.xib in Resources */,
@@ -3961,6 +3970,7 @@
 				73D00E9D215A1E490013E20D /* ChooseMutAlertView.m in Sources */,
 				58F4430B2149FF6200A94106 /* HeartBeatUtil.m in Sources */,
 				7330F520214B460A00FF4EEC /* NotifactionView.m in Sources */,
+				58E3A57D2248711E00F9D9E7 /* SettingCell.m in Sources */,
 				73F55A0C223F3F69003155D2 /* GroupInfoModel.m in Sources */,
 				58F1789B221FDFEC001CD0AF /* ChooseContactShowModel.m in Sources */,
 				5825A23C21FAAE5D00E6194B /* NSString+File.m in Sources */,

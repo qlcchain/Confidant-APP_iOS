@@ -64,5 +64,6 @@ static NSInteger socketConnectStatusDisconnected = 4;
 
 
 #define User_Header_Size 500*1024      // 500KB
+#define Screen_Lock_Local @"Screen_Lock_Local"
 
 #endif /* CustomMacro_h */

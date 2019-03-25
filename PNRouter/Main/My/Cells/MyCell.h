@@ -12,8 +12,10 @@ static NSString *MyCellReuse = @"MyCell";
 #define MyCellReuse_Height 47
 
 @interface MyCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UIImageView *rightJD;
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *iconWidth;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
 @property (weak, nonatomic) IBOutlet UIButton *subBtn;
