@@ -128,6 +128,10 @@
  头像外边距
  */
 @property (nonatomic, assign) CGFloat messageMargin;
+// 消息上边距
+@property (nonatomic, assign) CGFloat messageMarginTop;
+// 头像边距
+@property (nonatomic, assign) CGFloat headMargin;
 /**
  气泡最大边长   从尖角到另一边
  */

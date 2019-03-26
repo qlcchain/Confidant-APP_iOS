@@ -250,7 +250,9 @@
                 });
            
         } else {
-            self.imageContent_right.image = nil;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.imageContent_right.image = nil;
+            });
             if (data.msgState == CDMessageStateDownloadFaild || data.msgState == CDMessageStateNormal) {
                 return;
             }
