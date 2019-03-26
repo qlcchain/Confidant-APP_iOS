@@ -11,7 +11,7 @@ import UIKit
 
 class SocketUtil: NSObject {
     
-    static var shareInstance:SocketUtil {
+    @objc static var shareInstance:SocketUtil {
         struct MyStatic {
             static var instance:SocketUtil = SocketUtil()
         }
@@ -25,7 +25,7 @@ class SocketUtil: NSObject {
     public var onDisconnect: ((Error?) -> Void)?
     public var connectStatus:Int = socketConnectStatusNone
     
-    func connect(url:String) {
+    @objc func connect(url:String) {
         
         print("connecturl  = \(url)")
         weak var weakSelf = self
@@ -62,25 +62,25 @@ class SocketUtil: NSObject {
         socket!.connect()
     }
     
-    func disconnect() {
+    @objc func disconnect() {
         connectStatus = socketConnectStatusDisconnecting
         socket?.disconnect()
     }
     
-    func send(text:String) {
+    @objc func send(text:String) {
         socket?.write(string: text, completion: {
             //print("send text:\(text)")
             SocketMessageUtil.sendText(text);
         })
     }
     
-    func send(data:Data) {
+    @objc func send(data:Data) {
         socket?.write(data: data, completion: {
             print("send data:\(data.count)")
         })
     }
     
-    func getSocketConnectStatus() -> Int {
+    @objc func getSocketConnectStatus() -> Int {
         return connectStatus
     }
     

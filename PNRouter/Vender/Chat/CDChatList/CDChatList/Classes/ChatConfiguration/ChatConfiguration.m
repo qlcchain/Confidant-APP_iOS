@@ -30,7 +30,7 @@
     
     self.bubbleRoundAnglehorizInset = 10.0f;
     self.bubbleShareAngleWidth = 6.0f;
-    self.messageMargin = 10.0f;
+    self.messageMargin = 16.0f;
     self.bubbleMaxWidth = cd_ScreenW() * 0.64f;
     self.bubbleSharpAngleHeighInset = 25.0f;
     self.nickNameHeight = 25.0f;

@@ -230,7 +230,7 @@ typedef enum : NSUInteger {
 
 - (void)showEmptyView {
     NSString *imgStr = @"icon_documents_received_gray";
-    NSString *tipStr = @"No documents yet Let friends share";
+    NSString *tipStr = @"No files available yet";
     [self showEmptyViewToView:_contentBack img:[UIImage imageNamed:imgStr] title:tipStr];
 }
 

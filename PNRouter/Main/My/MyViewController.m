@@ -29,8 +29,8 @@
 #import "SettingViewController.h"
 #import "PTBPerformanceCenter.h"
 
-static NSString *Management_Circle_Str = @"Management Circles";
-static NSString *My_QRCode_Str = @"My QR Code";
+static NSString *Management_Circle_Str = @"Manage Circles";
+static NSString *My_QRCode_Str = @"Invite friends to Confidant";
 static NSString *Settings_Str = @"Settings";
 
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource> {
@@ -93,7 +93,7 @@ static NSString *Settings_Str = @"Settings";
         _myHeadView.isMyHead = YES;
         NSString *userKey = [EntryModel getShareObject].signPublicKey;
         [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] userKey:userKey];
-        _myHeadView.lblContent.text = @"Add to my status";
+//        _myHeadView.lblContent.text = @"Add to my status";
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpDetailvc)];
         
         _myHeadView.userInteractionEnabled = YES;
@@ -124,7 +124,7 @@ static NSString *Settings_Str = @"Settings";
     
     _tableV.delegate = self;
     _tableV.dataSource = self;
-    UIView *headBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 135)];
+    UIView *headBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 96)];
     [headBackView addSubview:self.myHeadView];
     _tableV.tableHeaderView = headBackView;
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];

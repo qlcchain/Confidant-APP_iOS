@@ -11,7 +11,7 @@
 @interface UploadAlertView ()
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomViewBottom;
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *otherHeight;
 
 @end
 
@@ -19,6 +19,7 @@
 
 + (instancetype)getInstance {
     UploadAlertView *view = [[[NSBundle mainBundle] loadNibNamed:@"UploadAlertView" owner:self options:nil] lastObject];
+    view.otherHeight.constant = 0;
     return view;
 }
 - (IBAction)backBtnAction:(id)sender {

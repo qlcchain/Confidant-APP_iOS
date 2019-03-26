@@ -14,7 +14,7 @@ class KeychainUtil: NSObject {
     
 private static let KeyService : String = "com.winq.routerchat"
     // 清除指定key
-   static func removeKey(keyName key:String) -> Bool {
+    @objc static func removeKey(keyName key:String) -> Bool {
         let keychain = Keychain(service:KeychainUtil.KeyService)
         do {
             //save pirivate key to keychain
@@ -28,7 +28,7 @@ private static let KeyService : String = "com.winq.routerchat"
     }
     
     // 清除所有key
-   static func removeAllKey() -> Bool {
+   @objc static func removeAllKey() -> Bool {
         let keychain = Keychain(service:KeychainUtil.KeyService)
         do {
             //save pirivate key to keychain
@@ -42,7 +42,7 @@ private static let KeyService : String = "com.winq.routerchat"
     }
     
     
-   static func isExistKey(keyName key:String) -> Bool {
+   @objc static func isExistKey(keyName key:String) -> Bool {
         
         let keychain = Keychain(service:KeychainUtil.KeyService)
         do {
@@ -60,7 +60,7 @@ private static let KeyService : String = "com.winq.routerchat"
         
     }
     
-    static func getKeyValue(keyName key:String) -> String {
+    @objc static func getKeyValue(keyName key:String) -> String {
         
         let keychain = Keychain(service:KeychainUtil.KeyService)
         do {
@@ -76,7 +76,7 @@ private static let KeyService : String = "com.winq.routerchat"
         }
     }
     
-    static func getKeyDataValue(keyName key:String) -> Data? {
+    @objc static func getKeyDataValue(keyName key:String) -> Data? {
         
         let keychain = Keychain(service:KeychainUtil.KeyService)
         do {
@@ -89,7 +89,7 @@ private static let KeyService : String = "com.winq.routerchat"
         }
     }
     
-   static func saveValueToKey(keyName key:String, keyValue value:String) -> Bool {
+   @objc static func saveValueToKey(keyName key:String, keyValue value:String) -> Bool {
         
         let keychain = Keychain(service: KeychainUtil.KeyService)
         do {
@@ -104,7 +104,7 @@ private static let KeyService : String = "com.winq.routerchat"
         return true
     }
     
-    static func saveDataKeyAndData(keyName key:String, keyValue value:Data) -> Bool {
+    @objc static func saveDataKeyAndData(keyName key:String, keyValue value:Data) -> Bool {
         
         let keychain = Keychain(service: KeychainUtil.KeyService)
         do {

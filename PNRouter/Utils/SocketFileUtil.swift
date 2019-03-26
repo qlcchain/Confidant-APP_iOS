@@ -10,14 +10,14 @@ import UIKit
 //import Starscream
 
 class SocketFileUtil: NSObject {
-    var socket:WebSocket? = nil
-    public var onConnect: (() -> Void)?
-    public var onDisconnect: ((Error?,String?) -> Void)?
-    public var receiveFileText: ((String?) -> Void)?
-    public var receiveFileData: ((Data?) -> Void)?
-    public var sendFileComplete: (() -> Void)?
+    @objc var socket:WebSocket? = nil
+    @objc public var onConnect: (() -> Void)?
+    @objc public var onDisconnect: ((Error?,String?) -> Void)?
+    @objc public var receiveFileText: ((String?) -> Void)?
+    @objc public var receiveFileData: ((Data?) -> Void)?
+    @objc public var sendFileComplete: (() -> Void)?
     
-    func connect(url:String) {
+    @objc func connect(url:String) {
         socket = WebSocket(url: URL(string: url)!, protocols: ["lws-pnr-bin"])
         socket!.disableSSLCertValidation = true
         //websocketDidConnect
@@ -46,25 +46,25 @@ class SocketFileUtil: NSObject {
         socket!.connect()
     }
     
-    func disconnect() {
+    @objc func disconnect() {
         socket?.disconnect()
         //socket = nil
     }
     
-    func send(text:String) {
+   @objc func send(text:String) {
         socket?.write(string: text, completion: {
             print("send text:\(text)")
         })
     }
     
-    func send(data:Data) {
+    @objc func send(data:Data) {
         socket?.write(data: data, completion: { [weak self] in
            // self?.sendFileComplete!()
             print("send data:\(data.count)---time123 :\(NSDate())")
         })
     }
     
-    func isConnected() -> Bool {
+    @objc func isConnected() -> Bool {
         if (socket != nil) {
             return socket!.isConnected
         }

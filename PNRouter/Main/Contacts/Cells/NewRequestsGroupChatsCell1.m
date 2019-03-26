@@ -49,7 +49,7 @@
         NSString *status = @"";
         UIColor *statusColor = blackC;
         if (model.status == 1) { // 已同意
-            status = @"Accepted";
+            status = @"Added";
             statusColor = grayC;
         } else if (model.status == 2) { // 等待
             status = @"Pending";
