@@ -232,7 +232,7 @@
                 <constraint firstItem="Jd4-kR-ur4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fhy-yH-FET"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-652" y="-121"/>
+            <point key="canvasLocation" x="-902" y="-139"/>
         </view>
     </objects>
     <resources>

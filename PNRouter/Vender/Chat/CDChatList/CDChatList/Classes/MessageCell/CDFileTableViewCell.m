@@ -268,7 +268,7 @@
             
             SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
             dataUtil.fileInfo = @"";
-            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:5 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey isGroup:NO];
+            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:5 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey isGroup:self.msgModal.isGroup];
             [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
             
         } else {
@@ -325,12 +325,24 @@
                     NSData *data = [NSData dataWithContentsOfFile:path];
                     if (msgkey) {
                         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
+                        if (!datakey) {
+                            weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+                            [SystemUtil removeDocmentFilePath:filePath];
+                            [weakSelf.tableView updateMessage:weakSelf.msgModal];
+                            return ;
+                        }
                         datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                         if (datakey && ![datakey isEmptyString]) {
                             data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                             [SystemUtil removeDocmentFilePath:path];
-                            [data writeToFile:path atomically:YES];
-                            weakSelf.msgModal.msgState = CDMessageStateNormal;
+                            if (!data) {
+                                weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+                                [SystemUtil removeDocmentFilePath:path];
+                            } else {
+                                [data writeToFile:path atomically:YES];
+                                weakSelf.msgModal.msgState = CDMessageStateNormal;
+                            }
+                            
                         } else {
                             weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
                              [SystemUtil removeDocmentFilePath:path];

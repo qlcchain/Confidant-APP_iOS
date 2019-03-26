@@ -17,6 +17,7 @@
 #import "ChooseContactTableCell.h"
 #import "ChooseContactHeaderView.h"
 #import "FriendModel.h"
+#import "GroupInfoModel.h"
 
 @interface ChooseContactViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
     BOOL isMutable;
@@ -85,7 +86,6 @@
             }
         }
     }];
-    
     
 }
 - (IBAction)rightAction:(id)sender {
@@ -165,6 +165,39 @@
     
     return [self sortWith:contactShowArr];
 }
+
+- (NSArray *)handleShowGroupData:(NSMutableArray<GroupInfoModel *> *)arr {
+    //    NSMutableArray *tempArr = [NSMutableArray arrayWithArray:arr];
+    NSMutableArray *contactShowArr = [NSMutableArray array];
+    [arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        GroupInfoModel *groupM = obj;
+        
+        //不存在则创建
+        ChooseContactShowModel *showM = [ChooseContactShowModel new];
+        showM.showSelect = NO;
+        showM.isSelect = NO;
+        showM.isGroup = YES;
+        showM.showCell = NO;
+        showM.showArrow = NO;
+        showM.Name = [groupM.GName base64DecodedString];
+        showM.Remarks = [groupM.Remark base64DecodedString];
+        showM.UserKey = groupM.UserKey;
+     
+        showM.routerArr = [NSMutableArray array];
+        //            showM.remarks = friendM.remarks;
+        ChooseContactRouterModel *routerM = [ChooseContactRouterModel new];
+        routerM.Id = groupM.GId;
+        routerM.showSelect = NO;
+        routerM.isSelect = NO;
+        [showM.routerArr addObject:routerM];
+        
+        [contactShowArr addObject:showM];
+        
+    }];
+    
+    return [self sortWith:contactShowArr];
+}
+
 
 - (BOOL)getOldShowCellStatus:(NSString *)userKey {
     __block BOOL showCell = NO;
@@ -271,6 +304,8 @@
     [self addTargetMethod];
     
     _dataArray = [NSMutableArray array];
+    NSArray *groupArr = [self handleShowGroupData:[ChatListDataUtil getShareObject].groupArray];
+    [_dataArray addObjectsFromArray:groupArr];
     NSArray *arr = [self handleShowData:[ChatListDataUtil getShareObject].friendArray];
     [_dataArray addObjectsFromArray:arr];
     
@@ -439,8 +474,12 @@
 - (FriendModel *)getFriendModelWithContactShowModel:(ChooseContactShowModel *)contactShowM contactRouterModel:(ChooseContactRouterModel *)contactRouterM {
     FriendModel *friendM = [[FriendModel alloc] init];
     friendM.userId = contactRouterM.Id;
+    friendM.isGroup = contactShowM.isGroup;
     friendM.username = [contactShowM.Name base64DecodedString]?:contactShowM.Name;
     friendM.publicKey = contactShowM.publicKey;
+    if (contactShowM.isGroup) {
+        friendM.publicKey = contactShowM.UserKey;
+    }
     friendM.remarks = [contactShowM.Remarks base64DecodedString]?:contactShowM.Remarks;
     friendM.Index = contactShowM.Index;
     friendM.onLineStatu = [contactShowM.Status integerValue];

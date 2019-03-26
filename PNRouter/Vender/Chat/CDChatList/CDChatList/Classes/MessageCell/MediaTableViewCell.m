@@ -350,12 +350,23 @@
                       NSData *data = [NSData dataWithContentsOfFile:path];
                      if (msgkey) {
                          NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
+                         if (datakey) {
+                             weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+                             [SystemUtil removeDocmentFilePath:path];
+                             return;
+                         }
                          datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                          if (datakey && ![datakey isEmptyString]) {
                              data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                              [SystemUtil removeDocmentFilePath:path];
-                             [data writeToFile:path atomically:YES];
-                             weakSelf.msgModal.msgState = CDMessageStateNormal;
+                             if (!data) {
+                                 weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
+                                 [SystemUtil removeDocmentFilePath:path];
+                             } else {
+                                 [data writeToFile:path atomically:YES];
+                                 weakSelf.msgModal.msgState = CDMessageStateNormal;
+                             }
+                             
                          } else {
                              weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
                              [SystemUtil removeDocmentFilePath:path];

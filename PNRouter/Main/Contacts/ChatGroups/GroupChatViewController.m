@@ -145,6 +145,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupFileSendFaield:) name:GROUP_FILE_SEND_FAIELD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxDownFileSuccess:) name:REVER_GROUP_FILE_PULL_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendingNoti:) name:FILE_SENDING_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageForward:) name:CHOOSE_FRIEND_NOTI object:nil];
 }
 
 #pragma mark ---pull message
@@ -480,7 +481,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         chatModel.fromId = [UserConfig getShareObject].userId;
         chatModel.toId = toId;
         chatModel.fileInfo = fileInfo;
-        chatModel.toPublicKey = self.groupModel.UserKey;
+        if ([publicKey isEmptyString]) {
+            chatModel.toPublicKey = self.groupModel.UserKey;
+        } else {
+            chatModel.toPublicKey = publicKey;
+        }
+        
         chatModel.msgType = fileType;
         chatModel.fileSize = fileData.length;
         chatModel.msgid = (long)[messageId integerValue];
@@ -1076,7 +1082,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
     if (_msgStartId == 0) { // 第一次自动加载
         
-        NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"toId"),bg_sqlValue(self.groupModel.GId)]];
+       // NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"toId"),bg_sqlValue(self.groupModel.GId)]];
+         NSArray *chats = [ChatModel bg_find:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"toId"),bg_sqlValue(self.groupModel.GId)]];
         if (chats && chats.count > 0) {
             @weakify_self
             [chats enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -1478,4 +1485,239 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 
+
+#pragma mark ----转发
+- (void) messageForward:(NSNotification *)noti {
+    __block NSData *fileDatas = nil;
+    NSArray *modeArray = (NSArray *)noti.object;
+    @weakify_self
+    [modeArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        
+        long tempMsgid = (long)[ChatListDataUtil getShareObject].tempMsgId++;
+        tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
+        
+        if (model.isGroup) { // 转发到群聊
+            // 自己私钥解密
+            NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:model.publicKey];
+            // 截取前16位
+            if (!datakey || datakey.length == 0) {
+                return;
+            }
+            datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+            if (weakSelf.selectMessageModel.msgType == CDMessageTypeText) { // 转发文字
+                
+                if ([model.userId isEqualToString:weakSelf.groupModel.GId]) {
+                    
+                    CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+                    messageModel.FromId = [UserConfig getShareObject].userId;
+                    messageModel.ToId = weakSelf.groupModel.GId;
+                    messageModel.publicKey = weakSelf.groupModel.UserKey;
+                    messageModel.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+                    messageModel.messageId = [NSString stringWithFormat:@"%ld",(long)tempMsgid];
+                    messageModel.msg = weakSelf.selectMessageModel.msg;
+                    messageModel.isGroup = YES;
+                    messageModel.msgState = CDMessageStateNormal;
+                    messageModel.messageStatu = -1;
+                    [self addMessagesToList:messageModel];
+                }
+                
+                if ([SystemUtil isSocketConnect]) {
+                    ChatModel *chatModel = [[ChatModel alloc] init];
+                    chatModel.fromId = [UserModel getUserModel].userId;
+                    chatModel.toId = model.userId;
+                    chatModel.toPublicKey = model.publicKey;
+                    chatModel.msgType = 0;
+                    chatModel.msgid = tempMsgid;
+                    chatModel.messageMsg = weakSelf.selectMessageModel.msg;
+                    chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
+                    chatModel.bg_tableName = CHAT_CACHE_TABNAME;
+                    [chatModel bg_save];
+                }
+                
+                // aes加密
+                NSString *enMsg = aesEncryptString(weakSelf.selectMessageModel.msg, datakey);
+                // 发送消息
+                [SendRequestUtil sendGroupMessageWithGid:model.userId point:@"" msg:enMsg msgid:[NSString stringWithFormat:@"%ld",(long)tempMsgid]];
+                
+                
+            } else {
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    
+                    NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.groupModel.GId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
+                    if (!fileDatas) {
+                        fileDatas = [NSData dataWithContentsOfFile:filePath];
+                    }
+                    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+                    NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+                    int msgid = [mill intValue];
+                    
+                    filePath = [[SystemUtil getBaseFilePath:model.userId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
+                    [fileDatas writeToFile:filePath atomically:YES];
+                    
+                    // 自己私钥解密
+                    NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:model.publicKey];
+                    NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+                    NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+                    fileDatas = aesEncryptData(fileDatas,msgKeyData);
+                    
+                    NSString *fileInfo = @"";
+                    if (weakSelf.selectMessageModel.fileWidth > 0 && weakSelf.selectMessageModel.fileHeight > 0) {
+                        fileInfo = [NSString stringWithFormat:@"%f*%f",weakSelf.selectMessageModel.fileWidth,weakSelf.selectMessageModel.fileHeight];
+                    }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                       if ([model.userId isEqualToString:weakSelf.groupModel.GId]) {
+                           CDMessageModel *messageModel = [[CDMessageModel alloc] init];
+                           messageModel.msgType = weakSelf.selectMessageModel.msgType;
+                           messageModel.msg = @"";
+                           messageModel.fileID = msgid;
+                           messageModel.fileWidth = weakSelf.selectMessageModel.fileWidth;
+                           messageModel.fileHeight = weakSelf.selectMessageModel.fileHeight;
+                           messageModel.FromId = [UserConfig getShareObject].userId;
+                           messageModel.ToId = weakSelf.groupModel.GId;
+                           messageModel.msgState = CDMessageStateSending;
+                           messageModel.messageId = [NSString stringWithFormat:@"%d",msgid];
+                           CTDataConfig config = [CTData defaultConfig];
+                           config.isOwner = YES;
+                           messageModel.isGroup = YES;
+                           messageModel.willDisplayTime = YES;
+                           messageModel.messageStatu = -1;
+                           messageModel.fileName = [mill stringByAppendingString:@".jpg"];
+                           messageModel.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+                           messageModel.publicKey = weakSelf.groupModel.UserKey;
+                           messageModel.ctDataconfig = config;
+                           NSString *nkName = [UserModel getUserModel].username;
+                           NSString *userKey = [EntryModel getShareObject].signPublicKey;
+                           messageModel.userThumImage =  [SystemUtil genterViewToImage:[weakSelf getHeadViewWithName:nkName userKey:userKey]];
+                           messageModel.dskey = weakSelf.groupModel.UserKey;
+                           messageModel.srckey = weakSelf.groupModel.UserKey;
+                           [weakSelf.listView addMessagesToBottom:@[messageModel]];
+                       }
+                        [weakSelf sendFileWithToid:model.userId fileName:weakSelf.selectMessageModel.fileName fileData:fileDatas fileId:msgid fileType:weakSelf.selectMessageModel.msgType messageId:[NSString stringWithFormat:@"%d",msgid] srcKey:@"" dsKey:@"" publicKey:model.publicKey msgKey:@"" fileInfo:fileInfo];
+                    });
+                });
+            }
+            
+        } else {
+            model.publicKey = [model.publicKey stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
+            UserModel *userM = [UserModel getUserModel];
+            // 生成签名
+            NSString *signString = [LibsodiumUtil getOwenrSignPrivateKeySignOwenrTempPublickKey];
+            // 生成nonce
+            NSString *nonceString = [LibsodiumUtil getGenterSysmetryNonce];
+            
+            if (weakSelf.selectMessageModel.msgType == CDMessageTypeText) { // 转发文字
+                // 生成对称密钥
+                NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].tempPrivateKey publicKey:model.publicKey];
+                // 加密消息
+                NSString *msg = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:weakSelf.selectMessageModel.msg nonce:nonceString];
+                // 加密对称密钥
+                NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
+                
+                NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.userId?:@"",@"From":userM.userId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
+                
+                long tempMsgid = (long)[ChatListDataUtil getShareObject].tempMsgId++;
+                tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
+                [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:[NSString stringWithFormat:@"%ld",(long)tempMsgid]];
+                
+                if ([SystemUtil isSocketConnect]) {
+                    ChatModel *chatModel = [[ChatModel alloc] init];
+                    chatModel.fromId = [UserConfig getShareObject].userId;
+                    chatModel.toId = model.userId;
+                    chatModel.toPublicKey = model.publicKey;
+                    chatModel.msgType = 0;
+                    chatModel.msgid = tempMsgid;
+                    chatModel.messageMsg = weakSelf.selectMessageModel.msg;
+                    chatModel.bg_tableName = CHAT_CACHE_TABNAME;
+                    chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
+                    [chatModel bg_save];
+                }
+                
+            } else { // 转发文件
+                
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    
+                    NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.groupModel.GId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
+                    if (!fileDatas) {
+                        fileDatas = [NSData dataWithContentsOfFile:filePath];
+                    }
+                    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+                    NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+                    int msgid = [mill intValue];
+                    
+                   
+                    filePath = [[SystemUtil getBaseFilePath:model.userId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
+                    [fileDatas writeToFile:filePath atomically:YES];
+                    
+                    // 生成32位对称密钥
+                    NSString *msgKey = [SystemUtil get32AESKey];
+                    if (weakSelf.selectMessageModel.msgType == 5) {
+                        msgKey = [SystemUtil getDoc32AESKey];
+                    }
+                    NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+                    NSString *symmetKey = [symmetData base64EncodedString];
+                    // 好友公钥加密对称密钥
+                    NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
+                    // 自己公钥加密对称密钥
+                    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+                    
+                    NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+                    NSData *enData = aesEncryptData(fileDatas,msgKeyData);
+                    
+                    NSString *fileInfo = @"";
+                    if (weakSelf.selectMessageModel.fileWidth > 0 && weakSelf.selectMessageModel.fileHeight > 0) {
+                        fileInfo = [NSString stringWithFormat:@"%f*%f",weakSelf.selectMessageModel.fileWidth,weakSelf.selectMessageModel.fileHeight];
+                    }
+                    [weakSelf sendChatFileWithToid:model.userId fileName:weakSelf.selectMessageModel.fileName fileData:enData fileId:msgid fileType:weakSelf.selectMessageModel.msgType messageId:[NSString stringWithFormat:@"%d",msgid] srcKey:srcKey dsKey:dsKey publicKey:model.publicKey msgKey:msgKey fileInfo:fileInfo];
+                    
+                });
+            }
+        }
+        
+    }];
+}
+
+#pragma mark -发送单聊文件
+- (void) sendChatFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey msgKey:(NSString *) msgKey fileInfo:(NSString *) fileInfo
+{
+    if ([SystemUtil isSocketConnect]) {
+        ChatModel *chatModel = [[ChatModel alloc] init];
+        chatModel.fromId = [UserConfig getShareObject].userId;
+        chatModel.toId = toId;
+        chatModel.toPublicKey = publicKey;
+        chatModel.msgType = fileType;
+        chatModel.fileSize = fileData.length;
+        chatModel.msgid = (long)[messageId integerValue];
+        chatModel.bg_tableName = CHAT_CACHE_TABNAME;
+        chatModel.fileName = fileName;
+        chatModel.srcKey = srcKey;
+        chatModel.dsKey = dsKey;
+        chatModel.msgKey = msgKey;
+        chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
+        
+        NSString *fileNameInfo = fileName;
+        if (fileInfo && fileInfo.length>0) {
+            fileNameInfo = [NSString stringWithFormat:@"%@,%@",fileNameInfo,fileInfo];
+            chatModel.fileName = fileNameInfo;
+        }
+        [chatModel bg_save];
+        SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+        [dataUtil sendFileId:toId fileName:fileNameInfo fileData:fileData fileid:fileId fileType:fileType messageid:messageId srcKey:srcKey dstKey:dsKey isGroup:NO];
+        [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+    } else {
+        NSString *filePath = [[SystemUtil getTempBaseFilePath:toId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:fileName]];
+        
+        if ([fileData writeToFile:filePath atomically:YES]) {
+            
+            if (fileInfo && fileInfo.length > 0) {
+                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":toId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":messageId,@"FileInfo":fileInfo};
+                [SendToxRequestUtil sendFileWithFilePath:filePath parames:parames];
+            } else {
+                NSDictionary *parames = @{@"Action":@"SendFile",@"FromId":[UserConfig getShareObject].userId,@"ToId":toId,@"FileName":[Base58Util Base58EncodeWithCodeName:fileName],@"FileMD5":[MD5Util md5WithPath:filePath],@"FileSize":@(fileData.length),@"FileType":@(fileType),@"SrcKey":srcKey,@"DstKey":dsKey,@"FileId":messageId,@"FileInfo":fileInfo};
+                [SendToxRequestUtil sendFileWithFilePath:filePath parames:parames];
+            }
+        }
+    }
+}
 @end

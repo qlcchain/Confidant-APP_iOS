@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *publicKey;
 //@property (nonatomic, strong) NSString *remarks;
 @property (nonatomic, strong) NSMutableArray *routerArr;
-
+@property (nonatomic) BOOL isGroup;
 @property (nonatomic) BOOL showCell;
 @property (nonatomic) BOOL showArrow;
 @property (nonatomic) BOOL showSelect;

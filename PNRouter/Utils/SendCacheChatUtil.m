@@ -21,6 +21,8 @@
 #import "NSString+Base64.h"
 #import "SocketCountUtil.h"
 
+
+
 const NSInteger sendTime = 10;
 const NSInteger timerTime = 10;
 
@@ -116,6 +118,8 @@ const NSInteger timerTime = 10;
 // 发送文件
 - (void) sendFileWithChatModel:(ChatModel *) model
 {
+    
+    
      if ([model.toId containsString:@"group"]) { // 是群聊
          dispatch_async(dispatch_get_global_queue(0, 0), ^{
             
@@ -209,5 +213,7 @@ const NSInteger timerTime = 10;
     
     
 }
+
+
 
 @end

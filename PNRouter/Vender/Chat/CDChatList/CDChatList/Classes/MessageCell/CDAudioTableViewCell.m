@@ -227,18 +227,39 @@
                     
                     NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
                     NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey];
+                    if (!datakey) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            data.isDown = NO;
+                            [SystemUtil removeDocmentFilePath:fileUrl];
+                            data.msgState = CDMessageStateDownloadFaild;
+                            [weakSelf.tableView updateMessage:data];
+                        });
+                        return ;
+                    }
                     datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                     
                     if (datakey && ![datakey isEmptyString]) {
                         fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                         [SystemUtil removeDocmentFilePath:imgPath];
-                        if ([fileData writeToFile:imgPath atomically:YES]) {
+                        if (!fileData || fileData.length == 0) {
+                            
                             dispatch_async(dispatch_get_main_queue(), ^{
-                                data.msgState = CDMessageStateNormal;
+                                data.isDown = NO;
+                                [SystemUtil removeDocmentFilePath:fileUrl];
+                                data.msgState = CDMessageStateDownloadFaild;
                                 [weakSelf.tableView updateMessage:data];
-                                NSLog(@"下载语音成功! filePath = %@",filePath);
                             });
+                            
+                        } else {
+                            if ([fileData writeToFile:imgPath atomically:YES]) {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    data.msgState = CDMessageStateNormal;
+                                    [weakSelf.tableView updateMessage:data];
+                                    NSLog(@"下载语音成功! filePath = %@",filePath);
+                                });
+                            }
                         }
+                        
                         
                     } else {
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -362,17 +383,36 @@
                     NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
                     
                     NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.srckey];
+                    if (!datakey) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            data.isDown = NO;
+                            [SystemUtil removeDocmentFilePath:imgPath];
+                            data.msgState = CDMessageStateDownloadFaild;
+                            [weakSelf.tableView updateMessage:data];
+                            return ;
+                        });
+                    }
                     datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                     
                     if (datakey && ![datakey isEmptyString]) {
                         fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                        if ([fileData writeToFile:imgPath atomically:YES]) {
+                        if (!fileData || fileData.length == 0) {
                             dispatch_async(dispatch_get_main_queue(), ^{
-                                data.msgState = CDMessageStateNormal;
+                                data.isDown = NO;
+                                [SystemUtil removeDocmentFilePath:imgPath];
+                                data.msgState = CDMessageStateDownloadFaild;
                                 [weakSelf.tableView updateMessage:data];
-                                NSLog(@"下载语音成功! filePath = %@",filePath);
                             });
+                        } else {
+                            if ([fileData writeToFile:imgPath atomically:YES]) {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    data.msgState = CDMessageStateNormal;
+                                    [weakSelf.tableView updateMessage:data];
+                                    NSLog(@"下载语音成功! filePath = %@",filePath);
+                                });
+                            }
                         }
+                        
                     } else {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             data.msgState = CDMessageStateDownloadFaild;

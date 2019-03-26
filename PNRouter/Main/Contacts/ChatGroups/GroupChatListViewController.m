@@ -178,6 +178,11 @@
     }
     [self.dataArray addObjectsFromArray:groups];
     [_mainTab reloadData];
+    
+    if ([ChatListDataUtil getShareObject].groupArray.count>0 > 0) {
+        [[ChatListDataUtil getShareObject].groupArray removeAllObjects];
+    }
+    [[ChatListDataUtil getShareObject].groupArray addObjectsFromArray:groups];
 }
 - (void) chooseContactNoti:(NSNotification *) noti
 {

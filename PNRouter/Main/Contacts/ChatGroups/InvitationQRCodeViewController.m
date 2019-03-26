@@ -16,6 +16,9 @@
 #import "UIImage+RoundedCorner.h"
 #import "RouterUserModel.h"
 #import "PNDefaultHeaderView.h"
+#import "UIImage+RoundedCorner.h"
+#import "UIImage+Resize.h"
+#import "UIView+Screenshot.h"
 
 @interface InvitationQRCodeViewController ()
 
@@ -57,11 +60,22 @@
         UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:self.routerUserModel.NickName]];
         [_userHeadBtn setImage:defaultImg forState:UIControlStateNormal];
         
-       // CGFloat cornt = defaultImg.size.height/7;
-      // UIImage *borderImg = [self addBorderToImage:defaultImg];
-         UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
+        UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
+        avatarImg = [avatarImg thumbnailImage:100 transparentBorder:0 cornerRadius:10 interpolationQuality:kCGInterpolationDefault];
+        UIImageView *backImgView  = [[UIImageView alloc] initWithImage:avatarImg];
+        backImgView.frame = CGRectMake(6, 6, 100, 100);
+        UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 112, 112)];
+        imgBackView.backgroundColor = [UIColor whiteColor];
+        imgBackView.layer.cornerRadius = 10;
+        imgBackView.layer.masksToBounds = YES;
+        [imgBackView addSubview:backImgView];
+        // uiview 生成图片
+        avatarImg = [imgBackView convertViewToImage];
+      
+        // UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
+        // [avatarImg roundedCornerImage:10 borderSize:0]
         @weakify_self
-        [HMScanner qrImageWithString:_routerUserModel.Qrcode avatar:[avatarImg roundedCornerImage:10 borderSize:0] completion:^(UIImage *image) {
+        [HMScanner qrImageWithString:_routerUserModel.Qrcode avatar:avatarImg completion:^(UIImage *image) {
             weakSelf.codeImgView.image = image;
         }];
     } else {
@@ -80,9 +94,20 @@
         aesCode = [NSString stringWithFormat:@"type_1,%@",aesCode];
         
         UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
-       // UIImage *borderImg = [self addBorderToImage:avatarImg];
+        avatarImg = [avatarImg thumbnailImage:100 transparentBorder:0 cornerRadius:10 interpolationQuality:kCGInterpolationDefault];
+        UIImageView *backImgView  = [[UIImageView alloc] initWithImage:avatarImg];
+        backImgView.frame = CGRectMake(6, 6, 100, 100);
+        UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 112, 112)];
+        imgBackView.backgroundColor = [UIColor whiteColor];
+        imgBackView.layer.cornerRadius = 10;
+        imgBackView.layer.masksToBounds = YES;
+        [imgBackView addSubview:backImgView];
+        // uiview 生成图片
+        avatarImg = [imgBackView convertViewToImage];
+        //UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
+        //[avatarImg roundedCornerImage:10 borderSize:0]
         @weakify_self
-        [HMScanner qrImageWithString:aesCode avatar:[avatarImg roundedCornerImage:10 borderSize:0] completion:^(UIImage *image) {
+        [HMScanner qrImageWithString:aesCode avatar:avatarImg completion:^(UIImage *image) {
             weakSelf.codeImgView.image = image;
         }];
     }
