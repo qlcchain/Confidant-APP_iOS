@@ -105,6 +105,21 @@
             }
         }
             break;
+        case EditGroupName:
+        {
+            NSString *name = [_groupInfoM.GName base64DecodedString]?:@"";
+            if (!_nameTF.text || _nameTF.text.length <= 0) {
+                [AppD.window showHint:@"Please enter name."];
+            } else {
+                if ([name isEqualToString:_nameTF.text]) {
+                    [AppD.window showHint:@"Please enter a different name."];
+                } else {
+                    NSString *base64Name = [_nameTF.text base64EncodedString];
+                    [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@(1) ToId:nil Name:base64Name NeedVerify:nil showHud:YES];
+                }
+            }
+        }
+            break;
         default:
             break;
     }
@@ -116,6 +131,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_NICKNAME_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_FRIEND_NICKNAME_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reviseGroupAliasSuccessNoti:) name:Revise_Group_Alias_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reviseGroupNameSuccessNoti:) name:Revise_Group_Name_SUCCESS_NOTI object:nil];
+    
 }
 
 - (instancetype) initWithType:(EditType) type
@@ -185,6 +202,13 @@
             _nameTF.text = [self.groupInfoM.Remark base64DecodedString];
         }
             break;
+        case EditGroupName:
+        {
+            _lblNavTitle.text = @"Name";
+            _nameTF.placeholder = @"Edit Group Name";
+            _nameTF.text = [self.groupInfoM.GName base64DecodedString];
+        }
+            break;
         default:
             break;
     }
@@ -219,6 +243,23 @@
     if (friends && friends.count > 0) {
         ChatListModel *model = friends[0];
         model.groupAlias = _nameTF.text;
+        [model bg_saveOrUpdate];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:MessageList_Update_Noti object:nil];
+    
+    if (_reviseSuccessB) {
+        _reviseSuccessB(_nameTF.text);
+    }
+    [self leftNavBarItemPressedWithPop:YES];
+}
+
+- (void)reviseGroupNameSuccessNoti:(NSNotification *)noti {
+    NSString *GId = noti.object;
+    // 更新消息列表数据库中群名称
+    NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(GId)]];
+    if (friends && friends.count > 0) {
+        ChatListModel *model = friends[0];
+        model.groupName = _nameTF.text;
         [model bg_saveOrUpdate];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:MessageList_Update_Noti object:nil];

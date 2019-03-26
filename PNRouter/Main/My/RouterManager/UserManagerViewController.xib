@@ -120,6 +120,7 @@
                 <constraint firstItem="41R-DJ-Ugu" firstAttribute="top" secondItem="T77-wX-PJl" secondAttribute="bottom" id="wXb-Bg-yCp"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="-20" y="130"/>
         </view>
     </objects>
     <resources>

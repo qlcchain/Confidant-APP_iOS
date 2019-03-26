@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ConnectView : UIView
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activeView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelBtn;
 @property (weak, nonatomic) IBOutlet UIView *backView;

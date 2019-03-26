@@ -8,16 +8,23 @@
 
 #import "RouterManagementCell.h"
 #import "RouterModel.h"
+#import "PNDefaultHeaderView.h"
 
 @implementation RouterManagementCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    _icon.layer.cornerRadius = _icon.width/2.0;
+    _icon.layer.masksToBounds = YES;
 }
 
 - (void)configWithModel:(RouterModel *)model {
     _nameLab.text = model.name;
+    NSString *userKey = @"";
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_nameLab.text]];
+    _icon.image = defaultImg;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

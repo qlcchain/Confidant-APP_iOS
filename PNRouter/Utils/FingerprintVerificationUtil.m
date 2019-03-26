@@ -131,6 +131,10 @@
 }
 
 - (void)backShowWithComplete:(void(^_Nullable)(BOOL success, NSError * _Nullable error))complete {
+    NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
+    if ([screenLock boolValue] == NO) {
+        return;
+    }
     @weakify_self
     dispatch_async(dispatch_get_main_queue(), ^{
         DDLogDebug(@"开始解锁");
@@ -170,6 +174,10 @@
 
 + (void)backShow
 {
+    NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
+    if ([screenLock boolValue] == NO) {
+        return;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         DDLogDebug(@"开始解锁");
         LAContext *myContext = [[LAContext alloc] init];
@@ -196,6 +204,10 @@
 }
 
 + (void)show {
+    NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
+    if ([screenLock boolValue] == NO) {
+        return;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         DDLogDebug(@"开始解锁");
         LAContext *myContext = [[LAContext alloc] init];

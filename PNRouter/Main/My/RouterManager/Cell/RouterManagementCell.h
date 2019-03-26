@@ -13,10 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 @class RouterModel;
 
 static NSString *RouterManagementCellReuse = @"RouterManagementCell";
-#define RouterManagementCell_Height 55
+#define RouterManagementCell_Height 56
 
 @interface RouterManagementCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UILabel *nameLab;
 
 - (void)configWithModel:(RouterModel *)model;

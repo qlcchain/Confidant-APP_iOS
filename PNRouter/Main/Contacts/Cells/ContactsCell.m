@@ -48,6 +48,7 @@
         _lblDesc.text = @"not Activated";
     }
     
+//    NSLog(@"nickname = %@    usertype = %@",model.NickName,@(model.UserType));
     _lblName.text = model.NickName?:@"";
     NSString *userKey = model.UserKey;
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_lblName.text]];

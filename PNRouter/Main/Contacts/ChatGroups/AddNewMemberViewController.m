@@ -11,6 +11,7 @@
 //#import "RouterUserCodeViewController.h"
 #import "RouterUserModel.h"
 #import "NSString+Base64.h"
+#import "RouterModel.h"
 
 @interface AddNewMemberViewController ()<UITextFieldDelegate>
 
@@ -125,7 +126,8 @@
     model.Active = 0;
     model.Qrcode = Qrcode;
     model.UserSN = UserSN;
-    model.NickName = @"TEMP USER";
+    model.NickName = [RouterModel getConnectRouter].name;
+//    model.NickName = @"TEMP USER";
     [self jumpToTempQR:model];
 }
 

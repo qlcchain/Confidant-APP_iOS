@@ -141,8 +141,7 @@
     if (_inLogin && labs(minues) >= 2) {
         [HWUserdefault updateObject:@(0) withKey:BACK_TIME];
         
-        if (_unlockView) {
-        } else {
+        if (!_unlockView) {
             @weakify_self
             [self.window endEditing:YES];
             [self.unlockView showWithUnlockOK:^{

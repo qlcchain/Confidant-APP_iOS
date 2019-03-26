@@ -14,6 +14,7 @@
 #import "PNRouter-Swift.h"
 #import "SocketCountUtil.h"
 #import "SystemUtil.h"
+#import "PNDefaultHeaderView.h"
 
 typedef enum : NSUInteger {
     RouterConnectStatusWait,
@@ -25,11 +26,13 @@ typedef enum : NSUInteger {
 @interface RouterManagerViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *connectBtnHeight; // 43
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *connectTipBackHeight; // 44
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *connectTipBackHeight; // 30
 @property (weak, nonatomic) IBOutlet UILabel *routerNameLab;
 @property (weak, nonatomic) IBOutlet UILabel *connectTipLab;
 @property (weak, nonatomic) IBOutlet UIImageView *connectTipIcon;
 @property (weak, nonatomic) IBOutlet UIButton *connectBtn;
+@property (weak, nonatomic) IBOutlet UIImageView *currentCircleIcon;
+@property (weak, nonatomic) IBOutlet UIView *currentCircleIconBack;
 
 @property (weak, nonatomic) IBOutlet UITableView *routerTable;
 @property (nonatomic, strong) NSMutableArray *routerArr;
@@ -61,6 +64,11 @@ typedef enum : NSUInteger {
 //    _connectBtn.layer.cornerRadius = 5.0f;
 //    _connectBtn.layer.borderColor = [UIColor whiteColor].CGColor;
 //    _connectBtn.layer.borderWidth = 1.0f;
+    _currentCircleIcon.layer.cornerRadius = _currentCircleIcon.width/2.0;
+    _currentCircleIcon.layer.masksToBounds = YES;
+    _currentCircleIconBack.layer.cornerRadius = _currentCircleIconBack.width/2.0;
+    _currentCircleIconBack.layer.masksToBounds = YES;
+    
     
     _routerArr = [NSMutableArray array];
     [_routerTable registerNib:[UINib nibWithNibName:RouterManagementCellReuse bundle:nil] forCellReuseIdentifier:RouterManagementCellReuse];
@@ -68,8 +76,14 @@ typedef enum : NSUInteger {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
     _connectRouteM = [RouterModel getConnectRouter];
     _routerNameLab.text = _connectRouteM.name?:@"";
+    NSString *userKey = @"";
+    UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_routerNameLab.text]];
+    _currentCircleIcon.image = defaultImg;
+    
     [self refreshStatus];
     [self refreshTableData];
 }
@@ -181,18 +195,18 @@ typedef enum : NSUInteger {
         _connectTipBackHeight.constant = 0;
     } else if (_connectStatus == RouterConnectStatusConnecting) {
         _connectBtnHeight.constant = 0;
-        _connectTipBackHeight.constant = 44;
+        _connectTipBackHeight.constant = 30;
         _connectTipLab.text = @"Connection...";
         _connectTipIcon.image = [UIImage imageNamed:@"icon_loading"];
     } else if (_connectStatus == RouterConnectStatusSuccess) {
         _connectBtnHeight.constant = 0;
-        _connectTipBackHeight.constant = 44;
+        _connectTipBackHeight.constant = 30;
         _connectTipLab.text = @"Successful connection";
         _connectTipIcon.image = [UIImage imageNamed:@"icon_connected"];
     } else if (_connectStatus == RouterConnectStatusFail) {
         _connectBtnHeight.constant = 43;
         [_connectBtn setTitle:@"Try again" forState:UIControlStateNormal];
-        _connectTipBackHeight.constant = 44;
+        _connectTipBackHeight.constant = 30;
         _connectTipLab.text = @"Failed to connect";
         _connectTipIcon.image = nil;
     }

@@ -10,8 +10,7 @@
 
 @implementation ConnectView
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     _backView.layer.cornerRadius = 8.0f;
     [super awakeFromNib];
 }

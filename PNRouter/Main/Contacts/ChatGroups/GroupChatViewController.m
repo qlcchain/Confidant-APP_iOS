@@ -52,6 +52,7 @@
 #import "GroupInfoModel.h"
 #import "GroupDetailsViewController.h"
 #import "UpdateGroupMemberAvatarUtil.h"
+#import <YBImageBrowser/YBImageBrowser.h>
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -189,8 +190,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.msginputView resignFirstResponder];
 }
 
-- (void)clickFileCellWithMsgMode:(CDChatMessage)msgModel withFilePath:(NSString *)filePath
-{
+- (void)clickFileCellWithMsgMode:(CDChatMessage)msgModel withFilePath:(NSString *)filePath {
     [YWFilePreviewView previewFileWithPaths:filePath fileName:msgModel.fileName fileType:msgModel.msgType];
 }
 - (void)clickChatMenuItem:(NSString *)itemTitle withMsgMode:(CDChatMessage) msgModel
@@ -198,9 +198,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     self.selectMessageModel = (CDMessageModel *)msgModel;
     NSString *msgId = [NSString stringWithFormat:@"%@",self.selectMessageModel.messageId];
     NSLog(@"%@",itemTitle);
-    if ([itemTitle isEqualToString:@"Save"]) {
-        
-    } else if ([itemTitle isEqualToString:@"Forward"]){ // 转发
+    if ([itemTitle isEqualToString:@"Forward"]){ // 转发
         ChooseContactViewController *vc = [[ChooseContactViewController alloc] init];
         [self presentModalVC:vc animated:YES];
     }  else if ([itemTitle isEqualToString:@"Withdraw"]){ // 删除
@@ -233,6 +231,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [SendRequestUtil sendDelGroupMessageWithType:@(0) GId:self.groupModel.GId MsgId:msgId FromID:userM.userId];
         }
         
+    } else if ([itemTitle isEqualToString:@"Save"]) { // 保存到相册
+        NSString *friendid = msgModel.ToId;
+        if (msgModel.isLeft && !msgModel.isGroup) {
+            friendid = msgModel.FromId;
+        }
+        NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:msgModel.fileName];
+        if (msgModel.msgType == CDMessageTypeImage) {
+            UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+            [self saveImage:img];
+        } else if (msgModel.msgType == CDMessageTypeMedia) {
+            [self saveVideo:filePath];
+        }
     }
 }
 //cell 的点击事件
@@ -1423,6 +1433,48 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 - (void)userHeadDownloadSuccess:(NSNotification *)noti {
     [_listView reloadData];
+}
+
+#pragma mark - 保存图片视频
+// 保存图片到相册
+- (void)saveImage:(UIImage *)image{
+    if (image) {
+        UIImageWriteToSavedPhotosAlbum(image, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+// 保存视频到相册
+- (void)saveVideo:(NSString *)videoPath{
+    if (videoPath) {
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoPath)) {
+            //保存相册核心代码
+            UISaveVideoAtPathToSavedPhotosAlbum(videoPath, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+        }
+    }
+}
+
+
+//保存图片完成后调用的方法
+- (void) savedPhotoImage:(UIImage*)image didFinishSavingWithError: (NSError *)error contextInfo: (void *)contextInfo {
+    if (error) {
+        NSLog(@"保存图片出错%@", error.localizedDescription);
+    }
+    else {
+        NSLog(@"保存图片成功");
+        [AppD.window showHint:@"Save success."];
+    }
+}
+
+//保存视频完成之后的回调
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    if (error) {
+        NSLog(@"保存视频失败%@", error.localizedDescription);
+    }
+    else {
+        NSLog(@"保存视频成功");
+        [AppD.window showHint:@"Save success."];
+    }
+    
 }
 
 

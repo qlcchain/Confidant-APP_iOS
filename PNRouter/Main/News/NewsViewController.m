@@ -153,7 +153,7 @@
         @weakify_self
         [self.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             ChatListModel *model = obj;
-            NSString *userName = [model.friendName lowercaseString];
+            NSString *userName = model.isGroup?[model.groupShowName lowercaseString]:[model.friendName lowercaseString];
             if ([userName containsString:[tf.text.trim lowercaseString]]) {
                 [weakSelf.searchDataArray addObject:model];
             }

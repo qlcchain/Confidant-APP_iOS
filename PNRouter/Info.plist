@@ -205,7 +205,7 @@
 	<key>CFBundleSignature</key>
 	<string>???</string>
 	<key>CFBundleVersion</key>
-	<string>71</string>
+	<string>72</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -227,8 +227,6 @@
 	<string>APP need your permission to access the camera.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use the fingerprint to continue.</string>
-	<key>NSFaceIDUsageDescription - 2</key>
-	<string>APP need your permission to access the facial ID.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>APP Access your recording permissions</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
