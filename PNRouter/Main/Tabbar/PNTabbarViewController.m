@@ -87,6 +87,8 @@
     
     // 获取好友列表
     [self sendGetFriendNoti];
+    // 获取群组列表
+     [SendRequestUtil sendPullGroupListWithShowHud:NO];
     
     // socket 断开连接通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketDisconnectNoti:) name:SOCKET_DISCONNECT_NOTI object:nil];
@@ -105,7 +107,8 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appLogoutNoti:) name:REVER_APP_LOGOUT_NOTI object:nil];
     // 广播成功
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gbFinashNoti:) name:GB_FINASH_NOTI object:nil];
-    
+    // 群组列表查询通知
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullGroupSucess:) name:PULL_GROUP_SUCCESS_NOTI object:nil];
     
 }
 
@@ -273,6 +276,15 @@
 - (void) sendGetFriendNoti
 {
     [SocketMessageUtil sendFriendListRequest];
+}
+// 获取群列表
+- (void) pullGroupSucess:(NSNotification *) noti
+{
+    NSArray *groups = noti.object;
+    if ([ChatListDataUtil getShareObject].groupArray.count>0 > 0) {
+        [[ChatListDataUtil getShareObject].groupArray removeAllObjects];
+    }
+    [[ChatListDataUtil getShareObject].groupArray addObjectsFromArray:groups];
 }
 - (void) getFriendListNoti:(NSNotification *) noti {
     

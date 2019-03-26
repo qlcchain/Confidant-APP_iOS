@@ -13,6 +13,7 @@
 
 @property (nonatomic , strong) NSMutableArray *dataArray;
 @property (nonatomic , strong) NSMutableArray *friendArray;
+@property (nonatomic , strong) NSMutableArray *groupArray;
 @property (nonatomic, assign) NSInteger tempMsgId;
 // tox文件发送 filenumber为key
 @property (nonatomic , strong) NSMutableDictionary *fileParames;

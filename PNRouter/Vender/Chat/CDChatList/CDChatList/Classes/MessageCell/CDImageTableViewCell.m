@@ -168,19 +168,36 @@
                                 
                                 NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
                                 NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.dskey];
+                                if (!datakey) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        data.msgState = CDMessageStateDownloadFaild;
+                                        [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
+                                        [weakSelf.tableView updateMessage:data];
+                                        return ;
+                                    });
+                                }
                                 datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                                 
                                 if (datakey && ![datakey isEmptyString]) {
                                     fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                                     [SystemUtil removeDocmentFilePath:imgPath];
-                                    if ( [fileData writeToFile:imgPath atomically:YES])
-                                    {
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                            data.msgState = CDMessageStateNormal;
+                                    if (!fileData || fileData.length == 0) {
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            data.msgState = CDMessageStateDownloadFaild;
+                                            [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
                                             [weakSelf.tableView updateMessage:data];
-                                            NSLog(@"下载成功! filePath = %@",filePath);
                                         });
+                                    } else {
+                                        if ( [fileData writeToFile:imgPath atomically:YES])
+                                        {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                data.msgState = CDMessageStateNormal;
+                                                [weakSelf.tableView updateMessage:data];
+                                                NSLog(@"下载成功! filePath = %@",filePath);
+                                            });
+                                        }
                                     }
+                                    
                                 } else {
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                         [SystemUtil removeDocmentFilePath:imgPath];
@@ -270,18 +287,35 @@
                             if ([[MD5Util md5WithPath:imgPath] isEqualToString:[NSString getNotNullValue:data.fileMd5]]) {
                                 NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
                                 NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:data.srckey];
+                                if (!datakey) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        data.msgState = CDMessageStateDownloadFaild;
+                                        [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
+                                        [weakSelf.tableView updateMessage:data];
+                                        return ;
+                                    });
+                                }
                                 datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                                 
                                 if (datakey && ![datakey isEmptyString]) {
                                     fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                                     [SystemUtil removeDocmentFilePath:imgPath];
-                                    if ([fileData writeToFile:imgPath atomically:YES]) {
+                                    if (!fileData || fileData.length == 0) {
                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                            data.msgState = CDMessageStateNormal;
+                                            data.msgState = CDMessageStateDownloadFaild;
+                                            [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
                                             [weakSelf.tableView updateMessage:data];
-                                            NSLog(@"下载成功! filePath = %@",filePath);
                                         });
+                                    } else {
+                                        if ([fileData writeToFile:imgPath atomically:YES]) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                data.msgState = CDMessageStateNormal;
+                                                [weakSelf.tableView updateMessage:data];
+                                                NSLog(@"下载成功! filePath = %@",filePath);
+                                            });
+                                        }
                                     }
+                                    
                                 } else {
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                         data.msgState = CDMessageStateDownloadFaild;
@@ -387,7 +421,7 @@
         if ([SystemUtil isSocketConnect]) {
             SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
             dataUtil.fileInfo = [NSString stringWithFormat:@"%f*%f",self.msgModal.fileWidth,self.msgModal.fileHeight];
-            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:1 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey isGroup:NO];
+            [dataUtil sendFileId:self.msgModal.ToId fileName:[self.msgModal.fileName base64EncodedString] fileData:fileData fileid:self.msgModal.fileID fileType:1 messageid:self.msgModal.messageId srcKey:srcKey dstKey:dsKey isGroup:self.msgModal.isGroup];
             [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
         } else {
             NSString *dataPath = [[SystemUtil getTempBaseFilePath:self.msgModal.ToId] stringByAppendingPathComponent:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName]];

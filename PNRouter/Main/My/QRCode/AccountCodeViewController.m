@@ -15,6 +15,9 @@
 #import "UIImage+RoundedCorner.h"
 #import <YBImageBrowser/YBImageBrowser.h>
 #import "PNDefaultHeaderView.h"
+#import "UIImage+RoundedCorner.h"
+#import "UIImage+Resize.h"
+#import "UIView+Screenshot.h"
 
 @interface AccountCodeViewController ()
 
@@ -75,9 +78,20 @@
     _lblName.text = [UserModel getUserModel].username;
     NSString *coderValue = [NSString stringWithFormat:@"type_3,%@,%@,%@",[EntryModel getShareObject].signPrivateKey,[UserModel getUserModel].userSn,[[UserModel getUserModel].username base64EncodedString]];
     
-     CGFloat cornt = defaultImg.size.height/7;
+    
+    defaultImg = [defaultImg thumbnailImage:100 transparentBorder:0 cornerRadius:10 interpolationQuality:kCGInterpolationDefault];
+    UIImageView *backImgView  = [[UIImageView alloc] initWithImage:defaultImg];
+    backImgView.frame = CGRectMake(6, 6, 100, 100);
+    UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 112, 112)];
+    imgBackView.backgroundColor = [UIColor whiteColor];
+    imgBackView.layer.cornerRadius = 10;
+    imgBackView.layer.masksToBounds = YES;
+    [imgBackView addSubview:backImgView];
+    // uiview 生成图片
+    defaultImg = [imgBackView convertViewToImage];
+    
     @weakify_self
-    [HMScanner qrImageWithString:coderValue avatar:[defaultImg roundedCornerImage:cornt borderSize:0] completion:^(UIImage *image) {
+    [HMScanner qrImageWithString:coderValue avatar:defaultImg completion:^(UIImage *image) {
         weakSelf.codeImgView.image = image;
     }];
 }

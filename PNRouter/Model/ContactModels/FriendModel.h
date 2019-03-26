@@ -31,6 +31,8 @@
 @property (nonatomic, strong) NSString *Index;
 @property (nonatomic) BOOL isUnRead;
 
+@property (nonatomic ,assign) BOOL isGroup;
+
 //+ (NSString *)getSignPublicKeyWithToxId:(NSString *)toxId;
 
 @end

@@ -21,6 +21,7 @@
     dispatch_once(&onceToken, ^{
         shareObject = [[self alloc] init];
         shareObject.dataArray = [NSMutableArray array];
+        shareObject.groupArray = [NSMutableArray array];
         shareObject.friendArray = [NSMutableArray array];
         if (![SystemUtil isSocketConnect]) {
             shareObject.fileParames = [NSMutableDictionary dictionary];
