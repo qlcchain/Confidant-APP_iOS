@@ -42,7 +42,7 @@
     UIColor *blackC = UIColorFromRGB(0x2C2C2C);
     UIColor *grayC = UIColorFromRGB(0xBDBDBD);
     if (model.dealStaus == 1) {
-        _lblStatus.text = @"Accepted";
+        _lblStatus.text = @"Added";
         _lblStatus.textColor = grayC;
     } else if (model.dealStaus == 2) {
         _lblStatus.text = @"Expired";

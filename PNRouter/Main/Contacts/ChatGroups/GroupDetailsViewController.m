@@ -24,6 +24,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *headImgView;
 @property (weak, nonatomic) IBOutlet UITextField *groupNameTF;
+@property (weak, nonatomic) IBOutlet UILabel *setGroupAliasLab;
 @property (weak, nonatomic) IBOutlet UILabel *groupAliasLab;
 @property (weak, nonatomic) IBOutlet UILabel *gorupMembersNumLab;
 @property (weak, nonatomic) IBOutlet UISwitch *approveSwitch;
@@ -82,14 +83,17 @@
     if (_groupModel.UserType == 0) { // 群主
         _normalBottomHeight.constant = 0;
         _ownerBottomHeight.constant = 168;
+        _setGroupAliasLab.text = @"Set Group Name";
+        _groupAliasLab.text = [_groupModel.GName base64DecodedString];
     } else {
         _normalBottomHeight.constant = 56;
         _ownerBottomHeight.constant = 0;
+        _setGroupAliasLab.text = @"Set Group Alias";
+        _groupAliasLab.text = [_groupModel.Remark base64DecodedString];
     }
     [self groupMemberViewInit];
     
     _groupNameTF.text = [_groupModel.GName base64DecodedString];
-    _groupAliasLab.text = [_groupModel.Remark base64DecodedString];
     _approveSwitch.on = [_groupModel.Verify boolValue];
 }
 
@@ -136,18 +140,16 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)reviseGroupNameAction:(id)sender {
-    if (_groupModel.UserType == 0) { // 群主
-        [self jumpToEditGroupName];
-    }
-}
-
 - (IBAction)approveSwitchAction:(id)sender {
     [SendRequestUtil sendGroupConfigWithGId:_groupModel.GId Type:@(2) ToId:nil Name:nil NeedVerify:_approveSwitch.on?@(1):@(0) showHud:YES];
 }
 
 - (IBAction)setGroupAliasAction:(id)sender {
-    [self jumpToEditGroupAlias];
+    if (_groupModel.UserType == 0) { // 群主
+        [self jumpToEditGroupName];
+    } else {
+        [self jumpToEditGroupAlias];
+    }
 }
 
 - (IBAction)leaveAction:(id)sender {
@@ -196,7 +198,7 @@
     @weakify_self
     vc.reviseSuccessB = ^(NSString *text) {
         weakSelf.groupModel.GName = [text base64EncodedString];
-        weakSelf.groupNameTF.text = [weakSelf.groupModel.GName base64DecodedString];
+         weakSelf.groupAliasLab.text = [weakSelf.groupModel.GName base64DecodedString];
     };
     [self.navigationController pushViewController:vc animated:YES];
 }

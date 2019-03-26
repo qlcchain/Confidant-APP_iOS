@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface MyHeadView : UIView
+
 @property (weak, nonatomic) IBOutlet UIButton *HeanBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
-@property (weak, nonatomic) IBOutlet UILabel *lblContent;
+//@property (weak, nonatomic) IBOutlet UILabel *lblContent;
 @property (nonatomic , assign) BOOL isMyHead;
+
 + (instancetype) loadMyHeadView;
 - (void) setUserNameFirstWithName:(NSString *)userName userKey:(NSString *)userKey;
+
 @end

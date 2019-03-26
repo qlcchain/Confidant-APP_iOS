@@ -80,6 +80,7 @@
     [super viewDidAppear:animated];
     
     [self handleUnread];
+    [self handleAddContactAllRead];
 }
 
 #pragma mark - Operation
@@ -100,7 +101,7 @@
     
     _addContactsBtn.selected = YES;
     _groupChatsBtn.selected = NO;
-    [self handleAddContactAllRead];
+    
     
 }
 
@@ -197,7 +198,7 @@
     if (self.addContactsSource.count > 0) {
         [self.addContactsSource removeAllObjects];
     }
-    NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"owerId"),bg_sqlValue([UserModel getUserModel].userId)]];
+    NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ order by %@ desc",bg_sqlKey(@"owerId"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"requestTime")]];
     if (finfAlls && finfAlls.count > 0) {
         [self.addContactsSource addObjectsFromArray:finfAlls];
     }
@@ -208,7 +209,7 @@
     if (self.groupChatsSource.count > 0) {
         [self.groupChatsSource removeAllObjects];
     }
-    NSArray *finfAlls = [GroupVerifyModel bg_find:Group_New_Requests_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId)]];
+    NSArray *finfAlls = [GroupVerifyModel bg_find:Group_New_Requests_TABNAME where:[NSString stringWithFormat:@"where %@=%@ order by %@ desc",bg_sqlKey(@"userId"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"requestTime")]];
     if (finfAlls && finfAlls.count > 0) {
         [self.groupChatsSource addObjectsFromArray:finfAlls];
     }

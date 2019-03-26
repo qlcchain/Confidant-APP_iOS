@@ -9,6 +9,9 @@
 #import "PNBaseViewController.h"
 
 @interface PersonCodeViewController : PNBaseViewController
+
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
+
 - (instancetype) initWithUserId:(NSString *) userId userNaem:(NSString *) userNaem signPK:(NSString *) signPK;
+
 @end

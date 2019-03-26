@@ -14,10 +14,10 @@
 #import <YBImageBrowser/YBImageBrowser.h>
 
 @implementation MyHeadView
-+ (instancetype) loadMyHeadView
-{
+
++ (instancetype) loadMyHeadView {
     MyHeadView *headView = [[[NSBundle mainBundle] loadNibNamed:@"MyHeadView" owner:self options:nil] lastObject];
-    headView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 135);
+    headView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 96);
     headView.HeanBtn.layer.cornerRadius = 24;
     headView.HeanBtn.layer.masksToBounds = YES;
     headView.HeanBtn.imageView.contentMode = UIViewContentModeScaleAspectFill;

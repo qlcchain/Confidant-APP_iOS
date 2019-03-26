@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -152,7 +152,7 @@
                                 <constraint firstAttribute="bottom" secondItem="i9X-J5-ntA" secondAttribute="bottom" id="zzv-qt-IFl"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PKq-Hn-11o">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PKq-Hn-11o">
                             <rect key="frame" x="0.0" y="168" width="375" height="56"/>
                             <subviews>
                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_other_small_gray" translatesAutoresizingMaskIntoConstraints="NO" id="HVS-FT-E3p">
@@ -220,6 +220,7 @@
                                 <constraint firstItem="aff-d4-rlY" firstAttribute="top" secondItem="Vla-Ir-4YC" secondAttribute="top" id="Gew-xT-tee"/>
                                 <constraint firstItem="aff-d4-rlY" firstAttribute="leading" secondItem="Vla-Ir-4YC" secondAttribute="leading" id="ZVW-MM-c5L"/>
                                 <constraint firstAttribute="bottom" secondItem="aff-d4-rlY" secondAttribute="bottom" id="f40-ey-jBX"/>
+                                <constraint firstAttribute="height" constant="44" id="mhx-D8-Jpe"/>
                                 <constraint firstAttribute="trailing" secondItem="aff-d4-rlY" secondAttribute="trailing" id="po1-sU-pjJ"/>
                             </constraints>
                         </view>
@@ -230,7 +231,6 @@
                         <constraint firstItem="PKq-Hn-11o" firstAttribute="leading" secondItem="ZhP-OK-hiL" secondAttribute="leading" id="8QJ-eC-9w2"/>
                         <constraint firstAttribute="trailing" secondItem="PKq-Hn-11o" secondAttribute="trailing" id="8e9-Ma-d9b"/>
                         <constraint firstItem="wvD-8M-Fxx" firstAttribute="leading" secondItem="ZhP-OK-hiL" secondAttribute="leading" id="9fB-XL-dQG"/>
-                        <constraint firstAttribute="height" constant="276" id="Alj-xF-Lhw"/>
                         <constraint firstItem="PKq-Hn-11o" firstAttribute="top" secondItem="wvD-8M-Fxx" secondAttribute="bottom" id="EnB-Kq-WCd"/>
                         <constraint firstAttribute="trailing" secondItem="SuE-OU-4LS" secondAttribute="trailing" id="Gmz-qP-Ui0"/>
                         <constraint firstAttribute="trailing" secondItem="X11-iQ-c6f" secondAttribute="trailing" id="Kq1-xH-G9F"/>
@@ -263,6 +263,7 @@
             <viewLayoutGuide key="safeArea" id="xVh-Iv-lIx"/>
             <connections>
                 <outlet property="bottomViewBottom" destination="NJt-Ez-fIM" id="HVN-GH-k3U"/>
+                <outlet property="otherHeight" destination="fat-bB-QIO" id="PXI-hd-wcj"/>
             </connections>
             <point key="canvasLocation" x="53.600000000000001" y="41.829085457271368"/>
         </view>

@@ -49,7 +49,7 @@
     _headImgView.image = defaultImg;
 //    _lblTitle.text = [StringUtil getUserNameFirstWithName:_lblName.text];
     _arrowImg.hidden = !model.showArrow;
-    _arrowImg.image = model.showCell?[UIImage imageNamed:@"icon_arrow_down_gray"]:[UIImage imageNamed:@"icon_arrow_up_gray"];
+    _arrowImg.image = model.showCell?[UIImage imageNamed:@"icon_arrow_up_gray"]:[UIImage imageNamed:@"icon_arrow_down_gray"];
 //    _selectBtn.selected = model.isSelect;
 //    _selectImg.hidden = !_selectBtn.selected;
 }
