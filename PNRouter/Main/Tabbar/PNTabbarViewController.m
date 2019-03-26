@@ -83,7 +83,7 @@
     [self addChildViewController:[[NewsViewController alloc] initWithManager:self.manager] text:@"Chats" imageName:@"btn_news"];
     [self addChildViewController:[[FileViewController alloc] initWithManager:self.manager] text:@"Files" imageName:@"btn_file"];
     [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"Contacts" imageName:@"btn_contacts"];
-    [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"Me" imageName:@"btn_my"];
+    [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"My" imageName:@"btn_my"];
     
     // 获取好友列表
     [self sendGetFriendNoti];

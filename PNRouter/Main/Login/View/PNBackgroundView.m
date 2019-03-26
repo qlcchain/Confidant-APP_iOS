@@ -32,9 +32,10 @@
         return;
     }
     
-    [AppD.window addSubview:self];
+    UIView *backView = [self getMaskWindowOfKeyboard];
+    [backView addSubview:self];
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.top.bottom.mas_equalTo(AppD.window).offset(0);
+        make.left.right.top.bottom.mas_equalTo(backView).offset(0);
     }];
     
 //    CSLOG_TEST_DDLOG(@"**********************锁屏界面打开成功");
@@ -66,6 +67,17 @@
 
 - (void)tapCancelAction:(UITapGestureRecognizer *)gr {
     [self hide];
+}
+
+- (UIView *)getMaskWindowOfKeyboard {
+    UIView *resultV = AppD.window;
+    for(UIView*window in [UIApplication sharedApplication].windows) {
+        if([window isKindOfClass:NSClassFromString(@"UIRemoteKeyboardWindow")]) {
+            resultV = window;
+            break;
+        }
+    }
+    return resultV;
 }
 
 @end
