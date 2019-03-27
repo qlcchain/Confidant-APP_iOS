@@ -20,6 +20,7 @@
 #import "UserManagerViewController.h"
 #import "EditTextViewController.h"
 #import "InvitationQRCodeViewController.h"
+#import "ChooseCircleViewController.h"
 
 typedef enum : NSUInteger {
     RouterConnectStatusWait,
@@ -49,8 +50,9 @@ typedef enum : NSUInteger {
 @end
 
 @implementation RouterManagerViewController
+
 - (IBAction)quickSwitchAction:(id)sender {
-    
+    [self jumpToChooseCircle];
 }
 
 #pragma mark - Observe
@@ -295,19 +297,26 @@ typedef enum : NSUInteger {
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
-    
 }
+
 #pragma mark - Transition
 - (void)jumpToAlias {
     EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditAlis];
     vc.routerM = _connectRouteM;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 - (void)jumpToRouterCode {
     InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
     vc.routerM = _connectRouteM;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (void)jumpToChooseCircle {
+    ChooseCircleViewController *vc = [[ChooseCircleViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - switch开关change
 - (void) swChange:(UISwitch *) sender
 {
