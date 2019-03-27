@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UsedSpaceTableViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *useLab;
+@property (weak, nonatomic) IBOutlet UIProgressView *useProgressV;
+
 @end
 
 NS_ASSUME_NONNULL_END

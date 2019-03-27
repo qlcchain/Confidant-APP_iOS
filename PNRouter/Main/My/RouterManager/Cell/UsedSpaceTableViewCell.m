@@ -13,12 +13,20 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    _useLab.text = @"0 G / 0 G （0%）";
+    _useProgressV.progress = 0;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
 }
 
 @end
