@@ -96,8 +96,8 @@
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
-    
 }
+
 - (IBAction)rightAction:(id)sender {
     _isEdit = !_isEdit;
     if (_isEdit) {
