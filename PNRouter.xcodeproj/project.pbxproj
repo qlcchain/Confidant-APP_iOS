@@ -529,6 +529,7 @@
 		73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806A21DF87AE0047C3DA /* DDLogUtil.m */; };
 		73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */; };
 		73F9A11A219973C80011FAA5 /* ReviceRadio.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F9A119219973C80011FAA5 /* ReviceRadio.m */; };
+		73F9D619224B110200D7B228 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F9D618224B110200D7B228 /* NSString+Trim.m */; };
 		73FD079921D74979001B89CB /* FriendRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73FD079721D74979001B89CB /* FriendRequestViewController.m */; };
 		73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FD079821D74979001B89CB /* FriendRequestViewController.xib */; };
 		815FEEED645E5889A42F8CA0 /* libPods-PNRouter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C33670BA720BB01C8243AF /* libPods-PNRouter.a */; };
@@ -1559,6 +1560,8 @@
 		73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibsodiumUtil.m; sourceTree = "<group>"; };
 		73F9A118219973C80011FAA5 /* ReviceRadio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReviceRadio.h; sourceTree = "<group>"; };
 		73F9A119219973C80011FAA5 /* ReviceRadio.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReviceRadio.m; sourceTree = "<group>"; };
+		73F9D617224B110200D7B228 /* NSString+Trim.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
+		73F9D618224B110200D7B228 /* NSString+Trim.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Trim.m"; sourceTree = "<group>"; };
 		73FD079621D74979001B89CB /* FriendRequestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendRequestViewController.h; sourceTree = "<group>"; };
 		73FD079721D74979001B89CB /* FriendRequestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendRequestViewController.m; sourceTree = "<group>"; };
 		73FD079821D74979001B89CB /* FriendRequestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendRequestViewController.xib; sourceTree = "<group>"; };
@@ -3129,6 +3132,8 @@
 				73121A6E219BF4E900510B48 /* NSString+SHA256.m */,
 				5825A23A21FAAE5D00E6194B /* NSString+File.h */,
 				5825A23B21FAAE5D00E6194B /* NSString+File.m */,
+				73F9D617224B110200D7B228 /* NSString+Trim.h */,
+				73F9D618224B110200D7B228 /* NSString+Trim.m */,
 			);
 			path = NSString;
 			sourceTree = "<group>";
@@ -4281,6 +4286,7 @@
 				5825A24421FAE78200E6194B /* SharedFriendModel.m in Sources */,
 				7330F4E42149147200FF4EEC /* CoreTextUtils.m in Sources */,
 				7330F37F2146118800FF4EEC /* UIImage+Resize.m in Sources */,
+				73F9D619224B110200D7B228 /* NSString+Trim.m in Sources */,
 				58BD2E6421475ED10091A77D /* UserModel.m in Sources */,
 				7330F3722146118800FF4EEC /* UIImage+FileName.m in Sources */,
 				73C4E35A219AC8B400EEFAC1 /* SendRequestUtil.m in Sources */,

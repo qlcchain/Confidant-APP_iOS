@@ -53,6 +53,7 @@
 #import "GroupDetailsViewController.h"
 #import "UpdateGroupMemberAvatarUtil.h"
 #import <YBImageBrowser/YBImageBrowser.h>
+#import "NSString+Trim.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -108,6 +109,31 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 - (IBAction)backAction:(id)sender {
     
+    NSString *textString = [self.msginputView getTextViewString];
+    textString = [NSString trimWhitespaceAndNewline:textString];
+    if (![[NSString getNotNullValue:textString] isEmptyString]) {
+        // 添加到chatlist
+        ChatListModel *chatModel = [[ChatListModel alloc] init];
+        chatModel.myID = [UserModel getUserModel].userId;
+        chatModel.isGroup = YES;
+        chatModel.groupID = self.groupModel.GId;
+        chatModel.isHD = NO;
+        // 解密消息
+        chatModel.isDraft = YES;
+        chatModel.draftMessage = textString;
+        [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+    } else {
+        NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(self.groupModel.GId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId)]];
+        if (friends && friends.count > 0) {
+            ChatListModel *chatModel = friends[0];
+            if (chatModel.isDraft) {
+                chatModel.isDraft = NO;
+                chatModel.draftMessage = @"";
+                [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+            }
+        }
+    }
+    
     [self leftNavBarItemPressedWithPop:YES];
     [SocketCountUtil getShareObject].groupChatId = @"";
 }
@@ -130,6 +156,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     _msgStartId = 0;
     [self.listView startRefresh];
     [SocketCountUtil getShareObject].groupChatId = self.groupModel.GId;
+    
+    NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(self.groupModel.GId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId)]];
+    if (friends && friends.count > 0) {
+        ChatListModel *chatModel = friends[0];
+        if (chatModel.isDraft) {
+            [self.msginputView setTextViewString:chatModel.draftMessage];
+        }
+    }
 }
 
 #pragma mark ----添加通知
@@ -518,6 +552,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 // 输入框输出文字
 - (void)inputViewPopSttring:(NSString *)string {
+    // 去掉前后空格和换行符
+    string = [NSString trimWhitespaceAndNewline:string];
     
     if (string && ![string isEmptyString]) {
       

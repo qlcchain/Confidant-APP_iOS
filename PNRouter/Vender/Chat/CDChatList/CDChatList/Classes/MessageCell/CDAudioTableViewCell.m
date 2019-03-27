@@ -238,7 +238,7 @@
                     }
                     datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                     
-                    if (datakey && ![datakey isEmptyString]) {
+                    if (datakey && ![datakey isEmptyString] && fileData && fileData.length>0) {
                         fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                         [SystemUtil removeDocmentFilePath:imgPath];
                         if (!fileData || fileData.length == 0) {
@@ -394,7 +394,7 @@
                     }
                     datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                     
-                    if (datakey && ![datakey isEmptyString]) {
+                    if (datakey && ![datakey isEmptyString] && fileData && fileData.length>0) {
                         fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                         if (!fileData || fileData.length == 0) {
                             dispatch_async(dispatch_get_main_queue(), ^{

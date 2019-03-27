@@ -242,6 +242,9 @@ static UIColor *InputHexColor(int hexColor){
             break;
         case UIGestureRecognizerStateBegan:
         {
+            if (AppD.window.windowLevel != UIWindowLevelNormal) {
+                AppD.window.windowLevel = UIWindowLevelNormal;
+            }
             
             //    开始录音
             [AATAudioTool checkCameraAuthorizationGrand:^{
