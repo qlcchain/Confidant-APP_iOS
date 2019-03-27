@@ -22,6 +22,11 @@
     self.headBackGroundColor = CDHexColor(0xEBEBEB);
     self.msgTextContentBackGroundColor_right = CDHexColor(0x06C0B5);
     self.msgTextContentBackGroundColor_left = CDHexColor(0xF5F7FA);
+//    self.msgBackGroundColor = [UIColor RandomColor];
+//    self.msgContentBackGroundColor = [UIColor RandomColor];
+//    self.headBackGroundColor = [UIColor RandomColor];
+//    self.msgTextContentBackGroundColor_right = [UIColor RandomColor];
+//    self.msgTextContentBackGroundColor_left = [UIColor RandomColor];
     
     self.msgTimeH = 25.0f;
     self.sysInfoMessageMaxWidth = cd_ScreenW() * 0.64f;
@@ -111,6 +116,7 @@
 }
 
 -(CGFloat)messageContentH{
+//    CGFloat top = data.willDisplayTime?data.chatConfig.messageMarginTop:0;
     return self.messageMarginBottom + self.messageMarginTop +  self.headSideLength;
 }
 

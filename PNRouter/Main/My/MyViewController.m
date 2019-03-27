@@ -73,20 +73,19 @@ static NSString *Settings_Str = @"Settings";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ownerOnLine:) name:OWNER_ONLINE_NOTI object:nil];
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 #pragma mark - layz
-- (NSMutableArray *)dataArray
-{
+- (NSMutableArray *)dataArray {
     if (!_dataArray) {
         _dataArray = [NSMutableArray arrayWithObjects:@[Management_Circle_Str],@[My_QRCode_Str],@[Settings_Str], nil];
     }
     return _dataArray;
 }
-- (MyHeadView *)myHeadView
-{
+
+- (MyHeadView *)myHeadView {
     if (!_myHeadView) {
         _myHeadView = [MyHeadView loadMyHeadView];
         _myHeadView.lblName.text = [UserModel getUserModel].username;
@@ -103,23 +102,22 @@ static NSString *Settings_Str = @"Settings";
 }
 
 
-- (void)updateView:(CGFloat)val
-{
+- (void)updateView:(CGFloat)val {
     self.downloadedBytes+=val;
     [self.filedIndicator_left updateWithTotalBytes:100 downloadedBytes:self.downloadedBytes];
 }
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     //[self updateView:10.0f];
 
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.view.backgroundColor = MAIN_PURPLE_COLOR;
     [self observe];
     
+    _lblVersion.hidden = YES;
     _lblVersion.text = [NSString stringWithFormat:@"V:%@ (Build %@)",APP_Version,APP_Build];
     
     _tableV.delegate = self;

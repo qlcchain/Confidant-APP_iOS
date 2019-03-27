@@ -92,6 +92,10 @@
     if (data.userName.length > 0) {
         data.cellHeight = data.cellHeight + data.chatConfig.nickNameHeight - data.chatConfig.messageMarginTop;
     }
+    
+//    return data.cellHeight;
+    CGFloat extra = data.willDisplayTime?0:data.chatConfig.messageMarginTop;
+    data.cellHeight = data.cellHeight - extra;
     return data.cellHeight;
 }
 
@@ -153,7 +157,8 @@
     // 计算气泡宽度
     CGFloat bubbleWidth = ceilf(data.width) + msgData.chatConfig.bubbleSharpAnglehorizInset + msgData.chatConfig.bubbleRoundAnglehorizInset;
     // 计算整个cell高度
-    CGFloat cellheight = ceilf(data.height) + msgData.chatConfig.bubbleRoundAnglehorizInset * 2 + msgData.chatConfig.messageMarginTop + msgData.chatConfig.messageMarginBottom;
+    CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
+    CGFloat cellheight = ceilf(data.height) + msgData.chatConfig.bubbleRoundAnglehorizInset * 2 + top + msgData.chatConfig.messageMarginBottom;
     
     // 如果 cellheight小于最小cell高度
     if (cellheight < msgData.chatConfig.messageContentH) {
@@ -189,9 +194,11 @@ CGSize caculateImageSize140By140(UIImage *image, CDChatMessage msgData) {
     
     // 返回的高度是图片高度，需加上消息内边距变成消息体高度
     if (maxSide == width) {
-        return CGSizeMake(140, actuallMiniSide + msgData.chatConfig.messageMarginBottom + msgData.chatConfig.messageMarginTop);
+        CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
+        return CGSizeMake(140, actuallMiniSide + msgData.chatConfig.messageMarginBottom + top);
     } else {
-        return CGSizeMake(actuallMiniSide, 140 + msgData.chatConfig.messageMarginBottom + msgData.chatConfig.messageMarginTop);
+        CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
+        return CGSizeMake(actuallMiniSide, 140 + msgData.chatConfig.messageMarginBottom + top);
     }
 }
 
@@ -214,9 +221,11 @@ CGSize caculateFileSize140By140(CGSize size, CDChatMessage msgData) {
     
     // 返回的高度是图片高度，需加上消息内边距变成消息体高度
     if (maxSide == width) {
-        return CGSizeMake(140, actuallMiniSide + msgData.chatConfig.messageMarginBottom +msgData.chatConfig.messageMarginTop);
+        CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
+        return CGSizeMake(140, actuallMiniSide + msgData.chatConfig.messageMarginBottom +top);
     } else {
-        return CGSizeMake(actuallMiniSide, 140 + msgData.chatConfig.messageMarginBottom + msgData.chatConfig.messageMarginTop);
+        CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
+        return CGSizeMake(actuallMiniSide, 140 + msgData.chatConfig.messageMarginBottom + top);
     }
 }
 

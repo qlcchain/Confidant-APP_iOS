@@ -195,7 +195,9 @@
     // 头像
     if (data.userThumImage || data.userThumImageURL){
 //        _headImage_left.frame = CGRectMake(data.chatConfig.messageMargin, data.chatConfig.messageMargin, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
-        _headImage_left.frame = CGRectMake(_chooseMsgBtn_left.cd_right + data.chatConfig.headMargin, data.chatConfig.messageMarginTop, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
+        CGFloat top = data.willDisplayTime?data.chatConfig.messageMarginTop:0;
+        top = data.userName.length == 0 ? top : data.chatConfig.nickNameHeight;
+        _headImage_left.frame = CGRectMake(_chooseMsgBtn_left.cd_right + data.chatConfig.headMargin, top, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
     } else {
 //        _headImage_left.frame = CGRectZero;
         _headImage_left.frame = CGRectMake(_chooseMsgBtn_left.cd_right, 0, 0, 0);
@@ -227,12 +229,13 @@
     CGRect bubbleRec = self.bubbleImage_left.frame;
 //    bubbleRec.origin.x = data.chatConfig.messageMargin * 2 + _headImage_left.cd_width - data.chatConfig.bubbleShareAngleWidth;
     bubbleRec.origin.x = data.chatConfig.headMargin * 2 + _headImage_left.cd_right - data.chatConfig.headMargin - data.chatConfig.bubbleShareAngleWidth;
-    bubbleRec.origin.y = data.userName.length == 0 ? data.chatConfig.messageMarginTop : data.chatConfig.nickNameHeight;
+    CGFloat top = data.willDisplayTime?data.chatConfig.messageMarginTop:0;
+    bubbleRec.origin.y = data.userName.length == 0 ? top : data.chatConfig.nickNameHeight;
     bubbleRec.size.width = data.bubbleWidth;
     if (data.userName.length == 0) {
-        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginTop - data.chatConfig.messageMarginBottom;
+        bubbleRec.size.height = msgContentHeight - top - data.chatConfig.messageMarginBottom;
     } else {
-        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginTop - data.chatConfig.nickNameHeight;
+        bubbleRec.size.height = msgContentHeight - top - data.chatConfig.nickNameHeight;
     }
     
     self.bubbleImage_left.frame = bubbleRec;
@@ -286,10 +289,11 @@
     }
     
     // 头像
+    CGFloat top = data.willDisplayTime?data.chatConfig.messageMarginTop:0;
     if (data.userThumImage || data.userThumImageURL){
-        _headImage_right.frame = CGRectMake(cd_ScreenW() - (data.chatConfig.headSideLength + data.chatConfig.headMargin), data.chatConfig.messageMarginTop, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
+        _headImage_right.frame = CGRectMake(cd_ScreenW() - (data.chatConfig.headSideLength + data.chatConfig.headMargin), top, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
     } else {
-        _headImage_right.frame = CGRectMake(cd_ScreenW(), data.chatConfig.messageMarginTop, 0, data.chatConfig.headSideLength);
+        _headImage_right.frame = CGRectMake(cd_ScreenW(), top, 0, data.chatConfig.headSideLength);
     }
     _headImage_right.layer.cornerRadius = _headImage_right.width/2.0;
     _headImage_right.layer.masksToBounds = YES;
@@ -317,12 +321,13 @@
     // 更新气泡的高度和宽度
     CGRect bubbleRec = self.bubbleImage_right.frame;
     bubbleRec.origin.x = cd_ScreenW() - (data.bubbleWidth + _headImage_right.cd_width) - data.chatConfig.headMargin * 2 + data.chatConfig.bubbleShareAngleWidth;
-    bubbleRec.origin.y = data.userName.length == 0 ? data.chatConfig.messageMarginTop : data.chatConfig.nickNameHeight;
+//    CGFloat top = data.willDisplayTime?data.chatConfig.messageMarginTop:0;
+    bubbleRec.origin.y = data.userName.length == 0 ? top : data.chatConfig.nickNameHeight;
     bubbleRec.size.width = data.bubbleWidth;
     if (data.userName.length == 0) {
-        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginTop - data.chatConfig.messageMarginBottom;
+        bubbleRec.size.height = msgContentHeight - top - data.chatConfig.messageMarginBottom;
     } else {
-        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginTop - data.chatConfig.nickNameHeight;
+        bubbleRec.size.height = msgContentHeight - top - data.chatConfig.nickNameHeight;
     }
     if (data.msgType == CDMessageTypeText) {
         // bubbleRec.size.height += 10;
