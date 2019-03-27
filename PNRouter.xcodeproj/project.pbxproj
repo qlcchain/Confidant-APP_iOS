@@ -266,6 +266,8 @@
 		73060558217719A5005A0E13 /* VPNFileInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73060553217719A5005A0E13 /* VPNFileInputView.m */; };
 		7306055B21771CEA005A0E13 /* VPNFileUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7306055A21771CEA005A0E13 /* VPNFileUtil.m */; };
 		730605622179B3C0005A0E13 /* MediaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 730605612179B3C0005A0E13 /* MediaTableViewCell.m */; };
+		7308AB08224B5BBF0003E689 /* UsedSpaceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7308AB06224B5BBF0003E689 /* UsedSpaceTableViewCell.m */; };
+		7308AB09224B5BBF0003E689 /* UsedSpaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7308AB07224B5BBF0003E689 /* UsedSpaceTableViewCell.xib */; };
 		73121A68219AD4FC00510B48 /* RegiterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A66219AD4FC00510B48 /* RegiterViewController.m */; };
 		73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73121A67219AD4FC00510B48 /* RegiterViewController.xib */; };
 		73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6B219BB59B00510B48 /* RouterConfig.m */; };
@@ -1052,6 +1054,9 @@
 		7306055A21771CEA005A0E13 /* VPNFileUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPNFileUtil.m; sourceTree = "<group>"; };
 		730605602179B3C0005A0E13 /* MediaTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaTableViewCell.h; sourceTree = "<group>"; };
 		730605612179B3C0005A0E13 /* MediaTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaTableViewCell.m; sourceTree = "<group>"; };
+		7308AB05224B5BBF0003E689 /* UsedSpaceTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UsedSpaceTableViewCell.h; sourceTree = "<group>"; };
+		7308AB06224B5BBF0003E689 /* UsedSpaceTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UsedSpaceTableViewCell.m; sourceTree = "<group>"; };
+		7308AB07224B5BBF0003E689 /* UsedSpaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UsedSpaceTableViewCell.xib; sourceTree = "<group>"; };
 		73121A65219AD4FC00510B48 /* RegiterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegiterViewController.h; sourceTree = "<group>"; };
 		73121A66219AD4FC00510B48 /* RegiterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegiterViewController.m; sourceTree = "<group>"; };
 		73121A67219AD4FC00510B48 /* RegiterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegiterViewController.xib; sourceTree = "<group>"; };
@@ -2313,6 +2318,9 @@
 				586D4178224B609F002008C6 /* ChooseCircleCell.h */,
 				586D4179224B609F002008C6 /* ChooseCircleCell.m */,
 				586D417A224B609F002008C6 /* ChooseCircleCell.xib */,
+				7308AB05224B5BBF0003E689 /* UsedSpaceTableViewCell.h */,
+				7308AB06224B5BBF0003E689 /* UsedSpaceTableViewCell.m */,
+				7308AB07224B5BBF0003E689 /* UsedSpaceTableViewCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -3734,6 +3742,7 @@
 				73F55A11223F78C4003155D2 /* GroupChatViewController.xib in Resources */,
 				5886FB9821F5C2390052EDD0 /* UploadAlertView.xib in Resources */,
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
+				7308AB09224B5BBF0003E689 /* UsedSpaceTableViewCell.xib in Resources */,
 				7330F3BF214769DF00FF4EEC /* FriendDetailViewController.xib in Resources */,
 				587C52C7215C798E006787FB /* RouterCodeViewController.xib in Resources */,
 				583BF92021F6B5D00078A2A8 /* SharedSettingsViewController.xib in Resources */,
@@ -4145,6 +4154,7 @@
 				736257B22142149300D7FD6B /* UIView+Toast.m in Sources */,
 				7378840621ACF2970033A189 /* OCTCall+Utilities.m in Sources */,
 				7378841D21ACF2970033A189 /* OCTSubmanagerChatsImpl.m in Sources */,
+				7308AB08224B5BBF0003E689 /* UsedSpaceTableViewCell.m in Sources */,
 				736257B12142149300D7FD6B /* UIView+Screenshot.m in Sources */,
 				580CFE502227B7FD00460B41 /* NSObject+MemoryLeak.m in Sources */,
 				73741800221E9B8F008EE243 /* SettingViewController.m in Sources */,

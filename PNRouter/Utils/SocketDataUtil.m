@@ -313,12 +313,20 @@ struct ResultFile {
     if (![dstKey isEmptyString]) {
         memcpy(sendFile.dstKey, [dstKey cStringUsingEncoding:NSASCIIStringEncoding],[dstKey length]);
     }
-    NSString *porpertyType = @"0";
+//    NSString *porpertyType = @"0";
+//    if (isGroup) {
+//        porpertyType = @"1";
+//    }
+   
     if (isGroup) {
-        porpertyType = @"1";
+        sendFile.porperty[0] = '\1';
+    } else {
+         sendFile.porperty[0] = '\0';
     }
-    memcpy(sendFile.porperty, [porpertyType cStringUsingEncoding:NSASCIIStringEncoding],[porpertyType length]);
-   // printf("srckey = %s , dskey = %s",sendFile.srcKey,sendFile.dstKey);
+    sendFile.Pad[0] = '\0';
+    
+    //memcpy(sendFile.porperty, [porpertyType cStringUsingEncoding:NSASCIIStringEncoding],[porpertyType length]);
+    
     memcpy(sendFile.filename, [fileName cStringUsingEncoding:NSASCIIStringEncoding],[fileName length]);
     memcpy(sendFile.fromid,[[UserConfig getShareObject].userId cStringUsingEncoding:NSASCIIStringEncoding],[[UserConfig getShareObject].userId length]);
 

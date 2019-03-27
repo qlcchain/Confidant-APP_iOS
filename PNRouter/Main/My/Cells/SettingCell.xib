@@ -48,6 +48,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="leftContraintV" destination="jOh-Nj-5sT" id="EY0-cI-kVD"/>
                 <outlet property="switc" destination="ild-bK-yCn" id="hd9-eS-Akg"/>
                 <outlet property="titleLab" destination="3vA-jJ-w2l" id="qD8-Kr-pm1"/>
             </connections>

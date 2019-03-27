@@ -14,6 +14,7 @@ static NSString *SettingCellReuse = @"SettingCell";
 #define SettingCell_Height 47
 
 @interface SettingCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftContraintV;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
 @property (weak, nonatomic) IBOutlet UISwitch *switc;

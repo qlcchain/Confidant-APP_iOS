@@ -19,6 +19,7 @@ static NSString *RouterManagementCellReuse = @"RouterManagementCell";
 
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet UILabel *nameLab;
+@property (weak, nonatomic) IBOutlet UILabel *lblDesc;
 
 - (void)configWithModel:(RouterModel *)model;
 

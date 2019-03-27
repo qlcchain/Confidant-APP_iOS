@@ -15,9 +15,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    
-    _icon.layer.cornerRadius = _icon.width/2.0;
-    _icon.layer.masksToBounds = YES;
 }
 
 - (void)configWithModel:(RouterModel *)model {
