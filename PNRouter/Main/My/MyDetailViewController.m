@@ -310,7 +310,7 @@
 {
     if (!_dataArray) {
         //_dataArray = [NSMutableArray arrayWithObjects:@"Profile Photo",@"Name",@"My QR Code",@"Company",@"Occupation",@"Region", nil];
-        _dataArray = [NSMutableArray arrayWithObjects:@"Profile Photo",@"Name",@"My QR Code", nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@"Profile Photo",@"Name",@"Invite friends to Confidant", nil];
     }
     return _dataArray;
 }

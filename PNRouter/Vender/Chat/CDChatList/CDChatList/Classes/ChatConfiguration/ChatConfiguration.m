@@ -30,9 +30,9 @@
     
     self.bubbleRoundAnglehorizInset = 10.0f;
     self.bubbleShareAngleWidth = 6.0f;
-    self.messageMargin = 10.0f;
-//    self.messageMargin = 16.0f;
-    self.messageMarginTop = 0.f;
+    self.messageMarginBottom = 16.0f;
+//    self.messageMargin = 10.0f;
+    self.messageMarginTop = 16.f;
     self.headMargin = 8.0f;
     self.bubbleMaxWidth = cd_ScreenW() * 0.64f;
     self.bubbleSharpAngleHeighInset = 25.0f;
@@ -111,7 +111,7 @@
 }
 
 -(CGFloat)messageContentH{
-    return self.messageMargin * 2 +  self.headSideLength;
+    return self.messageMarginBottom + self.messageMarginTop +  self.headSideLength;
 }
 
 -(CGFloat)bubbleSharpAnglehorizInset{
