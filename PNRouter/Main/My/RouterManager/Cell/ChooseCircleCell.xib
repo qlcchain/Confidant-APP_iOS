@@ -49,6 +49,10 @@
                             </button>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_connected" translatesAutoresizingMaskIntoConstraints="NO" id="9a1-tU-Z7I">
                                 <rect key="frame" x="288" y="20" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="Xhc-oH-t8E"/>
+                                    <constraint firstAttribute="width" constant="16" id="ioT-J3-82m"/>
+                                </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_headportrait" translatesAutoresizingMaskIntoConstraints="NO" id="CQP-I2-4ve">
                                 <rect key="frame" x="54" y="8" width="40" height="40"/>
@@ -58,7 +62,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4oc-wb-wxV">
-                                <rect key="frame" x="106" y="18.5" width="206" height="19"/>
+                                <rect key="frame" x="106" y="18.5" width="174" height="19"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                 <color key="textColor" red="0.16862745098039217" green="0.16862745098039217" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
@@ -78,8 +82,8 @@
                             <constraint firstItem="4oc-wb-wxV" firstAttribute="leading" secondItem="CQP-I2-4ve" secondAttribute="trailing" constant="12" id="8gO-8d-Eu4"/>
                             <constraint firstAttribute="bottom" secondItem="mKf-Mu-jac" secondAttribute="bottom" id="Aic-RM-Qs9"/>
                             <constraint firstItem="CQP-I2-4ve" firstAttribute="centerY" secondItem="K7n-fz-CLU" secondAttribute="centerY" id="EEs-xn-ahb"/>
+                            <constraint firstItem="9a1-tU-Z7I" firstAttribute="leading" secondItem="4oc-wb-wxV" secondAttribute="trailing" constant="8" id="Ejq-9Y-tfc"/>
                             <constraint firstItem="CQP-I2-4ve" firstAttribute="leading" secondItem="jgK-19-Hfs" secondAttribute="trailing" constant="16" id="HeT-WQ-BQ8"/>
-                            <constraint firstAttribute="trailing" secondItem="4oc-wb-wxV" secondAttribute="trailing" constant="8" id="KD7-3T-k5t"/>
                             <constraint firstItem="4oc-wb-wxV" firstAttribute="centerY" secondItem="K7n-fz-CLU" secondAttribute="centerY" id="SDB-Dl-L23"/>
                             <constraint firstAttribute="trailing" secondItem="mKf-Mu-jac" secondAttribute="trailing" id="VNj-ht-tiG"/>
                             <constraint firstItem="mKf-Mu-jac" firstAttribute="top" secondItem="K7n-fz-CLU" secondAttribute="top" id="ati-fU-cs0"/>

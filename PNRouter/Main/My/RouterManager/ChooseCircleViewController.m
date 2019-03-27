@@ -27,7 +27,7 @@
 @implementation ChooseCircleViewController
 
 - (void)viewWillAppear:(BOOL)animated {
-//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [super viewWillAppear:animated];
 }
 
@@ -111,6 +111,7 @@
 }
 
 - (IBAction)leaveAction:(id)sender {
+    NSArray *selectArr = [self getSelectCircles];
     
 }
 

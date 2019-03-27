@@ -314,7 +314,7 @@ typedef enum : NSUInteger {
 
 - (void)jumpToChooseCircle {
     ChooseCircleViewController *vc = [[ChooseCircleViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self presentModalVC:vc animated:YES];
 }
 
 #pragma mark - switch开关change
