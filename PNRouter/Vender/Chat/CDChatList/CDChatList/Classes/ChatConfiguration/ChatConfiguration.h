@@ -127,7 +127,9 @@
 /**
  头像外边距
  */
-@property (nonatomic, assign) CGFloat messageMargin;
+//@property (nonatomic, assign) CGFloat messageMargin;
+// 消息下边距
+@property (nonatomic, assign) CGFloat messageMarginBottom;
 // 消息上边距
 @property (nonatomic, assign) CGFloat messageMarginTop;
 // 头像边距

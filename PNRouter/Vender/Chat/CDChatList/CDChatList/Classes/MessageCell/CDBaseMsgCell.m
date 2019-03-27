@@ -227,12 +227,12 @@
     CGRect bubbleRec = self.bubbleImage_left.frame;
 //    bubbleRec.origin.x = data.chatConfig.messageMargin * 2 + _headImage_left.cd_width - data.chatConfig.bubbleShareAngleWidth;
     bubbleRec.origin.x = data.chatConfig.headMargin * 2 + _headImage_left.cd_right - data.chatConfig.headMargin - data.chatConfig.bubbleShareAngleWidth;
-    bubbleRec.origin.y = data.userName.length == 0 ? data.chatConfig.messageMargin : data.chatConfig.nickNameHeight;
+    bubbleRec.origin.y = data.userName.length == 0 ? data.chatConfig.messageMarginTop : data.chatConfig.nickNameHeight;
     bubbleRec.size.width = data.bubbleWidth;
     if (data.userName.length == 0) {
-        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMargin - data.chatConfig.messageMargin;
+        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginTop - data.chatConfig.messageMarginBottom;
     } else {
-        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMargin - data.chatConfig.nickNameHeight;
+        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginTop - data.chatConfig.nickNameHeight;
     }
     
     self.bubbleImage_left.frame = bubbleRec;
@@ -317,12 +317,12 @@
     // 更新气泡的高度和宽度
     CGRect bubbleRec = self.bubbleImage_right.frame;
     bubbleRec.origin.x = cd_ScreenW() - (data.bubbleWidth + _headImage_right.cd_width) - data.chatConfig.headMargin * 2 + data.chatConfig.bubbleShareAngleWidth;
-    bubbleRec.origin.y = data.userName.length == 0 ? data.chatConfig.messageMargin : data.chatConfig.nickNameHeight;
+    bubbleRec.origin.y = data.userName.length == 0 ? data.chatConfig.messageMarginTop : data.chatConfig.nickNameHeight;
     bubbleRec.size.width = data.bubbleWidth;
     if (data.userName.length == 0) {
-        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMargin - data.chatConfig.messageMargin;
+        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginTop - data.chatConfig.messageMarginBottom;
     } else {
-        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMargin - data.chatConfig.nickNameHeight;
+        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginTop - data.chatConfig.nickNameHeight;
     }
     if (data.msgType == CDMessageTypeText) {
         // bubbleRec.size.height += 10;
