@@ -69,6 +69,11 @@
     return array;
 }
 
+- (void)refreshLeaveBtn {
+    NSArray *selectArr = [self getSelectCircles];
+    [_leaveBtn setTitle:[NSString stringWithFormat:@"Leave the Circle(%@)",@(selectArr.count)] forState:UIControlStateNormal];
+}
+
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
     if (_isEdit) {
@@ -97,7 +102,7 @@
     _isEdit = !_isEdit;
     if (_isEdit) {
         _rightBtn.hidden = YES;
-//        NSArray *selectArr = [self getSelectCircles];
+        [self refreshLeaveBtn];
         _bottomHeight.constant = 44;
         [_circleArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             ChooseCircleShowModel *model = obj;
@@ -139,6 +144,7 @@
         ChooseCircleShowModel *tempM = weakSelf.circleArr[tableRow];
         if (weakSelf.isEdit) { // 多选点击cell
             tempM.isSelect = YES;
+            [weakSelf refreshLeaveBtn];
             [weakSelf.tableV reloadData];
         } else { // 切换Cirlce
             
