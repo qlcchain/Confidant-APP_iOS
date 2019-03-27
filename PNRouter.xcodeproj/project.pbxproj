@@ -99,6 +99,8 @@
 		582BFE56221D3D2700D8C2C8 /* RouterAliasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE54221D3D2700D8C2C8 /* RouterAliasViewController.m */; };
 		582BFE57221D3D2700D8C2C8 /* RouterAliasViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582BFE55221D3D2700D8C2C8 /* RouterAliasViewController.xib */; };
 		582BFE5A221E479A00D8C2C8 /* ContactShowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BFE59221E479A00D8C2C8 /* ContactShowModel.m */; };
+		58326918224B75A50058CDB8 /* LogOutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58326916224B75A50058CDB8 /* LogOutCell.m */; };
+		58326919224B75A50058CDB8 /* LogOutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58326917224B75A50058CDB8 /* LogOutCell.xib */; };
 		5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833A51C214F520E00ED69A7 /* UIColor+Random.m */; };
 		5833F9C6221E57F400F7B63D /* ContactHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5833F9C3221E57F400F7B63D /* ContactHeaderView.xib */; };
 		5833F9C7221E57F400F7B63D /* ContactHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5833F9C4221E57F400F7B63D /* ContactHeaderView.m */; };
@@ -732,6 +734,9 @@
 		582BFE55221D3D2700D8C2C8 /* RouterAliasViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouterAliasViewController.xib; sourceTree = "<group>"; };
 		582BFE58221E479A00D8C2C8 /* ContactShowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactShowModel.h; sourceTree = "<group>"; };
 		582BFE59221E479A00D8C2C8 /* ContactShowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactShowModel.m; sourceTree = "<group>"; };
+		58326915224B75A50058CDB8 /* LogOutCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogOutCell.h; sourceTree = "<group>"; };
+		58326916224B75A50058CDB8 /* LogOutCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogOutCell.m; sourceTree = "<group>"; };
+		58326917224B75A50058CDB8 /* LogOutCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LogOutCell.xib; sourceTree = "<group>"; };
 		5833A51C214F520E00ED69A7 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
 		5833A51D214F520E00ED69A7 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		5833F9C3221E57F400F7B63D /* ContactHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactHeaderView.xib; sourceTree = "<group>"; };
@@ -2557,6 +2562,9 @@
 				58E3A57A2248711E00F9D9E7 /* SettingCell.h */,
 				58E3A57B2248711E00F9D9E7 /* SettingCell.m */,
 				58E3A57C2248711E00F9D9E7 /* SettingCell.xib */,
+				58326915224B75A50058CDB8 /* LogOutCell.h */,
+				58326916224B75A50058CDB8 /* LogOutCell.m */,
+				58326917224B75A50058CDB8 /* LogOutCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3812,6 +3820,7 @@
 				73E39B3B2216BEED003CD33B /* RouterDetailViewController.xib in Resources */,
 				5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */,
 				7330F3CF21479AED00FF4EEC /* NewsCell.xib in Resources */,
+				58326919224B75A50058CDB8 /* LogOutCell.xib in Resources */,
 				584B439021FEE11D00D1F21A /* DiskManagementCell.xib in Resources */,
 				58E3A57E2248711E00F9D9E7 /* SettingCell.xib in Resources */,
 				58F5E4C2222CD46E00695F0A /* PNBackgroundView.xib in Resources */,
@@ -4280,6 +4289,7 @@
 				7330F37B2146118800FF4EEC /* UIImage+Capture.m in Sources */,
 				581FDF3A21F024160068C120 /* bwcontroller.m in Sources */,
 				736257A62142149300D7FD6B /* UIView+ViewController.m in Sources */,
+				58326918224B75A50058CDB8 /* LogOutCell.m in Sources */,
 				585AEE5921421DD70098A070 /* SocketMessageUtil.m in Sources */,
 				73060529216F3572005A0E13 /* AFHTTPClientV2.m in Sources */,
 				580CFE4D2227B7FD00460B41 /* MLeaksMessenger.m in Sources */,

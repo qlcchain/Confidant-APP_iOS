@@ -36,6 +36,7 @@
 - (void)setRootLoginWithType:(LoginType) type;
 - (void)judgeLogin;
 - (void)addTransitionAnimation;
+- (void)logOutApp;
 
 @end
 

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="66" id="KGk-i7-Jjw" customClass="LogOutCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="65.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sc9-yS-HbB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="65.5"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2V8-Re-yHH">
+                                <rect key="frame" x="0.0" y="10" width="320" height="55.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="INs-Yv-yl2">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="55.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Log Out">
+                                            <color key="titleColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="deviceRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="logOutAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZFW-y2-WED"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="INs-Yv-yl2" firstAttribute="leading" secondItem="2V8-Re-yHH" secondAttribute="leading" id="A8G-zB-dnw"/>
+                                    <constraint firstItem="INs-Yv-yl2" firstAttribute="top" secondItem="2V8-Re-yHH" secondAttribute="top" id="CSr-4V-jLM"/>
+                                    <constraint firstAttribute="trailing" secondItem="INs-Yv-yl2" secondAttribute="trailing" id="Nve-xz-d8a"/>
+                                    <constraint firstAttribute="bottom" secondItem="INs-Yv-yl2" secondAttribute="bottom" id="hAu-nk-kkf"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="deviceRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="2V8-Re-yHH" secondAttribute="trailing" id="2FC-aa-SuL"/>
+                            <constraint firstItem="2V8-Re-yHH" firstAttribute="top" secondItem="Sc9-yS-HbB" secondAttribute="top" constant="10" id="ebW-GP-COc"/>
+                            <constraint firstItem="2V8-Re-yHH" firstAttribute="leading" secondItem="Sc9-yS-HbB" secondAttribute="leading" id="saH-fC-n3u"/>
+                            <constraint firstAttribute="bottom" secondItem="2V8-Re-yHH" secondAttribute="bottom" id="tex-Fg-6Mc"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Sc9-yS-HbB" secondAttribute="bottom" id="2WA-Ik-eW8"/>
+                    <constraint firstItem="Sc9-yS-HbB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="UAh-Tp-ihq"/>
+                    <constraint firstItem="Sc9-yS-HbB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="yZj-QB-EdG"/>
+                    <constraint firstAttribute="trailing" secondItem="Sc9-yS-HbB" secondAttribute="trailing" id="zot-n5-62S"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+        </tableViewCell>
+    </objects>
+</document>
