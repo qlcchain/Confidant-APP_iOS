@@ -187,7 +187,7 @@
     }
 }
 
-+ (NSArray *)getLocalRouter {
++ (NSArray *)getLocalRouters {
     NSArray *routeArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
     NSMutableArray *resultArr = [NSMutableArray array];
     [routeArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {

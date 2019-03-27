@@ -117,7 +117,7 @@ typedef enum : NSUInteger {
 
 - (void)refreshTableData {
     [_routerArr removeAllObjects];
-    [_routerArr addObjectsFromArray:[RouterModel getLocalRouter]];
+    [_routerArr addObjectsFromArray:[RouterModel getLocalRouters]];
     [_routerTable reloadData];
 }
 

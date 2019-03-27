@@ -41,7 +41,7 @@
     self.headMargin = 8.0f;
     self.bubbleMaxWidth = cd_ScreenW() * 0.64f;
     self.bubbleSharpAngleHeighInset = 25.0f;
-    self.nickNameHeight = 15.0f;
+    self.nickNameHeight = 18.0f;
     
     self.messageTextDefaultFontSize = 16;
     self.messageTextDefaultFont = [UIFont systemFontOfSize: self.messageTextDefaultFontSize];

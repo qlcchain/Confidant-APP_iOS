@@ -374,7 +374,7 @@
     [self changeLogintStatu];
 
     _showRouterArr = [NSMutableArray array];
-    NSArray *routeArr = [RouterModel getLocalRouter];
+    NSArray *routeArr = [RouterModel getLocalRouters];
     [_showRouterArr addObjectsFromArray:routeArr];
     
     [self addObserve];

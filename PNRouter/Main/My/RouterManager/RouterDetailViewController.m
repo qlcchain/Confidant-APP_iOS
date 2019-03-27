@@ -100,7 +100,7 @@
 - (IBAction)switchRouterAction:(id)sender {
     @weakify_self
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    NSArray *routerArr = [RouterModel getLocalRouter];
+    NSArray *routerArr = [RouterModel getLocalRouters];
     [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         RouterModel *model = obj;
         UIAlertAction *alert = [UIAlertAction actionWithTitle:model.name style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
