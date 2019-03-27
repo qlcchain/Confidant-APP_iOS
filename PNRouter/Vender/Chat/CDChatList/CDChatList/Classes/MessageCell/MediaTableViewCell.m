@@ -328,6 +328,7 @@
             [self.tableView.msgDelegate clickFileCellWithMsgMode:self.msgModal withFilePath:filePath];
         }
     } else { // 下载视频
+       
         if (self.msgModal.msgState == CDMessageStateSending) {
             return;
         }
@@ -350,7 +351,7 @@
                       NSData *data = [NSData dataWithContentsOfFile:path];
                      if (msgkey) {
                          NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:msgkey];
-                         if (datakey) {
+                         if (!datakey) {
                              weakSelf.msgModal.msgState = CDMessageStateDownloadFaild;
                              [SystemUtil removeDocmentFilePath:path];
                              return;
