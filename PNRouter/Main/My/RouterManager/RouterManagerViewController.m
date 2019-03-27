@@ -15,6 +15,11 @@
 #import "SocketCountUtil.h"
 #import "SystemUtil.h"
 #import "PNDefaultHeaderView.h"
+#import "UsedSpaceTableViewCell.h"
+#import "SettingCell.h"
+#import "UserManagerViewController.h"
+#import "EditTextViewController.h"
+#import "InvitationQRCodeViewController.h"
 
 typedef enum : NSUInteger {
     RouterConnectStatusWait,
@@ -45,6 +50,7 @@ typedef enum : NSUInteger {
 
 @implementation RouterManagerViewController
 - (IBAction)quickSwitchAction:(id)sender {
+    
 }
 
 #pragma mark - Observe
@@ -59,6 +65,10 @@ typedef enum : NSUInteger {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    _quickBackView.layer.cornerRadius = 14.0f;
+    _quickBackView.layer.masksToBounds = YES;
+    _quickBackView.layer.borderColor = RGB(44, 44, 44).CGColor;
+    _quickBackView.layer.borderWidth = .5f;
     
     _codeBtn.hidden = YES;
     [self observe];
@@ -67,6 +77,8 @@ typedef enum : NSUInteger {
     _routerTable.dataSource = self;
     
     [_routerTable registerNib:[UINib nibWithNibName:RouterManagementCellReuse bundle:nil] forCellReuseIdentifier:RouterManagementCellReuse];
+    [_routerTable registerNib:[UINib nibWithNibName:UsedSpaceTableViewCellReuse bundle:nil] forCellReuseIdentifier:UsedSpaceTableViewCellReuse];
+    [_routerTable registerNib:[UINib nibWithNibName:SettingCellReuse bundle:nil] forCellReuseIdentifier:SettingCellReuse];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -89,10 +101,10 @@ typedef enum : NSUInteger {
     NSString *userType = [_connectRouteM.userSn substringWithRange:NSMakeRange(0, 2)];
     if ([userType isEqualToString:@"01"]) { // 管理员
         isAdmin = YES;
-        [_routerArr addObjectsFromArray:@[@"Circle Members",@"Circle Name",@"Circle QR Code",@"Used Space",@"Manage Disks ",@"Enable Auto Login"]];
+        [_routerArr addObjectsFromArray:@[@[@"Circle Members"],@[@"Circle Name",@"Circle QR Code"],@[@"Used Space",@"Manage Disks"],@[@"Enable Auto Login"]]];
     } else {
         isAdmin = NO;
-        [_routerArr addObjectsFromArray:@[@"Cirle Alias",@"Circle QR Code",@"Enable Auto Login"]];
+        [_routerArr addObjectsFromArray:@[@[@"Cirle Alias",@"Circle QR Code"],@[@"Enable Auto Login"]]];
     }
     
   //  [self refreshStatus];
@@ -170,57 +182,162 @@ typedef enum : NSUInteger {
 
 #pragma mark - tableviewDataSourceDelegate
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _routerArr.count;
 }
 
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [_routerArr[section] count];
+}
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 10;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return RouterManagementCell_Height;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
-    
-    RouterModel *model = _routerArr[indexPath.row];
-    [cell configWithModel:model];
-    
-    return cell;
+   
+    if (indexPath.section == 0) {
+         RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
+        cell.nameLab.text = _routerArr[indexPath.section][indexPath.row];
+        if (isAdmin) {
+            cell.icon.hidden = YES;
+        } else {
+            if (indexPath.row == 0) {
+                cell.icon.hidden = YES;
+                cell.lblDesc.text = _connectRouteM.name;
+            } else {
+                cell.icon.hidden = NO;
+                cell.lblDesc.text = @"";
+            }
+        }
+        return cell;
+    } else if (indexPath.section == 1) {
+        if (isAdmin) {
+            RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
+            cell.nameLab.text = _routerArr[indexPath.section][indexPath.row];
+            if (indexPath.row == 0) {
+                cell.icon.hidden = YES;
+                cell.lblDesc.text = _connectRouteM.name;
+            } else {
+                cell.icon.hidden = NO;
+                cell.lblDesc.text = @"";
+            }
+            return cell;
+        } else {
+            SettingCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellReuse];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.leftContraintV.constant = 16;
+            cell.titleLab.text = _routerArr[indexPath.section][indexPath.row];
+            [cell.switc setOn:_connectRouteM.isOpen animated:YES];
+            [cell.switc addTarget:self action:@selector(swChange:) forControlEvents:UIControlEventValueChanged];
+            return cell;
+        }
+        
+    } else if (indexPath.section == 2) {
+        if (indexPath.row == 0) {
+            UsedSpaceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UsedSpaceTableViewCellReuse];
+            return cell;
+        } else {
+            RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
+            cell.nameLab.text = _routerArr[indexPath.section][indexPath.row];
+            cell.lblDesc.text = @"";
+            cell.icon.hidden = YES;
+            return cell;
+        }
+    } else {
+        SettingCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellReuse];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftContraintV.constant = 16;
+        cell.titleLab.text = _routerArr[indexPath.section][indexPath.row];
+        [cell.switc setOn:_connectRouteM.isOpen animated:YES];
+        [cell.switc addTarget:self action:@selector(swChange:) forControlEvents:UIControlEventValueChanged];
+        return cell;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    RouterModel *model = _routerArr[indexPath.row];
-    [self jumpToRouterDetail:model];
     
+    if (indexPath.section == 0) {
+       
+        if (isAdmin) {
+            // 圈子人数
+        } else {
+            if (indexPath.row == 0) {
+               // 圈子别名
+                 [self jumpToAlias];
+            } else {
+               // 圈子code
+                 [self jumpToRouterCode];
+            }
+        }
+       
+    } else if (indexPath.section == 1) {
+        if (isAdmin) {
+            if (indexPath.row == 0) {
+                // 圈子别名
+                [self jumpToAlias];
+            } else {
+                 // 圈子code
+                [self jumpToRouterCode];
+            }
+            
+        }
+        
+    } else if (indexPath.section == 2) {
+        if (indexPath.row == 0) {
+           // 圈子磁盘空间和使用量
+        } else {
+           // 磁盘管理
+            UserManagerViewController *vc = [[UserManagerViewController alloc] initWithRid:_connectRouteM.toxid];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
+    
+}
+#pragma mark - Transition
+- (void)jumpToAlias {
+    EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditAlis];
+    vc.routerM = _connectRouteM;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (void)jumpToRouterCode {
+    InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
+    vc.routerM = _connectRouteM;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+#pragma mark - switch开关change
+- (void) swChange:(UISwitch *) sender
+{
+    [RouterModel updateRouterLoginSwitchWithSn:_connectRouteM.userSn isOpen:sender.isOn];
 }
 
 #pragma mark - Lazy
-- (void)setConnectStatus:(RouterConnectStatus)connectStatus {
-    _connectStatus = connectStatus;
-    if (_connectStatus == RouterConnectStatusWait) {
-        _connectBtnHeight.constant = 43;
-        [_connectBtn setTitle:@"Connect" forState:UIControlStateNormal];
-        _connectTipBackHeight.constant = 0;
-    } else if (_connectStatus == RouterConnectStatusConnecting) {
-        _connectBtnHeight.constant = 0;
-        _connectTipBackHeight.constant = 30;
-        _connectTipLab.text = @"Connection...";
-        _connectTipIcon.image = [UIImage imageNamed:@"icon_loading"];
-    } else if (_connectStatus == RouterConnectStatusSuccess) {
-        _connectBtnHeight.constant = 0;
-        _connectTipBackHeight.constant = 30;
-        _connectTipLab.text = @"Successful connection";
-        _connectTipIcon.image = [UIImage imageNamed:@"icon_connected"];
-    } else if (_connectStatus == RouterConnectStatusFail) {
-        _connectBtnHeight.constant = 43;
-        [_connectBtn setTitle:@"Try again" forState:UIControlStateNormal];
-        _connectTipBackHeight.constant = 30;
-        _connectTipLab.text = @"Failed to connect";
-        _connectTipIcon.image = nil;
-    }
-}
+//- (void)setConnectStatus:(RouterConnectStatus)connectStatus {
+//    _connectStatus = connectStatus;
+//    if (_connectStatus == RouterConnectStatusWait) {
+//        _connectBtnHeight.constant = 43;
+//        [_connectBtn setTitle:@"Connect" forState:UIControlStateNormal];
+//        _connectTipBackHeight.constant = 0;
+//    } else if (_connectStatus == RouterConnectStatusConnecting) {
+//        _connectBtnHeight.constant = 0;
+//        _connectTipBackHeight.constant = 30;
+//        _connectTipLab.text = @"Connection...";
+//        _connectTipIcon.image = [UIImage imageNamed:@"icon_loading"];
+//    } else if (_connectStatus == RouterConnectStatusSuccess) {
+//        _connectBtnHeight.constant = 0;
+//        _connectTipBackHeight.constant = 30;
+//        _connectTipLab.text = @"Successful connection";
+//        _connectTipIcon.image = [UIImage imageNamed:@"icon_connected"];
+//    } else if (_connectStatus == RouterConnectStatusFail) {
+//        _connectBtnHeight.constant = 43;
+//        [_connectBtn setTitle:@"Try again" forState:UIControlStateNormal];
+//        _connectTipBackHeight.constant = 30;
+//        _connectTipLab.text = @"Failed to connect";
+//        _connectTipIcon.image = nil;
+//    }
+//}
 
 @end
