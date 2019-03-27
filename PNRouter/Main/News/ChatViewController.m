@@ -49,6 +49,7 @@
 #import "PNDefaultHeaderView.h"
 #import "UserHeadUtil.h"
 #import "UserHeaderModel.h"
+#import "NSString+Trim.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -160,6 +161,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (IBAction)leftAction:(id)sender {
     
     NSString *textString = [self.msginputView getTextViewString];
+    textString = [NSString trimWhitespaceAndNewline:textString];
     if (![[NSString getNotNullValue:textString] isEmptyString]) {
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
@@ -717,6 +719,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 // 输入框输出文字
 - (void)inputViewPopSttring:(NSString *)string {
+    // 去掉前后空格和换行符
+    string = [NSString trimWhitespaceAndNewline:string];
+    
     if (string && ![string isEmptyString]) {
         UserModel *userM = [UserModel getUserModel];
         // 生成签名
