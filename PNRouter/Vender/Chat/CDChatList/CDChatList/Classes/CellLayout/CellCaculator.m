@@ -78,6 +78,7 @@
     } else {
         data.willDisplayTime = YES;
     }
+    data.chatConfig.messageMarginBottomOfTime = data.willDisplayTime?data.chatConfig.messageMarginBottomOfTime:0;
     CGSize res = [self caculateCellHeightAndBubleWidth:data];
     
     // 记录 缓存
@@ -90,13 +91,14 @@
     
     // 加上可能显示的昵称高度
     if (data.userName.length > 0) {
-        data.cellHeight = data.cellHeight + data.chatConfig.nickNameHeight - data.chatConfig.messageMarginTop;
+        data.cellHeight = data.cellHeight + data.chatConfig.nickNameHeight;
     }
     
-//    return data.cellHeight;
-    CGFloat extra = data.willDisplayTime?0:data.chatConfig.messageMarginTop;
-    data.cellHeight = data.cellHeight - extra;
     return data.cellHeight;
+//    CGFloat nameHeight = data.userName.length == 0?0:data.chatConfig.nickNameHeight;
+//    CGFloat extra = data.willDisplayTime?0:data.chatConfig.messageMarginBottomOfTime;
+//    data.cellHeight = data.cellHeight - extra;
+//    return data.cellHeight;
 }
 
 #pragma mark 针对不同的cell，计算cell高度及气泡宽度
@@ -157,8 +159,7 @@
     // 计算气泡宽度
     CGFloat bubbleWidth = ceilf(data.width) + msgData.chatConfig.bubbleSharpAnglehorizInset + msgData.chatConfig.bubbleRoundAnglehorizInset;
     // 计算整个cell高度
-    CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
-    CGFloat cellheight = ceilf(data.height) + msgData.chatConfig.bubbleRoundAnglehorizInset * 2 + top + msgData.chatConfig.messageMarginBottom;
+    CGFloat cellheight = ceilf(data.height) + msgData.chatConfig.bubbleRoundAnglehorizInset * 2 + msgData.chatConfig.messageMarginBottomOfTime + msgData.chatConfig.messageMarginBottom;
     
     // 如果 cellheight小于最小cell高度
     if (cellheight < msgData.chatConfig.messageContentH) {
@@ -194,11 +195,9 @@ CGSize caculateImageSize140By140(UIImage *image, CDChatMessage msgData) {
     
     // 返回的高度是图片高度，需加上消息内边距变成消息体高度
     if (maxSide == width) {
-        CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
-        return CGSizeMake(140, actuallMiniSide + msgData.chatConfig.messageMarginBottom + top);
+        return CGSizeMake(140, actuallMiniSide + msgData.chatConfig.messageMarginBottom + msgData.chatConfig.messageMarginBottomOfTime);
     } else {
-        CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
-        return CGSizeMake(actuallMiniSide, 140 + msgData.chatConfig.messageMarginBottom + top);
+        return CGSizeMake(actuallMiniSide, 140 + msgData.chatConfig.messageMarginBottom + msgData.chatConfig.messageMarginBottomOfTime);
     }
 }
 
@@ -221,11 +220,9 @@ CGSize caculateFileSize140By140(CGSize size, CDChatMessage msgData) {
     
     // 返回的高度是图片高度，需加上消息内边距变成消息体高度
     if (maxSide == width) {
-        CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
-        return CGSizeMake(140, actuallMiniSide + msgData.chatConfig.messageMarginBottom +top);
+        return CGSizeMake(140, actuallMiniSide + msgData.chatConfig.messageMarginBottom +msgData.chatConfig.messageMarginBottomOfTime);
     } else {
-        CGFloat top = msgData.willDisplayTime?msgData.chatConfig.messageMarginTop:0;
-        return CGSizeMake(actuallMiniSide, 140 + msgData.chatConfig.messageMarginBottom + top);
+        return CGSizeMake(actuallMiniSide, 140 + msgData.chatConfig.messageMarginBottom + msgData.chatConfig.messageMarginBottomOfTime);
     }
 }
 

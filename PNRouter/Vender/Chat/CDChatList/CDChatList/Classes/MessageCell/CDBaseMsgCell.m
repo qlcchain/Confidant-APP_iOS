@@ -195,8 +195,7 @@
     // 头像
     if (data.userThumImage || data.userThumImageURL){
 //        _headImage_left.frame = CGRectMake(data.chatConfig.messageMargin, data.chatConfig.messageMargin, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
-        CGFloat top = data.willDisplayTime?data.chatConfig.messageMarginTop:0;
-        top = data.userName.length == 0 ? top : data.chatConfig.nickNameHeight;
+        CGFloat top = data.userName.length == 0 ? data.chatConfig.messageMarginBottomOfTime : data.chatConfig.messageMarginBottomOfTime + data.chatConfig.nickNameHeight;
         _headImage_left.frame = CGRectMake(_chooseMsgBtn_left.cd_right + data.chatConfig.headMargin, top, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
     } else {
 //        _headImage_left.frame = CGRectZero;
@@ -207,7 +206,7 @@
     
     // 昵称
 //    _userName_left.frame = CGRectMake(data.chatConfig.messageMargin + _headImage_left.cd_width + data.chatConfig.bubbleShareAngleWidth, 0, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);
-    _userName_left.frame = CGRectMake(data.chatConfig.headMargin + _headImage_left.cd_width + data.chatConfig.bubbleShareAngleWidth+2, 0, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);
+    _userName_left.frame = CGRectMake(data.chatConfig.headMargin + _headImage_left.cd_width + data.chatConfig.bubbleShareAngleWidth+2, data.chatConfig.messageMarginBottomOfTime, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);
     
     // 左侧
     // 设置消息内容的总高度
@@ -229,13 +228,12 @@
     CGRect bubbleRec = self.bubbleImage_left.frame;
 //    bubbleRec.origin.x = data.chatConfig.messageMargin * 2 + _headImage_left.cd_width - data.chatConfig.bubbleShareAngleWidth;
     bubbleRec.origin.x = data.chatConfig.headMargin * 2 + _headImage_left.cd_right - data.chatConfig.headMargin - data.chatConfig.bubbleShareAngleWidth;
-    CGFloat top = data.willDisplayTime?data.chatConfig.messageMarginTop:0;
-    bubbleRec.origin.y = data.userName.length == 0 ? top : data.chatConfig.nickNameHeight;
+    bubbleRec.origin.y = data.userName.length == 0 ? data.chatConfig.messageMarginBottomOfTime : data.chatConfig.messageMarginBottomOfTime + data.chatConfig.nickNameHeight;
     bubbleRec.size.width = data.bubbleWidth;
     if (data.userName.length == 0) {
-        bubbleRec.size.height = msgContentHeight - top - data.chatConfig.messageMarginBottom;
+        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginBottomOfTime - data.chatConfig.messageMarginBottom;
     } else {
-        bubbleRec.size.height = msgContentHeight - top - data.chatConfig.nickNameHeight;
+        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginBottomOfTime - data.chatConfig.nickNameHeight - data.chatConfig.messageMarginBottom;
     }
     
     self.bubbleImage_left.frame = bubbleRec;
@@ -289,11 +287,10 @@
     }
     
     // 头像
-    CGFloat top = data.willDisplayTime?data.chatConfig.messageMarginTop:0;
     if (data.userThumImage || data.userThumImageURL){
-        _headImage_right.frame = CGRectMake(cd_ScreenW() - (data.chatConfig.headSideLength + data.chatConfig.headMargin), top, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
+        _headImage_right.frame = CGRectMake(cd_ScreenW() - (data.chatConfig.headSideLength + data.chatConfig.headMargin), data.chatConfig.messageMarginBottomOfTime, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
     } else {
-        _headImage_right.frame = CGRectMake(cd_ScreenW(), top, 0, data.chatConfig.headSideLength);
+        _headImage_right.frame = CGRectMake(cd_ScreenW(), data.chatConfig.messageMarginBottomOfTime, 0, data.chatConfig.headSideLength);
     }
     _headImage_right.layer.cornerRadius = _headImage_right.width/2.0;
     _headImage_right.layer.masksToBounds = YES;
@@ -321,13 +318,12 @@
     // 更新气泡的高度和宽度
     CGRect bubbleRec = self.bubbleImage_right.frame;
     bubbleRec.origin.x = cd_ScreenW() - (data.bubbleWidth + _headImage_right.cd_width) - data.chatConfig.headMargin * 2 + data.chatConfig.bubbleShareAngleWidth;
-//    CGFloat top = data.willDisplayTime?data.chatConfig.messageMarginTop:0;
-    bubbleRec.origin.y = data.userName.length == 0 ? top : data.chatConfig.nickNameHeight;
+    bubbleRec.origin.y = data.userName.length == 0 ? data.chatConfig.messageMarginBottomOfTime : data.chatConfig.messageMarginBottomOfTime + data.chatConfig.nickNameHeight;
     bubbleRec.size.width = data.bubbleWidth;
     if (data.userName.length == 0) {
-        bubbleRec.size.height = msgContentHeight - top - data.chatConfig.messageMarginBottom;
+        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginBottomOfTime - data.chatConfig.messageMarginBottom;
     } else {
-        bubbleRec.size.height = msgContentHeight - top - data.chatConfig.nickNameHeight;
+        bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginBottomOfTime - data.chatConfig.nickNameHeight;
     }
     if (data.msgType == CDMessageTypeText) {
         // bubbleRec.size.height += 10;
@@ -445,12 +441,13 @@
     // 设置顶部时间Label
     NSDate *date;
     date = [NSDate dateWithTimeIntervalSince1970:data.TimeStatmp ];
-    self.timeLabel.text = [self checkDateDisplay:date msg:data];
+    NSString *timeStr = [self checkDateDisplay:date msg:data];
+    self.timeLabel.text = timeStr;
     CGSize textSize = [self.timeLabel.text boundingRectWithSize:CGSizeMake(cd_ScreenW(), data.chatConfig.msgTimeH) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: self.timeLabel.font} context:nil].size;
     if (textSize.height < data.chatConfig.msgTimeH) {
         textSize.height = data.chatConfig.msgTimeH;
     }
-    data.chatConfig.alwaysShowMsgTime = YES;
+//    data.chatConfig.alwaysShowMsgTime = YES;
     [_timeLabel setFrame:CGRectMake(0, 0, textSize.width + data.chatConfig.sysInfoPadding * 2, textSize.height)];
     _timeLabel.center = CGPointMake(cd_ScreenW() / 2, data.chatConfig.msgTimeH / 2);
     
