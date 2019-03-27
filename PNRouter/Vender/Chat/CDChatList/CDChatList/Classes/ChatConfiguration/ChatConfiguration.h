@@ -20,7 +20,7 @@
 /**
  是否一直显示消息时间
  */
-@property (assign, nonatomic) BOOL alwaysShowMsgTime;
+//@property (assign, nonatomic) BOOL alwaysShowMsgTime;
 
 #pragma mark 所有视图的颜色定义
 /**
@@ -131,7 +131,7 @@
 // 消息下边距
 @property (nonatomic, assign) CGFloat messageMarginBottom;
 // 消息上边距
-@property (nonatomic, assign) CGFloat messageMarginTop;
+@property (nonatomic, assign) CGFloat messageMarginBottomOfTime;
 // 头像边距
 @property (nonatomic, assign) CGFloat headMargin;
 /**
