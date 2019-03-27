@@ -115,6 +115,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
         chatModel.myID = [UserModel getUserModel].userId;
+        chatModel.groupName = _lblNavTitle.text;
         chatModel.isGroup = YES;
         chatModel.groupID = self.groupModel.GId;
         chatModel.isHD = NO;

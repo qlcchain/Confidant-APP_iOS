@@ -24,15 +24,14 @@ typedef enum : NSUInteger {
 } RouterConnectStatus;
 
 @interface RouterManagerViewController () <UITableViewDelegate, UITableViewDataSource>
+{
+    BOOL isAdmin;
+}
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *connectBtnHeight; // 43
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *connectTipBackHeight; // 30
+
 @property (weak, nonatomic) IBOutlet UILabel *routerNameLab;
-@property (weak, nonatomic) IBOutlet UILabel *connectTipLab;
-@property (weak, nonatomic) IBOutlet UIImageView *connectTipIcon;
-@property (weak, nonatomic) IBOutlet UIButton *connectBtn;
+
 @property (weak, nonatomic) IBOutlet UIImageView *currentCircleIcon;
-@property (weak, nonatomic) IBOutlet UIView *currentCircleIconBack;
 
 @property (weak, nonatomic) IBOutlet UITableView *routerTable;
 @property (nonatomic, strong) NSMutableArray *routerArr;
@@ -40,37 +39,33 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) RouterModel *connectRouteM;
 @property (weak, nonatomic) IBOutlet UIButton *codeBtn;
+@property (weak, nonatomic) IBOutlet UIView *quickBackView;
 
 @end
 
 @implementation RouterManagerViewController
+- (IBAction)quickSwitchAction:(id)sender {
+}
 
 #pragma mark - Observe
 - (void)observe {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshStatus) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshStatus) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
 }
 
 #pragma mark - Life Cycle
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
     _codeBtn.hidden = YES;
     [self observe];
-//    _connectBtn.layer.cornerRadius = 5.0f;
-//    _connectBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-//    _connectBtn.layer.borderWidth = 1.0f;
-    _currentCircleIcon.layer.cornerRadius = _currentCircleIcon.width/2.0;
-    _currentCircleIcon.layer.masksToBounds = YES;
-    _currentCircleIconBack.layer.cornerRadius = _currentCircleIconBack.width/2.0;
-    _currentCircleIconBack.layer.masksToBounds = YES;
-    
-    
     _routerArr = [NSMutableArray array];
+    _routerTable.delegate = self;
+    _routerTable.dataSource = self;
+    
     [_routerTable registerNib:[UINib nibWithNibName:RouterManagementCellReuse bundle:nil] forCellReuseIdentifier:RouterManagementCellReuse];
 }
 
@@ -78,14 +73,30 @@ typedef enum : NSUInteger {
     [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
+    _currentCircleIcon.layer.cornerRadius = 32.0f;
+    
+    _currentCircleIcon.layer.masksToBounds = YES;
+    
+    _currentCircleIcon.layer.borderColor = [UIColor whiteColor].CGColor;
+    _currentCircleIcon.layer.borderWidth = 2.0f;
+    
     _connectRouteM = [RouterModel getConnectRouter];
     _routerNameLab.text = _connectRouteM.name?:@"";
     NSString *userKey = @"";
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_routerNameLab.text]];
     _currentCircleIcon.image = defaultImg;
     
-    [self refreshStatus];
-    [self refreshTableData];
+    NSString *userType = [_connectRouteM.userSn substringWithRange:NSMakeRange(0, 2)];
+    if ([userType isEqualToString:@"01"]) { // 管理员
+        isAdmin = YES;
+        [_routerArr addObjectsFromArray:@[@"Circle Members",@"Circle Name",@"Circle QR Code",@"Used Space",@"Manage Disks ",@"Enable Auto Login"]];
+    } else {
+        isAdmin = NO;
+        [_routerArr addObjectsFromArray:@[@"Cirle Alias",@"Circle QR Code",@"Enable Auto Login"]];
+    }
+    
+  //  [self refreshStatus];
+ //   [self refreshTableData];
 }
 
 #pragma mark - Operation

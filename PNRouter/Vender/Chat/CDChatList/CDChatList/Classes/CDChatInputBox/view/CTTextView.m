@@ -127,12 +127,17 @@
     if (_textH != height) { // 高度不一样，就改变了高度
         
         // 当高度大于最大高度时，需要滚动
+        if (height > _maxTextH && self.scrollEnabled) {
+            return;
+        }
         self.scrollEnabled = height > _maxTextH && _maxTextH > 0;
+        if (height > _maxTextH) {
+            height = _maxTextH;
+         }
         
-        _textH = height;
-        
+        NSLog(@"-------%d",self.scrollEnabled);
         //当不可以滚动（即 <= 最大高度）时，传值改变textView高度
-        if (_textChangedBlock && self.scrollEnabled == NO) {
+        if (_textChangedBlock) {
             [self.superview layoutIfNeeded];
             self.placeholderView.frame = self.bounds;
             _textChangedBlock(self.text,height);
