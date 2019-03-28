@@ -85,12 +85,8 @@
     [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"Contacts" imageName:@"btn_contacts"];
     [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"My" imageName:@"btn_my"];
     
-    // 获取好友列表
-    [self sendGetFriendNoti];
-    // 获取群组列表
-     [SendRequestUtil sendPullGroupListWithShowHud:NO];
-    
-    // socket 断开连接通知
+    [self sendFriendAndGroupList];
+     // socket 断开连接通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketDisconnectNoti:) name:SOCKET_DISCONNECT_NOTI object:nil];
     // socket 连接的通知
     
@@ -109,7 +105,17 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gbFinashNoti:) name:GB_FINASH_NOTI object:nil];
     // 群组列表查询通知
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullGroupSucess:) name:PULL_GROUP_SUCCESS_NOTI object:nil];
+    // 得新拉取好友和群组列表消息
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendFriendAndGroupList) name:GET_FRIEND_GROUP_LIST_NOTI object:nil];
     
+}
+
+- (void) sendFriendAndGroupList
+{
+    // 获取好友列表
+    [self sendGetFriendNoti];
+    // 获取群组列表
+    [SendRequestUtil sendPullGroupListWithShowHud:NO];
 }
 
 - (void) addChildViewController:(UIViewController *) childController text:(NSString *) text imageName:(NSString *) imageName {
@@ -180,6 +186,9 @@
 }
 - (void) socketOnconnectNoti:(NSNotification *) noti
 {
+    if (AppD.isSwitch) {
+        return;
+    }
     [HeartBeatUtil stop];
     AppD.isDisConnectLogin = YES;
     UserConfig *userM = [UserConfig getShareObject];
@@ -188,6 +197,9 @@
 }
 - (void) socketDisconnectNoti:(NSNotification *) noti
 {
+    if (AppD.isSwitch) {
+        return;
+    }
      [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
      [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"0"];
     if ([SystemUtil isSocketConnect]) {

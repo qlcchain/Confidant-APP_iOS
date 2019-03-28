@@ -211,7 +211,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     // 当前消息置为已读
     [[ChatListDataUtil getShareObject] cancelChatHDWithFriendid:self.friendModel.userId];
     
-    NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(self.friendModel.userId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId)]];
+    NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(self.friendModel.userId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"isGroup"),bg_sqlValue(@(0))]];
     if (friends && friends.count > 0) {
         ChatListModel *chatModel = friends[0];
         if (chatModel.isDraft) {

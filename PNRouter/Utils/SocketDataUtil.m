@@ -345,6 +345,8 @@ struct ResultFile {
     mutData = [NSMutableData dataWithData:myData];
     [mutData appendData:sendData];
     
+    NSLog(@"----%@----",[mutData subdataWithRange:NSMakeRange(mutData.length-4, 4)]);
+    
     @weakify_self
     [_fileUtil setOnConnect:^{
         NSLog(@"%@--%@",[weakSelf.fileUtil class],weakSelf.fileUtil.socket);

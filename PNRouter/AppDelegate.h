@@ -25,6 +25,7 @@
 @property (nonatomic ,assign) BOOL isDisConnectLogin;
 @property (nonatomic ,copy) NSString *regId;
 @property (nonatomic ,assign) BOOL isLoginMac;
+@property (nonatomic ,assign) BOOL isSwitch;
 @property (nonatomic ,assign) BOOL showTouch;
 
 /**
