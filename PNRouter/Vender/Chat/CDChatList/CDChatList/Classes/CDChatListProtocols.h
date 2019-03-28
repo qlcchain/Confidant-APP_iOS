@@ -177,6 +177,7 @@ typedef enum : NSUInteger {
 @property(nonatomic, assign) BOOL isGroup;
 @property (nonatomic, copy) NSString *nonceKey;
 @property (nonatomic, copy) NSString *signKey;
+@property (nonatomic, copy) NSString *fileKey;
 @property (nonatomic, copy) NSString *symmetKey;
 
 @property (nonatomic , assign) CGFloat fileWidth;

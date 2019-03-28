@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSString *MsgId;
 @property (nonatomic, strong) NSString *FileInfo;
 @property (nonatomic, strong) NSString *FileMD5;
+@property (nonatomic, strong) NSString *FileKey;
 @property (nonatomic, strong) NSString *UserKey;
 @property (nonatomic, strong) NSString *SelfKey; // 群密钥
 @property (nonatomic, strong) NSString *UserName;

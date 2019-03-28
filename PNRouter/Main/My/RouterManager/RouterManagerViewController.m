@@ -96,10 +96,6 @@ typedef enum : NSUInteger {
     [_routerTable registerNib:[UINib nibWithNibName:UsedSpaceTableViewCellReuse bundle:nil] forCellReuseIdentifier:UsedSpaceTableViewCellReuse];
     [_routerTable registerNib:[UINib nibWithNibName:SettingCellReuse bundle:nil] forCellReuseIdentifier:SettingCellReuse];
     
-    NSString *userType = [_connectRouteM.userSn substringWithRange:NSMakeRange(0, 2)];
-    if ([userType isEqualToString:@"01"]) { // 管理员
-        [self sendGetDiskTotalInfo];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -122,12 +118,14 @@ typedef enum : NSUInteger {
     NSString *userType = [_connectRouteM.userSn substringWithRange:NSMakeRange(0, 2)];
     [_routerArr removeAllObjects];
     if ([userType isEqualToString:@"01"]) { // 管理员
+        [self sendGetDiskTotalInfo];
         isAdmin = YES;
         [_routerArr addObjectsFromArray:@[@[Circle_Members_Str],@[Circle_Name_Str,Circle_QR_Code_Str],@[Used_Space_Str,Manage_Disks_Str],@[Enable_Auto_Login_Str]]];
     } else {
         isAdmin = NO;
         [_routerArr addObjectsFromArray:@[@[Circle_Alias_Str,Circle_QR_Code_Str],@[Enable_Auto_Login_Str]]];
     }
+    [_routerTable reloadData];
 }
 
 #pragma mark - Operation

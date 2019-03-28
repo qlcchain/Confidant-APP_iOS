@@ -26,6 +26,13 @@
     NSDictionary *params = @{@"Action":@"Recovery",@"RouteId":toxid?:@"",@"UserSn":sn?:@"",@"Pubkey":[EntryModel getShareObject].signPublicKey};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
++ (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn showHud:(BOOL) isShow {
+    if (isShow) {
+         [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":@"Recovery",@"RouteId":toxid?:@"",@"UserSn":sn?:@"",@"Pubkey":[EntryModel getShareObject].signPublicKey};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 #pragma mark - 用户注册
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code
 {

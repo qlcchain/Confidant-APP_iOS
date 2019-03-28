@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SendRequestUtil : NSObject
 
 + (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn;
++ (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn showHud:(BOOL) isShow;
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code;
 + (void) sendUserLoginWithPass:(NSString *) usersn userid:(NSString *) userid showHud:(BOOL) showHud;
 + (void) sendPullUserListWithShowLoad:(BOOL)show;

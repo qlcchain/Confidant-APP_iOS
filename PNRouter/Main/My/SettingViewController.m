@@ -62,6 +62,8 @@
 }
 
 - (void)logoutAction {
+    
+   
     RouterModel *connectRouter = [RouterModel getConnectRouter];
     if (connectRouter.isConnected) {
         [SendRequestUtil sendLogOut];
