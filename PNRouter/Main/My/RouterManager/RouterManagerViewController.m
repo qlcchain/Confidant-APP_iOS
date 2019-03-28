@@ -21,6 +21,9 @@
 #import "EditTextViewController.h"
 #import "InvitationQRCodeViewController.h"
 #import "ChooseCircleViewController.h"
+#import "DiskManagerViewController.h"
+#import "GetDiskTotalInfoModel.h"
+#import "UnitUtil.h"
 
 typedef enum : NSUInteger {
     RouterConnectStatusWait,
@@ -28,6 +31,14 @@ typedef enum : NSUInteger {
     RouterConnectStatusSuccess,
     RouterConnectStatusFail,
 } RouterConnectStatus;
+
+#define Circle_Members_Str @"Circle Members"
+#define Circle_Name_Str @"Circle Name"
+#define Circle_QR_Code_Str @"Circle QR Code"
+#define Used_Space_Str @"Used Space"
+#define Manage_Disks_Str @"Manage Disks"
+#define Enable_Auto_Login_Str @"Enable Auto Login"
+#define Circle_Alias_Str @"Cirle Alias"
 
 @interface RouterManagerViewController () <UITableViewDelegate, UITableViewDataSource>
 {
@@ -46,6 +57,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) RouterModel *connectRouteM;
 @property (weak, nonatomic) IBOutlet UIButton *codeBtn;
 @property (weak, nonatomic) IBOutlet UIView *quickBackView;
+@property (nonatomic, strong) GetDiskTotalInfoModel *getDiskTotalInfoM;
 
 @end
 
@@ -58,12 +70,14 @@ typedef enum : NSUInteger {
 #pragma mark - Observe
 - (void)observe {
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshStatus) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getDiskTotalInfoSuccessNoti:) name:GetDiskTotalInfo_Noti object:nil];
 }
 
 #pragma mark - Life Cycle
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -81,6 +95,11 @@ typedef enum : NSUInteger {
     [_routerTable registerNib:[UINib nibWithNibName:RouterManagementCellReuse bundle:nil] forCellReuseIdentifier:RouterManagementCellReuse];
     [_routerTable registerNib:[UINib nibWithNibName:UsedSpaceTableViewCellReuse bundle:nil] forCellReuseIdentifier:UsedSpaceTableViewCellReuse];
     [_routerTable registerNib:[UINib nibWithNibName:SettingCellReuse bundle:nil] forCellReuseIdentifier:SettingCellReuse];
+    
+    NSString *userType = [_connectRouteM.userSn substringWithRange:NSMakeRange(0, 2)];
+    if ([userType isEqualToString:@"01"]) { // 管理员
+        [self sendGetDiskTotalInfo];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -101,16 +120,14 @@ typedef enum : NSUInteger {
     _currentCircleIcon.image = defaultImg;
     
     NSString *userType = [_connectRouteM.userSn substringWithRange:NSMakeRange(0, 2)];
+    [_routerArr removeAllObjects];
     if ([userType isEqualToString:@"01"]) { // 管理员
         isAdmin = YES;
-        [_routerArr addObjectsFromArray:@[@[@"Circle Members"],@[@"Circle Name",@"Circle QR Code"],@[@"Used Space",@"Manage Disks"],@[@"Enable Auto Login"]]];
+        [_routerArr addObjectsFromArray:@[@[Circle_Members_Str],@[Circle_Name_Str,Circle_QR_Code_Str],@[Used_Space_Str,Manage_Disks_Str],@[Enable_Auto_Login_Str]]];
     } else {
         isAdmin = NO;
-        [_routerArr addObjectsFromArray:@[@[@"Cirle Alias",@"Circle QR Code"],@[@"Enable Auto Login"]]];
+        [_routerArr addObjectsFromArray:@[@[Circle_Alias_Str,Circle_QR_Code_Str],@[Enable_Auto_Login_Str]]];
     }
-    
-  //  [self refreshStatus];
- //   [self refreshTableData];
 }
 
 #pragma mark - Operation
@@ -175,6 +192,11 @@ typedef enum : NSUInteger {
     }
 }
 
+#pragma mark - Request
+- (void)sendGetDiskTotalInfo {
+    [SendRequestUtil sendGetDiskTotalInfoWithShowHud:NO];
+}
+
 #pragma mark - Transition
 - (void)jumpToRouterDetail:(RouterModel *)model {
     RouterDetailViewController *vc = [[RouterDetailViewController alloc] init];
@@ -190,11 +212,23 @@ typedef enum : NSUInteger {
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [_routerArr[section] count];
 }
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 10;
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [UIView new];
+    view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 10);
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *title = _routerArr[indexPath.section][indexPath.row];
+    if ([title isEqualToString:Used_Space_Str]) {
+        return UsedSpaceTableViewCell_Height;
+    }
     return RouterManagementCell_Height;
 }
 
@@ -240,6 +274,13 @@ typedef enum : NSUInteger {
     } else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             UsedSpaceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UsedSpaceTableViewCellReuse];
+            if (_getDiskTotalInfoM) {
+                CGFloat useDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.UsedCapacity];
+                CGFloat totalDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.TotalCapacity];
+                CGFloat usePercent = useDigital/totalDigital;
+                cell.useLab.text = [NSString stringWithFormat:@"%@ / %@ （%.1f%@）",_getDiskTotalInfoM.UsedCapacity?:@"",_getDiskTotalInfoM.TotalCapacity?:@"",usePercent*100,@"%"];
+                cell.useProgressV.progress = usePercent;
+            }
             return cell;
         } else {
             RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
@@ -266,6 +307,7 @@ typedef enum : NSUInteger {
        
         if (isAdmin) {
             // 圈子人数
+            [self jumpToUserManager];
         } else {
             if (indexPath.row == 0) {
                // 圈子别名
@@ -292,9 +334,7 @@ typedef enum : NSUInteger {
         if (indexPath.row == 0) {
            // 圈子磁盘空间和使用量
         } else {
-           // 磁盘管理
-            UserManagerViewController *vc = [[UserManagerViewController alloc] initWithRid:_connectRouteM.toxid];
-            [self.navigationController pushViewController:vc animated:YES];
+            [self jumpToDiskManagement];
         }
     }
 }
@@ -317,10 +357,30 @@ typedef enum : NSUInteger {
     [self presentModalVC:vc animated:YES];
 }
 
+- (void)jumpToDiskManagement {
+    DiskManagerViewController *vc = [DiskManagerViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToUserManager {
+    // 磁盘管理
+    UserManagerViewController *vc = [[UserManagerViewController alloc] initWithRid:_connectRouteM.toxid];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - switch开关change
 - (void) swChange:(UISwitch *) sender
 {
     [RouterModel updateRouterLoginSwitchWithSn:_connectRouteM.userSn isOpen:sender.isOn];
+}
+
+#pragma mark - Noti
+- (void)getDiskTotalInfoSuccessNoti:(NSNotification *)noti {
+    NSDictionary *receiveDic = noti.object;
+    NSDictionary *paramsDic = receiveDic[@"params"];
+    _getDiskTotalInfoM = [GetDiskTotalInfoModel getObjectWithKeyValues:paramsDic];
+    DDLogDebug(@"---%@",_getDiskTotalInfoM);
+    [_routerTable reloadData];
 }
 
 #pragma mark - Lazy

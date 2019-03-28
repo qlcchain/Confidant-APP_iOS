@@ -9,6 +9,8 @@
 #import "CTData.h"
 #import "ChatMacros.h"
 
+static CGFloat chatMessageMarginBottomOfTime = 16.f;
+
 @interface ChatConfiguration : NSObject
 
 #pragma mark 环境

@@ -40,6 +40,10 @@
 #import "ChatModel.h"
 #import "CSLogger.h"
 #import "CSLogMacro.h"
+#import "HeartBeatUtil.h"
+#import "SocketManageUtil.h"
+#import "FileDownUtil.h"
+#import "ChatListDataUtil.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate,UNUserNotificationCenterDelegate>
 {
@@ -250,6 +254,26 @@
     [AppD addTransitionAnimation];
     AppD.window.rootViewController = tabbarC;
     AppD.inLogin = YES;
+}
+
+- (void)logOutApp {
+    [HeartBeatUtil stop];
+    AppD.inLogin = NO;
+    if ([SystemUtil isSocketConnect]) {
+        [RouterConfig getRouterConfig].currentRouterIp = @"";
+        [[SocketUtil shareInstance] disconnect];
+        // 清除所有正在发送文件
+        [[SocketManageUtil getShareObject] clearAllConnectSocket];
+        // 清除所有正在下载文件
+        [[FileDownUtil getShareObject] removeAllTask];
+    } else {
+        AppD.isConnect = NO;
+        // [self logOutTox];
+        [[NSNotificationCenter defaultCenter] postNotificationName:TOX_CONNECT_STATUS_NOTI object:nil];
+    }
+    [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
+    AppD.isLogOut = YES;
+    [AppD setRootLoginWithType:RouterType];
 }
 
 #pragma mark - 配置DDLog

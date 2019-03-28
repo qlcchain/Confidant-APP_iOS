@@ -94,6 +94,11 @@
     return array;
 }
 
+- (void)refreshLeaveBtn {
+    NSArray *selectArr = [self getSelectCircles];
+    [_leaveBtn setTitle:[NSString stringWithFormat:@"Leave the Circle(%@)",@(selectArr.count)] forState:UIControlStateNormal];
+}
+
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
     if (_isEdit) {
@@ -116,13 +121,13 @@
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
-    
 }
+
 - (IBAction)rightAction:(id)sender {
     _isEdit = !_isEdit;
     if (_isEdit) {
         _rightBtn.hidden = YES;
-//        NSArray *selectArr = [self getSelectCircles];
+        [self refreshLeaveBtn];
         _bottomHeight.constant = 44;
         [_circleArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             ChooseCircleShowModel *model = obj;
@@ -145,6 +150,17 @@
 
 - (IBAction)leaveAction:(id)sender {
     NSArray *selectArr = [self getSelectCircles];
+    [selectArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ChooseCircleShowModel *model = obj;
+        [RouterModel deleteRouterWithUsersn:model.routerM.userSn];
+    }];
+    
+    [self dataInit];
+    [_tableV reloadData];
+    
+    _isEdit = NO;
+    _rightBtn.hidden = NO;
+    _bottomHeight.constant = 0;
     
 }
 
@@ -170,8 +186,12 @@
     @weakify_self
     cell.selectB = ^(NSInteger tableRow) {
         ChooseCircleShowModel *tempM = weakSelf.circleArr[tableRow];
+        if (tempM.routerM.isConnected) {
+            return;
+        }
         if (weakSelf.isEdit) { // 多选点击cell
-            tempM.isSelect = YES;
+            tempM.isSelect = !tempM.isSelect;
+            [weakSelf refreshLeaveBtn];
             [weakSelf.tableV reloadData];
         } else { // 切换Cirlce
             [weakSelf SwitchCircleWithModel:tempM];

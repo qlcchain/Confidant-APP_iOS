@@ -53,7 +53,7 @@ typedef enum : NSUInteger {
     [self addObserve];
     [self viewInit];
     [self dataInit];
-    
+//    [self refreshView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

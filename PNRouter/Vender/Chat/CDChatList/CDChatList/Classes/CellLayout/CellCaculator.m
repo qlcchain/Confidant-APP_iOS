@@ -78,7 +78,7 @@
     } else {
         data.willDisplayTime = YES;
     }
-    data.chatConfig.messageMarginBottomOfTime = data.willDisplayTime?data.chatConfig.messageMarginBottomOfTime:0;
+    data.chatConfig.messageMarginBottomOfTime = data.willDisplayTime?chatMessageMarginBottomOfTime:0;
     CGSize res = [self caculateCellHeightAndBubleWidth:data];
     
     // 记录 缓存
@@ -122,7 +122,7 @@
         case CDMessageTypeMedia:
             return [self sizeForMediaMessage:data];
         case CDMessageTypeFile:
-            return CGSizeMake(200,75);
+            return CGSizeMake(200,75+data.chatConfig.messageMarginBottomOfTime);
         case CDMessageTypeCustome:
             if ([self.list.msgDelegate respondsToSelector:@selector(chatlistSizeForMsg:ofList:)]) {
                 return [self.list.msgDelegate chatlistSizeForMsg:data ofList:self.list];
