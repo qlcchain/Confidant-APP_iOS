@@ -117,6 +117,17 @@
 
 - (IBAction)leaveAction:(id)sender {
     NSArray *selectArr = [self getSelectCircles];
+    [selectArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ChooseCircleShowModel *model = obj;
+        [RouterModel deleteRouterWithUsersn:model.routerM.userSn];
+    }];
+    
+    [self dataInit];
+    [_tableV reloadData];
+    
+    _isEdit = NO;
+    _rightBtn.hidden = NO;
+    _bottomHeight.constant = 0;
     
 }
 
@@ -142,8 +153,11 @@
     @weakify_self
     cell.selectB = ^(NSInteger tableRow) {
         ChooseCircleShowModel *tempM = weakSelf.circleArr[tableRow];
+        if (tempM.routerM.isConnected) {
+            return;
+        }
         if (weakSelf.isEdit) { // 多选点击cell
-            tempM.isSelect = YES;
+            tempM.isSelect = !tempM.isSelect;
             [weakSelf refreshLeaveBtn];
             [weakSelf.tableV reloadData];
         } else { // 切换Cirlce

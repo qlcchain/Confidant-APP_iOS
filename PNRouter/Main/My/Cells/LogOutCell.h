@@ -17,6 +17,8 @@ typedef void(^LogOutBlock)(void);
 
 @interface LogOutCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIButton *logoutBtn;
+
 @property (nonatomic, copy) LogOutBlock logOutB;
 
 @end

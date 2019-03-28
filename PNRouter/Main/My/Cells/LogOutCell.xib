@@ -62,6 +62,9 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="logoutBtn" destination="INs-Yv-yl2" id="ofd-H8-GB8"/>
+            </connections>
         </tableViewCell>
     </objects>
 </document>

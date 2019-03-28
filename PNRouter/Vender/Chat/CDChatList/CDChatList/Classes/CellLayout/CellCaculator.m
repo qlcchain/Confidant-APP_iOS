@@ -122,7 +122,7 @@
         case CDMessageTypeMedia:
             return [self sizeForMediaMessage:data];
         case CDMessageTypeFile:
-            return CGSizeMake(200,75);
+            return CGSizeMake(200,75+data.chatConfig.messageMarginBottomOfTime);
         case CDMessageTypeCustome:
             if ([self.list.msgDelegate respondsToSelector:@selector(chatlistSizeForMsg:ofList:)]) {
                 return [self.list.msgDelegate chatlistSizeForMsg:data ofList:self.list];

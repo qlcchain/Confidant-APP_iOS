@@ -22,6 +22,7 @@
 }
 
 - (IBAction)logOutAction:(id)sender {
+    _logoutBtn.userInteractionEnabled = NO;
     if (_logOutB) {
         _logOutB();
     }

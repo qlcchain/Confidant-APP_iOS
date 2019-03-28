@@ -32,6 +32,14 @@ typedef enum : NSUInteger {
     RouterConnectStatusFail,
 } RouterConnectStatus;
 
+#define Circle_Members_Str @"Circle Members"
+#define Circle_Name_Str @"Circle Name"
+#define Circle_QR_Code_Str @"Circle QR Code"
+#define Used_Space_Str @"Used Space"
+#define Manage_Disks_Str @"Manage Disks"
+#define Enable_Auto_Login_Str @"Enable Auto Login"
+#define Circle_Alias_Str @"Cirle Alias"
+
 @interface RouterManagerViewController () <UITableViewDelegate, UITableViewDataSource>
 {
     BOOL isAdmin;
@@ -88,7 +96,10 @@ typedef enum : NSUInteger {
     [_routerTable registerNib:[UINib nibWithNibName:UsedSpaceTableViewCellReuse bundle:nil] forCellReuseIdentifier:UsedSpaceTableViewCellReuse];
     [_routerTable registerNib:[UINib nibWithNibName:SettingCellReuse bundle:nil] forCellReuseIdentifier:SettingCellReuse];
     
-    [self sendGetDiskTotalInfo];
+    NSString *userType = [_connectRouteM.userSn substringWithRange:NSMakeRange(0, 2)];
+    if ([userType isEqualToString:@"01"]) { // 管理员
+        [self sendGetDiskTotalInfo];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -112,10 +123,10 @@ typedef enum : NSUInteger {
     [_routerArr removeAllObjects];
     if ([userType isEqualToString:@"01"]) { // 管理员
         isAdmin = YES;
-        [_routerArr addObjectsFromArray:@[@[@"Circle Members"],@[@"Circle Name",@"Circle QR Code"],@[@"Used Space",@"Manage Disks"],@[@"Enable Auto Login"]]];
+        [_routerArr addObjectsFromArray:@[@[Circle_Members_Str],@[Circle_Name_Str,Circle_QR_Code_Str],@[Used_Space_Str,Manage_Disks_Str],@[Enable_Auto_Login_Str]]];
     } else {
         isAdmin = NO;
-        [_routerArr addObjectsFromArray:@[@[@"Cirle Alias",@"Circle QR Code"],@[@"Enable Auto Login"]]];
+        [_routerArr addObjectsFromArray:@[@[Circle_Alias_Str,Circle_QR_Code_Str],@[Enable_Auto_Login_Str]]];
     }
 }
 
@@ -214,6 +225,10 @@ typedef enum : NSUInteger {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *title = _routerArr[indexPath.section][indexPath.row];
+    if ([title isEqualToString:Used_Space_Str]) {
+        return UsedSpaceTableViewCell_Height;
+    }
     return RouterManagementCell_Height;
 }
 
