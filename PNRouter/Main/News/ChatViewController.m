@@ -426,7 +426,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         mode.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         mode.publicKey = self.friendModel.publicKey;
         mode.messageId = [NSString stringWithFormat:@"%d",msgid];;
-        mode.willDisplayTime = YES;
+//        mode.willDisplayTime = YES;
         NSString *userKey = [EntryModel getShareObject].signPublicKey;
         mode.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:[UserModel getUserModel].username userKey:userKey]];
         mode.isLeft = NO;
@@ -636,7 +636,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.messageId = [NSString stringWithFormat:@"%d",msgid];
     CTDataConfig config = [CTData defaultConfig];
     config.isOwner = YES;
-    model.willDisplayTime = YES;
+//    model.willDisplayTime = YES;
     model.messageStatu = -1;
     NSString *uploadFileName = mill;
     model.fileName = mill;
@@ -1061,7 +1061,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                         messageModel.messageStatu = -1;
                         CTDataConfig config = [CTData defaultConfig];
                         config.isOwner = YES;
-                        messageModel.willDisplayTime = YES;
+//                        messageModel.willDisplayTime = YES;
                         messageModel.fileName = weakSelf.selectMessageModel.fileName;
                         messageModel.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
                         messageModel.publicKey = model.publicKey;
@@ -1217,7 +1217,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.dskey = fileModel.DstKey;
     CTDataConfig config = [CTData defaultConfig];
     config.isOwner = NO;
-    model.willDisplayTime = YES;
+//    model.willDisplayTime = YES;
     model.TimeStatmp = fileModel.timestamp;
     model.publicKey = self.friendModel.publicKey;
     model.ctDataconfig = config;
@@ -1307,7 +1307,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         config.isOwner = YES;
     }
     model.publicKey = self.friendModel.publicKey;
-    model.willDisplayTime = YES;
+//    model.willDisplayTime = YES;
     model.ctDataconfig = config;
     NSString *nkName = [UserModel getUserModel].username;
     NSString *userKey = [EntryModel getShareObject].signPublicKey;
@@ -1695,7 +1695,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             model.messageId = [NSString stringWithFormat:@"%d",msgid];
             CTDataConfig config = [CTData defaultConfig];
             config.isOwner = YES;
-            model.willDisplayTime = YES;
+//            model.willDisplayTime = YES;
             model.messageStatu = -1;
             NSString *uploadFileName = [mill stringByAppendingString:@".jpg"];
             model.fileName = [mill stringByAppendingString:@".jpg"];
@@ -1769,7 +1769,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.fileID = msgid;
     CTDataConfig config = [CTData defaultConfig];
     config.isOwner = YES;
-    model.willDisplayTime = YES;
+//    model.willDisplayTime = YES;
     model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
     model.publicKey = self.friendModel.publicKey;
     model.ctDataconfig = config;
@@ -1924,7 +1924,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.messageStatu = -1;
         CTDataConfig config = [CTData defaultConfig];
         config.isOwner = YES;
-        model.willDisplayTime = YES;
+//        model.willDisplayTime = YES;
         model.fileName = fileUrl.lastPathComponent;
         NSString *uploadFileName = model.fileName;
         model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];

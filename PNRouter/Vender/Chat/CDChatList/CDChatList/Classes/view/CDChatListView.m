@@ -134,7 +134,7 @@
              
              // 重新回到当前看的消息位置(把loading过程中，table的offset计算在中)
              CGFloat newOffset = newMessageTotalHeight + oldOffsetY;
-//             [self setContentOffset:CGPointMake(0, newOffset)];
+             [self setContentOffset:CGPointMake(0, newOffset)];
              
              // 判断是否要结束下拉加载功能
              // 当新消息的数量小于10条时，则认为没有旧消息了

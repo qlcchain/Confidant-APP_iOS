@@ -343,7 +343,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         mode.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         mode.publicKey = self.groupModel.UserKey;
         mode.messageId = [NSString stringWithFormat:@"%d",msgid];;
-        mode.willDisplayTime = YES;
+//        mode.willDisplayTime = YES;
         NSString *userKey = [EntryModel getShareObject].signPublicKey;
         mode.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:[UserModel getUserModel].username userKey:userKey]];
         mode.isLeft = NO;
@@ -475,7 +475,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.messageId = [NSString stringWithFormat:@"%d",msgid];
     CTDataConfig config = [CTData defaultConfig];
     config.isOwner = YES;
-    model.willDisplayTime = YES;
+//    model.willDisplayTime = YES;
     model.messageStatu = -1;
     model.fileWidth = img.size.width;
     model.fileHeight = img.size.height;
@@ -621,7 +621,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         signPK = [EntryModel getShareObject].signPublicKey;
         nickName = [UserConfig getShareObject].userName;
     }
-    model.willDisplayTime = YES;
+//    model.willDisplayTime = YES;
     model.ctDataconfig = config;
    
     model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nickName userKey:signPK]];
@@ -827,7 +827,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             CTDataConfig config = [CTData defaultConfig];
             config.isOwner = YES;
             model.isGroup = YES;
-            model.willDisplayTime = YES;
+//            model.willDisplayTime = YES;
             model.messageStatu = -1;
             NSString *uploadFileName = [mill stringByAppendingString:@".jpg"];
             model.fileName = [mill stringByAppendingString:@".jpg"];
@@ -897,7 +897,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.fileID = msgid;
     CTDataConfig config = [CTData defaultConfig];
     config.isOwner = YES;
-    model.willDisplayTime = YES;
+//    model.willDisplayTime = YES;
     model.fileHeight = evImage.size.height;
     model.fileWidth = evImage.size.width;
     model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
@@ -984,7 +984,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         CTDataConfig config = [CTData defaultConfig];
         config.isOwner = YES;
         model.isGroup = YES;
-        model.willDisplayTime = YES;
+//        model.willDisplayTime = YES;
         model.fileName = fileUrl.lastPathComponent;
         NSString *uploadFileName = model.fileName;
         model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
@@ -1618,7 +1618,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                            CTDataConfig config = [CTData defaultConfig];
                            config.isOwner = YES;
                            messageModel.isGroup = YES;
-                           messageModel.willDisplayTime = YES;
+//                           messageModel.willDisplayTime = YES;
                            messageModel.messageStatu = -1;
                            messageModel.fileName = [mill stringByAppendingString:@".jpg"];
                            messageModel.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
