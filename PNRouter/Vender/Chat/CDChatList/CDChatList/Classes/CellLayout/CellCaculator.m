@@ -78,7 +78,7 @@
     } else {
         data.willDisplayTime = YES;
     }
-    data.chatConfig.messageMarginBottomOfTime = data.willDisplayTime?data.chatConfig.messageMarginBottomOfTime:0;
+    data.chatConfig.messageMarginBottomOfTime = data.willDisplayTime?chatMessageMarginBottomOfTime:0;
     CGSize res = [self caculateCellHeightAndBubleWidth:data];
     
     // 记录 缓存
