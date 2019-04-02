@@ -77,7 +77,7 @@ static NSString *Settings_Str = @"Settings";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - layz
+#pragma mark - Lazy
 - (NSMutableArray *)dataArray {
     if (!_dataArray) {
         _dataArray = [NSMutableArray arrayWithObjects:@[Management_Circle_Str],@[My_QRCode_Str],@[Settings_Str], nil];
