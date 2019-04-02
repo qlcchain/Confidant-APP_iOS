@@ -26,6 +26,8 @@
 {
     BOOL isFindRequest;
     BOOL isLoginRequest;
+    NSString *currentURL;
+    int socketDisCount;
 }
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomHeight; // 44
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
@@ -223,6 +225,7 @@
     AppD.inLogin = NO;
     
     if ([SystemUtil isSocketConnect]) {
+        currentURL = [SystemUtil connectUrl];
         AppD.isSwitch = YES;
         // 取消当前socket 连接
          [[SocketUtil shareInstance] disconnect];
@@ -284,8 +287,27 @@
 {
     [self.view hideHud];
     AppD.isSwitch = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [AppD setRootLoginWithType:RouterType];
     [AppD.window showHint:hitStr];
+}
+#pragma mark- --切换成功
+- (void) switchCircleSuccess
+{
+    // 发送获取好友列表和群组列表通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_GROUP_LIST_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
+    // 取消红点
+    AppD.showNewFriendAddRequestRedDot = NO;
+    AppD.showNewGroupAddRequestRedDot = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
+    [self updateUserHead];
+    AppD.isLogOut = NO;
+    AppD.inLogin = YES;
+    AppD.isSwitch = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self leftNavBarItemPressedWithPop:NO];
+    //[AppD.window showHint:@"Successful circle switching."];
 }
 // 检测find请求10秒内是否有返回
 - (void) checkFindRequstOutTime
@@ -312,12 +334,16 @@
 - (void)socketOnConnect:(NSNotification *)noti {
   // 走find5
     isFindRequest = NO;
-   [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
+   [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn showHud:NO];
     [self performSelector:@selector(checkFindRequstOutTime) withObject:self afterDelay:10];
 }
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
-
+    socketDisCount +=1;
+    NSString *url = noti.object;
+    if ([url isEqualToString:currentURL] || socketDisCount ==1) {
+        return;
+    }
     [self.view hideHud];
     [self switchCircleFaieldWithHintString:@"Circle connection failed."];
    
@@ -352,16 +378,7 @@
     [self.view hideHud];
     NSInteger retCode = [noti.object integerValue];
     if (retCode == 0) {
-        // 发送获取好友列表和群组列表通知
-        [[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_GROUP_LIST_NOTI object:nil];
-         [[NSNotificationCenter defaultCenter] postNotificationName:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
-        [self updateUserHead];
-        AppD.isLogOut = NO;
-        AppD.inLogin = YES;
-        AppD.isSwitch = NO;
-        [self leftNavBarItemPressedWithPop:NO];
-        [AppD.window showHint:@"Successful circle switching."];
-        
+        [self switchCircleSuccess];
     } else if (retCode == 2) { // routeid不对
         [self switchCircleFaieldWithHintString:@"Routeid wrong."];
     } else if (retCode == 1) { //需要验证

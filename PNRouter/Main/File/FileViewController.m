@@ -35,7 +35,7 @@
 #import "FriendModel.h"
 #import "LibsodiumUtil.h"
 #import "FileRenameHelper.h"
-
+#import "AESCipher.h"
 
 typedef enum : NSUInteger {
     FileTableTypeNormal,
@@ -413,8 +413,19 @@ typedef enum : NSUInteger {
         FriendModel *model = obj;
         // 自己私钥解密对称密钥
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:weakSelf.selectModel.UserKey];
-         // 好友公钥加密对称密钥
-        NSString *fileKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:datakey enPK:model.publicKey];
+        NSString *fileKey = @"";
+        if (model.isGroup) { // 群密钥对称加密
+            // 自己私钥解密群密钥
+            NSString *groupKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:model.publicKey];
+            NSString *symmetKey = [[NSString alloc] initWithData:[groupKey base64DecodedData] encoding:NSUTF8StringEncoding];
+            NSString *msgKey = [symmetKey substringToIndex:16];
+            fileKey = aesEncryptString(datakey, msgKey);
+            
+        } else {
+            // 好友公钥加密对称密钥
+            fileKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:datakey enPK:model.publicKey];
+        }
+        
         
         [SendRequestUtil sendFileForwardMsgid:[NSString stringWithFormat:@"%@",weakSelf.selectModel.MsgId] toid:model.userId?:@"" fileName:weakSelf.selectModel.FileName filekey:fileKey?:@"" fileInfo:weakSelf.selectModel.FileInfo];
     }];

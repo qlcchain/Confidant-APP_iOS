@@ -639,7 +639,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                           self.listView.contentInset.right);
     NSLog(@"inset = %@",NSStringFromUIEdgeInsets(inset));
     [self.listView setContentInset:inset];
-    [self.listView relayoutTable:YES];
+   // [self.listView relayoutTable:YES];
+    // 异步让tableview滚到最底部
+    NSInteger cellCount = [self.listView numberOfRowsInSection:0];
+    NSInteger num = cellCount - 1 > 0 ? cellCount - 1 : 0;
+    NSIndexPath *index = [NSIndexPath indexPathForRow:num inSection:0];
+    [self.listView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 - (BOOL)canBecomeFirstResponder{
@@ -665,6 +670,41 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 [tempArr removeObjectAtIndex:index];
                 self.listView.isDelete = YES;
                 self.listView.msgArr = tempArr;
+                if (index != tempArr.count) {
+                    return ;
+                }
+                ChatListModel *chatModel = [[ChatListModel alloc] init];
+                chatModel.myID = [UserModel getUserModel].userId;
+                chatModel.groupID = self.groupModel.GId;
+                chatModel.friendID = [UserModel getUserModel].userId;
+                chatModel.isGroup = YES;
+                if (self.listView.msgArr.count > 0) {
+                    CDMessageModel *messageModel = (id)[tempArr lastObject];
+                    chatModel.chatTime = [NSDate date];
+                    chatModel.isHD = NO;
+                    chatModel.groupName = self.lblNavTitle.text;
+                    if (messageModel.isLeft) {
+                        chatModel.friendID = messageModel.FromId;
+                        chatModel.friendName = messageModel.userName;
+                    }
+                    chatModel.friendName = @"";
+                    chatModel.groupUserkey = self.groupModel.UserKey;
+                    if (messageModel.msgType == 1) {
+                        chatModel.lastMessage = @"[photo]";
+                    } else if (messageModel.msgType == 2) {
+                        chatModel.lastMessage = @"[voice]";
+                    } else if (messageModel.msgType == 5){
+                        chatModel.lastMessage = @"[file]";
+                    } else if (messageModel.msgType == 4) {
+                        chatModel.lastMessage = @"[video]";
+                    } else {
+                        chatModel.lastMessage = messageModel.msg;
+                    }
+                } else {
+                    chatModel.lastMessage = @"";
+                }
+                [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+                
             }
         }
     });
@@ -1087,6 +1127,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.fileSize = payloadModel.FileSize;
         model.dskey = self.groupModel.UserKey;
         model.srckey = self.groupModel.UserKey;
+        model.fileKey = payloadModel.FileKey;
         
 //        if (!model.isLeft) {
 //           [msgArr addObject:model.messageId];
@@ -1229,6 +1270,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.fileMd5 = payloadModel.FileMD5;
     model.filePath = payloadModel.FilePath;
     model.fileSize = payloadModel.FileSize;
+    model.fileKey = payloadModel.FileKey;
     model.dskey = self.groupModel.UserKey;
     model.srckey = self.groupModel.UserKey;
     

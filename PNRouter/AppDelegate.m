@@ -259,6 +259,9 @@
 - (void)logOutApp {
     [HeartBeatUtil stop];
     AppD.inLogin = NO;
+    AppD.showNewFriendAddRequestRedDot = NO;
+    AppD.showNewGroupAddRequestRedDot = NO;
+    
     if ([SystemUtil isSocketConnect]) {
         [RouterConfig getRouterConfig].currentRouterIp = @"";
         [[SocketUtil shareInstance] disconnect];
