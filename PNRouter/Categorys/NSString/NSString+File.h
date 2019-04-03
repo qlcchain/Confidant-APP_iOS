@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSInteger)fileSizeAtPath:(NSString*)filePath;
 
++ (BOOL)uploadFileNameIsOverLength:(NSString *)str;
++ (NSString *)getUploadFileNameOfCorrectLength:(NSString *)str;
+
 @end
 
 NS_ASSUME_NONNULL_END

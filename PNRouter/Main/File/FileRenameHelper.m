@@ -9,6 +9,7 @@
 #import "FileRenameHelper.h"
 #import "FileListModel.h"
 #import "PNRouter-Swift.h"
+#import "NSString+File.h"
 
 @implementation FileRenameHelper
 
@@ -34,7 +35,9 @@
             [AppD.window showHint:@"Please enter file name"];
             return;
         }
-        NSString *rename = [textField.text stringByAppendingString:[fileName stringByReplacingOccurrencesOfString:fileName.stringByDeletingPathExtension withString:@""]?:@""];
+        NSString *rename = fileName.pathExtension?[textField.text stringByAppendingPathExtension:fileName.pathExtension]:textField.text;
+        rename = [NSString getUploadFileNameOfCorrectLength:rename];
+//        NSString *rename = [textField.text stringByAppendingString:[fileName stringByReplacingOccurrencesOfString:fileName.stringByDeletingPathExtension withString:@""]?:@""];
         [SendRequestUtil sendFileRenameWithMsgId:model.MsgId Filename:fileName Rename:rename showHud:YES];
     }];
     [alertConfirm setValue:UIColorFromRGB(0x00152B) forKey:@"_titleTextColor"];

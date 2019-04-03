@@ -51,6 +51,7 @@
 #import "UserHeaderModel.h"
 #import "NSString+Trim.h"
 #import "ChatImgCacheUtil.h"
+#import "NSString+File.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -1985,18 +1986,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         config.isOwner = YES;
 //        model.willDisplayTime = YES;
         
-        
-        NSString *name = [fileUrl.lastPathComponent stringByDeletingPathExtension];
-        
-        if (name && name.length>50) {
-            NSString *fileT = fileUrl.pathExtension;
-            name = [name substringWithRange:NSMakeRange(0, 50)];
-            model.fileName = [NSString stringWithFormat:@"%@.%@",name,fileT?:@""];
-        } else {
-            model.fileName = fileUrl.lastPathComponent;
-        }
-        
+        model.fileName = [NSString getUploadFileNameOfCorrectLength:fileUrl.lastPathComponent];
         NSString *uploadFileName = model.fileName;
+        
         model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         model.publicKey = self.friendModel.publicKey;
         model.ctDataconfig = config;
