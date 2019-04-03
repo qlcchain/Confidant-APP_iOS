@@ -222,9 +222,11 @@ typedef enum : NSUInteger {
         }];
         [_mainTable reloadData];
     }
-    
-    if (_showArr.count <= 0) {
-        [self showEmptyView];
+
+    if (_myFilesTableType == MyFilesTableTypeNormal) {
+        if (_showArr.count <= 0) {
+            [self showEmptyView];
+        }
     }
 }
 
