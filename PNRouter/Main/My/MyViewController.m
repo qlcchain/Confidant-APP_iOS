@@ -117,7 +117,7 @@ static NSString *Settings_Str = @"Settings";
      self.view.backgroundColor = MAIN_PURPLE_COLOR;
     [self observe];
     
-    _lblVersion.hidden = YES;
+//    _lblVersion.hidden = YES;
     _lblVersion.text = [NSString stringWithFormat:@"V:%@ (Build %@)",APP_Version,APP_Build];
     
     _tableV.delegate = self;
