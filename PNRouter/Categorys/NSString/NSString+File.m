@@ -7,6 +7,9 @@
 //
 
 #import "NSString+File.h"
+#import "PNRouter-Swift.h"
+
+static NSInteger UploadFileNameLength = 128;
 
 @implementation NSString (File)
 
@@ -19,6 +22,32 @@
         NSLog(@"计算文件大小：文件不存在");
     }
     return 0;
+}
+
++ (BOOL)uploadFileNameIsOverLength:(NSString *)str {
+    BOOL isOver = NO;
+    NSString *base58Str = [Base58Util Base58EncodeWithCodeName:str];
+    if (base58Str.length > UploadFileNameLength) {
+        isOver = YES;
+    }
+    return isOver;
+}
+
++ (NSString *)getUploadFileNameOfCorrectLength:(NSString *)str {
+    if (!str || str.length <=0) {
+        return @"";
+    }
+    
+    NSString *pathExtension = str.pathExtension;
+    NSString *temp = str.stringByDeletingPathExtension;
+    NSString *result = pathExtension?[temp stringByAppendingPathExtension:pathExtension]:temp;
+    NSString *base58Str = [Base58Util Base58EncodeWithCodeName:result];
+    while (base58Str.length > UploadFileNameLength) {
+        temp = [temp substringToIndex:temp.length - 1];
+        result = pathExtension?[temp stringByAppendingPathExtension:pathExtension]:temp;
+        base58Str = [Base58Util Base58EncodeWithCodeName:result];
+    }
+    return result;
 }
 
 @end

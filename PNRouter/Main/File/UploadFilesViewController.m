@@ -153,7 +153,6 @@
 
 - (IBAction)uploadAction:(id)sender {
     UploadFileManager *uploadFileM = [UploadFileManager getShareObject];
-    //TODO:赋值
     _uploadParams = [NSMutableArray array];
     @weakify_self
     [_urlArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -182,7 +181,8 @@
         }
         
         NSString *UserId = [UserConfig getShareObject].userId;
-        NSString *FileName = [Base58Util Base58EncodeWithCodeName:url.path.lastPathComponent];
+        NSString *correntFileName = [NSString getUploadFileNameOfCorrectLength:url.path.lastPathComponent];
+        NSString *FileName = [Base58Util Base58EncodeWithCodeName:correntFileName];
         NSNumber *FileSize = @([NSString fileSizeAtPath:url.path]);
         NSNumber *FileType = @(0);
         if (weakSelf.documentType == DocumentPickerTypePhoto) {
