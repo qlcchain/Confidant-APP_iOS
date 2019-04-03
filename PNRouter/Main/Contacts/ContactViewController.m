@@ -405,12 +405,12 @@
        NSArray *friendArr = [FriendModel mj_objectArrayWithKeyValuesArray:modelArr];
         [friendArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *model = obj;
-            NSString *nickName = model.username;
-            if (model.remarks && ![model.remarks isEmptyString]) {
-                model.username = model.remarks;
-            }
+//            NSString *nickName = model.username;
+//            if (model.remarks && ![model.remarks isEmptyString]) {
+//                model.username = model.remarks;
+//            }
             model.publicKey = [LibsodiumUtil getFriendEnPublickkeyWithFriendSignPublicKey:model.signPublicKey];
-            model.remarks = nickName;
+          //  model.remarks = nickName;
         }];
         NSMutableArray *sortArr = [NSMutableArray arrayWithArray:friendArr];
         NSArray *showArr = [self handleShowData:sortArr];

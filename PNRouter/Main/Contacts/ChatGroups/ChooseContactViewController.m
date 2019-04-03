@@ -65,6 +65,7 @@
         if (self.downView.frame.origin.y == SCREEN_HEIGHT-Tab_BAR_HEIGHT) {
             [UIView animateWithDuration:0.3f animations:^{
                 self.downView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, Tab_BAR_HEIGHT);
+                self.tableContraintV.constant = 0;
             }];
         }
     } else {
@@ -133,7 +134,10 @@
             showM.showArrow = NO;
             showM.Index = friendM.Index;
             showM.Name = friendM.username;
-            showM.Remarks = friendM.remarks;
+            if (friendM.remarks && friendM.remarks.length > 0) {
+                 showM.Remarks = friendM.remarks;
+            }
+           
             showM.UserKey = friendM.signPublicKey;
             showM.publicKey = friendM.publicKey;
             showM.Status = @(friendM.onLineStatu);
@@ -179,8 +183,10 @@
         showM.isGroup = YES;
         showM.showCell = NO;
         showM.showArrow = NO;
-        showM.Name = [groupM.GName base64DecodedString];
-        showM.Remarks = [groupM.Remark base64DecodedString];
+        showM.Name = groupM.GName;
+        if (groupM.Remark && groupM.Remark.length>0) {
+            showM.Remarks = groupM.Remark;
+        }
         showM.UserKey = groupM.UserKey;
      
         showM.routerArr = [NSMutableArray array];
@@ -335,6 +341,17 @@
     }];
     return array;
 }
+- (NSInteger) getGroupCountWithArr:(NSMutableArray *) arr
+{
+    __block NSInteger groupCount = 0;
+    [arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if (model.isGroup) {
+            groupCount++;
+        }
+    }];
+    return groupCount;
+}
 
 #pragma mark - tableviewDataSourceDelegate
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -392,7 +409,8 @@
                             weakSelf.tableContraintV.constant = Tab_BAR_HEIGHT;
                         }];
                     }
-                    weakSelf.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %d groups",(unsigned long)selectArr.count,0];
+                    NSInteger groupCount = [weakSelf getGroupCountWithArr:selectArr];
+                    weakSelf.downView.lblContent.text = [NSString stringWithFormat:@"Selected: %lu persons, %ld groups",(unsigned long)selectArr.count-groupCount,(long)groupCount];
                     
                 } else {
                     [UIView animateWithDuration:0.3f animations:^{

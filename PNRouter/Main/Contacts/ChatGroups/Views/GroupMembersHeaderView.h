@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class GroupMembersModel;
 
+typedef void(^ClickCellBlock)(GroupMembersModel *model);
+
 static NSString *GroupMembersHeaderViewReuse = @"GroupMembersHeaderView";
 #define GroupMembersHeaderViewHeight 56
 
@@ -21,6 +23,7 @@ static NSString *GroupMembersHeaderViewReuse = @"GroupMembersHeaderView";
 @property (weak, nonatomic) IBOutlet UIImageView *headImg;
 @property (weak, nonatomic) IBOutlet UILabel *nameLab;
 @property (weak, nonatomic) IBOutlet UILabel *detailLab;
+@property (nonatomic ,copy) ClickCellBlock clickBlock;
 
 - (void)configHeaderWithModel:(GroupMembersModel *)model;
 

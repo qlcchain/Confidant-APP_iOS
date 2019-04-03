@@ -17,7 +17,7 @@
 @property (nonatomic, copy) NSString *userid;
 @property (nonatomic, copy) NSString *userPass;
 @property (nonatomic, assign) int routerToxNumber;
-//@property (nonatomic, copy) NSString *alias;
+@property (nonatomic, copy) NSString *aliasName;
 @property (nonatomic) BOOL isConnected;
 
 + (BOOL)routerIsExitsWithToxid:(NSString *)toxid;

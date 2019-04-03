@@ -419,6 +419,9 @@ typedef enum : NSUInteger {
             NSString *groupKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:model.publicKey];
             NSString *symmetKey = [[NSString alloc] initWithData:[groupKey base64DecodedData] encoding:NSUTF8StringEncoding];
             NSString *msgKey = [symmetKey substringToIndex:16];
+            
+            datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+            
             fileKey = aesEncryptString(datakey, msgKey);
             
         } else {

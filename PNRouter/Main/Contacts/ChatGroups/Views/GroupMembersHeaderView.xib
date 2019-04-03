@@ -45,17 +45,27 @@
                                 <constraint firstAttribute="height" constant="0.5" id="Iqt-Oz-SaD"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ymS-DK-h59">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="55.5"/>
+                            <connections>
+                                <action selector="clickAction:" destination="-1" eventType="touchUpInside" id="k61-xS-uCK"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="ymS-DK-h59" secondAttribute="trailing" id="019-b4-A15"/>
                         <constraint firstItem="4fE-QR-6vg" firstAttribute="centerY" secondItem="JtK-2O-qEM" secondAttribute="centerY" id="2rh-mT-9pI"/>
+                        <constraint firstItem="ydU-Up-HsV" firstAttribute="top" secondItem="ymS-DK-h59" secondAttribute="bottom" id="8eJ-ji-MEc"/>
                         <constraint firstItem="ydU-Up-HsV" firstAttribute="leading" secondItem="JtK-2O-qEM" secondAttribute="leading" constant="66" id="Bfw-2N-bz1"/>
                         <constraint firstAttribute="bottom" secondItem="ydU-Up-HsV" secondAttribute="bottom" id="HBO-aV-eUH"/>
+                        <constraint firstItem="ymS-DK-h59" firstAttribute="top" secondItem="JtK-2O-qEM" secondAttribute="top" id="MuT-Rd-Tls"/>
                         <constraint firstItem="H6K-tu-24m" firstAttribute="leading" secondItem="4fE-QR-6vg" secondAttribute="trailing" constant="10" id="gBG-6v-7Kg"/>
                         <constraint firstItem="Lwc-it-nRf" firstAttribute="centerY" secondItem="JtK-2O-qEM" secondAttribute="centerY" id="ipZ-t4-bm2"/>
                         <constraint firstItem="H6K-tu-24m" firstAttribute="centerY" secondItem="JtK-2O-qEM" secondAttribute="centerY" id="nwu-IA-vMf"/>
                         <constraint firstAttribute="trailing" secondItem="Lwc-it-nRf" secondAttribute="trailing" constant="16" id="roG-Dn-eOl"/>
                         <constraint firstItem="4fE-QR-6vg" firstAttribute="leading" secondItem="JtK-2O-qEM" secondAttribute="leading" constant="16" id="s7M-Fy-jel"/>
+                        <constraint firstItem="ymS-DK-h59" firstAttribute="leading" secondItem="JtK-2O-qEM" secondAttribute="leading" id="uGf-KY-rvT"/>
                         <constraint firstAttribute="trailing" secondItem="ydU-Up-HsV" secondAttribute="trailing" id="yBv-TC-uXA"/>
                     </constraints>
                 </view>
@@ -74,7 +84,7 @@
                 <outlet property="headImg" destination="4fE-QR-6vg" id="FV1-gG-g0G"/>
                 <outlet property="nameLab" destination="H6K-tu-24m" id="Gdy-jD-Nmr"/>
             </connections>
-            <point key="canvasLocation" x="1044" y="35"/>
+            <point key="canvasLocation" x="948" y="-148"/>
         </view>
     </objects>
     <resources>

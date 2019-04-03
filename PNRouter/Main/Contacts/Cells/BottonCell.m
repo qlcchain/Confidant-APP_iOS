@@ -17,6 +17,14 @@
     
     _delegateBtn.layer.cornerRadius = RADIUS;
     _delegateBtn.layer.masksToBounds = YES;
+    
+    _addFriendBtn.layer.cornerRadius = RADIUS;
+    _addFriendBtn.layer.masksToBounds = YES;
+}
+- (IBAction)addFriendAction:(id)sender {
+    if (_addFriendB) {
+        _addFriendB();
+    }
 }
 
 - (IBAction)bottonAction:(UIButton *)sender {

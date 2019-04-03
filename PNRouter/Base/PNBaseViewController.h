@@ -37,7 +37,7 @@
 - (void)hideEmptyView;
 
 - (void) toxLoginSuccessWithManager:(id<OCTManager>) manager;
-- (void) loginTox;
+- (void) loginToxWithShowHud:(BOOL) showHud;
 - (void) logOutTox;
 - (void)jumpToLoginDevice;
 @end

@@ -27,6 +27,7 @@
 #import "NSData+Base64.h"
 #import "UserHeadUtil.h"
 #import "UserHeaderModel.h"
+#import "FriendRequestViewController.h"
 
 @interface FriendDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -56,7 +57,7 @@
         _myHeadView = [MyHeadView loadMyHeadView];
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpDetailvc)];
         
-        _myHeadView.lblName.text = self.friendModel.remarks;
+        _myHeadView.lblName.text = self.friendModel.username;
         NSString *userKey = self.friendModel.signPublicKey;
         [_myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:self.friendModel.username] userKey:userKey];
         
@@ -94,7 +95,11 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    _lblNavTitle.text = self.friendModel.username;
+    NSString *nickName = self.friendModel.username;
+    if (self.friendModel.remarks && self.friendModel.remarks.length > 0) {
+        nickName = self.friendModel.remarks;
+    }
+    _lblNavTitle.text = nickName;
     [_tableV reloadData];
     [super viewDidAppear:animated];
 }
@@ -149,7 +154,7 @@
         if (indexPath.row == 0) {
             cell.lblName.text = @"Add Nickname";
             cell.detailText.hidden = NO;
-            cell.detailText.text = self.friendModel.username;
+            cell.detailText.text = self.friendModel.remarks;
         } else {
             cell.lblName.text = @"Share Contact";
             cell.detailText.hidden = YES;
@@ -168,12 +173,16 @@
         return cell;
     } else {
         BottonCell *cell = [tableView dequeueReusableCellWithIdentifier:BottonCellResue];
+        cell.addFriendBtn.hidden = !_friendModel.noFriend;
         @weakify_self
         cell.deleteContactB = ^{
             [weakSelf deleteFriendRequest];
         };
         cell.sendMessageB = ^{
             [weakSelf jumpToChat];
+        };
+        cell.addFriendB = ^{
+            [weakSelf jumpToAddFriend];
         };
         return cell;
     }
@@ -204,6 +213,11 @@
 #pragma mark - Transition
 - (void)jumpToChat {
     ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:self.friendModel];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (void) jumpToAddFriend
+{
+    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:_friendModel.username userId:_friendModel.userId signpk:_friendModel.signPublicKey];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

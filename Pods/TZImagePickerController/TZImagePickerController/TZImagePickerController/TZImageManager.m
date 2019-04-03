@@ -474,6 +474,7 @@ static dispatch_once_t onceToken;
 }
 
 - (void)savePhotoWithImage:(UIImage *)image location:(CLLocation *)location completion:(void (^)(PHAsset *asset, NSError *error))completion {
+
     __block NSString *localIdentifier = nil;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
         PHAssetChangeRequest *request = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
@@ -504,6 +505,7 @@ static dispatch_once_t onceToken;
 }
 
 - (void)saveVideoWithUrl:(NSURL *)url location:(CLLocation *)location completion:(void (^)(PHAsset *asset, NSError *error))completion {
+  
     __block NSString *localIdentifier = nil;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
         PHAssetChangeRequest *request = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];

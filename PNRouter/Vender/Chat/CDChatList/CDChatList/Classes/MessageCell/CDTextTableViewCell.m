@@ -44,6 +44,7 @@
     [self.bubbleImage_left addSubview:self.textContent_left];
     self.bubbleImage_left.clipsToBounds = NO;
     self.textContent_left.isOwer = NO;
+    self.textContent_left.isAdmin = self.msgModal.isAdmin;
     
     // 右侧气泡中添加label
     self.textContent_right = [[CDLabel alloc] init];
@@ -111,6 +112,7 @@
     textRect.origin = CGPointMake(data.chatConfig.bubbleRoundAnglehorizInset + data.chatConfig.bubbleShareAngleWidth, data.chatConfig.bubbleRoundAnglehorizInset);
     textRect.size = data.textlayout.contents.size;
     self.textContent_left.frame = textRect;
+    self.textContent_left.isAdmin = data.isAdmin;
 }
 
 -(void)configText_Right:(CDChatMessage)data{

@@ -280,7 +280,20 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
         if ([tempMsgId isEqualToString:msgId]) {
             // 上传文件
             NSURL *fileUrl = dic[UploadFileURL];
-            NSString *fileName = [fileUrl lastPathComponent];
+            
+            NSString *fileName = @"";
+            
+            NSString *name = [fileUrl.lastPathComponent stringByDeletingPathExtension];
+            
+            if (name && name.length>50) {
+                NSString *fileT = fileUrl.pathExtension;
+                name = [name substringWithRange:NSMakeRange(0, 50)];
+               fileName = [NSString stringWithFormat:@"%@.%@",name,fileT?:@""];
+            } else {
+                fileName = fileUrl.lastPathComponent;
+            }
+            
+            
             NSData *fileData = [NSData dataWithContentsOfURL:fileUrl];
             int fileType = [@(weakSelf.documentType) intValue];
             

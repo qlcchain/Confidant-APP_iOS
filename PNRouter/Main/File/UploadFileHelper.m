@@ -124,8 +124,8 @@
     
 #pragma mark - 五类个性化设置，这些参数都可以不传，此时会走默认设置
     imagePickerVc.isSelectOriginalPhoto = NO;
-    imagePickerVc.allowTakePicture = isImage; // 在内部显示拍照按钮
-    imagePickerVc.allowTakeVideo = !isImage;   // 在内部显示拍视频按
+    imagePickerVc.allowTakePicture = NO; // 在内部显示拍照按钮
+    imagePickerVc.allowTakeVideo = NO;   // 在内部显示拍视频按
     imagePickerVc.videoMaximumDuration = 15; // 视频最大拍摄时间
     [imagePickerVc setUiImagePickerControllerSettingBlock:^(UIImagePickerController *imagePickerController) {
         imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
@@ -301,7 +301,7 @@
     } else if (type == DocumentPickerTypeVideo) {
         documentTypes = @[@"public.video"];
     } else if (type == DocumentPickerTypeDocument) {
-        documentTypes = @[@"public.content"];
+        documentTypes = @[@"public.item"];
     }
 //    else if (type == DocumentPickerTypeOther) {
 //        documentTypes = @[@"public.item"];

@@ -54,6 +54,7 @@
 #import "UpdateGroupMemberAvatarUtil.h"
 #import <YBImageBrowser/YBImageBrowser.h>
 #import "NSString+Trim.h"
+#import "ChatImgCacheUtil.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -264,7 +265,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         } else {
             _deleteMsgId = msgId;
             UserModel *userM = [UserModel getUserModel];
-            [SendRequestUtil sendDelGroupMessageWithType:@(0) GId:self.groupModel.GId MsgId:msgId FromID:userM.userId];
+            NSInteger optionType = 0;
+            if (self.selectMessageModel.isLeft) {
+                optionType = 1;
+            }
+            [SendRequestUtil sendDelGroupMessageWithType:@(optionType) GId:self.groupModel.GId MsgId:msgId FromID:userM.userId];
         }
         
     } else if ([itemTitle isEqualToString:@"Save"]) { // 保存到相册
@@ -287,7 +292,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         case ChatClickEventTypeIMAGE:
         {
             CGRect newe =  [listInfo.containerView.superview convertRect:listInfo.containerView.frame toView:self.view];
-            [MsgPicViewController addToRootViewController:listInfo.image ofMsgId:listInfo.msgModel.messageId in:newe from:self.listView.msgArr];
+            [MsgPicViewController addToRootViewController:listInfo.image ofMsgId:listInfo.msgModel.messageId in:newe from:self.listView.msgArr vc:self];
         }
             break;
         case ChatClickEventTypeTEXT:
@@ -394,22 +399,103 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
         }
     }];
+}
+
+// 调用系统相机
+- (void)selectCamera:(BOOL)isCamera {
+    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (status == AVAuthorizationStatusRestricted || status == AVAuthorizationStatusDenied)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.view endEditing:YES];
+            [AppD.window showHint:@"Denied or Restricted"];
+        });
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.view endEditing:YES];
+            //调用系统相册的类
+            UIImagePickerController *pickerController = [[UIImagePickerController alloc]init];
+            //    更改titieview的字体颜色
+            NSMutableDictionary *attrs = [NSMutableDictionary dictionary];
+            attrs[NSForegroundColorAttributeName] = MAIN_PURPLE_COLOR;
+            [pickerController.navigationBar setTitleTextAttributes:attrs];
+            pickerController.navigationBar.translucent = NO;
+            pickerController.navigationBar.barTintColor = MAIN_WHITE_COLOR;
+            //设置选取的照片是否可编辑
+            pickerController.allowsEditing = NO;
+            //设置相册呈现的样式
+            if (isCamera) {
+                pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                NSString *requiredMediaType = ( NSString *)kUTTypeImage;
+                NSString *requiredMediaType1 = ( NSString *)kUTTypeMovie;
+                NSArray *arrMediaTypes=[NSArray arrayWithObjects:requiredMediaType, requiredMediaType1,nil];
+                [pickerController setMediaTypes:arrMediaTypes];
+                pickerController.videoMaximumDuration = 10;//最长拍摄时间
+                pickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;//拍摄质量
+                
+            } else {
+                pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            }
+            //选择完成图片或者点击取消按钮都是通过代理来操作我们所需要的逻辑过程
+            pickerController.delegate = self;
+            //使用模态呈现相册
+            //[self showDetailViewController:pickerController sender:nil];
+            [self.navigationController presentViewController:pickerController animated:YES completion:nil];
+        });
+    }
+}
+
+#pragma UIImagePickerController delegate
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    
+    [picker  dismissViewControllerAnimated:YES completion:nil];
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    // 判断获取类型：图片
+    if ([mediaType isEqualToString:( NSString *)kUTTypeImage]){
+        
+        UIImage *img = info[UIImagePickerControllerOriginalImage];
+        NSData *imgData = UIImageJPEGRepresentation(img,1.0);
+        [self sendImgageWithImage:img imgData:imgData];
+        
+    }else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]){
+        // 判断获取类型：视频
+        //获取视频文件的url
+        NSURL* mediaURL = [info objectForKey:UIImagePickerControllerMediaURL];
+        NSNumber *size;
+        [mediaURL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
+        CGFloat sizeMB = [size floatValue]/(1024.0*1024.0);
+        if (sizeMB <= 100) {
+            AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
+            UIImage *coverImage = [SystemUtil thumbnailImageForVideo:mediaURL];
+            [self extractedVideWithAsset:asset evImage:coverImage];
+            
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [AppD.window showHint:@"Video cannot be larger than 100MB"];
+            });
+        }
+    }
+    
     
     
 }
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark -发送更多回调
 - (void)inputViewPopCommand:(NSString *)string {
     if ([string isEqualToString:@"Album"]) {
-        
-        //        UIImagePickerController *imagePick = [[UIImagePickerController alloc] init];
-        //        imagePick.navigationBar.translucent = NO;
-        //        imagePick.delegate = self;
-        //        [self presentViewController:imagePick animated:YES completion:^{}];
+    
         [self selectImage];
         
-    } else if ([string isEqualToString:@"Private\ndocument"]) {
+    } else if ([string isEqualToString:@"Camera"]) {
+        [self selectCamera:YES];
         
-        NSArray *documentTypes = @[@"public.content"];
+    } else if ([string isEqualToString:@"File"]) {
+        
+        NSArray *documentTypes = @[@"public.item"];
         
         PNDocumentPickerViewController *vc = [[PNDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeImport];
         vc.delegate = self;
@@ -422,7 +508,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         [self presentViewController:vc animated:YES completion:nil];
         
         
-    } else if ([string isEqualToString:@"Short video"]) { // 视频
+    } else if ([string isEqualToString:@"Short Video"]) { // 视频
         
         //[self pushTZImagePickerController];
         
@@ -455,57 +541,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
 }
 
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-    
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    UIImage *img = info[UIImagePickerControllerOriginalImage];
-    NSData *imgData = UIImageJPEGRepresentation(img,1.0);
-    
-    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
-    int msgid = [mill intValue];
-    CDMessageModel *model = [[CDMessageModel alloc] init];
-    model.msgType = CDMessageTypeImage;
-    model.msg = info[UIImagePickerControllerMediaURL];
-    model.fileID = msgid;
-    model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
-    model.FromId = [UserConfig getShareObject].userId;
-   // model.ToId = self.friendModel.userId;
-    model.msgState = CDMessageStateSending;
-    model.messageId = [NSString stringWithFormat:@"%d",msgid];
-    CTDataConfig config = [CTData defaultConfig];
-    config.isOwner = YES;
-//    model.willDisplayTime = YES;
-    model.messageStatu = -1;
-    model.fileWidth = img.size.width;
-    model.fileHeight = img.size.height;
-    NSString *uploadFileName = mill;
-    model.fileName = mill;
-    model.isGroup = YES;
-    model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
-    model.publicKey = self.groupModel.UserKey;
-    model.ctDataconfig = config;
-    NSString *nkName = [UserModel getUserModel].username;
-    NSString *userKey = [EntryModel getShareObject].signPublicKey;
-    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
-    NSString *filePath = [[SystemUtil getBaseFilePath:self.groupModel.GId] stringByAppendingPathComponent:mill];
-    [imgData writeToFile:filePath atomically:YES];
-    model.dskey = self.groupModel.UserKey;
-    model.srckey = self.groupModel.UserKey;
-    [self.listView addMessagesToBottom:@[model]];
-    
-    // 自己私钥解密
-    NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
-    NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
-    NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-    imgData = aesEncryptData(imgData,msgKeyData);
-    
-    [self sendFileWithToid:self.groupModel.GId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:@"" dsKey:@"" publicKey:@"" msgKey:@"" fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
-}
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [picker dismissViewControllerAnimated:YES completion:nil];
-}
+
 
 #pragma mark -发送文件
 - (void) sendFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey msgKey:(NSString *) msgKey fileInfo:(NSString *) fileInfo
@@ -568,6 +604,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.messageId = [NSString stringWithFormat:@"%ld",(long)tempMsgid];
         model.msg = string;
         model.isGroup = YES;
+        model.isAdmin = self.groupModel.UserType+GROUP_IDF;;
         model.msgState = CDMessageStateNormal;
       
         model.messageStatu = -1;
@@ -639,12 +676,15 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                           self.listView.contentInset.right);
     NSLog(@"inset = %@",NSStringFromUIEdgeInsets(inset));
     [self.listView setContentInset:inset];
-   // [self.listView relayoutTable:YES];
+    [self.listView relayoutTable:YES];
     // 异步让tableview滚到最底部
-    NSInteger cellCount = [self.listView numberOfRowsInSection:0];
-    NSInteger num = cellCount - 1 > 0 ? cellCount - 1 : 0;
-    NSIndexPath *index = [NSIndexPath indexPathForRow:num inSection:0];
-    [self.listView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//    NSInteger cellCount = [self.listView numberOfRowsInSection:0];
+//    NSInteger num = cellCount - 1 > 0 ? cellCount - 1 : NSNotFound;
+//    if (num != NSNotFound) {
+//        NSIndexPath *index = [NSIndexPath indexPathForRow:num inSection:0];
+//        [self.listView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//    }
+   
 }
 
 - (BOOL)canBecomeFirstResponder{
@@ -732,8 +772,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
 #pragma mark - 五类个性化设置，这些参数都可以不传，此时会走默认设置
     imagePickerVc.isSelectOriginalPhoto = NO;
-    imagePickerVc.allowTakePicture = isImage; // 在内部显示拍照按钮
-    imagePickerVc.allowTakeVideo = !isImage;   // 在内部显示拍视频按
+    imagePickerVc.allowTakePicture = NO; // 在内部显示拍照按钮
+    imagePickerVc.allowTakeVideo = NO;   // 在内部显示拍视频按
     imagePickerVc.videoMaximumDuration = 15; // 视频最大拍摄时间
     [imagePickerVc setUiImagePickerControllerSettingBlock:^(UIImagePickerController *imagePickerController) {
         imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
@@ -762,17 +802,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
     // 3. Set allow picking video & photo & originalPhoto or not
     // 3. 设置是否可以选择视频/图片/原图
+    
     imagePickerVc.allowPickingVideo = !isImage;
     imagePickerVc.allowPickingImage = isImage;
     imagePickerVc.allowPickingOriginalPhoto = isImage;
     imagePickerVc.allowPickingGif = NO;
-    imagePickerVc.allowPickingMultipleVideo = NO; // 是否可以多选视频
+    imagePickerVc.allowPickingMultipleVideo = YES; // 是否可以多选视频
     
     
     // 4. 照片排列按修改时间升序
     imagePickerVc.sortAscendingByModificationDate = YES;
     
-    // imagePickerVc.minImagesCount = 3;
+    imagePickerVc.maxImagesCount = 9;
     imagePickerVc.alwaysEnableDoneBtn = YES;
     
     // imagePickerVc.minPhotoWidthSelectable = 3000;
@@ -842,82 +883,102 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     // 你可以通过block或者代理，来得到用户选择的照片.
     @weakify_self
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
-        if (photos.count > 0) {
-            UIImage *img = photos[0];
-            NSData *imgData = UIImageJPEGRepresentation(img,1.0);
-            
-            if (imgData.length/(1024*1024) > 100) {
-                [AppD.window showHint:@"Image cannot be larger than 100MB"];
-                return;
+        if (photos.count > 0 && assets.count > 0) {
+            PHAsset *asset = assets[0];
+            if (asset.mediaType == 1) { // 图片
+                [photos enumerateObjectsUsingBlock:^(UIImage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    UIImage *img = obj;
+                    NSData *imgData = UIImageJPEGRepresentation(img,1.0);
+                    if (imgData.length/(1024*1024) > 100) {
+                        [AppD.window showHint:@"Image cannot be larger than 100MB"];
+                        *stop = YES;
+                    }
+                    [weakSelf sendImgageWithImage:img imgData:imgData];
+                }];
+            } else {
+                [photos enumerateObjectsUsingBlock:^(UIImage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    UIImage *img = obj;
+                    [weakSelf getPHAssetVedioWithOverImg:img phAsset:assets[idx]];
+                }];
             }
-            
-            NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-            NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
-            int msgid = [mill intValue];
-            CDMessageModel *model = [[CDMessageModel alloc] init];
-            model.msgType = CDMessageTypeImage;
-            model.msg = @"";
-            model.fileID = msgid;
-            model.fileWidth = img.size.width;
-            model.fileHeight = img.size.height;
-            model.FromId = [UserConfig getShareObject].userId;
-            model.ToId = weakSelf.groupModel.GId;
-            model.msgState = CDMessageStateSending;
-            model.messageId = [NSString stringWithFormat:@"%d",msgid];
-            CTDataConfig config = [CTData defaultConfig];
-            config.isOwner = YES;
-            model.isGroup = YES;
-//            model.willDisplayTime = YES;
-            model.messageStatu = -1;
-            NSString *uploadFileName = [mill stringByAppendingString:@".jpg"];
-            model.fileName = [mill stringByAppendingString:@".jpg"];
-            model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
-            model.publicKey = weakSelf.groupModel.UserKey;
-            model.ctDataconfig = config;
-            NSString *nkName = [UserModel getUserModel].username;
-            NSString *userKey = [EntryModel getShareObject].signPublicKey;
-            model.userThumImage =  [SystemUtil genterViewToImage:[weakSelf getHeadViewWithName:nkName userKey:userKey]];
-            NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.groupModel.GId] stringByAppendingPathComponent:model.fileName];
-            [imgData writeToFile:filePath atomically:YES];
-            model.dskey = self.groupModel.UserKey;
-            model.srckey = self.groupModel.UserKey;
-            [weakSelf.listView addMessagesToBottom:@[model]];
-            
-            // 自己私钥解密
-            NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
-            NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
-            NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-            imgData = aesEncryptData(imgData,msgKeyData);
-            
-            [self sendFileWithToid:self.groupModel.GId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:@"" dsKey:@"" publicKey:@"" msgKey:@"" fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
-            
         }
     }];
     // 你可以通过block或者代理，来得到用户选择的视频.
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *phAsset) {
         
-        PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
-        options.version = PHVideoRequestOptionsVersionOriginal;
-        [[PHImageManager defaultManager] requestAVAssetForVideo:phAsset options:options resultHandler:^(AVAsset *avAsset, AVAudioMix *audioMix, NSDictionary *info) {
-            if ([avAsset isKindOfClass:[AVURLAsset class]]) {
-                AVURLAsset* urlAsset = (AVURLAsset*)avAsset;
-                NSNumber *size;
-                [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
-                CGFloat sizeMB = [size floatValue]/(1024.0*1024.0);
-                if (sizeMB <= 100) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [weakSelf extractedVideWithAsset:urlAsset evImage:coverImage];
-                    });
-                } else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [AppD.window showHint:@"Video cannot be larger than 100MB"];
-                    });
-                }
-            }}];
-        //        [weakSelf extracted:asset evImage:coverImage];
+        [weakSelf getPHAssetVedioWithOverImg:coverImage phAsset:phAsset];
     }];
              
     [self presentViewController:imagePickerVc animated:YES completion:nil];
+}
+
+- (void) getPHAssetVedioWithOverImg:(UIImage *) coverImage phAsset:(PHAsset *)phAsset
+{
+    PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+    options.version = PHVideoRequestOptionsVersionOriginal;
+    @weakify_self
+    [[PHImageManager defaultManager] requestAVAssetForVideo:phAsset options:options resultHandler:^(AVAsset *avAsset, AVAudioMix *audioMix, NSDictionary *info) {
+        if ([avAsset isKindOfClass:[AVURLAsset class]]) {
+            AVURLAsset* urlAsset = (AVURLAsset*)avAsset;
+            NSNumber *size;
+            [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
+            CGFloat sizeMB = [size floatValue]/(1024.0*1024.0);
+            if (sizeMB <= 100) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf extractedVideWithAsset:urlAsset evImage:coverImage];
+                });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [AppD.window showHint:@"Video cannot be larger than 100MB"];
+                });
+            }
+        }}];
+}
+
+- (void) sendImgageWithImage:(UIImage *) img imgData:(NSData *) imgData
+{
+    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
+    int msgid = [mill intValue];
+    CDMessageModel *model = [[CDMessageModel alloc] init];
+    model.msgType = CDMessageTypeImage;
+    model.msg = @"";
+    model.fileID = msgid;
+    model.fileWidth = img.size.width;
+    model.fileHeight = img.size.height;
+    model.FromId = [UserConfig getShareObject].userId;
+    model.ToId = self.groupModel.GId;
+    model.msgState = CDMessageStateSending;
+    model.messageId = [NSString stringWithFormat:@"%d",msgid];
+    CTDataConfig config = [CTData defaultConfig];
+    config.isOwner = YES;
+    model.isGroup = YES;
+    model.isAdmin = self.groupModel.UserType+GROUP_IDF;
+    //            model.willDisplayTime = YES;
+    model.messageStatu = -1;
+    NSString *uploadFileName = [mill stringByAppendingString:@".jpg"];
+    model.fileName = [mill stringByAppendingString:@".jpg"];
+    model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
+    model.publicKey = self.groupModel.UserKey;
+    model.ctDataconfig = config;
+    NSString *nkName = [UserModel getUserModel].username;
+    NSString *userKey = [EntryModel getShareObject].signPublicKey;
+    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
+    NSString *filePath = [[SystemUtil getBaseFilePath:self.groupModel.GId] stringByAppendingPathComponent:model.fileName];
+    [imgData writeToFile:filePath atomically:YES];
+    model.dskey = self.groupModel.UserKey;
+    model.srckey = self.groupModel.UserKey;
+    [self.listView addMessagesToBottom:@[model]];
+    
+     [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic objectForKey:[NSString stringWithFormat:@"%@_%@",model.ToId,model.fileName]];
+    
+    // 自己私钥解密
+    NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
+    NSString *symmetKey = [[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding];
+    NSData *msgKeyData =[[symmetKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+    imgData = aesEncryptData(imgData,msgKeyData);
+    
+    [self sendFileWithToid:self.groupModel.GId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:@"" dsKey:@"" publicKey:@"" msgKey:@"" fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
 }
 
 - (void)extractedVideWithAsset:(AVURLAsset *)asset evImage:(UIImage *) evImage
@@ -943,6 +1004,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
     model.publicKey = self.groupModel.UserKey;
     model.isGroup = YES;
+    model.isAdmin = self.groupModel.UserType+GROUP_IDF;
     model.ctDataconfig = config;
     model.mediaImage = evImage;
     NSString *nkName = [UserModel getUserModel].username;
@@ -1024,9 +1086,20 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         CTDataConfig config = [CTData defaultConfig];
         config.isOwner = YES;
         model.isGroup = YES;
-//        model.willDisplayTime = YES;
-        model.fileName = fileUrl.lastPathComponent;
+        model.isAdmin = self.groupModel.UserType+GROUP_IDF;
+        
+        NSString *name = [fileUrl.lastPathComponent stringByDeletingPathExtension];
+        
+        if (name && name.length>50) {
+            NSString *fileT = fileUrl.pathExtension;
+            name = [name substringWithRange:NSMakeRange(0, 50)];
+            model.fileName = [NSString stringWithFormat:@"%@.%@",name,fileT?:@""];
+        } else {
+            model.fileName = fileUrl.lastPathComponent;
+        }
+        
         NSString *uploadFileName = model.fileName;
+        
         model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
         model.publicKey = self.groupModel.UserKey;
         model.ctDataconfig = config;
@@ -1104,7 +1177,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
         model.ToId = self.groupModel.GId;
         model.isGroup = YES;
-        
+        model.isAdmin = self.groupModel.UserType+GROUP_IDF;
         if (payloadModel.FileInfo && payloadModel.FileInfo.length>0) {
             NSArray *whs = [payloadModel.FileInfo componentsSeparatedByString:@"*"];
             model.fileWidth = [whs[0] floatValue];
@@ -1170,6 +1243,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 CDMessageModel *model = [[CDMessageModel alloc] init];
                 model.FromId = chatModel.fromId;
                 model.isGroup = YES;
+                model.isAdmin = self.groupModel.UserType+GROUP_IDF;
                 model.ToId = chatModel.toId;
                 model.msgType = chatModel.msgType;
                 model.publicKey = weakSelf.groupModel.UserKey;
@@ -1250,7 +1324,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.isLeft = YES;
     model.ToId = self.groupModel.GId;
     model.isGroup = YES;
-    
+    model.isAdmin = self.groupModel.UserType+GROUP_IDF;
     if (payloadModel.FileInfo && payloadModel.FileInfo.length>0) {
         NSArray *whs = [payloadModel.FileInfo componentsSeparatedByString:@"*"];
         model.fileWidth = [whs[0] floatValue];
@@ -1326,7 +1400,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         CDMessageModel *messageModel = [[CDMessageModel alloc] init];
         messageModel.msgType = 3;
-        messageModel.msg = [NSString stringWithFormat:@"\"%@\" retracted a message",[FromUserName base64DecodedString]];
+        messageModel.msg = [NSString stringWithFormat:@"\"%@\" deleted a message",[FromUserName base64DecodedString]];
         [self.listView addMessagesToBottom:@[messageModel]];
     } else if (Type == 0xF1) { //新用户入群
         CDMessageModel *messageModel = [[CDMessageModel alloc] init];
@@ -1596,6 +1670,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     messageModel.messageId = [NSString stringWithFormat:@"%ld",(long)tempMsgid];
                     messageModel.msg = weakSelf.selectMessageModel.msg;
                     messageModel.isGroup = YES;
+                    messageModel.isAdmin = self.groupModel.UserType+GROUP_IDF;
                     messageModel.msgState = CDMessageStateNormal;
                     messageModel.messageStatu = -1;
                     [self addMessagesToList:messageModel];
@@ -1660,6 +1735,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                            CTDataConfig config = [CTData defaultConfig];
                            config.isOwner = YES;
                            messageModel.isGroup = YES;
+                           messageModel.isAdmin = weakSelf.groupModel.UserType+GROUP_IDF;
 //                           messageModel.willDisplayTime = YES;
                            messageModel.messageStatu = -1;
                            messageModel.fileName = [mill stringByAppendingString:@".jpg"];

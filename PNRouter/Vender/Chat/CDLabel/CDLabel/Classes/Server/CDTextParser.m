@@ -103,7 +103,7 @@ static void deallocfunc(void *ref){
 +(NSMutableAttributedString *)imagePlaceHolderStrFromConfiguration:(CTDataConfig)config{
     
     
-    UIFont *font = [UIFont systemFontOfSize:config.textSize];
+    UIFont *font = [UIFont systemFontOfSize:18];
     
     NSDictionary *imgInfoDic = @{@"ascent":@(font.ascender),
                                  @"descent":@(font.descender),

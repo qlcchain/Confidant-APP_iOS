@@ -9,6 +9,11 @@
 #import "MsgPicViewController.h"
 #import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "HMScanner.h"
+#import "NSString+RegexCategory.h"
+#import "UserModel.h"
+#import "FriendRequestViewController.h"
+#import "CodeMsgViewController.h"
 
 @interface MsgPicViewController ()<UIScrollViewDelegate>
 {
@@ -18,9 +23,16 @@
     CGRect originRect;
     UIView *menuView;
 }
+@property (nonatomic , strong) NSString *codeVaule;
 @end
 
 @implementation MsgPicViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.view.hidden = NO;
+    [super viewWillAppear:animated];
+}
 
 - (void) addScrollerView
 {
@@ -40,25 +52,16 @@
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.frame = menuView.bounds;
-    backBtn.backgroundColor = [UIColor blackColor];
+    backBtn.backgroundColor = [UIColor clearColor];
     [backBtn addTarget:self action:@selector(cancelMenuAction:) forControlEvents:UIControlEventTouchUpInside];
-    backBtn.alpha = 0.3f;
     [menuView addSubview:backBtn];
     
-    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, IS_iPhoneX?95+20:95)];
+    
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, IS_iPhoneX?95+20.5:95)];
     contentView.backgroundColor = [UIColor whiteColor];
     contentView.tag = 10;
     [menuView addSubview:contentView];
     
-//    UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-//    btn1.frame = CGRectMake(0, 0, SCREEN_WIDTH, 45);
-//    btn1.backgroundColor = [UIColor whiteColor];
-//    [btn1 setTitleColor:MAIN_PURPLE_COLOR forState:UIControlStateNormal];
-//    [btn1 setTitle:@"Share Friend" forState:UIControlStateNormal];
-//    btn1.titleLabel.font = [UIFont systemFontOfSize:16];
-//    btn1.tag = 1;
-//    [btn1 addTarget:self action:@selector(clickMenumTag:) forControlEvents:UIControlEventTouchUpInside];
-//    [contentView addSubview:btn1];
     
     UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
     btn2.frame = CGRectMake(0,0, SCREEN_WIDTH, 45);
@@ -66,25 +69,65 @@
     btn2.titleLabel.font = [UIFont systemFontOfSize:16];
     [btn2 setTitleColor:MAIN_PURPLE_COLOR forState:UIControlStateNormal];
     [btn2 setTitle:@"Save Photo" forState:UIControlStateNormal];
-    btn2.tag = 2;
+    btn2.tag = 1;
     [btn2 addTarget:self action:@selector(clickMenumTag:) forControlEvents:UIControlEventTouchUpInside];
     [contentView addSubview:btn2];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45, SCREEN_WIDTH, 5)];
+    
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(btn2.frame), SCREEN_WIDTH, 5)];
     lineView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [contentView addSubview:lineView];
     
-    UIButton *btn3 = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn3.frame = CGRectMake(0, 50, SCREEN_WIDTH, 45);
-    btn3.titleLabel.font = [UIFont systemFontOfSize:16];
-    btn3.backgroundColor = [UIColor whiteColor];
-    [btn3 setTitle:@"Cancel" forState:UIControlStateNormal];
-    [btn3 setTitleColor:MAIN_PURPLE_COLOR forState:UIControlStateNormal];
-    btn3.tag = 3;
-    [btn3 addTarget:self action:@selector(cancelMenuAction:) forControlEvents:UIControlEventTouchUpInside];
-    [contentView addSubview:btn3];
+    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(0, CGRectGetMaxY(lineView.frame), SCREEN_WIDTH, 45);
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    cancelBtn.backgroundColor = [UIColor whiteColor];
+    [cancelBtn setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelBtn setTitleColor:MAIN_PURPLE_COLOR forState:UIControlStateNormal];
+    cancelBtn.tag = 0;
+    [cancelBtn addTarget:self action:@selector(cancelMenuAction:) forControlEvents:UIControlEventTouchUpInside];
+    [contentView addSubview:cancelBtn];
     
     menuView.hidden = YES;
+    
+    
+    __block CGFloat downHeight = IS_iPhoneX?95+20:95;
+    @weakify_self
+    [HMScanner scaneImage:_img completion:^(NSArray *values) {
+        downHeight = IS_iPhoneX?95+20+45.5:95+45.5;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (values && values.count > 0) {
+                weakSelf.codeVaule = values.firstObject;
+               CGRect rect = contentView.frame;
+                rect.size.height += 45.5;
+                
+                UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 45, SCREEN_WIDTH,0.5)];
+                lineView1.backgroundColor = [UIColor groupTableViewBackgroundColor];
+                [contentView addSubview:lineView1];
+                
+                UIButton *codeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                codeBtn.frame = CGRectMake(0,CGRectGetMaxY(lineView1.frame), SCREEN_WIDTH, 45);
+                codeBtn.backgroundColor = [UIColor whiteColor];
+                codeBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+                [codeBtn setTitleColor:MAIN_PURPLE_COLOR forState:UIControlStateNormal];
+                [codeBtn setTitle:@"Scan QR Code in image" forState:UIControlStateNormal];
+                codeBtn.tag = 2;
+                [codeBtn addTarget:self action:@selector(clickMenumTag:) forControlEvents:UIControlEventTouchUpInside];
+                [contentView addSubview:codeBtn];
+                
+                rect = lineView.frame;
+                rect.origin.y = CGRectGetMaxY(codeBtn.frame);
+                lineView.frame = rect;
+                
+                rect = cancelBtn.frame;
+                rect.origin.y = CGRectGetMaxY(lineView.frame);
+                cancelBtn.frame = rect;
+                
+            }
+            
+        });
+    }];
 }
 - (void) cancelMenuAction:(UIButton *) btn
 {
@@ -102,7 +145,12 @@
     menuView.hidden = NO;
     UIView *contentView = [menuView viewWithTag:10];
     CGRect contectRect = contentView.frame;
-    contectRect.origin.y = SCREEN_HEIGHT - (IS_iPhoneX?95+20:95);
+     CGFloat downHeight = IS_iPhoneX?95+20:95;
+    if (_codeVaule && _codeVaule.length>0) {
+         downHeight = IS_iPhoneX?95+20+45.5:95+45.5;
+    }
+    
+    contectRect.origin.y = SCREEN_HEIGHT - downHeight;
     [UIView animateWithDuration:0.3 animations:^{
         contentView.frame = contectRect;
     }];
@@ -110,7 +158,59 @@
 - (void) clickMenumTag:(UIButton *) btn
 {
     [self cancelMenuAction:nil];
-    [self loadImageFinished:_img];
+    if (btn.tag == 1) {
+         [self loadImageFinished:_img];
+    } else if (btn.tag == 2) { // 识别码
+        NSLog(@"codevalue = %@",_codeVaule);
+        if ([_codeVaule isUrlAddress]) { // 是网址
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_codeVaule] options:@{} completionHandler:nil];
+        } else {
+           
+            NSArray *codeValues = [_codeVaule componentsSeparatedByString:@","];
+            NSString *codeType = codeValues[0];
+            if ([codeType isEqualToString:@"type_0"]) {
+                NSString *userID = codeValues[1];
+                if (userID.length == 76) {
+                    if ([userID isEqualToString:[UserModel getUserModel].userId]) {
+                         [self jumpCodeValueVC];
+                    } else {
+                        NSString *nickName = @"";
+                        if (codeValues.count>2) {
+                            nickName = codeValues[2];
+                        }
+                        [self addFriendRequest:userID nickName:nickName signpk:codeValues[3]];
+                    }
+                } else {
+                    [self jumpCodeValueVC];
+                }
+                
+            }
+        }
+    }
+   
+}
+
+#pragma mark - Transition
+- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk
+{
+   
+    if (_chatVC) {
+
+        self.view.hidden = YES;
+        [self removeFromParentViewController];
+    
+         FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
+        [_chatVC.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void) jumpCodeValueVC
+{
+    self.view.hidden = YES;
+    [self removeFromParentViewController];
+    
+    CodeMsgViewController *vc = [[CodeMsgViewController alloc] initWithCodeValue:_codeVaule];
+    [_chatVC.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark -系统分享
@@ -144,13 +244,14 @@
 +(void)addToRootViewController:(UIImage *)img
                        ofMsgId:(NSString *)msgId
                             in:(CGRect)imgRectIntTableView
-                          from: (CDChatMessageArray) msgs{
+                          from: (CDChatMessageArray) msgs vc:(PNBaseViewController *)vc{
     
     MsgPicViewController *msgVc = [[MsgPicViewController alloc] init];
     msgVc.img = img;
     msgVc.imgRectIntTableView = imgRectIntTableView;
     msgVc.msgs = msgs;
     msgVc.msgId = msgId;
+    msgVc.chatVC = vc;
     msgVc.view.backgroundColor = [UIColor clearColor];
     msgVc.view.frame = [UIScreen mainScreen].bounds;
     

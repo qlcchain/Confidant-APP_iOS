@@ -32,6 +32,7 @@
 @property (nonatomic) BOOL isUnRead;
 
 @property (nonatomic ,assign) BOOL isGroup;
+@property (nonatomic ,assign) BOOL noFriend;
 
 //+ (NSString *)getSignPublicKeyWithToxId:(NSString *)toxId;
 

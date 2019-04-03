@@ -171,7 +171,7 @@
             
         } else { // tox
             if (!AppD.manager) {
-                [self loginTox];
+                [self loginToxWithShowHud:YES];
             } else {
                 [self toxLoginSuccessWithManager:AppD.manager];
             }

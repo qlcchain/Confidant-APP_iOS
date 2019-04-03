@@ -203,7 +203,7 @@
     [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
         if ([model.userSn isEqualToString:sn]) {
-            model.name = name;
+            model.aliasName = name;
         }
         [resultArr addObject:model.mj_keyValues];
     }];

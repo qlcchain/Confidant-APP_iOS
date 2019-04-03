@@ -114,6 +114,16 @@
     NSString *regex2 = @"^(\\d{14}|\\d{17})(\\d|[xX])$";
     return [self isValidateByRegex:regex2];
 }
+// 网址
+- (BOOL)isUrlAddress {
+    
+    NSString*reg =@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)";
+    NSPredicate*urlPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", reg];
+    return [urlPredicate evaluateWithObject:self];
+    
+}
+
+
 
 //车牌
 - (BOOL)isCarNumber{

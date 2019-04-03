@@ -237,6 +237,9 @@
                         return ;
                     }
                     datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                    if (data.fileKey && data.fileKey.length > 0) {
+                        datakey = aesDecryptString(data.fileKey, datakey);
+                    }
                     
                     if (datakey && ![datakey isEmptyString] && fileData && fileData.length>0) {
                         fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
@@ -393,6 +396,9 @@
                         });
                     }
                     datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                    if (data.fileKey && data.fileKey.length > 0) {
+                        datakey = aesDecryptString(data.fileKey, datakey);
+                    }
                     
                     if (datakey && ![datakey isEmptyString] && fileData && fileData.length>0) {
                         fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);

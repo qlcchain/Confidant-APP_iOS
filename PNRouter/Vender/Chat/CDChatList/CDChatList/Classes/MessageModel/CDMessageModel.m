@@ -73,6 +73,7 @@
 @synthesize fileMd5;
 @synthesize isGroup;
 @synthesize fileKey;
+@synthesize isAdmin;
 
 -(instancetype)init:(NSDictionary *)dic{
     self = [super init];

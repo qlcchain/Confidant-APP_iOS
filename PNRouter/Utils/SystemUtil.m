@@ -130,9 +130,13 @@
    NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
     NSString *filePath = [NSString stringWithFormat:@"%@/files/%@/%@",@"Documents",[UserConfig getShareObject].userId,friendid];
-    BOOL isexit = [manage fileExistsAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+    NSString *docPath = [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    BOOL isexit = [manage fileExistsAtPath:docPath isDirectory:&isDir];
     if (!isexit || !isDir) {
-        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+        if (isexit && !isDir) {
+            [SystemUtil removeDocmentFilePath:docPath];
+        }
+       [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
     }
     return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
 }

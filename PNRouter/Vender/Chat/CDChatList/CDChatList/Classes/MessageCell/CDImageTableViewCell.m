@@ -24,6 +24,7 @@
 #import "LibsodiumUtil.h"
 #import "EntryModel.h"
 #import "UserConfig.h"
+#import "ChatImgCacheUtil.h"
 
 @interface CDImageTableViewCell()
 
@@ -114,10 +115,20 @@
     
     CGRect bubbleRec = self.bubbleImage_left.frame;
     self.imageContent_left.frame = bubbleRec;
-     self.imageContent_left.image = nil;
     NSString *friendID = data.FromId;
     if (data.isGroup) {
         friendID = data.ToId;
+    }
+    UIImage *img = [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic objectForKey:[NSString stringWithFormat:@"%@_%@",friendID,data.fileName]];
+    if (img) {
+        self.imageContent_left.image = img;
+        if ( data.msgState != CDMessageStateNormal) {
+            data.fileWidth = img.size.width;
+            data.fileHeight = img.size.height;
+            data.msgState = CDMessageStateNormal;
+            [self.tableView updateMessage:data];
+        }
+        return;
     }
     NSString *filePath = [[SystemUtil getBaseFilePath:friendID] stringByAppendingPathComponent:data.fileName];
     @weakify_self
@@ -133,7 +144,8 @@
                 weakSelf.imageContent_left.image = image;
                 data.fileWidth = image.size.width;
                 data.fileHeight = image.size.height;
-                if ( data.msgState == CDMessageStateDownloading) {
+                if ( data.msgState != CDMessageStateNormal) {
+                    [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",friendID,data.fileName]];
                     data.msgState = CDMessageStateNormal;
                     [weakSelf.tableView updateMessage:data];
                 }
@@ -163,6 +175,7 @@
                                 friendID = data.ToId;
                             }
                             NSString *imgPath = [[SystemUtil getBaseFilePath:friendID] stringByAppendingPathComponent:filePath];
+                    
                             
                             if ([[MD5Util md5WithPath:imgPath] isEqualToString:data.fileMd5]) {
                                 
@@ -178,7 +191,11 @@
                                 }
                                 datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                                 
-                                if (datakey && ![datakey isEmptyString] && fileData && fileData.length>0) {
+                                if (data.fileKey && data.fileKey.length > 0) {
+                                    datakey = aesDecryptString(data.fileKey, datakey);
+                                }
+                                
+                                if (datakey && ![datakey isEmptyString] && fileData && fileData.length>0 && datakey.length == 16) {
                                     fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                                     [SystemUtil removeDocmentFilePath:imgPath];
                                     if (!fileData || fileData.length == 0) {
@@ -190,10 +207,15 @@
                                     } else {
                                         if ( [fileData writeToFile:imgPath atomically:YES])
                                         {
-                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                data.msgState = CDMessageStateNormal;
-                                                [weakSelf.tableView updateMessage:data];
-                                                NSLog(@"下载成功! filePath = %@",filePath);
+                                            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                                                UIImage *image = [[UIImage alloc] initWithData:fileData];
+                                                [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",friendID,data.fileName]];
+                                                
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    data.msgState = CDMessageStateNormal;
+                                                    [weakSelf.tableView updateMessage:data];
+                                                    NSLog(@"下载成功! filePath = %@",filePath);
+                                                });
                                             });
                                         }
                                     }
@@ -245,6 +267,19 @@
     
     self.imageContent_right.frame = bubbleRec;
     
+    
+    UIImage *img = [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic objectForKey:[NSString stringWithFormat:@"%@_%@",data.ToId,data.fileName]];
+    if (img) {
+         self.imageContent_right.image = img;
+        if ( data.msgState != CDMessageStateNormal) {
+            data.fileWidth = img.size.width;
+            data.fileHeight = img.size.height;
+            data.msgState = CDMessageStateNormal;
+            [self.tableView updateMessage:data];
+        }
+        return;
+    }
+    
     NSString *filePath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:data.fileName];
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -260,7 +295,8 @@
                     self.imageContent_right.image = image;
                     data.fileWidth = image.size.width;
                     data.fileHeight = image.size.height;
-                    if ( data.msgState == CDMessageStateDownloading) {
+                    if ( data.msgState != CDMessageStateNormal) {
+                         [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",data.ToId,data.fileName]];
                         data.msgState = CDMessageStateNormal;
                         [self.tableView updateMessage:data];
                     }
@@ -299,7 +335,11 @@
                                 }
                                 datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                                 
-                                if (datakey && ![datakey isEmptyString] && fileData && fileData.length>0) {
+                                if (data.fileKey && data.fileKey.length > 0) {
+                                    datakey = aesDecryptString(data.fileKey, datakey);
+                                }
+                                
+                                if (datakey && ![datakey isEmptyString] && fileData && fileData.length>0 && fileData.length>0 && datakey.length == 16) {
                                     fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                                     [SystemUtil removeDocmentFilePath:imgPath];
                                     if (!fileData || fileData.length == 0) {
@@ -310,10 +350,15 @@
                                         });
                                     } else {
                                         if ([fileData writeToFile:imgPath atomically:YES]) {
-                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                data.msgState = CDMessageStateNormal;
-                                                [weakSelf.tableView updateMessage:data];
-                                                NSLog(@"下载成功! filePath = %@",filePath);
+                                            
+                                            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                                                UIImage *image = [[UIImage alloc] initWithData:fileData];
+                                                [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",data.ToId,data.fileName]];
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    data.msgState = CDMessageStateNormal;
+                                                    [weakSelf.tableView updateMessage:data];
+                                                    NSLog(@"下载成功! filePath = %@",filePath);
+                                                });
                                             });
                                         }
                                     }

@@ -18,6 +18,7 @@
 #import "RouterConfig.h"
 #import "AddGroupMemberViewController.h"
 #import "GroupInfoModel.h"
+#import "FriendDetailViewController.h"
 
 @interface GroupMembersViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 
@@ -117,6 +118,23 @@
     GroupMembersModel *model = arr[section];
     [view configHeaderWithModel:model];
     
+    @weakify_self
+    [view setClickBlock:^(GroupMembersModel * _Nonnull model) {
+       FriendModel *fModel = [[ChatListDataUtil getShareObject] getFriendWithUserid:model.ToxId];
+        if (!fModel) {
+            fModel = [[FriendModel alloc] init];
+            fModel.userId = model.ToxId;
+            fModel.username = [model.Nickname base64DecodedString];
+            fModel.signPublicKey = model.UserKey;
+            fModel.noFriend = YES;
+        } else {
+            fModel.username = fModel.username ?[fModel.username base64DecodedString]:@"";
+            fModel.remarks = fModel.remarks ?[fModel.remarks base64DecodedString]:@"";
+            
+        }
+        [weakSelf jumpFriendDetailVC:fModel];
+    }];
+    
     return view;
 }
 
@@ -136,7 +154,13 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
-
+#pragma mark ---jumpVC
+- (void) jumpFriendDetailVC:(FriendModel *) model
+{
+    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
+    vc.friendModel = model;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 #pragma mark - UITextFeildDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     NSLog(@"textFieldShouldReturn");

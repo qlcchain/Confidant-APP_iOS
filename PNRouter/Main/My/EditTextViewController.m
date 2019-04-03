@@ -85,7 +85,7 @@
         case EditAlis:
         {
             NSString *name = _nameTF.text.trim?:@"";
-            _routerM.name = name;
+            _routerM.aliasName = name;
             [RouterModel updateRouterName:name usersn:_routerM.userSn];
              [self leftNavBarItemPressedWithPop:YES];
         }
@@ -193,7 +193,7 @@
         case EditFriendAlis:
             _lblNavTitle.text = @"Alias";
             _nameTF.placeholder = @"Edit alias";
-            _nameTF.text = self.friendModel.username;
+            _nameTF.text = self.friendModel.remarks;
             break;
         case EditGroupAlias:
         {
@@ -226,7 +226,7 @@
 - (void) updateNickSuccess:(NSNotification *) noti
 {
     if (self.editType == EditFriendAlis) {
-        self.friendModel.username = _nameTF.text.trim?:@"";
+        self.friendModel.remarks = _nameTF.text.trim?:@"";
     } else {
         UserModel *model = [UserModel getUserModel];
         model.username = _nameTF.text.trim?:@"";

@@ -71,6 +71,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userRegisterSuccess:) name:USER_REGISTER_RECEVIE_NOTI object:nil];
 }
 
+
 - (instancetype) initWithLoginType:(LoginType)type {
     if (self = [super init]) {
         self.loginType = type;
@@ -94,6 +95,7 @@
     sendCount = 0;
     isConnectSocket = YES;
     resultLogin = NO;
+   
     if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
         
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
@@ -102,12 +104,20 @@
             sendCount = 0;
             [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
         } else {
+            [RouterConfig getRouterConfig].currentRouterIp = @"";
+            [RouterConfig getRouterConfig].currentRouterMAC = @"";
+            [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
+            [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
             isLogin = YES;
-            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
-            NSString *connectURL = [SystemUtil connectUrl];
-            [SocketUtil.shareInstance connectWithUrl:connectURL];
+            [self sendGB];
+//            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
+//            NSString *connectURL = [SystemUtil connectUrl];
+//            [SocketUtil.shareInstance connectWithUrl:connectURL];
         }
     } else {
+        [RouterConfig getRouterConfig].currentRouterMAC = @"";
+        [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
+        [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
         isLogin = YES;
         [self sendGB];
     }
@@ -203,7 +213,7 @@
         if (AppD.manager) {
             [self addRouterFriend];
         } else {
-            [self loginTox];
+            [self loginToxWithShowHud:YES];
         }
     }
 }
@@ -288,7 +298,7 @@
 
 - (void)socketOnConnect:(NSNotification *)noti {
     
-    if (AppD.isLoginMac && _loginType != MacType) {
+    if (AppD.isLoginMac) {
         return;
     }
     
@@ -307,7 +317,7 @@
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
     
-    if (AppD.isLoginMac && _loginType != MacType) {
+    if (AppD.isLoginMac) {
         return;
     }
     
@@ -502,6 +512,9 @@
 // 注册推送
 - (void) registerPushNoti:(NSNotification *) noti
 {
+    if (AppD.isLoginMac) {
+        return;
+    }
     [SendRequestUtil sendRegidReqeust];
 }
 // 加router好友成功
@@ -553,7 +566,7 @@
 
 - (void) recivceUserFind:(NSNotification *) noti
 {
-    if (AppD.isLoginMac && _loginType != MacType) {
+    if (AppD.isLoginMac) {
         return;
     }
     [AppD.window hideHud];
@@ -593,6 +606,9 @@
 #pragma mark -登陆成功
 - (void) loginSuccess:(NSNotification *) noti
 {
+    if (AppD.isLoginMac) {
+        return;
+    }
   
     NSInteger retCode = [noti.object integerValue];
     if (retCode == 0) {
@@ -617,6 +633,9 @@
 #pragma mark -注册成功
 - (void) userRegisterSuccess:(NSNotification *) noti
 {
+    if (AppD.isLoginMac) {
+        return;
+    }
    
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     NSString *userid = receiveDic[@"params"][@"UserId"];

@@ -253,15 +253,16 @@
     NSMutableArray *mutableMsgArr = [NSMutableArray arrayWithArray:_msgArr];
     [mutableMsgArr replaceObjectAtIndex:msgIndex withObject:message];
     _msgArr = [mutableMsgArr copy];
-   // [self reloadData];
-    NSIndexPath *index = [NSIndexPath indexPathForRow:msgIndex inSection:0];
-    CDBaseMsgCell *baseCell = [self cellForRowAtIndexPath:index];
-    NSLog(@"----%ld", [self visibleCells].count);
-    if (baseCell) {
-        [self reloadRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationNone];
-    } else {
-        NSLog(@"-44--");
-    }
+    [self reloadData];
+    
+//    NSIndexPath *index = [NSIndexPath indexPathForRow:msgIndex inSection:0];
+//    CDBaseMsgCell *baseCell = [self cellForRowAtIndexPath:index];
+//    NSLog(@"----%ld", [self visibleCells].count);
+//    if (baseCell) {
+//        [self reloadRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationNone];
+//    } else {
+//        NSLog(@"-44--");
+//    }
     
     
     // 若待更新的cell在屏幕上方，则可能造成屏幕抖动，需要手动调回contentoffset
@@ -371,7 +372,6 @@
     NSInteger num = cellCount - 1 > 0 ? cellCount - 1 : 0;
     NSIndexPath *index = [NSIndexPath indexPathForRow:num inSection:0];
     
-   // [self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:NSNotFound inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     [self scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 

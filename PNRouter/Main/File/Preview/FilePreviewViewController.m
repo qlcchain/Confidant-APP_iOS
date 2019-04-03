@@ -39,35 +39,42 @@
     [self.view showHudInView:self.view hint:@""];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSData *fileData = [NSData dataWithContentsOfFile:self.filePath];
-        NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.userKey];
-        if (datakey && datakey.length>0) {
-            datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-            if (datakey && ![datakey isEmptyString]) {
-                fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                if (fileData) {
-                   NSString *deFilePath = [SystemUtil getTempDeFilePath:self.fileName];
-                   BOOL isWriteFinsh = [fileData writeToFile:deFilePath atomically:YES];
-                    if (isWriteFinsh) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.view hideHud];
-                            [self previewFilePath:deFilePath];
-                        });
-                    }
-                    
-                } else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.view hideHud];
-                        [self.view showHint:@"Decryption failure."];
-                    });
-                }
-            }
-        } else {
+        if (!fileData || fileData.length == 0 ) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.view hideHud];
                 [self.view showHint:@"Decryption failure."];
             });
+        } else {
+            NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.userKey];
+            if (datakey && datakey.length>0) {
+                datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                if (datakey && ![datakey isEmptyString]) {
+                    
+                    fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+                    if (fileData) {
+                        NSString *deFilePath = [SystemUtil getTempDeFilePath:self.fileName];
+                        BOOL isWriteFinsh = [fileData writeToFile:deFilePath atomically:YES];
+                        if (isWriteFinsh) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self.view hideHud];
+                                [self previewFilePath:deFilePath];
+                            });
+                        }
+                        
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.view hideHud];
+                            [self.view showHint:@"Decryption failure."];
+                        });
+                    }
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.view hideHud];
+                    [self.view showHint:@"Decryption failure."];
+                });
+            }
         }
-        
     });
 }
 

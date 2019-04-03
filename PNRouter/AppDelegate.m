@@ -182,6 +182,7 @@
 
 - (void)setRootLoginWithType:(LoginType) type {
     [AppD addTransitionAnimation];
+    AppD.isLoginMac = NO;
     LoginViewController *vc = [[LoginViewController alloc] initWithLoginType:type];
     AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];
 }
@@ -244,6 +245,7 @@
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager {
     [KeyCUtil saveStringToKeyWithString:@"1" key:LOGIN_KEY];
     AppD.isLogOut = NO;
+    AppD.isLoginMac = NO;
     if ([SystemUtil isSocketConnect]) {
         AppD.manager = nil;
     }
@@ -406,12 +408,14 @@
     CTinputHelper.share.emojiNameArr = @[temp.allKeys,temp.allKeys];
   //  CTinputHelper.share.emojiNameArrTitles = @[@"hhe",@"haha"];
     UIImage *photo = [UIImage imageNamed:@"Private document1"];
+    UIImage *camcer = [UIImage imageNamed:@"Private document2"];
     UIImage *news = [UIImage imageNamed:@"Private document"];
     UIImage *video = [UIImage imageNamed:@"Private document3"];
     // 配置 ‘’更多‘’  功能;
     [CTinputHelper.share.config addExtra:@{@"Album": photo,
-                                           @"Private\ndocument": news,
-                                           @"Short video":video
+                                           @"Camera":camcer,
+                                           @"File": news,
+                                           @"Short Video":video
                                            }];
     [CTinputHelper.share.config addEmoji];
     [CTinputHelper.share.config addVoice];

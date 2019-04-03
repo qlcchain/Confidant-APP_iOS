@@ -205,7 +205,7 @@
         if (AppD.manager) {
             [self addRouterFriend];
         } else {
-            [self loginTox];
+            [self loginToxWithShowHud:YES];
         }
     }
 }

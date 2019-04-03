@@ -285,15 +285,20 @@
 
 - (void)jumpToLoginDevice {
     LoginDeviceViewController *vc = [[LoginDeviceViewController alloc] init];
-    PNNavViewController *nav = [[PNNavViewController alloc] initWithRootViewController:vc];
-    [self presentViewController:nav animated:YES completion:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+    //[self presentModalVC:vc animated:YES];
+   // PNNavViewController *nav = [[PNNavViewController alloc] initWithRootViewController:vc];
+   // [self presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma ToxLogin
-- (void) loginTox
+- (void) loginToxWithShowHud:(BOOL)showHud
 {
     AppD.manager = nil;
-    [AppD.window showHudInView:AppD.window hint:@"Connect P2P..."];
+    if (showHud) {
+         [AppD.window showHudInView:AppD.window hint:@"Connect P2P..."];
+    }
+   
    OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
     configuration.options.udpEnabled = YES;
     configuration.options.proxyType = OCTToxProxyTypeNone;
@@ -303,15 +308,21 @@
     @weakify_self
     [OCTManagerFactory managerWithConfiguration:configuration encryptPassword:TOX_DATA_PASS successBlock:^(id < OCTManager > manager) {
        
+        if (showHud) {
             [AppD.window hideHud];
-            [manager.bootstrap addPredefinedNodes];
-            [manager.bootstrap bootstrap];
-            AppD.manager = manager;
-            [weakSelf toxLoginSuccessWithManager:manager];
+        }
+        [manager.bootstrap addPredefinedNodes];
+        [manager.bootstrap bootstrap];
+        AppD.manager = manager;
+        [weakSelf toxLoginSuccessWithManager:manager];
         
     } failureBlock:^(NSError * _Nonnull error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [AppD.window hideHud];
+            if (showHud) {
+                [AppD.window hideHud];
+            } else {
+                 [weakSelf toxLoginSuccessWithManager:nil];
+            }
             [AppD.window showHint:@"Connect faield"];
         });
         

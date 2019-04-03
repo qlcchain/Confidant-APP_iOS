@@ -229,6 +229,7 @@
     return self;
 }
 
+
 /// This init method for crop photo / 用这个初始化方法以裁剪图片
 - (instancetype)initCropTypeWithAsset:(PHAsset *)asset photo:(UIImage *)photo completion:(void (^)(UIImage *cropImage,PHAsset *asset))completion {
     TZPhotoPreviewController *previewVc = [[TZPhotoPreviewController alloc] init];

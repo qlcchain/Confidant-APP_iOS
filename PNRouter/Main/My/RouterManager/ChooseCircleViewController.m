@@ -22,18 +22,25 @@
 #import "UserModel.h"
 #import "UserHeadUtil.h"
 
-@interface ChooseCircleViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
+#import "ConnectView.h"
+#import "OCTSubmanagerUser.h"
+#import "OCTSubmanagerFriends.h"
+
+
+@interface ChooseCircleViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,OCTSubmanagerUserDelegate>
 {
     BOOL isFindRequest;
     BOOL isLoginRequest;
     NSString *currentURL;
     int socketDisCount;
+    int toxSuccessCount;
 }
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomHeight; // 44
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (weak, nonatomic) IBOutlet UIButton *leftBtn;
 @property (weak, nonatomic) IBOutlet UIButton *rightBtn;
 @property (weak, nonatomic) IBOutlet UIButton *leaveBtn;
+@property (nonatomic ,strong) ConnectView *connectView;
 
 @property (nonatomic) BOOL isEdit;
 @property (nonatomic ,strong) NSMutableArray *circleArr;
@@ -65,6 +72,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnDisconnect:) name:SOCKET_ON_DISCONNECT_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:SOCKET_LOGIN_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
 }
 #pragma mark - Operation
 - (void)dataInit {
@@ -215,6 +223,7 @@
     if (model.routerM.isConnected) {
         return;
     }
+    
     [self.view showHudInView:self.view hint:Connect_Cricle];
     RouterModel *selectRouterModel = model.routerM;
     // 发送退出请求
@@ -236,18 +245,18 @@
         // 清除所有正在下载文件
         [[FileDownUtil getShareObject] removeAllTask];
         
-        [RouterConfig getRouterConfig].currentRouterIp = @"";
-        [RouterConfig getRouterConfig].currentRouterSn = selectRouterModel.userSn;
-        [RouterConfig getRouterConfig].currentRouterToxid = selectRouterModel.toxid;
-        
-        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
-        
     } else {
         AppD.isConnect = NO;
-        // [self logOutTox];
+        AppD.currentRouterNumber = -1;
         [[NSNotificationCenter defaultCenter] postNotificationName:TOX_CONNECT_STATUS_NOTI object:nil];
     }
     [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
+    
+    [RouterConfig getRouterConfig].currentRouterIp = @"";
+    [RouterConfig getRouterConfig].currentRouterSn = selectRouterModel.userSn;
+    [RouterConfig getRouterConfig].currentRouterToxid = selectRouterModel.toxid;
+    
+    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
 }
 
 #pragma mark -连接socket_tox
@@ -262,24 +271,81 @@
         
     } else {
         if (AppD.manager) {
-           // [self addRouterFriend];
+            [self addRouterFriend];
         } else {
-            [self loginTox];
+            [self loginToxWithShowHud:NO];
         }
     }
 }
-- (void) findOrLogin
+
+// 添加tox好友
+- (void) addRouterFriend
 {
-//    if (isFind) {
-//        isFind = NO;
-//        [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
-//    } else if (isLogin) {
-//        isLogin = NO;
-//        sendCount = 0;
-//        [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
-//    }
+    if (![AppD.manager.friends friendIsExitWithFriend:[RouterConfig getRouterConfig].currentRouterToxid]) {
+        // 隐藏连接圈子提示
+         [self.view hideHud];
+        // 显示p2p连接
+        [self showConnectServerLoad];
+        // 添加好友
+        BOOL result = [AppD.manager.friends sendFriendRequestToAddress:[RouterConfig getRouterConfig].currentRouterToxid message:@"" error:nil];
+        if (!result) { // 添加好友失败
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideConnectServerLoad];
+                [self switchCircleFaieldWithHintString:@"Circle connection failed."];
+            });
+        }
+        
+    } else { // 好友已存在并且在线
+        if ([AppD.manager.friends getFriendConnectStatuWithFriendNumber:AppD.currentRouterNumber] > 0) {
+            // 走 find 请求
+            [self toxConnectSuccessSendFindRequest];
+            
+        } else {
+            // 隐藏连接圈子提示
+            [self.view hideHud];
+            [self showConnectServerLoad];
+        }
+    }
+}
+// tox 连接成功后 调用find 请求
+- (void) toxConnectSuccessSendFindRequest
+{
+    toxSuccessCount +=1;
+    if (toxSuccessCount == 1) {
+        [self.view showHudInView:self.view hint:Connect_Cricle];
+        isFindRequest = NO;
+        [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn showHud:NO];
+        [self performSelector:@selector(checkFindRequstOutTime) withObject:self afterDelay:10];
+    }
+    
+}
+// 显示连接p2p提示层
+- (void) showConnectServerLoad
+{
+    if (!_connectView) {
+        _connectView = [ConnectView loadConnectView];
+        @weakify_self
+        [_connectView setClickCancelBlock:^{
+            [weakSelf switchCircleFaieldWithHintString:@"Circle connection failed."];
+        }];
+    }
+    [_connectView showConnectView];
+}
+- (void) hideConnectServerLoad
+{
+    [_connectView hiddenConnectView];
 }
 
+#pragma mark -tox 登陆成功
+- (void) toxLoginSuccessWithManager:(id<OCTManager>)manager
+{
+    if (manager) {
+         [self addRouterFriend];
+    } else {
+        [self switchCircleFaieldWithHintString:@"Circle connection failed."];
+    }
+   
+}
 
 
 #pragma mark -- 切换失败
@@ -288,6 +354,7 @@
     [self.view hideHud];
     AppD.isSwitch = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+     [RouterConfig getRouterConfig].currentRouterIp = @"";
     [AppD setRootLoginWithType:RouterType];
     [AppD.window showHint:hitStr];
 }
@@ -313,8 +380,14 @@
 - (void) checkFindRequstOutTime
 {
     if (!isFindRequest) {
-        [self.view hideHud];
-        [self switchCircleFaieldWithHintString:@"Circle connection failed."];
+        if (toxSuccessCount == 2) {
+            isFindRequest = NO;
+            [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn showHud:NO];
+            [self performSelector:@selector(checkFindRequstOutTime) withObject:self afterDelay:10];
+        } else {
+            [self.view hideHud];
+            [self switchCircleFaieldWithHintString:@"Circle connection failed."];
+        }
     }
 }
 // 检测登录请求10秒内是否有返回
@@ -394,7 +467,14 @@
     }
 }
 
-
+ #pragma mark -加router好友成功
+- (void) toxAddRoterSuccess:(NSNotification *) noti
+{
+    NSLog(@"thread = %@",[NSThread currentThread]);
+    NSLog(@"加router好友成功----switch circle");
+    [self hideConnectServerLoad];
+    [self toxConnectSuccessSendFindRequest];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

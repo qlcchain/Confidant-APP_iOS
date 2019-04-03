@@ -332,6 +332,11 @@
                             return ;
                         }
                         datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                        
+                        if (weakSelf.msgModal.fileKey && weakSelf.msgModal.fileKey.length > 0) {
+                            datakey = aesDecryptString(weakSelf.msgModal.fileKey, datakey);
+                        }
+                        
                         if (datakey && ![datakey isEmptyString] && data && data.length>0) {
                             data = aesDecryptData(data, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
                             [SystemUtil removeDocmentFilePath:path];

@@ -28,6 +28,7 @@
 @property (strong, nonatomic) NSString *text;
 
 @property (assign, nonatomic) BOOL isOwer;
+@property (assign, nonatomic) int isAdmin;
 
 @property (strong, nonatomic) NSAttributedString *attributedText;
 

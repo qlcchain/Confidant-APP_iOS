@@ -323,6 +323,7 @@
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         if (!error) {
             if (success) {
+                NSData *imgData = [NSData dataWithContentsOfURL:filePath];
                 success(downloadTask,filePath.lastPathComponent);
             }
         } else {

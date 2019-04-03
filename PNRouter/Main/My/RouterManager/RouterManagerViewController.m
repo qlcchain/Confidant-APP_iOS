@@ -240,7 +240,7 @@ typedef enum : NSUInteger {
         } else {
             if (indexPath.row == 0) {
                 cell.icon.hidden = YES;
-                cell.lblDesc.text = _connectRouteM.name;
+                cell.lblDesc.text = _connectRouteM.aliasName?:@"";
             } else {
                 cell.icon.hidden = NO;
                 cell.lblDesc.text = @"";
@@ -253,7 +253,7 @@ typedef enum : NSUInteger {
             cell.nameLab.text = _routerArr[indexPath.section][indexPath.row];
             if (indexPath.row == 0) {
                 cell.icon.hidden = YES;
-                cell.lblDesc.text = _connectRouteM.name;
+                cell.lblDesc.text = _connectRouteM.aliasName?:@"";
             } else {
                 cell.icon.hidden = NO;
                 cell.lblDesc.text = @"";

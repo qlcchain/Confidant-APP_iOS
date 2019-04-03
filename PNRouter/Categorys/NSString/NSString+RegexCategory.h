@@ -193,5 +193,6 @@
               containLetter:(BOOL)containLetter
       containOtherCharacter:(NSString *)containOtherCharacter
         firstCannotBeDigtal:(BOOL)firstCannotBeDigtal;
-
+// 网址
+- (BOOL)isUrlAddress;
 @end

@@ -26,6 +26,9 @@
 - (IBAction)cacelAction:(id)sender {
     AppD.currentRouterNumber = -1;
     [self hiddenConnectView];
+    if (_clickCancelBlock) {
+        _clickCancelBlock();
+    }
 }
 
 - (void) showConnectView

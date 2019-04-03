@@ -179,6 +179,9 @@
 
 - (void) toxReConnectSuccessNoti:(NSNotification *) noti
 {
+    if (AppD.isSwitch || AppD.isLogOut) {
+        return;
+    }
     // 重新登录
     AppD.isDisConnectLogin = YES;
     UserConfig *userM = [UserConfig getShareObject];
@@ -186,7 +189,7 @@
 }
 - (void) socketOnconnectNoti:(NSNotification *) noti
 {
-    if (AppD.isSwitch) {
+    if (AppD.isSwitch || AppD.isLogOut) {
         return;
     }
     [HeartBeatUtil stop];
@@ -197,7 +200,7 @@
 }
 - (void) socketDisconnectNoti:(NSNotification *) noti
 {
-    if (AppD.isSwitch) {
+    if (AppD.isSwitch || AppD.isLogOut) {
         return;
     }
      [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
@@ -309,9 +312,9 @@
         NSArray *friendArr = [FriendModel mj_objectArrayWithKeyValuesArray:modelArr];
         [friendArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *model = obj;
-            if (model.remarks && ![model.remarks isEmptyString]) {
-                model.username = model.remarks;
-            }
+//            if (model.remarks && ![model.remarks isEmptyString]) {
+//                model.username = model.remarks;
+//            }
             model.publicKey = [LibsodiumUtil getFriendEnPublickkeyWithFriendSignPublicKey:model.signPublicKey];
         }];
         [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];

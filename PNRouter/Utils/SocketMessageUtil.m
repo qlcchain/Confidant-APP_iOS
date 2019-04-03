@@ -1348,12 +1348,45 @@
 }
 + (void) handleFileForward:(NSDictionary *)receiveDic {
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    NSString *fromID = receiveDic[@"params"][@"FromId"];
+    NSString *toID = receiveDic[@"params"][@"ToId"];
+    NSInteger fileType = [receiveDic[@"params"][@"FileType"] integerValue];
+    NSString *toKey = receiveDic[@"params"][@"ToKey"];
+    NSString *toUserName = receiveDic[@"params"][@"ToUserName"];
 //    0：成功
 //    1：用户id错误
 //    2：目标文件错误
 //    3：目标不可达
 //    4：其他错误
     if (retCode == 0) {
+        // 添加到chatlist
+        ChatListModel *chatModel = [[ChatListModel alloc] init];
+        chatModel.myID = [UserConfig getShareObject].userId;
+        chatModel.chatTime = [NSDate date];
+        chatModel.isHD = NO;
+        NSInteger msgType = fileType;
+        
+        chatModel.isGroup = [toID containsString:@"group"];
+        if (chatModel.isGroup) {
+            chatModel.friendID = [UserConfig getShareObject].userId;
+            chatModel.groupName = [toUserName base64DecodedString]?:toUserName;
+            chatModel.groupUserkey = toKey;
+            chatModel.groupID = toID;
+        } else {
+            chatModel.friendID = toID;
+            chatModel.friendName = [toUserName base64DecodedString]?:toUserName;
+        }
+       
+        if (msgType == 1) {
+            chatModel.lastMessage = @"[photo]";
+        } else if (msgType == 2) {
+            chatModel.lastMessage = @"[voice]";
+        } else if (msgType == 5){
+            chatModel.lastMessage = @"[file]";
+        } else if (msgType == 4){
+            chatModel.lastMessage = @"[video]";
+        }
+        [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
         
     } else {
         if (retCode == 1) {
@@ -1512,7 +1545,6 @@
         chatListModel.groupID = gId;
         chatListModel.groupName = [GName base64DecodedString]?:GName;
         chatListModel.friendName = @"";
-//        chatListModel.groupAlias = [Remark base64DecodedString]?:Remark;
         chatListModel.groupUserkey = UserKey;
         chatListModel.chatTime = [NSDate date];
         chatListModel.isHD = NO;

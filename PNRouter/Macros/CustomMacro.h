@@ -20,7 +20,8 @@
 #define FRIEND_CHAT_TABNAME  @"FRIEND_CHAT_TABNAME"
 // 消息缓存表
 #define CHAT_CACHE_TABNAME  @"CHAT_CACHE_TABNAME"
-
+// 群组标识
+#define GROUP_IDF 6
 #define OperationRecord_Table @"OperationRecord_Table"
 #define UserHeader_Table @"UserHeader_Table"
 // 群组请求通知表

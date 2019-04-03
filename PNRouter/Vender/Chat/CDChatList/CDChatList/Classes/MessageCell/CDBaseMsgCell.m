@@ -562,6 +562,11 @@
     if (!self.msgModal.isLeft) {
         UIMenuItem *item1 = [[UIMenuItem alloc] initWithTitle:@"Withdraw" action:@selector(selectWithdrawItem:)];
         [itmes addObject:item1];
+    } else {
+        if (self.msgModal.isAdmin == GROUP_IDF) { //是群主
+            UIMenuItem *item1 = [[UIMenuItem alloc] initWithTitle:@"Withdraw" action:@selector(selectWithdrawItem:)];
+            [itmes addObject:item1];
+        }
     }
     
     if (self.msgModal.msgType == CDMessageTypeImage || self.msgModal.msgType == CDMessageTypeMedia) {

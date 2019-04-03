@@ -312,15 +312,19 @@ typedef enum CTDisplayViewState : NSInteger {
     UIMenuItem *item2 = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(copycontent:)];
     UIMenuItem *item3 = [[UIMenuItem alloc] initWithTitle:@"All Select" action:@selector(selectAllContent:)];
     UIMenuItem *item4 = [[UIMenuItem alloc] initWithTitle:@"Forward" action:@selector(clickForwardItem:)];
+     UIMenuItem *item5 = [[UIMenuItem alloc] initWithTitle:@"Withdraw" action:@selector(clickWithdrawItem:)];
     if (self.isOwer) {
-        UIMenuItem *item5 = [[UIMenuItem alloc] initWithTitle:@"Withdraw" action:@selector(clickWithdrawItem:)];
+       
         [menu setMenuItems:@[item2,item3,item4,item5]];
     } else {
+        if (self.isAdmin == GROUP_IDF) {
+             [menu setMenuItems:@[item2,item3,item4,item5]];
+        } else {
+            [menu setMenuItems:@[item2,item3,item4]];
+        }
         
-        [menu setMenuItems:@[item2,item3,item4]];
     }
     
-   
     CGRect rec = CGRectMake(self.frame.size.width * 0.5, self.leftSelectionAnchor.frame.origin.y, 10, 10);
     [menu setTargetRect:rec inView:self];
     [menu setMenuVisible:YES animated:YES];

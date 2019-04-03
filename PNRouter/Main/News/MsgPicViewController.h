@@ -8,17 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "CDChatList.h"
+#import "PNBaseViewController.h"
+
 
 @interface MsgPicViewController : UIViewController
 @property(nonatomic, strong) UIImage *img;
 @property(nonatomic, assign) CGRect imgRectIntTableView;
 @property(nonatomic, copy) CDChatMessageArray msgs;
 @property(nonatomic, copy) NSString *msgId;
+@property (nonatomic , strong) PNBaseViewController *chatVC;
 
 @property(nonatomic, strong) UIImageView *imgView;
 
 +(void)addToRootViewController:(UIImage *)img
                        ofMsgId:(NSString *)msgId
                             in:(CGRect)imgRectIntTableView
-                          from: (CDChatMessageArray) msgs;
+                          from: (CDChatMessageArray) msgs vc:(PNBaseViewController *) vc;
 @end

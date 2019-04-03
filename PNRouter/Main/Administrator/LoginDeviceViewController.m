@@ -83,7 +83,7 @@
     [RouterConfig getRouterConfig].currentRouterIp = @"";
     [RouterConfig getRouterConfig].currentRouterMAC = @"";
     [[NSNotificationCenter defaultCenter] postNotificationName:CANCEL_LOGINMAC_NOTI object:nil];
-   [self leftNavBarItemPressedWithPop:NO];
+   [self leftNavBarItemPressedWithPop:YES];
 }
 
 - (IBAction)loginAction:(id)sender {

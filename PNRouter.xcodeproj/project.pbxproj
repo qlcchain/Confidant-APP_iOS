@@ -277,6 +277,9 @@
 		73121A74219C26E900510B48 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A72219C26E900510B48 /* LoginViewController.m */; };
 		73121A75219C26E900510B48 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73121A73219C26E900510B48 /* LoginViewController.xib */; };
 		7317447421F072110018BA50 /* EntryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7317447321F072110018BA50 /* EntryModel.m */; };
+		73194E91225360520047F50C /* ChatImgCacheUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E90225360520047F50C /* ChatImgCacheUtil.m */; };
+		731C6310225209F100C05CA7 /* CodeMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 731C630E225209F100C05CA7 /* CodeMsgViewController.m */; };
+		731C6311225209F100C05CA7 /* CodeMsgViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731C630F225209F100C05CA7 /* CodeMsgViewController.xib */; };
 		732DCEE1223788A300B2A2CA /* AddGroupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732DCEDF223788A300B2A2CA /* AddGroupMenuViewController.m */; };
 		732DCEE2223788A300B2A2CA /* AddGroupMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732DCEE0223788A300B2A2CA /* AddGroupMenuViewController.xib */; };
 		732DCEE6223796B800B2A2CA /* AddNewMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732DCEE4223796B800B2A2CA /* AddNewMemberViewController.m */; };
@@ -1074,6 +1077,11 @@
 		73121A73219C26E900510B48 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		7317447221F072110018BA50 /* EntryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntryModel.h; sourceTree = "<group>"; };
 		7317447321F072110018BA50 /* EntryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EntryModel.m; sourceTree = "<group>"; };
+		73194E8F225360520047F50C /* ChatImgCacheUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatImgCacheUtil.h; sourceTree = "<group>"; };
+		73194E90225360520047F50C /* ChatImgCacheUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatImgCacheUtil.m; sourceTree = "<group>"; };
+		731C630D225209F100C05CA7 /* CodeMsgViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeMsgViewController.h; sourceTree = "<group>"; };
+		731C630E225209F100C05CA7 /* CodeMsgViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeMsgViewController.m; sourceTree = "<group>"; };
+		731C630F225209F100C05CA7 /* CodeMsgViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeMsgViewController.xib; sourceTree = "<group>"; };
 		732DCEDE223788A300B2A2CA /* AddGroupMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddGroupMenuViewController.h; sourceTree = "<group>"; };
 		732DCEDF223788A300B2A2CA /* AddGroupMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddGroupMenuViewController.m; sourceTree = "<group>"; };
 		732DCEE0223788A300B2A2CA /* AddGroupMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddGroupMenuViewController.xib; sourceTree = "<group>"; };
@@ -1960,6 +1968,9 @@
 				584A448221460B0800608122 /* NewsViewController.xib */,
 				7330F3D52147ABAD00FF4EEC /* MsgPicViewController.h */,
 				7330F3D62147ABAD00FF4EEC /* MsgPicViewController.m */,
+				731C630D225209F100C05CA7 /* CodeMsgViewController.h */,
+				731C630E225209F100C05CA7 /* CodeMsgViewController.m */,
+				731C630F225209F100C05CA7 /* CodeMsgViewController.xib */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -3073,6 +3084,8 @@
 				73C4B55A22375C660018146C /* FileConfig.m */,
 				58E3A5742242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.h */,
 				58E3A5752242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m */,
+				73194E8F225360520047F50C /* ChatImgCacheUtil.h */,
+				73194E90225360520047F50C /* ChatImgCacheUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3768,6 +3781,7 @@
 				7330F509214A71BC00FF4EEC /* AddFriendViewController.xib in Resources */,
 				584B43AA21FF0B9800D1F21A /* ConfigDiskCell.xib in Resources */,
 				7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */,
+				731C6311225209F100C05CA7 /* CodeMsgViewController.xib in Resources */,
 				73899CC62152011000962B14 /* GuidePageView1.xib in Resources */,
 				58A23A7E223F6BC00098AED5 /* GroupMemberView.xib in Resources */,
 				583BF92C21F6E4940078A2A8 /* UploadFilesCell.xib in Resources */,
@@ -4008,6 +4022,7 @@
 				584A447921460AD800608122 /* MyViewController.m in Sources */,
 				7362575C214213AA00D7FD6B /* NSDateFormatter+Category.m in Sources */,
 				581FDF5621F024170068C120 /* DHT.m in Sources */,
+				73194E91225360520047F50C /* ChatImgCacheUtil.m in Sources */,
 				73C4B55F223783500018146C /* GroupChatListViewController.m in Sources */,
 				585AEE532140D2280098A070 /* HMScanner.m in Sources */,
 				583BF94F21F809000078A2A8 /* FilePreviewViewController.m in Sources */,
@@ -4030,6 +4045,7 @@
 				73EE8CBE2154E5330048866B /* ChooseContactViewController.m in Sources */,
 				7378840421ACF2970033A189 /* OCTChat.m in Sources */,
 				7330F3712146118800FF4EEC /* UIImage+Blur.m in Sources */,
+				731C6310225209F100C05CA7 /* CodeMsgViewController.m in Sources */,
 				7330F47B2147DBB800FF4EEC /* StringUtil.m in Sources */,
 				7330F4EF2149147200FF4EEC /* CDImageTableViewCell.m in Sources */,
 				581FDF5821F024170068C120 /* toxencryptsave.m in Sources */,

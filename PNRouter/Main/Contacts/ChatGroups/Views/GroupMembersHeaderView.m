@@ -13,7 +13,7 @@
 #import "FriendModel.h"
 
 @interface GroupMembersHeaderView ()
-
+@property (nonatomic ,strong) GroupMembersModel *memberModel;
 @end
 
 @implementation GroupMembersHeaderView
@@ -42,6 +42,7 @@
 }
 
 - (void)configHeaderWithModel:(GroupMembersModel *)model {
+    self.memberModel = model;
     _detailLab.text = [model.Type integerValue] == 0?@"Group Owner":nil;
 //    NSString *showName = model.Remarks&&model.Remarks.length>0?model.Remarks:model.Nickname;
     NSString *name = [model.showName base64DecodedString]?:model.showName;
@@ -52,4 +53,9 @@
     _headImg.image = defaultImg;
 }
 
+- (IBAction)clickAction:(id)sender {
+    if (_clickBlock) {
+        _clickBlock(self.memberModel);
+    }
+}
 @end

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @class ChatListModel;
+@class FriendModel;
 
 @interface ChatListDataUtil : NSObject
 
@@ -32,5 +33,5 @@
 - (void) removeGroupChatModelWithGID:(NSString *) gID;
 - (void) cancelChatHDWithFriendid:(NSString *) friendid;
 - (NSString *) getFriendSignPublickeyWithFriendid:(NSString *) fid;
-
+- (FriendModel *) getFriendWithUserid:(NSString *) fid;
 @end

@@ -19,6 +19,9 @@
 #import "UserModel.h"
 #import "LoginViewController.h"
 #import "RouterAliasViewController.h"
+#import "NSString+Base64.h"
+#import "UserConfig.h"
+#import "UserHeadUtil.h"
 
 @interface AccountManagementViewController ()
 {
@@ -39,8 +42,11 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnConnect:) name:SOCKET_ON_CONNECT_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnDisconnect:) name:SOCKET_ON_DISCONNECT_NOTI object:nil];
-   // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userIdcodeSuccessNoti:) name:@"UserIdcodeSuccessNoti" object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:SOCKET_LOGIN_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userRegisterSuccess:) name:USER_REGISTER_RECEVIE_NOTI object:nil];
     
 }
 
@@ -115,10 +121,11 @@
 
 - (void) sendfindRouterRequest
 {
-   // [SendRequestUtil sendUserFindWithToxid:_RouterId?:@"" usesn:_UserSn?:@""];
     [RouterConfig getRouterConfig].currentRouterToxid = _RouterId;
     [RouterConfig getRouterConfig].currentRouterSn = _UserSn;
-    [AppD setRootLoginWithType:MacType];
+    [SendRequestUtil sendUserFindWithToxid:_RouterId?:@"" usesn:_UserSn?:@""];
+    
+   // [AppD setRootLoginWithType:MacType];
 }
 
 //- (IBAction)activitionCodeAction:(id)sender {
@@ -134,19 +141,26 @@
 }
 
 - (IBAction)nextAction:(id)sender {
-    RouterModel *routherM = [RouterModel checkRoutherWithSn:_UserSn];
-    if (routherM) {
-        [RouterModel updateRouterConnectStatusWithSn:_UserSn];
-        AppD.isLoginMac = NO;
-        [RouterConfig getRouterConfig].currentRouterMAC = @"";
-        [AppD setRootLoginWithType:RouterType];
+//    RouterModel *routherM = [RouterModel checkRoutherWithSn:_UserSn];
+//    if (routherM) {
+//        [RouterModel updateRouterConnectStatusWithSn:_UserSn];
+//        AppD.isLoginMac = NO;
+//        [RouterConfig getRouterConfig].currentRouterMAC = @"";
+//        [AppD setRootLoginWithType:RouterType];
+//    } else {
+//        NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
+//        if (connectStatu == socketConnectStatusConnected) {
+//            [self sendfindRouterRequest];
+//        } else {
+//            [self connectSocket];
+//        }
+//    }
+    [RouterConfig getRouterConfig].currentRouterMAC = @"";
+    NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
+    if (connectStatu == socketConnectStatusConnected) {
+        [self sendfindRouterRequest];
     } else {
-        NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
-        if (connectStatu == socketConnectStatusConnected) {
-            [self sendfindRouterRequest];
-        } else {
-            [self connectSocket];
-        }
+        [self connectSocket];
     }
 
 }
@@ -226,16 +240,109 @@
             type = AccountTemp;
         }
         if (retCode == 0) { //已激活
-            [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
-            [UserModel createUserLocalWithName:userName userid:userid version:fileVersion filePay:@"" userpass:@"" userSn:usesn hashid:@""];
-            [RouterModel updateRouterConnectStatusWithSn:usesn];
-            LoginViewController *vc = [[LoginViewController alloc] init];
-            [self setRootVCWithVC:vc];
+//            LoginViewController *vc = [[LoginViewController alloc] init];
+//            [self setRootVCWithVC:vc];
+             [self sendLoginRequestWithUserid:userid usersn:usesn];
         } else { // 未激活 或者日临时帐户
-            RegiterViewController *vc = [[RegiterViewController alloc] initWithAccountType:type];
-            [self setRootVCWithVC:vc];
+//            RegiterViewController *vc = [[RegiterViewController alloc] initWithAccountType:type];
+//            [self setRootVCWithVC:vc];
+             [self sendRegisterRequestWithShowHud:YES];
         }
     }
+}
+
+
+- (void) sendLoginRequestWithUserid:(NSString *) userid usersn:(NSString *) usersn
+{
+    
+    [SendRequestUtil sendUserLoginWithPass:usersn userid:userid showHud:YES];
+}
+
+- (void) sendRegisterRequestWithShowHud:(BOOL) isShow
+{
+    NSString *userName = [[UserModel getUserModel].username base64EncodedString];
+    [SendRequestUtil sendUserRegisterWithUserPass:@"" username:userName code:@""];
+    
+}
+
+
+#pragma mark -登陆成功
+- (void) loginSuccess:(NSNotification *) noti
+{
+    NSInteger retCode = [noti.object integerValue];
+    if (retCode == 0) {
+        [self updateUserHead];
+        [AppD setRootTabbarWithManager:nil];
+        //  [AppD.window showHint:@"Login Success"];
+    } else {
+        
+        [AppD setRootLoginWithType:MacType];
+        
+        if (retCode == 2) { // routeid不对
+            [AppD.window showHint:@"Routeid wrong."];
+        } else if (retCode == 1) { //需要验证
+            [AppD.window showHint:@"Need to verify"];
+        } else if (retCode == 3) { //uid错误
+            [AppD.window showHint:@"uid wrong."];
+        } else if (retCode == 4) { //登陆密码错误
+            [AppD.window showHint:@"Login failed, verification failed."];
+        } else if (retCode == 5) { //验证码错误
+            [AppD.window showHint:@"Verification code error."];
+        } else { // 其它错误
+            [AppD.window showHint:@"Login failed Other error."];
+        }
+    }
+}
+
+#pragma mark -注册成功
+- (void) userRegisterSuccess:(NSNotification *) noti
+{
+    
+    NSDictionary *receiveDic = (NSDictionary *)noti.object;
+     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        NSString *userid = receiveDic[@"params"][@"UserId"];
+        NSString *userSn = receiveDic[@"params"][@"UserSn"];
+        NSString *hashid = receiveDic[@"params"][@"Index"];
+        NSString *routeId = receiveDic[@"params"][@"RouteId"];
+        NSString *routerName = receiveDic[@"params"][@"RouterName"];
+        NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
+        NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
+        
+        // 保存用户
+        [UserModel updateHashid:hashid usersn:userSn userid:userid needasysn:0];
+        // 保存路由
+        [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userid];
+        [RouterModel updateRouterConnectStatusWithSn:userSn];
+        
+        [UserConfig getShareObject].userId = userid;
+        [UserConfig getShareObject].userName = [UserModel getUserModel].username;
+        [UserConfig getShareObject].usersn = userSn;
+        [UserConfig getShareObject].dataFilePay = dataFilePay;
+        [UserConfig getShareObject].dataFileVersion = dataFileVersion;
+        
+        [self updateUserHead];
+        
+        [AppD setRootTabbarWithManager:nil];
+    } else {
+         [AppD setRootLoginWithType:MacType];
+    }
+   
+    //  [AppD.window showHint:@"Registered successfully"];
+}
+
+// 注册推送
+- (void) registerPushNoti:(NSNotification *) noti
+{
+    [SendRequestUtil sendRegidReqeust];
+}
+
+- (void)updateUserHead {
+    //    if (_loginType == ImportType) {
+    NSString *Fid = [UserModel getUserModel].userId?:@"";
+    NSString *Md5 = @"0";
+    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
+    //    }
 }
 
 @end

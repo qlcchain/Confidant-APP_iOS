@@ -13,12 +13,15 @@ static NSString *BottonCellResue = @"BottonCell";
 
 typedef void(^DeleteContactBlock)(void);
 typedef void(^SendMessageBlock)(void);
+typedef void(^AddFriendBlock)(void);
 
 @interface BottonCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIButton *sendMessageBtn;
 @property (weak, nonatomic) IBOutlet UIButton *delegateBtn;
+@property (weak, nonatomic) IBOutlet UIButton *addFriendBtn;
 
 @property (nonatomic, copy) DeleteContactBlock deleteContactB;
 @property (nonatomic, copy) DeleteContactBlock sendMessageB;
+@property (nonatomic, copy) AddFriendBlock addFriendB;
 
 @end

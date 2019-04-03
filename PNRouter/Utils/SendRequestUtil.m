@@ -95,6 +95,9 @@
 #pragma mark - 登陆退出
 + (void) sendLogOut
 {
+    // 隐藏connect cirle...状态栏
+    [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"1"];
+    
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":@"LogOut",@"UserId":userM.userId,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":[RouterConfig getRouterConfig].currentRouterSn?:@""};
     [SocketMessageUtil sendVersion2WithParams:params];

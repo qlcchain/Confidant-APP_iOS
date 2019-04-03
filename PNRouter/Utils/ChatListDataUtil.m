@@ -47,6 +47,20 @@
     }];
     return signPublicKey;
 }
+
+- (FriendModel *) getFriendWithUserid:(NSString *) fid
+{
+    __block FriendModel *model = nil;
+    [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *friendModel = (FriendModel *)obj;
+        if ([friendModel.userId isEqualToString:fid]) {
+            model = friendModel;
+            *stop = YES;
+        }
+    }];
+    return model;
+}
+
 - (void) addFriendModel:(ChatListModel *) model
 {
     @synchronized (self) {
@@ -82,10 +96,9 @@
                 if ([friendModel.userId isEqualToString:model.friendID]) {
                     NSString *nickName = friendModel.username?:@"";
                     nickName = [nickName base64DecodedString];
-                    if (nickName && ![nickName isEmptyString]) {
-                        model.friendName = nickName;
-                    } else {
-                        model.friendName = friendModel.username;
+                    model.friendName = nickName;
+                    if (friendModel.remarks && friendModel.remarks.length > 0) {
+                         model.friendName = [friendModel.remarks base64DecodedString];
                     }
                     model.publicKey = friendModel.publicKey;
                     model.signPublicKey = friendModel.signPublicKey;
