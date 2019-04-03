@@ -25,6 +25,7 @@
 #import "ChatModel.h"
 #import "MD5Util.h"
 #import "NSData+Base64.h"
+#import "NSString+Base64.h"
 #import "UserHeadUtil.h"
 #import "UserHeaderModel.h"
 #import "FriendRequestViewController.h"
@@ -82,7 +83,7 @@
     _tableV.dataSource = self;
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
-    UIView *headBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 135)];
+    UIView *headBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 96)];
     [headBackView addSubview:self.myHeadView];
     _tableV.tableHeaderView = headBackView;
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -133,6 +134,13 @@
 {
     if (indexPath.section == 2) {
         return BottonCellHeight;
+    }
+    if (indexPath.section == 0) {
+        if (_friendModel.noFriend) {
+            if (indexPath.row == 0) {
+                return 0;
+            }
+        }
     }
     return GroupCellHeight;
 }
@@ -217,7 +225,7 @@
 }
 - (void) jumpToAddFriend
 {
-    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:_friendModel.username userId:_friendModel.userId signpk:_friendModel.signPublicKey];
+    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:[_friendModel.username base64EncodedString] userId:_friendModel.userId signpk:_friendModel.signPublicKey];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
