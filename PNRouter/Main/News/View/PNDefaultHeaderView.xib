@@ -18,14 +18,10 @@
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_headportrait" translatesAutoresizingMaskIntoConstraints="NO" id="99X-bZ-L12">
                     <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="48" id="GDe-Jy-Zx0"/>
-                        <constraint firstAttribute="width" constant="48" id="RfQ-Gz-hdw"/>
-                    </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KZH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EeK-xo-FtX">
                     <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -47,7 +43,7 @@
                 <outlet property="icon" destination="99X-bZ-L12" id="XS1-ia-N7w"/>
                 <outlet property="nameLab" destination="EeK-xo-FtX" id="VB8-a2-Ncc"/>
             </connections>
-            <point key="canvasLocation" x="158.40000000000001" y="137.6311844077961"/>
+            <point key="canvasLocation" x="92.799999999999997" y="-25.187406296851577"/>
         </view>
     </objects>
     <resources>

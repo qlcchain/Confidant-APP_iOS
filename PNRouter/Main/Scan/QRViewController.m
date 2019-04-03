@@ -13,6 +13,7 @@
 #import <Masonry/Masonry.h>
 #import <SDWebImage/UIButton+WebCache.h>
 #import "UIImage+Resize.h"
+#import <AVFoundation/AVFoundation.h>
 
 
 @interface QRViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
@@ -35,6 +36,31 @@
 
 - (IBAction)clickHead:(id)sender {
     [self clickAlbumButton];
+}
+
+- (IBAction)clickFlashlight:(UIButton *)sender {
+    
+    Class captureDeviceClass =NSClassFromString(@"AVCaptureDevice");
+    if(captureDeviceClass !=nil) {
+        AVCaptureDevice*device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        if([device hasTorch]) { // 判断是否有闪光灯
+            [device lockForConfiguration:nil];
+            if (sender.tag==0) {
+                sender.tag=1;
+                [device setTorchMode:AVCaptureTorchModeOn];//手电筒开                            // 请求独占访问硬件设备
+            }else{
+                sender.tag=0;
+                [device setTorchMode:AVCaptureTorchModeOff]; // 手电筒关
+            }
+            // 请求解除独占访问硬件设备
+            [device unlockForConfiguration];
+        } else {
+            [self.view showHint:@"Device unsupported"];
+        }
+    } else {
+         [self.view showHint:@"Device unsupported"];
+    }
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {

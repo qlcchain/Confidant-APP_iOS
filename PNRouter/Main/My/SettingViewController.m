@@ -108,6 +108,7 @@
     } else {
         MyCell *cell = [tableView dequeueReusableCellWithIdentifier:MyCellReuse];
         cell.iconWidth.constant = 0;
+        cell.iconleftV.constant = 0;
         cell.lblContent.text = title;
         if (indexPath.row == 0) {
             cell.lblSubContent.hidden = YES;

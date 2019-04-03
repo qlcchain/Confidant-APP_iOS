@@ -20,6 +20,7 @@
 #import "LibsodiumUtil.h"
 #import "UserModel.h"
 #import "NSString+Base64.h"
+#import "NSString+RegexCategory.h"
 
 @interface PNBaseViewController ()
 
@@ -242,6 +243,22 @@
     @weakify_self
     QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
         if (codeValue != nil && codeValue.length > 0) {
+            if (codeValue.length == 12) {
+                NSString *macAdress = @"";
+                for (int i = 0; i<12; i+=2) {
+                   NSString *macIndex = [codeValue substringWithRange:NSMakeRange(i, 2)];
+                    macAdress = [macAdress stringByAppendingString:macIndex];
+                    if (i < 10) {
+                        macAdress = [macAdress stringByAppendingString:@":"];
+                    }
+                }
+                if ([macAdress isMacAddress]) {
+                    AppD.isScaner = YES;
+                    [RouterConfig getRouterConfig].currentRouterMAC = macAdress;
+                    [weakSelf scanSuccessfulWithIsMacd:YES];
+                    return ;
+                }
+            }
             NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
             NSString *type = codeValues[0];
             

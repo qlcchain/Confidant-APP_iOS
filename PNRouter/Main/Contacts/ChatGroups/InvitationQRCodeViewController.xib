@@ -123,6 +123,7 @@
                                         <constraint firstAttribute="height" constant="56" id="E1T-mI-8qZ"/>
                                         <constraint firstAttribute="width" constant="56" id="kiv-4d-vze"/>
                                     </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EpS-iE-lnw">
                                     <rect key="frame" x="74" y="194" width="195" height="195"/>

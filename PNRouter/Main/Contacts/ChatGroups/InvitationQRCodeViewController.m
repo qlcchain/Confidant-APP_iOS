@@ -44,10 +44,12 @@
     [super viewDidLoad];
     _backView.layer.cornerRadius = 8.0f;
     _backView.layer.masksToBounds = YES;
-    _userHeadBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-    _userHeadBtn.layer.borderWidth = 2.0f;
+   
     _userHeadBtn.layer.cornerRadius = _userHeadBtn.width/2.0;
     _userHeadBtn.layer.masksToBounds = YES;
+    _userHeadBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+    _userHeadBtn.layer.borderWidth = 2.0f;
+    _userHeadBtn.backgroundColor = MAIN_PURPLE_COLOR;
     
     if (_userManageType == 1) {
         _lblName.text = [NSString stringWithFormat:@"【%@】",_routerUserModel.NickName];

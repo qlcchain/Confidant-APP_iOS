@@ -86,12 +86,13 @@
             <connections>
                 <outlet property="iconImageView" destination="mUP-XD-PHv" id="ntb-UK-uZa"/>
                 <outlet property="iconWidth" destination="nUl-8b-6EF" id="muP-4D-nc0"/>
+                <outlet property="iconleftV" destination="X6k-wu-PQd" id="p7m-ZR-fTJ"/>
                 <outlet property="lblContent" destination="wy8-Cg-UUl" id="Q1Y-o4-NWu"/>
                 <outlet property="lblSubContent" destination="jDX-ph-KvW" id="K4D-JQ-53f"/>
                 <outlet property="rightJD" destination="jSf-WQ-HxL" id="9Sb-1z-rfx"/>
                 <outlet property="subBtn" destination="a3I-A3-v7C" id="cp6-Vd-Oq1"/>
             </connections>
-            <point key="canvasLocation" x="-867.20000000000005" y="-98.50074962518741"/>
+            <point key="canvasLocation" x="-944" y="-102"/>
         </tableViewCell>
     </objects>
     <resources>

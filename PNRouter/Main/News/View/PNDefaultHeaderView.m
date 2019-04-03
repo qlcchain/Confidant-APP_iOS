@@ -34,7 +34,7 @@
         PNDefaultHeaderView *view = [PNDefaultHeaderView loadView];
         view.frame = backFrame;
         view.nameLab.text = name;
-        view.nameLab.font = [UIFont systemFontOfSize:16];
+        view.nameLab.font = [UIFont systemFontOfSize:18];
         resultImg = [view convertViewToImage];
     }
     return resultImg;
@@ -48,7 +48,7 @@
     } else {
         PNDefaultHeaderView *view = [PNDefaultHeaderView loadView];
         view.nameLab.text = name;
-        view.nameLab.font = [UIFont systemFontOfSize:16];
+        view.nameLab.font = [UIFont systemFontOfSize:18];
         resultImg = [view convertViewToImage];
     }
     return resultImg;
