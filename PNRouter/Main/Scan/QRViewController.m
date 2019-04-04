@@ -15,11 +15,11 @@
 #import "UIImage+Resize.h"
 #import <AVFoundation/AVFoundation.h>
 
-
-@interface QRViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-{
+@interface QRViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     NSInteger checkCount;
+    UIStatusBarStyle barStyle;
 }
+
 @property (weak, nonatomic) IBOutlet UIView *parentView;
 @property (nonatomic ,strong) HMScanner *scanner;
 @property (nonatomic ,strong) HMScannerBorder *scannerBorder;
@@ -69,6 +69,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
     _parentView.frame = CGRectMake(0, NAVIGATION_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT);
     [self prepareScanerBorder];
 }
@@ -82,6 +84,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    [UIApplication sharedApplication].statusBarStyle = barStyle;
     
     [_scannerBorder stopScannerAnimating];
     [_scanner stopScan];
@@ -100,7 +104,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
     
-    
+    barStyle = [UIApplication sharedApplication].statusBarStyle;
 }
 
 #pragma mark - Config View
@@ -138,8 +142,6 @@
         [AppD.window showHint:@"unable_photo"];
         return;
     }
-    
-   
 
     //调用系统相册的类
     UIImagePickerController *pickerController = [[UIImagePickerController alloc]init];
@@ -149,12 +151,15 @@
     [pickerController.navigationBar setTitleTextAttributes:attrs];
     pickerController.navigationBar.translucent = NO;
     pickerController.navigationBar.barTintColor = MAIN_PURPLE_COLOR;
+    pickerController.navigationBar.tintColor = [UIColor whiteColor];
     //设置相册呈现的样式
     pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary; //UIImagePickerControllerSourceTypeSavedPhotosAlbum;//图片分组列表样式
     pickerController.delegate = self;
     pickerController.allowsEditing = YES;
     //使用模态呈现相册
-    [self.navigationController presentViewController:pickerController animated:YES completion:nil];
+    [self.navigationController presentViewController:pickerController animated:YES completion:^{
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    }];
     
 //    @weakify_self
 //
@@ -271,8 +276,6 @@
                     [weakSelf.scanner startScan];
                 }
             }
-            
-            
         }];
     }
     return _scanner;

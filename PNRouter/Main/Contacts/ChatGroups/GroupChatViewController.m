@@ -422,6 +422,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [pickerController.navigationBar setTitleTextAttributes:attrs];
             pickerController.navigationBar.translucent = NO;
             pickerController.navigationBar.barTintColor = MAIN_WHITE_COLOR;
+            pickerController.navigationBar.tintColor = [UIColor whiteColor];
             //设置选取的照片是否可编辑
             pickerController.allowsEditing = NO;
             //设置相册呈现的样式
