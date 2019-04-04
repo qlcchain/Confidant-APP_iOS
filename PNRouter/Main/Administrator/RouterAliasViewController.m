@@ -9,9 +9,14 @@
 #import "RouterAliasViewController.h"
 #import "AccountManagementViewController.h"
 #import "SocketMessageUtil.h"
+#import "PNRouter-Swift.h"
+#import "SystemUtil.h"
+#import "NSString+Trim.h"
 
 @interface RouterAliasViewController ()
-
+{
+    BOOL isRouterAliasViewController;
+}
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UILabel *headerLab;
 @property (weak, nonatomic) IBOutlet UITextField *aliasTF;
@@ -30,8 +35,15 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    isRouterAliasViewController = YES;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    isRouterAliasViewController = NO;
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidLoad {
@@ -58,7 +70,41 @@
 }
 
 - (void)sendResetRouterName {
-    [SocketMessageUtil sendUpdateRourerNickName:_aliasTF.text showHud:YES];
+    
+    NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
+    if (connectStatu == socketConnectStatusConnected) {
+        NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:_aliasTF.text]];
+        [SocketMessageUtil sendUpdateRourerNickName:aliasName showHud:YES];
+    } else {
+        [self connectSocket];
+    }
+    
+}
+
+#pragma mark -连接socket
+- (void) connectSocket {
+    // 连接
+    [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
+    NSString *connectURL = [SystemUtil connectUrl];
+    [SocketUtil.shareInstance connectWithUrl:connectURL];
+}
+
+#pragma mark -通知回调
+- (void)socketOnConnect:(NSNotification *)noti {
+    if (!isRouterAliasViewController) {
+        return;
+    }
+    [AppD.window hideHud];
+    NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:_aliasTF.text]];
+    [SocketMessageUtil sendUpdateRourerNickName:aliasName showHud:YES];
+}
+
+- (void)socketOnDisconnect:(NSNotification *)noti {
+    if (!isRouterAliasViewController) {
+        return;
+    }
+    [AppD.window hideHud];
+    [AppD.window showHint:@"The connection fails"];
 }
 
 #pragma mark - Action
@@ -67,7 +113,8 @@
 }
 
 - (IBAction)nextAction:(id)sender {
-    if (!_aliasTF.text || _aliasTF.text.length <= 0) {
+    NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:_aliasTF.text]];
+    if (!aliasName || aliasName.length == 0) {
         [AppD.window showHint:@"Please input circle alias"];
         return;
     }

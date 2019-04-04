@@ -237,6 +237,7 @@ typedef enum : NSUInteger {
         cell.nameLab.text = _routerArr[indexPath.section][indexPath.row];
         if (isAdmin) {
             cell.icon.hidden = YES;
+            cell.lblDesc.text = @"";
         } else {
             if (indexPath.row == 0) {
                 cell.icon.hidden = YES;

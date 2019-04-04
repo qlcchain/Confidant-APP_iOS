@@ -100,20 +100,25 @@
         
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
         if (connectStatu == socketConnectStatusConnected) {
-            // 发送登陆请求
-            sendCount = 0;
-            [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
-        } else {
-            [RouterConfig getRouterConfig].currentRouterIp = @"";
-            [RouterConfig getRouterConfig].currentRouterMAC = @"";
-            [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
-            [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
-            isLogin = YES;
-            [self sendGB];
-//            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
-//            NSString *connectURL = [SystemUtil connectUrl];
-//            [SocketUtil.shareInstance connectWithUrl:connectURL];
+            [SocketUtil.shareInstance disconnect];
         }
+        
+        [RouterConfig getRouterConfig].currentRouterIp = @"";
+        [RouterConfig getRouterConfig].currentRouterMAC = @"";
+        [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
+        [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
+        isLogin = YES;
+        [self sendGB];
+        
+            // 发送登陆请求
+//            sendCount = 0;
+//            [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
+//        } else {
+//
+////            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
+////            NSString *connectURL = [SystemUtil connectUrl];
+////            [SocketUtil.shareInstance connectWithUrl:connectURL];
+//        }
     } else {
         [RouterConfig getRouterConfig].currentRouterMAC = @"";
         [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;

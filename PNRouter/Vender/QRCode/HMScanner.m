@@ -284,6 +284,11 @@
     
     // 3> 拍摄会话 - 判断能够添加设备
     session = [[AVCaptureSession alloc] init];
+    //高质量采集率
+    
+    [session setSessionPreset:AVCaptureSessionPresetHigh];
+    
+
     if (![session canAddInput:videoInput]) {
         //NSLog(@"无法添加输入设备");
         session = nil;
@@ -305,8 +310,39 @@
     
     // 5> 设置扫描类型
 //    dataOutput.rectOfInterest = self.scanFrame;
-    dataOutput.metadataObjectTypes = dataOutput.availableMetadataObjectTypes;
+// dataOutput.metadataObjectTypes = dataOutput.availableMetadataObjectTypes;
+    dataOutput.metadataObjectTypes = @[AVMetadataObjectTypeQRCode,//二维码
+                                       //以下为条形码，如果项目只需要扫描二维码，下面都不要写
+                                       //AVMetadataObjectTypeEAN13Code,
+                                      // AVMetadataObjectTypeEAN8Code,
+                                       AVMetadataObjectTypeCode128Code,
+                                       ];
     [dataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+    
+   
+    
+    AVCaptureVideoPreviewLayer * layer = [AVCaptureVideoPreviewLayer layerWithSession:session];
+    
+    layer.videoGravity=AVLayerVideoGravityResizeAspectFill;
+    
+    layer.frame = CGRectMake(0, 0, _scanFrame.size.width,_scanFrame.size.height);
+    
+   // [self.ScanReadView.layerinsertSublayer:layer atIndex:0];
+    
+   // [self setOverlayPickerView:self.ScanReadView];
+    
+    //放大焦距
+    NSError *error = nil;
+    
+    [device lockForConfiguration:&error];
+    
+    if (device.activeFormat.videoMaxZoomFactor > 2) {
+        
+        device.videoZoomFactor = 2;
+        
+    }else{
+        device.videoZoomFactor = device.activeFormat.videoMaxZoomFactor;
+    }
     
     // 6> 设置预览图层会话
     [self setupLayers];

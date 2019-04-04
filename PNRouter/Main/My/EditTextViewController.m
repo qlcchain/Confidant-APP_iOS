@@ -15,6 +15,7 @@
 #import "NSString+Base64.h"
 #import "NSString+HexStr.h"
 #import "ChatListModel.h"
+#import "NSString+Trim.h"
 
 @interface EditTextViewController ()
 
@@ -37,69 +38,82 @@
 
 - (IBAction)okAction:(id)sender {
     [self.view endEditing:YES];
+    
+    NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:_nameTF.text]];
+    
     switch (self.editType) {
         case EditName:
         {
-            if ([_nameTF.text.trim isEmptyString]) {
+            if ([aliasName isEmptyString]) {
                 [AppD.window showHint:@"Nickname cannot be empty"];
             } else {
-                
-                [SendRequestUtil sendUpdateWithNickName:_nameTF.text.trim?:@""];
+                [SendRequestUtil sendUpdateWithNickName:aliasName];
                 
             }
         }
             break;
         case EditFriendAlis:
         {
-            if ([_nameTF.text.trim isEmptyString]) {
+            if ([aliasName isEmptyString]) {
                 [AppD.window showHint:@"Nickname cannot be empty"];
             } else {
-                [SendRequestUtil sendAddFriendNickName:_nameTF.text.trim?:@"" friendId:self.friendModel.userId];
+                [SendRequestUtil sendAddFriendNickName:aliasName friendId:self.friendModel.userId];
             }
         }
             break;
         case EditCompany:
         {
-            UserModel *model = [UserModel getUserModel];
-            model.commpany = _nameTF.text.trim?:@"";
-            [model saveUserModeToKeyChain];
-             [self leftNavBarItemPressedWithPop:YES];
+            if ([aliasName isEmptyString]) {
+                [AppD.window showHint:@"Nickname cannot be empty"];
+            } else {
+                UserModel *model = [UserModel getUserModel];
+                model.commpany = aliasName;
+                [model saveUserModeToKeyChain];
+                [self leftNavBarItemPressedWithPop:YES];
+            }
         }
             break;
         case EditPosition:
         {
-            UserModel *model = [UserModel getUserModel];
-            model.position = _nameTF.text.trim?:@"";
-            [model saveUserModeToKeyChain];
-             [self leftNavBarItemPressedWithPop:YES];
+            if ([aliasName isEmptyString]) {
+                [AppD.window showHint:@"Nickname cannot be empty"];
+            } else {
+                UserModel *model = [UserModel getUserModel];
+                model.position = aliasName;
+                [model saveUserModeToKeyChain];
+                [self leftNavBarItemPressedWithPop:YES];
+            }
         }
             break;
         case EditLocation:
         {
-            UserModel *model = [UserModel getUserModel];
-            model.position = _nameTF.text.trim?:@"";
-            [model saveUserModeToKeyChain];
-             [self leftNavBarItemPressedWithPop:YES];
+            if ([aliasName isEmptyString]) {
+                [AppD.window showHint:@"Nickname cannot be empty"];
+            } else {
+                UserModel *model = [UserModel getUserModel];
+                model.location = aliasName;
+                [model saveUserModeToKeyChain];
+                [self leftNavBarItemPressedWithPop:YES];
+            }
         }
             break;
         case EditAlis:
         {
-            NSString *name = _nameTF.text.trim?:@"";
-            _routerM.aliasName = name;
-            [RouterModel updateRouterName:name usersn:_routerM.userSn];
+            _routerM.aliasName = aliasName;
+            [RouterModel updateRouterName:aliasName usersn:_routerM.userSn];
              [self leftNavBarItemPressedWithPop:YES];
         }
             break;
         case EditGroupAlias:
         {
             NSString *alias = [_groupInfoM.Remark base64DecodedString]?:@"";
-            if (!_nameTF.text || _nameTF.text.length <= 0) {
+            if ([aliasName isEmptyString]) {
                 [AppD.window showHint:@"Please enter alias."];
             } else {
-                if ([alias isEqualToString:_nameTF.text]) {
+                if ([alias isEqualToString:aliasName]) {
                     [AppD.window showHint:@"Please enter a different alias."];
                 } else {
-                    NSString *base64Name = [_nameTF.text base64EncodedString];
+                    NSString *base64Name = [aliasName base64EncodedString];
                     [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@([NSString numberWithHexString:@"F1"]) ToId:nil Name:base64Name NeedVerify:nil showHud:YES];
                 }
             }
@@ -108,13 +122,13 @@
         case EditGroupName:
         {
             NSString *name = [_groupInfoM.GName base64DecodedString]?:@"";
-            if (!_nameTF.text || _nameTF.text.length <= 0) {
+            if ([aliasName isEmptyString]) {
                 [AppD.window showHint:@"Please enter name."];
             } else {
-                if ([name isEqualToString:_nameTF.text]) {
+                if ([name isEqualToString:aliasName]) {
                     [AppD.window showHint:@"Please enter a different name."];
                 } else {
-                    NSString *base64Name = [_nameTF.text base64EncodedString];
+                    NSString *base64Name = [aliasName base64EncodedString];
                     [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@(1) ToId:nil Name:base64Name NeedVerify:nil showHud:YES];
                 }
             }
@@ -242,13 +256,13 @@
     NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(GId)]];
     if (friends && friends.count > 0) {
         ChatListModel *model = friends[0];
-        model.groupAlias = _nameTF.text;
+        model.groupAlias = _nameTF.text.trim;
         [model bg_saveOrUpdate];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:MessageList_Update_Noti object:nil];
     
     if (_reviseSuccessB) {
-        _reviseSuccessB(_nameTF.text);
+        _reviseSuccessB(_nameTF.text.trim);
     }
     [self leftNavBarItemPressedWithPop:YES];
 }
@@ -259,13 +273,13 @@
     NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(GId)]];
     if (friends && friends.count > 0) {
         ChatListModel *model = friends[0];
-        model.groupName = _nameTF.text;
+        model.groupName = _nameTF.text.trim;
         [model bg_saveOrUpdate];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:MessageList_Update_Noti object:nil];
     
     if (_reviseSuccessB) {
-        _reviseSuccessB(_nameTF.text);
+        _reviseSuccessB(_nameTF.text.trim);
     }
     [self leftNavBarItemPressedWithPop:YES];
 }

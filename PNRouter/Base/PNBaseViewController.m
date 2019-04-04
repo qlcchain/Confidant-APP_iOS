@@ -21,6 +21,7 @@
 #import "UserModel.h"
 #import "NSString+Base64.h"
 #import "NSString+RegexCategory.h"
+#import "SystemUtil.h"
 
 @interface PNBaseViewController ()
 
@@ -330,7 +331,13 @@
         }
         [manager.bootstrap addPredefinedNodes];
         [manager.bootstrap bootstrap];
-        AppD.manager = manager;
+        
+        if ([SystemUtil isSocketConnect] || AppD.currentRouterNumber < 0) {
+            AppD.manager = nil;
+        } else {
+            AppD.manager = manager;
+        }
+        
         [weakSelf toxLoginSuccessWithManager:manager];
         
     } failureBlock:^(NSError * _Nonnull error) {
