@@ -301,7 +301,10 @@
     [session addInput:videoInput];
     [session addOutput:dataOutput];
     
+    session.sessionPreset = AVCaptureSessionPreset1920x1080;
+    
     // 5> 设置扫描类型
+//    dataOutput.rectOfInterest = self.scanFrame;
     dataOutput.metadataObjectTypes = dataOutput.availableMetadataObjectTypes;
     [dataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
     
