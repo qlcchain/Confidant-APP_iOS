@@ -40,6 +40,7 @@
 
 - (IBAction)clickFlashlight:(UIButton *)sender {
     
+    
     Class captureDeviceClass =NSClassFromString(@"AVCaptureDevice");
     if(captureDeviceClass !=nil) {
         AVCaptureDevice*device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -47,9 +48,11 @@
             [device lockForConfiguration:nil];
             if (sender.tag==0) {
                 sender.tag=1;
+                sender.selected = YES;
                 [device setTorchMode:AVCaptureTorchModeOn];//手电筒开                            // 请求独占访问硬件设备
             }else{
                 sender.tag=0;
+                sender.selected = NO;
                 [device setTorchMode:AVCaptureTorchModeOff]; // 手电筒关
             }
             // 请求解除独占访问硬件设备

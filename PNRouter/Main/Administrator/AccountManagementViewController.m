@@ -322,7 +322,6 @@
         [UserConfig getShareObject].dataFileVersion = dataFileVersion;
         
         [self updateUserHead];
-        
         [AppD setRootTabbarWithManager:nil];
     } else {
          [AppD setRootLoginWithType:MacType];
