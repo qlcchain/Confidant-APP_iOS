@@ -278,6 +278,8 @@
 		73121A75219C26E900510B48 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73121A73219C26E900510B48 /* LoginViewController.xib */; };
 		7317447421F072110018BA50 /* EntryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7317447321F072110018BA50 /* EntryModel.m */; };
 		73194E91225360520047F50C /* ChatImgCacheUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E90225360520047F50C /* ChatImgCacheUtil.m */; };
+		73194E95225598C30047F50C /* SendFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E93225598C30047F50C /* SendFileListViewController.m */; };
+		73194E96225598C30047F50C /* SendFileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73194E94225598C30047F50C /* SendFileListViewController.xib */; };
 		731C6310225209F100C05CA7 /* CodeMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 731C630E225209F100C05CA7 /* CodeMsgViewController.m */; };
 		731C6311225209F100C05CA7 /* CodeMsgViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731C630F225209F100C05CA7 /* CodeMsgViewController.xib */; };
 		732DCEE1223788A300B2A2CA /* AddGroupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732DCEDF223788A300B2A2CA /* AddGroupMenuViewController.m */; };
@@ -1079,6 +1081,9 @@
 		7317447321F072110018BA50 /* EntryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EntryModel.m; sourceTree = "<group>"; };
 		73194E8F225360520047F50C /* ChatImgCacheUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatImgCacheUtil.h; sourceTree = "<group>"; };
 		73194E90225360520047F50C /* ChatImgCacheUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatImgCacheUtil.m; sourceTree = "<group>"; };
+		73194E92225598C30047F50C /* SendFileListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendFileListViewController.h; sourceTree = "<group>"; };
+		73194E93225598C30047F50C /* SendFileListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendFileListViewController.m; sourceTree = "<group>"; };
+		73194E94225598C30047F50C /* SendFileListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendFileListViewController.xib; sourceTree = "<group>"; };
 		731C630D225209F100C05CA7 /* CodeMsgViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeMsgViewController.h; sourceTree = "<group>"; };
 		731C630E225209F100C05CA7 /* CodeMsgViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeMsgViewController.m; sourceTree = "<group>"; };
 		731C630F225209F100C05CA7 /* CodeMsgViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeMsgViewController.xib; sourceTree = "<group>"; };
@@ -1971,6 +1976,9 @@
 				731C630D225209F100C05CA7 /* CodeMsgViewController.h */,
 				731C630E225209F100C05CA7 /* CodeMsgViewController.m */,
 				731C630F225209F100C05CA7 /* CodeMsgViewController.xib */,
+				73194E92225598C30047F50C /* SendFileListViewController.h */,
+				73194E93225598C30047F50C /* SendFileListViewController.m */,
+				73194E94225598C30047F50C /* SendFileListViewController.xib */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -3773,6 +3781,7 @@
 				73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
+				73194E96225598C30047F50C /* SendFileListViewController.xib in Resources */,
 				584B43A421FF0AE700D1F21A /* ConfigDiskHeaderView.xib in Resources */,
 				583BF95021F809000078A2A8 /* FilePreviewViewController.xib in Resources */,
 				58BD2E6F2147B6CF0091A77D /* FileCell.xib in Resources */,
@@ -4241,6 +4250,7 @@
 				580CFE452227B7FD00460B41 /* PTBPerformanceViewController.m in Sources */,
 				583BF93F21F708B30078A2A8 /* DetailInformationCell.m in Sources */,
 				588F8CED220178FC000D7966 /* UploadFileHelper.m in Sources */,
+				73194E95225598C30047F50C /* SendFileListViewController.m in Sources */,
 				73780F07221EA9A400D2DDCF /* AccountCodeViewController.m in Sources */,
 				58BD2E5E21475E020091A77D /* HWUserdefault.m in Sources */,
 				73E2FB6E21A7F3FD00DAED52 /* RouterUserModel.m in Sources */,

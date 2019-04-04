@@ -9,7 +9,7 @@
 #import "NSString+File.h"
 #import "PNRouter-Swift.h"
 
-static NSInteger UploadFileNameLength = 128;
+static NSInteger UploadFileNameLength = 160;
 
 @implementation NSString (File)
 

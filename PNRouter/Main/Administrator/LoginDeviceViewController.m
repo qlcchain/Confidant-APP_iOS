@@ -71,6 +71,7 @@
 }
 
 - (void)sendLogin {
+    AppD.manager = nil;
     NSString *mac = [RouterConfig getRouterConfig].currentRouterMAC?:@"";
     NSString *loginKey = [_devicePWTF.text.trim SHA256];
     [SendRequestUtil sendRouterLoginWithMac:mac loginKey:loginKey showHud:YES];

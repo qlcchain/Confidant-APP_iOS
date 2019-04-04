@@ -342,7 +342,7 @@
     
     NSString *action = receiveDic[@"params"][@"Action"];
     
-    if (!([action isEqualToString:Action_login] || [action isEqualToString: Action_Register] || [action isEqualToString: Action_Recovery] || [action isEqualToString: Action_RouterLogin] || [action isEqualToString: Action_ResetRouterKey] || [action isEqualToString: Action_ResetUserIdcode])) {
+    if (!([action isEqualToString:Action_login] || [action isEqualToString: Action_Register] || [action isEqualToString: Action_Recovery] || [action isEqualToString: Action_RouterLogin] || [action isEqualToString: Action_ResetRouterKey] || [action isEqualToString: Action_ResetUserIdcode] || [action isEqualToString: Action_ResetRouterName])) {
         if (AppD.isLogOut) {
             return;
         }
@@ -1990,7 +1990,7 @@
 #pragma mark -设备管理员修改设备昵称
 + (void) sendUpdateRourerNickName:(NSString *) nickName showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Load..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"Name":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
