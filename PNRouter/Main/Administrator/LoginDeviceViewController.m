@@ -80,7 +80,12 @@
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
+    
     AppD.isLoginMac = NO;
+    NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
+    if (connectStatu == socketConnectStatusConnected) {
+        [[SocketUtil shareInstance] disconnect];
+    }
     [RouterConfig getRouterConfig].currentRouterIp = @"";
     [RouterConfig getRouterConfig].currentRouterMAC = @"";
     [[NSNotificationCenter defaultCenter] postNotificationName:CANCEL_LOGINMAC_NOTI object:nil];
@@ -187,7 +192,7 @@
 }
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
-    if (!isLoginDeviceViewController) {
+    if (!isLoginDeviceViewController || !AppD.isLoginMac) {
         return;
     }
     [AppD.window hideHud];

@@ -58,7 +58,7 @@
                 <constraint firstItem="Zid-Gt-Sws" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="mUU-US-8Lh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="12" y="-362"/>
+            <point key="canvasLocation" x="2" y="-376"/>
         </view>
     </objects>
 </document>

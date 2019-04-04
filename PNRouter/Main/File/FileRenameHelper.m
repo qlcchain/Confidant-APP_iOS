@@ -10,6 +10,7 @@
 #import "FileListModel.h"
 #import "PNRouter-Swift.h"
 #import "NSString+File.h"
+#import "NSString+Trim.h"
 
 @implementation FileRenameHelper
 
@@ -31,11 +32,14 @@
     [alertC addAction:alertCancel];
     UIAlertAction *alertConfirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField *textField = alertC.textFields.firstObject;
-        if (!textField.text || textField.text.length <= 0) {
+        
+        NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:textField.text]];
+        
+        if ([aliasName isEmptyString]) {
             [AppD.window showHint:@"Please enter file name"];
             return;
         }
-        NSString *rename = fileName.pathExtension?[textField.text stringByAppendingPathExtension:fileName.pathExtension]:textField.text;
+        NSString *rename = fileName.pathExtension?[aliasName stringByAppendingPathExtension:fileName.pathExtension]:aliasName;
         rename = [NSString getUploadFileNameOfCorrectLength:rename];
 //        NSString *rename = [textField.text stringByAppendingString:[fileName stringByReplacingOccurrencesOfString:fileName.stringByDeletingPathExtension withString:@""]?:@""];
         [SendRequestUtil sendFileRenameWithMsgId:model.MsgId Filename:fileName Rename:rename showHud:YES];

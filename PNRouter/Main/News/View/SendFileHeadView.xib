@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SendFileHeadView">
+            <rect key="frame" x="0.0" y="0.0" width="373" height="108"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oRW-gX-MBq">
+                    <rect key="frame" x="0.0" y="0.0" width="373" height="56"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Folder" translatesAutoresizingMaskIntoConstraints="NO" id="SdW-jM-joy">
+                            <rect key="frame" x="16" y="18" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="Cv2-Q5-hvv"/>
+                                <constraint firstAttribute="height" constant="20" id="oXA-VL-Qzj"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Local Files" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jhv-8y-rfU">
+                            <rect key="frame" x="46" y="18.5" width="77" height="19"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrive" translatesAutoresizingMaskIntoConstraints="NO" id="9mk-8C-bvw">
+                            <rect key="frame" x="349" y="21" width="8" height="14"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W2p-HA-hzL">
+                            <rect key="frame" x="0.0" y="0.0" width="373" height="56"/>
+                            <state key="normal" title="Button"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="SdW-jM-joy" firstAttribute="centerY" secondItem="oRW-gX-MBq" secondAttribute="centerY" id="6ne-Ti-5CN"/>
+                        <constraint firstAttribute="trailing" secondItem="W2p-HA-hzL" secondAttribute="trailing" id="CCF-Xb-yCR"/>
+                        <constraint firstAttribute="bottom" secondItem="W2p-HA-hzL" secondAttribute="bottom" id="N0c-lF-LhG"/>
+                        <constraint firstItem="SdW-jM-joy" firstAttribute="leading" secondItem="oRW-gX-MBq" secondAttribute="leading" constant="16" id="OJY-FS-dUK"/>
+                        <constraint firstItem="Jhv-8y-rfU" firstAttribute="leading" secondItem="SdW-jM-joy" secondAttribute="trailing" constant="10" id="Ozi-sq-z7S"/>
+                        <constraint firstItem="W2p-HA-hzL" firstAttribute="leading" secondItem="oRW-gX-MBq" secondAttribute="leading" id="X4d-qF-RPT"/>
+                        <constraint firstItem="Jhv-8y-rfU" firstAttribute="centerY" secondItem="oRW-gX-MBq" secondAttribute="centerY" id="Zg9-Fq-QEv"/>
+                        <constraint firstItem="W2p-HA-hzL" firstAttribute="top" secondItem="oRW-gX-MBq" secondAttribute="top" id="hNp-ut-Eo9"/>
+                        <constraint firstItem="9mk-8C-bvw" firstAttribute="centerY" secondItem="oRW-gX-MBq" secondAttribute="centerY" id="kjj-tb-8qG"/>
+                        <constraint firstAttribute="trailing" secondItem="9mk-8C-bvw" secondAttribute="trailing" constant="16" id="xn7-et-vRV"/>
+                        <constraint firstAttribute="height" constant="56" id="yZe-cX-d7R"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Documents sent through from 'Local Files' will be automatically added to ‘Confidant Drive'" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2nl-P2-vTk">
+                    <rect key="frame" x="16" y="63" width="341" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="28" id="8sf-bO-aht"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="oRW-gX-MBq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="QOg-Xg-cYD"/>
+                <constraint firstItem="2nl-P2-vTk" firstAttribute="top" secondItem="oRW-gX-MBq" secondAttribute="bottom" constant="7" id="Qvo-Po-mSH"/>
+                <constraint firstItem="oRW-gX-MBq" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="REu-HA-c7a"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="2nl-P2-vTk" secondAttribute="trailing" constant="16" id="cgR-Gk-Pcx"/>
+                <constraint firstItem="2nl-P2-vTk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="eeQ-BR-mKk"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="oRW-gX-MBq" secondAttribute="trailing" id="fLP-ul-gaE"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="128.80000000000001" y="-29.685157421289357"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Folder" width="35" height="35"/>
+        <image name="icon_arrive" width="8" height="14"/>
+    </resources>
+</document>
