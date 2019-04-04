@@ -13,19 +13,25 @@
 #define kMaxDetectedCount   20
 
 @interface HMScanner() <AVCaptureMetadataOutputObjectsDelegate>
+
 /// 父视图弱引用
 @property (nonatomic, weak) UIView *parentView;
 /// 扫描范围
 @property (nonatomic) CGRect scanFrame;
 /// 完成回调
 @property (nonatomic, copy) void (^completionCallBack)(NSString *);
+
+/// 预览图层
+@property(nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
+
+/// 数据输出
+@property(nonatomic, strong)  AVCaptureMetadataOutput *dataOutput;
+
 @end
 
 @implementation HMScanner {
     /// 拍摄会话
     AVCaptureSession *session;
-    /// 预览图层
-    AVCaptureVideoPreviewLayer *previewLayer;
     /// 绘制图层
     CALayer *drawLayer;
     /// 当前检测计数
@@ -161,7 +167,7 @@
         }
         
         // 转换对象坐标
-        AVMetadataMachineReadableCodeObject *dataObject = (AVMetadataMachineReadableCodeObject *)[previewLayer transformedMetadataObjectForMetadataObject:obj];
+        AVMetadataMachineReadableCodeObject *dataObject = (AVMetadataMachineReadableCodeObject *)[_previewLayer transformedMetadataObjectForMetadataObject:obj];
         
         // 判断扫描范围
         if (!CGRectContainsRect(self.scanFrame, dataObject.bounds)) {
@@ -260,12 +266,12 @@
     [self.parentView.layer insertSublayer:drawLayer atIndex:0];
     
     // 预览图层
-    previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
+    _previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
     
-    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    previewLayer.frame = self.parentView.bounds;
+    _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    _previewLayer.frame = self.parentView.bounds;
     
-    [self.parentView.layer insertSublayer:previewLayer atIndex:0];
+    [self.parentView.layer insertSublayer:_previewLayer atIndex:0];
 }
 
 /// 设置扫描会话
@@ -280,7 +286,7 @@
         return;
     }
     // 2> 数据输出
-    AVCaptureMetadataOutput *dataOutput = [[AVCaptureMetadataOutput alloc] init];
+    _dataOutput = [[AVCaptureMetadataOutput alloc] init];
     
     // 3> 拍摄会话 - 判断能够添加设备
     session = [[AVCaptureSession alloc] init];
@@ -295,7 +301,7 @@
         
         return;
     }
-    if (![session canAddOutput:dataOutput]) {
+    if (![session canAddOutput:_dataOutput]) {
         //NSLog(@"无法添加输入设备");
         session = nil;
         
@@ -304,19 +310,20 @@
     
     // 4> 添加输入／输出设备
     [session addInput:videoInput];
-    [session addOutput:dataOutput];
+    [session addOutput:_dataOutput];
+    
+    
     
     // 5> 设置扫描类型
-   // dataOutput.metadataObjectTypes = dataOutput.availableMetadataObjectTypes;
-    dataOutput.metadataObjectTypes = @[AVMetadataObjectTypeQRCode,//二维码
-                                       //以下为条形码，如果项目只需要扫描二维码，下面都不要写
-                                       //AVMetadataObjectTypeEAN13Code,
-                                      // AVMetadataObjectTypeEAN8Code,
+// dataOutput.metadataObjectTypes = dataOutput.availableMetadataObjectTypes;
+    _dataOutput.metadataObjectTypes = @[AVMetadataObjectTypeQRCode,
                                        AVMetadataObjectTypeCode128Code,
                                        ];
-    [dataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+    [_dataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
     
-   
+    // 优化扫描速度
+    session.sessionPreset = AVCaptureSessionPreset1920x1080;
+    
     
     AVCaptureVideoPreviewLayer * layer = [AVCaptureVideoPreviewLayer layerWithSession:session];
     
@@ -343,6 +350,11 @@
     
     // 6> 设置预览图层会话
     [self setupLayers];
+    
+    @weakify_self
+    [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureInputPortFormatDescriptionDidChangeNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock: ^(NSNotification *_Nonnull note) {
+        weakSelf.dataOutput.rectOfInterest = [weakSelf.previewLayer metadataOutputRectOfInterestForRect:weakSelf.scanFrame];
+    }];
 }
 
 @end
