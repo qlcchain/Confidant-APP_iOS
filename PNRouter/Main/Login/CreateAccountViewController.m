@@ -9,6 +9,7 @@
 #import "CreateAccountViewController.h"
 #import "UserModel.h"
 #import "ImportAccountViewController.h"
+#import "NSString+Trim.h"
 
 @interface CreateAccountViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
@@ -29,11 +30,12 @@
 }
 - (IBAction)nextAction:(id)sender {
     [self.view endEditing:YES];
-    if ([_nameTF.text.trim isEmptyString]) {
+     NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:_nameTF.text]];
+    if ([aliasName isEmptyString]) {
         [self.view showHint:@"Nickname cannot be empty."];
         return;
     }
-    [self createUserName:_nameTF.text.trim];
+    [self createUserName:aliasName];
 }
 
 - (void)viewDidLoad {

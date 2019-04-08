@@ -13,7 +13,7 @@
 + (NSString *)trim:(NSString *)val trimCharacterSet:(NSCharacterSet *)characterSet {
     NSString *returnVal = @"";
     if (val) {
-        returnVal = [val stringByTrimmingCharactersInSet:characterSet];
+        returnVal = [val stringByTrimmingCharactersInSet:characterSet]?:@"";
     }
     return returnVal;
 }

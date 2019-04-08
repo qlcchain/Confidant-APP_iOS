@@ -280,6 +280,8 @@
 		73194E91225360520047F50C /* ChatImgCacheUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E90225360520047F50C /* ChatImgCacheUtil.m */; };
 		73194E95225598C30047F50C /* SendFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E93225598C30047F50C /* SendFileListViewController.m */; };
 		73194E96225598C30047F50C /* SendFileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73194E94225598C30047F50C /* SendFileListViewController.xib */; };
+		73194E992255D11B0047F50C /* SendFileHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E982255D11B0047F50C /* SendFileHeadView.m */; };
+		73194E9B2255D1320047F50C /* SendFileHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73194E9A2255D1320047F50C /* SendFileHeadView.xib */; };
 		731C6310225209F100C05CA7 /* CodeMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 731C630E225209F100C05CA7 /* CodeMsgViewController.m */; };
 		731C6311225209F100C05CA7 /* CodeMsgViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731C630F225209F100C05CA7 /* CodeMsgViewController.xib */; };
 		732DCEE1223788A300B2A2CA /* AddGroupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732DCEDF223788A300B2A2CA /* AddGroupMenuViewController.m */; };
@@ -1084,6 +1086,9 @@
 		73194E92225598C30047F50C /* SendFileListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendFileListViewController.h; sourceTree = "<group>"; };
 		73194E93225598C30047F50C /* SendFileListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendFileListViewController.m; sourceTree = "<group>"; };
 		73194E94225598C30047F50C /* SendFileListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendFileListViewController.xib; sourceTree = "<group>"; };
+		73194E972255D11B0047F50C /* SendFileHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendFileHeadView.h; sourceTree = "<group>"; };
+		73194E982255D11B0047F50C /* SendFileHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendFileHeadView.m; sourceTree = "<group>"; };
+		73194E9A2255D1320047F50C /* SendFileHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendFileHeadView.xib; sourceTree = "<group>"; };
 		731C630D225209F100C05CA7 /* CodeMsgViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeMsgViewController.h; sourceTree = "<group>"; };
 		731C630E225209F100C05CA7 /* CodeMsgViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeMsgViewController.m; sourceTree = "<group>"; };
 		731C630F225209F100C05CA7 /* CodeMsgViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeMsgViewController.xib; sourceTree = "<group>"; };
@@ -1893,6 +1898,9 @@
 				583B2B2B2231099F00E6238D /* PNDefaultHeaderView.h */,
 				583B2B2C2231099F00E6238D /* PNDefaultHeaderView.m */,
 				583B2B2E223109A900E6238D /* PNDefaultHeaderView.xib */,
+				73194E972255D11B0047F50C /* SendFileHeadView.h */,
+				73194E982255D11B0047F50C /* SendFileHeadView.m */,
+				73194E9A2255D1320047F50C /* SendFileHeadView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3830,6 +3838,7 @@
 				73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */,
 				5833F9C6221E57F400F7B63D /* ContactHeaderView.xib in Resources */,
 				58F178A4221FF376001CD0AF /* ChooseContactTableCell.xib in Resources */,
+				73194E9B2255D1320047F50C /* SendFileHeadView.xib in Resources */,
 				583B2B3C22389F5A00E6238D /* NewRequestsGroupChatsCell1.xib in Resources */,
 				582BFE43221AAA1100D8C2C8 /* DiskManagementMMCCell.xib in Resources */,
 				73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */,
@@ -4360,6 +4369,7 @@
 				7362577F2142143F00D7FD6B /* NSString+RegexCategory.m in Sources */,
 				583BF91A21F6B5AB0078A2A8 /* DetailInformationViewController.m in Sources */,
 				736257A82142149300D7FD6B /* UIView+BlockGesture.m in Sources */,
+				73194E992255D11B0047F50C /* SendFileHeadView.m in Sources */,
 				7378840021ACF2970033A189 /* OCTMessageAbstract.m in Sources */,
 				736257C5214225FD00D7FD6B /* getgateway.c in Sources */,
 				582BFE4C221D26DF00D8C2C8 /* ImportAccountViewController.m in Sources */,
