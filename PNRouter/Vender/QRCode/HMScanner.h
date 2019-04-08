@@ -11,8 +11,6 @@
 /// 二维码/条码扫描器
 @interface HMScanner : NSObject
 
-@property (nonatomic) CGRect ddRect;
-
 /// 使用视图实例化扫描器，扫描预览窗口会添加到指定视图中
 ///
 /// @param view       指定的视图

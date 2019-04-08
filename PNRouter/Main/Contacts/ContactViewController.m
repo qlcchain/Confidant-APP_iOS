@@ -219,7 +219,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     ContactHeaderView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:ContactHeaderViewReuse];
 
-    NSArray *arr = _isSearch? self.searchDataArray : self.dataArray;
+    NSArray *arr = _isSearch ? self.searchDataArray : self.dataArray;
     ContactShowModel *model = arr[section];
     view.headerSection = section;
     [view configHeaderWithModel:model];
