@@ -308,11 +308,11 @@
         return;
     }
     
+    session.sessionPreset = AVCaptureSessionPreset1920x1080;
+    
     // 4> 添加输入／输出设备
     [session addInput:videoInput];
     [session addOutput:_dataOutput];
-    
-    
     
     // 5> 设置扫描类型
 // dataOutput.metadataObjectTypes = dataOutput.availableMetadataObjectTypes;
@@ -320,10 +320,7 @@
                                        AVMetadataObjectTypeCode128Code,
                                        ];
     [_dataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-    
-    // 优化扫描速度
-    session.sessionPreset = AVCaptureSessionPreset1920x1080;
-    
+
     
     AVCaptureVideoPreviewLayer * layer = [AVCaptureVideoPreviewLayer layerWithSession:session];
     
@@ -337,13 +334,9 @@
     
     //放大焦距
     NSError *error = nil;
-    
     [device lockForConfiguration:&error];
-    
     if (device.activeFormat.videoMaxZoomFactor > 2) {
-        
         device.videoZoomFactor = 2;
-        
     }else{
         device.videoZoomFactor = device.activeFormat.videoMaxZoomFactor;
     }

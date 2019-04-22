@@ -277,7 +277,6 @@
                 }
             }
         }];
-        _scanner.ddRect = [self.view convertRect:_scannerBorder.frame toView:AppD.window];
     }
     return _scanner;
 }
