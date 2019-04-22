@@ -71,7 +71,7 @@
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
-    _parentView.frame = CGRectMake(0, NAVIGATION_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT);
+   // _parentView.frame = CGRectMake(0, NAVIGATION_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT);
     [self prepareScanerBorder];
 }
 
@@ -103,7 +103,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
-    
+    self.navigationController.navigationBar.translucent = NO;
     barStyle = [UIApplication sharedApplication].statusBarStyle;
 }
 

@@ -26,15 +26,16 @@
 }
 
 + (void)createUserLocalWithName:(NSString *)name {
+    
     NSString *modeJson = [KeyCUtil getKeyValueWithKey:USER_LOCAL];
     if (!modeJson || [modeJson isEmptyString]) {
         UserModel *userM = [[UserModel alloc] init];
-        userM.username = name;
+        userM.username = name?:@"";
         userM.userId = @"";
         [KeyCUtil saveStringToKeyWithString:userM.mj_JSONString key:USER_LOCAL];
     } else {
         UserModel *userM = [UserModel getObjectWithKeyValues:[modeJson mj_keyValues]];
-        userM.username = name;
+        userM.username = name?:@"";
         [KeyCUtil saveStringToKeyWithString:userM.mj_JSONString key:USER_LOCAL];
     }
 }
@@ -109,7 +110,7 @@
 + (void)updateUserLocalWithName:(NSString *) name {
     NSString *modeJson = [KeyCUtil getKeyValueWithKey:USER_LOCAL];
     UserModel *userM = [UserModel getObjectWithKeyValues:[modeJson mj_keyValues]];;
-    userM.username = name;
+    userM.username = name?:@"";
     [KeyCUtil saveStringToKeyWithString:userM.mj_JSONString key:USER_LOCAL];
 }
 + (void)updateUserLocalWithPass:(NSString *) pass {

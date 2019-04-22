@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^GroupMemberDelBlock)(void);
 typedef void(^GroupMemberAddBlock)(void);
+typedef void(^GroupMemberHeadBlock)(NSInteger index);
 
 @interface GroupMemberView : UIView
 
@@ -45,6 +46,7 @@ typedef void(^GroupMemberAddBlock)(void);
 
 @property (nonatomic, copy) GroupMemberDelBlock delB;
 @property (nonatomic, copy) GroupMemberAddBlock addB;
+@property (nonatomic, copy) GroupMemberHeadBlock headB;
 
 + (instancetype)getInstance;
 - (void) updateConstraintWithPersonCount:(NSArray<GroupMemberShowModel *> *)arr;

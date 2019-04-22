@@ -44,16 +44,16 @@
 - (void)initCopy {
     BOOL en = self.type == YBIBCopywriterTypeEnglish;
     
-    self.videoIsInvalid = en ? @"Video is invalid" : @"视频无效";
-    self.videoError = en ? @"Video error" : @"视频错误";
-    self.unableToSave = en ? @"Unable to save" : @"无法保存";
-    self.imageIsInvalid = en ? @"Image is invalid" : @"图片无效";
-    self.downloadImageFailed = en ? @"Download failed" : @"图片下载失败";
-    self.getPhotoAlbumAuthorizationFailed = en ? @"Failed to get album authorization" : @"获取相册权限失败";
-    self.saveToPhotoAlbumSuccess = en ? @"Save successful" : @"已保存到系统相册";
-    self.saveToPhotoAlbumFailed = en ? @"Save failed" : @"保存失败";
-    self.saveToPhotoAlbum = en ? @"Save" : @"保存到相册";
-    self.cancel = en ? @"Cancel" : @"取消";
+    self.videoIsInvalid = en ? @"Video is invalid" : @"Video is invalid";
+    self.videoError = en ? @"Video error" : @"Video error";
+    self.unableToSave = en ? @"Unable to save" : @"Unable to save";
+    self.imageIsInvalid = en ? @"Image is invalid" : @"Image is invalid";
+    self.downloadImageFailed = en ? @"Download failed" : @"Download failed";
+    self.getPhotoAlbumAuthorizationFailed = en ? @"Failed to get album authorization" : @"Failed to get album authorization";
+    self.saveToPhotoAlbumSuccess = en ? @"Save successful" : @"Save successful";
+    self.saveToPhotoAlbumFailed = en ? @"Save failed" : @"Save failed";
+    self.saveToPhotoAlbum = en ? @"Save" : @"Save";
+    self.cancel = en ? @"Cancel" : @"Cancel";
 }
 
 #pragma mark - public

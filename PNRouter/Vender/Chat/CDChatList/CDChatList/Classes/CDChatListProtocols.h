@@ -221,13 +221,18 @@ typedef NSArray<CDChatMessage>* CDChatMessageArray;
  */
 -(void)chatlistLoadMoreMsg: (CDChatMessage)topMessage
                   callback: (void(^)(CDChatMessageArray, BOOL))finnished;
+
+/**
+ 点击图像
+ */
+-(void)clickHeadWithMessage:(CDChatMessage) clickMessage;
 @optional
 /**
  消息中的点击事件
  
  @param listInfo 点击事件体
  */
--(void)chatlistClickMsgEvent: (ChatListInfo *)listInfo;
+-(void)chatlistClickMsgEvent: (ChatListInfo *)listInfo imgView:(UIImageView *) imgV;
 
 - (void) clickChatMenuItem:(NSString *) itemTitle withMsgMode:(CDChatMessage ) msgModel;
 - (void) clickFileCellWithMsgMode:(CDChatMessage) msgModel withFilePath:(NSString *) filePath;

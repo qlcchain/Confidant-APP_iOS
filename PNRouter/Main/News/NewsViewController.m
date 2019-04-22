@@ -30,6 +30,7 @@
 #import "AddGroupMenuViewController.h"
 #import "GroupInfoModel.h"
 #import "GroupChatViewController.h"
+#import "OtherFileOpenViewController.h"
 
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate> {
     BOOL isSearch;
@@ -65,7 +66,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupQuitSuccessNoti:) name:GroupQuit_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageListUpdateNoti:) name:MessageList_Update_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherFileOpenNoti:) name:OTHER_FILE_OPEN_NOTI object:nil];
 }
 
 - (void)viewDidLoad {
@@ -99,6 +100,18 @@
     [self chatMessageChangeNoti:nil];
     [self showSocketStatu];
     [self addNoti];
+    
+    
+    if (AppD.fileURL) {
+        [self performSelector:@selector(jumpOtherFileVC) withObject:self afterDelay:1.0];
+    }
+}
+- (void) jumpOtherFileVC
+{
+    OtherFileOpenViewController *vc = [[OtherFileOpenViewController alloc] initWithFileUrl:AppD.fileURL];
+    vc.backVC = self;
+    AppD.fileURL = nil;
+    [self presentModalVC:vc animated:YES];
 }
 
 #pragma mark -Operation-
@@ -369,7 +382,7 @@
                 if ([codeValue isEqualToString:[UserConfig getShareObject].userId]) {
                     [AppD.window showHint:@"You cannot add yourself as a friend."];
                 } else if (codeValue.length != 76) {
-                    [AppD.window showHint:@"The two-dimensional code format is wrong."];
+                    [AppD.window showHint:@"QR code format is wrong."];
                 } else {
                     NSString *nickName = @"";
                     if (codeValues.count>2) {
@@ -460,6 +473,14 @@
 
 - (void)messageListUpdateNoti:(NSNotification *)noti {
     [self updateData];
+}
+
+- (void) otherFileOpenNoti:(NSNotification *) noti
+{
+    NSURL *url = noti.object;
+    OtherFileOpenViewController *vc = [[OtherFileOpenViewController alloc] initWithFileUrl:url];
+    vc.backVC = self;
+    [self presentModalVC:vc animated:YES];
 }
 
 #pragma mark - Layz

@@ -240,7 +240,7 @@ typedef enum : NSUInteger {
 - (void)sendPullFileList {
     NSString *UserId = [UserConfig getShareObject].userId;
     NSNumber *MsgStartId = @(0);
-    NSNumber *MsgNum = @(15);
+    NSNumber *MsgNum = @(50);
     NSNumber *Category = @(0); // ALL
     NSNumber *FileType = @(0);
     

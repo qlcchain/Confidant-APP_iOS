@@ -123,18 +123,26 @@
     [view setClickBlock:^(GroupMembersModel * _Nonnull model) {
         if (![model.ToxId isEqualToString:[UserModel getUserModel].userId]) {
             FriendModel *fModel = [[ChatListDataUtil getShareObject] getFriendWithUserid:model.ToxId];
+            FriendModel *friendModel = [[FriendModel alloc] init];
             if (!fModel) {
-                fModel = [[FriendModel alloc] init];
-                fModel.userId = model.ToxId;
-                fModel.username = [model.Nickname base64DecodedString];
-                fModel.signPublicKey = model.UserKey;
-                fModel.noFriend = YES;
+                friendModel.userId = model.ToxId;
+                friendModel.username = [model.Nickname base64DecodedString];
+                friendModel.signPublicKey = model.UserKey;
+                friendModel.noFriend = YES;
             } else {
-                fModel.username = fModel.username ?[fModel.username base64DecodedString]:@"";
-                fModel.remarks = fModel.remarks ?[fModel.remarks base64DecodedString]:@"";
+                friendModel.userId = fModel.userId;
+                friendModel.username = [fModel.username base64DecodedString]?:fModel.username;
+                friendModel.publicKey = fModel.publicKey;
+                friendModel.remarks = [fModel.remarks base64DecodedString]?:fModel.remarks;
+                friendModel.Index = fModel.Index;
+                friendModel.onLineStatu = fModel.onLineStatu;
+                friendModel.signPublicKey = fModel.signPublicKey;
+                friendModel.RouteId = fModel.RouteId;
+                friendModel.RouteName = fModel.RouteName;
+                friendModel.signPublicKey = fModel.publicKey;
                 
             }
-            [weakSelf jumpFriendDetailVC:fModel];
+            [weakSelf jumpFriendDetailVC:friendModel];
         }
        
     }];
@@ -163,6 +171,7 @@
 {
     FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
     vc.friendModel = model;
+    vc.isGroup = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark - UITextFeildDelegate

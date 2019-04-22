@@ -156,7 +156,16 @@
         }
         self.navigationController.viewControllers = marr;
     }
-   
+}
+
+// 保留第一个和最后一个
+- (void) moveAllNavgationViewController
+{
+    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+    if (marr.count > 1) {
+        NSArray *navArr = @[[marr firstObject],[marr lastObject]];
+        self.navigationController.viewControllers = navArr;
+    }
 }
 // 移除上一个vs
 - (void) moveNavgationBackOneViewController
@@ -301,6 +310,59 @@
     [self presentModalVC:vc animated:YES];
 }
 
+#pragma mark - Transition
+- (void)jumpToCircleQR {
+    
+    [RouterConfig getRouterConfig].currentRouterMAC = @"";
+    @weakify_self
+    QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
+        if (codeValue != nil && codeValue.length > 0) {
+            if (codeValue.length == 12) {
+                NSString *macAdress = @"";
+                for (int i = 0; i<12; i+=2) {
+                    NSString *macIndex = [codeValue substringWithRange:NSMakeRange(i, 2)];
+                    macAdress = [macAdress stringByAppendingString:macIndex];
+                    if (i < 10) {
+                        macAdress = [macAdress stringByAppendingString:@":"];
+                    }
+                }
+                if ([macAdress isMacAddress]) {
+                    AppD.isScaner = YES;
+                    [RouterConfig getRouterConfig].currentRouterMAC = macAdress;
+                    [weakSelf scanSuccessfulWithIsMacd:YES];
+                    return ;
+                }
+            }
+            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
+            NSString *type = codeValues[0];
+            
+            if ([[NSString getNotNullValue:type] isEqualToString:@"type_1"]) {
+                // router 码
+                NSString *result = aesDecryptString(codeValues[1],AES_KEY);
+                result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                if (result && result.length == 114) {
+                    
+                    NSString *toxid = [result substringWithRange:NSMakeRange(6, 76)];
+                    NSString *sn = [result substringWithRange:NSMakeRange(result.length-32, 32)];
+                    NSLog(@"%@",[RouterConfig getRouterConfig].currentRouterSn);
+                    
+                    AppD.isScaner = YES;
+                    [RouterConfig getRouterConfig].currentRouterToxid = toxid;
+                    [RouterConfig getRouterConfig].currentRouterSn = sn;
+                    [RouterConfig getRouterConfig].currentRouterIp = @"";
+                    
+                    [weakSelf scanSuccessfulWithIsMacd:NO];
+                } else {
+                    [weakSelf.view showHint:@"format error!"];
+                }
+            } else {
+                [weakSelf.view showHint:@"format error!"];
+            }
+        }
+    }];
+    [self presentModalVC:vc animated:YES];
+}
+
 - (void)jumpToLoginDevice {
     LoginDeviceViewController *vc = [[LoginDeviceViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
@@ -313,6 +375,7 @@
 - (void) loginToxWithShowHud:(BOOL)showHud
 {
     AppD.manager = nil;
+    AppD.currentRouterNumber = -1;
     if (showHud) {
          [AppD.window showHudInView:AppD.window hint:@"Connect P2P..."];
     }
@@ -332,13 +395,10 @@
         [manager.bootstrap addPredefinedNodes];
         [manager.bootstrap bootstrap];
         
-        if ([SystemUtil isSocketConnect] || AppD.currentRouterNumber < 0) {
-            AppD.manager = nil;
-        } else {
+        if (![SystemUtil isSocketConnect]) {
             AppD.manager = manager;
+            [weakSelf toxLoginSuccessWithManager:manager];
         }
-        
-        [weakSelf toxLoginSuccessWithManager:manager];
         
     } failureBlock:^(NSError * _Nonnull error) {
         dispatch_async(dispatch_get_main_queue(), ^{

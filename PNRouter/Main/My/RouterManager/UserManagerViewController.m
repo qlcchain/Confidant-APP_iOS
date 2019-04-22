@@ -8,7 +8,7 @@
 
 #import "UserManagerViewController.h"
 #import "SendRequestUtil.h"
-#import "GroupCell.h"
+//#import "GroupCell.h"
 #import "RouterUserModel.h"
 #import "ContactsHeadView.h"
 #import "NSString+Base64.h"
@@ -21,6 +21,7 @@
 #import <MJRefresh/MJRefreshStateHeader.h>
 #import <MJRefresh/MJRefreshHeader.h>
 #import "InvitationQRCodeViewController.h"
+#import "CircleMemberDetailViewController.h"
 
 @interface UserManagerViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 {
@@ -91,10 +92,10 @@
     // Hide the status
     ((MJRefreshStateHeader *)_tableV.mj_header).stateLabel.hidden = YES;
     
-    [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
+   // [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
     [_tableV registerNib:[UINib nibWithNibName:ContactsCellReuse bundle:nil] forCellReuseIdentifier:ContactsCellReuse];
     //[self.dataArray addObject:@[@"Create user accounts",@"Create temporary accounts"]];
-    [self.dataArray addObject:@[@"Create User Accounts"]];
+   // [self.dataArray addObject:@[@"Create User Accounts"]];
     [self addObserver];
     
 }
@@ -122,19 +123,19 @@
     } else {
         isSearch = YES;
         [self.searchDataArray removeAllObjects];
-        [self.searchDataArray addObject:@[@"Create User Accounts"]];
+      //  [self.searchDataArray addObject:@[@"Create User Accounts"]];
         
         __block NSMutableArray *ptArray = [NSMutableArray array];
         __block NSMutableArray *tempArray = [NSMutableArray array];
         
-        [self.dataArray[1] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self.dataArray[0] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             RouterUserModel *model = obj;
             NSString *userName = [model.NickName lowercaseString];
             if ([userName containsString:[tf.text.trim lowercaseString]]) {
                 [ptArray addObject:model];
             }
         }];
-        [self.dataArray[2] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self.dataArray[1] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             RouterUserModel *model = obj;
             NSString *userName = [model.NickName lowercaseString];
             if ([userName containsString:[tf.text.trim lowercaseString]]) {
@@ -166,9 +167,6 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return nil;
-    }
     if (isSearch ? [self.searchDataArray[section] count] == 0 : [self.dataArray[section] count] == 0) {
         return nil;
     }
@@ -176,7 +174,7 @@
     backView.backgroundColor = [UIColor clearColor];
     ContactsHeadView *view = [ContactsHeadView loadContactsHeadView];
     view.topContraintH.constant = 0;
-    if (section == 1) {
+    if (section == 0) {
         view.lblTitle.text = [@"User" stringByAppendingString:[NSString stringWithFormat:@" (%zd/%zd)",userCount,isSearch? [self.searchDataArray[section] count] : [self.dataArray[section] count]]];
     } else {
         view.lblTitle.text = [@"Temporoay" stringByAppendingString:[NSString stringWithFormat:@" (%zd/%zd)",tempCount,isSearch? [self.searchDataArray[section] count] : [self.dataArray[section] count]]];
@@ -187,24 +185,18 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        return GroupCellHeight;
-    }
     return ContactsCellHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 16;
-    }
-    if (section == 1) {
         if (isSearch) {
-            if ([self.searchDataArray[2] count] > 0) {
+            if ([self.searchDataArray[1] count] > 0) {
                 return 16;
             }
         } else {
-            if ([self.dataArray[2] count] > 0) {
+            if ([self.dataArray[1] count] > 0) {
                 return 16;
             }
         }
@@ -214,9 +206,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 0;
-    }
     if (isSearch ? [self.searchDataArray[section] count] == 0 : [self.dataArray[section] count] == 0) {
         return 0;
     }
@@ -225,11 +214,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        GroupCell *myCell = [tableView dequeueReusableCellWithIdentifier:GroupCellReuse];
-        myCell.lblName.text = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];
-        return myCell;
-    }
+//    if (indexPath.section == 0) {
+//        GroupCell *myCell = [tableView dequeueReusableCellWithIdentifier:GroupCellReuse];
+//        myCell.lblName.text = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];
+//        return myCell;
+//    }
     ContactsCell *myCell = [tableView dequeueReusableCellWithIdentifier:ContactsCellReuse];
     RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];
     [myCell setModeWithRoutherUserModel:model];
@@ -239,28 +228,26 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 0) {
-        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:self.rid];
-        [self presentModalVC:vc animated:YES];
-//        vc.userType = indexPath.row;
-//        [self.navigationController pushViewController:vc animated:YES];
-    } else {
-        if (indexPath.section == 1) {
-            RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];;
-            InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
-            vc.routerUserModel = model;
-            vc.userManageType = 1;
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            
-            RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];;
-            InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
-            vc.routerUserModel = model;
-            vc.userManageType = 1;
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-        
-    }
+    
+    RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];;
+//    InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
+//    vc.routerUserModel = model;
+//    vc.userManageType = 1;
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+    CircleMemberDetailViewController *vc = [[CircleMemberDetailViewController alloc] init];
+    vc.routerUserModel = model;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    
+//    if (indexPath.section == 0) {
+//        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:self.rid];
+//        [self presentModalVC:vc animated:YES];
+//
+//    } else {
+//
+//    }
 }
 
 #pragma mark - noti
@@ -272,7 +259,6 @@
         [self.dataArray removeAllObjects];
         userCount = 0;
         tempCount = 0;
-        [self.dataArray addObject:@[@"Create User Accounts"]];
     }
     
     NSArray *playod = noti.object;

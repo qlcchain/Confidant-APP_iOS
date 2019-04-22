@@ -117,18 +117,21 @@
 
 - (void)pullTmpAccountSuccessNoti:(NSNotification *)noti {
     NSDictionary *params = noti.object;
-    NSString *ToId = params[@"ToId"];
-    NSString *UserSN = params[@"UserSN"];
-    NSString *Qrcode = params[@"Qrcode"];
+    NSInteger retCode = [params[@"RetCode"] integerValue];
+    if (retCode == 0) {
+        NSString *Qrcode = params[@"Qrcode"];
+        NSString *ToId = params[@"ToId"];
+        NSString *UserSN = params[@"UserSN"];
+        RouterUserModel *model = [[RouterUserModel alloc] init];
+        model.UserType = 3;
+        model.Active = 0;
+        model.Qrcode = Qrcode;
+        model.UserSN = UserSN;
+        model.NickName = [RouterModel getConnectRouter].name;
+        //    model.NickName = @"TEMP USER";
+        [self jumpToTempQR:model];
+    }
     
-    RouterUserModel *model = [[RouterUserModel alloc] init];
-    model.UserType = 3;
-    model.Active = 0;
-    model.Qrcode = Qrcode;
-    model.UserSN = UserSN;
-    model.NickName = [RouterModel getConnectRouter].name;
-//    model.NickName = @"TEMP USER";
-    [self jumpToTempQR:model];
 }
 
 @end

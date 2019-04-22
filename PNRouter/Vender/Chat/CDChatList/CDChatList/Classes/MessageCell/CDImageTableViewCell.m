@@ -122,10 +122,13 @@
     UIImage *img = [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic objectForKey:[NSString stringWithFormat:@"%@_%@",friendID,data.fileName]];
     if (img) {
         self.imageContent_left.image = img;
+        data.mediaImage = img;
         if ( data.msgState != CDMessageStateNormal) {
             data.fileWidth = img.size.width;
             data.fileHeight = img.size.height;
             data.msgState = CDMessageStateNormal;
+            [ self.indicator_left stopAnimating];
+            [ self.indicator_left setHidden: YES];
             [self.tableView updateMessage:data];
         }
         return;
@@ -138,15 +141,17 @@
         if (!image && !data.isDown) {
             [SystemUtil removeDocmentFilePath:filePath];
         }
-        if ([SystemUtil filePathisExist:filePath])
+        if (image)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.imageContent_left.image = image;
                 data.fileWidth = image.size.width;
                 data.fileHeight = image.size.height;
                 if ( data.msgState != CDMessageStateNormal) {
-                    [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",friendID,data.fileName]];
+                    [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",friendID,data.fileName?:@""]];
                     data.msgState = CDMessageStateNormal;
+                    [ self.indicator_left stopAnimating];
+                    [ self.indicator_left setHidden: YES];
                     [weakSelf.tableView updateMessage:data];
                 }
             });
@@ -209,13 +214,22 @@
                                         {
                                             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                                                 UIImage *image = [[UIImage alloc] initWithData:fileData];
-                                                [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",friendID,data.fileName]];
-                                                
-                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                    data.msgState = CDMessageStateNormal;
-                                                    [weakSelf.tableView updateMessage:data];
-                                                    NSLog(@"下载成功! filePath = %@",filePath);
-                                                });
+                                                if (image) {
+                                                    [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",friendID,data.fileName?:@""]];
+                                                    
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        data.msgState = CDMessageStateNormal;
+                                                        [weakSelf.tableView updateMessage:data];
+                                                        NSLog(@"下载成功! filePath = %@",filePath);
+                                                    });
+                                                    
+                                                }  else {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        data.msgState = CDMessageStateDownloadFaild;
+                                                        [SystemUtil removeDocmentFilePath:imgPath];
+                                                        [weakSelf.tableView updateMessage:data];
+                                                    });
+                                                }
                                             });
                                         }
                                     }
@@ -271,10 +285,13 @@
     UIImage *img = [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic objectForKey:[NSString stringWithFormat:@"%@_%@",data.ToId,data.fileName]];
     if (img) {
          self.imageContent_right.image = img;
+         data.mediaImage = img;
         if ( data.msgState != CDMessageStateNormal) {
             data.fileWidth = img.size.width;
             data.fileHeight = img.size.height;
             data.msgState = CDMessageStateNormal;
+            [ self.indicator_right stopAnimating];
+            [ self.indicator_right setHidden: YES];
             [self.tableView updateMessage:data];
         }
         return;
@@ -288,16 +305,17 @@
         if (!image && !data.isDown) {
              [SystemUtil removeDocmentFilePath:filePath];
         }
-        
-        if ( [SystemUtil filePathisExist:filePath])
+        if (image)
         {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.imageContent_right.image = image;
                     data.fileWidth = image.size.width;
                     data.fileHeight = image.size.height;
                     if ( data.msgState != CDMessageStateNormal) {
-                         [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",data.ToId,data.fileName]];
+                        [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",data.ToId,data.fileName?:@""]];
                         data.msgState = CDMessageStateNormal;
+                        [ self.indicator_right stopAnimating];
+                        [ self.indicator_right setHidden: YES];
                         [self.tableView updateMessage:data];
                     }
                 });
@@ -353,12 +371,21 @@
                                             
                                             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                                                 UIImage *image = [[UIImage alloc] initWithData:fileData];
-                                                [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",data.ToId,data.fileName]];
-                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                    data.msgState = CDMessageStateNormal;
-                                                    [weakSelf.tableView updateMessage:data];
-                                                    NSLog(@"下载成功! filePath = %@",filePath);
-                                                });
+                                                if (image) {
+                                                    [[ChatImgCacheUtil getChatImgCacheUtilShare].imgCacheDic setObject:image forKey:[NSString stringWithFormat:@"%@_%@",data.ToId,data.fileName?:@""]];
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        data.msgState = CDMessageStateNormal;
+                                                        [weakSelf.tableView updateMessage:data];
+                                                        NSLog(@"下载成功! filePath = %@",filePath);
+                                                    });
+                                                } else {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        data.msgState = CDMessageStateDownloadFaild;
+                                                        [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
+                                                        [weakSelf.tableView updateMessage:data];
+                                                    });
+                                                }
+                                                
                                             });
                                         }
                                     }
@@ -499,8 +526,13 @@
     
     info.msgText = self.msgModal.msg;
     info.msgModel = self.msgModal;
-    if ([self.tableView.msgDelegate respondsToSelector:@selector(chatlistClickMsgEvent:)]) {
-        [self.tableView.msgDelegate chatlistClickMsgEvent:info];
+    if ([self.tableView.msgDelegate respondsToSelector:@selector(chatlistClickMsgEvent:imgView:)]) {
+        if (self.msgModal.isLeft) {
+            [self.tableView.msgDelegate chatlistClickMsgEvent:info imgView:self.imageContent_left];
+        } else {
+            [self.tableView.msgDelegate chatlistClickMsgEvent:info imgView:self.imageContent_right];
+        }
+        
     } else {
 #ifdef DEBUG
       NSLog(@"[CDChatList] chatlistClickMsgEvent未实现，不能响应点击事件");

@@ -30,7 +30,7 @@
                                 <action selector="head1Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="oiu-Ov-mVT"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mrd-3v-T4i">
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mrd-3v-T4i">
                             <rect key="frame" x="58" y="3" width="32" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="32" id="lMP-6a-PDI"/>
@@ -41,7 +41,7 @@
                                 <action selector="head2Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="rBP-rf-H0b"/>
                             </connections>
                         </button>
-                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kmD-JD-BEu">
+                        <button opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kmD-JD-BEu">
                             <rect key="frame" x="100" y="3" width="32" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="32" id="aFH-ba-gNv"/>
@@ -52,7 +52,7 @@
                                 <action selector="head3Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="rhl-SP-mTS"/>
                             </connections>
                         </button>
-                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YP5-OF-xlE">
+                        <button opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YP5-OF-xlE">
                             <rect key="frame" x="142" y="3" width="32" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="32" id="3zR-a2-hJ0"/>
@@ -63,7 +63,7 @@
                                 <action selector="head4Action:" destination="peP-7v-1Fg" eventType="touchUpInside" id="yO2-oe-TWr"/>
                             </connections>
                         </button>
-                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MiS-gT-LUf">
+                        <button opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MiS-gT-LUf">
                             <rect key="frame" x="184" y="3" width="32" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="YAz-pK-fGb"/>

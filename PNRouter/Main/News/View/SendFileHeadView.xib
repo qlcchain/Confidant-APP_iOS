@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SendFileHeadView">
-            <rect key="frame" x="0.0" y="0.0" width="373" height="108"/>
+            <rect key="frame" x="0.0" y="0.0" width="373" height="155"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oRW-gX-MBq">
@@ -36,7 +36,7 @@
                             <rect key="frame" x="349" y="21" width="8" height="14"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W2p-HA-hzL">
-                            <rect key="frame" x="0.0" y="0.0" width="373" height="56"/>
+                            <rect key="frame" x="0.0" y="10" width="373" height="46"/>
                             <state key="normal" title="Button"/>
                         </button>
                     </subviews>
@@ -49,7 +49,7 @@
                         <constraint firstItem="Jhv-8y-rfU" firstAttribute="leading" secondItem="SdW-jM-joy" secondAttribute="trailing" constant="10" id="Ozi-sq-z7S"/>
                         <constraint firstItem="W2p-HA-hzL" firstAttribute="leading" secondItem="oRW-gX-MBq" secondAttribute="leading" id="X4d-qF-RPT"/>
                         <constraint firstItem="Jhv-8y-rfU" firstAttribute="centerY" secondItem="oRW-gX-MBq" secondAttribute="centerY" id="Zg9-Fq-QEv"/>
-                        <constraint firstItem="W2p-HA-hzL" firstAttribute="top" secondItem="oRW-gX-MBq" secondAttribute="top" id="hNp-ut-Eo9"/>
+                        <constraint firstItem="W2p-HA-hzL" firstAttribute="top" secondItem="oRW-gX-MBq" secondAttribute="top" constant="10" id="hNp-ut-Eo9"/>
                         <constraint firstItem="9mk-8C-bvw" firstAttribute="centerY" secondItem="oRW-gX-MBq" secondAttribute="centerY" id="kjj-tb-8qG"/>
                         <constraint firstAttribute="trailing" secondItem="9mk-8C-bvw" secondAttribute="trailing" constant="16" id="xn7-et-vRV"/>
                         <constraint firstAttribute="height" constant="56" id="yZe-cX-d7R"/>
@@ -64,19 +64,44 @@
                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PHe-YZ-Gb5">
+                    <rect key="frame" x="0.0" y="91" width="373" height="40"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confidant Drive" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X3Z-9Q-gFX">
+                            <rect key="frame" x="16" y="0.0" width="357" height="40"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="0qU-Ls-7UX"/>
+                        <constraint firstItem="X3Z-9Q-gFX" firstAttribute="top" secondItem="PHe-YZ-Gb5" secondAttribute="top" id="Cr8-qW-7JX"/>
+                        <constraint firstAttribute="bottom" secondItem="X3Z-9Q-gFX" secondAttribute="bottom" id="XCH-UV-ZYi"/>
+                        <constraint firstItem="X3Z-9Q-gFX" firstAttribute="leading" secondItem="PHe-YZ-Gb5" secondAttribute="leading" constant="16" id="XeR-vO-zVO"/>
+                        <constraint firstAttribute="trailing" secondItem="X3Z-9Q-gFX" secondAttribute="trailing" id="yl2-r7-8Bq"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="PHe-YZ-Gb5" secondAttribute="trailing" id="3xM-Zf-cif"/>
+                <constraint firstItem="PHe-YZ-Gb5" firstAttribute="top" secondItem="2nl-P2-vTk" secondAttribute="bottom" id="OJs-e7-9UF"/>
                 <constraint firstItem="oRW-gX-MBq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="QOg-Xg-cYD"/>
                 <constraint firstItem="2nl-P2-vTk" firstAttribute="top" secondItem="oRW-gX-MBq" secondAttribute="bottom" constant="7" id="Qvo-Po-mSH"/>
                 <constraint firstItem="oRW-gX-MBq" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="REu-HA-c7a"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="2nl-P2-vTk" secondAttribute="trailing" constant="16" id="cgR-Gk-Pcx"/>
                 <constraint firstItem="2nl-P2-vTk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="eeQ-BR-mKk"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="oRW-gX-MBq" secondAttribute="trailing" id="fLP-ul-gaE"/>
+                <constraint firstItem="PHe-YZ-Gb5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="vQK-ZB-sW7"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="128.80000000000001" y="-29.685157421289357"/>
+            <connections>
+                <outlet property="localFileBtn" destination="W2p-HA-hzL" id="6Tz-l9-bF3"/>
+            </connections>
+            <point key="canvasLocation" x="-237.59999999999999" y="-135.38230884557723"/>
         </view>
     </objects>
     <resources>

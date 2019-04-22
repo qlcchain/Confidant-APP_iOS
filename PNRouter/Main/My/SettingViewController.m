@@ -23,6 +23,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableV;
 @property (nonatomic , strong) NSMutableArray *dataArray;
+@property (weak, nonatomic) IBOutlet UIView *clearDataBackView;
 
 @end
 
@@ -32,7 +33,7 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@"Configuration QR Code",@"Status",Screen_Lock_Str,Log_Out_Str, nil];
+        _dataArray = [NSMutableArray arrayWithObjects:Screen_Lock_Str,Log_Out_Str, nil];
     }
     return _dataArray;
 }
@@ -52,7 +53,29 @@
     [_myTableV registerNib:[UINib nibWithNibName:SettingCellReuse bundle:nil] forCellReuseIdentifier:SettingCellReuse];
     [_myTableV registerNib:[UINib nibWithNibName:LogOutCellReuse bundle:nil] forCellReuseIdentifier:LogOutCellReuse];
     
+    UITapGestureRecognizer *tapGeture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clearAppAllData)];
+    tapGeture.numberOfTapsRequired = 3;
+    _clearDataBackView.userInteractionEnabled = YES;
+    [_clearDataBackView addGestureRecognizer:tapGeture];
+}
+// 清除app所有信息
+- (void) clearAppAllData
+{
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"Clear all data and exit the app?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [SystemUtil clearAppAllData];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            exit(0);
+        });
+    }];
+    [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
+    [alertC addAction:alert1];
     
+    UIAlertAction *alertCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertC addAction:alertCancel];
+    
+    [self presentViewController:alertC animated:YES completion:nil];
 }
 
 #pragma mark - Operation
@@ -114,7 +137,9 @@
             cell.lblSubContent.hidden = YES;
             cell.subBtn.hidden = NO;
             [cell.subBtn setImage:[UIImage imageNamed:@"icon_code"] forState:UIControlStateNormal];
-        } else if (indexPath.row == 1) {
+        }
+        
+        /*else if (indexPath.row == 1) {
             cell.lblSubContent.hidden = NO;
             cell.subBtn.hidden = YES;
             if ([SystemUtil isSocketConnect]) {
@@ -131,7 +156,7 @@
                     cell.lblSubContent.text = @"OffLine";
                 }
             }
-        }
+        }*/
         
         return cell;
     }
@@ -141,10 +166,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 0) {
-        AccountCodeViewController *vc = [[AccountCodeViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+//    if (indexPath.row == 0) {
+//        AccountCodeViewController *vc = [[AccountCodeViewController alloc] init];
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }
 }
 
 @end

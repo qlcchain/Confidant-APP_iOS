@@ -70,7 +70,7 @@
             NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(model.groupID),bg_sqlKey(@"myID"),bg_sqlValue(model.myID),bg_sqlKey(@"isGroup"),bg_sqlValue(@(1))]];
             if (friends && friends.count > 0) {
                 ChatListModel *model1 = friends[0];
-                model1.friendName = model.friendName;
+                model1.friendName = model.friendName?:@"";
                 model1.groupName = model.groupName;
                 model1.groupAlias = model.groupAlias;
                 model1.isHD = model.isHD;

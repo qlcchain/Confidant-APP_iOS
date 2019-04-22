@@ -104,6 +104,10 @@
     _indicator_left.frame = _failLabel_left.frame;
     _indicator_left.center = _failLabel_left.center;
     
+    UITapGestureRecognizer *headTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(leftheadTapGestureAction:)];
+    _headImage_left.userInteractionEnabled = YES;
+    [_headImage_left addGestureRecognizer:headTapGesture];
+    
 }
 #pragma mark 初始化右侧消息UI
 -(void)initMessageContent_Right{
@@ -169,6 +173,10 @@
     
     _indicator_right.frame = _failLabel_right.frame;
     _indicator_right.center = _failLabel_right.center;
+    
+//    UITapGestureRecognizer *headTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rightheadTapGestureAction:)];
+//    _headImage_right.userInteractionEnabled = YES;
+//    [_headImage_right addGestureRecognizer:headTapGesture];
 }
 
 #pragma mark 根据消息中的cellHeight  bubbleWidth 更新左侧UI
@@ -411,6 +419,8 @@
     _headImage_right.backgroundColor = data.chatConfig.headBackGroundColor;
     _headImage_left.backgroundColor = data.chatConfig.headBackGroundColor;
     
+    
+    
     if (data.userThumImage || data.userThumImageURL){
         if (data.isLeft) {
             if (data.userThumImage) {
@@ -619,4 +629,16 @@
     }
 }
 
+
+#pragma mark ---点击头像手势
+- (void) rightheadTapGestureAction:(UIGestureRecognizer *) gesture
+{
+    if (self.tableView.msgDelegate) {
+        [self.tableView.msgDelegate clickHeadWithMessage:self.msgModal];
+    }
+}
+- (void) leftheadTapGestureAction:(UIGestureRecognizer *) gesture
+{
+     [self.tableView.msgDelegate clickHeadWithMessage:self.msgModal];
+}
 @end

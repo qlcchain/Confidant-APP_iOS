@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *passWord;
 @property (nonatomic, assign) NSInteger dataFileVersion;
 @property (nonatomic, copy) NSString *dataFilePay;
+@property (nonatomic ,strong) NSString *adminKey;
+@property (nonatomic ,strong) NSString *adminName;
+@property (nonatomic ,strong) NSString *adminId;
 
 + (instancetype) getShareObject;
 @end

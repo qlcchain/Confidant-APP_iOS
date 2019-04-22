@@ -34,9 +34,12 @@
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark - 用户注册
-+ (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code
++ (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code showHUD:(BOOL) isShow
 {
-    [AppD.window showHudInView:AppD.window hint:@"Register..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    if (isShow) {
+         [AppD.window showHudInView:AppD.window hint:@"Register..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+   
     NSDictionary *params = @{@"Action":@"Register",@"RouteId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":[RouterConfig getRouterConfig].currentRouterSn?:@"",@"Sign":@"",@"Pubkey":[EntryModel getShareObject].signPublicKey,@"NickName":userName};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
@@ -429,6 +432,13 @@
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 
-
++ (void) sendDelUserWithFromTid:(NSString *) fromTid toTid:(NSString *) toTid sn:(NSString *) sn showHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_DelUser,@"From":fromTid,@"To":toTid,@"Sn":sn};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 
 @end

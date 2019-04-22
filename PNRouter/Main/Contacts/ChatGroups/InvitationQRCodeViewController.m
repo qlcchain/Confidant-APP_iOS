@@ -19,8 +19,11 @@
 #import "UIImage+RoundedCorner.h"
 #import "UIImage+Resize.h"
 #import "UIView+Screenshot.h"
+#import "UserConfig.h"
+
 
 @interface InvitationQRCodeViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *lblCircleName;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UIImageView *codeImgView;
@@ -40,8 +43,16 @@
      [self shareCode];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullTmpAccountSuccessNoti:) name:PullTmpAccount_Success_Noti object:nil];
+    
     _backView.layer.cornerRadius = 8.0f;
     _backView.layer.masksToBounds = YES;
    
@@ -50,6 +61,8 @@
     _userHeadBtn.layer.borderColor = [UIColor whiteColor].CGColor;
     _userHeadBtn.layer.borderWidth = 2.0f;
     _userHeadBtn.backgroundColor = MAIN_PURPLE_COLOR;
+    
+    _lblCircleName.text = [NSString stringWithFormat:@"Circle Owner:  %@", [UserConfig getShareObject].adminName];
     
     if (_userManageType == 1) {
         _lblName.text = [NSString stringWithFormat:@"【%@】",_routerUserModel.NickName];
@@ -61,59 +74,50 @@
         NSString *userKey = _routerUserModel.UserKey;
         UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:self.routerUserModel.NickName]];
         [_userHeadBtn setImage:defaultImg forState:UIControlStateNormal];
+        [self getQrCodeImgWithQrCode:_routerUserModel.Qrcode];
         
-        UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
-        avatarImg = [avatarImg thumbnailImage:100 transparentBorder:0 cornerRadius:10 interpolationQuality:kCGInterpolationDefault];
-        UIImageView *backImgView  = [[UIImageView alloc] initWithImage:avatarImg];
-        backImgView.frame = CGRectMake(6, 6, 100, 100);
-        UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 112, 112)];
-        imgBackView.backgroundColor = [UIColor whiteColor];
-        imgBackView.layer.cornerRadius = 10;
-        imgBackView.layer.masksToBounds = YES;
-        [imgBackView addSubview:backImgView];
-        // uiview 生成图片
-        avatarImg = [imgBackView convertViewToImage];
-      
-        // UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
-        // [avatarImg roundedCornerImage:10 borderSize:0]
-        @weakify_self
-        [HMScanner qrImageWithString:_routerUserModel.Qrcode avatar:avatarImg completion:^(UIImage *image) {
-            weakSelf.codeImgView.image = image;
-        }];
     } else {
-        _lblName.text = [NSString stringWithFormat:@"【%@】",_routerM.name];
-        NSString *userType = [_routerM.userSn substringWithRange:NSMakeRange(0, 2)];
-        if ([userType isEqualToString:@"03"]) { // 临时
-            _lblDesc.text = @"Please note data sychronization is not supported\nwhen you are logged in to a temporary account.";
-        }
         
-        NSString *userKey = _routerUserModel.UserKey;
+        _lblName.text = [NSString stringWithFormat:@"【%@】",_routerM.name];
+        NSString *userKey = [UserConfig getShareObject].adminKey?:@"";
         UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_routerM.name]];
         [_userHeadBtn setImage:defaultImg forState:UIControlStateNormal];
         
-        NSString *aesCode = [NSString stringWithFormat:@"%@%@%@",@"010001",_routerM.toxid?:@"",_routerM.userSn?:@""];
-        aesCode = aesEncryptString(aesCode, AES_KEY);
-        aesCode = [NSString stringWithFormat:@"type_1,%@",aesCode];
-        
-        UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
-        avatarImg = [avatarImg thumbnailImage:100 transparentBorder:0 cornerRadius:10 interpolationQuality:kCGInterpolationDefault];
-        UIImageView *backImgView  = [[UIImageView alloc] initWithImage:avatarImg];
-        backImgView.frame = CGRectMake(6, 6, 100, 100);
-        UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 112, 112)];
-        imgBackView.backgroundColor = [UIColor whiteColor];
-        imgBackView.layer.cornerRadius = 10;
-        imgBackView.layer.masksToBounds = YES;
-        [imgBackView addSubview:backImgView];
-        // uiview 生成图片
-        avatarImg = [imgBackView convertViewToImage];
-        //UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
-        //[avatarImg roundedCornerImage:10 borderSize:0]
-        @weakify_self
-        [HMScanner qrImageWithString:aesCode avatar:avatarImg completion:^(UIImage *image) {
-            weakSelf.codeImgView.image = image;
-        }];
+        NSString *userType = [_routerM.userSn substringWithRange:NSMakeRange(0, 2)];
+        if ([userType isEqualToString:@"03"]) { // 临时
+            _lblDesc.text = @"Please note data sychronization is not supported\nwhen you are logged in to a temporary account.";
+            NSString *aesCode = [NSString stringWithFormat:@"%@%@%@",@"010001",_routerM.toxid?:@"",_routerM.userSn?:@""];
+            aesCode = aesEncryptString(aesCode, AES_KEY);
+            aesCode = [NSString stringWithFormat:@"type_1,%@",aesCode];
+            [self getQrCodeImgWithQrCode:aesCode];
+        } else {
+           NSString *tempQRCode = [HWUserdefault getObjectWithKey:[UserModel getUserModel].userId];
+            if (tempQRCode && tempQRCode.length > 0) {
+                [self getQrCodeImgWithQrCode:tempQRCode];
+            } else {
+                [SendRequestUtil sendPullTmpAccountWithShowHud:YES];
+            }
+        }
     }
-    
+}
+
+- (void) getQrCodeImgWithQrCode:(NSString *) qrCoderStr
+{
+    UIImage *avatarImg =  [UIImage imageNamed:@"icon_small_60"];
+    avatarImg = [avatarImg thumbnailImage:100 transparentBorder:0 cornerRadius:10 interpolationQuality:kCGInterpolationDefault];
+    UIImageView *backImgView  = [[UIImageView alloc] initWithImage:avatarImg];
+    backImgView.frame = CGRectMake(6, 6, 100, 100);
+    UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 112, 112)];
+    imgBackView.backgroundColor = [UIColor whiteColor];
+    imgBackView.layer.cornerRadius = 10;
+    imgBackView.layer.masksToBounds = YES;
+    [imgBackView addSubview:backImgView];
+    // uiview 生成图片
+    avatarImg = [imgBackView convertViewToImage];
+    @weakify_self
+    [HMScanner qrImageWithString:qrCoderStr avatar:avatarImg completion:^(UIImage *image) {
+        weakSelf.codeImgView.image = image;
+    }];
 }
 
 - (UIImage *)addBorderToImage:(UIImage *)image {
@@ -156,4 +160,19 @@
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
 }
 
+
+#pragma mark ---通知
+- (void)pullTmpAccountSuccessNoti:(NSNotification *)noti {
+    NSDictionary *params = noti.object;
+    NSInteger retCode = [params[@"RetCode"] integerValue];
+    if (retCode == 0) {
+        NSString *Qrcode = params[@"Qrcode"];
+        [self getQrCodeImgWithQrCode:Qrcode];
+        [HWUserdefault updateObject:Qrcode withKey:[UserModel getUserModel].userId];
+    } else {
+        [self backAction:nil];
+    }
+    
+   
+}
 @end

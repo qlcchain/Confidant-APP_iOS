@@ -36,24 +36,36 @@
     _head5Btn.layer.masksToBounds = YES;
 }
 
-- (IBAction)head1Action:(id)sender {
+- (IBAction)head1Action:(UIButton *)sender {
+    
+    if (_headB) {
+        _headB(sender.tag);
+    }
     
 }
 
-- (IBAction)head2Action:(id)sender {
-    
+- (IBAction)head2Action:(UIButton *)sender {
+    if (_headB) {
+        _headB(sender.tag);
+    }
 }
 
-- (IBAction)head3Action:(id)sender {
-    
+- (IBAction)head3Action:(UIButton *)sender {
+    if (_headB) {
+        _headB(sender.tag);
+    }
 }
 
-- (IBAction)head4Action:(id)sender {
-    
+- (IBAction)head4Action:(UIButton *)sender {
+    if (_headB) {
+        _headB(sender.tag);
+    }
 }
 
-- (IBAction)head5Action:(id)sender {
-    
+- (IBAction)head5Action:(UIButton *)sender {
+    if (_headB) {
+        _headB(sender.tag);
+    }
 }
 
 - (IBAction)addAction:(id)sender {

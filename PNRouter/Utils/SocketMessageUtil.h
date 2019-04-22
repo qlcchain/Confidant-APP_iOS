@@ -76,6 +76,7 @@ static NSString *Action_GroupMsgPush = @"GroupMsgPush";
 static NSString *Action_GroupConfig = @"GroupConfig";
 static NSString *Action_GroupSysPush = @"GroupSysPush";
 static NSString *Action_GroupDelMsg = @"GroupDelMsg";
+static NSString *Action_DelUser = @"DelUser";
 
 
 @class FriendModel;

@@ -39,7 +39,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't hesitate to ping me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ub-XD-rda">
-                                        <rect key="frame" x="0.0" y="20" width="214" height="16.5"/>
+                                        <rect key="frame" x="0.0" y="20" width="210" height="16.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
@@ -60,7 +60,7 @@
                                     <constraint firstItem="3ub-XD-rda" firstAttribute="leading" secondItem="Ge8-gJ-B9q" secondAttribute="leading" id="V87-Sg-vbk"/>
                                     <constraint firstItem="Nkh-mg-xda" firstAttribute="leading" secondItem="Ge8-gJ-B9q" secondAttribute="leading" id="pfd-yU-4zf"/>
                                     <constraint firstItem="9ri-0a-Gmg" firstAttribute="centerY" secondItem="Nkh-mg-xda" secondAttribute="centerY" id="qaa-AN-Jqq"/>
-                                    <constraint firstAttribute="trailing" secondItem="3ub-XD-rda" secondAttribute="trailing" constant="16" id="rap-9Z-0SJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="3ub-XD-rda" secondAttribute="trailing" constant="20" id="rap-9Z-0SJ"/>
                                     <constraint firstAttribute="trailing" secondItem="9ri-0a-Gmg" secondAttribute="trailing" id="xS2-IO-Dwp"/>
                                     <constraint firstAttribute="bottom" secondItem="3ub-XD-rda" secondAttribute="bottom" id="xfm-UW-k06"/>
                                     <constraint firstItem="Nkh-mg-xda" firstAttribute="top" secondItem="Ge8-gJ-B9q" secondAttribute="top" id="y9v-gW-DkS"/>

@@ -61,7 +61,7 @@
     NSString *text = muDic.mj_JSONString;
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (AppD.manager) {
+        if (AppD.manager && AppD.currentRouterNumber >= 0) { // tox_stop
             [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
         } else {
             [SocketUtil.shareInstance sendWithText:text];
@@ -81,7 +81,7 @@
     NSString *text = muDic.mj_JSONString;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (AppD.manager) {
+        if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop
             [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
         } else {
             [SocketUtil.shareInstance sendWithText:text];
@@ -108,7 +108,7 @@
     NSString *text = muDic.mj_JSONString;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (AppD.manager) {
+        if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
             [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
         } else {
             [SocketUtil.shareInstance sendWithText:text];
@@ -129,7 +129,7 @@
     NSString *text = muDic.mj_JSONString;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (AppD.manager) {
+        if (AppD.manager && AppD.currentRouterNumber >= 0) { // tox_stop
             [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
         } else {
             [SocketUtil.shareInstance sendWithText:text];
@@ -147,7 +147,7 @@
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
-    if (AppD.manager) {
+    if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
         [SocketUtil.shareInstance sendWithText:text];
@@ -163,7 +163,7 @@
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
-    if (AppD.manager) {
+    if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
         [SocketUtil.shareInstance sendWithText:text];
@@ -181,7 +181,7 @@
     [muDic setObject:params forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
     
-    if (AppD.manager) {
+    if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
          [SocketUtil.shareInstance sendWithText:text];
@@ -199,7 +199,7 @@
     [muDic setObject:params forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
     
-    if (AppD.manager) {
+    if (AppD.manager && AppD.currentRouterNumber >= 0) { //tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
         [SocketUtil.shareInstance sendWithText:text];
@@ -216,7 +216,7 @@
     [muDic setObject:params forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
     
-    if (AppD.manager) {
+    if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
         [SocketUtil.shareInstance sendWithText:text];
@@ -233,7 +233,7 @@
     [muDic setObject:params forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
     
-    if (AppD.manager) {
+    if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
         [SocketUtil.shareInstance sendWithText:text];
@@ -250,7 +250,7 @@
     [muDic setObject:params forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
     
-    if (AppD.manager) {
+    if (AppD.manager && AppD.currentRouterNumber >= 0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
         [SocketUtil.shareInstance sendWithText:text];
@@ -262,7 +262,7 @@
     [muDic setObject:params forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
     
-    if (AppD.manager) {
+    if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
         [SocketUtil.shareInstance sendWithText:text];
@@ -279,7 +279,7 @@
     [muDic setObject:params forKey:@"params"];
     NSString *text = muDic.mj_JSONString;
     
-    if (AppD.manager) {
+    if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
         [SocketUtil.shareInstance sendWithText:text];
@@ -489,6 +489,8 @@
         [SocketMessageUtil handleGroupVerify:receiveDic];
     } else if ([action isEqualToString:Action_PullTmpAccount]) { // 拉取临时通信二维码
         [SocketMessageUtil handlePullTmpAccount:receiveDic];
+    } else if ([action isEqualToString:Action_DelUser]) { // 删除用户
+        [SocketMessageUtil handleDelUser:receiveDic];
     }
 }
 
@@ -506,8 +508,16 @@
      NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 2) {
         [AppD.window showHint:@"Router id error"];
-    } else if (retCode == 4){
+        [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
+    }  else if (retCode == 4){
         [AppD.window showHint:@"Other error"];
+         [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
+    }else if (retCode == 5){
+        [AppD.window showHint:@"The qr code has been occupied by others"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
+    } else if (retCode == 6){
+        [AppD.window showHint:@"This account is no longer valid"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:receiveDic];
     }
@@ -516,23 +526,40 @@
 + (void) handleRegiserRouter:(NSDictionary *) receiveDic
 {
     [AppD.window hideHud];
+    
+    
+    
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
-    if (retCode == 1) {
-        [AppD.window showHint:@"Router id error"];
-    } else if (retCode == 2) {
-        [AppD.window showHint:@"The qr code has been activated by other users"];
-    } else if (retCode == 3) {
-        [AppD.window showHint:@"Error verification coder"];
-    }else if (retCode == 4) {
-        [AppD.window showHint:@"Other error"];
-    } else if (retCode == 0) {
+    if (retCode == 0) {
+        
+        NSString *adminId = receiveDic[@"params"][@"AdminId"];
+        NSString *adminName = receiveDic[@"params"][@"AdminName"];
+        NSString *adminUserKey = receiveDic[@"params"][@"AdminKey"];
+        
+        [UserConfig getShareObject].adminId = adminId;
+        [UserConfig getShareObject].adminKey = adminUserKey;
+        [UserConfig getShareObject].adminName = adminName? [adminName base64DecodedString]:@"";
+        
         // 开始心跳
         [HeartBeatUtil start];
-         [[NSNotificationCenter defaultCenter] postNotificationName:USER_REGISTER_RECEVIE_NOTI object:receiveDic];
         [[NSNotificationCenter defaultCenter] postNotificationName:REGISTER_PUSH_NOTI object:nil];
         // 发送未完成消息
         [[SendCacheChatUtil getSendCacheChatUtilShare] start];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:USER_REGISTER_RECEVIE_NOTI object:receiveDic];
+    } else {
+        
+        if (retCode == 1) {
+            [AppD.window showHint:@"Router id error"];
+        } else if (retCode == 2) {
+            [AppD.window showHint:@"The qr code has been activated by other users"];
+        } else if (retCode == 3) {
+            [AppD.window showHint:@"Error verification coder"];
+        }else {
+            [AppD.window showHint:@"Other error"];
+        }
     }
+    
 }
 #pragma mark -拉取用户
 + (void) handlePullUserList:(NSDictionary *) receiveDic
@@ -712,11 +739,13 @@
 
 + (void) handlePushLogout:(NSDictionary *)receiveDic {
     
-   NSString *userId = receiveDic[@"params"][@"UserId"];
+    NSString *userId = receiveDic[@"params"][@"UserId"];
+    int Reason = [receiveDic[@"params"][@"Reason"] intValue];
+    
     if ([[NSString getNotNullValue:userId] isEqualToString:[UserConfig getShareObject].userId]) {
         NSDictionary *params = @{@"Action":Action_PushLogout,@"RetCode":@(0),@"ToId":[UserConfig getShareObject].userId,@"Msg":@""};
         [SocketMessageUtil sendVersion1WithParams:params];
-        [[NSNotificationCenter defaultCenter] postNotificationName:REVER_APP_LOGOUT_NOTI object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:REVER_APP_LOGOUT_NOTI object:@(Reason)];
     }
 }
 
@@ -1113,7 +1142,14 @@
     NSString *userSn = receiveDic[@"params"][@"UserSn"];
     NSString *hashid = receiveDic[@"params"][@"Index"];
     NSString *routeId = receiveDic[@"params"][@"Routerid"];
+    
+    NSString *adminId = receiveDic[@"params"][@"AdminId"];
+    NSString *adminName = receiveDic[@"params"][@"AdminName"];
+    NSString *adminUserKey = receiveDic[@"params"][@"AdminKey"];
    
+    [UserConfig getShareObject].adminId = adminId;
+    [UserConfig getShareObject].adminKey = adminUserKey;
+    [UserConfig getShareObject].adminName = adminName? [adminName base64DecodedString]:@"";
     
     [UserConfig getShareObject].userId = userId;
     [UserConfig getShareObject].usersn = userSn;
@@ -1441,14 +1477,33 @@
 + (void)handlePullTmpAccount:(NSDictionary *)receiveDic {
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode != 0) {
+        [AppD.window showHint:@"Other errors"];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:PullTmpAccount_Success_Noti object:receiveDic[@"params"]];
+}
+/*
+ 0：用户删除成功
+ 1：没有管理员权限
+ 2：错误的目标用户id
+ 3：其他错误
+ */
++ (void) handleDelUser:(NSDictionary *)receiveDic {
     
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:PullTmpAccount_Success_Noti object:receiveDic[@"params"]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:DEL_USER_SUCCESS_NOTI object:nil];
     } else {
         if (retCode == 1) {
+            [AppD.window showHint:@"No administrator rights"];
+        } else if (retCode == 2) {
+            [AppD.window showHint:@"Wrong target user id"];
+        } else if (retCode == 3) {
             [AppD.window showHint:@"Other errors"];
         }
     }
+    
 }
 
 

@@ -74,7 +74,7 @@
 
 - (void)logout {
     [self hideToast];
-    [[NSNotificationCenter defaultCenter] postNotificationName:REVER_APP_LOGOUT_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:REVER_APP_LOGOUT_NOTI object:@(3)];
 }
 
 #pragma mark - Action

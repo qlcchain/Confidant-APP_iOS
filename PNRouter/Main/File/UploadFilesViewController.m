@@ -38,6 +38,7 @@
 @interface UploadFilesViewController () <UITableViewDelegate, UITableViewDataSource>
 {
     NSInteger fileID;
+    BOOL isUploadFilesViewController;
 }
 @property (nonatomic, strong) NSMutableArray *sourceArr;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
@@ -51,13 +52,23 @@
 
 @implementation UploadFilesViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    isUploadFilesViewController = YES;
+    [super viewWillAppear:animated];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    isUploadFilesViewController = NO;
+    [super viewWillDisappear:animated];
+}
+
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileReqSuccessNoti:) name:UploadFileReq_Success_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseShareFriendNoti:) name:CHOOSE_Share_FRIEND_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didToxUploadFile:) name:DID_UPLOAD_FILE_NOTI object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileReqSuccessNoti:) name:FILE_SEND_NOTI object:nil];
-    
 }
 
 - (void)dealloc {
@@ -157,7 +168,6 @@
     @weakify_self
     [_urlArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSURL *url = obj;
-        
         // 只有一个文件时重命名
         if (weakSelf.nameTF.hidden == NO && weakSelf.nameTF.text != nil && weakSelf.nameTF.text.length > 0) {
             NSMutableArray *pathArr = [NSMutableArray arrayWithArray:url.pathComponents];
@@ -182,6 +192,10 @@
         
         NSString *UserId = [UserConfig getShareObject].userId;
         NSString *correntFileName = [NSString getUploadFileNameOfCorrectLength:url.path.lastPathComponent];
+        
+        // 截取长度
+        correntFileName = [NSString getUploadFileNameOfCorrectLength:correntFileName];
+      
         NSString *FileName = [Base58Util Base58EncodeWithCodeName:correntFileName];
         NSNumber *FileSize = @([NSString fileSizeAtPath:url.path]);
         NSNumber *FileType = @(0);
@@ -272,6 +286,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark - Noti
 - (void)uploadFileReqSuccessNoti:(NSNotification *)noti {
+    
+    if (!isUploadFilesViewController) {
+        return;
+    }
+    
     NSString *msgId = noti.object;
     @weakify_self
     [_uploadParams enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -281,17 +300,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             // 上传文件
             NSURL *fileUrl = dic[UploadFileURL];
             
-            NSString *fileName = @"";
             
-            NSString *name = [fileUrl.lastPathComponent stringByDeletingPathExtension];
-            
-            if (name && name.length>50) {
-                NSString *fileT = fileUrl.pathExtension;
-                name = [name substringWithRange:NSMakeRange(0, 50)];
-               fileName = [NSString stringWithFormat:@"%@.%@",name,fileT?:@""];
-            } else {
-                fileName = fileUrl.lastPathComponent;
-            }
+            NSString *fileName = [NSString getUploadFileNameOfCorrectLength:fileUrl.lastPathComponent];
             
             
             NSData *fileData = [NSData dataWithContentsOfURL:fileUrl];
@@ -369,10 +379,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 // tox文件正在上传
 - (void) didToxUploadFile:(NSNotification *) noti
 {
-    NSString *fileid = noti.object;
-    if ([fileid integerValue] == fileID) {
-        [self jumpTaskListVC];
+    if (isUploadFilesViewController) {
+        NSString *fileid = noti.object;
+        if ([fileid integerValue] == fileID) {
+            [self jumpTaskListVC];
+        }
     }
+    
 }
 
 @end

@@ -270,8 +270,6 @@
 		730605622179B3C0005A0E13 /* MediaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 730605612179B3C0005A0E13 /* MediaTableViewCell.m */; };
 		7308AB08224B5BBF0003E689 /* UsedSpaceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7308AB06224B5BBF0003E689 /* UsedSpaceTableViewCell.m */; };
 		7308AB09224B5BBF0003E689 /* UsedSpaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7308AB07224B5BBF0003E689 /* UsedSpaceTableViewCell.xib */; };
-		73121A68219AD4FC00510B48 /* RegiterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A66219AD4FC00510B48 /* RegiterViewController.m */; };
-		73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73121A67219AD4FC00510B48 /* RegiterViewController.xib */; };
 		73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6B219BB59B00510B48 /* RouterConfig.m */; };
 		73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6E219BF4E900510B48 /* NSString+SHA256.m */; };
 		73121A74219C26E900510B48 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A72219C26E900510B48 /* LoginViewController.m */; };
@@ -282,8 +280,11 @@
 		73194E96225598C30047F50C /* SendFileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73194E94225598C30047F50C /* SendFileListViewController.xib */; };
 		73194E992255D11B0047F50C /* SendFileHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E982255D11B0047F50C /* SendFileHeadView.m */; };
 		73194E9B2255D1320047F50C /* SendFileHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73194E9A2255D1320047F50C /* SendFileHeadView.xib */; };
+		73194E9F2255EE580047F50C /* FileListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E9D2255EE580047F50C /* FileListCell.m */; };
+		73194EA02255EE580047F50C /* FileListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73194E9E2255EE580047F50C /* FileListCell.xib */; };
 		731C6310225209F100C05CA7 /* CodeMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 731C630E225209F100C05CA7 /* CodeMsgViewController.m */; };
 		731C6311225209F100C05CA7 /* CodeMsgViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731C630F225209F100C05CA7 /* CodeMsgViewController.xib */; };
+		73216788225B2E5C00383D61 /* CircleOutUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73216787225B2E5C00383D61 /* CircleOutUtil.m */; };
 		732DCEE1223788A300B2A2CA /* AddGroupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732DCEDF223788A300B2A2CA /* AddGroupMenuViewController.m */; };
 		732DCEE2223788A300B2A2CA /* AddGroupMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732DCEE0223788A300B2A2CA /* AddGroupMenuViewController.xib */; };
 		732DCEE6223796B800B2A2CA /* AddNewMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732DCEE4223796B800B2A2CA /* AddNewMemberViewController.m */; };
@@ -333,7 +334,6 @@
 		7330F3CF21479AED00FF4EEC /* NewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F3CD21479AED00FF4EEC /* NewsCell.xib */; };
 		7330F3D22147A97700FF4EEC /* BaseMsgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F3D02147A97700FF4EEC /* BaseMsgModel.m */; };
 		7330F3D42147A98D00FF4EEC /* messageHistory.json in Resources */ = {isa = PBXBuildFile; fileRef = 7330F3D32147A98D00FF4EEC /* messageHistory.json */; };
-		7330F3D72147ABAE00FF4EEC /* MsgPicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F3D62147ABAD00FF4EEC /* MsgPicViewController.m */; };
 		7330F46C2147AD2B00FF4EEC /* InputViewBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7330F46A2147AD2A00FF4EEC /* InputViewBundle.bundle */; };
 		7330F46D2147AD2B00FF4EEC /* Expression.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7330F46B2147AD2B00FF4EEC /* Expression.bundle */; };
 		7330F47B2147DBB800FF4EEC /* StringUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F47A2147DBB800FF4EEC /* StringUtil.m */; };
@@ -383,6 +383,12 @@
 		7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F525214BF4C000FF4EEC /* SocketAlertView.xib */; };
 		734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734B793721A7EAAF0068AA2C /* UserManagerViewController.m */; };
 		734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */; };
+		734ED8C422602572002F1960 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734ED8C122602571002F1960 /* WebViewController.m */; };
+		734ED8C522602572002F1960 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734ED8C322602572002F1960 /* WebViewController.xib */; };
+		734ED8C9226038B1002F1960 /* CircleLoginCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734ED8C7226038B1002F1960 /* CircleLoginCodeViewController.m */; };
+		734ED8CA226038B1002F1960 /* CircleLoginCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734ED8C8226038B1002F1960 /* CircleLoginCodeViewController.xib */; };
+		7353944E2266CF140004CE85 /* CircleMemberDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7353944C2266CF140004CE85 /* CircleMemberDetailViewController.m */; };
+		7353944F2266CF140004CE85 /* CircleMemberDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353944D2266CF140004CE85 /* CircleMemberDetailViewController.xib */; };
 		7356429D222630D800DC0BCB /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7356429C222630D800DC0BCB /* ChatModel.m */; };
 		735642A02226752A00DC0BCB /* SendCacheChatUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7356429F2226752A00DC0BCB /* SendCacheChatUtil.m */; };
 		7360B85221FC3269008FB181 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85121FC3269008FB181 /* FileData.m */; };
@@ -499,6 +505,8 @@
 		7392791121F72203003AAD58 /* DiskManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392790F21F72203003AAD58 /* DiskManagerViewController.m */; };
 		7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7392791021F72203003AAD58 /* DiskManagerViewController.xib */; };
 		7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392791421FAF356003AAD58 /* UploadFileManager.m */; };
+		73976A49225C990B0001E276 /* OtherFileOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73976A47225C990B0001E276 /* OtherFileOpenViewController.m */; };
+		73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73976A48225C990B0001E276 /* OtherFileOpenViewController.xib */; };
 		73A4867021B94B220062C34F /* ConnectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A4866F21B94B220062C34F /* ConnectView.m */; };
 		73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A4867121B94B3A0062C34F /* ConnectView.xib */; };
 		73AC8F50223F9E64000E60D5 /* GroupListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC8F4E223F9E64000E60D5 /* GroupListCell.m */; };
@@ -1069,9 +1077,6 @@
 		7308AB05224B5BBF0003E689 /* UsedSpaceTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UsedSpaceTableViewCell.h; sourceTree = "<group>"; };
 		7308AB06224B5BBF0003E689 /* UsedSpaceTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UsedSpaceTableViewCell.m; sourceTree = "<group>"; };
 		7308AB07224B5BBF0003E689 /* UsedSpaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UsedSpaceTableViewCell.xib; sourceTree = "<group>"; };
-		73121A65219AD4FC00510B48 /* RegiterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegiterViewController.h; sourceTree = "<group>"; };
-		73121A66219AD4FC00510B48 /* RegiterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegiterViewController.m; sourceTree = "<group>"; };
-		73121A67219AD4FC00510B48 /* RegiterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegiterViewController.xib; sourceTree = "<group>"; };
 		73121A6A219BB59B00510B48 /* RouterConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterConfig.h; sourceTree = "<group>"; };
 		73121A6B219BB59B00510B48 /* RouterConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterConfig.m; sourceTree = "<group>"; };
 		73121A6D219BF4E900510B48 /* NSString+SHA256.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SHA256.h"; sourceTree = "<group>"; };
@@ -1089,9 +1094,14 @@
 		73194E972255D11B0047F50C /* SendFileHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendFileHeadView.h; sourceTree = "<group>"; };
 		73194E982255D11B0047F50C /* SendFileHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendFileHeadView.m; sourceTree = "<group>"; };
 		73194E9A2255D1320047F50C /* SendFileHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendFileHeadView.xib; sourceTree = "<group>"; };
+		73194E9C2255EE580047F50C /* FileListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileListCell.h; sourceTree = "<group>"; };
+		73194E9D2255EE580047F50C /* FileListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileListCell.m; sourceTree = "<group>"; };
+		73194E9E2255EE580047F50C /* FileListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FileListCell.xib; sourceTree = "<group>"; };
 		731C630D225209F100C05CA7 /* CodeMsgViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeMsgViewController.h; sourceTree = "<group>"; };
 		731C630E225209F100C05CA7 /* CodeMsgViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeMsgViewController.m; sourceTree = "<group>"; };
 		731C630F225209F100C05CA7 /* CodeMsgViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeMsgViewController.xib; sourceTree = "<group>"; };
+		73216786225B2E5C00383D61 /* CircleOutUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleOutUtil.h; sourceTree = "<group>"; };
+		73216787225B2E5C00383D61 /* CircleOutUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleOutUtil.m; sourceTree = "<group>"; };
 		732DCEDE223788A300B2A2CA /* AddGroupMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddGroupMenuViewController.h; sourceTree = "<group>"; };
 		732DCEDF223788A300B2A2CA /* AddGroupMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddGroupMenuViewController.m; sourceTree = "<group>"; };
 		732DCEE0223788A300B2A2CA /* AddGroupMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddGroupMenuViewController.xib; sourceTree = "<group>"; };
@@ -1175,8 +1185,6 @@
 		7330F3D02147A97700FF4EEC /* BaseMsgModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseMsgModel.m; sourceTree = "<group>"; };
 		7330F3D12147A97700FF4EEC /* BaseMsgModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseMsgModel.h; sourceTree = "<group>"; };
 		7330F3D32147A98D00FF4EEC /* messageHistory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = messageHistory.json; sourceTree = "<group>"; };
-		7330F3D52147ABAD00FF4EEC /* MsgPicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgPicViewController.h; sourceTree = "<group>"; };
-		7330F3D62147ABAD00FF4EEC /* MsgPicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgPicViewController.m; sourceTree = "<group>"; };
 		7330F46A2147AD2A00FF4EEC /* InputViewBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InputViewBundle.bundle; sourceTree = "<group>"; };
 		7330F46B2147AD2B00FF4EEC /* Expression.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Expression.bundle; sourceTree = "<group>"; };
 		7330F4792147DBB800FF4EEC /* StringUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
@@ -1276,6 +1284,15 @@
 		734B793621A7EAAF0068AA2C /* UserManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManagerViewController.h; sourceTree = "<group>"; };
 		734B793721A7EAAF0068AA2C /* UserManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManagerViewController.m; sourceTree = "<group>"; };
 		734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserManagerViewController.xib; sourceTree = "<group>"; };
+		734ED8C122602571002F1960 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		734ED8C222602572002F1960 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		734ED8C322602572002F1960 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		734ED8C6226038B1002F1960 /* CircleLoginCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleLoginCodeViewController.h; sourceTree = "<group>"; };
+		734ED8C7226038B1002F1960 /* CircleLoginCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleLoginCodeViewController.m; sourceTree = "<group>"; };
+		734ED8C8226038B1002F1960 /* CircleLoginCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CircleLoginCodeViewController.xib; sourceTree = "<group>"; };
+		7353944B2266CF140004CE85 /* CircleMemberDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleMemberDetailViewController.h; sourceTree = "<group>"; };
+		7353944C2266CF140004CE85 /* CircleMemberDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleMemberDetailViewController.m; sourceTree = "<group>"; };
+		7353944D2266CF140004CE85 /* CircleMemberDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CircleMemberDetailViewController.xib; sourceTree = "<group>"; };
 		7356429B222630D800DC0BCB /* ChatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatModel.h; sourceTree = "<group>"; };
 		7356429C222630D800DC0BCB /* ChatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatModel.m; sourceTree = "<group>"; };
 		7356429E2226752A00DC0BCB /* SendCacheChatUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendCacheChatUtil.h; sourceTree = "<group>"; };
@@ -1521,6 +1538,9 @@
 		7392791021F72203003AAD58 /* DiskManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskManagerViewController.xib; sourceTree = "<group>"; };
 		7392791321FAF356003AAD58 /* UploadFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadFileManager.h; sourceTree = "<group>"; };
 		7392791421FAF356003AAD58 /* UploadFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFileManager.m; sourceTree = "<group>"; };
+		73976A46225C990B0001E276 /* OtherFileOpenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherFileOpenViewController.h; sourceTree = "<group>"; };
+		73976A47225C990B0001E276 /* OtherFileOpenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherFileOpenViewController.m; sourceTree = "<group>"; };
+		73976A48225C990B0001E276 /* OtherFileOpenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherFileOpenViewController.xib; sourceTree = "<group>"; };
 		73A4866E21B94B220062C34F /* ConnectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectView.h; sourceTree = "<group>"; };
 		73A4866F21B94B220062C34F /* ConnectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectView.m; sourceTree = "<group>"; };
 		73A4867121B94B3A0062C34F /* ConnectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectView.xib; sourceTree = "<group>"; };
@@ -1948,9 +1968,6 @@
 			isa = PBXGroup;
 			children = (
 				580CFE0E2224DD5B00460B41 /* View */,
-				73121A65219AD4FC00510B48 /* RegiterViewController.h */,
-				73121A66219AD4FC00510B48 /* RegiterViewController.m */,
-				73121A67219AD4FC00510B48 /* RegiterViewController.xib */,
 				73121A71219C26E900510B48 /* LoginViewController.h */,
 				73121A72219C26E900510B48 /* LoginViewController.m */,
 				73121A73219C26E900510B48 /* LoginViewController.xib */,
@@ -1960,6 +1977,9 @@
 				582BFE49221D26DF00D8C2C8 /* ImportAccountViewController.h */,
 				582BFE4A221D26DF00D8C2C8 /* ImportAccountViewController.m */,
 				582BFE4B221D26DF00D8C2C8 /* ImportAccountViewController.xib */,
+				73976A46225C990B0001E276 /* OtherFileOpenViewController.h */,
+				73976A47225C990B0001E276 /* OtherFileOpenViewController.m */,
+				73976A48225C990B0001E276 /* OtherFileOpenViewController.xib */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1979,8 +1999,6 @@
 				584A448021460B0800608122 /* NewsViewController.h */,
 				584A448121460B0800608122 /* NewsViewController.m */,
 				584A448221460B0800608122 /* NewsViewController.xib */,
-				7330F3D52147ABAD00FF4EEC /* MsgPicViewController.h */,
-				7330F3D62147ABAD00FF4EEC /* MsgPicViewController.m */,
 				731C630D225209F100C05CA7 /* CodeMsgViewController.h */,
 				731C630E225209F100C05CA7 /* CodeMsgViewController.m */,
 				731C630F225209F100C05CA7 /* CodeMsgViewController.xib */,
@@ -2063,6 +2081,9 @@
 				737417FD221E9B8F008EE243 /* SettingViewController.h */,
 				737417FE221E9B8F008EE243 /* SettingViewController.m */,
 				737417FF221E9B8F008EE243 /* SettingViewController.xib */,
+				734ED8C222602572002F1960 /* WebViewController.h */,
+				734ED8C122602571002F1960 /* WebViewController.m */,
+				734ED8C322602572002F1960 /* WebViewController.xib */,
 			);
 			path = My;
 			sourceTree = "<group>";
@@ -2337,6 +2358,12 @@
 				734B793621A7EAAF0068AA2C /* UserManagerViewController.h */,
 				734B793721A7EAAF0068AA2C /* UserManagerViewController.m */,
 				734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */,
+				734ED8C6226038B1002F1960 /* CircleLoginCodeViewController.h */,
+				734ED8C7226038B1002F1960 /* CircleLoginCodeViewController.m */,
+				734ED8C8226038B1002F1960 /* CircleLoginCodeViewController.xib */,
+				7353944B2266CF140004CE85 /* CircleMemberDetailViewController.h */,
+				7353944C2266CF140004CE85 /* CircleMemberDetailViewController.m */,
+				7353944D2266CF140004CE85 /* CircleMemberDetailViewController.xib */,
 			);
 			path = RouterManager;
 			sourceTree = "<group>";
@@ -2672,6 +2699,9 @@
 				7330F3CB21479AED00FF4EEC /* NewsCell.h */,
 				7330F3CC21479AED00FF4EEC /* NewsCell.m */,
 				7330F3CD21479AED00FF4EEC /* NewsCell.xib */,
+				73194E9C2255EE580047F50C /* FileListCell.h */,
+				73194E9D2255EE580047F50C /* FileListCell.m */,
+				73194E9E2255EE580047F50C /* FileListCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3102,6 +3132,8 @@
 				58E3A5752242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m */,
 				73194E8F225360520047F50C /* ChatImgCacheUtil.h */,
 				73194E90225360520047F50C /* ChatImgCacheUtil.m */,
+				73216786225B2E5C00383D61 /* CircleOutUtil.h */,
+				73216787225B2E5C00383D61 /* CircleOutUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3722,6 +3754,9 @@
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 0940;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 0;
 							};
@@ -3803,9 +3838,11 @@
 				58A23A7E223F6BC00098AED5 /* GroupMemberView.xib in Resources */,
 				583BF92C21F6E4940078A2A8 /* UploadFilesCell.xib in Resources */,
 				584A447F21460AFE00608122 /* FileViewController.xib in Resources */,
+				73194EA02255EE580047F50C /* FileListCell.xib in Resources */,
 				73899CC42152011000962B14 /* GuidePageView2.xib in Resources */,
 				581FDF6321F172E00068C120 /* ModifyActivateCodeViewController.xib in Resources */,
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
+				7353944F2266CF140004CE85 /* CircleMemberDetailViewController.xib in Resources */,
 				582BFE57221D3D2700D8C2C8 /* RouterAliasViewController.xib in Resources */,
 				73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */,
 				581DE4E32238D9D10056D4F8 /* CreateGroupChatViewController.xib in Resources */,
@@ -3830,6 +3867,7 @@
 				7330F3AF21475A0600FF4EEC /* GroupCell.xib in Resources */,
 				73C4B560223783500018146C /* GroupChatListViewController.xib in Resources */,
 				583B2B4122389F6600E6238D /* NewRequestsGroupChatsCell2.xib in Resources */,
+				734ED8CA226038B1002F1960 /* CircleLoginCodeViewController.xib in Resources */,
 				58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */,
 				737883EE21ACF2970033A189 /* nodes.json in Resources */,
 				73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */,
@@ -3843,7 +3881,6 @@
 				582BFE43221AAA1100D8C2C8 /* DiskManagementMMCCell.xib in Resources */,
 				73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */,
 				583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */,
-				73121A69219AD4FC00510B48 /* RegiterViewController.xib in Resources */,
 				7330F3A9214679BF00FF4EEC /* ShareCollectionCell.xib in Resources */,
 				73F55A092238D398003155D2 /* InvitationQRCodeViewController.xib in Resources */,
 				582BFE4D221D26DF00D8C2C8 /* ImportAccountViewController.xib in Resources */,
@@ -3868,6 +3905,7 @@
 				584B439F21FEFF1A00D1F21A /* ConfigDiskViewController.xib in Resources */,
 				73741801221E9B8F008EE243 /* SettingViewController.xib in Resources */,
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
+				73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */,
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
 				583B2B2F223109A900E6238D /* PNDefaultHeaderView.xib in Resources */,
 				73121A75219C26E900510B48 /* LoginViewController.xib in Resources */,
@@ -3876,6 +3914,7 @@
 				586838032240959500B8ACB8 /* GroupMembersViewController.xib in Resources */,
 				583BF94A21F70FBC0078A2A8 /* TaskCompletedCell.xib in Resources */,
 				581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */,
+				734ED8C522602572002F1960 /* WebViewController.xib in Resources */,
 				581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */,
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
 				7330F3C421476E9300FF4EEC /* UserInfoCell.xib in Resources */,
@@ -3992,7 +4031,7 @@
 				7306055B21771CEA005A0E13 /* VPNFileUtil.m in Sources */,
 				5868380C22409E8700B8ACB8 /* GroupMembersModel.m in Sources */,
 				73D00E9A215A05960013E20D /* ChooseRecipientAlertView.m in Sources */,
-				73121A68219AD4FC00510B48 /* RegiterViewController.m in Sources */,
+				73194E9F2255EE580047F50C /* FileListCell.m in Sources */,
 				737882A821ACF05E0033A189 /* SSLSecurity.swift in Sources */,
 				583BF94421F70FAC0078A2A8 /* TaskOngoingCell.m in Sources */,
 				73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */,
@@ -4029,6 +4068,7 @@
 				73F55A0C223F3F69003155D2 /* GroupInfoModel.m in Sources */,
 				58F1789B221FDFEC001CD0AF /* ChooseContactShowModel.m in Sources */,
 				5825A23C21FAAE5D00E6194B /* NSString+File.m in Sources */,
+				73976A49225C990B0001E276 /* OtherFileOpenViewController.m in Sources */,
 				73899CC52152011000962B14 /* GuidePageView3.m in Sources */,
 				7330F3732146118800FF4EEC /* UIImage+GIF.m in Sources */,
 				7330F5022149147200FF4EEC /* CDChatListView.m in Sources */,
@@ -4092,7 +4132,6 @@
 				581FDF6221F172E00068C120 /* ModifyActivateCodeViewController.m in Sources */,
 				73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */,
 				580CFE402227B7FD00460B41 /* PTBBasePerformanceMonitor.m in Sources */,
-				7330F3D72147ABAE00FF4EEC /* MsgPicViewController.m in Sources */,
 				581FDF4C21F024170068C120 /* ping.m in Sources */,
 				587C52D2215CB6B6006787FB /* SkyRadiusView.m in Sources */,
 				7378840F21ACF2970033A189 /* OCTFileTools.m in Sources */,
@@ -4136,6 +4175,7 @@
 				585AEE1E213F71E00098A070 /* ChatViewController.m in Sources */,
 				7362577D2142143F00D7FD6B /* NSString+Hash.m in Sources */,
 				736257AF2142149300D7FD6B /* UIView+Find.m in Sources */,
+				73216788225B2E5C00383D61 /* CircleOutUtil.m in Sources */,
 				7330F3502146102A00FF4EEC /* PNNavViewController.m in Sources */,
 				736257A92142149300D7FD6B /* UIView+Animation.m in Sources */,
 				7330F37C2146118800FF4EEC /* UIImage+FX.m in Sources */,
@@ -4195,6 +4235,7 @@
 				7378841C21ACF2970033A189 /* OCTSubmanagerFriendsImpl.m in Sources */,
 				58A23A76223BC43F0098AED5 /* CSContextWhitelistFilterLogFormatter.m in Sources */,
 				736257B22142149300D7FD6B /* UIView+Toast.m in Sources */,
+				734ED8C422602572002F1960 /* WebViewController.m in Sources */,
 				7378840621ACF2970033A189 /* OCTCall+Utilities.m in Sources */,
 				7378841D21ACF2970033A189 /* OCTSubmanagerChatsImpl.m in Sources */,
 				7308AB08224B5BBF0003E689 /* UsedSpaceTableViewCell.m in Sources */,
@@ -4238,6 +4279,7 @@
 				7330F4FE2149147200FF4EEC /* CTEmojiKeyboard.m in Sources */,
 				581FDF4821F024170068C120 /* TCP_client.m in Sources */,
 				580CFE412227B7FD00460B41 /* PTBCPUMonitor.m in Sources */,
+				734ED8C9226038B1002F1960 /* CircleLoginCodeViewController.m in Sources */,
 				7330F4EA2149147200FF4EEC /* MagnifiterView.m in Sources */,
 				73869114214CEC63003CF6A3 /* ChatListModel.m in Sources */,
 				586D417B224B609F002008C6 /* ChooseCircleCell.m in Sources */,
@@ -4364,6 +4406,7 @@
 				7330F50D214A74FA00FF4EEC /* AddFriendCellTableViewCell.m in Sources */,
 				581FDF6721F173AC0068C120 /* ModifyRouterPWViewController.m in Sources */,
 				581FDF5121F024170068C120 /* onion_client.m in Sources */,
+				7353944E2266CF140004CE85 /* CircleMemberDetailViewController.m in Sources */,
 				580CFE3F2227B7FD00460B41 /* PTBMemoryMonitor.m in Sources */,
 				7392791121F72203003AAD58 /* DiskManagerViewController.m in Sources */,
 				7362577F2142143F00D7FD6B /* NSString+RegexCategory.m in Sources */,
@@ -4443,7 +4486,7 @@
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4467,7 +4510,7 @@
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4610,7 +4653,7 @@
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/PNRouter/PNRouterPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = PNRouter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4640,7 +4683,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
@@ -4651,7 +4694,7 @@
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/PNRouter/PNRouterPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = PNRouter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4666,7 +4709,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "ba311bcd-9336-4dd1-9fe8-c71c08dfc130";
-				PROVISIONING_PROFILE_SPECIFIER = RouterChatDisProfile;
+				PROVISIONING_PROFILE_SPECIFIER = RouterChatDevProfile;
 				SWIFT_OBJC_BRIDGING_HEADER = "PNRouter/PNRouter-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;

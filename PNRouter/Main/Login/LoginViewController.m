@@ -9,7 +9,6 @@
 #import "LoginViewController.h"
 #import "RouterModel.h"
 #import "RouterConfig.h"
-#import "RegiterViewController.h"
 #import "UserModel.h"
 #import "PNRouter-Swift.h"
 #import "KeyCUtil.h"
@@ -27,6 +26,8 @@
 #import "UserHeadUtil.h"
 #import "EntryModel.h"
 #import "CSLogMacro.h"
+#import "NSData+Base64.h"
+
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate> {
     BOOL isLogin;
@@ -34,6 +35,7 @@
     BOOL isConnectSocket;
     BOOL resultLogin;
     NSInteger sendCount;
+    BOOL isClickLogin;
 }
 @property (weak, nonatomic) IBOutlet UIButton *arrowImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblDesc;
@@ -95,7 +97,8 @@
     sendCount = 0;
     isConnectSocket = YES;
     resultLogin = NO;
-   
+    isClickLogin = YES;
+    
     if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
         
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
@@ -128,6 +131,7 @@
     }
 }
 - (IBAction)rightAction:(id)sender {
+    isClickLogin = YES;
     isLogin = NO;
     isFind = NO;
     [self jumpToQR];
@@ -138,7 +142,7 @@
 // 导入帐号
 - (void)scanSuccessfulWithIsAccount:(NSArray *)values
 {
-    
+
     UIAlertController *vc = [UIAlertController alertControllerWithTitle:@"" message:@"This operation will overwrite the current account. Do you want to continue?" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
@@ -146,8 +150,11 @@
     @weakify_self
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *signpk = values[1];
-        NSString *usersn = values[2];
+       // NSString *usersn = values[2];
         if (![signpk isEqualToString:[EntryModel getShareObject].signPrivateKey]) {
+            
+            // 清除所有数据
+            [SystemUtil clearAppAllData];
             // 更改私钥
             [LibsodiumUtil changeUserPrivater:values[1]];
             NSString *name = [values[3] base64DecodedString];
@@ -156,10 +163,11 @@
             [RouterModel delegateAllRouter];
             [weakSelf.showRouterArr removeAllObjects];
             weakSelf.selectRouther = nil;
-        } else {
-            [AppD.window showHint:@""];
-             weakSelf.selectRouther = [RouterModel checkRoutherWithSn:usersn];
         }
+//        else {
+//            [AppD.window showHint:@""];
+//            weakSelf.selectRouther = [RouterModel checkRoutherWithSn:usersn];
+//        }
         [weakSelf changeLogintStatu];
     }];
     
@@ -167,8 +175,7 @@
     [vc addAction:confirm];
     
     [self presentViewController:vc animated:YES completion:nil];
-    
-    
+
 }
 // 扫码成功重新开启组播
 - (void)scanSuccessfulWithIsMacd:(BOOL)isMac
@@ -201,7 +208,8 @@
     // 当前是在局域网
     if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString])
     {
-        AppD.manager = nil;
+        //AppD.manager = nil; tox_stop
+        AppD.currentRouterNumber = -1;
         NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
         if (connectStatu == socketConnectStatusConnected) {
             [[SocketUtil shareInstance] disconnect];
@@ -253,7 +261,7 @@
 - (void) sendRegisterRequestWithShowHud:(BOOL) isShow
 {
      NSString *userName = [[UserModel getUserModel].username base64EncodedString];
-     [SendRequestUtil sendUserRegisterWithUserPass:@"" username:userName code:@""];
+     [SendRequestUtil sendUserRegisterWithUserPass:@"" username:userName code:@"" showHUD:YES];
     
 }
 
@@ -446,7 +454,8 @@
 #pragma mark -切换routher 刷新方法
 - (void)refreshSelectRouter:(RouterModel *)routeM {
     
-    AppD.manager = nil;
+    //AppD.manager = nil; tox_stop
+    AppD.currentRouterNumber = -1;
     
     isLogin = NO;
     isFind = NO;
@@ -517,43 +526,39 @@
 // 注册推送
 - (void) registerPushNoti:(NSNotification *) noti
 {
-    if (AppD.isLoginMac) {
-        return;
+    if (isClickLogin) {
+        [SendRequestUtil sendRegidReqeust];
     }
-    [SendRequestUtil sendRegidReqeust];
+    
 }
 // 加router好友成功
 - (void) toxAddRoterSuccess:(NSNotification *) noti
 {
-    NSLog(@"thread = %@",[NSThread currentThread]);
-    NSLog(@"加router好友成功");
-    [self hideConnectServerLoad];
-   // [AppD.window showHint:@"Server connection successful."];
-    [self findOrLogin];
+    if (AppD.currentRouterNumber >=0 && isClickLogin) {
+        NSLog(@"thread = %@",[NSThread currentThread]);
+        NSLog(@"加router好友成功");
+        [self hideConnectServerLoad];
+        // [AppD.window showHint:@"Server connection successful."];
+        [self findOrLogin];
+    }
+    
 }
 - (void) gbFinashNoti:(NSNotification *) noti
 {
+    if (!isClickLogin) {
+        return;
+    }
      [AppD.window hideHud];
     if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterMAC] isEmptyString]) {
         if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
+            isClickLogin = NO;
             [self.view showHint:@"Unable to connect to server."];
         } else {
+            isClickLogin = NO;
             [self jumpToLoginDevice];
         }
         
     } else {
-//        RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RoutherConfig getRouterConfig].currentRouterSn];
-//        if (routerModel) {
-//            self.selectRouther = routerModel;
-//            _lblRoutherName.text = self.selectRouther.name;
-//            _loginBtn.selected = YES;
-//            [self connectSocketWithIsShowHud:YES];
-//            [self changeLogintStatu];
-//        } else { // 走find 5
-//            isFind = YES;
-//            [self connectSocketWithIsShowHud:YES];
-//        }
-        
         RouterModel *routerModel = [RouterModel checkRoutherWithSn:[RouterConfig getRouterConfig].currentRouterSn];
         if (routerModel) {
             self.selectRouther = routerModel;
@@ -571,10 +576,10 @@
 
 - (void) recivceUserFind:(NSNotification *) noti
 {
-    if (AppD.isLoginMac) {
+   
+    if (!isClickLogin) {
         return;
     }
-    [AppD.window hideHud];
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     if (receiveDic) {
         NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
@@ -582,36 +587,24 @@
         NSString *usesn = receiveDic[@"params"][@"UserSn"];
         NSString *userid = receiveDic[@"params"][@"UserId"];
         NSString *userName = receiveDic[@"params"][@"NickName"];
-        
-        NSString *userType = [usesn substringWithRange:NSMakeRange(0, 2)];
-        AccountType type = AccountSupper;
-        if ([userType isEqualToString:@"02"]) {
-            type = AccountOrdinary;
-        } else if ([userType isEqualToString:@"03"]){
-            type = AccountTemp;
-        }
-        
+    
         if (retCode == 0) { //已激活
             sendCount = 0;
             [self sendLoginRequestWithUserid:userid usersn:usesn];
-            
-//            [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
-//            [RouterModel updateRouterConnectStatusWithSn:usesn];
-//            [UserModel createUserLocalWithName:userName userid:userid version:0 filePay:@"" userpass:@"" userSn:usesn hashid:@""];
-//            [RouterModel updateRouterConnectStatusWithSn:usesn];
-//            LoginViewController *vc = [[LoginViewController alloc] init];
-//            [self setRootVCWithVC:vc];
+
         } else { // 未激活 或者日临时帐户
-//            RegiterViewController *vc = [[RegiterViewController alloc] initWithAccountType:type];
-//            [self setRootVCWithVC:vc];
+
             [self sendRegisterRequestWithShowHud:YES];
         }
+    } else {
+        isClickLogin = NO;
     }
 }
 #pragma mark -登陆成功
 - (void) loginSuccess:(NSNotification *) noti
 {
-    if (AppD.isLoginMac) {
+    
+    if (!isClickLogin) {
         return;
     }
   
@@ -620,58 +613,85 @@
         [self updateUserHead];
         [AppD setRootTabbarWithManager:nil];
       //  [AppD.window showHint:@"Login Success"];
-    } else if (retCode == 2) { // routeid不对
-        [AppD.window showHint:@"Routeid wrong."];
-    } else if (retCode == 1) { //需要验证
-        [AppD.window showHint:@"Need to verify"];
-    } else if (retCode == 3) { //uid错误
-        [AppD.window showHint:@"uid wrong."];
-    } else if (retCode == 4) { //登陆密码错误
-        [AppD.window showHint:@"Login failed, verification failed."];
-    } else if (retCode == 5) { //验证码错误
-        [AppD.window showHint:@"Verification code error."];
-    } else { // 其它错误
-        [AppD.window showHint:@"Login failed Other error."];
+    } else {
+        isClickLogin = NO;
+        if (retCode == 2) { // routeid不对
+            [AppD.window showHint:@"Routeid wrong."];
+        } else if (retCode == 1) { //需要验证
+            [AppD.window showHint:@"Need to verify"];
+        } else if (retCode == 3) { //uid错误
+            [AppD.window showHint:@"uid wrong."];
+        } else if (retCode == 4) { //登陆密码错误
+            [AppD.window showHint:@"Login failed, verification failed."];
+        } else if (retCode == 5) { //验证码错误
+            [AppD.window showHint:@"Verification code error."];
+        } else { // 其它错误
+            [AppD.window showHint:@"Login failed Other error."];
+        }
     }
 }
 
 #pragma mark -注册成功
 - (void) userRegisterSuccess:(NSNotification *) noti
 {
-    if (AppD.isLoginMac) {
+    if (!isClickLogin) {
         return;
     }
-   
+    
+    
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
-    NSString *userid = receiveDic[@"params"][@"UserId"];
-    NSString *userSn = receiveDic[@"params"][@"UserSn"];
-    NSString *hashid = receiveDic[@"params"][@"Index"];
-    NSString *routeId = receiveDic[@"params"][@"RouteId"];
-    NSString *routerName = receiveDic[@"params"][@"RouterName"];
-    NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
-    NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
-    
-    
-    // 保存用户
-    [UserModel updateHashid:hashid usersn:userSn userid:userid needasysn:0];
-    // 保存路由
-    [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userid];
-    [RouterModel updateRouterConnectStatusWithSn:userSn];
-    
-    [UserConfig getShareObject].userId = userid;
-    [UserConfig getShareObject].userName = [UserModel getUserModel].username;
-    [UserConfig getShareObject].usersn = userSn;
-    [UserConfig getShareObject].dataFilePay = dataFilePay;
-    [UserConfig getShareObject].dataFileVersion = dataFileVersion;
-    
-    [self updateUserHead];
-    
-    [AppD setRootTabbarWithManager:nil];
-   //  [AppD.window showHint:@"Registered successfully"];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        NSString *userid = receiveDic[@"params"][@"UserId"];
+        NSString *userSn = receiveDic[@"params"][@"UserSn"];
+        NSString *hashid = receiveDic[@"params"][@"Index"];
+        NSString *routeId = receiveDic[@"params"][@"RouteId"];
+        NSString *routerName = receiveDic[@"params"][@"RouterName"];
+        NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
+        NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
+        
+        // 保存用户
+        [UserModel updateHashid:hashid usersn:userSn userid:userid needasysn:0];
+        // 保存路由
+        [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userid];
+        [RouterModel updateRouterConnectStatusWithSn:userSn];
+        
+        [UserConfig getShareObject].userId = userid;
+        [UserConfig getShareObject].userName = [UserModel getUserModel].username;
+        [UserConfig getShareObject].usersn = userSn;
+        [UserConfig getShareObject].dataFilePay = dataFilePay;
+        [UserConfig getShareObject].dataFileVersion = dataFileVersion;
+        
+        [self updateUserHead];
+        
+        [AppD setRootTabbarWithManager:nil];
+    } else {
+        isClickLogin = NO;
+    }
+
 }
 
 #pragma mark - OCTSubmanagerUserDelegate
 - (void)submanagerUser:(nonnull id<OCTSubmanagerUser>)submanager connectionStatusUpdate:(OCTToxConnectionStatus)connectionStatus {
+    
+}
+
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    
+//    NSString *devToken = @"Izq2cRDrsOUCzHtqrHpEoKlQgl9heypMieJvHG2WGQU=";
+//    NSLog(@"---%@",[devToken base64DecodedData]);
+//    
+//    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:[AppD.devToken base64EncodedString] preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        UIPasteboard *pBoard = [UIPasteboard generalPasteboard];
+//        pBoard.string = [AppD.devToken base64EncodedString];
+//    }];
+//    [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
+//    [alertC addAction:alert1];
+//   
+//    [self presentViewController:alertC animated:YES completion:nil];
     
 }
 

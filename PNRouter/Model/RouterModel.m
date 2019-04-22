@@ -210,6 +210,21 @@
     
     [KeyCUtil saveRouterTokeychainWithArr:resultArr key:ROUTER_ARR];
 }
+
++ (void)updateCircleName:(NSString *)name usersn:(NSString *)sn {
+    NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
+    NSMutableArray *resultArr = [NSMutableArray array];
+    [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
+        if ([model.userSn isEqualToString:sn]) {
+            model.name = name;
+        }
+        [resultArr addObject:model.mj_keyValues];
+    }];
+    
+    [KeyCUtil saveRouterTokeychainWithArr:resultArr key:ROUTER_ARR];
+}
+
 + (void)updateRouterPassWithSn:(NSString *)sn pass:(NSString *) pass
 {
     NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];

@@ -26,6 +26,8 @@
 #import "UserModel.h"
 #import "NSData+Base64.h"
 #import "FileData.h"
+#import "OperationRecordModel.h"
+#import "KeyCUtil.h"
 
 @implementation SystemUtil
 + (void) playSystemSound
@@ -137,6 +139,22 @@
             [SystemUtil removeDocmentFilePath:docPath];
         }
        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+}
+
++ (NSString *) getCurrentUserBaseFilePath
+{
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"%@/files/%@",@"Documents",[UserConfig getShareObject].userId];
+    NSString *docPath = [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    BOOL isexit = [manage fileExistsAtPath:docPath isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        if (isexit && !isDir) {
+            [SystemUtil removeDocmentFilePath:docPath];
+        }
+        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
     }
     return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
 }
@@ -259,10 +277,13 @@
         convertedValue /= 1024;
         multiplyFactor++;
     }
+    if (convertedValue == 0) {
+        convertedValue = 1;
+    }
     return [NSString stringWithFormat:@"%4.1f %@",convertedValue, [tokens objectAtIndex:multiplyFactor]];
 }
 
-+ (NSString *)transformedZSValue:(int) convertedValue
++ (NSString *)transformedZSValue:(NSInteger) convertedValue
 {
     int multiplyFactor = 0;
     NSArray *tokens = [NSArray arrayWithObjects:@"B",@"KB",@"MB",@"GB",@"TB",nil];
@@ -271,7 +292,7 @@
         convertedValue /= 1024;
         multiplyFactor++;
     }
-    return [NSString stringWithFormat:@"%d %@",convertedValue, [tokens objectAtIndex:multiplyFactor]];
+    return [NSString stringWithFormat:@"%ld %@",(long)convertedValue, [tokens objectAtIndex:multiplyFactor]];
 }
 
 //获取视频封面，本地视频，网络视频都可以用
@@ -488,6 +509,18 @@
             model.status = 3;
             [model bg_saveOrUpdateAsync:nil];
     }];
+}
+// 清除app所有数据
++ (void) clearAppAllData
+{
+    [KeyCUtil deleteAllKey];
+    [FriendModel bg_drop:FRIEND_LIST_TABNAME];
+    [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
+    [OperationRecordModel bg_drop:OperationRecord_Table];
+    NSString *documentPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    [SystemUtil removeDocmentFilePath:[documentPath stringByAppendingPathComponent:@"files"]];
+    [SystemUtil removeDocmentFilePath:[documentPath stringByAppendingPathComponent:@"uploadFiles/%@_upload"]];
+    
 }
 
 @end
