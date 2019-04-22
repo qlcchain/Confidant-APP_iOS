@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="46.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrive" translatesAutoresizingMaskIntoConstraints="NO" id="jSf-WQ-HxL">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrive" translatesAutoresizingMaskIntoConstraints="NO" id="jSf-WQ-HxL">
                         <rect key="frame" x="296" y="16.5" width="8" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="8" id="YfZ-Ap-ekh"/>
@@ -43,12 +43,12 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDX-ph-KvW">
-                        <rect key="frame" x="93.5" y="23.5" width="189.5" height="0.0"/>
+                        <rect key="frame" x="93.5" y="23.5" width="0.0" height="0.0"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <color key="textColor" red="0.52156862745098043" green="0.52156862745098043" blue="0.52156862745098043" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_management_circle" translatesAutoresizingMaskIntoConstraints="NO" id="mUP-XD-PHv">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mUP-XD-PHv">
                         <rect key="frame" x="16" y="15.5" width="16" height="16"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="16" id="nUl-8b-6EF"/>
@@ -78,7 +78,6 @@
                     <constraint firstItem="jDX-ph-KvW" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="eKh-Ku-lku"/>
                     <constraint firstItem="jDX-ph-KvW" firstAttribute="leading" secondItem="wy8-Cg-UUl" secondAttribute="trailing" constant="10" id="hNz-xZ-I1c"/>
                     <constraint firstAttribute="trailing" secondItem="9ii-pt-6F3" secondAttribute="trailing" id="kJk-c6-hap"/>
-                    <constraint firstItem="jSf-WQ-HxL" firstAttribute="leading" secondItem="jDX-ph-KvW" secondAttribute="trailing" constant="13" id="utc-St-t2F"/>
                     <constraint firstAttribute="bottom" secondItem="9ii-pt-6F3" secondAttribute="bottom" id="vun-D1-Dym"/>
                 </constraints>
             </tableViewCellContentView>
@@ -89,14 +88,15 @@
                 <outlet property="iconleftV" destination="X6k-wu-PQd" id="p7m-ZR-fTJ"/>
                 <outlet property="lblContent" destination="wy8-Cg-UUl" id="Q1Y-o4-NWu"/>
                 <outlet property="lblSubContent" destination="jDX-ph-KvW" id="K4D-JQ-53f"/>
+                <outlet property="rightContraintV" destination="ZO5-wX-nHJ" id="Rkg-zJ-Fg1"/>
+                <outlet property="rightContraintW" destination="YfZ-Ap-ekh" id="DuN-Zi-4uK"/>
                 <outlet property="rightJD" destination="jSf-WQ-HxL" id="9Sb-1z-rfx"/>
                 <outlet property="subBtn" destination="a3I-A3-v7C" id="cp6-Vd-Oq1"/>
             </connections>
-            <point key="canvasLocation" x="-944" y="-102"/>
+            <point key="canvasLocation" x="-1256" y="-109"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon_arrive" width="8" height="14"/>
-        <image name="icon_management_circle" width="16" height="16"/>
     </resources>
 </document>

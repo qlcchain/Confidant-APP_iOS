@@ -34,6 +34,8 @@
     NSString *currentURL;
     int socketDisCount;
     int toxSuccessCount;
+    BOOL isSwitchCircle;
+    int requestTime;
 }
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomHeight; // 44
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
@@ -73,6 +75,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:SOCKET_LOGIN_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
 }
 #pragma mark - Operation
 - (void)dataInit {
@@ -223,7 +226,7 @@
     if (model.routerM.isConnected) {
         return;
     }
-    
+    isSwitchCircle = YES;
     [self.view showHudInView:self.view hint:Connect_Cricle];
     RouterModel *selectRouterModel = model.routerM;
     // 发送退出请求
@@ -265,11 +268,14 @@
     // 当前是在局域网
     if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString])
     {
-        AppD.manager = nil;
+        requestTime = 10;
+        //AppD.manager = nil; tox_stop
+        AppD.currentRouterNumber = -1;
         NSString *connectURL = [SystemUtil connectUrl];
         [SocketUtil.shareInstance connectWithUrl:connectURL];
         
     } else {
+        requestTime = 15;
         if (AppD.manager) {
             [self addRouterFriend];
         } else {
@@ -312,10 +318,9 @@
 {
     toxSuccessCount +=1;
     if (toxSuccessCount == 1) {
-        [self.view showHudInView:self.view hint:Connect_Cricle];
         isFindRequest = NO;
         [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn showHud:NO];
-        [self performSelector:@selector(checkFindRequstOutTime) withObject:self afterDelay:10];
+        [self performSelector:@selector(checkFindRequstOutTime) withObject:self afterDelay:requestTime];
     }
     
 }
@@ -351,6 +356,7 @@
 #pragma mark -- 切换失败
 - (void) switchCircleFaieldWithHintString:(NSString *) hitStr
 {
+    AppD.currentRouterNumber = -1;
     [self.view hideHud];
     AppD.isSwitch = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -361,6 +367,11 @@
 #pragma mark- --切换成功
 - (void) switchCircleSuccess
 {
+    if (![SystemUtil isSocketConnect]) {
+        if (AppD.currentRouterNumber < 0) {
+            return;
+        }
+    }
     // 发送获取好友列表和群组列表通知
     [[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_GROUP_LIST_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
@@ -383,9 +394,8 @@
         if (toxSuccessCount == 2) {
             isFindRequest = NO;
             [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn showHud:NO];
-            [self performSelector:@selector(checkFindRequstOutTime) withObject:self afterDelay:10];
+            [self performSelector:@selector(checkFindRequstOutTime) withObject:self afterDelay:requestTime];
         } else {
-            [self.view hideHud];
             [self switchCircleFaieldWithHintString:@"Circle connection failed."];
         }
     }
@@ -394,7 +404,6 @@
 - (void) checkLoginRequstOutTime
 {
     if (!isLoginRequest) {
-        [self.view hideHud];
         [self switchCircleFaieldWithHintString:@"Circle connection failed."];
     }
 }
@@ -405,20 +414,26 @@
     [self connectSocketWithIsShowHud:NO];
 }
 - (void)socketOnConnect:(NSNotification *)noti {
-  // 走find5
-    isFindRequest = NO;
-   [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn showHud:NO];
-    [self performSelector:@selector(checkFindRequstOutTime) withObject:self afterDelay:10];
+    if (isSwitchCircle) {
+        // 走find5
+        isFindRequest = NO;
+        [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn showHud:NO];
+        [self performSelector:@selector(checkFindRequstOutTime) withObject:self afterDelay:requestTime];
+    }
+  
 }
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
-    socketDisCount +=1;
-    NSString *url = noti.object;
-    if ([url isEqualToString:currentURL] || socketDisCount ==1) {
-        return;
+    
+    if (isSwitchCircle) {
+        NSString *url = noti.object;
+        if ([url isEqualToString:currentURL]) {
+            return;
+        }
+        [self.view hideHud];
+        [self switchCircleFaieldWithHintString:@"Circle connection failed."];
     }
-    [self.view hideHud];
-    [self switchCircleFaieldWithHintString:@"Circle connection failed."];
+    
    
 }
 // find5 通知回调
@@ -436,7 +451,7 @@
         if (retCode == 0) { //已激活
             isLoginRequest = NO;
             [SendRequestUtil sendUserLoginWithPass:usesn userid:userid showHud:NO];
-            [self performSelector:@selector(checkLoginRequstOutTime) withObject:self afterDelay:10];
+            [self performSelector:@selector(checkLoginRequstOutTime) withObject:self afterDelay:requestTime];
         } else { // 未激活 或者日临时帐户
            // [self sendRegisterRequestWithShowHud:YES];
             [self switchCircleFaieldWithHintString:@"Circle inactive."];
@@ -466,14 +481,22 @@
         [self switchCircleFaieldWithHintString:@"Login failed Other error."];
     }
 }
+#pragma mark --- 注册推送
+- (void) registerPushNoti:(NSNotification *) noti
+{
+    [SendRequestUtil sendRegidReqeust];
+}
 
  #pragma mark -加router好友成功
 - (void) toxAddRoterSuccess:(NSNotification *) noti
 {
-    NSLog(@"thread = %@",[NSThread currentThread]);
-    NSLog(@"加router好友成功----switch circle");
-    [self hideConnectServerLoad];
-    [self toxConnectSuccessSendFindRequest];
+    if (isSwitchCircle) {
+        NSLog(@"thread = %@",[NSThread currentThread]);
+        NSLog(@"加router好友成功----switch circle");
+        [self hideConnectServerLoad];
+        [self.view showHudInView:self.view hint:Connect_Cricle];
+        [self toxConnectSuccessSendFindRequest];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

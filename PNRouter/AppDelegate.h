@@ -28,6 +28,10 @@
 @property (nonatomic ,assign) BOOL isSwitch;
 @property (nonatomic ,assign) BOOL showTouch;
 
+// 外部文件打开的url
+@property (nonatomic ,strong) NSURL *fileURL;
+//@property (nonatomic ,strong) NSData *devToken;
+
 /**
  app是否正在进行登录操作
  */
@@ -35,6 +39,7 @@
 
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager;
 - (void)setRootLoginWithType:(LoginType) type;
+- (void) setRootTabbarLonginDev;
 - (void)judgeLogin;
 - (void)addTransitionAnimation;
 - (void)logOutApp;

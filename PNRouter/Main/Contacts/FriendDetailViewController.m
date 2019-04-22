@@ -49,6 +49,9 @@
 }
 
 - (IBAction)backAction:(id)sender {
+    if (_isBack) {
+        [self moveNavgationBackOneViewController];
+    }
     [self leftNavBarItemPressedWithPop:YES];
 }
 
@@ -220,8 +223,19 @@
 
 #pragma mark - Transition
 - (void)jumpToChat {
-    ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:self.friendModel];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (_isBack) {
+        [self leftNavBarItemPressedWithPop:YES];
+    } else if (_isGroup) {
+       
+        ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:self.friendModel];
+        [self.navigationController pushViewController:vc animated:YES];
+        [self moveAllNavgationViewController];
+        
+    } else {
+        ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:self.friendModel];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 }
 - (void) jumpToAddFriend
 {

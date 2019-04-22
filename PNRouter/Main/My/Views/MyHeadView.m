@@ -49,6 +49,7 @@
     browser.dataSourceArray = @[data1];
     browser.currentIndex = 0;
     [browser show];
+    
 }
 
 

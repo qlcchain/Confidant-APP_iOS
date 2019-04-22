@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) NSString *UserId;
 @property (nonatomic , strong) NSString *Qrcode;
 @property (nonatomic , assign) NSInteger LastLoginTime;
+@property (nonatomic , assign) NSInteger CreateTime;
 @property (nonatomic , strong) NSString *UserKey;
 
 

@@ -67,7 +67,7 @@
                 if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
                     [AppD.window showHint:@"You cannot add yourself as a friend."];
                 } else if (codeValue.length != 76) {
-                    [AppD.window showHint:@"The two-dimensional code format is wrong."];
+                    [AppD.window showHint:@"QR code format is wrong."];
                 } else {
                     NSString *nickName = @"";
                     if (codeValues.count>2) {

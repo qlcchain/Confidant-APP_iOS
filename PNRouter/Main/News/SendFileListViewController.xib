@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SendFileListViewController">
             <connections>
+                <outlet property="mainTabV" destination="1We-bE-Ljf" id="6rU-He-R13"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -33,6 +34,9 @@
                             <state key="normal" title="Cancel">
                                 <color key="titleColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="deviceRGB"/>
                             </state>
+                            <connections>
+                                <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="H7w-se-33W"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a File" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFM-pD-JSQ">
                             <rect key="frame" x="138.5" y="11.5" width="98" height="21"/>
@@ -50,15 +54,35 @@
                         <constraint firstItem="5g0-RO-xqJ" firstAttribute="leading" secondItem="Zid-Gt-Sws" secondAttribute="leading" id="f0u-ne-Ctv"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="28f-e0-cnz">
+                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1We-bE-Ljf">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="1We-bE-Ljf" firstAttribute="leading" secondItem="28f-e0-cnz" secondAttribute="leading" id="2WF-Tu-E1t"/>
+                        <constraint firstAttribute="bottom" secondItem="1We-bE-Ljf" secondAttribute="bottom" id="3K2-xm-G5z"/>
+                        <constraint firstAttribute="trailing" secondItem="1We-bE-Ljf" secondAttribute="trailing" id="ZxF-NL-fvY"/>
+                        <constraint firstItem="1We-bE-Ljf" firstAttribute="top" secondItem="28f-e0-cnz" secondAttribute="top" id="yfK-vy-LMd"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="28f-e0-cnz" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="2sq-Uu-aaq"/>
                 <constraint firstAttribute="trailing" secondItem="Zid-Gt-Sws" secondAttribute="trailing" id="6vh-kv-IG7"/>
                 <constraint firstItem="Zid-Gt-Sws" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="71O-Kq-vE0"/>
+                <constraint firstItem="28f-e0-cnz" firstAttribute="top" secondItem="Zid-Gt-Sws" secondAttribute="bottom" id="SeX-oW-Ms3"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="28f-e0-cnz" secondAttribute="bottom" id="TQC-bk-0Pi"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="28f-e0-cnz" secondAttribute="trailing" id="hfe-KW-cqV"/>
                 <constraint firstItem="Zid-Gt-Sws" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="mUU-US-8Lh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="2" y="-376"/>
+            <point key="canvasLocation" x="-359" y="-473"/>
         </view>
     </objects>
 </document>

@@ -41,8 +41,9 @@
             NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
             NSString *type = codeValues[0];
             if ([[NSString getNotNullValue:type] isEqualToString:@"type_3"]) {
+                
                 [LibsodiumUtil changeUserPrivater:codeValues[1]];
-                NSString *name = [codeValues[2] base64DecodedString];
+                NSString *name = [codeValues[3] base64DecodedString];
                 [UserModel createUserLocalWithName:name];
                 [AppD setRootLoginWithType:ImportType];
             } else {

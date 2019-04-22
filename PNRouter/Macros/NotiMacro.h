@@ -64,6 +64,8 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 #define OWNER_ONLINE_NOTI @"OWNER_ONLINE_NOTI"
 // 选择好友通知
 #define CHOOSE_FRIEND_NOTI @"CHOOSE_FRIEND_NOTI"
+// 外部文件转发选择好友通知
+#define DOC_OPEN_CHOOSE_FRIEND_NOTI @"DOC_OPEN_CHOOSE_FRIEND_NOTI"
 // 文件发送通知
 #define FILE_SEND_NOTI @"FILE_SEND_NOTI"
 // 文件发送中通知
@@ -147,6 +149,10 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 #define UpdateAvatar_FileNotExist_Noti @"UpdateAvatar_FileNotExist_Noti"
 // 拉取临时通信二维码  成功通知
 #define PullTmpAccount_Success_Noti @"PullTmpAccount_Success_Noti"
+// 外部文件打开
+#define OTHER_FILE_OPEN_NOTI @"OTHER_FILE_OPEN_NOTI"
+// 删除用户成功
+#define DEL_USER_SUCCESS_NOTI @"DEL_USER_SUCCESS_NOTI"
 
 
 // ---------------------群组----------------------

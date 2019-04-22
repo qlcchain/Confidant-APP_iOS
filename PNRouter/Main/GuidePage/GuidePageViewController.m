@@ -10,57 +10,21 @@
 #import "GuidePageView1.h"
 #import "GuidePageView2.h"
 #import "GuidePageView3.h"
-#import "QRViewController.h"
-#import "RSAUtil.h"
-#import "AESCipher.h"
-#import "LoginViewController.h"
-#import "RegiterViewController.h"
-#import "RouterConfig.h"
-#import "PNRouter-Swift.h"
-#import "RouterModel.h"
-#import "ReviceRadio.h"
-#import "UserModel.h"
-#import "SystemUtil.h"
-#import "OCTSubmanagerFriends.h"
-#import "NSString+Base64.h"
-#import "OCTSubmanagerUser.h"
-#import "ConnectView.h"
+
+
 
 @interface GuidePageViewController ()
 {
     BOOL isFind;
 }
 @property (nonatomic ,strong) UIScrollView *mainScrollView;
-@property (nonatomic ,strong) ConnectView *connectView;
+
 
 @end
 
 @implementation GuidePageViewController
-- (void) showConnectServerLoad
-{
-    if (!_connectView) {
-        _connectView = [ConnectView loadConnectView];
-    }
-    [_connectView showConnectView];
-}
-- (void) hideConnectServerLoad
-{
-    [_connectView hiddenConnectView];
-}
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-- (void) addNotication
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnConnect:) name:SOCKET_ON_CONNECT_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnDisconnect:) name:SOCKET_ON_DISCONNECT_NOTI object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gbFinashNoti:) name:GB_FINASH_NOTI object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
-    
-    
-}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     _mainScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
@@ -72,7 +36,6 @@
     _mainScrollView.contentSize = CGSizeMake(SCREEN_WIDTH*3, SCREEN_HEIGHT);
     [self.view addSubview:_mainScrollView];
     [self addGuidePageView];
-    [self addNotication];
 }
 
 // 添加引导页
@@ -95,177 +58,6 @@
 - (void)startAction:(UIButton *)btn {
     [AppD judgeLogin];
 }
-
-//- (void) nextAction:(UIButton *) sender
-//{
-//    if (sender.tag == 2) {
-//
-//
-//         [self jumpToQR];
-//    } else {
-//        [_mainScrollView scrollRectToVisible:CGRectMake(SCREEN_WIDTH*(sender.tag+1), 0, SCREEN_WIDTH, SCREEN_HEIGHT) animated:YES];
-//    }
-//}
-
-//- (void)scanAction:(UIButton *)sender {
-//    [self jumpToQR];
-//}
-
-- (void)scanSuccessfulWithIsMacd:(BOOL)isMac {
-    [AppD.window showHudInView:AppD.window hint:@"Check Circle..."];
-    if (isMac) {
-         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterMAC];
-    } else {
-        [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
-    }
-}
-
-#pragma mark -连接socket
-- (void) connectSocket
-{
-    NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
-    if (connectStatu == socketConnectStatusConnected) {
-        [[SocketUtil shareInstance] disconnect];
-    }    // 连接
-    [AppD.window showHudInView:AppD.window hint:@"Connect Circle..."];
-    NSString *connectURL = [SystemUtil connectUrl];
-    [SocketUtil.shareInstance connectWithUrl:connectURL];
-}
-
-#pragma mark -通知回调
-- (void)socketOnConnect:(NSNotification *)noti {
-    
-    if (AppD.isLoginMac) {
-        return;
-    }
-    
-    [AppD.window hideHud];
-    [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
-}
-
-- (void)socketOnDisconnect:(NSNotification *)noti {
-    
-    if (AppD.isLoginMac) {
-        return;
-    }
-    
-    [AppD.window hideHud];
-    [AppD.window showHint:@"The connection fails"];
-}
-
-- (void) gbFinashNoti:(NSNotification *) noti
-{
-    if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterMAC] isEmptyString]) {
-        if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
-            [self.view showHint:@"Unable to connect to server."];
-        } else {
-            [self jumpToLoginDevice];
-        }
-    } else {
-        isFind = YES;
-        // 当前是在局域网
-        if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString])
-        {
-            AppD.manager = nil;
-            [self connectSocket];
-            
-        } else { // tox
-            if (!AppD.manager) {
-                [self loginToxWithShowHud:YES];
-            } else {
-                [self toxLoginSuccessWithManager:AppD.manager];
-            }
-            
-        }
-    }
-}
-
-- (void)toxLoginSuccessWithManager:(id<OCTManager>)manager
-{
-    
-  //  [RoutherConfig getRouterConfig].currentRouterToxid = @"A1DA6FFE24611BDE1D14B55B02F180961A3DFB8C9C9B2A572EB274896B7EAC30B4CDCDCE68B8";
-    
-    if (![manager.friends friendIsExitWithFriend:[RouterConfig getRouterConfig].currentRouterToxid]) {
-        // 添加好友
-        [self showConnectServerLoad];
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            BOOL result = [manager.friends sendFriendRequestToAddress:[RouterConfig getRouterConfig].currentRouterToxid message:@"" error:nil];
-            if (!result) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self hideConnectServerLoad];
-                    [AppD.window showHint:@"Failed to connect to the server"];
-                });
-            }
-        });
-       
-    } else { // 好友已存在并且在线
-        
-        if ([AppD.manager.friends getFriendConnectStatuWithFriendNumber:AppD.currentRouterNumber] > 0) {
-             [self sendToxFindWithManager:manager];
-        } else {
-            [self showConnectServerLoad];
-        }
-        
-    }
-    
-}
-
-
-- (void) sendToxFindWithManager:(id<OCTManager>)manager
-{
-    if (isFind) {
-        isFind = NO;
-        [SendRequestUtil sendUserFindWithToxid:[RouterConfig getRouterConfig].currentRouterToxid usesn:[RouterConfig getRouterConfig].currentRouterSn];
-    }
-}
-
-- (void) toxAddRoterSuccess:(NSNotification *) noti
-{
-    [self hideConnectServerLoad];
-    [AppD.window hideHud];
-   // [AppD.window showHint:@"Server connection successful."];
-    [self sendToxFindWithManager:AppD.manager];
-}
-
-- (void) recivceUserFind:(NSNotification *) noti
-{
-    if (AppD.isLoginMac) {
-        return;
-    }
-    NSDictionary *receiveDic = (NSDictionary *)noti.object;
-    if (receiveDic) {
-        NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
-        NSString *routherid = receiveDic[@"params"][@"RouteId"];
-        NSString *usesn = receiveDic[@"params"][@"UserSn"];
-        NSString *userid = receiveDic[@"params"][@"UserId"];
-        NSString *userName = receiveDic[@"params"][@"NickName"];
-        NSInteger fileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
-        
-        NSString *userType = [usesn substringWithRange:NSMakeRange(0, 2)];
-        AccountType type = AccountSupper;
-        if ([userType isEqualToString:@"02"]) {
-            type = AccountOrdinary;
-        } else if ([userType isEqualToString:@"03"]){
-            type = AccountTemp;
-        }
-        
-        //[RouterModel addRouterWithToxid:routherid usesn:usesn];
-        
-        if (retCode == 0) { //已激活
-            [RouterModel addRouterWithToxid:routherid usesn:usesn userid:userid];
-            [UserModel createUserLocalWithName:userName userid:userid version:fileVersion filePay:@"" userpass:@"" userSn:usesn hashid:@""];
-            [RouterModel updateRouterConnectStatusWithSn:usesn];
-            LoginViewController *vc = [[LoginViewController alloc] init];
-            [self setRootVCWithVC:vc];
-        } else { // 未激活 或者日临时帐户
-            RegiterViewController *vc = [[RegiterViewController alloc] initWithAccountType:type];
-            [self setRootVCWithVC:vc];
-        }
-    }
-}
-
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

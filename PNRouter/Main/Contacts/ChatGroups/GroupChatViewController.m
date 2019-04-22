@@ -10,7 +10,6 @@
 #import "FriendDetailViewController.h"
 #import "BaseMsgModel.h"
 #import "CDChatList.h"
-#import "MsgPicViewController.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import "UserModel.h"
 #import "SocketMessageUtil.h"
@@ -57,6 +56,17 @@
 #import "ChatImgCacheUtil.h"
 #import "NSString+File.h"
 
+#import "RequestService.h"
+#import "NSString+File.h"
+#import <YBImageBrowser/YBImageBrowser.h>
+#import "HMScanner.h"
+#import "FriendRequestViewController.h"
+#import "CodeMsgViewController.h"
+#import "NSString+RegexCategory.h"
+#import "RouterConfig.h"
+#import "RouterModel.h"
+#import "CircleOutUtil.h"
+
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
 #define ScreenW [UIScreen mainScreen].bounds.size.width
@@ -67,9 +77,10 @@ typedef void(^PullMoreBlock)(NSArray *arr);
 @interface GroupChatViewController ()<ChatListProtocol,
 CTInputViewProtocol,
 UINavigationControllerDelegate,
-UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate>
+UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate,YBImageBrowserDelegate>
 {
     BOOL isGroupChatViewController;
+    YBImageBrowser *browser;
 }
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (weak, nonatomic) IBOutlet UIView *tabBackView;
@@ -82,9 +93,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property (nonatomic, strong) NSString *deleteMsgId;
 
 @property (nonatomic ,strong) GroupInfoModel *groupModel;
+
+@property (nonatomic ,strong) NSMutableArray *actionArr;
 @end
 
 @implementation GroupChatViewController
+
+#pragma mark ---layz
+- (NSMutableArray *)actionArr
+{
+    if (!_actionArr) {
+        _actionArr = [NSMutableArray array];
+    }
+    return _actionArr;
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
@@ -231,6 +254,35 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)clickFileCellWithMsgMode:(CDChatMessage)msgModel withFilePath:(NSString *)filePath {
     [YWFilePreviewView previewFileWithPaths:filePath fileName:msgModel.fileName fileType:msgModel.msgType];
 }
+- (void)clickHeadWithMessage:(CDChatMessage)clickMessage
+{
+    FriendModel *fModel = [[ChatListDataUtil getShareObject] getFriendWithUserid:clickMessage.FromId];
+    FriendModel *friendModel = [[FriendModel alloc] init];
+    if (!fModel) {
+        friendModel.userId = clickMessage.FromId;
+        friendModel.username = clickMessage.userName;
+        friendModel.signPublicKey = clickMessage.publicKey;
+        friendModel.noFriend = YES;
+    } else {
+        
+        friendModel.userId = fModel.userId;
+        friendModel.username = [fModel.username base64DecodedString]?:fModel.username;
+        friendModel.publicKey = fModel.publicKey;
+        friendModel.remarks = [fModel.remarks base64DecodedString]?:fModel.remarks;
+        friendModel.Index = fModel.Index;
+        friendModel.onLineStatu = fModel.onLineStatu;
+        friendModel.signPublicKey = fModel.signPublicKey;
+        friendModel.RouteId = fModel.RouteId;
+        friendModel.RouteName = fModel.RouteName;
+        friendModel.signPublicKey = fModel.publicKey;
+       
+    }
+    
+    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
+    vc.friendModel = friendModel;
+    vc.isGroup = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 - (void)clickChatMenuItem:(NSString *)itemTitle withMsgMode:(CDChatMessage) msgModel
 {
     self.selectMessageModel = (CDMessageModel *)msgModel;
@@ -288,12 +340,140 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 //cell 的点击事件
-- (void)chatlistClickMsgEvent:(ChatListInfo *)listInfo {
+- (void)chatlistClickMsgEvent:(ChatListInfo *)listInfo imgView:(UIImageView *)imgV {
     switch (listInfo.eventType) {
         case ChatClickEventTypeIMAGE:
         {
-            CGRect newe =  [listInfo.containerView.superview convertRect:listInfo.containerView.frame toView:self.view];
-            [MsgPicViewController addToRootViewController:listInfo.image ofMsgId:listInfo.msgModel.messageId in:newe from:self.listView.msgArr vc:self];
+            NSMutableArray *messageArr = [NSMutableArray array];
+            for (int i = 0; i<self.listView.msgArr.count; i++) {
+                CDMessageModel *messageModel = (CDMessageModel*)self.listView.msgArr[i];
+                if (messageModel.msgType == CDMessageTypeImage) {
+                    [messageArr addObject:messageModel];
+                }
+            }
+            // 设置数据源数组并展示
+            
+            browser = [YBImageBrowser new];
+            browser.delegate = self;
+            YBImageBrowserSheetView *sheetView = [YBImageBrowserSheetView new];
+            if (self.actionArr.count == 0) {
+                @weakify_self
+                YBImageBrowserSheetAction *action1 = [YBImageBrowserSheetAction actionWithName:@"Save Photo" identity:@"save" action:^(id<YBImageBrowserCellDataProtocol>  _Nonnull data) {
+                    YBImageBrowseCellData *data1 = (YBImageBrowseCellData *)data;
+                    [weakSelf loadImageFinished:data1.image];
+                    
+                }];
+                
+                YBImageBrowserSheetAction *action2 = [YBImageBrowserSheetAction actionWithName:@"Scan QR Code in image" identity:@"Scaner" action:^(id<YBImageBrowserCellDataProtocol>  _Nonnull data) {
+                    YBImageBrowseCellData *data1 = (YBImageBrowseCellData *)data;
+                    [HMScanner scaneImage:data1.image completion:^(NSArray *values) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (values && values.count > 0) {
+                                NSString *codeVlaue = [values firstObject];
+                                if ([codeVlaue isUrlAddress]) { // 是网址
+                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:codeVlaue] options:@{} completionHandler:nil];
+                                } else {
+                                    NSArray *codeValues = [codeVlaue componentsSeparatedByString:@","];
+                                    NSString *codeType = codeValues[0];
+                                    if ([codeType isEqualToString:@"type_0"]) {
+                                        NSString *userID = codeValues[1];
+                                        if (userID.length == 76) {
+                                            if ([userID isEqualToString:[UserModel getUserModel].userId]) {
+                                                [AppD.window showHint:@"You cannot add yourself as a friend."];
+                                            } else {
+                                                NSString *nickName = @"";
+                                                if (codeValues.count>2) {
+                                                    nickName = codeValues[2];
+                                                }
+                                                [weakSelf addFriendRequest:userID nickName:nickName signpk:codeValues[3]];
+                                            }
+                                        } else {
+                                            [weakSelf jumpCodeValueVCWithCodeValue:codeVlaue];
+                                        }
+                                    } else if (codeVlaue.length == 12) {
+                                        NSString *macAdress = @"";
+                                        for (int i = 0; i<12; i+=2) {
+                                            NSString *macIndex = [codeVlaue substringWithRange:NSMakeRange(i, 2)];
+                                            macAdress = [macAdress stringByAppendingString:macIndex];
+                                            if (i < 10) {
+                                                macAdress = [macAdress stringByAppendingString:@":"];
+                                            }
+                                        }
+                                        if ([macAdress isMacAddress]) {
+                                            [weakSelf showAlertVCWithValues:@[macAdress] isMac:YES];
+                                        } else {
+                                            [weakSelf jumpCodeValueVCWithCodeValue:codeVlaue];
+                                        }
+                                    } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_1"]) {
+                                        // router 码
+                                        NSString *result = aesDecryptString(codeValues[1],AES_KEY);
+                                        result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                                        if (result && result.length == 114) {
+                                            
+                                            NSString *toxid = [result substringWithRange:NSMakeRange(6, 76)];
+                                            NSString *sn = [result substringWithRange:NSMakeRange(result.length-32, 32)];
+                                            NSLog(@"%@---%@",[RouterConfig getRouterConfig].currentRouterSn,[RouterConfig getRouterConfig].currentRouterToxid);
+                                            
+                                            if ([[RouterConfig getRouterConfig].currentRouterToxid isEqualToString:toxid]) {
+                                                // 是当前帐户
+                                                [AppD.window showHint:@"Already in the same circle."];
+                                            } else {
+                                                [weakSelf showAlertVCWithValues:@[toxid,sn] isMac:NO];
+                                            }
+                                        }
+                                    } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_2"]) {
+                                        // mac 码
+                                        NSString *result = aesDecryptString(codeValues[1],AES_KEY);
+                                        result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                                        AppD.isScaner = YES;
+                                        [weakSelf showAlertVCWithValues:@[result] isMac:YES];
+                                        
+                                    } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_3"]) { //帐户码
+                                        
+                                        [weakSelf showAlertImportAccount:codeValues];
+                                        
+                                    } else {
+                                        [weakSelf jumpCodeValueVCWithCodeValue:codeVlaue];
+                                    }
+                                }
+                            } else {
+                                
+                            }
+                        });
+                    }];
+                }];
+                
+                [self.actionArr addObject:action1];
+                [self.actionArr addObject:action2];
+            }
+            sheetView.actions = [NSArray arrayWithArray:self.actionArr];
+            browser.sheetView = sheetView;
+            NSMutableArray *imgDataArr = [NSMutableArray array];
+            __block NSInteger currentIndex = 0;
+            [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                CDMessageModel *messageModel = obj;
+                // 本地图片（推荐使用 YBImage）
+                YBImageBrowseCellData *data1 = [YBImageBrowseCellData new];
+                if (messageModel.mediaImage) {
+                    UIImage *resultImg = messageModel.mediaImage;
+                    data1.imageBlock = ^__kindof UIImage * _Nullable{
+                        return resultImg;
+                    };
+                } else {
+                    NSString *requestUrl = [NSString stringWithFormat:@"%@%@",[RequestService getPrefixUrl],messageModel.filePath];
+                    data1.url = [NSURL URLWithString:requestUrl];
+                }
+                
+                [imgDataArr addObject:data1];
+                data1.sourceObject = imgV;
+                
+                if ([listInfo.msgModel.messageId isEqualToString:messageModel.messageId]) {
+                    currentIndex = idx;
+                }
+            }];
+            browser.dataSourceArray = [NSArray arrayWithArray:imgDataArr];
+            browser.currentIndex = currentIndex;
+            [browser showFromController:self];
         }
             break;
         case ChatClickEventTypeTEXT:
@@ -357,7 +537,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         mode.dskey = self.groupModel.UserKey;
         mode.srckey = self.groupModel.UserKey;
         [self.listView addMessagesToBottom:@[mode]];
-        
         
         // 自己私钥解密
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
@@ -948,6 +1127,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.fileID = msgid;
     model.fileWidth = img.size.width;
     model.fileHeight = img.size.height;
+    model.mediaImage = img;
     model.FromId = [UserConfig getShareObject].userId;
     model.ToId = self.groupModel.GId;
     model.msgState = CDMessageStateSending;
@@ -1868,5 +2048,153 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+- (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageIndexChanged:(NSUInteger)index data:(id<YBImageBrowserCellDataProtocol>)data
+{
+    NSLog(@"------------------------------------");
+    YBImageBrowserSheetView *sheetView = imageBrowser.sheetView;
+    NSMutableArray *mutArr = [self.actionArr mutableCopy];
+    YBImageBrowseCellData *data1 = (YBImageBrowseCellData *)data;
+    
+    [HMScanner scaneImage:data1.image completion:^(NSArray *values) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!values || values.count == 0) {
+                [mutArr removeLastObject];
+                sheetView.actions = [NSArray arrayWithArray:mutArr];
+            } else {
+                sheetView.actions = [NSArray arrayWithArray:mutArr];
+            }
+        });
+    }];
+}
+
+- (void)loadImageFinished:(UIImage *)image
+{
+    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), (__bridge void *)self);
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    if (!error) {
+        [self.view showHint:@"Save Success"];
+    } else {
+        [self.view showHint:@"Save Failed"];
+    }
+}
+
+
+#pragma mark - Transition
+- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk
+{
+    
+    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void) jumpCodeValueVCWithCodeValue:(NSString *) codeValue
+{
+    
+    CodeMsgViewController *vc = [[CodeMsgViewController alloc] initWithCodeValue:codeValue];
+    [browser presentViewController:vc animated:YES completion:nil];
+    
+}
+
+- (void) showAlertImportAccount:(NSArray *) values
+{
+    
+    NSString *signpk = values[1];
+    //NSString *usersn = values[2];
+    if ([signpk isEqualToString:[EntryModel getShareObject].signPrivateKey])
+    {
+        
+        [AppD.window showHint:@"The same user."];
+        return;
+        
+//        RouterModel *selectRouther = [RouterModel checkRoutherWithSn:usersn];
+//        if (selectRouther) {
+//            if ([[RouterConfig getRouterConfig].currentRouterToxid isEqualToString:selectRouther.toxid]) { // 是当前帐户
+//                [AppD.window showHint:@"The same user."];
+//                return;
+//            }
+//        }
+    }
+    
+    
+    UIAlertController *vc = [UIAlertController alertControllerWithTitle:@"" message:@"This operation will overwrite the current account. Do you want to continue?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        if (![signpk isEqualToString:[EntryModel getShareObject].signPrivateKey]) {
+            // 清除所有数据
+            [SystemUtil clearAppAllData];
+            // 更改私钥
+            [LibsodiumUtil changeUserPrivater:values[1]];
+            NSString *name = [values[3] base64DecodedString];
+            [UserModel createUserLocalWithName:name];
+            // 删除所有路由
+            [RouterModel delegateAllRouter];
+            
+            [AppD setRootLoginWithType:ImportType];
+        }
+            
+//        } else {
+//            RouterModel *selectRouther = [RouterModel checkRoutherWithSn:usersn];
+//            if (selectRouther) {
+//                [RouterConfig getRouterConfig].currentRouterToxid = selectRouther.toxid;
+//                [RouterConfig getRouterConfig].currentRouterSn = selectRouther.userSn;
+//                [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:selectRouther.toxid];
+//            } else {
+//                [AppD setRootLoginWithType:ImportType];
+//            }
+//        }
+        
+    }];
+    
+    [vc addAction:cancelAction];
+    [vc addAction:confirm];
+    
+    [browser presentViewController:vc animated:YES completion:nil];
+}
+
+- (void) showAlertVCWithValues:(NSArray *) values isMac:(BOOL) isMac
+{
+    self.view.hidden = YES;
+    [self removeFromParentViewController];
+    
+    AppD.isScaner = YES;
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"Do you want to switch the circle?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (isMac) {
+            [RouterConfig getRouterConfig].currentRouterMAC = values[0];
+            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0]];
+        } else {
+            [RouterConfig getRouterConfig].currentRouterToxid = values[0];
+            [RouterConfig getRouterConfig].currentRouterSn = values[1];
+            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0]];
+        }
+    }];
+    [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
+    [alertC addAction:alert1];
+    
+    UIAlertAction *alertCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertC addAction:alertCancel];
+    
+    [browser presentViewController:alertC animated:YES completion:nil];
+    
 }
 @end

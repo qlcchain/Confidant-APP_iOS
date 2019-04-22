@@ -15,6 +15,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (nonatomic, strong) FriendModel *friendModel;
+@property (nonatomic , assign) BOOL isBack;
+@property (nonatomic , assign) BOOL isGroup;
 //@property (nonatomic, strong) ContactShowModel *contactShowM;
 
 @end

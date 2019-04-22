@@ -44,6 +44,7 @@
 #import "SocketManageUtil.h"
 #import "FileDownUtil.h"
 #import "ChatListDataUtil.h"
+#import "LoginDeviceViewController.h"
 
 @interface AppDelegate () <BuglyDelegate,MiPushSDKDelegate,UNUserNotificationCenterDelegate>
 {
@@ -60,20 +61,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    NSString *clearDataResult = [KeyCUtil getKeyValueWithKey:CLEAR_DATA];
-   // [ChatModel bg_drop:CHAT_CACHE_TABNAME];
-    if (![[NSString getNotNullValue:clearDataResult] isEqualToString:@"2"]) {
-        [KeyCUtil deleteAllKey];
-        [FriendModel bg_drop:FRIEND_LIST_TABNAME];
-        [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
-        [OperationRecordModel bg_drop:OperationRecord_Table];
-        [KeyCUtil saveStringToKeyWithString:@"2" key:CLEAR_DATA];
-    }
-    
+    AppD.currentRouterNumber = -1;
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
+    // 去除icon 角标
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     // 配置Bugly
     [self configBugly];
     // 配置小米推送
@@ -91,7 +84,7 @@
     [[SendCacheChatUtil getSendCacheChatUtilShare] deleteCacheFileNollData];
   //  [RSAModel getRSAModel];
     // 得到签名，加密 公私钥对
-   EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickey];
+    EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickey];
     [LibsodiumUtil changeUserPrivater:model.signPrivateKey];
     [self.window makeKeyAndVisible];
     
@@ -242,12 +235,21 @@
     }
 }
 
-- (void)setRootTabbarWithManager:(id<OCTManager>) manager {
+- (void) setRootTabbarLonginDev {
+    
+    LoginDeviceViewController *vc = [[LoginDeviceViewController alloc] init];
+    PNNavViewController *tabbvc = [[PNNavViewController alloc] initWithRootViewController:vc];
+    [AppD addTransitionAnimation];
+    AppD.window.rootViewController = tabbvc;
+}
+
+- (void) setRootTabbarWithManager:(id<OCTManager>) manager {
     [KeyCUtil saveStringToKeyWithString:@"1" key:LOGIN_KEY];
     AppD.isLogOut = NO;
     AppD.isLoginMac = NO;
     if ([SystemUtil isSocketConnect]) {
-        AppD.manager = nil;
+       // AppD.manager = nil; tox_stop
+        AppD.currentRouterNumber = -1;
     }
     // 设置当前路由
    // [RouterModel updateRouterConnectStatusWithSn:[RoutherConfig getRouterConfig].currentRouterSn];
@@ -273,6 +275,7 @@
         [[FileDownUtil getShareObject] removeAllTask];
     } else {
         AppD.isConnect = NO;
+        AppD.currentRouterNumber = -1;
         // [self logOutTox];
         [[NSNotificationCenter defaultCenter] postNotificationName:TOX_CONNECT_STATUS_NOTI object:nil];
     }
@@ -469,28 +472,32 @@
     // 判断传过来的url是否为文件类型
     if ([url.scheme isEqualToString:@"file"]) {
         if ([_window.rootViewController isKindOfClass:[PNTabbarViewController class]]) {
-            [self performSelector:@selector(showVPNFileView:) withObject:url afterDelay:.5f];
-        } else {
             [self performSelector:@selector(showVPNFileView:) withObject:url afterDelay:1.0f];
+        } else {
+            self.fileURL = url;
         }
+        
+        
     }
     
     return YES;
 }
 
 - (void) showVPNFileView:(NSURL *) url {
-    NSString *fileURL = url.absoluteString;
-    NSArray *array = [fileURL componentsSeparatedByString:@"."];
-    NSString *fileSuffix = [array lastObject];
-  
-    array = [fileURL componentsSeparatedByString:@"/"];
-    NSString *fileName = [[array lastObject] stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    VPNFileInputView *fileView = [VPNFileInputView loadVPNFileInputView];
-    fileView.fileSuffix = fileSuffix;
-    fileView.txtFileName.text = fileName;
-    fileView.vpnURL = url;
-    UIWindow *win = [UIApplication sharedApplication].keyWindow;
-    [fileView showVPNFileInputView:win];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:OTHER_FILE_OPEN_NOTI object:url];
+//    NSString *fileURL = url.absoluteString;
+//    NSArray *array = [fileURL componentsSeparatedByString:@"."];
+//    NSString *fileSuffix = [array lastObject];
+//
+//    array = [fileURL componentsSeparatedByString:@"/"];
+//    NSString *fileName = [[array lastObject] stringByReplacingOccurrencesOfString:@"-" withString:@""];
+//    VPNFileInputView *fileView = [VPNFileInputView loadVPNFileInputView];
+//    fileView.fileSuffix = fileSuffix;
+//    fileView.txtFileName.text = fileName;
+//    fileView.vpnURL = url;
+//    UIWindow *win = [UIApplication sharedApplication].keyWindow;
+//    [fileView showVPNFileInputView:win];
     
 }
 
@@ -498,8 +505,10 @@
 - (void)application:(UIApplication *)app
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+   // NSLog(@"-----%@",deviceToken);
     // 注册APNS成功, 注册deviceToken
     [MiPushSDK bindDeviceToken:deviceToken];
+   // AppD.devToken = deviceToken;
 }
 
 - (void)application:(UIApplication *)app

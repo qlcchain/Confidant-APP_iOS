@@ -83,7 +83,12 @@
     [self dismissViewControllerAnimated:YES completion:^{
         if (isSend) {
             if (weakSelf.selectArray.count > 0) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+                if (weakSelf.docOPenTag == 1) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:DOC_OPEN_CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+                }
+                
             }
         }
     }];

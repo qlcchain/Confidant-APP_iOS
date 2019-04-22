@@ -19,11 +19,14 @@
 #import "SettingCell.h"
 #import "UserManagerViewController.h"
 #import "EditTextViewController.h"
-#import "InvitationQRCodeViewController.h"
+#import "CircleLoginCodeViewController.h"
 #import "ChooseCircleViewController.h"
 #import "DiskManagerViewController.h"
 #import "GetDiskTotalInfoModel.h"
 #import "UnitUtil.h"
+#import "AddNewMemberViewController.h"
+#import "UserConfig.h"
+#import "InvitationQRCodeViewController.h"
 
 typedef enum : NSUInteger {
     RouterConnectStatusWait,
@@ -33,18 +36,21 @@ typedef enum : NSUInteger {
 } RouterConnectStatus;
 
 #define Circle_Members_Str @"Circle Members"
+#define Circle_Code_Str @"Circle QR Code"
 #define Circle_Name_Str @"Circle Name"
-#define Circle_QR_Code_Str @"Circle QR Code"
+#define Add_Circle_Member @"Add a New Member "
+#define Circle_QR_Code_Str @"My private code"
 #define Used_Space_Str @"Used Space"
 #define Manage_Disks_Str @"Manage Disks"
 #define Enable_Auto_Login_Str @"Enable Auto Login"
-#define Circle_Alias_Str @"Cirle Alias"
+#define Circle_Alias_Str @"Circle Alias"
 
 @interface RouterManagerViewController () <UITableViewDelegate, UITableViewDataSource>
 {
     BOOL isAdmin;
 }
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *navContraintV;
 
 @property (weak, nonatomic) IBOutlet UILabel *routerNameLab;
 
@@ -81,6 +87,7 @@ typedef enum : NSUInteger {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    _navContraintV.constant = STATUS_BAR_HEIGHT;
     _quickBackView.layer.cornerRadius = 14.0f;
     _quickBackView.layer.masksToBounds = YES;
     _quickBackView.layer.borderColor = RGB(44, 44, 44).CGColor;
@@ -111,7 +118,7 @@ typedef enum : NSUInteger {
     
     _connectRouteM = [RouterModel getConnectRouter];
     _routerNameLab.text = _connectRouteM.name?:@"";
-    NSString *userKey = @"";
+    NSString *userKey = [UserConfig getShareObject].adminKey?:@"";
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_routerNameLab.text]];
     _currentCircleIcon.image = defaultImg;
     
@@ -120,10 +127,10 @@ typedef enum : NSUInteger {
     if ([userType isEqualToString:@"01"]) { // 管理员
         [self sendGetDiskTotalInfo];
         isAdmin = YES;
-        [_routerArr addObjectsFromArray:@[@[Circle_Members_Str],@[Circle_Name_Str,Circle_QR_Code_Str],@[Used_Space_Str,Manage_Disks_Str],@[Enable_Auto_Login_Str]]];
+        [_routerArr addObjectsFromArray:@[@[Circle_Members_Str,Circle_Code_Str],@[Circle_Name_Str],@[Used_Space_Str,Manage_Disks_Str],@[Enable_Auto_Login_Str],@[Circle_QR_Code_Str]]];
     } else {
         isAdmin = NO;
-        [_routerArr addObjectsFromArray:@[@[Circle_Alias_Str,Circle_QR_Code_Str],@[Enable_Auto_Login_Str]]];
+        [_routerArr addObjectsFromArray:@[@[Circle_Alias_Str,Circle_Code_Str],@[Enable_Auto_Login_Str],@[Circle_QR_Code_Str]]];
     }
     [_routerTable reloadData];
 }
@@ -236,8 +243,14 @@ typedef enum : NSUInteger {
          RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
         cell.nameLab.text = _routerArr[indexPath.section][indexPath.row];
         if (isAdmin) {
-            cell.icon.hidden = YES;
-            cell.lblDesc.text = @"";
+            if (indexPath.row == 0) {
+                cell.icon.hidden = YES;
+                cell.lblDesc.text = @"";
+            } else {
+                cell.icon.hidden = NO;
+                cell.lblDesc.text = @"";
+            }
+           
         } else {
             if (indexPath.row == 0) {
                 cell.icon.hidden = YES;
@@ -256,7 +269,7 @@ typedef enum : NSUInteger {
                 cell.icon.hidden = YES;
                 cell.lblDesc.text = _connectRouteM.aliasName?:@"";
             } else {
-                cell.icon.hidden = NO;
+                cell.icon.hidden = YES;
                 cell.lblDesc.text = @"";
             }
             return cell;
@@ -271,30 +284,45 @@ typedef enum : NSUInteger {
         }
         
     } else if (indexPath.section == 2) {
-        if (indexPath.row == 0) {
-            UsedSpaceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UsedSpaceTableViewCellReuse];
-            if (_getDiskTotalInfoM) {
-                CGFloat useDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.UsedCapacity];
-                CGFloat totalDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.TotalCapacity];
-                CGFloat usePercent = useDigital/totalDigital;
-                cell.useLab.text = [NSString stringWithFormat:@"%@ / %@ （%.1f%@）",_getDiskTotalInfoM.UsedCapacity?:@"",_getDiskTotalInfoM.TotalCapacity?:@"",usePercent*100,@"%"];
-                cell.useProgressV.progress = usePercent;
+        if (isAdmin) {
+            if (indexPath.row == 0) {
+                UsedSpaceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UsedSpaceTableViewCellReuse];
+                if (_getDiskTotalInfoM) {
+                    CGFloat useDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.UsedCapacity];
+                    CGFloat totalDigital = [UnitUtil getDigitalOfM:_getDiskTotalInfoM.TotalCapacity];
+                    CGFloat usePercent = useDigital/totalDigital;
+                    cell.useLab.text = [NSString stringWithFormat:@"%@ / %@ （%.1f%@）",_getDiskTotalInfoM.UsedCapacity?:@"",_getDiskTotalInfoM.TotalCapacity?:@"",usePercent*100,@"%"];
+                    cell.useProgressV.progress = usePercent;
+                }
+                return cell;
+            } else {
+                RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
+                cell.nameLab.text = _routerArr[indexPath.section][indexPath.row];
+                cell.lblDesc.text = @"";
+                cell.icon.hidden = YES;
+                return cell;
             }
-            return cell;
         } else {
             RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
             cell.nameLab.text = _routerArr[indexPath.section][indexPath.row];
-            cell.lblDesc.text = @"";
             cell.icon.hidden = YES;
+            cell.lblDesc.text = @"";
             return cell;
         }
-    } else {
+        
+    } else if (indexPath.section == 3){
         SettingCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellReuse];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftContraintV.constant = 16;
         cell.titleLab.text = _routerArr[indexPath.section][indexPath.row];
         [cell.switc setOn:_connectRouteM.isOpen animated:YES];
         [cell.switc addTarget:self action:@selector(swChange:) forControlEvents:UIControlEventValueChanged];
+        return cell;
+    } else {
+        RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
+        cell.nameLab.text = _routerArr[indexPath.section][indexPath.row];
+        cell.icon.hidden = YES;
+        cell.lblDesc.text = @"";
         return cell;
     }
 }
@@ -305,48 +333,63 @@ typedef enum : NSUInteger {
     if (indexPath.section == 0) {
        
         if (isAdmin) {
-            // 圈子人数
-            [self jumpToUserManager];
+            if (indexPath.row == 0) {
+                // 圈子人数
+                [self jumpToUserManager];
+            } else {
+                // 添加圈子人员
+               // [self jumpAddNewMember];
+                
+                // 圈子code
+                [self jumpToCircleCode];
+            }
+           
         } else {
             if (indexPath.row == 0) {
                // 圈子别名
-                 [self jumpToAlias];
+                 [self jumpToAliasWithType:EditAlis];
             } else {
                // 圈子code
-                 [self jumpToRouterCode];
+                 [self jumpToCircleCode];
             }
         }
        
     } else if (indexPath.section == 1) {
         if (isAdmin) {
             if (indexPath.row == 0) {
-                // 圈子别名
-                [self jumpToAlias];
-            } else {
-                 // 圈子code
-                [self jumpToRouterCode];
-            }
+                // 修改圈子昵称
+                [self jumpToAliasWithType:EditCircleName];
+            } 
             
         }
         
     } else if (indexPath.section == 2) {
-        if (indexPath.row == 0) {
-           // 圈子磁盘空间和使用量
+        if (isAdmin) {
+            if (indexPath.row == 0) {
+                // 圈子磁盘空间和使用量
+            } else {
+                [self jumpToDiskManagement];
+            }
         } else {
-            [self jumpToDiskManagement];
+            // 圈子code
+            [self jumpToRouterCode];
         }
+       
+    } else if (indexPath.section == 4) {
+        // 圈子code
+        [self jumpToRouterCode];
     }
 }
 
 #pragma mark - Transition
-- (void)jumpToAlias {
-    EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditAlis];
+- (void)jumpToAliasWithType:(EditType) editType {
+    EditTextViewController *vc = [[EditTextViewController alloc] initWithType:editType];
     vc.routerM = _connectRouteM;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)jumpToRouterCode {
-    InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
+    CircleLoginCodeViewController *vc = [[CircleLoginCodeViewController alloc] init];
     vc.routerM = _connectRouteM;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -360,10 +403,21 @@ typedef enum : NSUInteger {
     DiskManagerViewController *vc = [DiskManagerViewController new];
     [self.navigationController pushViewController:vc animated:YES];
 }
+- (void) jumpAddNewMember
+{
+    AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:_connectRouteM.toxid];
+    [self presentModalVC:vc animated:YES];
+}
 
 - (void)jumpToUserManager {
     // 磁盘管理
     UserManagerViewController *vc = [[UserManagerViewController alloc] initWithRid:_connectRouteM.toxid];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToCircleCode {
+    InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
+    vc.routerM = _connectRouteM;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

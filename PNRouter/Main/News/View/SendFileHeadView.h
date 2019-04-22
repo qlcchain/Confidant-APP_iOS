@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SendFileHeadView : UIView
 + (instancetype) getSendFileHeadView;
+@property (weak, nonatomic) IBOutlet UIButton *localFileBtn;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -14,6 +14,7 @@ typedef enum : NSUInteger {
     EditPosition,
     EditLocation,
     EditAlis,
+    EditCircleName,
     EditFriendAlis,
     EditGroupAlias,
     EditGroupName,

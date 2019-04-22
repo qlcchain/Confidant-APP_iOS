@@ -10,4 +10,6 @@
 
 @interface ChooseContactViewController : PNBaseViewController
 
+@property (nonatomic,assign) NSInteger docOPenTag;
+
 @end

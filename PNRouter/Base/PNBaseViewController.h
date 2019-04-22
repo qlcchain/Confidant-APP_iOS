@@ -28,8 +28,11 @@
 - (void) moveNavgationBackViewController;
 // 移除上一个vs
 - (void) moveNavgationBackOneViewController;
+// 保留第一个和最后一个
+- (void) moveAllNavgationViewController;
 - (void)setRootVCWithVC:(PNBaseViewController *) vc;
 - (void)jumpToQR;
+- (void)jumpToCircleQR;
 - (void) scanSuccessfulWithIsMacd:(BOOL) isMac;
 - (void) scanSuccessfulWithIsAccount:(NSArray *) values;
 

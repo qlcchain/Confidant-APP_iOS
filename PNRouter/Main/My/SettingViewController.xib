@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingViewController">
             <connections>
+                <outlet property="clearDataBackView" destination="IsW-aA-V7M" id="wnh-zP-R7y"/>
                 <outlet property="myTableV" destination="6l5-px-6kp" id="P9W-H6-5fj"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -24,8 +25,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="46c-Bf-cU6">
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtF-gv-Iy0">
-                            <rect key="frame" x="159" y="11.5" width="57.5" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtF-gv-Iy0">
+                            <rect key="frame" x="154.5" y="11.5" width="66.5" height="21"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                             <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -59,6 +60,13 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IsW-aA-V7M">
+                            <rect key="frame" x="0.0" y="563" width="375" height="40"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="AKX-D9-AU0"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -66,6 +74,9 @@
                         <constraint firstItem="6l5-px-6kp" firstAttribute="top" secondItem="ZlZ-lx-bzv" secondAttribute="top" constant="16" id="4k9-kn-3RF"/>
                         <constraint firstAttribute="trailing" secondItem="6l5-px-6kp" secondAttribute="trailing" id="CFF-bv-kIV"/>
                         <constraint firstItem="6l5-px-6kp" firstAttribute="leading" secondItem="ZlZ-lx-bzv" secondAttribute="leading" id="HxC-1e-qwe"/>
+                        <constraint firstItem="IsW-aA-V7M" firstAttribute="leading" secondItem="ZlZ-lx-bzv" secondAttribute="leading" id="McX-1w-yLt"/>
+                        <constraint firstAttribute="bottom" secondItem="IsW-aA-V7M" secondAttribute="bottom" id="Nv0-an-P1c"/>
+                        <constraint firstAttribute="trailing" secondItem="IsW-aA-V7M" secondAttribute="trailing" id="UHA-E7-8jd"/>
                     </constraints>
                 </view>
             </subviews>

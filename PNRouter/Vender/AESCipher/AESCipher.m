@@ -51,7 +51,7 @@ NSData * cipherOperation(NSData *contentData, NSData *keyData, CCOperation opera
 }
 
 NSString * aesEncryptString(NSString *content, NSString *key) {
-    if (!content || [content isEmptyString]) {
+    if (!content || [content isEmptyString] || key.length !=16) {
         return @"";
     }
     NSCParameterAssert(content);
@@ -64,6 +64,10 @@ NSString * aesEncryptString(NSString *content, NSString *key) {
 }
 
 NSString * aesDecryptString(NSString *content, NSString *key) {
+    
+    if (!content || [content isEmptyString] || key.length !=16) {
+        return @"";
+    }
     NSCParameterAssert(content);
     NSCParameterAssert(key);
     
@@ -77,6 +81,10 @@ NSString * aesDecryptString(NSString *content, NSString *key) {
 }
 
 NSData * aesEncryptData(NSData *contentData, NSData *keyData) {
+    
+    if (!contentData || !keyData || keyData.length != kKeySize) {
+        return nil;
+    }
     NSCParameterAssert(contentData);
     NSCParameterAssert(keyData);
     
@@ -86,6 +94,11 @@ NSData * aesEncryptData(NSData *contentData, NSData *keyData) {
 }
 
 NSData * aesDecryptData(NSData *contentData, NSData *keyData) {
+    
+    if (!contentData || !keyData || keyData.length != kKeySize) {
+        return nil;
+    }
+    
     NSCParameterAssert(contentData);
     NSCParameterAssert(keyData);
     

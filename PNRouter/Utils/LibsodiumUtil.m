@@ -26,36 +26,87 @@
 
 + (void) changeUserPrivater:(NSString *) privater
 {
-    NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
-    EntryModel *model = [EntryModel getObjectWithKeyValues:[modelJson mj_keyValues]];
-    if (model) {
-        
-        model.signPrivateKey = privater;
-        NSData *signskData = [privater base64DecodedData];
-        NSData *signpkData = [signskData subdataWithRange:NSMakeRange(32,32)];
-        model.signPublicKey = [signpkData base64EncodedString];
-        
-        unsigned char pk[32];
-        unsigned char sk[32];
-        const unsigned char *signsk = [signskData bytes];
-        const unsigned char *signpk = [signpkData bytes];
-        // 签名转解密
-        int signResult = crypto_sign_ed25519_pk_to_curve25519(pk,signpk);
-        signResult = crypto_sign_ed25519_sk_to_curve25519(sk,signsk);
-        
-        NSData *pkData = [NSData dataWithBytesNoCopy:pk length:32 freeWhenDone:NO];
-        NSData *skData = [NSData dataWithBytesNoCopy:sk length:32 freeWhenDone:NO];
-        
-        model.publicKey = [pkData base64EncodedString];
-        model.privateKey = [skData base64EncodedString];
-        
-        [KeyCUtil saveStringToKeyWithString:model.mj_JSONString key:libkey];
-        
-        [EntryModel getShareObject].publicKey = model.publicKey;
-        [EntryModel getShareObject].privateKey = model.privateKey;
-        [EntryModel getShareObject].signPublicKey = model.signPublicKey;
-        [EntryModel getShareObject].signPrivateKey = model.signPrivateKey;
-    }
+//    NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
+//    EntryModel *model = [EntryModel getObjectWithKeyValues:[modelJson mj_keyValues]];
+//    if (model) {
+//
+//        model.signPrivateKey = privater;
+//        NSData *signskData = [privater base64DecodedData];
+//        NSData *signpkData = [signskData subdataWithRange:NSMakeRange(32,32)];
+//        model.signPublicKey = [signpkData base64EncodedString];
+//
+//        unsigned char pk[32];
+//        unsigned char sk[32];
+//        const unsigned char *signsk = [signskData bytes];
+//        const unsigned char *signpk = [signpkData bytes];
+//        // 签名转解密
+//        int signResult = crypto_sign_ed25519_pk_to_curve25519(pk,signpk);
+//        signResult = crypto_sign_ed25519_sk_to_curve25519(sk,signsk);
+//
+//        NSData *pkData = [NSData dataWithBytesNoCopy:pk length:32 freeWhenDone:NO];
+//        NSData *skData = [NSData dataWithBytesNoCopy:sk length:32 freeWhenDone:NO];
+//
+//        model.publicKey = [pkData base64EncodedString];
+//        model.privateKey = [skData base64EncodedString];
+//
+//        [KeyCUtil saveStringToKeyWithString:model.mj_JSONString key:libkey];
+//
+//        [EntryModel getShareObject].publicKey = model.publicKey;
+//        [EntryModel getShareObject].privateKey = model.privateKey;
+//        [EntryModel getShareObject].signPublicKey = model.signPublicKey;
+//        [EntryModel getShareObject].signPrivateKey = model.signPrivateKey;
+//    } else {
+    
+    EntryModel *model = [[EntryModel alloc] init];
+    model.signPrivateKey = privater;
+    NSData *signskData = [privater base64DecodedData];
+    NSData *signpkData = [signskData subdataWithRange:NSMakeRange(32,32)];
+    model.signPublicKey = [signpkData base64EncodedString];
+    
+    unsigned char pk[32];
+    unsigned char sk[32];
+    const unsigned char *signsk = [signskData bytes];
+    const unsigned char *signpk = [signpkData bytes];
+    // 签名转解密
+    int signResult = crypto_sign_ed25519_pk_to_curve25519(pk,signpk);
+    signResult = crypto_sign_ed25519_sk_to_curve25519(sk,signsk);
+    
+    NSData *pkData = [NSData dataWithBytesNoCopy:pk length:32 freeWhenDone:NO];
+    NSData *skData = [NSData dataWithBytesNoCopy:sk length:32 freeWhenDone:NO];
+    
+    model.publicKey = [pkData base64EncodedString];
+    model.privateKey = [skData base64EncodedString];
+    
+    [KeyCUtil saveStringToKeyWithString:model.mj_JSONString key:libkey];
+    
+    [EntryModel getShareObject].publicKey = model.publicKey;
+    [EntryModel getShareObject].privateKey = model.privateKey;
+    [EntryModel getShareObject].signPublicKey = model.signPublicKey;
+    [EntryModel getShareObject].signPrivateKey = model.signPrivateKey;
+    
+    // 生成临时公私钥对
+    unsigned char temppk[32];
+    unsigned char tempsk[32];
+    crypto_box_keypair(temppk, tempsk);
+    
+    
+    NSData *temppkdata = [NSData dataWithBytesNoCopy:temppk length:32 freeWhenDone:NO];
+    NSData *tempskdata = [NSData dataWithBytesNoCopy:tempsk length:32 freeWhenDone:NO];
+    
+    // 将临时公私钥对转成nsstring 并以空格隔开
+    NSString *tempPublicString = [temppkdata base64EncodedString];
+    NSString *tempPrivateString = [tempskdata base64EncodedString];
+    
+    model.tempPublicKey = tempPublicString;
+    model.tempPrivateKey = tempPrivateString;
+    [EntryModel getShareObject].publicKey = model.publicKey;
+    [EntryModel getShareObject].privateKey = model.privateKey;
+    [EntryModel getShareObject].signPublicKey = model.signPublicKey;
+    [EntryModel getShareObject].signPrivateKey = model.signPrivateKey;
+    [EntryModel getShareObject].tempPublicKey = tempPublicString;
+    [EntryModel getShareObject].tempPrivateKey = tempPrivateString;
+    
+//    }
 }
 
 + (EntryModel *) getPrivatekeyAndPublickey

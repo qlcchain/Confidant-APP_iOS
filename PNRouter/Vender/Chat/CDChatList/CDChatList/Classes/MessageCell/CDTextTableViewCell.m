@@ -72,8 +72,8 @@
     info.clickedTextContent = link.url;
     info.range = link.range;
     info.msgModel = self.msgModal;
-    if ([self.tableView.msgDelegate respondsToSelector:@selector(chatlistClickMsgEvent:)]) {
-        [self.tableView.msgDelegate chatlistClickMsgEvent:info];
+    if ([self.tableView.msgDelegate respondsToSelector:@selector(chatlistClickMsgEvent:imgView:)]) {
+        [self.tableView.msgDelegate chatlistClickMsgEvent:info imgView:nil];
     }else{
 #ifdef DEBUG
         NSLog(@"[CDChatList] chatlistClickMsgEvent未实现，不能响应点击事件");

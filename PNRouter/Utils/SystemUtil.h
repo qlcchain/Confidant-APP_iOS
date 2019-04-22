@@ -17,7 +17,8 @@
 + (NSString *) connectUrl;
 + (NSString *) connectFileUrl;
 + (NSString *) getBaseFilePath:(NSString *) friendid;
-
+// 清除所有数据
++ (void) clearAppAllData;
 + (NSString *)getTempUploadPhotoBaseFilePath;
 + (NSString *)getTempUploadVideoBaseFilePath;
 + (NSString *)getTempDownloadFilePath:(NSString *)fileName;
@@ -25,7 +26,7 @@
 + (void) removeDocmentAudio;
 // iOS将文件大小转换文KB\MB\GB
 + (NSString *)transformedValue:(CGFloat) convertedValue;
-+ (NSString *)transformedZSValue:(int) convertedValue;
++ (NSString *)transformedZSValue:(NSInteger) convertedValue;
 //获取视频封面，本地视频，网络视频都可以用
 + (UIImage*) thumbnailImageForVideo:(NSURL *)videoURL;
 // 文件路径是否存在
@@ -50,5 +51,5 @@
  app退出时。配置
  */
 + (void) configureAPPTerminate;
-
++ (NSString *) getCurrentUserBaseFilePath;
 @end

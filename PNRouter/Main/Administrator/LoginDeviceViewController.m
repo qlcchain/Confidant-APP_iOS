@@ -19,6 +19,7 @@
 @interface LoginDeviceViewController ()<UITextFieldDelegate>
 {
     BOOL isLoginDeviceViewController;
+    BOOL isClickConnect;
 }
 @property (weak, nonatomic) IBOutlet UITextField *devicePWTF;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
@@ -71,7 +72,8 @@
 }
 
 - (void)sendLogin {
-    AppD.manager = nil;
+    //AppD.manager = nil;  tox_stop
+    AppD.currentRouterNumber = -1;
     NSString *mac = [RouterConfig getRouterConfig].currentRouterMAC?:@"";
     NSString *loginKey = [_devicePWTF.text.trim SHA256];
     [SendRequestUtil sendRouterLoginWithMac:mac loginKey:loginKey showHud:YES];
@@ -80,7 +82,7 @@
 #pragma mark - Action
 
 - (IBAction)backAction:(id)sender {
-    
+   
     AppD.isLoginMac = NO;
     NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
     if (connectStatu == socketConnectStatusConnected) {
@@ -89,7 +91,12 @@
     [RouterConfig getRouterConfig].currentRouterIp = @"";
     [RouterConfig getRouterConfig].currentRouterMAC = @"";
     [[NSNotificationCenter defaultCenter] postNotificationName:CANCEL_LOGINMAC_NOTI object:nil];
-   [self leftNavBarItemPressedWithPop:YES];
+    if (self.navigationController.viewControllers.count == 1) {
+        [AppD setRootLoginWithType:RouterType];
+    } else {
+        [self leftNavBarItemPressedWithPop:YES];
+    }
+   
 }
 
 - (IBAction)loginAction:(id)sender {
@@ -98,6 +105,7 @@
         [self.view showHint:@"Your password must include 8 charactors."];
         return;
     }
+    isClickConnect = YES;
     NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
     if (connectStatu == socketConnectStatusConnected) {
         [self sendLogin];
@@ -187,14 +195,16 @@
     if (!isLoginDeviceViewController) {
         return;
     }
+    isClickConnect = NO;
     [AppD.window hideHud];
     [self sendLogin];
 }
 
 - (void)socketOnDisconnect:(NSNotification *)noti {
-    if (!isLoginDeviceViewController || !AppD.isLoginMac) {
+    if (!isLoginDeviceViewController || !AppD.isLoginMac || !isClickConnect) {
         return;
     }
+    isClickConnect = NO;
     [AppD.window hideHud];
     [AppD.window showHint:@"The connection fails"];
 }

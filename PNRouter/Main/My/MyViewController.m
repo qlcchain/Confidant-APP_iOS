@@ -28,9 +28,11 @@
 #import "EntryModel.h"
 #import "SettingViewController.h"
 #import "PTBPerformanceCenter.h"
+#import "WebViewController.h"
 
 static NSString *Management_Circle_Str = @"Manage Circles";
-static NSString *My_QRCode_Str = @"Invite friends to Confidant";
+//static NSString *My_QRCode_Str = @"Share with Friends";
+static NSString *Help_Center = @"Help Center";
 static NSString *Settings_Str = @"Settings";
 
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource> {
@@ -80,7 +82,7 @@ static NSString *Settings_Str = @"Settings";
 #pragma mark - Lazy
 - (NSMutableArray *)dataArray {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@[Management_Circle_Str],@[My_QRCode_Str],@[Settings_Str], nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@[Management_Circle_Str],@[Help_Center],@[Settings_Str], nil];
     }
     return _dataArray;
 }
@@ -192,10 +194,10 @@ static NSString *Settings_Str = @"Settings";
     NSString *iconStr = @"";
     if ([titleStr isEqualToString:Management_Circle_Str]) {
         iconStr = @"icon_management_circle";
-    } else if ([titleStr isEqualToString:My_QRCode_Str]) {
-        iconStr = @"icon_my_qrcode";
-    } else if ([titleStr isEqualToString:Settings_Str]) {
+    }  else if ([titleStr isEqualToString:Settings_Str]) {
         iconStr = @"Settings";
+    } else if ([titleStr isEqualToString:Help_Center]) {
+        iconStr = @"ic_verified";
     }
     cell.iconImageView.image = [UIImage imageNamed:iconStr];
     cell.lblSubContent.hidden = YES;
@@ -232,14 +234,23 @@ static NSString *Settings_Str = @"Settings";
     }
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
-           // [KeyCUtil deleteAllKey];
-          //  [FriendModel bg_drop:FRIEND_LIST_TABNAME];
-           // [FriendModel bg_drop:FRIEND_REQUEST_TABNAME];
-           // exit(0);
-            PersonCodeViewController *vc = [[PersonCodeViewController alloc] init];
+          
+//            PersonCodeViewController *vc = [[PersonCodeViewController alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
+            
+            WebViewController *vc = [[WebViewController alloc] init];
+            vc.fromType = WebFromTypeHelpCenter;
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
+    
+//    if (indexPath.section == 2) {
+//
+//        WebViewController *vc = [[WebViewController alloc] init];
+//        vc.fromType = WebFromTypeShareFriend;
+//        [self.navigationController pushViewController:vc animated:YES];
+//
+//    }
     
     if (indexPath.section == self.dataArray.count-1) {
         SettingViewController *vc = [[SettingViewController alloc] init];

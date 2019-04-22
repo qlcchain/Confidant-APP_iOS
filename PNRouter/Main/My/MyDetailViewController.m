@@ -104,6 +104,7 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     MyCell *cell = [tableView dequeueReusableCellWithIdentifier:MyCellReuse];
+    cell.iconleftV.constant = 0;
     cell.iconWidth.constant = 0;
     cell.lblContent.text = self.dataArray[indexPath.row];
     if (indexPath.row == 0 || indexPath.row == 2) {
@@ -310,7 +311,7 @@
 {
     if (!_dataArray) {
         //_dataArray = [NSMutableArray arrayWithObjects:@"Profile Photo",@"Name",@"My QR Code",@"Company",@"Occupation",@"Region", nil];
-        _dataArray = [NSMutableArray arrayWithObjects:@"Profile Photo",@"Name",@"Invite friends to Confidant", nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@"Profile Photo",@"Name",@"My QR Code", nil];
     }
     return _dataArray;
 }

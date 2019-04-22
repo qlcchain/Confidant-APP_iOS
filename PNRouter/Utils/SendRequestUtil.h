@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn;
 + (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn showHud:(BOOL) isShow;
-+ (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code;
++ (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code showHUD:(BOOL) isShow;
 + (void) sendUserLoginWithPass:(NSString *) usersn userid:(NSString *) userid showHud:(BOOL) showHud;
 + (void) sendPullUserListWithShowLoad:(BOOL)show;
 + (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg;
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendGroupQuitWithGId:(NSString *)GId GroupName:(nullable NSString *)GroupName showHud:(BOOL)showHud;
 + (void)sendGroupVerifyWithFrom:(NSString *)From To:(NSString *)To Aduit:(NSString *)Aduit GId:(NSString *)GId GName:(nullable NSString *)GName Result:(NSNumber *)Result UserKey:(nullable NSString *)UserKey showHud:(BOOL)showHud;
 + (void) sendToxSendGroupFileWithParames:(NSDictionary *) parames;
-
++ (void) sendDelUserWithFromTid:(NSString *) fromTid toTid:(NSString *) toTid sn:(NSString *) sn showHud:(BOOL) showHud;
 @end
 
 NS_ASSUME_NONNULL_END

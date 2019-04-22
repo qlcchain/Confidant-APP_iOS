@@ -34,6 +34,7 @@
 #import "SocketManageUtil.h"
 #import "FileDownUtil.h"
 #import "SendCacheChatUtil.h"
+#import "ChatModel.h"
 
 @interface PNTabbarViewController ()<UITabBarControllerDelegate>
 @property (nonatomic ,strong) SocketAlertView *alertView;
@@ -147,8 +148,12 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     
 }
-
-- (void) logout {
+/*
+1：有其他设备登陆了该账户
+2：系统升级，强制退出
+3：用户被删除，强制退出
+ */
+- (void) logoutWithType:(int) type {
     
     [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
     [SendRequestUtil sendLogOut];
@@ -163,18 +168,32 @@
         [[FileDownUtil getShareObject] removeAllTask];
     } else {
         AppD.isConnect = NO;
+        AppD.currentRouterNumber = -1;
         // [self logOutTox];
         [[NSNotificationCenter defaultCenter] postNotificationName:TOX_CONNECT_STATUS_NOTI object:nil];
     }
     [[ChatListDataUtil getShareObject].dataArray removeAllObjects];
     AppD.isLogOut = YES;
+    
+    if (type == 3) {
+        // 删除聊天文件
+        NSString *filePath = [SystemUtil getCurrentUserBaseFilePath];
+        // 删除当前router
+        RouterModel *connectMode = [RouterModel getConnectRouter];
+        [RouterModel deleteRouterWithUsersn:connectMode.userSn];
+        [SystemUtil removeDocmentFilePath:filePath];
+        // 删除未发送消息表
+        [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId)]];
+    }
+    
     [AppD setRootLoginWithType:RouterType];
 }
 
 #pragma mark - noti
 - (void) appLogoutNoti:(NSNotification *) noti
 {
-    [self logout];
+    int Reson = [noti.object intValue];
+    [self logoutWithType:Reson];
 }
 
 - (void) toxReConnectSuccessNoti:(NSNotification *) noti
@@ -258,6 +277,9 @@
 #pragma mark -广播完成
 - (void) gbFinashNoti:(NSNotification *) noti
 {
+    if (AppD.isSwitch || AppD.isLogOut) {
+        return;
+    }
     [self connectSocket];
 }
 

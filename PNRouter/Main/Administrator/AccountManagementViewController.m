@@ -15,7 +15,6 @@
 #import "SendRequestUtil.h"
 #import "SystemUtil.h"
 #import "RouterModel.h"
-#import "RegiterViewController.h"
 #import "UserModel.h"
 #import "LoginViewController.h"
 #import "RouterAliasViewController.h"
@@ -231,21 +230,9 @@
         NSString *userid = receiveDic[@"params"][@"UserId"];
         NSString *userName = receiveDic[@"params"][@"NickName"];
         NSInteger fileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
-        
-        NSString *userType = [usesn substringWithRange:NSMakeRange(0, 2)];
-        AccountType type = AccountSupper;
-        if ([userType isEqualToString:@"02"]) {
-            type = AccountOrdinary;
-        } else if ([userType isEqualToString:@"03"]){
-            type = AccountTemp;
-        }
         if (retCode == 0) { //已激活
-//            LoginViewController *vc = [[LoginViewController alloc] init];
-//            [self setRootVCWithVC:vc];
              [self sendLoginRequestWithUserid:userid usersn:usesn];
         } else { // 未激活 或者日临时帐户
-//            RegiterViewController *vc = [[RegiterViewController alloc] initWithAccountType:type];
-//            [self setRootVCWithVC:vc];
              [self sendRegisterRequestWithShowHud:YES];
         }
     }
@@ -261,7 +248,7 @@
 - (void) sendRegisterRequestWithShowHud:(BOOL) isShow
 {
     NSString *userName = [[UserModel getUserModel].username base64EncodedString];
-    [SendRequestUtil sendUserRegisterWithUserPass:@"" username:userName code:@""];
+    [SendRequestUtil sendUserRegisterWithUserPass:@"" username:userName code:@"" showHUD:YES];
     
 }
 
@@ -288,8 +275,11 @@
             [AppD.window showHint:@"Login failed, verification failed."];
         } else if (retCode == 5) { //验证码错误
             [AppD.window showHint:@"Verification code error."];
+        } else if (retCode == 7) { //验证码错误
+            [AppD.window showHint:@"This account is no longer valid."];
         } else { // 其它错误
             [AppD.window showHint:@"Login failed Other error."];
+            
         }
     }
 }

@@ -16,6 +16,7 @@
 #import "NSString+HexStr.h"
 #import "ChatListModel.h"
 #import "NSString+Trim.h"
+#import "SocketMessageUtil.h"
 
 @interface EditTextViewController ()
 
@@ -99,9 +100,18 @@
             break;
         case EditAlis:
         {
-            _routerM.aliasName = aliasName;
+            _routerM.aliasName = aliasName?:@"";
             [RouterModel updateRouterName:aliasName usersn:_routerM.userSn];
-             [self leftNavBarItemPressedWithPop:YES];
+            [self leftNavBarItemPressedWithPop:YES];
+        }
+            break;
+        case EditCircleName:
+        {
+            if ([aliasName isEmptyString]) {
+                [AppD.window showHint:@"Nickname cannot be empty"];
+            } else {
+               [SocketMessageUtil sendUpdateRourerNickName:aliasName showHud:YES];
+            }
         }
             break;
         case EditGroupAlias:
@@ -146,6 +156,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickSuccess:) name:REVER_UPDATE_FRIEND_NICKNAME_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reviseGroupAliasSuccessNoti:) name:Revise_Group_Alias_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reviseGroupNameSuccessNoti:) name:Revise_Group_Name_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetRouterNameSuccess:) name:ResetRouterName_Success_Noti object:nil];
     
 }
 
@@ -202,6 +213,11 @@
         case EditAlis:
             _lblNavTitle.text = @"Alias";
             _nameTF.placeholder = @"Edit alias";
+            _nameTF.text = _routerM.name;
+            break;
+        case EditCircleName:
+            _lblNavTitle.text = @"CircleName";
+            _nameTF.placeholder = @"Edit Circle Name";
             _nameTF.text = _routerM.name;
             break;
         case EditFriendAlis:
@@ -281,6 +297,13 @@
     if (_reviseSuccessB) {
         _reviseSuccessB(_nameTF.text.trim);
     }
+    [self leftNavBarItemPressedWithPop:YES];
+}
+
+- (void)resetRouterNameSuccess:(NSNotification *)noti {
+    NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:_nameTF.text]];
+    _routerM.name = aliasName;
+    [RouterModel updateCircleName:aliasName usersn:_routerM.userSn];
     [self leftNavBarItemPressedWithPop:YES];
 }
 

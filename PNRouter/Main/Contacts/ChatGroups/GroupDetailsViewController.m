@@ -19,6 +19,7 @@
 #import "RouterConfig.h"
 #import "FriendModel.h"
 #import "UserModel.h"
+#import "FriendDetailViewController.h"
 
 @interface GroupDetailsViewController ()
 
@@ -107,6 +108,32 @@
     _memberView.addB = ^{
         [weakSelf jumpToAddGroupMember];
     };
+    _memberView.headB = ^(NSInteger index) {
+         GroupMembersModel *model = weakSelf.membersArr[index];
+        if (![model.ToxId isEqualToString:[UserModel getUserModel].userId]) {
+            FriendModel *fModel = [[ChatListDataUtil getShareObject] getFriendWithUserid:model.ToxId];
+            FriendModel *friendModel = [[FriendModel alloc] init];
+            if (!fModel) {
+                friendModel.userId = model.ToxId;
+                friendModel.username = [model.Nickname base64DecodedString];
+                friendModel.signPublicKey = model.UserKey;
+                friendModel.noFriend = YES;
+            } else {
+                friendModel.userId = fModel.userId;
+                friendModel.username = [fModel.username base64DecodedString]?:fModel.username;
+                friendModel.publicKey = fModel.publicKey;
+                friendModel.remarks = [fModel.remarks base64DecodedString]?:fModel.remarks;
+                friendModel.Index = fModel.Index;
+                friendModel.onLineStatu = fModel.onLineStatu;
+                friendModel.signPublicKey = fModel.signPublicKey;
+                friendModel.RouteId = fModel.RouteId;
+                friendModel.RouteName = fModel.RouteName;
+                friendModel.signPublicKey = fModel.publicKey;
+                
+            }
+            [weakSelf jumpFriendDetailVC:friendModel];
+        }
+    };
     [self refreshMemberView];
     [_memberView showDelBtn:_groupModel.UserType == 0?YES:NO];
     [_memberBackView addSubview:_memberView];
@@ -127,6 +154,15 @@
     [_memberView updateConstraintWithPersonCount:arr];
     _gorupMembersNumLab.text = [NSString stringWithFormat:@"%lu people",(unsigned long)self.membersArr.count];
     
+}
+
+#pragma mark ---jumpVC
+- (void) jumpFriendDetailVC:(FriendModel *) model
+{
+    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
+    vc.friendModel = model;
+    vc.isGroup = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Request

@@ -16,7 +16,7 @@
 @implementation CodeMsgViewController
 
 - (IBAction)backAction:(id)sender {
-    [self leftNavBarItemPressedWithPop:YES];
+    [self leftNavBarItemPressedWithPop:NO];
 }
 - (id)initWithCodeValue:(NSString *)codeValue
 {
