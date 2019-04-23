@@ -10,14 +10,20 @@
 #import "UserModel.h"
 #import "ImportAccountViewController.h"
 #import "NSString+Trim.h"
+#import "TermsViewController.h"
 
 @interface CreateAccountViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 @property (weak, nonatomic) IBOutlet UITextField *nameTF;
+@property (weak, nonatomic) IBOutlet UILabel *lblBottom;
 
 @end
 
 @implementation CreateAccountViewController
+- (IBAction)bottomAction:(id)sender {
+    TermsViewController *vc = [[TermsViewController alloc] init];
+    [self presentModalVC:vc animated:YES];
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -40,6 +46,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSString *urlStr = @"I accept the Terms & Privacy Policy.";
+    
+    NSMutableAttributedString *content = [[NSMutableAttributedString alloc]initWithString:urlStr];
+    NSRange contentRange = [urlStr rangeOfString:@"Terms & Privacy Policy."];//{0,[content length]};
+    [content addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:contentRange];
+    _lblBottom.attributedText = content;
+    
     _nextBtn.layer.cornerRadius = 4.0f;
     [_nameTF becomeFirstResponder];
 }

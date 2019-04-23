@@ -1,1 +1,6 @@
-../../../Target Support Files/CocoaLumberjack/CocoaLumberjack.modulemap
+module CocoaLumberjack {
+  umbrella header "CocoaLumberjack-umbrella.h"
+
+  export *
+  module * { export * }
+}

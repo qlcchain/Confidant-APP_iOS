@@ -435,7 +435,7 @@
 + (void) sendDelUserWithFromTid:(NSString *) fromTid toTid:(NSString *) toTid sn:(NSString *) sn showHud:(BOOL) showHud
 {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:@"Remove..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_DelUser,@"From":fromTid,@"To":toTid,@"Sn":sn};
     [SocketMessageUtil sendVersion4WithParams:params];

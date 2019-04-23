@@ -32,7 +32,7 @@
 {
     if (!_dataArray) {
         NSString *userName = [NSString getNotNullValue:_routerUserModel.NickName];
-        if (_routerUserModel.Active == 1 && [userName isEqualToString:@"tempUser"]) {
+        if (_routerUserModel.Active == 1 && ![userName isEqualToString:@"tempUser"]) {
             _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Joining time"],@[@"Remove"]]];
         } else {
             _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Joining time"]]];
@@ -72,8 +72,11 @@
 }
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == self.dataArray.count-1) {
+    
+    NSString *resultStr = self.dataArray[indexPath.section][indexPath.row];
+    if ([resultStr isEqualToString:@"Remove"]) {
         LogOutCell *cell = [tableView dequeueReusableCellWithIdentifier:LogOutCellReuse];
+        cell.btnContraintV.constant = 0;
         [cell.logoutBtn setTitle:self.dataArray[indexPath.section][indexPath.row] forState:UIControlStateNormal];
         @weakify_self
         cell.logOutB = ^{
@@ -84,20 +87,18 @@
         MyCell *cell = [tableView dequeueReusableCellWithIdentifier:MyCellReuse];
         cell.iconleftV.constant = 0;
         cell.iconWidth.constant = 0;
+        cell.rightContraintV.constant = 0;
+        cell.rightContraintW.constant = 0;
+        cell.subContentContraintV.constant = 0;
+        cell.lblSubContent.hidden = YES;
+        cell.subBtn.hidden = NO;
         cell.lblContent.text = self.dataArray[indexPath.section][indexPath.row];
-        if (indexPath.section == 0 && indexPath.row == 0) {
-            cell.rightContraintV.constant = 0;
-            cell.rightContraintW.constant = 0;
-            cell.lblSubContent.hidden = YES;
-            cell.subBtn.hidden = NO;
+        if ([resultStr isEqualToString:@"Profile Photo"]) {
             UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:_routerUserModel.UserKey?:@"" Name:[StringUtil getUserNameFirstWithName:_routerUserModel.NickName?:@""]];
             [cell.subBtn setImage:defaultImg forState:UIControlStateNormal];
             
         } else {
-            cell.subBtn.hidden = YES;
             cell.lblSubContent.hidden = NO;
-            cell.rightContraintV.constant = 13;
-            cell.rightContraintW.constant = 8;
             if (indexPath.section == 0) {
                  cell.lblSubContent.text = _routerUserModel.NickName;
             } else {
@@ -107,6 +108,11 @@
         }
         return cell;
     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
         
 - (void) delCircleUser
@@ -118,7 +124,6 @@
 - (void) delUserSuccessNoti:(NSNotification *) noti
 {
     [self backAction:nil];
-    [AppD.window showHint:@"Delete Success."];
 }
 
 /*

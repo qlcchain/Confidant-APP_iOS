@@ -27,15 +27,14 @@
     
     YBImageBrowserLayoutDirection _layoutDirection;
     CGSize _containerSize;
-    BOOL _playing;
+    BOOL _isPlaying;
     BOOL _currentIndexIsSelf;
-    BOOL _bodyInCenter;
-    BOOL _active;
-    BOOL _outTransitioning;
+    BOOL _bodyIsInCenter;
+    BOOL _isActive;
     
     CGPoint _gestureInteractionStartPoint;
     // Gestural interaction is in progress.
-    BOOL _gestureInteracting;
+    BOOL _isGestureInteraction;
     YBIBGestureInteractionProfile *_giProfile;
     
     UIInterfaceOrientation _statusBarOrientationBefore;
@@ -88,21 +87,15 @@
     [super prepareForReuse];
 }
 
-- (void)willMoveToWindow:(UIWindow *)newWindow {
-    [super willMoveToWindow:newWindow];
-    self->_outTransitioning = NO;
-}
-
 - (void)initVars {
     self->_layoutDirection = YBImageBrowserLayoutDirectionUnknown;
     self->_containerSize = CGSizeMake(1, 1);
-    self->_playing = NO;
+    self->_isPlaying = NO;
     self->_currentIndexIsSelf = NO;
-    self->_bodyInCenter = YES;
+    self->_bodyIsInCenter = YES;
     self->_gestureInteractionStartPoint = CGPointZero;
-    self->_gestureInteracting = NO;
-    self->_active = YES;
-    self->_outTransitioning = NO;
+    self->_isGestureInteraction = NO;
+    self->_isActive = YES;
 }
 
 #pragma mark - <YBImageBrowserCellProtocol>
@@ -124,7 +117,7 @@
     self->_containerSize = containerSize;
     self->_layoutDirection = layoutDirection;
     
-    if (self->_gestureInteracting) {
+    if (self->_isGestureInteraction) {
         [self restoreGestureInteractionWithDuration:0];
     }
     
@@ -133,7 +126,7 @@
 
 - (void)yb_browserPageIndexChanged:(NSUInteger)pageIndex ownIndex:(NSUInteger)ownIndex {
     if (pageIndex != ownIndex) {
-        if (self->_playing) {
+        if (self->_isPlaying) {
             [self.baseView yb_hideProgressView];
             [self cancelPlay];
             [self.cellData loadData];
@@ -153,7 +146,7 @@
 }
 
 - (void)yb_browserBodyIsInTheCenter:(BOOL)isIn {
-    self->_bodyInCenter = isIn;
+    self->_bodyIsInCenter = isIn;
     if (!isIn) {
         self->_gestureInteractionStartPoint = CGPointZero;
     }
@@ -205,17 +198,10 @@
 #pragma mark - <YBVideoBrowseTopBarDelegate>
 
 - (void)yb_videoBrowseTopBar:(YBVideoBrowseTopBar *)topBar clickCancelButton:(UIButton *)button {
-    [self browserDismiss];
+    self.yb_browserDismissBlock();
 }
 
 #pragma mark - private
-
-- (void)browserDismiss {
-    self->_outTransitioning = YES;
-    [self.contentView yb_hideProgressView];
-    [self yb_hideProgressView];
-    self.yb_browserDismissBlock();
-}
 
 - (void)updateLayoutWithContainerSize:(CGSize)containerSize {
     self.baseView.frame = CGRectMake(0, 0, containerSize.width, containerSize.height);
@@ -229,11 +215,11 @@
 }
 
 - (void)startPlay {
-    if (!self.cellData.avAsset || self->_playing) return;
+    if (!self.cellData.avAsset || self->_isPlaying) return;
     
     [self cancelPlay];
     
-    self->_playing = YES;
+    self->_isPlaying = YES;
     
     self->_playerItem = [AVPlayerItem playerItemWithAsset:self.cellData.avAsset];
     self->_player = [AVPlayer playerWithPlayerItem:self->_playerItem];
@@ -270,7 +256,7 @@
     }
     self->_playerItem = nil;
     
-    self->_playing = NO;
+    self->_isPlaying = NO;
 }
 
 - (void)restoreAsset {
@@ -370,7 +356,7 @@
 }
 
 - (void)avPlayerItemStatusChanged {
-    if (!self->_active) return;
+    if (!self->_isActive) return;
     
     self.playButton.hidden = YES;
     switch (self->_playerItem.status) {
@@ -449,17 +435,15 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    if (!self->_outTransitioning) {
-        if (object == self->_playerItem) {
-            if ([keyPath isEqualToString:@"status"]) {
-                [self avPlayerItemStatusChanged];
-            }
-        } else if (object == self.cellData) {
-            if ([keyPath isEqualToString:@"dataState"]) {
-                [self cellDataStateChanged];
-            } else if ([keyPath isEqualToString:@"dataDownloadState"]) {
-                [self cellDataDownloadStateChanged];
-            }
+    if (object == self->_playerItem) {
+        if ([keyPath isEqualToString:@"status"]) {
+            [self avPlayerItemStatusChanged];
+        }
+    } else if (object == self.cellData) {
+        if ([keyPath isEqualToString:@"dataState"]) {
+            [self cellDataStateChanged];
+        } else if ([keyPath isEqualToString:@"dataDownloadState"]) {
+            [self cellDataDownloadStateChanged];
         }
     }
 }
@@ -480,20 +464,20 @@
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification {
-    self->_active = NO;
-    if (self->_player && self->_playing) {
+    self->_isActive = NO;
+    if (self->_player && self->_isPlaying) {
         [self->_player pause];
         [self.actionBar pause];
     }
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
-    self->_active = YES;
+    self->_isActive = YES;
 }
 
 - (void)didChangeStatusBarFrame {
     if ([UIApplication sharedApplication].statusBarFrame.size.height > YBIB_HEIGHT_STATUSBAR) {
-        if (self->_player && self->_playing) {
+        if (self->_player && self->_isPlaying) {
             [self->_player pause];
             [self.actionBar pause];
         }
@@ -507,7 +491,7 @@
         case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
             break;
         case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
-            if (self->_player && self->_playing) {
+            if (self->_player && self->_isPlaying) {
 //                [self->_player pause];
                 [self.actionBar pause];
             }
@@ -530,16 +514,16 @@
 }
 
 - (void)respondsToTapGesture:(UITapGestureRecognizer *)tap {
-    if (self->_playing) {
+    if (self->_isPlaying) {
         self.actionBar.hidden = !self.actionBar.isHidden;
         self.topBar.hidden = !self.topBar.isHidden;
     } else {
-        [self browserDismiss];
+        self.yb_browserDismissBlock();
     }
 }
 
 - (void)respondsToPanGesture:(UIPanGestureRecognizer *)pan {
-    if ((!self.firstFrameImageView.image && !self->_playing) || self->_giProfile.disable) return;
+    if ((!self.firstFrameImageView.image && !self->_isPlaying) || self->_giProfile.disable) return;
     
     CGPoint point = [pan locationInView:self];
     if (pan.state == UIGestureRecognizerStateBegan) {
@@ -549,7 +533,7 @@
     } else if (pan.state == UIGestureRecognizerStateCancelled || pan.state == UIGestureRecognizerStateEnded || pan.state == UIGestureRecognizerStateRecognized || pan.state == UIGestureRecognizerStateFailed) {
         
         // END
-        if (self->_gestureInteracting) {
+        if (self->_isGestureInteraction) {
             CGPoint velocity = [pan velocityInView:self.baseView];
             
             BOOL velocityArrive = ABS(velocity.y) > self->_giProfile.dismissVelocityY;
@@ -557,7 +541,7 @@
             
             BOOL shouldDismiss = distanceArrive || velocityArrive;
             if (shouldDismiss) {
-                [self browserDismiss];
+                self.yb_browserDismissBlock();
             } else {
                 [self restoreGestureInteractionWithDuration:self->_giProfile.restoreDuration];
             }
@@ -570,14 +554,14 @@
         
         BOOL distanceArrive = ABS(point.y - self->_gestureInteractionStartPoint.y) > triggerDistance && (ABS(point.x - self->_gestureInteractionStartPoint.x) < triggerDistance && ABS(velocityPoint.x) < 500);
         
-        BOOL shouldStart = !self->_gestureInteracting && distanceArrive && self->_currentIndexIsSelf && self->_bodyInCenter;
+        BOOL shouldStart = !self->_isGestureInteraction && distanceArrive && self->_currentIndexIsSelf && self->_bodyIsInCenter;
         // START
         if (shouldStart) {
             if (self->_actionBar) self.actionBar.hidden = YES;
             if (self->_topBar) self.topBar.hidden = YES;
             
             if ([UIApplication sharedApplication].statusBarOrientation != self->_statusBarOrientationBefore) {
-                [self browserDismiss];
+                self.yb_browserDismissBlock();
             } else {
                 self->_gestureInteractionStartPoint = point;
                 
@@ -590,12 +574,12 @@
                 self.yb_browserScrollEnabledBlock(NO);
                 self.yb_browserToolBarHiddenBlock(YES);
                 
-                self->_gestureInteracting = YES;
+                self->_isGestureInteraction = YES;
             }
         }
         
         // CHANGE
-        if (self->_gestureInteracting) {
+        if (self->_isGestureInteraction) {
             self.baseView.center = point;
             CGFloat scale = 1 - ABS(point.y - self->_gestureInteractionStartPoint.y) / (self->_containerSize.height * 1.2);
             if (scale > 1) scale = 1;
@@ -623,12 +607,12 @@
     };
     void (^completion)(BOOL finished) = ^(BOOL finished){
         self.yb_browserScrollEnabledBlock(YES);
-        if (!self->_playing) self.yb_browserToolBarHiddenBlock(NO);
+        if (!self->_isPlaying) self.yb_browserToolBarHiddenBlock(NO);
         
         self.baseView.userInteractionEnabled = YES;
         
         self->_gestureInteractionStartPoint = CGPointZero;
-        self->_gestureInteracting = NO;
+        self->_isGestureInteraction = NO;
     };
     if (duration <= 0) {
         animations();

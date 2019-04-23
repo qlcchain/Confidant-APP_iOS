@@ -15,8 +15,7 @@
 @implementation YBIBPhotoAlbumManager
 
 + (void)getAVAssetWithPHAsset:(PHAsset *)phAsset success:(void(^)(AVAsset *))success failed:(void(^)(void))failed {
-    PHVideoRequestOptions *options = [PHVideoRequestOptions new];
-    options.networkAccessAllowed = YES;
+    PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
     [[PHImageManager defaultManager] requestAVAssetForVideo:phAsset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
         YBIB_GET_QUEUE_MAIN_ASYNC(^{
             if (asset) {
@@ -29,11 +28,10 @@
 }
 
 + (void)getImageDataWithPHAsset:(PHAsset *)phAsset success:(void(^)(NSData *))success failed:(void(^)(void))failed {
-    PHImageRequestOptions *options = [PHImageRequestOptions new];
-    options.networkAccessAllowed = YES;
-    options.resizeMode = PHImageRequestOptionsResizeModeNone;
-    options.synchronous = YES;
-    [[PHImageManager defaultManager] requestImageDataForAsset:phAsset options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+    PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
+    option.resizeMode = PHImageRequestOptionsResizeModeNone;
+    option.synchronous = YES;
+    [[PHImageManager defaultManager] requestImageDataForAsset:phAsset options:option resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
         BOOL complete = ![[info objectForKey:PHImageCancelledKey] boolValue] && ![info objectForKey:PHImageErrorKey] && ![[info objectForKey:PHImageResultIsDegradedKey] boolValue];
         if (complete && imageData) {
             if (success) success(imageData);

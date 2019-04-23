@@ -21,6 +21,7 @@ static NSString *MyCellReuse = @"MyCell";
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
 @property (weak, nonatomic) IBOutlet UIButton *subBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblSubContent;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subContentContraintV;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightContraintV;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightContraintW;
