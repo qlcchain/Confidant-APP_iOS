@@ -479,6 +479,7 @@
             showM.Index = friendM.Index;
             showM.Name = friendM.username;
             showM.Remarks = friendM.remarks;
+            showM.RouteName = friendM.RouteName;
             showM.UserKey = friendM.signPublicKey;
             showM.publicKey = friendM.publicKey;
             showM.Status = @(friendM.onLineStatu);

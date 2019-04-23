@@ -81,7 +81,6 @@
     [super viewDidLoad];
     
     [self observe];
-    _lblNavTitle.text = self.friendModel.username;
     _tableV.delegate = self;
     _tableV.dataSource = self;
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -103,7 +102,6 @@
     if (self.friendModel.remarks && self.friendModel.remarks.length > 0) {
         nickName = self.friendModel.remarks;
     }
-    _lblNavTitle.text = nickName;
     [_tableV reloadData];
     [super viewDidAppear:animated];
 }

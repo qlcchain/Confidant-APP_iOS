@@ -159,9 +159,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }
     }
-    
-    [self leftNavBarItemPressedWithPop:YES];
     [SocketCountUtil getShareObject].groupChatId = @"";
+    if ([self.navigationController.viewControllers count] == 2) {
+        self.tabBarController.selectedIndex = 0;
+    }
+    [self leftNavBarItemPressedWithPop:YES];
+   
 }
 
 - (IBAction)rightAction:(id)sender {

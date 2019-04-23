@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ContactShowModel : BBaseModel
 
+@property (nonatomic, strong) NSString *RouteName;
 @property (nonatomic, strong) NSString *Index;
 @property (nonatomic, strong) NSString *Name;
 @property (nonatomic, strong) NSString *Remarks;

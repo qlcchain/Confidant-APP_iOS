@@ -30,6 +30,7 @@
 #import "NSString+Base64.h"
 #import "SystemUtil.h"
 #import "InvitationQRCodeViewController.h"
+#import "PNNavViewController.h"
 
 @interface AddGroupMenuViewController ()
 
@@ -299,6 +300,7 @@
     GroupInfoModel *model = noti.object;
     GroupChatViewController *vc = [[GroupChatViewController alloc] initWihtGroupMode:model];
     [self.navigationController pushViewController:vc animated:YES];
+    [self moveAllNavgationViewController];
 }
 - (void)jumpToCircleCode {
     InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
