@@ -440,5 +440,12 @@
     NSDictionary *params = @{@"Action":Action_DelUser,@"From":fromTid,@"To":toTid,@"Sn":sn};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
-
++ (void) sendRebootWithToxid:(NSString *) toxID showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"Reboot..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_Reboot,@"User":toxID?:@""};
+    [SocketMessageUtil sendVersion3WithParams:params];
+}
 @end

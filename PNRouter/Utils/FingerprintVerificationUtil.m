@@ -144,7 +144,7 @@
                 if (error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证失败");
-                        [FingerprintVerificationUtil handleError:error];
+                        [FingerprintVerificationUtil handleError:error isExit:NO];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -171,7 +171,7 @@
         self.unlockContext = nil;
     }
 }
-
+/*
 + (void)backShow
 {
     NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
@@ -189,7 +189,7 @@
                 if (error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证失败");
-                        [FingerprintVerificationUtil handleError:error];
+                        [FingerprintVerificationUtil handleError:error isExit:NO];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -202,7 +202,7 @@
         }
     });
 }
-
+*/
 + (void)show {
     NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
     if ([screenLock boolValue] == NO) {
@@ -219,7 +219,7 @@
                 if (error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         DDLogDebug(@"解锁验证失败");
-                        [FingerprintVerificationUtil handleError:error];
+                        [FingerprintVerificationUtil handleError:error isExit:YES];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -234,7 +234,7 @@
     });
 }
 
-+ (void)handleError:(NSError *)error {
++ (void)handleError:(NSError *)error isExit:(BOOL) isExit{
     //失败操作
     LAError errorCode = error.code;
     switch (errorCode) {
@@ -247,7 +247,10 @@
         case LAErrorUserCancel: // Authentication was canceled by user (e.g. tapped Cancel button)
         {
             NSLog(@"用户取消验证Touch ID"); // -2 在TouchID对话框中点击了取消按钮
-            [FingerprintVerificationUtil exitAPP];
+            if (isExit) {
+                 [FingerprintVerificationUtil exitAPP];
+            }
+           
         }
             break;
         case LAErrorUserFallback: // Authentication was canceled, because the user tapped the fallback button (Enter Password)

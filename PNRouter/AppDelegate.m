@@ -126,7 +126,6 @@
 
 }
 
-
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     NSInteger seconds = [[HWUserdefault getObjectWithKey:BACK_TIME] integerValue];

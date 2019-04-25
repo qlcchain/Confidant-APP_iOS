@@ -1502,6 +1502,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.listView stopRefresh];
     
     NSArray *messageArr = noti.object;
+    
+    
+    if (self.listView.msgArr && self.listView.msgArr.count > 0) {
+        if (_msgStartId == 0) {
+            return;
+        }
+    }
+    
     NSMutableArray *msgArr = [NSMutableArray array];
     NSMutableArray *messageModelArr = [NSMutableArray array];
     [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {

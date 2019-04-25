@@ -68,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendGroupVerifyWithFrom:(NSString *)From To:(NSString *)To Aduit:(NSString *)Aduit GId:(NSString *)GId GName:(nullable NSString *)GName Result:(NSNumber *)Result UserKey:(nullable NSString *)UserKey showHud:(BOOL)showHud;
 + (void) sendToxSendGroupFileWithParames:(NSDictionary *) parames;
 + (void) sendDelUserWithFromTid:(NSString *) fromTid toTid:(NSString *) toTid sn:(NSString *) sn showHud:(BOOL) showHud;
++ (void) sendRebootWithToxid:(NSString *) toxID showHud:(BOOL)showHud;
 @end
 
 NS_ASSUME_NONNULL_END

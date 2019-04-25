@@ -1443,7 +1443,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:UploadAvatar_Success_Noti object:receiveDic];
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@"User id error"];
+           // [AppD.window showHint:@"User id error"];
         } else if (retCode == 2) {
             [AppD.window showHint:@"Target file error"];
         } else if (retCode == 3) {
@@ -1462,7 +1462,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:UpdateAvatar_Success_Noti object:receiveDic];
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@"User id error"];
+           // [AppD.window showHint:@"User id error"];
         } else if (retCode == 2) {
 //            [AppD.window showHint:@"Avatars are up to date"];
         } else if (retCode == 3) {

@@ -11,7 +11,6 @@
 @interface FingerprintVerificationUtil : NSObject
 
 + (void)show;
-+ (void)backShow;
 - (void)backShowWithComplete:(void(^_Nullable)(BOOL success, NSError * _Nullable error))complete;
 - (void)hide;
 

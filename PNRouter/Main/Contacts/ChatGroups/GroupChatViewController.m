@@ -176,9 +176,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [super viewDidLoad];
     [self addNoti];
     
-    // 拉取群好友
-    [self pullGroupFriend];
-    
     self.view.backgroundColor = RGB(246, 246, 246);
    
     [self loadChatUI];
@@ -1337,6 +1334,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     self.groupModel.UserType = [resultArr[1] intValue];
     if (!messageArr || messageArr.count == 0) {
         return;
+    }
+    if (self.listView.msgArr && self.listView.msgArr.count > 0) {
+        if (_msgStartId == 0) {
+            return;
+        }
     }
    // NSMutableArray *msgArr = [NSMutableArray array];
     NSMutableArray *messageModelArr = [NSMutableArray array];
