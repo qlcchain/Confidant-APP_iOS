@@ -224,15 +224,15 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>APP need your permission to access the camera.</string>
+	<string>App need your permission to access the camera to take pictures.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Use the fingerprint to continue.</string>
+	<string>APP need your permission to access the Touch ID/Face ID to unlock the app.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>APP Access your recording permissions</string>
+	<string>APP need your permission to access the microphone to send sound messages.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>APP Access your Photo Libray.</string>
+	<string>APP needs your permission to access the album to save pictures.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>APP need your permission to access the album.</string>
+	<string>APP needs your permission to access the album to send picture information.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AvenirLTStd-Black.otf</string>
