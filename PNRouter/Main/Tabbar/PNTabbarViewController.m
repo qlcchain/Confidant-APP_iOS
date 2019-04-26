@@ -197,6 +197,9 @@
         RouterModel *connectMode = [RouterModel getConnectRouter];
         [RouterModel deleteRouterWithUsersn:connectMode.userSn];
         [SystemUtil removeDocmentFilePath:filePath];
+        
+        filePath = [SystemUtil getBaseFileTimePathWithToid:[UserConfig getShareObject].userId];
+        [SystemUtil removeDocmentFilePath:filePath];
         // 删除未发送消息表
         [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId)]];
     }

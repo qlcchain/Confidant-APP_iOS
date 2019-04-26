@@ -87,7 +87,6 @@
     EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickey];
     [LibsodiumUtil changeUserPrivater:model.signPrivateKey];
     [self.window makeKeyAndVisible];
-    
     return YES;
 }
 
@@ -123,7 +122,6 @@
         NSDictionary *params = @{@"Action":@"HeartBeat",@"UserId":userM.userId?:@"",@"Active":@"1"};
         [SocketMessageUtil sendVersion1WithParams:params];
     }
-
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

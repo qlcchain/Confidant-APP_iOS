@@ -17,6 +17,7 @@
 + (NSString *) connectUrl;
 + (NSString *) connectFileUrl;
 + (NSString *) getBaseFilePath:(NSString *) friendid;
++ (NSString *) getBaseFileTimePathWithToid:(NSString *) toId;
 // 清除所有数据
 + (void) clearAppAllData;
 + (NSString *)getTempUploadPhotoBaseFilePath;
@@ -52,4 +53,5 @@
  */
 + (void) configureAPPTerminate;
 + (NSString *) getCurrentUserBaseFilePath;
++ (void) saveImageForTtimeWithToid:(NSString *) toid fileName:(NSString *) fileName fileTime:(NSInteger) fileTime;
 @end

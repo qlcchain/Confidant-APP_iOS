@@ -189,7 +189,7 @@
                                 if (!datakey) {
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                         data.msgState = CDMessageStateDownloadFaild;
-                                        [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
+                                        [SystemUtil removeDocmentFileName:data.fileName friendid:friendID];
                                         [weakSelf.tableView updateMessage:data];
                                         return ;
                                     });
@@ -206,12 +206,16 @@
                                     if (!fileData || fileData.length == 0) {
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             data.msgState = CDMessageStateDownloadFaild;
-                                            [SystemUtil removeDocmentFileName:data.fileName friendid:data.ToId];
+                                            [SystemUtil removeDocmentFileName:data.fileName friendid:friendID];
                                             [weakSelf.tableView updateMessage:data];
                                         });
                                     } else {
                                         if ( [fileData writeToFile:imgPath atomically:YES])
                                         {
+                                            
+                                            // 根据filename 保存 filetime
+                                            [SystemUtil saveImageForTtimeWithToid:friendID fileName:data.fileName fileTime:data.TimeStatmp];
+                                            
                                             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                                                 UIImage *image = [[UIImage alloc] initWithData:fileData];
                                                 if (image) {
@@ -368,6 +372,9 @@
                                         });
                                     } else {
                                         if ([fileData writeToFile:imgPath atomically:YES]) {
+                                            
+                                            // 根据filename 保存 filetime
+                                            [SystemUtil saveImageForTtimeWithToid:data.ToId fileName:data.fileName fileTime:data.TimeStatmp];
                                             
                                             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                                                 UIImage *image = [[UIImage alloc] initWithData:fileData];

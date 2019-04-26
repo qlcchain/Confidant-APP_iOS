@@ -143,6 +143,22 @@
     return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
 }
 
++ (NSString *) getBaseFileTimePathWithToid:(NSString *) toId
+{
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"%@/filetimes/%@/%@",@"Documents",[UserConfig getShareObject].userId,toId];
+    NSString *docPath = [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    BOOL isexit = [manage fileExistsAtPath:docPath isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        if (isexit && !isDir) {
+            [SystemUtil removeDocmentFilePath:docPath];
+        }
+        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+}
+
 + (NSString *) getCurrentUserBaseFilePath
 {
     NSFileManager *manage = [NSFileManager defaultManager];
@@ -519,8 +535,21 @@
     [OperationRecordModel bg_drop:OperationRecord_Table];
     NSString *documentPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
     [SystemUtil removeDocmentFilePath:[documentPath stringByAppendingPathComponent:@"files"]];
+    [SystemUtil removeDocmentFilePath:[documentPath stringByAppendingPathComponent:@"filetimes"]];
     [SystemUtil removeDocmentFilePath:[documentPath stringByAppendingPathComponent:@"uploadFiles/%@_upload"]];
     
 }
 
+
+#pragma mark --存储图片时间--filename key
++ (void) saveImageForTtimeWithToid:(NSString *) toid fileName:(NSString *) fileName fileTime:(NSInteger) fileTime
+{
+    NSString *timePath = [[SystemUtil getBaseFileTimePathWithToid:toid] stringByAppendingPathComponent:@"times"];
+    NSMutableDictionary *timesDic = [NSMutableDictionary dictionaryWithContentsOfFile:timePath];
+    if (!timesDic) {
+        timesDic = [NSMutableDictionary dictionary];
+    }
+    [timesDic setObject:@(fileTime) forKey:fileName];
+    [timesDic writeToFile:timePath atomically:YES];
+}
 @end

@@ -509,9 +509,9 @@
     if (retCode == 2) {
         [AppD.window showHint:@"Router id error"];
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
-    }  else if (retCode == 4){
+    }  else if (retCode == 4) {
         [AppD.window showHint:@"Other error"];
-         [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
     }else if (retCode == 5){
         [AppD.window showHint:@"The qr code has been occupied by others"];
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];

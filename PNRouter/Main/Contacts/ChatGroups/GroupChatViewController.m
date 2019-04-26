@@ -448,31 +448,48 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
             sheetView.actions = [NSArray arrayWithArray:self.actionArr];
             browser.sheetView = sheetView;
+            
+            NSString *fileDocs = [SystemUtil getBaseFilePath:self.groupModel.GId];
+            NSFileManager *fm = [NSFileManager defaultManager];
+            NSDirectoryEnumerator *dirEnumerater = [fm enumeratorAtPath:fileDocs];
+            NSString *filePath = nil;
+            __block NSInteger cidx = 0;
+            
             NSMutableArray *imgDataArr = [NSMutableArray array];
-            __block NSInteger currentIndex = 0;
-            [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                CDMessageModel *messageModel = obj;
-                // 本地图片（推荐使用 YBImage）
-                YBImageBrowseCellData *data1 = [YBImageBrowseCellData new];
-                if (messageModel.mediaImage) {
-                    UIImage *resultImg = messageModel.mediaImage;
-                    data1.imageBlock = ^__kindof UIImage * _Nullable{
-                        return resultImg;
-                    };
-                } else {
-                    NSString *requestUrl = [NSString stringWithFormat:@"%@%@",[RequestService getPrefixUrl],messageModel.filePath];
-                    data1.url = [NSURL URLWithString:requestUrl];
+            NSMutableDictionary *timeDics = [NSMutableDictionary dictionaryWithContentsOfFile:[[SystemUtil getBaseFileTimePathWithToid:self.groupModel.GId] stringByAppendingPathComponent:@"times"]];
+            //开始遍历文件
+            while (nil != (filePath = [dirEnumerater nextObject])) {
+                NSString *imgFilePath = [NSString stringWithFormat:@"%@/%@",fileDocs,filePath];
+                NSString *fileName = [imgFilePath lastPathComponent];
+                
+                if ([imgFilePath.pathExtension caseInsensitiveCompare:@"jpg"] == NSOrderedSame || [imgFilePath.pathExtension caseInsensitiveCompare:@"png"] == NSOrderedSame || [imgFilePath.pathExtension caseInsensitiveCompare:@"jpeg"] == NSOrderedSame || [imgFilePath.pathExtension caseInsensitiveCompare:@"bmp"] == NSOrderedSame) {
+                    
+                    YBImageBrowseCellData *data1 = [YBImageBrowseCellData new];
+                    
+                    NSURL *fileUrl = [NSURL fileURLWithPath:imgFilePath];
+                    data1.url = fileUrl;
+                    if (timeDics) {
+                        data1.extraData = [timeDics objectForKey:fileName];
+                    }
+                    [imgDataArr addObject:data1];
                 }
-                
-                [imgDataArr addObject:data1];
-                data1.sourceObject = imgV;
-                
-                if ([listInfo.msgModel.messageId isEqualToString:messageModel.messageId]) {
-                    currentIndex = idx;
+            }
+            
+            NSSortDescriptor*descriptor1=[NSSortDescriptor sortDescriptorWithKey:@"extraData"ascending:YES];
+            NSArray*descriptors1 = [NSArray arrayWithObject:descriptor1];
+            NSMutableArray *browserDatas = [NSMutableArray arrayWithArray:[imgDataArr sortedArrayUsingDescriptors:descriptors1]];
+            
+            [browserDatas enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                YBImageBrowseCellData *cellData = obj;
+                if ([listInfo.msgModel.fileName isEqualToString:[cellData.url lastPathComponent]]) {
+                    cidx = idx;
+                    cellData.sourceObject = imgV;
+                    *stop = YES;
                 }
             }];
-            browser.dataSourceArray = [NSArray arrayWithArray:imgDataArr];
-            browser.currentIndex = currentIndex;
+            
+            browser.dataSourceArray = [NSArray arrayWithArray:browserDatas];
+            browser.currentIndex = cidx;
             [browser showFromController:self];
         }
             break;
@@ -1148,6 +1165,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
     NSString *filePath = [[SystemUtil getBaseFilePath:self.groupModel.GId] stringByAppendingPathComponent:model.fileName];
     [imgData writeToFile:filePath atomically:YES];
+    
+    [SystemUtil saveImageForTtimeWithToid:self.groupModel.GId fileName:model.fileName fileTime:model.TimeStatmp];
+    
     model.dskey = self.groupModel.UserKey;
     model.srckey = self.groupModel.UserKey;
     [self.listView addMessagesToBottom:@[model]];
@@ -1732,6 +1752,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     
                     if ([fileData writeToFile:docPath atomically:YES]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            if (obj.msgType == 1) {
+                                // 根据filename 保存 filetime
+                                [SystemUtil saveImageForTtimeWithToid:weakSelf.groupModel.GId fileName:fileName fileTime:obj.TimeStatmp];
+                            }
+                           
+                            
                             obj.msgState = CDMessageStateNormal;
                             obj.isDown = NO;
                             [weakSelf.listView updateMessage:obj];
@@ -1829,6 +1855,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         long tempMsgid = (long)[ChatListDataUtil getShareObject].tempMsgId++;
         tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
         
+        if (weakSelf.selectMessageModel.msgType == 1) {
+            [SystemUtil saveImageForTtimeWithToid:model.userId fileName:weakSelf.selectMessageModel.fileName fileTime:[NSDate getTimestampFromDate:[NSDate date]]];
+        }
+        
         if (model.isGroup) { // 转发到群聊
             // 自己私钥解密
             NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:model.publicKey];
@@ -1875,6 +1905,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 
                 
             } else {
+                
                 dispatch_async(dispatch_get_global_queue(0, 0), ^{
                     
                     NSString *filePath = [[SystemUtil getBaseFilePath:weakSelf.groupModel.GId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
@@ -1887,6 +1918,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     
                     filePath = [[SystemUtil getBaseFilePath:model.userId] stringByAppendingPathComponent:weakSelf.selectMessageModel.fileName];
                     [fileDatas writeToFile:filePath atomically:YES];
+                    
+                    
                     
                     // 自己私钥解密
                     NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:model.publicKey];
