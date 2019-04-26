@@ -242,6 +242,10 @@
 		73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A1E219048AE003D07CC /* DDRSAWrapper.m */; };
 		73001A2321912890003D07CC /* RSAUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A2221912890003D07CC /* RSAUtil.m */; };
 		73001A262191328C003D07CC /* RSAModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A252191328C003D07CC /* RSAModel.m */; };
+		7301A896226EB876006225FA /* Privacy Policy.html in Resources */ = {isa = PBXBuildFile; fileRef = 7301A894226EB875006225FA /* Privacy Policy.html */; };
+		7301A897226EB876006225FA /* Terms of Service.html in Resources */ = {isa = PBXBuildFile; fileRef = 7301A895226EB876006225FA /* Terms of Service.html */; };
+		7301A89B226EB887006225FA /* TermsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7301A898226EB885006225FA /* TermsViewController.m */; };
+		7301A89C226EB887006225FA /* TermsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7301A89A226EB887006225FA /* TermsViewController.xib */; };
 		730330DF21C76DEC007C4063 /* libMiPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330DD21C76DEB007C4063 /* libMiPushSDK.a */; };
 		730330E121C76E2F007C4063 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E021C76E2F007C4063 /* UserNotifications.framework */; };
 		730330E321C76E3A007C4063 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E221C76E3A007C4063 /* libresolv.tbd */; };
@@ -1029,6 +1033,11 @@
 		73001A2221912890003D07CC /* RSAUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAUtil.m; sourceTree = "<group>"; };
 		73001A242191328C003D07CC /* RSAModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSAModel.h; sourceTree = "<group>"; };
 		73001A252191328C003D07CC /* RSAModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAModel.m; sourceTree = "<group>"; };
+		7301A894226EB875006225FA /* Privacy Policy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Privacy Policy.html"; sourceTree = "<group>"; };
+		7301A895226EB876006225FA /* Terms of Service.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Terms of Service.html"; sourceTree = "<group>"; };
+		7301A898226EB885006225FA /* TermsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsViewController.m; sourceTree = "<group>"; };
+		7301A899226EB886006225FA /* TermsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsViewController.h; sourceTree = "<group>"; };
+		7301A89A226EB887006225FA /* TermsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TermsViewController.xib; sourceTree = "<group>"; };
 		730330DD21C76DEB007C4063 /* libMiPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMiPushSDK.a; sourceTree = "<group>"; };
 		730330DE21C76DEC007C4063 /* MiPushSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiPushSDK.h; sourceTree = "<group>"; };
 		730330E021C76E2F007C4063 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -1968,6 +1977,9 @@
 			isa = PBXGroup;
 			children = (
 				580CFE0E2224DD5B00460B41 /* View */,
+				7301A899226EB886006225FA /* TermsViewController.h */,
+				7301A898226EB885006225FA /* TermsViewController.m */,
+				7301A89A226EB887006225FA /* TermsViewController.xib */,
 				73121A71219C26E900510B48 /* LoginViewController.h */,
 				73121A72219C26E900510B48 /* LoginViewController.m */,
 				73121A73219C26E900510B48 /* LoginViewController.xib */,
@@ -2193,6 +2205,8 @@
 		585AEE12213F6EDE0098A070 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7301A894226EB875006225FA /* Privacy Policy.html */,
+				7301A895226EB876006225FA /* Terms of Service.html */,
 				7330F46B2147AD2B00FF4EEC /* Expression.bundle */,
 				7330F46A2147AD2A00FF4EEC /* InputViewBundle.bundle */,
 				7362573B213E8B3200D7FD6B /* AppDelegate.h */,
@@ -3824,6 +3838,7 @@
 				73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
+				7301A896226EB876006225FA /* Privacy Policy.html in Resources */,
 				73194E96225598C30047F50C /* SendFileListViewController.xib in Resources */,
 				584B43A421FF0AE700D1F21A /* ConfigDiskHeaderView.xib in Resources */,
 				583BF95021F809000078A2A8 /* FilePreviewViewController.xib in Resources */,
@@ -3857,6 +3872,7 @@
 				583BF93A21F6FE4F0078A2A8 /* ArrangeAlertView.xib in Resources */,
 				7330F51E214B460A00FF4EEC /* NotifactionView.strings in Resources */,
 				58A23A88223FA9F70098AED5 /* RemoveGroupMemberViewController.xib in Resources */,
+				7301A897226EB876006225FA /* Terms of Service.html in Resources */,
 				73625748213E8B3400D7FD6B /* LaunchScreen.storyboard in Resources */,
 				586D417C224B609F002008C6 /* ChooseCircleCell.xib in Resources */,
 				7330F38E214645BA00FF4EEC /* MyHeadView.xib in Resources */,
@@ -3865,6 +3881,7 @@
 				584A448421460B0800608122 /* NewsViewController.xib in Resources */,
 				734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */,
 				7330F3AF21475A0600FF4EEC /* GroupCell.xib in Resources */,
+				7301A89C226EB887006225FA /* TermsViewController.xib in Resources */,
 				73C4B560223783500018146C /* GroupChatListViewController.xib in Resources */,
 				583B2B4122389F6600E6238D /* NewRequestsGroupChatsCell2.xib in Resources */,
 				734ED8CA226038B1002F1960 /* CircleLoginCodeViewController.xib in Resources */,
@@ -3993,7 +4010,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PNRouter/Pods-PNRouter-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-PNRouter/Pods-PNRouter-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
@@ -4008,7 +4025,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PNRouter/Pods-PNRouter-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PNRouter/Pods-PNRouter-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4356,6 +4373,7 @@
 				7330F4E72149147200FF4EEC /* CDCalculator.m in Sources */,
 				7330F386214612E800FF4EEC /* ContactViewController.m in Sources */,
 				7378840921ACF2970033A189 /* OCTSettingsStorageObject.m in Sources */,
+				7301A89B226EB887006225FA /* TermsViewController.m in Sources */,
 				5825A24121FAC03700E6194B /* ChooseShareContactViewController.m in Sources */,
 				583B2B2D2231099F00E6238D /* PNDefaultHeaderView.m in Sources */,
 				737883FD21ACF2970033A189 /* OCTManagerConstants.m in Sources */,
@@ -4483,6 +4501,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;

@@ -46,6 +46,7 @@ def demo_pods
 #    pod 'TYAttributedLabel'
     pod 'YBImageBrowser'
     pod 'TZImagePickerController' #iOS8 and later
+    # pod 'TYAttributedLabel', '~> 2.6.2'
 end
 
 

@@ -203,7 +203,7 @@
     // 头像
     if (data.userThumImage || data.userThumImageURL){
 //        _headImage_left.frame = CGRectMake(data.chatConfig.messageMargin, data.chatConfig.messageMargin, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
-        CGFloat top = data.userName.length == 0 ? data.chatConfig.messageMarginBottomOfTime : data.chatConfig.messageMarginBottomOfTime + data.chatConfig.nickNameHeight;
+        CGFloat top = data.userName.length == 0 ? data.chatConfig.messageMarginBottomOfTime : data.chatConfig.messageMarginBottomOfTime+5;
         _headImage_left.frame = CGRectMake(_chooseMsgBtn_left.cd_right + data.chatConfig.headMargin, top, data.chatConfig.headSideLength, data.chatConfig.headSideLength);
     } else {
 //        _headImage_left.frame = CGRectZero;
@@ -214,6 +214,7 @@
     
     // 昵称
 //    _userName_left.frame = CGRectMake(data.chatConfig.messageMargin + _headImage_left.cd_width + data.chatConfig.bubbleShareAngleWidth, 0, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);
+
     _userName_left.frame = CGRectMake(data.chatConfig.headMargin + _headImage_left.cd_width + data.chatConfig.bubbleShareAngleWidth+2, data.chatConfig.messageMarginBottomOfTime, data.chatConfig.bubbleMaxWidth, data.chatConfig.nickNameHeight);
     
     // 左侧
@@ -234,9 +235,9 @@
     
     // 更新消息气泡的高度和宽度
     CGRect bubbleRec = self.bubbleImage_left.frame;
-//    bubbleRec.origin.x = data.chatConfig.messageMargin * 2 + _headImage_left.cd_width - data.chatConfig.bubbleShareAngleWidth;
     bubbleRec.origin.x = data.chatConfig.headMargin * 2 + _headImage_left.cd_right - data.chatConfig.headMargin - data.chatConfig.bubbleShareAngleWidth;
     bubbleRec.origin.y = data.userName.length == 0 ? data.chatConfig.messageMarginBottomOfTime : data.chatConfig.messageMarginBottomOfTime + data.chatConfig.nickNameHeight;
+    
     bubbleRec.size.width = data.bubbleWidth;
     if (data.userName.length == 0) {
         bubbleRec.size.height = msgContentHeight - data.chatConfig.messageMarginBottomOfTime - data.chatConfig.messageMarginBottom;

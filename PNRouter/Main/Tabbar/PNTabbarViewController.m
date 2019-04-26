@@ -155,6 +155,21 @@
  */
 - (void) logoutWithType:(int) type {
     
+//    if (type > 0) {
+//        NSString *alertMessage = @"Other devices logged into the account";
+//        if (type == 1) {
+//            alertMessage = @"System upgrade, forced exit";
+//        } else if (type == 3) {
+//            alertMessage = @"Users are deleted and forced to quit";
+//        }
+//        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        }];
+//        [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
+//        [alertC addAction:alert1];
+//        [self presentViewController:alertC animated:YES completion:nil];
+//    }
+    
     [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
     [SendRequestUtil sendLogOut];
     AppD.inLogin = NO;

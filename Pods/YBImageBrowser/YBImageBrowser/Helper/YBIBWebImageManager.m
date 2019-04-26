@@ -7,10 +7,15 @@
 //
 
 #import "YBIBWebImageManager.h"
-#if __has_include(<SDWebImage/SDWebImageManager.h>)
-#import <SDWebImage/SDWebImageManager.h>
+#if __has_include(<SDWebImage/SDWebImageDownloader.h>)
+#import <SDWebImage/SDWebImageDownloader.h>
 #else
-#import "SDWebImageManager.h"
+#import "SDWebImageDownloader.h"
+#endif
+#if __has_include(<SDWebImage/SDImageCache.h>)
+#import <SDWebImage/SDImageCache.h>
+#else
+#import "SDImageCache.h"
 #endif
 
 static BOOL _downloaderShouldDecompressImages;
@@ -51,28 +56,19 @@ static BOOL _cacheShouldDecompressImages;
 }
 
 + (void)cancelTaskWithDownloadToken:(id)token {
-    if (token && [token isKindOfClass:SDWebImageDownloadToken.class]) {
-        [((SDWebImageDownloadToken *)token) cancel];
+    if (token) {
+        [[SDWebImageDownloader sharedDownloader] cancel:token];
     }
 }
 
 + (void)storeImage:(UIImage *)image imageData:(NSData *)data forKey:(NSURL *)key toDisk:(BOOL)toDisk {
-    if (!key) return;
-    NSString *cacheKey = [SDWebImageManager.sharedManager cacheKeyForURL:key];
-    if (!cacheKey) return;
-    
-    [[SDImageCache sharedImageCache] storeImage:image imageData:data forKey:cacheKey toDisk:toDisk completion:nil];
+    [[SDImageCache sharedImageCache] storeImage:image imageData:data forKey:key.absoluteString toDisk:toDisk completion:nil];
 }
 
 + (void)queryCacheOperationForKey:(NSURL *)key completed:(YBIBWebImageManagerCacheQueryCompletedBlock)completed {
-#define QUERY_CACHE_FAILED if (completed) {completed(nil, nil); return;}
-    if (!key) QUERY_CACHE_FAILED
-    NSString *cacheKey = [SDWebImageManager.sharedManager cacheKeyForURL:key];
-    if (!cacheKey) QUERY_CACHE_FAILED
-#undef QUERY_CACHE_FAILED
-        
+    if (!key) return;
     SDImageCacheOptions options = SDImageCacheQueryDataWhenInMemory;
-    [[SDImageCache sharedImageCache] queryCacheOperationForKey:cacheKey options:options done:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+    [[SDImageCache sharedImageCache] queryCacheOperationForKey:key.absoluteString options:options done:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
         if (completed) {
             completed(image, data);
         }

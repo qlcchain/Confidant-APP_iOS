@@ -94,7 +94,7 @@ static NSString * const kIdentityOfYBImageBrowserSheetCell = @"kIdentityOfYBImag
     
     CGFloat width = containerSize.width, height = containerSize.height;
     
-    CGFloat tableViewHeight = MIN(self.heightOfCell * self.actions.count + self.heightOfCell + 2 + YBIB_HEIGHT_EXTRABOTTOM, height * self.maxHeightScale);
+    CGFloat tableViewHeight = MIN(self.heightOfCell * self.actions.count + self.heightOfCell + 5 + YBIB_HEIGHT_EXTRABOTTOM, height * self.maxHeightScale);
     self->_hideFrame = CGRectMake(0, height, width, tableViewHeight);
     self->_showFrame = CGRectMake(0, height - tableViewHeight, width, tableViewHeight);
     
@@ -150,7 +150,7 @@ static NSString * const kIdentityOfYBImageBrowserSheetCell = @"kIdentityOfYBImag
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0)
         return 0.001;
-    return 2;
+    return 5;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {

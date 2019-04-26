@@ -79,6 +79,7 @@ static NSString *Action_GroupDelMsg = @"GroupDelMsg";
 static NSString *Action_DelUser = @"DelUser";
 
 
+
 @class FriendModel;
 
 @interface SocketMessageUtil : NSObject

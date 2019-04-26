@@ -43,7 +43,9 @@
 
 - (void)configHeaderWithModel:(ContactShowModel *)model {
     NSString *name = [model.Name base64DecodedString]?:model.Name;
+    NSString *routerName = [model.RouteName base64DecodedString]?:model.RouteName;
     _lblName.text = model.showArrow?[NSString stringWithFormat:@"%@(%@)",name,@(model.routerArr.count)]:name;
+    _lblRouterName.text = model.showArrow? @"": [NSString stringWithFormat:@"- %@",routerName?:@""];
     NSString *userKey = model.UserKey;
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:_lblName.text]];
     _headImgView.image = defaultImg;

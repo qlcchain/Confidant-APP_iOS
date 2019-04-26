@@ -20,7 +20,7 @@
 @interface YBVideoBrowseCellData () <NSURLSessionDelegate> {
     NSURLSessionDownloadTask *_downloadTask;
 }
-@property (nonatomic, assign) BOOL loading;
+@property (nonatomic, assign) BOOL isLoading;
 @end
 
 @implementation YBVideoBrowseCellData
@@ -41,7 +41,7 @@
     self->_allowShowSheetView = YES;
     self->_dataState = YBVideoBrowseCellDataStateInvalid;
     self->_dataDownloadState = YBVideoBrowseCellDataDownloadStateNone;
-    self->_loading = NO;
+    self->_isLoading = NO;
 }
 
 #pragma mark - <YBImageBrowserCellDataProtocol>
@@ -89,11 +89,11 @@
 #pragma mark - internal
 
 - (void)loadData {
-    if (self.loading) {
+    if (self.isLoading) {
         self.dataState = self.dataState;
         return;
     } else {
-        self.loading = YES;
+        self.isLoading = YES;
     }
     
     if (self.avAsset) {
@@ -103,7 +103,7 @@
         [self loadAVAssetFromPHAsset];
     } else {
         self.dataState = YBVideoBrowseCellDataStateInvalid;
-        self.loading = NO;
+        self.isLoading = NO;
     }
 }
 
@@ -118,18 +118,18 @@
         [self loadFirstFrameOfVideo];
     } failed:^{
         self.dataState = YBVideoBrowseCellDataStateLoadPHAssetFailed;
-        self.loading = NO;
+        self.isLoading = NO;
     }];
 }
 
 - (BOOL)loadLocalFirstFrameOfVideo {
     if (self.firstFrame) {
         self.dataState = YBVideoBrowseCellDataStateFirstFrameReady;
-        self.loading = NO;
+        self.isLoading = NO;
     } else if (self.sourceObject && [self.sourceObject isKindOfClass:UIImageView.class] && ((UIImageView *)self.sourceObject).image) {
         self.firstFrame = ((UIImageView *)self.sourceObject).image;
         self.dataState = YBVideoBrowseCellDataStateFirstFrameReady;
-        self.loading = NO;
+        self.isLoading = NO;
     } else {
         return NO;
     }
@@ -152,12 +152,12 @@
         YBIB_GET_QUEUE_MAIN_ASYNC(^{
             if (error || !result) {
                 self.dataState = YBVideoBrowseCellDataStateLoadFirstFrameFailed;
-                self.loading = NO;
+                self.isLoading = NO;
             } else {
                 self.firstFrame = result;
                 self.dataState = YBVideoBrowseCellDataStateLoadFirstFrameSuccess;
                 self.dataState = YBVideoBrowseCellDataStateFirstFrameReady;
-                self.loading = NO;
+                self.isLoading = NO;
             }
         })
     })

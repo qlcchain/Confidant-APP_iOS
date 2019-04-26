@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateAccountViewController">
             <connections>
+                <outlet property="lblBottom" destination="fOd-12-2GQ" id="AfL-tX-3LK"/>
                 <outlet property="nameTF" destination="qug-7d-8J9" id="k8h-WS-pAx"/>
                 <outlet property="nextBtn" destination="Kpy-BZ-alM" id="Oqg-UR-b96"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -149,12 +150,58 @@
                         <constraint firstAttribute="bottom" secondItem="dwV-n2-ZV5" secondAttribute="bottom" constant="10" id="u29-kX-71B"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B3R-gX-Akb">
+                    <rect key="frame" x="16" y="593" width="343" height="40"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By creating an account, " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zpO-wH-98R">
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="yhc-LZ-uKx"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By creating an account, " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOd-12-2GQ">
+                            <rect key="frame" x="0.0" y="20" width="343" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="alF-Ns-HWn"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qq6-is-ixp">
+                            <rect key="frame" x="48" y="20" width="247" height="20"/>
+                            <connections>
+                                <action selector="bottomAction:" destination="-1" eventType="touchUpInside" id="aaU-6b-fKA"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="fOd-12-2GQ" secondAttribute="trailing" id="42R-Kb-UID"/>
+                        <constraint firstAttribute="trailing" secondItem="zpO-wH-98R" secondAttribute="trailing" id="Cvt-dj-mqk"/>
+                        <constraint firstAttribute="bottom" secondItem="fOd-12-2GQ" secondAttribute="bottom" id="Hdk-JI-rz7"/>
+                        <constraint firstItem="fOd-12-2GQ" firstAttribute="top" secondItem="zpO-wH-98R" secondAttribute="bottom" id="Jho-YL-sW0"/>
+                        <constraint firstItem="qq6-is-ixp" firstAttribute="leading" secondItem="B3R-gX-Akb" secondAttribute="leading" constant="48" id="UTa-dJ-w1b"/>
+                        <constraint firstAttribute="height" constant="40" id="X2F-qZ-CIU"/>
+                        <constraint firstAttribute="bottom" secondItem="qq6-is-ixp" secondAttribute="bottom" id="bVi-Gx-5Mp"/>
+                        <constraint firstItem="fOd-12-2GQ" firstAttribute="leading" secondItem="B3R-gX-Akb" secondAttribute="leading" id="cac-ov-z1g"/>
+                        <constraint firstItem="qq6-is-ixp" firstAttribute="top" secondItem="zpO-wH-98R" secondAttribute="bottom" id="gH8-eK-2k4"/>
+                        <constraint firstAttribute="trailing" secondItem="qq6-is-ixp" secondAttribute="trailing" constant="48" id="hBU-Xl-4bk"/>
+                        <constraint firstItem="zpO-wH-98R" firstAttribute="top" secondItem="B3R-gX-Akb" secondAttribute="top" id="ten-AE-IEJ"/>
+                        <constraint firstItem="zpO-wH-98R" firstAttribute="leading" secondItem="B3R-gX-Akb" secondAttribute="leading" id="uAa-Pk-Tf4"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="xuf-3R-9UO" secondAttribute="trailing" constant="16" id="0sr-hc-uPV"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="B3R-gX-Akb" secondAttribute="bottom" constant="34" id="80F-fh-Et9"/>
                 <constraint firstItem="naX-Rv-V3d" firstAttribute="top" secondItem="Kpy-BZ-alM" secondAttribute="bottom" constant="32" id="BkO-57-LMZ"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="S0m-kB-MDc" secondAttribute="trailing" id="CwP-cf-2Kd"/>
+                <constraint firstItem="B3R-gX-Akb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="HqS-tx-3aR"/>
                 <constraint firstItem="xuf-3R-9UO" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="KnE-fh-fOs"/>
                 <constraint firstItem="S0m-kB-MDc" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="Ly7-Rv-m0W"/>
                 <constraint firstItem="0EF-9t-YS9" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="NzV-Bb-n6b"/>
@@ -163,6 +210,7 @@
                 <constraint firstItem="Kpy-BZ-alM" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="TTU-m8-Usv"/>
                 <constraint firstItem="0EF-9t-YS9" firstAttribute="top" secondItem="S0m-kB-MDc" secondAttribute="bottom" constant="22" id="UWG-sF-ZuC"/>
                 <constraint firstItem="xuf-3R-9UO" firstAttribute="top" secondItem="5di-pQ-RtZ" secondAttribute="bottom" constant="5" id="W0X-78-jUL"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="B3R-gX-Akb" secondAttribute="trailing" constant="16" id="WLc-Xb-pFS"/>
                 <constraint firstItem="Kpy-BZ-alM" firstAttribute="top" secondItem="xuf-3R-9UO" secondAttribute="bottom" constant="45" id="Ww3-Ta-fyC"/>
                 <constraint firstItem="5di-pQ-RtZ" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="ff7-93-CSq"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Kpy-BZ-alM" secondAttribute="trailing" constant="16" id="hUP-Jm-dqj"/>
