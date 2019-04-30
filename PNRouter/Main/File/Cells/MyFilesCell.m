@@ -54,7 +54,7 @@
     _selectLeftWidth.constant = model.showSelect?40:0;
     _selectBtn.selected = model.isSelect;
     _icon.image = [UIImage imageNamed:fileTypeImgName];
-    NSString *fileName = model.FileName.lastPathComponent;
+    NSString *fileName = model.FileName?:@"";
     _titleLab.text = [Base58Util Base58DecodeWithCodeName:fileName];
     
     int fileSize = [model.FileSize intValue];

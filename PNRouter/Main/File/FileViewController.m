@@ -9,7 +9,6 @@
 #import "FileViewController.h"
 #import "FileCell.h"
 #import "TaskListViewController.h"
-#import "MyFilesViewController.h"
 #import "SendRequestUtil.h"
 #import "UserConfig.h"
 #import "PNNavViewController.h"
@@ -135,7 +134,7 @@ typedef enum : NSUInteger {
 
 #pragma mark -删除文件
 - (void) deleteFileWithModel:(FileListModel *) model {
-    [SendRequestUtil sendDelFileWithUserId:[UserConfig getShareObject].userId FileName:model.FileName showHud:YES];
+    [SendRequestUtil sendDelFileWithUserId:[UserConfig getShareObject].userId FileName:model.FileName filePath:model.FilePath showHud:YES];
 }
 
 - (void)otherApplicationOpen:(NSURL *)fileURL {
@@ -146,8 +145,8 @@ typedef enum : NSUInteger {
 
 - (void)showFileMoreAlertView:(FileListModel *)model {
     self.selectModel = model;
-    NSString *fileNameBase58 = model.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+   
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:model.FileName]?:@"";
     
     FileMoreAlertView *view = [FileMoreAlertView getInstance];
     @weakify_self
@@ -193,9 +192,9 @@ typedef enum : NSUInteger {
     if (_arrangeType == ArrangeTypeByName) {
         [self.showArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
             FileListModel *listM1 = obj1;
-            NSString *fileName1 = [Base58Util Base58DecodeWithCodeName:listM1.FileName.lastPathComponent];
+            NSString *fileName1 = [Base58Util Base58DecodeWithCodeName:listM1.FileName];
             FileListModel *listM2 = obj2;
-            NSString *fileName2 = [Base58Util Base58DecodeWithCodeName:listM2.FileName.lastPathComponent];
+            NSString *fileName2 = [Base58Util Base58DecodeWithCodeName:listM2.FileName];
             return [fileName1 compare:fileName2];
         }];
         [_mainTable reloadData];
@@ -289,7 +288,6 @@ typedef enum : NSUInteger {
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     FileCell *cell = [tableView dequeueReusableCellWithIdentifier:FileCellReuse];
-    
     FileListModel *model = _showArr[indexPath.row];
 
     [cell configCellWithModel:model];
@@ -350,8 +348,7 @@ typedef enum : NSUInteger {
         @weakify_self
         [_sourceArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FileListModel *model = obj;
-            NSString *fileNameBase58 = model.FileName.lastPathComponent;
-            NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58];
+            NSString *fileName = [Base58Util Base58DecodeWithCodeName:model.FileName?:@""];
             if ([fileName containsString:tf.text.trim]) {
                 [weakSelf.searchArr addObject:model];
             }
@@ -432,7 +429,7 @@ typedef enum : NSUInteger {
         }
         
         
-        [SendRequestUtil sendFileForwardMsgid:[NSString stringWithFormat:@"%@",weakSelf.selectModel.MsgId] toid:model.userId?:@"" fileName:weakSelf.selectModel.FileName filekey:fileKey?:@"" fileInfo:weakSelf.selectModel.FileInfo];
+        [SendRequestUtil sendFileForwardMsgid:[NSString stringWithFormat:@"%@",weakSelf.selectModel.MsgId] toid:model.userId?:@"" fileName:weakSelf.selectModel.FileName filePath:weakSelf.selectModel.FilePath filekey:fileKey?:@"" fileInfo:weakSelf.selectModel.FileInfo];
     }];
 }
 - (void)pullFileListCompleteNoti:(NSNotification *)noti {
@@ -479,8 +476,8 @@ typedef enum : NSUInteger {
             // 删除成功-保存操作记录
             NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
             NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
-            NSString *fileName = [Base58Util Base58DecodeWithCodeName:model.FileName.lastPathComponent];
-            [OperationRecordModel saveOrUpdateWithFileType:model.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:model.FileName?:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
+            NSString *fileName = [Base58Util Base58DecodeWithCodeName:model.FileName?:@""];
+            [OperationRecordModel saveOrUpdateWithFileType:model.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName?:@"" routerPath:model.FilePath?:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
             
             *stop = YES;
         }
@@ -495,7 +492,8 @@ typedef enum : NSUInteger {
     [_showArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FileListModel *model = obj;
         if ([model.MsgId integerValue] == MsgId) {
-            model.FileName = [model.FileName stringByReplacingOccurrencesOfString:model.FileName.lastPathComponent withString:Filename];
+            //model.FileName = [model.FileName stringByReplacingOccurrencesOfString:model.FileName.lastPathComponent withString:Filename];
+            model.FileName = Filename;
             *stop = YES;
         }
     }];

@@ -91,6 +91,8 @@ static NSString *Action_DelUser = @"DelUser";
 + (void)sendVersion2WithParams:(NSDictionary *)params fetchParam:(void(^)(NSDictionary *dic))paramB;
 + (void)sendVersion3WithParams:(NSDictionary *)params;
 + (void)sendVersion4WithParams:(NSDictionary *)params;
++ (void)sendVersion5WithParams:(NSDictionary *)params;
++ (void)sendRecevieMessageWithParams5:(NSDictionary *)params;
 // 回复router
 + (void)sendRecevieMessageWithParams:(NSDictionary *)params tempmsgid:(NSInteger) msgid;
 + (void)receiveText:(NSString *)text;

@@ -55,7 +55,7 @@
 #import "NSString+Trim.h"
 #import "ChatImgCacheUtil.h"
 #import "NSString+File.h"
-
+#import "GroupMembersViewController.h"
 #import "RequestService.h"
 #import "NSString+File.h"
 #import <YBImageBrowser/YBImageBrowser.h>
@@ -66,6 +66,7 @@
 #import "RouterConfig.h"
 #import "RouterModel.h"
 #import "CircleOutUtil.h"
+#import "GroupMembersModel.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -206,6 +207,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxDownFileSuccess:) name:REVER_GROUP_FILE_PULL_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendingNoti:) name:FILE_SENDING_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageForward:) name:CHOOSE_FRIEND_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remindUserNoti:) name:REMIND_USER_SUCCESS_NOTI object:nil];
 }
 
 #pragma mark ---pull message
@@ -783,6 +785,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
           //  [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
         }
     }
+}
+// 输入@
+- (void) inputViewPopRemid
+{
+    GroupMembersViewController *vc  = [[GroupMembersViewController alloc] init];
+    vc.groupInfoM = self.groupModel;
+    vc.optionType = RemindType;
+    [self presentModalVC:vc animated:YES];
 }
 
 // 输入框输出文字
@@ -1416,8 +1426,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         if (model.msgType == 0) { // 文字
            model.msg = aesDecryptString(payloadModel.Msg, datakey);
         }
-        NSString *signPK = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:model.FromId];
+        NSString *signPK = payloadModel.UserKey;
         NSString *nickName = model.userName?:@"";
+        
         CTDataConfig config = [CTData defaultConfig];
         if (!model.isLeft) {
             config.isOwner = YES;
@@ -1839,10 +1850,19 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         NSLog(@"保存视频成功");
         [AppD.window showHint:@"Save success."];
     }
-    
 }
 
-
+#pragma mark ---@用户通知
+- (void) remindUserNoti:(NSNotification *)noti {
+    
+    GroupMembersModel *memberModel = noti.object;
+    if (memberModel) {
+        NSString *inputStirng = [self.msginputView getTextViewString];
+        inputStirng = [inputStirng substringToIndex:inputStirng.length-1];
+       // inputStirng = [inputStirng stringByAppendingString:[NSString stringWithFormat:@"%@ ",[memberModel.showName base64DecodedString]]];
+       // [self.msginputView setTextViewString:inputStirng];
+    }
+}
 
 #pragma mark ----转发
 - (void) messageForward:(NSNotification *)noti {

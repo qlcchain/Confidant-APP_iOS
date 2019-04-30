@@ -54,7 +54,7 @@ struct SendFile {
     char srcKey[256];
     char dstKey[256];
     char porperty[1];
-    char Pad[1];
+    char Ver[1];
     //char content[1024*1024*2];
    // char content[0];
    // char* content;
@@ -217,7 +217,6 @@ struct ResultFile {
 - (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSInteger)fileid fileType:(uint32_t) fileType messageid:(NSString *)messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey isGroup:(BOOL)isGroup
 {
     
-   // imgData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageHistory" ofType:@"json"]];
     NSArray *fileinfos = [fileName componentsSeparatedByString:@","];
     if (fileinfos && fileinfos.count>=2) {
        NSString *info = [fileinfos lastObject];
@@ -323,7 +322,7 @@ struct ResultFile {
     } else {
          sendFile.porperty[0] = '\0';
     }
-    sendFile.Pad[0] = '\0';
+    sendFile.Ver[0] = '\1';
     
     //memcpy(sendFile.porperty, [porpertyType cStringUsingEncoding:NSASCIIStringEncoding],[porpertyType length]);
     

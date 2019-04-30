@@ -8,6 +8,11 @@
 
 #import "PNBaseViewController.h"
 
+typedef enum : NSUInteger {
+    MyFilesTableTypeNormal,
+    MyFilesTableTypeSearch,
+} MyFilesTableType;
+
 @interface FileViewController : PNBaseViewController
 
 @end

@@ -226,6 +226,7 @@
 - (void)jumpToGroupMembers {
     GroupMembersViewController *vc = [GroupMembersViewController new];
     vc.groupInfoM = _groupModel;
+    vc.optionType = CheckType;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

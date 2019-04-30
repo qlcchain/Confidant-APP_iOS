@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +26,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eew-Ip-alv">
-                        <rect key="frame" x="28" y="43" width="292" height="0.5"/>
+                        <rect key="frame" x="16" y="43" width="304" height="0.5"/>
                         <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="ImH-Gk-w6s"/>
@@ -37,7 +37,7 @@
                     </switch>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="eew-Ip-alv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="28" id="2NS-nZ-fm7"/>
+                    <constraint firstItem="eew-Ip-alv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="2NS-nZ-fm7"/>
                     <constraint firstAttribute="trailing" secondItem="ild-bK-yCn" secondAttribute="trailing" constant="16" id="BbU-RE-ys4"/>
                     <constraint firstItem="3vA-jJ-w2l" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Dq5-9T-D5Q"/>
                     <constraint firstItem="ild-bK-yCn" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="VJu-Ns-HYi"/>

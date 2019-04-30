@@ -27,7 +27,7 @@
                       success:(HTTPRequestV2SuccessBlock)successReqBlock
                       failure:(HTTPRequestV2FailedBlock)failedReqBlock;
 
-+ (void) downFileWithBaseURLStr:(NSString *) url friendid:(NSString *) friendid
++ (void) downFileWithBaseURLStr:(NSString *) url fileName:(NSString *) fileName friendid:(NSString *) friendid
                   progressBlock:(void(^)(CGFloat progress)) progressBlock
                         success:(void (^)(NSURLSessionDownloadTask *dataTask,NSString *filePath)) success
                         failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;

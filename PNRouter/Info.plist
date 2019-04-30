@@ -205,7 +205,7 @@
 	<key>CFBundleSignature</key>
 	<string>???</string>
 	<key>CFBundleVersion</key>
-	<string>93</string>
+	<string>94</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -224,7 +224,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>App need your permission to access the camera to take pictures.</string>
+	<string>Confidant app will access the user's camera to take photos, detect the user's face and read QR codes.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>APP need your permission to access the Touch ID/Face ID to unlock the app.</string>
 	<key>NSMicrophoneUsageDescription</key>

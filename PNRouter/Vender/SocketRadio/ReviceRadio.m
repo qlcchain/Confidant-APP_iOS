@@ -327,7 +327,7 @@
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     
     if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterMAC] isEmptyString]) {
-         [self sendGBFinsh];
+        [self sendMacFrpRequestWithMac:[RouterConfig getRouterConfig].currentRouterMAC];
     } else {
          [self sendRequestWithRid:[RouterConfig getRouterConfig].currentRouterToxid];
     }
@@ -344,6 +344,33 @@
      [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     [[RouterConfig getRouterConfig].routherArray removeAllObjects];
     [NSThread detachNewThreadSelector:@selector(sendRadionMessageWithRouterid:) toTarget:self withObject:routerid];
+}
+
+- (void) sendMacFrpRequestWithMac:(NSString *) mac
+{
+    mac = [mac stringByReplacingOccurrencesOfString:@":" withString:@""];
+    NSString *url = [NSString stringWithFormat:@"https://pprouter.online:9001/v1/pprmap/CheckByMac?mac=%@",mac?:@""];
+    @weakify_self
+    [AFHTTPClientV2 requestWithBaseURLStr:url params:@{} httpMethod:HttpMethodGet successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+        
+        NSInteger retCode = [responseObject[@"RetCode"] integerValue];
+        NSInteger connStatus = [responseObject[@"ConnStatus"] integerValue];
+        if (retCode == 0 && connStatus == 1) {
+            NSString *routerIp = responseObject[@"ServerHost"];
+            NSString *routerPort = [NSString stringWithFormat:@"%@",responseObject[@"ServerPort"]];
+            NSString *routerId = [NSString stringWithFormat:@"%@",responseObject[@"Rid"]];
+            [RouterConfig getRouterConfig].currentRouterPort = routerPort;
+            [[RouterConfig getRouterConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
+            [RouterConfig getRouterConfig].currentRouterIp = routerIp;
+            [RouterConfig getRouterConfig].currentRouterToxid = routerId;
+            NSLog(@"---%@---%@",routerIp,routerId);
+        }
+        NSLog(@"----successBlock-----");
+        [weakSelf sendGBFinsh];
+    } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+        [weakSelf sendGBFinsh];
+        NSLog(@"-----failedBlock----");
+    }];
 }
 
 - (void) sendRequestWithRid:(NSString *) rid

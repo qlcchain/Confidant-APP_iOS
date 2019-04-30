@@ -91,6 +91,26 @@
 }
 
 /**
+ 发送文本消息 5
+ */
++ (void)sendVersion5WithParams:(NSDictionary *)params{
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams5]];
+    //    NSString *paramsJson = params.mj_JSONString;
+    //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
+    [muDic setObject:params forKey:@"params"];
+    NSString *text = muDic.mj_JSONString;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop
+            [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
+        } else {
+            [SocketUtil.shareInstance sendWithText:text];
+        }
+    });
+    
+}
+
+/**
  发送文本消息 4
  */
 + (void)sendVersion4WithParams:(NSDictionary *)params {
@@ -228,6 +248,23 @@
  */
 + (void)sendRecevieMessageWithParams:(NSDictionary *)params tempmsgid:(NSInteger) msgid{
     NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRecevieBaseParams:msgid]];
+    //    NSString *paramsJson = params.mj_JSONString;
+    //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
+    [muDic setObject:params forKey:@"params"];
+    NSString *text = muDic.mj_JSONString;
+    
+    if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
+        [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
+    } else {
+        [SocketUtil.shareInstance sendWithText:text];
+    }
+}
+
+/**
+ 发送文本消息  app->router
+ */
++ (void)sendRecevieMessageWithParams5:(NSDictionary *)params tempmsgid:(NSInteger) msgid{
+    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRecevieBaseParams5:msgid]];
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
@@ -526,15 +563,19 @@
 + (void) handleRegiserRouter:(NSDictionary *) receiveDic
 {
     [AppD.window hideHud];
-    
-    
-    
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
         
         NSString *adminId = receiveDic[@"params"][@"AdminId"];
         NSString *adminName = receiveDic[@"params"][@"AdminName"];
         NSString *adminUserKey = receiveDic[@"params"][@"AdminKey"];
+        
+        // 重新取值  rid 和 usesn
+        NSString *userSn = receiveDic[@"params"][@"UserSn"];
+        NSString *routeId = receiveDic[@"params"][@"RouteId"];
+        
+        [RouterConfig getRouterConfig].currentRouterToxid = routeId?:[RouterConfig getRouterConfig].currentRouterToxid;
+        [RouterConfig getRouterConfig].currentRouterSn = userSn?:[RouterConfig getRouterConfig].currentRouterSn;
         
         [UserConfig getShareObject].adminId = adminId;
         [UserConfig getShareObject].adminKey = adminUserKey;
@@ -688,7 +729,7 @@
     fileModel.timestamp = [receiveDic[@"timestamp"] integerValue];
     NSString *retcode = @"0"; // 0：请求接收到   1：其他错误
     NSDictionary *params = @{@"Action":Action_PushFile,@"Retcode":retcode,@"FromId":fileModel.FromId,@"ToId":fileModel.ToId,@"MsgId":fileModel.MsgId};
-    [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
+    [SocketMessageUtil sendRecevieMessageWithParams5:params tempmsgid:tempmsgid];
     
     // 添加到chatlist
     ChatListModel *chatModel = [[ChatListModel alloc] init];
@@ -1164,6 +1205,9 @@
             [RouterModel updateRouterConnectStatusWithSn:userSn];
             // 开启未发送成功消息发送
             [[SendCacheChatUtil getSendCacheChatUtilShare] start];
+            
+            [RouterConfig getRouterConfig].currentRouterToxid = routeId?:[RouterConfig getRouterConfig].currentRouterToxid;
+            [RouterConfig getRouterConfig].currentRouterSn = userSn?:[RouterConfig getRouterConfig].currentRouterSn;
         }
         // 同步data文件
         if (needSynch == 0) { // 不需要 同步
@@ -1247,11 +1291,8 @@
     
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     NSString *msgId = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
-    if (retCode == 0) {
+    if (retCode == 0 || retCode == 1) {
         [[NSNotificationCenter defaultCenter] postNotificationName:UploadFileReq_Success_Noti object:msgId];
-    } else if (retCode == 1) {
-        [AppD.window hideHud];
-        [AppD.window showHint:@"Existing file with the same name"];
     } else if (retCode == 2) {
         [AppD.window hideHud];
         [AppD.window showHint:@"Not enough space"];
@@ -1974,6 +2015,11 @@
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION4,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
++ (NSDictionary *)getBaseParams5 {
+    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION5,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+}
+
 
 + (NSDictionary *)getMutBaseParamsWithMore {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
@@ -1988,6 +2034,11 @@
 + (NSDictionary *)getRecevieBaseParams:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION1,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+}
+
++ (NSDictionary *)getRecevieBaseParams5:(NSInteger) tempmsgid {
+    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION5,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams3:(NSInteger) tempmsgid {

@@ -314,7 +314,7 @@
         
         @weakify_self
         if ([SystemUtil isSocketConnect]) {
-            [RequestService downFileWithBaseURLStr:self.msgModal.filePath friendid:friendid progressBlock:^(CGFloat progress) {
+            [RequestService downFileWithBaseURLStr:self.msgModal.filePath fileName:self.msgModal.fileName friendid:friendid progressBlock:^(CGFloat progress) {
                 
             } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
                 
@@ -372,12 +372,12 @@
         } else {
             if (self.msgModal.isGroup) {
                 
-                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"5" fileFrom:@"1"];
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] filePath:self.msgModal.filePath msgId:self.msgModal.messageId fileOwer:@"5" fileFrom:@"1"];
                 
             } else if (self.msgModal.isLeft) {
-                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.FromId toid:self.msgModal.ToId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"2" fileFrom:@"1"];
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.FromId toid:self.msgModal.ToId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] filePath:self.msgModal.filePath msgId:self.msgModal.messageId fileOwer:@"2" fileFrom:@"1"];
             } else {
-                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:self.msgModal.FromId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] msgId:self.msgModal.messageId fileOwer:@"1" fileFrom:@"1"];
+                [SendRequestUtil sendToxPullFileWithFromId:self.msgModal.ToId toid:self.msgModal.FromId fileName:[Base58Util Base58EncodeWithCodeName:self.msgModal.fileName] filePath:self.msgModal.filePath msgId:self.msgModal.messageId fileOwer:@"1" fileFrom:@"1"];
             }
             
         }

@@ -10,7 +10,7 @@
 //#import "AFNetworking.h"
 #import <AFNetworking/AFNetworking.h>
 #define TimeOut_Request 60
-#define TimeOut_GetRequest 5
+#define TimeOut_GetRequest 8
 
 typedef enum HttpMethod {
     HttpMethodGet      = 0,
@@ -64,7 +64,7 @@ typedef void (^HTTPRequestV2FailedBlock)(NSURLSessionDataTask *dataTask, NSError
                                   success:(void (^)(NSURLSessionDataTask *dataTask, id responseObject))success
                                   failure:(void (^)(NSURLSessionDataTask *dataTask, NSError *error))failure;
 
-+ (void) downFileWithBaseURLStr:(NSString *) ULRString friendid:(NSString *) friendid
++ (void) downFileWithBaseURLStr:(NSString *) ULRString fileName:(NSString *) fileName friendid:(NSString *) friendid
                   progressBlock:(void(^)(CGFloat progress)) progressBlock
                         success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
                         failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;

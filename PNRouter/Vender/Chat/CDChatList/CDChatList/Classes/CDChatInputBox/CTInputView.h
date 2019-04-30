@@ -17,7 +17,8 @@
 -(void)inputViewPopCommand:(NSString *)string; //
 // 输出音频
 -(void)inputViewPopAudioath:(NSURL *)path; //
-
+// 输入@
+-(void)inputViewPopRemid; //
 @end
 
 /**
@@ -29,4 +30,7 @@
 -(void)turnButtonOnAtIndex:(NSInteger)idx;
 - (NSString *) getTextViewString;
 - (void) setTextViewString:(NSString *) textString;
+
+- (NSAttributedString *) getTextViewAttributeString;
+- (void) setTextViewAttributeString:(NSAttributedString *) attributeString;
 @end

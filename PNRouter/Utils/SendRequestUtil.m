@@ -125,10 +125,10 @@
 }
 
 #pragma mark tox_拉取文件
-+ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName msgId:(NSString *) msgId fileOwer:(NSString *) fileOwer fileFrom:(NSString *) fileFrom
++ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName filePath:(NSString *) filePath msgId:(NSString *) msgId fileOwer:(NSString *) fileOwer fileFrom:(NSString *) fileFrom
 {
-    NSDictionary *params = @{@"Action":@"PullFile",@"FromId":fromId,@"ToId":toId,@"FileName":fileName,@"MsgId":msgId,@"FileOwner":fileOwer,@"FileFrom":fileFrom};
-    [SocketMessageUtil sendVersion1WithParams:params];
+    NSDictionary *params = @{@"Action":@"PullFile",@"FromId":fromId,@"ToId":toId,@"FileName":fileName?:@"",@"FilePath":filePath?:@"",@"MsgId":msgId,@"FileOwner":fileOwer,@"FileFrom":fileFrom};
+    [SocketMessageUtil sendVersion5WithParams:params];
 }
 
 #pragma mark -注册小米推送 邦定regid
@@ -199,7 +199,7 @@
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_PullFileList,@"UserId":UserId?:@"",@"MsgStartId":MsgStartId?:@"",@"MsgNum":MsgNum?:@"",@"Category":Category?:@"",@"FileType":FileType?:@""};
-    [SocketMessageUtil sendVersion2WithParams:params];
+    [SocketMessageUtil sendVersion5WithParams:params];
 }
 
 #pragma mark - 上传文件请求
@@ -226,12 +226,12 @@
 }
 
 #pragma mark - 删除文件
-+ (void)sendDelFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName showHud:(BOOL)showHud {
++ (void)sendDelFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName filePath:(NSString *) filePath showHud:(BOOL)showHud {
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_DelFile,@"UserId":UserId?:@"",@"FileName":FileName?:@""};
-    [SocketMessageUtil sendVersion2WithParams:params];
+    NSDictionary *params = @{@"Action":Action_DelFile,@"UserId":UserId?:@"",@"FileName":FileName?:@"",@"FilePath":filePath?:@""};
+    [SocketMessageUtil sendVersion5WithParams:params];
 }
 
 #pragma mark - 拉取可分享文件好友列表
@@ -299,9 +299,9 @@
 }
 
 #pragma mark -转发
-+ (void) sendFileForwardMsgid:(NSString *) msgid toid:(NSString *) toid fileName:(NSString *) fileName filekey:(NSString *) filekey fileInfo:(NSString *) fileInfo
++ (void) sendFileForwardMsgid:(NSString *) msgid toid:(NSString *) toid fileName:(NSString *) fileName filePath:(NSString *) filePath filekey:(NSString *) filekey fileInfo:(NSString *) fileInfo
 {
-    NSDictionary *params = @{@"Action":Action_FileForward,@"MsgId":msgid?:@"",@"FromId":[UserConfig getShareObject].userId?:@"",@"ToId":toid,@"FileName":fileName?:@"",@"FileKey":filekey?:@"",@"FileInfo":fileInfo?:@""};
+    NSDictionary *params = @{@"Action":Action_FileForward,@"MsgId":msgid?:@"",@"FromId":[UserConfig getShareObject].userId?:@"",@"ToId":toid,@"FileName":fileName?:@"",@"FilePath":filePath?:@"",@"FileKey":filekey?:@"",@"FileInfo":fileInfo?:@""};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 
@@ -388,7 +388,7 @@
 {
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum,@"MsgStartId":msgStartId};
-    [SocketMessageUtil sendVersion4WithParams:params];
+    [SocketMessageUtil sendVersion5WithParams:params];
 }
 #pragma mark ---群组发送文件成功
 + (void) sendGroupFilePretreatmentWithGID:(NSString *) gid fileName:(NSString *) fileName fileSize:(NSNumber *) fileSize fileType:(NSNumber *) fileType fileMD5:(NSString *) fileMd5 fileInfo:(NSString *) fileInfo fileId:(NSString *) fileId

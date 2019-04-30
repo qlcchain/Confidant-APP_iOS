@@ -169,7 +169,7 @@
             data.isDown = YES;
             if ([SystemUtil isSocketConnect]) {
                 @weakify_self
-                [RequestService downFileWithBaseURLStr:data.filePath friendid:friendID progressBlock:^(CGFloat progress) {
+                [RequestService downFileWithBaseURLStr:data.filePath fileName:data.fileName friendid:friendID progressBlock:^(CGFloat progress) {
                     
                 } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
                     data.isDown = NO;
@@ -267,9 +267,9 @@
                 }];
             } else {
                 if (data.isGroup) {
-                    [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
+                    [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] filePath:data.filePath msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
                 } else {
-                     [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"2" fileFrom:@"1"];
+                    [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] filePath:data.filePath msgId:data.messageId fileOwer:@"2" fileFrom:@"1"];
                 }
                
             }
@@ -302,7 +302,6 @@
     }
     
     NSString *filePath = [[SystemUtil getBaseFilePath:data.ToId] stringByAppendingPathComponent:data.fileName];
-    
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:filePath];
         // 当图片正在下载时不能删子除路径
@@ -337,7 +336,7 @@
             data.isDown = YES;
             if ([SystemUtil isSocketConnect]) {
                 @weakify_self
-                [RequestService downFileWithBaseURLStr:data.filePath friendid:data.ToId progressBlock:^(CGFloat progress) {
+                [RequestService downFileWithBaseURLStr:data.filePath fileName:data.fileName friendid:data.ToId progressBlock:^(CGFloat progress) {
                     
                 } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
                      data.isDown = NO;
@@ -427,9 +426,9 @@
                 }];
             } else {
                 if (data.isGroup) {
-                    [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
+                    [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] filePath:data.filePath msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
                 } else {
-                     [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"1" fileFrom:@"1"];
+                    [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] filePath:data.filePath msgId:data.messageId fileOwer:@"1" fileFrom:@"1"];
                 }
                
             }

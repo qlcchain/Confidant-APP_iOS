@@ -297,7 +297,7 @@
     return dataTask;
 }
 
-+ (void) downFileWithBaseURLStr:(NSString *) ULRString friendid:(NSString *) friendid
++ (void) downFileWithBaseURLStr:(NSString *) ULRString fileName:(NSString *) fileName friendid:(NSString *) friendid
                   progressBlock:(void(^)(CGFloat progress)) progressBlock
                         success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
                                           failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure
@@ -307,8 +307,7 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     /* 下载路径 */
     NSString *path = [SystemUtil getBaseFilePath:friendid];
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:url.lastPathComponent];
-    NSString *filePath = [path stringByAppendingPathComponent:fileName];
+    NSString *filePath = [path stringByAppendingPathComponent:fileName?:@""];
     if ([SystemUtil filePathisExist:filePath]) {
         [SystemUtil removeDocmentFilePath:filePath];
     }
@@ -323,7 +322,7 @@
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         if (!error) {
             if (success) {
-                NSData *imgData = [NSData dataWithContentsOfURL:filePath];
+               // NSData *imgData = [NSData dataWithContentsOfURL:filePath];
                 success(downloadTask,filePath.lastPathComponent);
             }
         } else {

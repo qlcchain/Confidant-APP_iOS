@@ -142,8 +142,8 @@ typedef enum : NSUInteger {
 }
 
 - (void)refreshFileName {
-    NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+   
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:self.fileListM.FileName?:@""]?:@"";
     _nameLab.text = fileName;
 }
 
@@ -178,14 +178,14 @@ typedef enum : NSUInteger {
         [weakSelf deleteFileWithModel:model];
     }];
     
-    NSString *fileNameBase58 = model.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+   
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:self.fileListM.FileName?:@""]?:@"";
     [view showWithFileName:fileName fileType:model.FileType];
 }
 
 #pragma mark -删除文件
 - (void)deleteFileWithModel:(FileListModel *)model {
-    [SendRequestUtil sendDelFileWithUserId:[UserConfig getShareObject].userId FileName:model.FileName showHud:YES];
+    [SendRequestUtil sendDelFileWithUserId:[UserConfig getShareObject].userId FileName:model.FileName filePath:model.FilePath showHud:YES];
 }
 
 - (void)otherApplicationOpen:(NSURL *)fileURL {
@@ -309,8 +309,7 @@ typedef enum : NSUInteger {
 - (void)jumpToFilePreview:(NSString *)filePath{
     FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
     vc.filePath = filePath;
-    NSString *fileNameBase58 = self.fileListM.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:self.fileListM.FileName?:@""]?:@"";
     vc.fileName = fileName;
     vc.userKey = _fileListM.UserKey;
     vc.fileListM = _fileListM;
@@ -431,8 +430,8 @@ typedef enum : NSUInteger {
     // 删除成功-保存操作记录
     NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
     NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:_fileListM.FileName.lastPathComponent];
-    [OperationRecordModel saveOrUpdateWithFileType:_fileListM.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:_fileListM.FileName?:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:_fileListM.FileName?:@""];
+    [OperationRecordModel saveOrUpdateWithFileType:_fileListM.FileType operationType:@(2) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:_fileListM.FilePath?:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
     
     [self backAction:nil];
 }
@@ -442,7 +441,7 @@ typedef enum : NSUInteger {
     NSInteger MsgId = [receiveDic[@"params"][@"MsgId"] integerValue];
     NSString *Filename = receiveDic[@"params"][@"Filename"];
     
-    _fileListM.FileName = [_fileListM.FileName stringByReplacingOccurrencesOfString:_fileListM.FileName.lastPathComponent withString:Filename];
+    _fileListM.FileName = Filename;
     [self refreshFileName];
 }
 

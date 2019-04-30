@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
+@property (weak, nonatomic) IBOutlet UIButton *addBtn;
 
 @property (nonatomic ,strong) NSMutableArray *dataArray;
 @property (nonatomic ,strong) NSMutableArray *searchDataArray;
@@ -56,6 +57,10 @@
     
     [self addObserve];
     
+    if (_optionType == RemindType) {
+        _addBtn.hidden = YES;
+    }
+    
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
     
@@ -83,7 +88,13 @@
 
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (_optionType == CheckType) {
+        [self leftNavBarItemPressedWithPop:YES];
+    } else {
+         [[NSNotificationCenter defaultCenter] postNotificationName:REMIND_USER_SUCCESS_NOTI object:nil];
+        [self leftNavBarItemPressedWithPop:NO];
+    }
+    
 }
 
 - (IBAction)addAction:(id)sender {
@@ -121,30 +132,35 @@
     
     @weakify_self
     [view setClickBlock:^(GroupMembersModel * _Nonnull model) {
-        if (![model.ToxId isEqualToString:[UserModel getUserModel].userId]) {
-            FriendModel *fModel = [[ChatListDataUtil getShareObject] getFriendWithUserid:model.ToxId];
-            FriendModel *friendModel = [[FriendModel alloc] init];
-            if (!fModel) {
-                friendModel.userId = model.ToxId;
-                friendModel.username = [model.Nickname base64DecodedString];
-                friendModel.signPublicKey = model.UserKey;
-                friendModel.noFriend = YES;
-            } else {
-                friendModel.userId = fModel.userId;
-                friendModel.username = [fModel.username base64DecodedString]?:fModel.username;
-                friendModel.publicKey = fModel.publicKey;
-                friendModel.remarks = [fModel.remarks base64DecodedString]?:fModel.remarks;
-                friendModel.Index = fModel.Index;
-                friendModel.onLineStatu = fModel.onLineStatu;
-                friendModel.signPublicKey = fModel.signPublicKey;
-                friendModel.RouteId = fModel.RouteId;
-                friendModel.RouteName = fModel.RouteName;
-                friendModel.signPublicKey = fModel.publicKey;
-                
+        // 选中@用户
+        if (weakSelf.optionType == RemindType) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:REMIND_USER_SUCCESS_NOTI object:model];
+            [weakSelf leftNavBarItemPressedWithPop:NO];
+        } else {
+            if (![model.ToxId isEqualToString:[UserModel getUserModel].userId]) {
+                FriendModel *fModel = [[ChatListDataUtil getShareObject] getFriendWithUserid:model.ToxId];
+                FriendModel *friendModel = [[FriendModel alloc] init];
+                if (!fModel) {
+                    friendModel.userId = model.ToxId;
+                    friendModel.username = [model.Nickname base64DecodedString];
+                    friendModel.signPublicKey = model.UserKey;
+                    friendModel.noFriend = YES;
+                } else {
+                    friendModel.userId = fModel.userId;
+                    friendModel.username = [fModel.username base64DecodedString]?:fModel.username;
+                    friendModel.publicKey = fModel.publicKey;
+                    friendModel.remarks = [fModel.remarks base64DecodedString]?:fModel.remarks;
+                    friendModel.Index = fModel.Index;
+                    friendModel.onLineStatu = fModel.onLineStatu;
+                    friendModel.signPublicKey = fModel.signPublicKey;
+                    friendModel.RouteId = fModel.RouteId;
+                    friendModel.RouteName = fModel.RouteName;
+                    friendModel.signPublicKey = fModel.publicKey;
+                    
+                }
+                [weakSelf jumpFriendDetailVC:friendModel];
             }
-            [weakSelf jumpFriendDetailVC:friendModel];
         }
-       
     }];
     
     return view;

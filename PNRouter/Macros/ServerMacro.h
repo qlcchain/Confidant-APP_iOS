@@ -21,6 +21,7 @@
 #define APIVERSION2 @"2"
 #define APIVERSION3 @"3"
 #define APIVERSION4 @"4"
+#define APIVERSION5 @"5"
 #define SOCKET_USETDATAVERSION @"1"
 
 #define Server_Data @"data"

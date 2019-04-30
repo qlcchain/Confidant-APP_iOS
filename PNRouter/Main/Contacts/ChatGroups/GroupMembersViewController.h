@@ -8,10 +8,15 @@
 
 #import "PNBaseViewController.h"
 
+typedef enum : NSUInteger {
+    RemindType,
+    CheckType
+} OptionType;
+
 @class GroupInfoModel;
 
 @interface GroupMembersViewController : PNBaseViewController
 
 @property (nonatomic, strong) GroupInfoModel *groupInfoM;
-
+@property (nonatomic , assign) OptionType optionType;
 @end

@@ -336,6 +336,13 @@ static UIColor *InputHexColor(int hexColor){
         [self emojiKeyboardSelectSend];
         return NO;
     }
+    if ([text isEqualToString:@"@"]) {
+        if ([self.delegate respondsToSelector:@selector(inputViewPopRemid)]) {
+            [self.delegate inputViewPopRemid];
+            textView.text = [textView.text stringByAppendingString:@"@"];
+        }
+        return YES;
+    }
     if (range.length == 1 && text.length == 0) {
         return YES;
     } else if (textView.text.length >= 245) {
@@ -389,6 +396,17 @@ static UIColor *InputHexColor(int hexColor){
     self.textView.text = textString;
     [self performSelector:@selector(textBecomeFirstResponder) withObject:self afterDelay:0.7];
 }
+
+- (NSAttributedString *) getTextViewAttributeString
+{
+    return self.textView.attributedText;
+}
+- (void) setTextViewAttributeString:(NSAttributedString *) attributeString
+{
+    self.textView.attributedText = attributeString;
+    [self.textView becomeFirstResponder];
+}
+
 - (void) textBecomeFirstResponder
 {
     [self.textView becomeFirstResponder];

@@ -213,7 +213,7 @@
     data.isDown = YES;
     if ([SystemUtil isSocketConnect]) {
         @weakify_self
-        [RequestService downFileWithBaseURLStr:data.filePath friendid:friendID progressBlock:^(CGFloat progress) {
+        [RequestService downFileWithBaseURLStr:data.filePath fileName:data.fileName friendid:friendID progressBlock:^(CGFloat progress) {
             
         } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
             data.isDown = NO;
@@ -294,9 +294,9 @@
         }];
     } else {
         if (data.isGroup) {
-            [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
+            [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] filePath:data.filePath msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
         } else {
-             [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"2" fileFrom:@"1"];
+            [SendRequestUtil sendToxPullFileWithFromId:data.FromId toid:data.ToId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] filePath:data.filePath msgId:data.messageId fileOwer:@"2" fileFrom:@"1"];
         }
        
     }
@@ -373,7 +373,7 @@
     data.isDown = YES;
     if ([SystemUtil isSocketConnect]) {
         @weakify_self
-        [RequestService downFileWithBaseURLStr:data.filePath friendid:data.ToId progressBlock:^(CGFloat progress) {
+        [RequestService downFileWithBaseURLStr:data.filePath fileName:data.fileName friendid:data.ToId progressBlock:^(CGFloat progress) {
             
         } success:^(NSURLSessionDownloadTask *dataTask , NSString *filePath) {
             
@@ -446,9 +446,9 @@
         }];
     } else {
         if (data.isGroup) {
-             [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
+            [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] filePath:data.filePath msgId:data.messageId fileOwer:@"5" fileFrom:@"1"];
         } else {
-             [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] msgId:data.messageId fileOwer:@"1" fileFrom:@"1"];
+            [SendRequestUtil sendToxPullFileWithFromId:data.ToId toid:data.FromId fileName:[Base58Util Base58EncodeWithCodeName:data.fileName] filePath:data.filePath msgId:data.messageId fileOwer:@"1" fileFrom:@"1"];
         }
        
     }

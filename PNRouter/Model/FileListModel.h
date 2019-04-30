@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSNumber *Timestamp;
 @property (nonatomic ,strong) NSNumber *FileType;
 @property (nonatomic ,strong) NSString *FileName;
+@property (nonatomic ,strong) NSString *FilePath;
 @property (nonatomic ,strong) NSString *FileMD5;
 @property (nonatomic ,strong) NSString *FileInfo;
 @property (nonatomic ,strong) NSNumber *FileSize;

@@ -637,11 +637,10 @@
     if (!isClickLogin) {
         return;
     }
-    
-    
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
+        
         NSString *userid = receiveDic[@"params"][@"UserId"];
         NSString *userSn = receiveDic[@"params"][@"UserSn"];
         NSString *hashid = receiveDic[@"params"][@"Index"];

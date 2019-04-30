@@ -16,6 +16,7 @@ class Base58Util: NSObject {
     }
     
    @objc static func Base58Decode(codeName:String) -> String {
+        
         let codeData = Base58.decode(codeName) ?? Data()
         return String(data: codeData, encoding: String.Encoding.utf8) ?? ""
 //        var codeData = Data()

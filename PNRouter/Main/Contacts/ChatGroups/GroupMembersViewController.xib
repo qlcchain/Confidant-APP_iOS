@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GroupMembersViewController">
             <connections>
+                <outlet property="addBtn" destination="HXo-HV-ykj" id="nHI-9M-mws"/>
                 <outlet property="searchBackView" destination="aIL-eR-epz" id="u3S-YR-O2E"/>
                 <outlet property="searchTF" destination="udL-qS-dqd" id="zHG-wk-wDv"/>
                 <outlet property="tableV" destination="S5S-0H-CP1" id="4wV-GU-f7U"/>
@@ -27,7 +28,7 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3zS-1a-6XN">
-                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                            <rect key="frame" x="3" y="0.0" width="44" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="8Lj-Ri-Dp0"/>
                                 <constraint firstAttribute="width" constant="44" id="d3E-48-jEU"/>
@@ -47,7 +48,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HXo-HV-ykj">
-                            <rect key="frame" x="331" y="0.0" width="44" height="44"/>
+                            <rect key="frame" x="328" y="0.0" width="44" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="JFa-4w-W49"/>
                                 <constraint firstAttribute="width" constant="44" id="OT4-0d-IXU"/>
@@ -68,8 +69,8 @@
                         <constraint firstItem="3zS-1a-6XN" firstAttribute="centerY" secondItem="cCw-xW-irc" secondAttribute="centerY" id="NAd-Mm-hDG"/>
                         <constraint firstItem="uO6-bb-aso" firstAttribute="centerX" secondItem="cCw-xW-irc" secondAttribute="centerX" id="Qen-tK-UCP"/>
                         <constraint firstItem="HXo-HV-ykj" firstAttribute="centerY" secondItem="cCw-xW-irc" secondAttribute="centerY" id="l6u-vQ-h2X"/>
-                        <constraint firstAttribute="trailing" secondItem="HXo-HV-ykj" secondAttribute="trailing" id="sTq-Ve-0yJ"/>
-                        <constraint firstItem="3zS-1a-6XN" firstAttribute="leading" secondItem="cCw-xW-irc" secondAttribute="leading" id="zZI-jK-A32"/>
+                        <constraint firstAttribute="trailing" secondItem="HXo-HV-ykj" secondAttribute="trailing" constant="3" id="sTq-Ve-0yJ"/>
+                        <constraint firstItem="3zS-1a-6XN" firstAttribute="leading" secondItem="cCw-xW-irc" secondAttribute="leading" constant="3" id="zZI-jK-A32"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhQ-Er-rtn">

@@ -20,7 +20,7 @@
 
 - (void) setFileModel:(FileListModel *) model
 {
-     NSString *lastPath = model.FileName.lastPathComponent;
+    NSString *lastPath = model.FileName?:@"";
     _lblFileName.text = [Base58Util Base58DecodeWithCodeName:lastPath];
     _lblFileSize.text = [SystemUtil transformedValue:[model.FileSize floatValue]];
     

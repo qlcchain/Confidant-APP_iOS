@@ -15,8 +15,7 @@
 @implementation FileRenameHelper
 
 + (void)showRenameViewWithModel:(FileListModel *)model vc:(PNBaseViewController *)vc {
-    NSString *fileNameBase58 = model.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:model.FileName]?:@"";
     NSString *title = @"Rename the File";
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
     NSMutableAttributedString *titleAttr = [[NSMutableAttributedString alloc] initWithString:title];

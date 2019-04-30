@@ -15,8 +15,9 @@
 #import "AccountCodeViewController.h"
 #import "LogOutCell.h"
 #import "RouterModel.h"
-
+#import "TermsViewController.h"
 #define Screen_Lock_Str @"Screen Lock"
+#define Terms_Policy @"Terms & Privacy Policy"
 #define Log_Out_Str @"Log Out"
 
 @interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -33,7 +34,7 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:Screen_Lock_Str,Log_Out_Str, nil];
+        _dataArray = [NSMutableArray arrayWithObjects:Screen_Lock_Str,Terms_Policy,Log_Out_Str,nil];
     }
     return _dataArray;
 }
@@ -128,36 +129,12 @@
         };
         
         return cell;
-    } else {
+    } else if ([title isEqualToString:Terms_Policy]){
         MyCell *cell = [tableView dequeueReusableCellWithIdentifier:MyCellReuse];
         cell.iconWidth.constant = 0;
         cell.iconleftV.constant = 0;
+        cell.subBtn.hidden = YES;
         cell.lblContent.text = title;
-        if (indexPath.row == 0) {
-            cell.lblSubContent.hidden = YES;
-            cell.subBtn.hidden = NO;
-            [cell.subBtn setImage:[UIImage imageNamed:@"icon_code"] forState:UIControlStateNormal];
-        }
-        
-        /*else if (indexPath.row == 1) {
-            cell.lblSubContent.hidden = NO;
-            cell.subBtn.hidden = YES;
-            if ([SystemUtil isSocketConnect]) {
-                if ([SocketUtil.shareInstance getSocketConnectStatus] == socketConnectStatusConnected) {
-                    cell.lblSubContent.text = @"OnLine";
-                } else {
-                    cell.lblSubContent.text = @"OffLine";
-                }
-            } else {
-                OCTToxConnectionStatus connectStatus = [AppD.manager.user connectionStatus];
-                if (connectStatus > 0) {
-                    cell.lblSubContent.text = @"OnLine";
-                } else {
-                    cell.lblSubContent.text = @"OffLine";
-                }
-            }
-        }*/
-        
         return cell;
     }
     
@@ -170,6 +147,11 @@
 //        AccountCodeViewController *vc = [[AccountCodeViewController alloc] init];
 //        [self.navigationController pushViewController:vc animated:YES];
 //    }
+    NSString *title = self.dataArray[indexPath.row];
+    if ([title isEqualToString:Terms_Policy]) {
+        TermsViewController *vc = [[TermsViewController alloc] init];
+        [self presentModalVC:vc animated:YES];
+    }
 }
 
 @end

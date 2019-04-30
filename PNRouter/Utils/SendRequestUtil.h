@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendUpdateWithNickName:(NSString *) nickName;
 + (void) sendLogOut;
 + (void) sendToxSendFileWithParames:(NSDictionary *) parames;
-+ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName msgId:(NSString *) msgId fileOwer:(NSString *) fileOwer fileFrom:(NSString *) fileFrom;
++ (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toId fileName:(NSString *) fileName filePath:(NSString *) filePath msgId:(NSString *) msgId fileOwer:(NSString *) fileOwer fileFrom:(NSString *) fileFrom;
 + (void) sendRegidReqeust;
 #pragma mark -添加好友备注
 + (void) sendAddFriendNickName:(NSString *) nickName friendId:(NSString *) friendId;
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendPullFileListWithUserId:(NSString *)UserId MsgStartId:(NSNumber *)MsgStartId MsgNum:(NSNumber *)MsgNum Category:(NSNumber *)Category FileType:(NSNumber *)FileType showHud:(BOOL)showHud;
 + (void)sendUploadFileReqWithUserId:(NSString *)UserId FileName:(NSString *)FileName FileSize:(NSNumber *)FileSize FileType:(NSNumber *)FileType showHud:(BOOL)showHud fetchParam:(void(^)(NSDictionary *dic))paramB;
 + (void)sendUploadFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName FileMD5:(NSString *)FileMD5 FileSize:(NSNumber *)FileSize FileType:(NSNumber *)FileType UserKey:(NSString *)UserKey fileInfo:(NSString *) fileInfo showHud:(BOOL)showHud;
-+ (void)sendDelFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName showHud:(BOOL)showHud;
++ (void)sendDelFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName filePath:(NSString *) filePath showHud:(BOOL)showHud;
 + (void)sendPullSharedFriendWithUserId:(NSString *)UserId showHud:(BOOL)showHud;
 + (void)sendShareFileWithFromId:(NSString *)FromId ToId:(NSString *)ToId FileName:(NSString *)FileName DstKey:(NSString *)DstKey showHud:(BOOL)showHud;
 
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendRebootWithShowHud:(BOOL)showHud;
 + (void)sendFileRenameWithMsgId:(NSNumber *)MsgId Filename:(NSString *)Filename Rename:(NSString *)Rename showHud:(BOOL)showHud;
 // 文件转发
-+ (void) sendFileForwardMsgid:(NSString *) msgid toid:(NSString *) toid fileName:(NSString *) fileName filekey:(NSString *) filekey fileInfo:(NSString *) fileInfo;
++ (void) sendFileForwardMsgid:(NSString *) msgid toid:(NSString *) toid fileName:(NSString *) fileName filePath:(NSString *) filePath filekey:(NSString *) filekey fileInfo:(NSString *) fileInfo;
 
 + (void)sendUploadAvatarWithFileName:(NSString *)FileName FileMd5:(NSString *)FileMd5 showHud:(BOOL)showHud;
 + (void)sendUpdateAvatarWithFid:(NSString *)Fid Md5:(NSString *)Md5 showHud:(BOOL)showHud;

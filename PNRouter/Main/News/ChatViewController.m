@@ -285,7 +285,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(_msgStartId)]; // 从这个消息号往前（不包含该消息），为0表示默认从最新的消息回溯
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
     NSDictionary *params = @{@"Action":Action_PullMsg,@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum};
-    [SocketMessageUtil sendVersion3WithParams:params];
+    [SocketMessageUtil sendVersion5WithParams:params];
 }
 
 #pragma mark -初始化聊天界面
@@ -310,7 +310,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     self.msginputView = input;
     [self.view addSubview:input];
     
-
 }
 #pragma mark ChatListProtocol
 
@@ -928,6 +927,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
 }
+
 
 // 输入框输出文字
 - (void)inputViewPopSttring:(NSString *)string {

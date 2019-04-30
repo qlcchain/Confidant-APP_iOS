@@ -71,9 +71,8 @@
                        failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure
                         downloadTaskB:(void (^)(NSURLSessionDownloadTask *downloadTask))downloadTaskB
 {
-    NSString *filePath = fileModel.FileName;
-    NSString *fileNameBase58 = fileModel.FileName.lastPathComponent;
-    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
+    NSString *filePath = fileModel.FilePath;
+    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileModel.FileName?:@""]?:@"";
     NSString *downloadFilePath = [SystemUtil getTempDownloadFilePath:fileName];
     
     __block FileData *fileDataModel = nil;
@@ -142,8 +141,8 @@
                     // 下载成功-保存操作记录
                     NSInteger timestamp = [NSDate getTimestampFromDate:[NSDate date]];
                     NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(timestamp)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
-                    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileModel.FileName.lastPathComponent];
-                    [OperationRecordModel saveOrUpdateWithFileType:fileModel.FileType operationType:@(1) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:fileModel.FileName?:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
+                    NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileModel.FileName?:@""];
+                    [OperationRecordModel saveOrUpdateWithFileType:fileModel.FileType operationType:@(1) operationTime:operationTime operationFrom:[UserConfig getShareObject].userName operationTo:@"" fileName:fileName routerPath:fileModel.FilePath?:@"" localPath:@"" userId:[UserConfig getShareObject].userId];
                     
                     [weakSelf.taskArr removeObject:fileDataModel];
                     NSLog(@"下载列表：%@",weakSelf.taskArr);
@@ -307,8 +306,8 @@
 
 - (void) toxDownFileModel:(FileListModel *) fileModel
 {
-    NSString *filePath = fileModel.FileName;
-    NSString *fileNameBase58 = fileModel.FileName.lastPathComponent;
+    NSString *filePath = fileModel.FilePath;
+    NSString *fileNameBase58 = fileModel.FileName?:@"";
     NSString *fileName = [Base58Util Base58DecodeWithCodeName:fileNameBase58]?:@"";
     
     [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(fileModel.MsgId)] complete:^(NSArray * _Nullable array) {
@@ -343,7 +342,7 @@
         
         NSString *fileOwer = [NSString stringWithFormat:@"%d",fileModel.FileFrom];
         self->isTaskFile = YES;
-        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileModel.FileName.lastPathComponent msgId:[NSString stringWithFormat:@"%@",fileModel.MsgId ] fileOwer:fileOwer fileFrom:@"2"];
+        [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:fileModel.FileName filePath:fileModel.FilePath msgId:[NSString stringWithFormat:@"%@",fileModel.MsgId ] fileOwer:fileOwer fileFrom:@"2"];
     }];
     
    
@@ -381,7 +380,7 @@
                 
                 NSString *fileOwer = [NSString stringWithFormat:@"%d",fileModel.fileFrom];
                 self->isTaskFile = YES;
-                [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:fileName] msgId:[NSString stringWithFormat:@"%d",fileModel.msgId ] fileOwer:fileOwer fileFrom:@"2"];
+                [SendRequestUtil sendToxPullFileWithFromId:[UserConfig getShareObject].userId toid:[UserConfig getShareObject].userId fileName:[Base58Util Base58EncodeWithCodeName:fileName] filePath:filePath msgId:[NSString stringWithFormat:@"%d",fileModel.msgId ] fileOwer:fileOwer fileFrom:@"2"];
                 
             }
             
