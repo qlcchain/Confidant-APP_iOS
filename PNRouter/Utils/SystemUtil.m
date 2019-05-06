@@ -552,4 +552,11 @@
     [timesDic setObject:@(fileTime) forKey:fileName];
     [timesDic writeToFile:timePath atomically:YES];
 }
++ (NSArray<NSTextCheckingResult *> *)findAllAtWithString:(NSString *) textString
+{
+    // 找到文本中所有的@
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kATRegular options:NSRegularExpressionCaseInsensitive error:nil];
+    NSArray *matches = [regex matchesInString:textString options:NSMatchingReportProgress range:NSMakeRange(0, [textString length])];
+    return matches;
+}
 @end

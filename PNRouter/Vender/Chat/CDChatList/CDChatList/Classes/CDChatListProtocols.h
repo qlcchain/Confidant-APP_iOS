@@ -226,6 +226,12 @@ typedef NSArray<CDChatMessage>* CDChatMessageArray;
  点击图像
  */
 -(void)clickHeadWithMessage:(CDChatMessage) clickMessage;
+
+/**
+ 长按图像
+ */
+-(void) longPressHeadWithMessage:(CDChatMessage) clickMessage;
+
 @optional
 /**
  消息中的点击事件

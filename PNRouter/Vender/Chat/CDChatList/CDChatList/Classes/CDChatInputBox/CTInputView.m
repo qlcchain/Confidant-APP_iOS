@@ -11,6 +11,9 @@
 #import "AATVoiceHudAlert.h"
 #import "CTInputConfiguration.h"
 #import "AATAudioTool.h"
+#import "SystemUtil.h"
+#import "AtUserModel.h"
+#import "NSString+RegexCategory.h"
 
 @interface EmojiTextAttachment : NSTextAttachment
 @property(strong, nonatomic) NSString *emojiTag;
@@ -336,20 +339,157 @@ static UIColor *InputHexColor(int hexColor){
         [self emojiKeyboardSelectSend];
         return NO;
     }
-    if ([text isEqualToString:@"@"]) {
-        if ([self.delegate respondsToSelector:@selector(inputViewPopRemid)]) {
-            [self.delegate inputViewPopRemid];
-            textView.text = [textView.text stringByAppendingString:@"@"];
+    
+    if (textView.text.length >= 245) {
+        if (range.length == 1 && text.length == 0) {
+            return YES;
         }
-        return YES;
-    }
-    if (range.length == 1 && text.length == 0) {
-        return YES;
-    } else if (textView.text.length >= 245) {
         textView.text = [textView.text substringToIndex:245];
         return NO;
     }
+    
+    if ([text isEqualToString:@"@"]) {
+        if (self.atStrings.count == 5) {
+            [AppD.window showMiddleHint:@"At most five at a time."];
+            return YES;
+        }
+        if (textView.text.length > 0) {
+            NSString *endStr = [textView.text substringWithRange:NSMakeRange(textView.text.length-1, 1)];
+            if ([endStr isValidLettersAndNumbers]) {
+                return YES;
+            }
+        }
+        if ([self.delegate respondsToSelector:@selector(inputViewPopRemid)]) {
+            [self.delegate inputViewPopRemid];
+           // textView.text = [textView.text stringByAppendingString:@"@"];
+        }
+        return YES;
+    }
+//    if (range.length == 1 && text.length == 0) {
+//        return YES;
+//    } else
+    
+    if ([text isEqualToString:@""]) {
+        NSRange selectRange = _textView.selectedRange;
+        if (selectRange.length > 0)
+        {
+            //用户长按选择文本时不处理
+            return YES;
+        }
+        if (self.atStrings.count == 0) {
+            return YES;
+        }
+        // 判断删除的是一个@中间的字符就整体删除
+        NSMutableString *string = [NSMutableString stringWithString:_textView.text];
+        BOOL inAt = NO;
+        NSInteger index = range.location;
+        
+        for (AtUserModel *atModel in self.atStrings) {
+            // 找到所有@位置
+            NSArray *atValues = [self rangeOfSubString:atModel.atName inString:string];
+            
+            for (NSValue *valueRange in atValues) {
+                NSRange matchMange = [valueRange rangeValue];
+                NSRange newRange = NSMakeRange(matchMange.location + 1, matchMange.length - 1);
+                
+                if (NSLocationInRange(range.location, newRange))
+                {
+                    inAt = YES;
+                    index = matchMange.location;
+                    [string replaceCharactersInRange:matchMange withString:@""];
+                    [self.atStrings removeObject:atModel];
+                    break;
+                }
+            }
+            
+            if (inAt) {
+                break;
+            }
+            
+        }
+       // NSArray *matches = [SystemUtil findAllAtWithString:string];
+       
+//        for (NSTextCheckingResult *match in matches)
+//        {
+//            NSRange newRange = NSMakeRange(match.range.location + 1, match.range.length - 1);
+//            if (NSLocationInRange(range.location, newRange))
+//            {
+//                inAt = YES;
+//                index = match.range.location;
+//                [string replaceCharactersInRange:match.range withString:@""];
+//                break;
+//            }
+//        }
+        
+        if (inAt)
+        {
+            _textView.text = string;
+            [_textView textDidChange];
+            _textView.selectedRange = NSMakeRange(index, 0);
+            return NO;
+        }
+    }
     return YES;
+}
+
+- (NSArray*) rangeOfSubString:(NSString*)subStr inString:(NSString*)string {
+    
+    NSMutableArray *rangeArray = [NSMutableArray array];
+    NSString*string1 = [string stringByAppendingString:subStr];
+    NSString *temp;
+    for(int i =0; i < string.length; i++) {
+        temp = [string1 substringWithRange:NSMakeRange(i, subStr.length)];
+        if ([temp isEqualToString:subStr]) {
+             NSRange range = {i,subStr.length};
+             [rangeArray addObject: [NSValue valueWithRange:range]];
+        }
+    }
+     return rangeArray;
+}
+
+
+
+- (void)textViewDidChangeSelection:(UITextView *)textView
+{
+    // 光标不能点落在@词中间
+    NSRange range = _textView.selectedRange;
+    if (range.length > 0)
+    {
+        // 选择文本时可以
+        return;
+    }
+    
+    NSMutableString *string = [NSMutableString stringWithString:_textView.text];
+    for (AtUserModel *atModel in self.atStrings) {
+        NSRange matchMange = [string rangeOfString:atModel.atName];
+        NSRange newRange = NSMakeRange(matchMange.location + 1, matchMange.length - 1);
+        
+        if (NSLocationInRange(range.location, newRange))
+        {
+            _textView.selectedRange = NSMakeRange(matchMange.location + matchMange.length, 0);
+            break;
+        }
+    }
+    
+//    NSArray *matches = [SystemUtil findAllAtWithString:_textView.text];
+//
+//    for (NSTextCheckingResult *match in matches)
+//    {
+//        NSRange newRange = NSMakeRange(match.range.location + 1, match.range.length - 1);
+//        if (NSLocationInRange(range.location, newRange))
+//        {
+//            _textView.selectedRange = NSMakeRange(match.range.location + match.range.length, 0);
+//            break;
+//        }
+//    }
+}
+
+- (NSMutableArray *)atStrings
+{
+    if (!_atStrings) {
+        _atStrings = [NSMutableArray array];
+    }
+    return _atStrings;
 }
 
 #pragma mark 表情 CTEmojiKeyboardDelegare
@@ -390,11 +530,30 @@ static UIColor *InputHexColor(int hexColor){
     NSString *plainStr = [EmojiTextAttachment getPlainString: [self.textView.attributedText copy]];
     return plainStr;
 }
-
+- (NSRange) selectedRange
+{
+    return self.textView.selectedRange;
+}
+- (void) setSelectedRange:(NSRange) range
+{
+    self.textView.selectedRange = range;
+}
+- (void) setTextUnmarkText
+{
+    [self.textView unmarkText];
+}
 - (void) setTextViewString:(NSString *) textString
 {
     self.textView.text = textString;
+  
     [self performSelector:@selector(textBecomeFirstResponder) withObject:self afterDelay:0.7];
+}
+
+- (void) setTextViewString:(NSString *) textString delayTime:(CGFloat) delayTime
+{
+    self.textView.text = textString;
+    
+    [self performSelector:@selector(textBecomeFirstResponder) withObject:self afterDelay:0.5];
 }
 
 - (NSAttributedString *) getTextViewAttributeString
@@ -409,6 +568,7 @@ static UIColor *InputHexColor(int hexColor){
 
 - (void) textBecomeFirstResponder
 {
+    [self.textView textDidChange];
     [self.textView becomeFirstResponder];
 }
 

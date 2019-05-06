@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *fromId;
 @property (nonatomic, strong) NSString *toId;
+@property (nonatomic, strong) NSString *atIds;
 @property (nonatomic, strong) NSString *messageMsg;
 @property (nonatomic, assign) long msgid;
 @property (nonatomic, strong) NSString *toPublicKey;

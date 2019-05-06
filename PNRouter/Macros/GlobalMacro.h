@@ -11,8 +11,10 @@
 
 #if DEBUG
 static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
+static NSString *pushType = @"1";
 #else
 static const DDLogLevel ddLogLevel = DDLogLevelError;
+static NSString *pushType = @"241";
 #endif
 
 

@@ -26,11 +26,16 @@
  https://stackoverflow.com/questions/26928849/error-when-try-becomefirstresponder-call-for-uimenucontroller
  */
 @interface CTInputView : UIView
+@property (nonatomic , strong) NSMutableArray *atStrings;
 @property(nonatomic, weak) id<CTInputViewProtocol>delegate;
 -(void)turnButtonOnAtIndex:(NSInteger)idx;
 - (NSString *) getTextViewString;
 - (void) setTextViewString:(NSString *) textString;
-
+- (void) setTextUnmarkText;
 - (NSAttributedString *) getTextViewAttributeString;
 - (void) setTextViewAttributeString:(NSAttributedString *) attributeString;
+- (BOOL) isFirstResponder;
+- (NSRange) selectedRange;
+- (void) setSelectedRange:(NSRange) range;
+- (void) setTextViewString:(NSString *) textString delayTime:(CGFloat) delayTime;
 @end

@@ -58,7 +58,12 @@
     [self addObserve];
     
     if (_optionType == RemindType) {
-        _addBtn.hidden = YES;
+        if (_groupInfoM.UserType == 0) {
+            [_addBtn setTitle:@"ALL" forState:UIControlStateNormal];
+        } else {
+            _addBtn.hidden = YES;
+        }
+        
     }
     
     _searchBackView.layer.cornerRadius = 3.0f;
@@ -98,7 +103,13 @@
 }
 
 - (IBAction)addAction:(id)sender {
-    [self jumpToAddGroupMember];
+    if (_optionType == RemindType) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:REMIND_USER_SUCCESS_NOTI object:@"ALL"];
+        [self leftNavBarItemPressedWithPop:NO];
+    } else {
+        [self jumpToAddGroupMember];
+    }
+    
 }
 
 #pragma mark - tableviewDataSourceDelegate
@@ -259,8 +270,19 @@
         GroupMembersModel *model2 = obj2;
         return [model1.Type compare:model2.Type];
     }];
+   
     [_dataArray removeAllObjects];
     [_dataArray addObjectsFromArray:arr];
+    if (_optionType == RemindType) {
+        @weakify_self
+        [_dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            GroupMembersModel *model = obj;
+            if ([model.ToxId isEqualToString:[UserModel getUserModel].userId]) {
+                [weakSelf.dataArray removeObject:obj];
+                *stop = YES;
+            }
+        }];
+    }
     [_tableV reloadData];
 }
 

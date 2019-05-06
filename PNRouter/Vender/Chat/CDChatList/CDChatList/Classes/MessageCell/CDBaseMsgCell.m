@@ -108,6 +108,9 @@
     _headImage_left.userInteractionEnabled = YES;
     [_headImage_left addGestureRecognizer:headTapGesture];
     
+    UILongPressGestureRecognizer *headLongGesture= [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(leftheadLongGestureAction:)];
+    [_headImage_left addGestureRecognizer:headLongGesture];
+    
 }
 #pragma mark 初始化右侧消息UI
 -(void)initMessageContent_Right{
@@ -641,5 +644,18 @@
 - (void) leftheadTapGestureAction:(UIGestureRecognizer *) gesture
 {
      [self.tableView.msgDelegate clickHeadWithMessage:self.msgModal];
+}
+- (void) leftheadLongGestureAction:(UIGestureRecognizer *) gesture
+{
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan:
+            if ([self.tableView.msgDelegate respondsToSelector:@selector(longPressHeadWithMessage:)]) {
+                [self.tableView.msgDelegate longPressHeadWithMessage:self.msgModal];
+            }
+            break;
+            
+        default:
+            break;
+    }
 }
 @end

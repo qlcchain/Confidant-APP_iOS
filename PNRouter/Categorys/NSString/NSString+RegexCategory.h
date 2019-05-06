@@ -195,4 +195,7 @@
         firstCannotBeDigtal:(BOOL)firstCannotBeDigtal;
 // 网址
 - (BOOL)isUrlAddress;
+
+// 英文或数字
+- (BOOL) isValidLettersAndNumbers;
 @end

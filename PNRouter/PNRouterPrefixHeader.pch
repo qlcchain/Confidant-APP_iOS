@@ -17,6 +17,9 @@
 #define NSLog(args, ...)
 #endif
 
+#define kATFormat  @"@%@ "
+#define kATRegular @"@[\\u4e00-\\u9fa5\\w\\-\\_]+ "
+
 #ifdef __OBJC__
 
         #import <UIKit/UIKit.h>

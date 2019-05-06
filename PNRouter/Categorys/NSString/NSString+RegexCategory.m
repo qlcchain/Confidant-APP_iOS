@@ -160,6 +160,13 @@
     return [self isValidateByRegex:taxNoRegex];
 }
 
+// 英文或数字
+- (BOOL) isValidLettersAndNumbers
+{
+    NSString *chineseRegex = @"^[a-zA-Z0-9]+$";
+    return [self isValidateByRegex:chineseRegex];
+}
+
 - (BOOL)isValidWithMinLenth:(NSInteger)minLenth
                    maxLenth:(NSInteger)maxLenth
              containChinese:(BOOL)containChinese

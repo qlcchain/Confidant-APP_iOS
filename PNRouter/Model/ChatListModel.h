@@ -7,6 +7,7 @@
 //
 
 #import "BBaseModel.h"
+#import <BGFMDB/BGFMDB.h>
 
 @interface ChatListModel : BBaseModel
 
@@ -14,6 +15,11 @@
 @property (nonatomic ,strong) NSString *myID;
 @property (nonatomic ,strong) NSString *groupID;
 @property (nonatomic ,strong) NSString *groupName;
+@property (nonatomic ,strong) NSString *atIds;
+@property (nonatomic ,strong) NSString *atNames;
+@property (nonatomic ,assign) BOOL isAT;
+@property (nonatomic ,assign) BOOL isATYou;
+@property (nonatomic ,assign) BOOL isOwerClearAtYour;
 @property (nonatomic, strong) NSString *groupAlias;
 @property (nonatomic ,strong) NSString *groupUserkey;
 @property (nonatomic ,strong) NSString *publicKey;

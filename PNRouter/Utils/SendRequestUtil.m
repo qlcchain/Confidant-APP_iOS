@@ -135,7 +135,8 @@
 + (void) sendRegidReqeust
 {
     if (AppD.regId && ![AppD.regId isEmptyString]) {
-         NSDictionary *params = @{@"os":@"1",@"appversion":APP_Version,@"regid":AppD.regId,@"routerid":[RouterConfig getRouterConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
+        
+         NSDictionary *params = @{@"os":pushType,@"appversion":APP_Version,@"regid":AppD.regId,@"routerid":[RouterConfig getRouterConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
        
         [AFHTTPClientV2 requestWithBaseURLStr:PUSH_ONLINE_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
             int retCode = [responseObject[@"Ret"] intValue];

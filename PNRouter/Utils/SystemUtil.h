@@ -54,4 +54,6 @@
 + (void) configureAPPTerminate;
 + (NSString *) getCurrentUserBaseFilePath;
 + (void) saveImageForTtimeWithToid:(NSString *) toid fileName:(NSString *) fileName fileTime:(NSInteger) fileTime;
++ (NSArray<NSTextCheckingResult *> *)findAllAtWithString:(NSString *) textString;
+
 @end

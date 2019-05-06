@@ -73,6 +73,19 @@
                 model1.friendName = model.friendName?:@"";
                 model1.groupName = model.groupName;
                 model1.groupAlias = model.groupAlias;
+                model1.atIds = model.atIds;
+                model1.atNames = model.atNames;
+                if (model1.isATYou) {
+                    if (model.isOwerClearAtYour) {
+                        model1.isATYou = NO;
+                    }
+                } else {
+                    if (model.isATYou) {
+                        model1.isATYou = YES;
+                    }
+                }
+               
+                model1.isAT = model.isAT;
                 model1.isHD = model.isHD;
                 model1.unReadNum = model.isHD?@([model1.unReadNum integerValue] + 1):model1.unReadNum;
                 model1.isDraft = model.isDraft;

@@ -92,6 +92,28 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
     [hud hideAnimated:YES afterDelay:delay];
 }
 
+- (void) showMiddleHint:(NSString *)hint
+{
+    //显示提示信息
+    //    UIView *view = [[UIApplication sharedApplication].delegate window];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self animated:YES];
+    hud.userInteractionEnabled = NO;
+    // Configure for text only and offset down
+    hud.mode = MBProgressHUDModeText;
+    hud.label.text = hint;
+    hud.label.numberOfLines = 0;
+    hud.margin = 10.f;
+    hud.yOffset = -15;
+    hud.removeFromSuperViewOnHide = YES;
+    [self setHUD:hud];
+    CGFloat delay = 2.0f;
+    NSInteger textLegth = [NSString getNotNullValue:hint].length;
+    if (textLegth >= 8) {
+        delay = 3.0f;
+    }
+    [hud hideAnimated:YES afterDelay:delay];
+}
+
 - (void)showHint:(NSString *)hint yOffset:(float)yOffset {
     //显示提示信息
     UIView *view = [[UIApplication sharedApplication].delegate window];

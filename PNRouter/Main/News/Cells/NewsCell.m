@@ -58,27 +58,36 @@
         UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:model.friendName]];
         _headImgView.image = defaultImg;
     }
-    
-    if (model.isDraft) {
-        NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[Drafts] %@",model.draftMessage?:@""]];
-        NSRange redRange = NSMakeRange([[noteStr string] rangeOfString:@"[Drafts]"].location, [[noteStr string] rangeOfString:@"[Drafts]"].length);
+    if (model.isATYou) {
+        
+        NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[You were mentioned] %@:%@",model.friendName?:@"",model.lastMessage?:@""]];
+        NSRange redRange = NSMakeRange([[noteStr string] rangeOfString:@"[You were mentioned]"].location, [[noteStr string] rangeOfString:@"[You were mentioned]"].length);
         //需要设置的位置
         [noteStr addAttribute:NSForegroundColorAttributeName value:RGB(239, 59, 48) range:redRange];
         //设置颜色
         [_lblContent setAttributedText:noteStr];
     } else {
-        if (model.isGroup) {
-            if (model.friendName && model.friendName.length>0) {
-                _lblContent.text =[NSString stringWithFormat:@"%@: %@",model.friendName,model.lastMessage?:@""];
+        
+        if (model.isDraft) {
+            NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[Drafts] %@",model.draftMessage?:@""]];
+            NSRange redRange = NSMakeRange([[noteStr string] rangeOfString:@"[Drafts]"].location, [[noteStr string] rangeOfString:@"[Drafts]"].length);
+            //需要设置的位置
+            [noteStr addAttribute:NSForegroundColorAttributeName value:RGB(239, 59, 48) range:redRange];
+            //设置颜色
+            [_lblContent setAttributedText:noteStr];
+        } else {
+            if (model.isGroup) {
+                if (model.friendName && model.friendName.length>0) {
+                    _lblContent.text = [NSString stringWithFormat:@"%@: %@",model.friendName,model.lastMessage?:@""];
+                } else {
+                    _lblContent.text = model.lastMessage?:@"";
+                }
             } else {
                 _lblContent.text = model.lastMessage?:@"";
             }
-        } else {
-            _lblContent.text = model.lastMessage?:@"";
+            
         }
-        
     }
-   
     _lblTime.text = [model.chatTime minuteDescription];
     if (model.isGroup) {
 //        _lblName.text =  model.groupName;

@@ -67,6 +67,7 @@
 #import "RouterModel.h"
 #import "CircleOutUtil.h"
 #import "GroupMembersModel.h"
+#import "AtUserModel.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -82,6 +83,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 {
     BOOL isGroupChatViewController;
     YBImageBrowser *browser;
+    NSInteger insertIndex;
 }
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (weak, nonatomic) IBOutlet UIView *tabBackView;
@@ -96,6 +98,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property (nonatomic ,strong) GroupInfoModel *groupModel;
 
 @property (nonatomic ,strong) NSMutableArray *actionArr;
+@property (nonatomic ,strong) NSMutableArray *atModels;
 @end
 
 @implementation GroupChatViewController
@@ -108,7 +111,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
     return _actionArr;
 }
-
+- (NSMutableArray *)atModels
+{
+    if (!_atModels) {
+        _atModels = [NSMutableArray array];
+    }
+    return _atModels;
+}
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
@@ -136,18 +145,39 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (IBAction)backAction:(id)sender {
     
     NSString *textString = [self.msginputView getTextViewString];
-    textString = [NSString trimWhitespaceAndNewline:textString];
+    textString = [NSString trimNewline:textString];
+    
     if (![[NSString getNotNullValue:textString] isEmptyString]) {
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
         chatModel.myID = [UserModel getUserModel].userId;
         chatModel.groupName = _lblNavTitle.text;
+        chatModel.groupUserkey = self.groupModel.UserKey;
         chatModel.isGroup = YES;
         chatModel.groupID = self.groupModel.GId;
         chatModel.isHD = NO;
         // 解密消息
         chatModel.isDraft = YES;
         chatModel.draftMessage = textString;
+        
+        if (self.msginputView.atStrings.count > 0) {
+            NSString *atIds = @"";
+            NSString *atNames = @"";
+            for (int i = 0; i<self.msginputView.atStrings.count; i++) {
+                AtUserModel *atModel = self.msginputView.atStrings[i];
+                atIds = [atIds stringByAppendingString:atModel.userId];
+                atNames = [atNames stringByAppendingString:atModel.atName];
+                if (i != self.msginputView.atStrings.count-1) {
+                    atIds = [atIds stringByAppendingString:@","];
+                    atNames = [atNames stringByAppendingString:@","];
+                }
+            }
+            chatModel.isAT = YES;
+            chatModel.atNames = atNames;
+            chatModel.atIds = atIds;
+            // 清除所有@
+            [self.msginputView.atStrings removeAllObjects];
+        }
         [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
     } else {
         NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(self.groupModel.GId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId)]];
@@ -156,6 +186,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             if (chatModel.isDraft) {
                 chatModel.isDraft = NO;
                 chatModel.draftMessage = @"";
+                // 清除at消息
+                chatModel.isAT = NO;
+                chatModel.atNames = @"";
+                chatModel.atIds = @"";
+                
                 [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
             }
         }
@@ -187,8 +222,25 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(self.groupModel.GId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId)]];
     if (friends && friends.count > 0) {
         ChatListModel *chatModel = friends[0];
+        if (chatModel.isATYou) {
+            chatModel.isATYou = NO;
+            chatModel.isOwerClearAtYour = YES;
+            [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+        }
         if (chatModel.isDraft) {
             [self.msginputView setTextViewString:chatModel.draftMessage];
+            if (chatModel.isAT) {
+                NSArray *atIds = [chatModel.atIds componentsSeparatedByString:@","];
+                NSArray *atNames = [chatModel.atNames componentsSeparatedByString:@","];
+                if (atIds && atIds.count > 0) {
+                    for (int i = 0; i<atIds.count; i++) {
+                        AtUserModel *atModel = [[AtUserModel alloc] init];
+                        atModel.userId = atIds[i];
+                        atModel.atName = atNames[i];
+                        [self.msginputView.atStrings addObject:atModel];
+                    }
+                }
+            }
         }
     }
 }
@@ -501,6 +553,27 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 
+#pragma mark ---长按头像@
+- (void) longPressHeadWithMessage:(CDChatMessage)clickMessage
+{
+    insertIndex = [self.msginputView getTextViewString].length;
+    NSString *insertString = [NSString stringWithFormat:kATFormat,clickMessage.userName];
+    NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
+    [string insertString:insertString atIndex:insertIndex];
+    if (string.length > 245) {
+        [self.view showHint:@"The length of the sent content is out of range."];
+        return;
+    }
+    [self.msginputView setTextViewString:string delayTime:0];
+    [self.msginputView setSelectedRange:NSMakeRange(insertIndex + insertString.length, 0)];
+    
+    AtUserModel *atModel = [[AtUserModel alloc] init];
+    atModel.userId = clickMessage.FromId;
+    atModel.userName = clickMessage.userName;
+    atModel.atName = insertString;
+    [self.msginputView.atStrings addObject:atModel];
+}
+
 // 下拉加载更多
 - (void)chatlistLoadMoreMsg:(CDChatMessage)topMessage callback:(void (^)(CDChatMessageArray,BOOL))finnished {
     @weakify_self
@@ -789,6 +862,16 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 // 输入@
 - (void) inputViewPopRemid
 {
+    // 去选择@的人
+    [self.msginputView setTextUnmarkText];
+    insertIndex = self.msginputView.getTextViewString.length;
+    
+    if (self.msginputView.isFirstResponder)
+    {
+        insertIndex  = self.msginputView.selectedRange.location + self.msginputView.selectedRange.length;
+       // [self.msginputView resignFirstResponder];
+    }
+    
     GroupMembersViewController *vc  = [[GroupMembersViewController alloc] init];
     vc.groupInfoM = self.groupModel;
     vc.optionType = RemindType;
@@ -797,11 +880,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 // 输入框输出文字
 - (void)inputViewPopSttring:(NSString *)string {
-    // 去掉前后空格和换行符
-    string = [NSString trimWhitespaceAndNewline:string];
+    // 去掉前后换行符
+    string = [NSString trimNewline:string];
     
     if (string && ![string isEmptyString]) {
-      
+        
         CDMessageModel *model = [[CDMessageModel alloc] init];
         model.FromId = [UserConfig getShareObject].userId;
         model.ToId = self.groupModel.GId;
@@ -826,13 +909,30 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
         // aes加密
         NSString *enMsg = aesEncryptString(string, datakey);
+        NSString *points = @"";
+        if (self.msginputView.atStrings.count > 0) {
+            for (int i = 0; i<self.msginputView.atStrings.count; i++) {
+                AtUserModel *atModel = self.msginputView.atStrings[i];
+                if ([atModel.userId isEqualToString:@"all"]) {
+                    points = atModel.userId;
+                    break;
+                }
+                points = [points stringByAppendingString:atModel.userId];
+                if (i != self.msginputView.atStrings.count-1) {
+                    points = [points stringByAppendingString:@","];
+                }
+            }
+            // 清除所有@
+            [self.msginputView.atStrings removeAllObjects];
+        }
         // 发送消息
-        [SendRequestUtil sendGroupMessageWithGid:self.groupModel.GId point:@"" msg:enMsg msgid:model.messageId];
+        [SendRequestUtil sendGroupMessageWithGid:self.groupModel.GId point:points msg:enMsg msgid:model.messageId];
         
         if ([SystemUtil isSocketConnect]) {
             ChatModel *chatModel = [[ChatModel alloc] init];
             chatModel.fromId = model.FromId;
             chatModel.toId = model.ToId;
+            chatModel.atIds = points;
             chatModel.toPublicKey = model.publicKey;
             chatModel.msgType = 0;
             chatModel.msgid = tempMsgid;
@@ -1854,13 +1954,53 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 #pragma mark ---@用户通知
 - (void) remindUserNoti:(NSNotification *)noti {
-    
-    GroupMembersModel *memberModel = noti.object;
-    if (memberModel) {
-        NSString *inputStirng = [self.msginputView getTextViewString];
-        inputStirng = [inputStirng substringToIndex:inputStirng.length-1];
-       // inputStirng = [inputStirng stringByAppendingString:[NSString stringWithFormat:@"%@ ",[memberModel.showName base64DecodedString]]];
-       // [self.msginputView setTextViewString:inputStirng];
+   
+    id objectValue = noti.object;
+    if ([objectValue isKindOfClass:[GroupMembersModel class]]) {
+        GroupMembersModel *memberModel = objectValue;
+        if (memberModel) {
+            NSString *insertString = [NSString stringWithFormat:kATFormat,[memberModel.showName base64DecodedString]];
+            
+            NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
+            [string insertString:insertString atIndex:insertIndex];
+            if (string.length > 245) {
+                [self.view showHint:@"The length of the sent content is out of range."];
+                return;
+            }
+            [self.msginputView setTextViewString:string delayTime:0];
+            [self.msginputView setSelectedRange:NSMakeRange(insertIndex + insertString.length, 0)];
+            
+            AtUserModel *atModel = [[AtUserModel alloc] init];
+            atModel.userId = memberModel.ToxId;
+            atModel.userName = [memberModel.showName base64DecodedString];
+            atModel.atName = insertString;
+            [self.msginputView.atStrings addObject:atModel];
+            
+            // NSString *inputStirng = [self.msginputView getTextViewString];
+            // inputStirng = [inputStirng substringToIndex:inputStirng.length-1];
+            // inputStirng = [inputStirng stringByAppendingString:[NSString stringWithFormat:@"%@ ",[memberModel.showName base64DecodedString]]];
+            // [self.msginputView setTextViewString:inputStirng];
+        }
+    } else if ([objectValue isKindOfClass:[NSString class]]) {
+        
+        NSString *insertString = [NSString stringWithFormat:kATFormat,@"All"];
+        NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
+        [string insertString:insertString atIndex:insertIndex];
+        if (string.length > 245) {
+            [self.view showHint:@"The length of the sent content is out of range."];
+            return;
+        }
+        [self.msginputView setTextViewString:string delayTime:0];
+        [self.msginputView setSelectedRange:NSMakeRange(insertIndex + insertString.length, 0)];
+        
+        AtUserModel *atModel = [[AtUserModel alloc] init];
+        atModel.userId = @"all";
+        atModel.userName = @"all";
+        atModel.atName = insertString;
+        [self.msginputView.atStrings addObject:atModel];
+        
+    } else {
+        [self.msginputView becomeFirstResponder];
     }
 }
 

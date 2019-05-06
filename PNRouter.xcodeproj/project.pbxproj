@@ -536,6 +536,7 @@
 		73E03B4C21DDF88A005DF993 /* DHTnodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E03B4B21DDF88A005DF993 /* DHTnodes.json */; };
 		73E2FB6E21A7F3FD00DAED52 /* RouterUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E2FB6D21A7F3FD00DAED52 /* RouterUserModel.m */; };
 		73E39B3B2216BEED003CD33B /* RouterDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E39B3A2216BEEC003CD33B /* RouterDetailViewController.xib */; };
+		73E7422A227EC0C4007BA73A /* AtUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E74229227EC0C4007BA73A /* AtUserModel.m */; };
 		73EE8CBE2154E5330048866B /* ChooseContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CBC2154E5330048866B /* ChooseContactViewController.m */; };
 		73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */; };
 		73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CC32159CD980048866B /* ChooseContactCell.m */; };
@@ -1589,6 +1590,8 @@
 		73E2FB6C21A7F3FD00DAED52 /* RouterUserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterUserModel.h; sourceTree = "<group>"; };
 		73E2FB6D21A7F3FD00DAED52 /* RouterUserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterUserModel.m; sourceTree = "<group>"; };
 		73E39B3A2216BEEC003CD33B /* RouterDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RouterDetailViewController.xib; sourceTree = "<group>"; };
+		73E74228227EC0C4007BA73A /* AtUserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AtUserModel.h; sourceTree = "<group>"; };
+		73E74229227EC0C4007BA73A /* AtUserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AtUserModel.m; sourceTree = "<group>"; };
 		73EE8CBB2154E5330048866B /* ChooseContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactViewController.h; sourceTree = "<group>"; };
 		73EE8CBC2154E5330048866B /* ChooseContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactViewController.m; sourceTree = "<group>"; };
 		73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseContactViewController.xib; sourceTree = "<group>"; };
@@ -3005,6 +3008,8 @@
 				5868380B22409E8700B8ACB8 /* GroupMembersModel.m */,
 				58E3A5772243366E00F9D9E7 /* GroupVerifyModel.h */,
 				58E3A5782243366E00F9D9E7 /* GroupVerifyModel.m */,
+				73E74228227EC0C4007BA73A /* AtUserModel.h */,
+				73E74229227EC0C4007BA73A /* AtUserModel.m */,
 			);
 			path = ContactModels;
 			sourceTree = "<group>";
@@ -4159,6 +4164,7 @@
 				732DCEE1223788A300B2A2CA /* AddGroupMenuViewController.m in Sources */,
 				581FDF3621F024160068C120 /* msi.m in Sources */,
 				736257802142143F00D7FD6B /* NSString+Localizable.m in Sources */,
+				73E7422A227EC0C4007BA73A /* AtUserModel.m in Sources */,
 				737883F421ACF2970033A189 /* OCTToxEncryptSave.m in Sources */,
 				737883FE21ACF2970033A189 /* OCTManagerImpl.m in Sources */,
 				580CFE472227B7FD00460B41 /* MLeakedObjectProxy.m in Sources */,

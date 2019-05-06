@@ -1742,7 +1742,7 @@
     NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
     [SocketMessageUtil sendRecevieMessageWithParams4:params tempmsgid:tempmsgid];
     
-    
+    BOOL isAT = NO;
     if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:messageModel.GId])) {
         // 判断时间 间隔10秒 收到好友消息播放系统声音
         NSString *formatDate = [HWUserdefault getObjectWithKey:PLAY_KEY];
@@ -1759,6 +1759,11 @@
             [HWUserdefault updateObject:[format stringFromDate:[NSDate date]] withKey:PLAY_KEY];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:RECEVIED_GROUP_MESSAGE_SUCCESS_NOTI object:messageModel];
+    } else {
+        
+        if (messageModel.Point > 0) {
+            isAT = YES;
+        }
     }
     
     // 添加到chatlist
@@ -1766,6 +1771,7 @@
     chatListModel.myID = [UserConfig getShareObject].userId;
     chatListModel.friendID = messageModel.From;
     chatListModel.isGroup = YES;
+    chatListModel.isATYou = isAT;
     chatListModel.groupID = messageModel.GId;
     chatListModel.groupName = [messageModel.GroupName base64DecodedString]?:messageModel.GroupName;
 //    chatListModel.groupAlias = [messageModel.GroupName base64DecodedString]?:messageModel.GroupName;

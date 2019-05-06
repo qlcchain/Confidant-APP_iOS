@@ -529,6 +529,7 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     if ([selector isEqualToString:@"bindDeviceToken:"]) {
         NSLog(@"regid == %@", data[@"regid"]);
         self.regId = data[@"regid"];
+      //  printf([self.regId UTF8String]);
     }
 }
 

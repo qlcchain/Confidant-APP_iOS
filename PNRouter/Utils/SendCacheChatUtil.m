@@ -189,7 +189,7 @@ const NSInteger timerTime = 10;
         NSString *enMsg = aesEncryptString(model.messageMsg, datakey);
         // 发送消息
         dispatch_async(dispatch_get_main_queue(), ^{
-            [SendRequestUtil sendGroupMessageWithGid:model.toId point:@"" msg:enMsg msgid:[NSString stringWithFormat:@"%ld",model.msgid]];
+            [SendRequestUtil sendGroupMessageWithGid:model.toId point:model.atIds?:@"" msg:enMsg msgid:[NSString stringWithFormat:@"%ld",model.msgid]];
         });
         
     } else {
