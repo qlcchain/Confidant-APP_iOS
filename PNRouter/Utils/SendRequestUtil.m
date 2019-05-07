@@ -149,7 +149,6 @@
             NSLog(@"注册推送失败!!!!!!!!");
         }];
     }
-    
 }
 #pragma mark -添加好友备注
 + (void) sendAddFriendNickName:(NSString *) nickName friendId:(NSString *) friendId
@@ -296,7 +295,7 @@
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_FileRename, @"UserId":userM.userId?:@"", @"MsgId":MsgId, @"Filename":[Base58Util Base58EncodeWithCodeName:Filename], @"Rename":[Base58Util Base58EncodeWithCodeName:Rename]};
-    [SocketMessageUtil sendVersion4WithParams:params];
+    [SocketMessageUtil sendVersion5WithParams:params];
 }
 
 #pragma mark -转发

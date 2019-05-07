@@ -556,6 +556,19 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 #pragma mark ---长按头像@
 - (void) longPressHeadWithMessage:(CDChatMessage)clickMessage
 {
+    
+    BOOL isExit = NO;
+    for (AtUserModel *atModel in self.msginputView.atStrings) {
+        if ([clickMessage.FromId isEqualToString:atModel.userId]) {
+            isExit = YES;
+            break;
+        }
+    }
+    if (isExit) {
+       // [self.msginputView becomeFirstResponder];
+        return;
+    }
+    
     insertIndex = [self.msginputView getTextViewString].length;
     NSString *insertString = [NSString stringWithFormat:kATFormat,clickMessage.userName];
     NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
@@ -1959,6 +1972,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if ([objectValue isKindOfClass:[GroupMembersModel class]]) {
         GroupMembersModel *memberModel = objectValue;
         if (memberModel) {
+            BOOL isExit = NO;
+            for (AtUserModel *atModel in self.msginputView.atStrings) {
+                if ([memberModel.ToxId isEqualToString:atModel.userId]) {
+                    isExit = YES;
+                    break;
+                }
+            }
+            if (isExit) {
+                [self.msginputView becomeFirstResponder];
+                return;
+            }
             NSString *insertString = [NSString stringWithFormat:kATFormat,[memberModel.showName base64DecodedString]];
             
             NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
@@ -1982,6 +2006,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             // [self.msginputView setTextViewString:inputStirng];
         }
     } else if ([objectValue isKindOfClass:[NSString class]]) {
+        
+        BOOL isExit = NO;
+        for (AtUserModel *atModel in self.msginputView.atStrings) {
+            if ([@"all" isEqualToString:atModel.userId]) {
+                isExit = YES;
+                break;
+            }
+        }
+        if (isExit) {
+            [self.msginputView becomeFirstResponder];
+            return;
+        }
         
         NSString *insertString = [NSString stringWithFormat:kATFormat,@"All"];
         NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];

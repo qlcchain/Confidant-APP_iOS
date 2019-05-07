@@ -488,16 +488,18 @@ typedef enum : NSUInteger {
     NSDictionary *receiveDic = noti.object;
     NSInteger MsgId = [receiveDic[@"params"][@"MsgId"] integerValue];
     NSString *Filename = receiveDic[@"params"][@"Filename"];
-    
+    __block NSInteger index = 0;
     [_showArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FileListModel *model = obj;
         if ([model.MsgId integerValue] == MsgId) {
+            index = idx;
             //model.FileName = [model.FileName stringByReplacingOccurrencesOfString:model.FileName.lastPathComponent withString:Filename];
             model.FileName = Filename;
             *stop = YES;
         }
     }];
-    [self refreshTable];
+   // [self refreshTable];
+     [_mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)didReceiveMemoryWarning {

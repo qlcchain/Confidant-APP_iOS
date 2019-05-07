@@ -1275,14 +1275,10 @@
 		7330F50C214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddFriendCellTableViewCell.xib; sourceTree = "<group>"; };
 		7330F510214A790400FF4EEC /* FriendModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendModel.h; sourceTree = "<group>"; };
 		7330F511214A790400FF4EEC /* FriendModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendModel.m; sourceTree = "<group>"; };
-		7330F515214B460A00FF4EEC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/NotifactionView.strings"; sourceTree = "<group>"; };
 		7330F516214B460A00FF4EEC /* NotifactionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifactionView.h; sourceTree = "<group>"; };
 		7330F517214B460A00FF4EEC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NotifactionView.strings; sourceTree = "<group>"; };
-		7330F518214B460A00FF4EEC /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/NotifactionView.strings; sourceTree = "<group>"; };
 		7330F51A214B460A00FF4EEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/NotifactionView.xib; sourceTree = "<group>"; };
 		7330F51B214B460A00FF4EEC /* NotifactionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifactionView.m; sourceTree = "<group>"; };
-		7330F51C214B460A00FF4EEC /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/NotifactionView.strings; sourceTree = "<group>"; };
-		7330F51D214B460A00FF4EEC /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/NotifactionView.strings; sourceTree = "<group>"; };
 		7330F522214BF4B500FF4EEC /* SocketAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAlertView.h; sourceTree = "<group>"; };
 		7330F523214BF4B500FF4EEC /* SocketAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketAlertView.m; sourceTree = "<group>"; };
 		7330F525214BF4C000FF4EEC /* SocketAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SocketAlertView.xib; sourceTree = "<group>"; };
@@ -3788,10 +3784,6 @@
 			knownRegions = (
 				en,
 				Base,
-				"zh-Hans",
-				ko,
-				tr,
-				ru,
 			);
 			mainGroup = 7362572F213E8B3200D7FD6B;
 			productRefGroup = 73625739213E8B3200D7FD6B /* Products */;
@@ -4464,11 +4456,7 @@
 		7330F514214B460A00FF4EEC /* NotifactionView.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				7330F515214B460A00FF4EEC /* zh-Hans */,
 				7330F517214B460A00FF4EEC /* en */,
-				7330F518214B460A00FF4EEC /* ko */,
-				7330F51C214B460A00FF4EEC /* tr */,
-				7330F51D214B460A00FF4EEC /* ru */,
 			);
 			name = NotifactionView.strings;
 			sourceTree = "<group>";

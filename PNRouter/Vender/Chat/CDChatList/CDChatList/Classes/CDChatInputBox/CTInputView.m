@@ -350,7 +350,7 @@ static UIColor *InputHexColor(int hexColor){
     
     if ([text isEqualToString:@"@"]) {
         if (self.atStrings.count == 5) {
-            [AppD.window showMiddleHint:@"At most five at a time."];
+            [AppD.window showMiddleHint:@"You can mention up to 5 contacts in the group at once."];
             return YES;
         }
         if (textView.text.length > 0) {

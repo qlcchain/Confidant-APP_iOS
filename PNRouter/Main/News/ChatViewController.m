@@ -177,9 +177,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 //    vc.friendModel = _friendModel;
 //    [self.navigationController pushViewController:vc animated:YES];
     
-    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
-    vc.inputType = DebugLogTypeSystem;
-    [self.navigationController pushViewController:vc animated:YES];
+//    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
+//    vc.inputType = DebugLogTypeSystem;
+//    [self.navigationController pushViewController:vc animated:YES];
     
 
     
