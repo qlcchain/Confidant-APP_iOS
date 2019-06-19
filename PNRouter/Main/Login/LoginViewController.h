@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LoginViewController : PNBaseViewController
 
-@property (nonatomic ,assign) LoginType loginType;
+@property (nonatomic ,assign) LoginType loginType; // 登陆类型
 
 - (instancetype) initWithLoginType:(LoginType) type;
 

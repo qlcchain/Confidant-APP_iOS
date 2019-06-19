@@ -136,7 +136,9 @@
 {
     if (AppD.regId && ![AppD.regId isEmptyString]) {
         
-         NSDictionary *params = @{@"os":pushType,@"appversion":APP_Version,@"regid":AppD.regId,@"routerid":[RouterConfig getRouterConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
+        NSDictionary *params = @{@"os":pushType,@"regtype":@(2),@"appversion":APP_Version,@"regid":AppD.regId,@"routerid":[RouterConfig getRouterConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
+        
+        NSLog(@"parames = %@",params);
        
         [AFHTTPClientV2 requestWithBaseURLStr:PUSH_ONLINE_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
             int retCode = [responseObject[@"Ret"] intValue];
@@ -178,7 +180,7 @@
 #pragma mark - 路由器修改管理密码
 + (void)sendResetRouterKeyWithRouterId:(NSString *)RouterId OldKey:(NSString *)OldKey NewKey:(NSString *)NewKey showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_ResetRouterKey,@"RouterId":RouterId?:@"",@"OldKey":OldKey?:@"",@"NewKey":NewKey?:@""};
     [SocketMessageUtil sendVersion2WithParams:params];
@@ -187,7 +189,7 @@
 #pragma mark - 路由器修改账户激活码
 + (void)sendResetUserIdcodeWithRouterId:(NSString *)RouterId UserSn:(NSString *)UserSn OldCode:(NSString *)OldCode NewCode:(NSString *)NewCode showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_ResetUserIdcode,@"RouterId":RouterId?:@"",@"UserSn":UserSn?:@"",@"OldCode":OldCode?:@"",@"NewCode":NewCode?:@""};
     [SocketMessageUtil sendVersion2WithParams:params];
@@ -196,7 +198,7 @@
 #pragma mark - 拉取文件列表
 + (void)sendPullFileListWithUserId:(NSString *)UserId MsgStartId:(NSNumber *)MsgStartId MsgNum:(NSNumber *)MsgNum Category:(NSNumber *)Category FileType:(NSNumber *)FileType showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_PullFileList,@"UserId":UserId?:@"",@"MsgStartId":MsgStartId?:@"",@"MsgNum":MsgNum?:@"",@"Category":Category?:@"",@"FileType":FileType?:@""};
     [SocketMessageUtil sendVersion5WithParams:params];
@@ -219,7 +221,7 @@
 #pragma mark - 上传文件
 + (void)sendUploadFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName FileMD5:(NSString *)FileMD5 FileSize:(NSNumber *)FileSize FileType:(NSNumber *)FileType UserKey:(NSString *)UserKey fileInfo:(NSString *) fileInfo showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_UploadFile,@"UserId":UserId?:@"",@"FileName":FileName?:@"",@"FileMD5":FileMD5?:@"",@"FileSize":FileSize?:@"",@"FileType":FileType?:@"",@"UserKey":UserKey?:@"",@"FileInfo":fileInfo};
     [SocketMessageUtil sendVersion2WithParams:params];
@@ -228,7 +230,7 @@
 #pragma mark - 删除文件
 + (void)sendDelFileWithUserId:(NSString *)UserId FileName:(NSString *)FileName filePath:(NSString *) filePath showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Deleting_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_DelFile,@"UserId":UserId?:@"",@"FileName":FileName?:@"",@"FilePath":filePath?:@""};
     [SocketMessageUtil sendVersion5WithParams:params];
@@ -237,7 +239,7 @@
 #pragma mark - 拉取可分享文件好友列表
 + (void)sendPullSharedFriendWithUserId:(NSString *)UserId showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_PullSharedFriend,@"UserId":UserId?:@""};
     [SocketMessageUtil sendVersion2WithParams:params];
@@ -246,7 +248,7 @@
 #pragma mark - 分享文件
 + (void)sendShareFileWithFromId:(NSString *)FromId ToId:(NSString *)ToId FileName:(NSString *)FileName DstKey:(NSString *)DstKey showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_ShareFile,@"FromId":FromId?:@"",@"ToId":ToId?:@"",@"FileName":FileName?:@"",@"DstKey":DstKey?:@""};
     [SocketMessageUtil sendVersion2WithParams:params];
@@ -255,7 +257,7 @@
 #pragma mark - 设备磁盘统计信息
 + (void)sendGetDiskTotalInfoWithShowHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_GetDiskTotalInfo};
     [SocketMessageUtil sendVersion3WithParams:params];
@@ -264,7 +266,7 @@
 #pragma mark - 设备磁盘详细信息
 + (void)sendGetDiskDetailInfoWithSlot:(NSNumber *)Slot showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_GetDiskDetailInfo, @"Slot":Slot};
     [SocketMessageUtil sendVersion3WithParams:params];
@@ -273,7 +275,7 @@
 #pragma mark - 设备磁盘模式配置
 + (void)sendFormatDiskWithMode:(NSString *)Mode showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_FormatDisk, @"Mode":Mode};
     [SocketMessageUtil sendVersion3WithParams:params];
@@ -282,16 +284,16 @@
 #pragma mark - 设备重启
 + (void)sendRebootWithShowHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:@"Rebooting..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_Reboot};
+    NSDictionary *params = @{@"Action":Action_Reboot,@"User":[UserModel getUserModel].userId?:@""};
     [SocketMessageUtil sendVersion3WithParams:params];
 }
 
 #pragma mark - 文件重命名
 + (void)sendFileRenameWithMsgId:(NSNumber *)MsgId Filename:(NSString *)Filename Rename:(NSString *)Rename showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Updateing_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_FileRename, @"UserId":userM.userId?:@"", @"MsgId":MsgId, @"Filename":[Base58Util Base58EncodeWithCodeName:Filename], @"Rename":[Base58Util Base58EncodeWithCodeName:Rename]};
@@ -308,7 +310,7 @@
 #pragma mark - 用户上传头像
 + (void)sendUploadAvatarWithFileName:(NSString *)FileName FileMd5:(NSString *)FileMd5 showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_UploadAvatar,@"Uid":userM.userId?:@"",@"FileName":[Base58Util Base58EncodeWithCodeName:FileName],@"FileMd5":FileMd5};
@@ -318,7 +320,7 @@
 #pragma mark - 更新好友头像
 + (void)sendUpdateAvatarWithFid:(NSString *)Fid Md5:(NSString *)Md5 showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_UpdateAvatar,@"Uid":userM.userId?:@"",@"Fid":Fid,@"Md5":Md5};
@@ -328,7 +330,7 @@
 #pragma mark - 拉取临时通信二维码
 + (void)sendPullTmpAccountWithShowHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_PullTmpAccount,@"UserId":userM.userId?:@""};
@@ -342,7 +344,7 @@
 + (void) sendCreateGroupWithName:(NSString *) groupName userKey:(NSString *) userKey verifyMode:(NSString *) verifyMode friendId:(NSString *) friendId friendKey:(NSString *) friendKey showHud:(BOOL)showHud
 {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_CreateGroup,@"UserId":userM.userId?:@"",@"GroupName":groupName?:@"",@"UserKey":userKey?:@"",@"VerifyMode":verifyMode,@"FriendId":friendId,@"FriendKey":friendKey?:@""};
@@ -351,7 +353,7 @@
 + (void) sendPullGroupListWithShowHud:(BOOL)showHud
 {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_GroupListPull,@"UserId":userM.userId?:@"",@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"TargetNum":@"0",@"StartId":@"0"};
@@ -361,7 +363,7 @@
 #pragma mark - 拉取群好友信息
 + (void)sendGroupUserPullWithGId:(NSString *)GId TargetNum:(NSNumber *)TargetNum StartId:(NSString *)StartId showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_GroupUserPull,@"UserId":userM.userId?:@"",@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"GId":GId,@"TargetNum":TargetNum,@"StartId":StartId};
@@ -370,7 +372,7 @@
 #pragma mark ---拉取好友进群
 + (void) sendAddGroupWithGId:(NSString *) gid friendId:(NSString *) friendids friendKey:(NSString *) friendkeys showHud:(BOOL)showHud{
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_InviteGroup,@"UserId":userM.userId?:@"",@"FriendId":friendids?:@"",@"GId":gid,@"FriendKey":friendkeys};
@@ -395,7 +397,7 @@
 {
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_GroupSendFileDone,@"UserId":userM.userId?:@"",@"FileMD5":fileMd5?:@"",@"GId":gid,@"FileName":fileName,@"FileSize":fileSize,@"FileType":fileType,@"FileInfo":fileInfo,@"FileId":fileId};
-    [SocketMessageUtil sendVersion4WithParams:params];
+    [SocketMessageUtil sendVersion5WithParams:params];
 }
 #pragma mark --删除群消息
 + (void) sendDelGroupMessageWithType:(NSNumber *) type GId:(NSString *) gid MsgId:(NSString *) msgid FromID:(NSString *) formID
@@ -406,7 +408,7 @@
 #pragma mark - 77.    群属性设置
 + (void)sendGroupConfigWithGId:(NSString *)GId Type:(NSNumber *)Type ToId:(nullable NSString *)ToId Name:(nullable NSString *)Name NeedVerify:(nullable NSNumber *)NeedVerify showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_GroupConfig,@"UserId":userM.userId?:@"",@"GId":GId,@"Type":Type,@"ToId":ToId?:@"",@"Name":Name?:@"",@"NeedVerify":NeedVerify?:@(-1)};
@@ -416,7 +418,7 @@
 #pragma mark - 68.    用户退群
 + (void)sendGroupQuitWithGId:(NSString *)GId GroupName:(nullable NSString *)GroupName showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_GroupQuit,@"UserId":userM.userId?:@"",@"GId":GId,@"GroupName":GroupName?:@""};
@@ -426,7 +428,7 @@
 #pragma mark - 66.    邀请用户入群审核处理
 + (void)sendGroupVerifyWithFrom:(NSString *)From To:(NSString *)To Aduit:(NSString *)Aduit GId:(NSString *)GId GName:(nullable NSString *)GName Result:(NSNumber *)Result UserKey:(nullable NSString *)UserKey showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_GroupVerify,@"From":From,@"To":To,@"Aduit":Aduit,@"GId":GId,@"GName":GName?:@"",@"Result":Result,@"UserKey":UserKey};
     [SocketMessageUtil sendVersion4WithParams:params];
@@ -448,4 +450,23 @@
     NSDictionary *params = @{@"Action":Action_Reboot,@"User":toxID?:@""};
     [SocketMessageUtil sendVersion3WithParams:params];
 }
+
+
++ (void) sendQLCNodeWithEnable:(NSNumber *) enable seed:(NSString *) seed showHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_EnableQlcNode,@"Enable":enable,@"Seed":@""};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
++ (void) sendCheckNodeWithShowHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_CheckQlcNode};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
 @end
+

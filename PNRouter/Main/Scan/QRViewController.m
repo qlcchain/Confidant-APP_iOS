@@ -115,14 +115,15 @@
 /// 准备扫描框
 - (void)prepareScanerBorder {
     
-    CGFloat width = _parentView.frame.size.width - 90;
+    CGFloat width = SCREEN_WIDTH - 90;
     
     _scannerBorder = [[HMScannerBorder alloc] initWithFrame:CGRectMake(45,100, width, width)];
    // _scannerBorder.center = self.view.center;
     _scannerBorder.tintColor = MAIN_PURPLE_COLOR;
     [_parentView addSubview:_scannerBorder];
     
-    _maskView = [HMScannerMaskView maskViewWithFrame:_parentView.bounds cropRect:_scannerBorder.frame];
+    //_maskView = [HMScannerMaskView maskViewWithFrame:_parentView.bounds cropRect:_scannerBorder.frame];
+     _maskView = [HMScannerMaskView maskViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT) cropRect:_scannerBorder.frame];
     [_parentView insertSubview:_maskView atIndex:0];
     
 //    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];

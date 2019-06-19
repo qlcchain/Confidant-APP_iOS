@@ -17,6 +17,13 @@
 #import "ChatListDataUtil.h"
 
 @implementation SendToxRequestUtil
+
+/**
+ 发送文本消息
+
+ @param message 发送文本
+ @param manage toxmange
+ */
 + (void) sendTextMessageWithText:(NSString *) message manager:(id<OCTManager>) manage
 {
     if (AppD.currentRouterNumber < 0) {
@@ -32,6 +39,12 @@
     }];
 }
 
+/**
+ tox 发送文件
+
+ @param filePath 文件本地file
+ @param parames 上传文件所带的参数
+ */
 + (void) sendFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -44,6 +57,12 @@
     });
 }
 
+/**
+ tox 重新发送文件
+ 
+ @param filePath 文件本地file
+ @param parames 上传文件所带的参数
+ */
 + (void) deUploadFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames fileData:(NSData *) fileData
 {
     NSString *srcKey = parames[@"SrcKey"];
@@ -81,7 +100,12 @@
 
 }
 
-
+/**
+ tox 上传文件
+ 
+ @param filePath 文件本地file
+ @param parames 上传文件所带的参数
+ */
 + (void) uploadFileWithFilePath:(NSString *) filePath parames:(NSDictionary *) parames fileData:(NSData *) fileData
 {
 

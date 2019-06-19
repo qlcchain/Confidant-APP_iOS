@@ -296,12 +296,6 @@
     NSData *msgtData =[enMsg dataUsingEncoding:NSUTF8StringEncoding];
     char *msgKey = [msgtData bytes];
     
-    //enMsg = [enMsg base64EncodedString];
-    //char css[enMsg.length+1];
-    //memcpy(css, [enMsg cStringUsingEncoding:NSASCIIStringEncoding],[enMsg length]+1);
-   // char enstr[sizeof(css)+crypto_box_BOXZEROBYTES];
-//    char enstr[sizeof(css)+crypto_box_BOXZEROBYTES];
-//    const int encrypted_length = encrypt_data_symmetric(gk,nonceKey, css,sizeof(css), enstr);
     int length = msgtData.length;
     char enstr[length+crypto_box_MACBYTES];
     const int encrypted_length = encrypt_data_symmetric(gk,nonceKey,msgKey,length, enstr);
@@ -311,7 +305,6 @@
          NSData *enstrData = [NSData dataWithBytesNoCopy:enstr length:length+crypto_box_MACBYTES freeWhenDone:NO];
         return [enstrData base64EncodedString];
     }
-    
     return @"";
 }
 

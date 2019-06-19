@@ -22,7 +22,7 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
     
     //修改样式，否则等待框背景色将为半透明
     HUD.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
-    HUD.bezelView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5];
+    HUD.bezelView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6];
     //设置菊花框为白色
     [UIActivityIndicatorView appearanceWhenContainedInInstancesOfClasses:@[[MBProgressHUD class]]].color = [UIColor whiteColor];
     HUD.label.textColor = [UIColor whiteColor];
@@ -52,6 +52,56 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
         [HUD hideAnimated:YES afterDelay:time];
     }
 }
+
+- (void)showSuccessHudInView:(UIView *)view hint:(NSString *)hint {
+    MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    HUD.label.text = hint;
+    HUD.label.numberOfLines = 0;
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fill"]];
+   
+    //修改样式，否则等待框背景色将为半透明
+   // HUD.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+    HUD.bezelView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6];
+    
+    
+    [view addSubview:HUD];
+    [HUD showAnimated:YES];
+    
+    HUD.userInteractionEnabled = NO;
+    // 再设置模式
+   HUD.mode = MBProgressHUDModeCustomView;
+    
+    HUD.label.textColor = [UIColor whiteColor];
+    // 隐藏时候从父控件中移除
+    HUD.removeFromSuperViewOnHide = YES;
+    // 1秒之后再消失
+    [HUD hideAnimated:YES afterDelay:1.5];
+}
+
+- (void)showFaieldHudInView:(UIView *)view hint:(NSString *)hint {
+    
+    MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    HUD.label.text = hint;
+    HUD.label.numberOfLines = 0;
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"error"]];
+    
+    //修改样式，否则等待框背景色将为半透明
+    // HUD.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+    HUD.bezelView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6];
+    [view addSubview:HUD];
+    [HUD showAnimated:YES];
+    
+    HUD.userInteractionEnabled = NO;
+    // 再设置模式
+    HUD.mode = MBProgressHUDModeCustomView;
+    
+    HUD.label.textColor = [UIColor whiteColor];
+    // 隐藏时候从父控件中移除
+    HUD.removeFromSuperViewOnHide = YES;
+    // 1秒之后再消失
+    [HUD hideAnimated:YES afterDelay:1.5];
+}
+
 
 - (void)showView:(UIView *)view hint:(NSString *)hint{
     

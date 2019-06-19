@@ -17,11 +17,12 @@
 #define PUSH_ONLINE_URL @"https://pprouter.online:9001/v1/pareg/"
 
 
-#define APIVERSION1 @"1"
-#define APIVERSION2 @"2"
-#define APIVERSION3 @"3"
-#define APIVERSION4 @"4"
-#define APIVERSION5 @"5"
+#define APIVERSION @"6"
+//#define APIVERSION2 @"2"
+//#define APIVERSION3 @"3"
+//#define APIVERSION4 @"4"
+//#define APIVERSION5 @"5"
+//#define APIVERSION6 @"6"
 #define SOCKET_USETDATAVERSION @"1"
 
 #define Server_Data @"data"

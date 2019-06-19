@@ -16,6 +16,7 @@
 // 表情键盘
 @interface CTEmojiKeyboard : UIView
 +(CTEmojiKeyboard *)keyBoard;
+- (void) addSupperEmjBtu;
 
 @property(nonatomic, weak)id<CTEmojiKeyboardDelegare> emojiDelegate;
 -(void)updateKeyBoard;

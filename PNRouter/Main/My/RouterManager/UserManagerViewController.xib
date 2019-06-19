@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,20 +37,33 @@
                                 <action selector="backAction:" destination="-1" eventType="touchUpInside" id="PD5-NE-3ud"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Management" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmT-ow-bFd">
-                            <rect key="frame" x="113.5" y="11.5" width="148.5" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Circle Members" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmT-ow-bFd">
+                            <rect key="frame" x="124" y="11.5" width="127.5" height="21"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                             <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="752-xD-bcr">
+                            <rect key="frame" x="329" y="0.0" width="46" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="xDe-81-RMR"/>
+                            </constraints>
+                            <state key="normal" image="add_circle"/>
+                            <connections>
+                                <action selector="addCircleAction:" destination="-1" eventType="touchUpInside" id="EYG-VG-Ppm"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="752-xD-bcr" firstAttribute="top" secondItem="UWq-vX-Uhe" secondAttribute="top" id="BAN-4E-kus"/>
                         <constraint firstAttribute="height" constant="44" id="KgN-C7-bOt"/>
                         <constraint firstItem="DmT-ow-bFd" firstAttribute="centerY" secondItem="UWq-vX-Uhe" secondAttribute="centerY" id="YEv-vX-sUL"/>
                         <constraint firstItem="DmT-ow-bFd" firstAttribute="centerX" secondItem="UWq-vX-Uhe" secondAttribute="centerX" id="huO-Ej-Xuq"/>
+                        <constraint firstAttribute="trailing" secondItem="752-xD-bcr" secondAttribute="trailing" id="izr-4r-Ufi"/>
                         <constraint firstItem="HDi-fJ-ilz" firstAttribute="leading" secondItem="UWq-vX-Uhe" secondAttribute="leading" constant="5" id="qln-1m-hnw"/>
                         <constraint firstItem="HDi-fJ-ilz" firstAttribute="centerY" secondItem="UWq-vX-Uhe" secondAttribute="centerY" id="wPK-Ie-LWT"/>
+                        <constraint firstAttribute="bottom" secondItem="752-xD-bcr" secondAttribute="bottom" id="x86-dm-J3W"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T77-wX-PJl">
@@ -124,6 +137,7 @@
         </view>
     </objects>
     <resources>
+        <image name="add_circle" width="24" height="25"/>
         <image name="arrow-exit-h" width="24" height="24"/>
         <image name="icon_search" width="14" height="13.5"/>
     </resources>

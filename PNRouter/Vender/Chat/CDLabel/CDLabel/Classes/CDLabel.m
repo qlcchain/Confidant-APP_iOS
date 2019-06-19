@@ -674,13 +674,13 @@ CGRect expangRectToRect(CGRect originR, CGSize target){
     UIPasteboard * paste = [UIPasteboard generalPasteboard];
     paste.string = sub.string;
     
-    [self resignFirstResponder];
+   // [self resignFirstResponder];
     [self scrollDidScroll];
 }
 
 - (void)selectAllContent:(UIMenuController *)menu
 {
-    [self resignFirstResponder];
+   // [self resignFirstResponder];
     [self scrollDidScroll];
     
     self.selectionStartPosition = 0;

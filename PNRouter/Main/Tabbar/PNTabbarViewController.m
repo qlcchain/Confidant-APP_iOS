@@ -84,7 +84,7 @@
     [self addChildViewController:[[NewsViewController alloc] initWithManager:self.manager] text:@"Chats" imageName:@"btn_news"];
     [self addChildViewController:[[FileViewController alloc] initWithManager:self.manager] text:@"Files" imageName:@"btn_file"];
     [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"Contacts" imageName:@"btn_contacts"];
-    [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"My" imageName:@"btn_my"];
+    [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"Me" imageName:@"btn_my"];
     
     [self sendFriendAndGroupList];
      // socket 断开连接通知
@@ -111,6 +111,9 @@
     
 }
 
+/**
+ 获取好友及群组列表信息
+ */
 - (void) sendFriendAndGroupList
 {
     // 获取好友列表
@@ -119,6 +122,13 @@
     [SendRequestUtil sendPullGroupListWithShowHud:NO];
 }
 
+/**
+ tabbar 添加 childvc
+
+ @param childController vc
+ @param text 标题
+ @param imageName 图标名
+ */
 - (void) addChildViewController:(UIViewController *) childController text:(NSString *) text imageName:(NSString *) imageName {
     // 设置item图片不渲染
     childController.tabBarItem.image = [[UIImage imageNamed:[imageName stringByAppendingString:@"_normal"]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -137,17 +147,6 @@
     [self addChildViewController:nav];
 }
 
-#pragma mark - UITabBarControllerDelegate-
-//- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-//    if ([((QlinkNavViewController *)viewController).topViewController isKindOfClass:[WalletViewController class]]){
-//
-//    }
-//    return YES;
-//}
-
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    
-}
 /*
 1：有其他设备登陆了该账户
 2：系统升级，强制退出
@@ -207,13 +206,13 @@
     [AppD setRootLoginWithType:RouterType];
 }
 
-#pragma mark - noti
+#pragma mark - app被强制退出通知
 - (void) appLogoutNoti:(NSNotification *) noti
 {
     int Reson = [noti.object intValue];
     [self logoutWithType:Reson];
 }
-
+#pragma mark -tox 重连成功通知
 - (void) toxReConnectSuccessNoti:(NSNotification *) noti
 {
     if (AppD.isSwitch || AppD.isLogOut) {
@@ -224,6 +223,7 @@
     UserConfig *userM = [UserConfig getShareObject];
     [SendRequestUtil sendUserLoginWithPass:@"" userid:userM.userId showHud:NO];
 }
+#pragma mark -socket 重连成功通知
 - (void) socketOnconnectNoti:(NSNotification *) noti
 {
     if (AppD.isSwitch || AppD.isLogOut) {
@@ -235,6 +235,7 @@
     [SendRequestUtil sendUserLoginWithPass:@"" userid:userM.userId showHud:NO];
     [[NSNotificationCenter defaultCenter] postNotificationName:RELOAD_SOCKET_FAILD_NOTI object:@"1"];
 }
+#pragma mark -socket 重连失败通知
 - (void) socketDisconnectNoti:(NSNotification *) noti
 {
     if (AppD.isSwitch || AppD.isLogOut) {
@@ -275,6 +276,11 @@
     }
 }
 
+/**
+ 获取外网映射ip
+
+ @param is4g yes：组播获取 no :外网映射
+ */
 - (void) sendHtppRequestWithIs4g:(BOOL) is4g
 {
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
@@ -285,6 +291,9 @@
     }
 }
 
+/**
+ 连接到socket
+ */
 - (void) connectSocket {
     [SocketCountUtil getShareObject].reConnectCount += 1;
     NSString *connectURL = [SystemUtil connectUrl];
@@ -292,7 +301,7 @@
         [SocketUtil.shareInstance connectWithUrl:connectURL];
     }
 }
-#pragma mark -广播完成
+#pragma mark -广播完成通知
 - (void) gbFinashNoti:(NSNotification *) noti
 {
     if (AppD.isSwitch || AppD.isLogOut) {
@@ -327,12 +336,12 @@
 //
 //}
 
-#pragma mark - 获取好友列表
+#pragma mark - 获取好友列表通知
 - (void) sendGetFriendNoti
 {
     [SocketMessageUtil sendFriendListRequest];
 }
-// 获取群列表
+#pragma mark -获取群列表成功通知
 - (void) pullGroupSucess:(NSNotification *) noti
 {
     NSArray *groups = noti.object;
@@ -341,6 +350,7 @@
     }
     [[ChatListDataUtil getShareObject].groupArray addObjectsFromArray:groups];
 }
+#pragma mark -获取好友列表成功通知
 - (void) getFriendListNoti:(NSNotification *) noti {
     
     NSString *jsonModel =(NSString *)noti.object;
@@ -371,9 +381,9 @@
         [item1 clearBadge];
     }
 }
+#pragma mark -chats页面tabar红点显示通知
 - (void) chatsHDShow:(NSNotification *) noti
 {
-   
     dispatch_async(dispatch_get_main_queue(), ^{
         
         NSMutableArray *chats = noti.object;
@@ -394,7 +404,6 @@
             [item1 clearBadge];
         }
     });
-    
 }
 
 - (void)didReceiveMemoryWarning {

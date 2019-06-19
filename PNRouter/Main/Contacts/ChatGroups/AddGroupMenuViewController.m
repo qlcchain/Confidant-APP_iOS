@@ -12,7 +12,6 @@
 #import "UserModel.h"
 #import "FriendRequestViewController.h"
 #import "PersonCodeViewController.h"
-#import "ChooseContactViewController.h"
 #import "CreateGroupChatViewController.h"
 #import "ChatListDataUtil.h"
 #import "GroupChatViewController.h"
@@ -145,12 +144,11 @@
         [self.navigationController pushViewController:vc animated:YES];
         
     } else if (sender.tag == 40) { // add a new member
-//        NSString *rid = [RouterConfig getRouterConfig].currentRouterToxid;
-//        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:rid];
-//        [self presentModalVC:vc animated:YES];
-        [self jumpToCircleCode];
         
-        
+        NSString *rid = [RouterConfig getRouterConfig].currentRouterToxid;
+        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:rid];
+        [self presentModalVC:vc animated:YES];
+       // [self jumpToCircleCode];
     }
 }
 
@@ -217,7 +215,7 @@
 - (void) jumpCodeValueVC
 {
     CodeMsgViewController *vc = [[CodeMsgViewController alloc] initWithCodeValue:self.codeResultValue];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self presentModalVC:vc animated:YES];
 }
 
 - (void) showAlertVCWithValues:(NSArray *) values isMac:(BOOL) isMac
@@ -262,18 +260,18 @@
     NSString *currentRouterSn = [RouterConfig getRouterConfig].currentRouterSn;
     NSString *userType = [currentRouterSn substringWithRange:NSMakeRange(0, 2)];
     
-//    if ([userType isEqualToString:@"01"]) { // 01:admin
-//        _addNewMemberHeight.constant = 56;
-//    } else {
-//        _addNewMemberHeight.constant = 0;
-//    }
+    if ([userType isEqualToString:@"01"]) { // 01:admin
+        _addNewMemberHeight.constant = 56;
+    } else {
+        _addNewMemberHeight.constant = 0;
+    }
 }
 
 
 #pragma mark -- 添加通知
 - (void) addNotifcation
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseContactNoti:) name:CHOOSE_FRIEND_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseContactNoti:) name:CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
 }
 

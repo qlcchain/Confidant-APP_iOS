@@ -12,11 +12,14 @@
 #if DEBUG
 static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 static NSString *pushType = @"1";
+static BOOL isDis = NO;
 #else
 static const DDLogLevel ddLogLevel = DDLogLevelError;
 static NSString *pushType = @"241";
+static BOOL isDis = YES;
 #endif
 
+const static float fontMax = 50000;
 
 /**
  *  强弱引用转换，用于解决代码块（block）与强引用self之间的循环引用问题

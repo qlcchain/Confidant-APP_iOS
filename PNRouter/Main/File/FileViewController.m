@@ -73,7 +73,7 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFileCompleteNoti:) name:Delete_File_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileRenameSuccessNoti:) name:FileRename_Success_Noti object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileForwardNoti:) name:CHOOSE_FRIEND_NOTI object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileForwardNoti:) name:CHOOSE_FRIEND_FILE_FOWARD_NOTI object:nil];
     
 }
 
@@ -371,6 +371,7 @@ typedef enum : NSUInteger {
 - (void) jumpForwardVC
 {
     ChooseContactViewController *vc = [[ChooseContactViewController alloc] init];
+    vc.docOPenTag = 4;
     [self presentModalVC:vc animated:YES];
 }
 

@@ -124,7 +124,7 @@
     NSString *ToId = @"";
     
     if (_showUpload) {
-        [AppD.window showHudInView:AppD.window hint:@"Uploading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Uploading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     if ([SystemUtil isSocketConnect]) { // socket
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
@@ -151,12 +151,13 @@
     
     NSArray *resultArr = noti.object;
     if (resultArr && resultArr.count>0 && [resultArr[0] integerValue] == 0) { // 成功
-        
         NSString *FileMd5 = [MD5Util md5WithData:_uploadImgData];
         [SendRequestUtil sendUploadAvatarWithFileName:_uploadFileName FileMd5:FileMd5 showHud:YES];
-        
     } else { // 上传失败
-        [AppD.window showHint:@"Failed to upload avatar."];
+        if (_showUpload) {
+            [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Upload"];
+        }
+        //[AppD.window showHint:@"Failed to upload avatar."];
     }
 }
 
@@ -171,6 +172,10 @@
     [UserHeaderModel saveOrUpdate:model];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:USER_HEAD_CHANGE_NOTI object:nil];
+    
+    if (_showUpload) {
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Uploaded"];
+    }
 }
 
 #pragma mark - 更新头像成功

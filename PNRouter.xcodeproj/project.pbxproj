@@ -546,6 +546,9 @@
 		73F55A0C223F3F69003155D2 /* GroupInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A0B223F3F69003155D2 /* GroupInfoModel.m */; };
 		73F55A10223F78C4003155D2 /* GroupChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A0E223F78C4003155D2 /* GroupChatViewController.m */; };
 		73F55A11223F78C4003155D2 /* GroupChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F55A0F223F78C4003155D2 /* GroupChatViewController.xib */; };
+		73F6B98022A002760053AAB4 /* EmojModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6B97F22A002760053AAB4 /* EmojModel.m */; };
+		73F6B98322A00E8A0053AAB4 /* EmoticonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6B98222A00E8A0053AAB4 /* EmoticonCell.m */; };
+		73F6B98622A0BA650053AAB4 /* ExpressionCillectionLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6B98522A0BA650053AAB4 /* ExpressionCillectionLayout.m */; };
 		73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806521DF87490047C3DA /* DebugLogViewController.m */; };
 		73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F8806721DF874A0047C3DA /* DebugLogViewController.xib */; };
 		73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806A21DF87AE0047C3DA /* DDLogUtil.m */; };
@@ -1602,6 +1605,12 @@
 		73F55A0D223F78C4003155D2 /* GroupChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupChatViewController.h; sourceTree = "<group>"; };
 		73F55A0E223F78C4003155D2 /* GroupChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupChatViewController.m; sourceTree = "<group>"; };
 		73F55A0F223F78C4003155D2 /* GroupChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupChatViewController.xib; sourceTree = "<group>"; };
+		73F6B97E22A002760053AAB4 /* EmojModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmojModel.h; sourceTree = "<group>"; };
+		73F6B97F22A002760053AAB4 /* EmojModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmojModel.m; sourceTree = "<group>"; };
+		73F6B98122A00E8A0053AAB4 /* EmoticonCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmoticonCell.h; sourceTree = "<group>"; };
+		73F6B98222A00E8A0053AAB4 /* EmoticonCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmoticonCell.m; sourceTree = "<group>"; };
+		73F6B98422A0BA650053AAB4 /* ExpressionCillectionLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpressionCillectionLayout.h; sourceTree = "<group>"; };
+		73F6B98522A0BA650053AAB4 /* ExpressionCillectionLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpressionCillectionLayout.m; sourceTree = "<group>"; };
 		73F8806521DF87490047C3DA /* DebugLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogViewController.m; sourceTree = "<group>"; };
 		73F8806621DF874A0047C3DA /* DebugLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogViewController.h; sourceTree = "<group>"; };
 		73F8806721DF874A0047C3DA /* DebugLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DebugLogViewController.xib; sourceTree = "<group>"; };
@@ -2253,6 +2262,8 @@
 				582BFE2F2216538D00D8C2C8 /* GetDiskDetailInfoModel.m */,
 				583B2B3022311F3300E6238D /* UserHeaderModel.h */,
 				583B2B3122311F3300E6238D /* UserHeaderModel.m */,
+				73F6B97E22A002760053AAB4 /* EmojModel.h */,
+				73F6B97F22A002760053AAB4 /* EmojModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2847,6 +2858,10 @@
 		7330F49F2149147200FF4EEC /* CellLayout */ = {
 			isa = PBXGroup;
 			children = (
+				73F6B98122A00E8A0053AAB4 /* EmoticonCell.h */,
+				73F6B98222A00E8A0053AAB4 /* EmoticonCell.m */,
+				73F6B98422A0BA650053AAB4 /* ExpressionCillectionLayout.h */,
+				73F6B98522A0BA650053AAB4 /* ExpressionCillectionLayout.m */,
 				7330F4A02149147200FF4EEC /* CellCaculator.h */,
 				7330F4A12149147200FF4EEC /* CellCaculator.m */,
 			);
@@ -4229,6 +4244,7 @@
 				58A23A7C223F6BB20098AED5 /* GroupMemberView.m in Sources */,
 				581FDF4921F024170068C120 /* logger.m in Sources */,
 				73A4867021B94B220062C34F /* ConnectView.m in Sources */,
+				73F6B98022A002760053AAB4 /* EmojModel.m in Sources */,
 				7330F4F02149147200FF4EEC /* CDAudioTableViewCell.m in Sources */,
 				7330F4FF2149147200FF4EEC /* CTTextView.m in Sources */,
 				73D31B20218025270034B2B9 /* RMDownloadIndicator.m in Sources */,
@@ -4370,6 +4386,7 @@
 				730465FF2232433800EB6073 /* UserHeadUtil.m in Sources */,
 				581FDF5521F024170068C120 /* friend_connection.m in Sources */,
 				736257842142143F00D7FD6B /* NSString+Base64Image.m in Sources */,
+				73F6B98622A0BA650053AAB4 /* ExpressionCillectionLayout.m in Sources */,
 				7330F37B2146118800FF4EEC /* UIImage+Capture.m in Sources */,
 				581FDF3A21F024160068C120 /* bwcontroller.m in Sources */,
 				736257A62142149300D7FD6B /* UIView+ViewController.m in Sources */,
@@ -4423,6 +4440,7 @@
 				736257C5214225FD00D7FD6B /* getgateway.c in Sources */,
 				582BFE4C221D26DF00D8C2C8 /* ImportAccountViewController.m in Sources */,
 				584A447E21460AFE00608122 /* FileViewController.m in Sources */,
+				73F6B98322A00E8A0053AAB4 /* EmoticonCell.m in Sources */,
 				58A23A82223F936D0098AED5 /* AddGroupMemberViewController.m in Sources */,
 				583BF93021F6EDB80078A2A8 /* MyFilesCell.m in Sources */,
 				580CFE462227B7FD00460B41 /* UINavigationController+MemoryLeak.m in Sources */,

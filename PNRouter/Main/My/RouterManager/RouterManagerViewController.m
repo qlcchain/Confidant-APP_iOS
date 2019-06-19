@@ -39,15 +39,18 @@ typedef enum : NSUInteger {
 #define Circle_Code_Str @"Circle QR Code"
 #define Circle_Name_Str @"Circle Name"
 #define Add_Circle_Member @"Add a New Member "
-#define Circle_QR_Code_Str @"My private code"
+#define Circle_QR_Code_Str @"My Private Code"
 #define Used_Space_Str @"Used Space"
 #define Manage_Disks_Str @"Manage Disks"
+#define Run_QLC_Chain_Str @"Run as QLC Chain Node"
 #define Enable_Auto_Login_Str @"Enable Auto Login"
 #define Circle_Alias_Str @"Circle Alias"
+#define Reboot_Circle @"Reboot Circle"
 
 @interface RouterManagerViewController () <UITableViewDelegate, UITableViewDataSource>
 {
     BOOL isAdmin;
+    NSInteger qlcNodeStatus;
 }
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *navContraintV;
@@ -77,6 +80,10 @@ typedef enum : NSUInteger {
 - (void)observe {
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshStatus) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getDiskTotalInfoSuccessNoti:) name:GetDiskTotalInfo_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rebootSuccessNoti:) name:Reboot_Success_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableQlcNodeSuccessNoti:) name:ENABLE_QLC_NODE_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chekcQlcNodeSuccessNoti:) name:CHECK_QLC_NODE_SUCCESS_NOTI object:nil];
+    
 }
 
 #pragma mark - Life Cycle
@@ -103,6 +110,7 @@ typedef enum : NSUInteger {
     [_routerTable registerNib:[UINib nibWithNibName:UsedSpaceTableViewCellReuse bundle:nil] forCellReuseIdentifier:UsedSpaceTableViewCellReuse];
     [_routerTable registerNib:[UINib nibWithNibName:SettingCellReuse bundle:nil] forCellReuseIdentifier:SettingCellReuse];
     
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -125,9 +133,13 @@ typedef enum : NSUInteger {
     NSString *userType = [_connectRouteM.userSn substringWithRange:NSMakeRange(0, 2)];
     [_routerArr removeAllObjects];
     if ([userType isEqualToString:@"01"]) { // 管理员
+        // 查看磁盘
         [self sendGetDiskTotalInfo];
+        // 查看节点水状态
+        [SendRequestUtil sendCheckNodeWithShowHud:NO];
+        
         isAdmin = YES;
-        [_routerArr addObjectsFromArray:@[@[Circle_Members_Str,Circle_Code_Str],@[Circle_Name_Str],@[Used_Space_Str,Manage_Disks_Str],@[Enable_Auto_Login_Str],@[Circle_QR_Code_Str]]];
+        [_routerArr addObjectsFromArray:@[@[Circle_Members_Str,Circle_Code_Str],@[Circle_Name_Str],@[Used_Space_Str,Manage_Disks_Str],@[Run_QLC_Chain_Str],@[Enable_Auto_Login_Str],@[Circle_QR_Code_Str],@[Reboot_Circle]]];
     } else {
         isAdmin = NO;
         [_routerArr addObjectsFromArray:@[@[Circle_Alias_Str,Circle_Code_Str],@[Enable_Auto_Login_Str],@[Circle_QR_Code_Str]]];
@@ -215,10 +227,33 @@ typedef enum : NSUInteger {
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (!isAdmin) {
+        if (section == 0) {
+            return 0;
+        }
+    } else {
+        if (section == 0) {
+            return 1;
+        } else if (section == 1) {
+            return 0;
+        }
+//        } else if (section == 3) {
+//            return 0;
+//        }
+    }
     return [_routerArr[section] count];
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (!isAdmin) {
+        if (section == 0) {
+            return 0;
+        }
+    } else {
+        if (section == 1) {
+            return 0;
+        }
+    }
     return 10;
 }
 
@@ -310,13 +345,19 @@ typedef enum : NSUInteger {
             return cell;
         }
         
-    } else if (indexPath.section == 3){
+    } else if (indexPath.section == 3 || indexPath.section == 4){
         SettingCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellReuse];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftContraintV.constant = 16;
         cell.titleLab.text = _routerArr[indexPath.section][indexPath.row];
-        [cell.switc setOn:_connectRouteM.isOpen animated:YES];
-        [cell.switc addTarget:self action:@selector(swChange:) forControlEvents:UIControlEventValueChanged];
+        if (indexPath.section == 4) {
+            [cell.switc setOn:_connectRouteM.isOpen animated:YES];
+            [cell.switc addTarget:self action:@selector(swChange:) forControlEvents:UIControlEventValueChanged];
+        } else {
+            [cell.switc setOn:qlcNodeStatus animated:YES];
+            [cell.switc addTarget:self action:@selector(qlcChainChange:) forControlEvents:UIControlEventValueChanged];
+        }
+       
         return cell;
     } else {
         RouterManagementCell *cell = [tableView dequeueReusableCellWithIdentifier:RouterManagementCellReuse];
@@ -375,10 +416,30 @@ typedef enum : NSUInteger {
             [self jumpToRouterCode];
         }
        
-    } else if (indexPath.section == 4) {
+    } else if (indexPath.section == 5) {
         // 圈子code
         [self jumpToRouterCode];
+    } else if (indexPath.section == 6) {
+        // 重启圈子
+        [self rebootCircle];
     }
+}
+
+#pragma mark ----重启圈子
+- (void) rebootCircle
+{
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"Disconnect after circle reboot" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Reboot" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [SendRequestUtil sendRebootWithShowHud:YES];
+    }];
+    [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
+    [alertC addAction:alert1];
+    
+    UIAlertAction *alertCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertC addAction:alertCancel];
+    
+    [self presentViewController:alertC animated:YES completion:nil];
 }
 
 #pragma mark - Transition
@@ -426,6 +487,11 @@ typedef enum : NSUInteger {
 {
     [RouterModel updateRouterLoginSwitchWithSn:_connectRouteM.userSn isOpen:sender.isOn];
 }
+- (void) qlcChainChange:(UISwitch *) sender
+{
+    int openTag = sender.isOn;
+    [SendRequestUtil sendQLCNodeWithEnable:@(openTag) seed:@"" showHud:YES];
+}
 
 #pragma mark - Noti
 - (void)getDiskTotalInfoSuccessNoti:(NSNotification *)noti {
@@ -433,6 +499,28 @@ typedef enum : NSUInteger {
     NSDictionary *paramsDic = receiveDic[@"params"];
     _getDiskTotalInfoM = [GetDiskTotalInfoModel getObjectWithKeyValues:paramsDic];
     DDLogDebug(@"---%@",_getDiskTotalInfoM);
+    [_routerTable reloadData];
+}
+- (void) rebootSuccessNoti:(NSNotification *) noti
+{
+    [AppD.window showHint:@"Reboot Success."];
+}
+- (void)enableQlcNodeSuccessNoti:(NSNotification *) noti
+{
+    NSInteger retCode = [noti.object integerValue];
+    if (retCode == 0) {
+        if (qlcNodeStatus == 0) {
+            qlcNodeStatus = 1;
+        } else {
+            qlcNodeStatus = 0;
+        }
+    }
+    [_routerTable reloadData];
+}
+- (void)chekcQlcNodeSuccessNoti:(NSNotification *) noti
+{
+    NSDictionary *resultDic = noti.object;
+    qlcNodeStatus = [resultDic[@"Status"] integerValue];
     [_routerTable reloadData];
 }
 

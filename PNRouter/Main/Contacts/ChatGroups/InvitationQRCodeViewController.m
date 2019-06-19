@@ -24,6 +24,7 @@
 
 @interface InvitationQRCodeViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *lblCircleName;
+@property (weak, nonatomic) IBOutlet UILabel *lblHi;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UIImageView *codeImgView;
@@ -66,9 +67,11 @@
     
     if (_userManageType == 1) {
         _lblName.text = [NSString stringWithFormat:@"【%@】",_routerUserModel.NickName];
-        
+        _lblHi.text = @"";
         if (_routerUserModel.UserType !=2) {
             _lblDesc.text = @"Please note data sychronization is not supported\nwhen you are logged in to a temporary account.";
+        } else {
+            _lblHi.text = [NSString stringWithFormat:@"Hi, %@",_routerUserModel.aliaName?:@""];
         }
         
         NSString *userKey = _routerUserModel.UserKey;

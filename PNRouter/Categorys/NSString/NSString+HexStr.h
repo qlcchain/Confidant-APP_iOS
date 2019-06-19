@@ -27,5 +27,6 @@
 
 + (NSInteger)numberWithHexString:(NSString *)hexString;
 + (NSString *)stringWithHexNumber:(NSUInteger)hexNumber;
-
+// 得到字符串字节数
+- (NSUInteger)charactorNumber;
 @end

@@ -29,7 +29,7 @@ def demo_pods
     pod 'AFNetworking'
     pod 'Masonry'
     pod 'KeychainAccess'
-    
+    pod 'JPush'
     # pod 'Starscream'
     pod 'SDWebImage/GIF',:inhibit_warnings => true
     pod 'FLAnimatedImage',:inhibit_warnings => true

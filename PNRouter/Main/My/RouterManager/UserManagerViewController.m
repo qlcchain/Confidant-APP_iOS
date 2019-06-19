@@ -51,6 +51,12 @@
     }
     return self;
 }
+- (IBAction)addCircleAction:(id)sender {
+    
+    AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:self.rid];
+    [self presentModalVC:vc animated:YES];
+    
+}
 
 - (IBAction)backAction:(id)sender {
    
@@ -230,10 +236,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];;
-//    InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
-//    vc.routerUserModel = model;
-//    vc.userManageType = 1;
-//    [self.navigationController pushViewController:vc animated:YES];
+
     
     CircleMemberDetailViewController *vc = [[CircleMemberDetailViewController alloc] init];
     vc.routerUserModel = model;

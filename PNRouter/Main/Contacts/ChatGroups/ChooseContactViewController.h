@@ -10,6 +10,7 @@
 
 @interface ChooseContactViewController : PNBaseViewController
 
+// 1:doc 2:创建群组 3:消息文件转发 4:文件转发
 @property (nonatomic,assign) NSInteger docOPenTag;
 
 @end

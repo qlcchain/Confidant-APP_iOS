@@ -53,6 +53,7 @@
     self.estimatedRowHeight = 0;
     self.estimatedSectionHeaderHeight = 0;
     self.estimatedSectionFooterHeight = 0;
+    self.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
     self.caculator = [[CellCaculator alloc] init];
     
@@ -453,17 +454,13 @@
 //}
 
 
--(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
-    BOOL res = [super pointInside:point withEvent:event];
-    if (res && [self.msgDelegate respondsToSelector:@selector(chatlistBecomeFirstResponder)]) {
-        [self.msgDelegate chatlistBecomeFirstResponder];
-    }
-    
-//    if (self.loadHeaderState == CDHeaderLoadStateInitializting) {
-//        self.loadHeaderState = CDHeaderLoadStateNoraml;
+//-(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
+//    BOOL res = [super pointInside:point withEvent:event];
+//    if (res && [self.msgDelegate respondsToSelector:@selector(chatlistBecomeFirstResponder)]) {
+//        [self.msgDelegate chatlistBecomeFirstResponder];
 //    }
-    return res;
-}
+//    return res;
+//}
 
 
 #pragma mark table 代理

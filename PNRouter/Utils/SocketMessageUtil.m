@@ -50,6 +50,27 @@
 
 @implementation SocketMessageUtil
 
++ (NSString *) signActionTimerWithDic:(NSMutableDictionary *) headDic
+{
+    if (!headDic) {
+        return @"";
+    }
+    /// 注册 recovery 接口不需要验证
+    if ([[NSString getNotNullValue:headDic[@"Action"]] isEqualToString:Action_Register] || [[NSString getNotNullValue:headDic[@"Action"]] isEqualToString:Action_Recovery]) {
+        
+    } else {
+        // 时间
+        NSString *timestamp = headDic[@"timestamp"];
+        // action内容 + 秒时间
+        NSString *content = [NSString stringWithFormat:@"%@,%@",headDic[@"Action"],timestamp];
+        // 私钥签名
+        NSString *signContent = [LibsodiumUtil getOwenrSignTemp:content];
+        // 加入签名签名到头部
+        [headDic setObject:signContent forKey:@"sign"];
+    }
+    return [headDic mj_JSONString];
+}
+
 /**
  发送文本消息
  */
@@ -58,7 +79,9 @@
 //    NSString *paramsJson = params.mj_JSONString;
 //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    
+   // NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         if (AppD.manager && AppD.currentRouterNumber >= 0) { // tox_stop
@@ -78,7 +101,9 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    
+   // NSString *text = muDic.mj_JSONString;
+     NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop
@@ -94,11 +119,10 @@
  发送文本消息 5
  */
 + (void)sendVersion5WithParams:(NSDictionary *)params{
-    NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams5]];
-    //    NSString *paramsJson = params.mj_JSONString;
-    //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
-    [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    NSMutableDictionary *headDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams5]];
+    [headDic setObject:params forKey:@"params"];
+   // NSString *text = headDic.mj_JSONString;
+     NSString *text = [SocketMessageUtil signActionTimerWithDic:headDic];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop
@@ -108,6 +132,26 @@
         }
     });
     
+}
+
+/**
+ 发送文本消息 6
+ */
++ (void)sendVersion6WithParams:(NSDictionary *)params{
+    
+    NSMutableDictionary *headDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getBaseParams6]];
+    
+    [headDic setObject:params forKey:@"params"];
+    // NSString *text = headDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:headDic];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop
+            [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
+        } else {
+            [SocketUtil.shareInstance sendWithText:text];
+        }
+    });
 }
 
 /**
@@ -125,7 +169,8 @@
         [paramsDic setObject:signTime forKey:@"Sign"];
     }
     [muDic setObject:paramsDic forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+   // NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
@@ -146,7 +191,8 @@
     
     [muDic setObject:@"" forKey:@"params"];
     
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (AppD.manager && AppD.currentRouterNumber >= 0) { // tox_stop
@@ -166,7 +212,9 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
+    
     if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
@@ -182,7 +230,10 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+   // NSString *text = muDic.mj_JSONString;
+    
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
+    
     if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
     } else {
@@ -199,7 +250,8 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
@@ -217,7 +269,8 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     if (AppD.manager && AppD.currentRouterNumber >= 0) { //tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
@@ -234,7 +287,8 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
@@ -251,7 +305,8 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
@@ -268,7 +323,8 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
@@ -285,7 +341,8 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     if (AppD.manager && AppD.currentRouterNumber >= 0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
@@ -297,7 +354,8 @@
 + (void)sendRecevieMessageWithParams4:(NSDictionary *)params tempmsgid:(NSInteger) msgid{
     NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:[SocketMessageUtil getRecevieBaseParams4:msgid]];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
@@ -314,7 +372,8 @@
     //    NSString *paramsJson = params.mj_JSONString;
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
-    NSString *text = muDic.mj_JSONString;
+    //NSString *text = muDic.mj_JSONString;
+    NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     if (AppD.manager && AppD.currentRouterNumber >=0) { // tox_stop
         [SendToxRequestUtil sendTextMessageWithText:text manager:AppD.manager];
@@ -528,6 +587,10 @@
         [SocketMessageUtil handlePullTmpAccount:receiveDic];
     } else if ([action isEqualToString:Action_DelUser]) { // 删除用户
         [SocketMessageUtil handleDelUser:receiveDic];
+    } else if ([action isEqualToString:Action_EnableQlcNode]) { // 开启qlc节点
+        [SocketMessageUtil handleEnableQlcNode:receiveDic];
+    }else if ([action isEqualToString:Action_CheckQlcNode]) { // 检测qlc节点
+        [SocketMessageUtil handleCheckQlcNode:receiveDic];
     }
 }
 
@@ -1313,11 +1376,16 @@
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Delivered"];
         [[NSNotificationCenter defaultCenter] postNotificationName:Delete_File_Noti object:nil];
-    } else if (retCode == 1) {
-        [AppD.window showHint:@"File does not exist."];
     } else {
-        [AppD.window showHint:@"Have no legal power."];
+        [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Deliver"];
+        
+//        if (retCode == 1) {
+//            [AppD.window showHint:@"File does not exist."];
+//        } else {
+//            [AppD.window showHint:@"Have no legal power."];
+//        }
     }
 }
 
@@ -1383,10 +1451,14 @@
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:Reboot_Success_Noti object:receiveDic];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:Reboot_Fail_Noti object:receiveDic];
         if (retCode == 1) {
-            [AppD.window showHint:@"The system is busy, please check later"];
+             [AppD.window showHint:@"No administrator rights"];
+        } else {
+             [AppD.window showHint:@"The system is busy, please check later"];
         }
+       // [[NSNotificationCenter defaultCenter] postNotificationName:Reboot_Fail_Noti object:receiveDic];
+       
+        
     }
 }
 
@@ -1412,15 +1484,16 @@
     
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:FileRename_Success_Noti object:receiveDic];
-//        [AppD.window showHint:@"Reset device nickname successfully"];
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Updated"];
     } else {
-        if (retCode == 1) {
-            [AppD.window showHint:@"User id error"];
-        } else if (retCode == 2) {
-            [AppD.window showHint:@"The renamed file already exists"];
-        } else if (retCode == 3) {
-            [AppD.window showHint:@"Other errors"];
-        }
+         [AppD.window showFaieldHudInView:AppD.window hint:@"Faield to Update"];
+//        if (retCode == 1) {
+//            [AppD.window showHint:@"User id error"];
+//        } else if (retCode == 2) {
+//            [AppD.window showHint:@"The renamed file already exists"];
+//        } else if (retCode == 3) {
+//            [AppD.window showHint:@"Other errors"];
+//        }
     }
 }
 + (void) handleFileForward:(NSDictionary *)receiveDic {
@@ -1546,6 +1619,27 @@
     }
     
 }
++ (void) handleEnableQlcNode:(NSDictionary *)receiveDic {
+    
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode != 0) {
+        [AppD.window showFaieldHudInView:AppD.window hint:@"Configuration failed"];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:ENABLE_QLC_NODE_SUCCESS_NOTI object:@(retCode)];
+}
++ (void) handleCheckQlcNode:(NSDictionary *)receiveDic {
+    
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:CHECK_QLC_NODE_SUCCESS_NOTI object:receiveDic[@"params"]];
+    } else {
+    }
+}
+
+
 
 
 #pragma mark --------------群组 ----------------
@@ -1690,9 +1784,9 @@
     NSString *GId = receiveDic[@"params"][@"GId"];
     NSString *fileID = receiveDic[@"params"][@"FileId"];
      NSString *GName = receiveDic[@"params"][@"Gname"];
-    NSString *Remark = receiveDic[@"params"][@"Gname"];
+    //NSString *Remark = receiveDic[@"params"][@"Gname"];
      int fileType = [receiveDic[@"params"][@"FileType"] intValue];
-     NSString *Userkey = receiveDic[@"params"][@"Userkey"];
+     NSString *Userkey = receiveDic[@"params"][@"UserKey"];
     if (retCode == 0) { // 0：文件发送成功
         
         // 添加到chatlist
@@ -1735,7 +1829,6 @@
 + (void)handleGroupMsgPush:(NSDictionary *)receiveDic {
     
    PayloadModel *messageModel = [PayloadModel mj_objectWithKeyValues:receiveDic[@"params"]];
-    
     // 回复router
     NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
     NSDictionary *params = @{@"Action":Action_GroupMsgPush,@"Retcode":retcode,@"Msg":@"",@"ToId":messageModel.To,@"GId":messageModel.GId};
@@ -2011,55 +2104,58 @@
 #pragma mark - Base
 + (NSDictionary *)getBaseParams {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION1,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 + (NSDictionary *)getBaseParams3 {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION3,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 + (NSDictionary *)getBaseParams4 {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION4,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 + (NSDictionary *)getBaseParams5 {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION5,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
-
++ (NSDictionary *)getBaseParams6 {
+    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getTimestampFromDate:[NSDate date]])];
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+}
 
 + (NSDictionary *)getMutBaseParamsWithMore {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION1,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRegiserBaseParams {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION2,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION1,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams5:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION5,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams3:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION3,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams4:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION4,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseVersion2Params:(NSInteger) tempmsgid {
     NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION2,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
+    return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 
@@ -2102,7 +2198,7 @@
 #pragma mark -设备管理员修改设备昵称
 + (void) sendUpdateRourerNickName:(NSString *) nickName showHud:(BOOL)showHud {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:@"Loading..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_ResetRouterName,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"Name":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];

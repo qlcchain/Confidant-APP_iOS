@@ -60,6 +60,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+/**
+ 添加通知
+ */
 - (void) addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnConnect:) name:SOCKET_ON_CONNECT_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketOnDisconnect:) name:SOCKET_ON_DISCONNECT_NOTI object:nil];
@@ -89,6 +92,10 @@
     }
 }
 
+/**
+ 登陆
+ @param sender sender
+ */
 - (IBAction)loginAction:(id)sender {
     if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterToxid] isEmptyString]) {
         [self.view showHint:@"Please select the circle."];
@@ -130,19 +137,34 @@
         [self sendGB];
     }
 }
+
+/**
+ 扫码操作
+ @param sender sender
+ */
 - (IBAction)rightAction:(id)sender {
     isClickLogin = YES;
     isLogin = NO;
     isFind = NO;
     [self jumpToQR];
 }
+
+/**
+ 选择circle
+
+ @param sender sender
+ */
 - (IBAction)routherSelect:(id)sender {
     [self showRouter];
 }
-// 导入帐号
+
+/**
+ 导入帐号
+
+ @param values 导入帐号的值
+ */
 - (void)scanSuccessfulWithIsAccount:(NSArray *)values
 {
-
     UIAlertController *vc = [UIAlertController alertControllerWithTitle:@"" message:@"This operation will overwrite the current account. Do you want to continue?" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
@@ -177,7 +199,12 @@
     [self presentViewController:vc animated:YES completion:nil];
 
 }
-// 扫码成功重新开启组播
+
+/**
+ 扫码成功后回调
+
+ @param isMac 是不是mac帐户
+ */
 - (void)scanSuccessfulWithIsMacd:(BOOL)isMac
 {
     if (isMac) {
@@ -200,7 +227,13 @@
         [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
     }
 }
-#pragma mark -连接socket_tox
+
+
+/**
+ 根据ip,连接socket or tox
+
+ @param isShow 是否显示加载ui
+ */
 - (void) connectSocketWithIsShowHud:(BOOL) isShow
 {
     isConnectSocket = YES;
@@ -230,6 +263,10 @@
         }
     }
 }
+
+/**
+ 根据 isfind islogin ,判断当前是find还是login
+ */
 - (void) findOrLogin
 {
     if (isFind) {
@@ -242,6 +279,12 @@
     }
 }
 
+/**
+ 发送登陆请求
+
+ @param userid 用户id
+ @param usersn 用户sn
+ */
 - (void) sendLoginRequestWithUserid:(NSString *) userid usersn:(NSString *) usersn
 {
     BOOL isShow = NO;
@@ -258,6 +301,11 @@
     [self performSelector:@selector(sendLoginRequestWithUserid:) withObject:userid afterDelay:5];*/
 }
 
+/**
+ 发送注册请求
+
+ @param isShow 是否显示加载ui
+ */
 - (void) sendRegisterRequestWithShowHud:(BOOL) isShow
 {
      NSString *userName = [[UserModel getUserModel].username base64EncodedString];
@@ -265,12 +313,20 @@
     
 }
 
-#pragma mark -tox 登陆成功
+
+/**
+ tox登陆成功回调
+
+ @param manager tox manage
+ */
 - (void) toxLoginSuccessWithManager:(id<OCTManager>)manager
 {
     [self addRouterFriend];
 }
 
+/**
+ 添加circle为好友
+ */
 - (void) addRouterFriend
 {
     
@@ -295,6 +351,9 @@
     }
 }
 
+/**
+ 显示tox连接中的弹出框
+ */
 - (void) showConnectServerLoad
 {
     if (!_connectView) {
@@ -302,19 +361,19 @@
     }
     [_connectView showConnectView];
 }
+/**
+ 隐藏tox连接中的弹出框
+ */
 - (void) hideConnectServerLoad
 {
     [_connectView hiddenConnectView];
 }
-
-
-
+#pragma socket边接成功通知
 - (void)socketOnConnect:(NSNotification *)noti {
     
     if (AppD.isLoginMac) {
         return;
     }
-    
     isConnectSocket = NO;
     [AppD.window hideHud];
     if (isLogin) {  // 登陆
@@ -327,13 +386,12 @@
     }
    
 }
-
+#pragma mark --socket连接失败通知
 - (void)socketOnDisconnect:(NSNotification *)noti {
     
     if (AppD.isLoginMac) {
         return;
     }
-    
     [AppD.window hideHud];
     if (isConnectSocket) {
         isConnectSocket = NO;
@@ -344,11 +402,19 @@
 {
     [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
 }
+
+/**
+ 发送组播
+ */
 - (void) sendGB
 {
     [self loadHudView];
     [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
 }
+
+/**
+ 得到当前选择的circle
+ */
 - (void) getCurrentSelectRouter
 {
     if (AppD.showTouch) {
@@ -362,7 +428,6 @@
     
 }
 
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -371,7 +436,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
 //    CSLOG_TEST_DDLOG(@"Login View Controller alloc***************************************************");
     AppD.inLogin = NO;
     self.view.backgroundColor = MAIN_PURPLE_COLOR;
@@ -409,7 +473,10 @@
     }
 }
 
-#pragma 第一次 广播完回调。验证是否走socket 还是 tox
+
+/**
+ 检查当前连接方式
+ */
 - (void) checkConnectStyle
 {
     NSLog(@"ip = %@",[RouterConfig getRouterConfig].currentRouterIp);
@@ -421,6 +488,9 @@
     [self changeLogintStatu];
 }
 
+/**
+ 更新ui
+ */
 - (void) changeLogintStatu
 {
     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back!",[UserModel getUserModel].username]?:@"";
@@ -451,12 +521,12 @@
         [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_gray"] forState:UIControlStateNormal];
     }
 }
+
 #pragma mark -切换routher 刷新方法
 - (void)refreshSelectRouter:(RouterModel *)routeM {
     
     //AppD.manager = nil; tox_stop
     AppD.currentRouterNumber = -1;
-    
     isLogin = NO;
     isFind = NO;
     
@@ -472,7 +542,9 @@
     _lblRoutherName.text = self.selectRouther.name;
 }
 
-
+/**
+ 显示所有circle
+ */
 - (void)showRouter {
     @weakify_self
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -507,6 +579,9 @@
 //    }
 //}
 
+/**
+ 更新头像
+ */
 - (void)updateUserHead {
 //    if (_loginType == ImportType) {
         NSString *Fid = [UserModel getUserModel].userId?:@"";
@@ -515,15 +590,15 @@
 //    }
 }
 
-#pragma mark - 通知回调
-// touch验证成功
+
+#pragma mark -touch验证成功通知
 - (void) touchModifySuccess:(NSNotification *) noti
 {
     if ([RouterModel getLoginOpenRouter]) {
         [self loginAction:nil];
     }
 }
-// 注册推送
+#pragma mark -注册推送
 - (void) registerPushNoti:(NSNotification *) noti
 {
     if (isClickLogin) {
@@ -531,7 +606,7 @@
     }
     
 }
-// 加router好友成功
+#pragma mark --tox加圈子为好友成功通知
 - (void) toxAddRoterSuccess:(NSNotification *) noti
 {
     if (AppD.currentRouterNumber >=0 && isClickLogin) {
@@ -543,6 +618,7 @@
     }
     
 }
+#pragma mark -组播成功通知
 - (void) gbFinashNoti:(NSNotification *) noti
 {
     if (!isClickLogin) {
@@ -570,13 +646,11 @@
         isFind = YES;
         [self connectSocketWithIsShowHud:YES];
     }
-    
     AppD.isScaner = NO;
 }
-
+#pragma mark -find接口成功通知
 - (void) recivceUserFind:(NSNotification *) noti
 {
-   
     if (!isClickLogin) {
         return;
     }
@@ -588,6 +662,13 @@
         NSString *userid = receiveDic[@"params"][@"UserId"];
         NSString *userName = receiveDic[@"params"][@"NickName"];
     
+        if (![[NSString getNotNullValue:routherid] isEmptyString]) {
+            [RouterConfig getRouterConfig].currentRouterToxid = routherid;
+        }
+        if (![[NSString getNotNullValue:usesn] isEmptyString]) {
+            [RouterConfig getRouterConfig].currentRouterSn = usesn;
+        }
+        
         if (retCode == 0) { //已激活
             sendCount = 0;
             [self sendLoginRequestWithUserid:userid usersn:usesn];
@@ -600,10 +681,9 @@
         isClickLogin = NO;
     }
 }
-#pragma mark -登陆成功
+#pragma mark -登陆成功通知
 - (void) loginSuccess:(NSNotification *) noti
 {
-    
     if (!isClickLogin) {
         return;
     }
@@ -631,7 +711,7 @@
     }
 }
 
-#pragma mark -注册成功
+#pragma mark -注册成功通知
 - (void) userRegisterSuccess:(NSNotification *) noti
 {
     if (!isClickLogin) {
@@ -669,12 +749,6 @@
     }
 
 }
-
-#pragma mark - OCTSubmanagerUserDelegate
-- (void)submanagerUser:(nonnull id<OCTSubmanagerUser>)submanager connectionStatusUpdate:(OCTToxConnectionStatus)connectionStatus {
-    
-}
-
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {

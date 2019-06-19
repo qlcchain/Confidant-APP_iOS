@@ -59,6 +59,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+/**
+ 添加通知
+ */
 - (void) addNoti
 {
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:ADD_MESSAGE_NOTI object:nil];
@@ -106,6 +109,10 @@
         [self performSelector:@selector(jumpOtherFileVC) withObject:self afterDelay:1.0];
     }
 }
+
+/**
+ 外部文件导入跳转
+ */
 - (void) jumpOtherFileVC
 {
     OtherFileOpenViewController *vc = [[OtherFileOpenViewController alloc] initWithFileUrl:AppD.fileURL];
@@ -114,12 +121,22 @@
     [self presentModalVC:vc animated:YES];
 }
 
-#pragma mark -Operation-
+
+/**
+ 添加好友跳转
+
+ @param friendId 好友id
+ @param nickName 好友昵称
+ @param signpk 好友签名公钥
+ */
 - (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName singpk:(NSString *) signpk{
     FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+/**
+ 查询最后一条消息
+ */
 - (void)updateData {
     if (self.dataArray.count >0) {
         [self.dataArray removeAllObjects];
@@ -132,31 +149,24 @@
         tempArr = [self sortWith:tempArr];
     }
     [self.dataArray  addObjectsFromArray:tempArr];
-//    @weakify_self
-//    [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//        ChatListModel *model = obj;
-//        __block BOOL isexit = NO;
-//        [weakSelf.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            ChatListModel *model1 = obj;
-//
-//            if (!model.isGroup && [model.friendID isEqualToString:model1.friendID]) {
-//                isexit = YES;
-//                *stop = YES;
-//            }
-//        }];
-//        if (!isexit) {
-//            [weakSelf.dataArray addObject:model];
-//        }
-//    }];
+
     [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CHATS_HD_NOTI object:self.dataArray];
     [_tableV reloadData];
 }
 
-#pragma mark - 直接添加监听方法
+/**
+ 添加searchtf 监听
+
+ */
 -(void)addTargetMethod{
     [_searchTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
+/**
+ seartf 文本改变方法
+
+ @param tf seartf
+ */
 - (void) textFieldTextChange:(UITextField *) tf
 {
     if ([tf.text.trim isEmptyString]) {
@@ -184,6 +194,9 @@
     return YES;
 }
 
+/**
+ 显示socket连接状态
+ */
 - (void) showSocketStatu
 {
     if (![SystemUtil isSocketConnect]) {
@@ -196,9 +209,6 @@
     }
 }
 
-#pragma mark - Action
-- (IBAction)switchRouther:(id)sender {
-}
 
 - (IBAction)reload:(id)sender {
     _connectBackView.hidden = YES;
@@ -213,16 +223,9 @@
     //    }];
 }
 
-//- (IBAction)leftAction:(id)sender {
-//    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
-//    vc.inputType = DebugLogTypeTest1000;
-//    [self.navigationController pushViewController:vc animated:YES];
-//}
 
 - (IBAction)rightAction:(id)sender {
     [self jumpToAddGroupMenu];
-    //    [self jumpToAddGroupMember];
-    //    [self jumpToScan];
 }
 
 #pragma mark - tableviewDataSourceDelegate
@@ -234,8 +237,6 @@
 {
     return NewsCellHeight;
 }
-
-
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
 
     NewsCell *cell = [tableView dequeueReusableCellWithIdentifier:NewsCellResue];
@@ -287,7 +288,6 @@
 }
 
 #pragma mark - SWTableViewDelegate
-
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
 {
     switch (state) {
@@ -306,6 +306,12 @@
 }
 
 
+/**
+ 选择cell菜单回调
+
+ @param cell cell
+ @param index index
+ */
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
 {
     [cell hideUtilityButtonsAnimated:YES];
@@ -356,6 +362,11 @@
     return YES;
 }
 
+/**
+ 设置cell右边button icon
+
+ @return 所有button
+ */
 - (NSArray *)rightButtons
 {
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
@@ -369,62 +380,23 @@
     return rightUtilityButtons;
 }
 
-#pragma mark - Transition
-- (void)jumpToScan {
-    @weakify_self
-    QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
-        if (codeValue != nil && codeValue.length > 0) {
-            
-            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
-            codeValue = codeValues[0];
-            if ([codeValue isEqualToString:@"type_0"]) {
-                codeValue = codeValues[1];
-                if ([codeValue isEqualToString:[UserConfig getShareObject].userId]) {
-                    [AppD.window showHint:@"You cannot add yourself as a friend."];
-                } else if (codeValue.length != 76) {
-                    [AppD.window showHint:@"QR code format is wrong."];
-                } else {
-                    NSString *nickName = @"";
-                    if (codeValues.count>2) {
-                        nickName = codeValues[2];
-                    }
-                    [weakSelf addFriendRequest:codeValue nickName:nickName singpk:codeValues[3]];
-                }
-            } else {
-                [weakSelf.view showHint:@"format error!"];
-            }
-        }
-    }];
-    [self presentModalVC:vc animated:YES];
-}
-
-- (void)jumpToAddGroupMember {
-    NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
-    // 过滤非当前路由的好友
-    NSString *currentToxid = [RouterConfig getRouterConfig].currentRouterToxid;
-    NSMutableArray *inputArr = [NSMutableArray array];
-    [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        FriendModel *model = obj;
-        if ([model.RouteId isEqualToString:currentToxid]) {
-            [inputArr addObject:model];
-        }
-    }];
-    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr originArr:@[] type:AddGroupMemberTypeBeforeCreate];
-    [self presentModalVC:vc animated:YES];
-}
-
 - (void)jumpToAddGroupMenu {
     AddGroupMenuViewController *vc = [[AddGroupMenuViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark - noti
+#pragma mark - 消息发生改变通知
 - (void) chatMessageChangeNoti:(NSNotification *) noti
 {
     [self updateData];
 }
 
-//根据时间排序
+/**
+ 根据时间排序
+
+ @param array 排序前array
+ @return 排序后的array
+ */
 - (NSMutableArray *) sortWith:(NSMutableArray *)array{
     [array sortUsingComparator:^NSComparisonResult(ChatListModel *node1, ChatListModel *node2) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -440,6 +412,11 @@
     return array;
 }
 
+/**
+ socket连接失败，显示top通知
+
+ @param noti noti
+ */
 - (void) reloadSecketFaieldNoti:(NSNotification *) noti
 {
     NSString *result = noti.object;
@@ -459,6 +436,7 @@
     }
 }
 
+#pragma mark -退出群组成功通知
 - (void)groupQuitSuccessNoti:(NSNotification *)noti {
     NSString *GId = noti.object;
     // 删除群组下面所有文件
@@ -467,7 +445,6 @@
     
     // 删除群列表的记录
     [ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(GId)]];
-    
     [self updateData];
 }
 

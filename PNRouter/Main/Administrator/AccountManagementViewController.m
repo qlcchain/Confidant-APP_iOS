@@ -230,6 +230,14 @@
         NSString *userid = receiveDic[@"params"][@"UserId"];
         NSString *userName = receiveDic[@"params"][@"NickName"];
         NSInteger fileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
+        
+        if (![[NSString getNotNullValue:routherid] isEmptyString]) {
+            [RouterConfig getRouterConfig].currentRouterToxid = routherid;
+        }
+        if (![[NSString getNotNullValue:usesn] isEmptyString]) {
+            [RouterConfig getRouterConfig].currentRouterSn = usesn;
+        }
+        
         if (retCode == 0) { //已激活
              [self sendLoginRequestWithUserid:userid usersn:usesn];
         } else { // 未激活 或者日临时帐户
@@ -272,13 +280,13 @@
         } else if (retCode == 3) { //uid错误
             [AppD.window showHint:@"uid wrong."];
         } else if (retCode == 4) { //登陆密码错误
-            [AppD.window showHint:@"Login failed, verification failed."];
+            [AppD.window showHint:@"Login failed."];
         } else if (retCode == 5) { //验证码错误
             [AppD.window showHint:@"Verification code error."];
         } else if (retCode == 7) { //验证码错误
             [AppD.window showHint:@"This account is no longer valid."];
         } else { // 其它错误
-            [AppD.window showHint:@"Login failed Other error."];
+            [AppD.window showHint:@"Login failed."];
             
         }
     }

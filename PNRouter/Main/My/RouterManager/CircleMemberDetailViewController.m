@@ -13,6 +13,7 @@
 #import "LogOutCell.h"
 #import "NSDate+Category.h"
 #import "UserConfig.h"
+#import "InvitationQRCodeViewController.h"
 
 @interface CircleMemberDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
@@ -31,11 +32,11 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        NSString *userName = [NSString getNotNullValue:_routerUserModel.NickName];
-        if (_routerUserModel.Active == 1 && ![userName isEqualToString:@"tempUser"]) {
-            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Joining time"],@[@"Remove"]]];
+        //NSString *userName = [NSString getNotNullValue:_routerUserModel.NickName];
+        if (_routerUserModel.Active == 1) { //  && ![userName isEqualToString:@"tempUser"]
+            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Circle Login QR Code"],@[@"Joining time"],@[@"Remove"]]];
         } else {
-            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Joining time"]]];
+            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Circle Login QR Code"],@[@"Joining time"]]];
         }
     }
     return _dataArray;
@@ -72,7 +73,6 @@
 }
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     NSString *resultStr = self.dataArray[indexPath.section][indexPath.row];
     if ([resultStr isEqualToString:@"Remove"]) {
         LogOutCell *cell = [tableView dequeueReusableCellWithIdentifier:LogOutCellReuse];
@@ -101,9 +101,18 @@
             cell.lblSubContent.hidden = NO;
             if (indexPath.section == 0) {
                  cell.lblSubContent.text = _routerUserModel.NickName;
-            } else {
-                NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(_routerUserModel.CreateTime)] format:@"yyyy-MM-dd HH:mm:ss" isMil:NO];
-                cell.lblSubContent.text = operationTime?:@"";
+            } else if (indexPath.section == 1) {
+                cell.rightContraintW.constant = 8;
+                cell.lblSubContent.hidden = YES;
+                [cell.subBtn setImage:[UIImage imageNamed:@"icon_code"] forState:UIControlStateNormal];
+            }else {
+                if (_routerUserModel.Active != 1) {
+                    cell.lblSubContent.text = @"Not Activated";
+                } else {
+                    NSString *operationTime = [NSDate getTimeWithTimestamp:[NSString stringWithFormat:@"%@",@(_routerUserModel.CreateTime)] format:@"yyyy/MM/dd" isMil:NO];
+                    cell.lblSubContent.text = operationTime?:@"";
+                }
+                
             }
         }
         return cell;
@@ -113,6 +122,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 1) {
+        InvitationQRCodeViewController *vc = [[InvitationQRCodeViewController alloc] init];
+        vc.routerUserModel = _routerUserModel;
+        vc.userManageType = 1;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
         
 - (void) delCircleUser

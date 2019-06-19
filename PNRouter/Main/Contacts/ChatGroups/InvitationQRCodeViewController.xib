@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,6 +15,7 @@
                 <outlet property="backView" destination="Q9A-Rd-AOl" id="70J-bb-7qS"/>
                 <outlet property="codeImgView" destination="EpS-iE-lnw" id="8Mw-zS-h0t"/>
                 <outlet property="lblCircleName" destination="Mky-Ms-Ip2" id="qqL-2G-Y15"/>
+                <outlet property="lblHi" destination="zC1-uW-UHa" id="HLS-49-2Xn"/>
                 <outlet property="lblName" destination="WzK-to-YNg" id="v0i-Im-qOS"/>
                 <outlet property="userHeadBtn" destination="nVv-1A-ltn" id="qU4-5l-bcq"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -95,13 +96,25 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zC1-uW-UHa">
+                                                    <rect key="frame" x="13" y="-3" width="281" height="19"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="19" id="sou-M1-Df0"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                                    <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
+                                                <constraint firstItem="RhT-ly-Ld3" firstAttribute="top" secondItem="zC1-uW-UHa" secondAttribute="bottom" constant="4" id="Gmm-o1-96Z"/>
                                                 <constraint firstItem="WzK-to-YNg" firstAttribute="centerX" secondItem="9AJ-d4-RxK" secondAttribute="centerX" id="JwB-tx-4CL"/>
                                                 <constraint firstItem="RhT-ly-Ld3" firstAttribute="top" secondItem="9AJ-d4-RxK" secondAttribute="top" constant="20" id="Rcp-z7-8e2"/>
                                                 <constraint firstItem="RhT-ly-Ld3" firstAttribute="centerX" secondItem="9AJ-d4-RxK" secondAttribute="centerX" id="ewB-0P-na8"/>
                                                 <constraint firstItem="WzK-to-YNg" firstAttribute="top" secondItem="RhT-ly-Ld3" secondAttribute="bottom" constant="4" id="gzf-5S-CLM"/>
+                                                <constraint firstItem="zC1-uW-UHa" firstAttribute="leading" secondItem="9AJ-d4-RxK" secondAttribute="leading" constant="13" id="iAp-TK-Cii"/>
+                                                <constraint firstAttribute="trailing" secondItem="zC1-uW-UHa" secondAttribute="trailing" constant="13" id="oAO-QP-VEu"/>
                                                 <constraint firstAttribute="height" constant="67" id="qLg-IA-A8P"/>
                                             </constraints>
                                         </view>
@@ -134,14 +147,14 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gL1-bd-FbP">
                                     <rect key="frame" x="16" y="446" width="311" height="39"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open the QR code with Confidant app to join the circle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KYh-x1-OuJ">
-                                            <rect key="frame" x="41" y="13.5" width="245.5" height="12"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can find Confidant App in Google Play/ App Store" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KYh-x1-OuJ">
+                                            <rect key="frame" x="42.5" y="13.5" width="242" height="12"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
                                             <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_router_small" translatesAutoresizingMaskIntoConstraints="NO" id="lO0-jF-P85">
-                                            <rect key="frame" x="21" y="11.5" width="16" height="16"/>
+                                            <rect key="frame" x="22.5" y="11.5" width="16" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="IIQ-2i-hY0"/>
                                                 <constraint firstAttribute="width" constant="16" id="hzx-W4-D9p"/>

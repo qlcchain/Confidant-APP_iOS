@@ -95,7 +95,7 @@
 {
     if (!_file_rightName) {
         _file_rightName = [[UILabel alloc] init];
-        _file_rightName.textColor = [UIColor whiteColor];
+        _file_rightName.textColor = MAIN_PURPLE_COLOR;
         _file_rightName.font = [UIFont systemFontOfSize:15];
         _file_rightName.textAlignment = NSTextAlignmentLeft;
         _file_rightName.lineBreakMode = NSLineBreakByTruncatingMiddle;

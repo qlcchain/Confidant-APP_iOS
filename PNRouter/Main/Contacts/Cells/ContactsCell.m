@@ -45,7 +45,7 @@
     if (model.Active == 1) {
         _lblDesc.text = @"Activated";
     } else {
-        _lblDesc.text = @"not Activated";
+        _lblDesc.text = @"Not Activated";
     }
     
 //    NSLog(@"nickname = %@    usertype = %@",model.NickName,@(model.UserType));

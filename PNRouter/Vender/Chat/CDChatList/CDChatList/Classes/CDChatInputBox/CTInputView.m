@@ -14,6 +14,9 @@
 #import "SystemUtil.h"
 #import "AtUserModel.h"
 #import "NSString+RegexCategory.h"
+#import "NSString+HexStr.h"
+
+
 
 @interface EmojiTextAttachment : NSTextAttachment
 @property(strong, nonatomic) NSString *emojiTag;
@@ -339,12 +342,12 @@ static UIColor *InputHexColor(int hexColor){
         [self emojiKeyboardSelectSend];
         return NO;
     }
-    
-    if (textView.text.length >= 245) {
+    NSString *textViewString = textView.text?:@"";
+    if ([textViewString charactorNumber] >= fontMax) {
         if (range.length == 1 && text.length == 0) {
             return YES;
         }
-        textView.text = [textView.text substringToIndex:245];
+       // textView.text = [textView.text substringToIndex:245];
         return NO;
     }
     
@@ -659,6 +662,10 @@ static UIColor *InputHexColor(int hexColor){
 }
 
 -(BOOL)resignFirstResponder{
+    
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    NSLog(@"pasteboard.string = %@",pasteboard.string);
+    
     self.textView.inputView = nil;
     [self.textView resignFirstResponder];
     

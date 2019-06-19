@@ -85,8 +85,12 @@
             if (weakSelf.selectArray.count > 0) {
                 if (weakSelf.docOPenTag == 1) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:DOC_OPEN_CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
-                } else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+                } else  if (weakSelf.docOPenTag == 2){
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:weakSelf.selectArray];
+                } else if (weakSelf.docOPenTag == 3) {
+                     [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_FOWARD_NOTI object:weakSelf.selectArray];
+                } else if (weakSelf.docOPenTag == 4) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_FILE_FOWARD_NOTI object:weakSelf.selectArray];
                 }
                 
             }

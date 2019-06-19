@@ -8,14 +8,12 @@
 
 #import "ContactViewController.h"
 #import "ContactTableCell.h"
-//#import "GroupCell.h"
 #import "ContactHeaderView.h"
 #import "FriendDetailViewController.h"
 #import "UserModel.h"
 #import "SocketMessageUtil.h"
 #import "QRViewController.h"
 #import "FriendModel.h"
-//#import "AddFriendViewController.h"
 #import "NewRequestsViewController.h"
 #import "RSAModel.h"
 #import "ChatListDataUtil.h"
@@ -65,7 +63,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(friendListChangeNoti:) name:FRIEND_LIST_CHANGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendGetFriendNoti) name:FRIEND_DELETE_MY_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFriendListNoti:) name:GET_FRIEND_LIST_NOTI object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestAddFriendNoti:) name:REQEUST_ADD_FRIEND_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactHDShow:) name:TABBAR_CONTACT_HD_NOTI object:nil];
 }
 
@@ -283,89 +280,6 @@
     return friendM;
 }
 
-#pragma mark - SWTableViewDelegate
-/*
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
-{
-    switch (state) {
-        case 0:
-            NSLog(@"utility buttons closed");
-            break;
-        case 1:
-            NSLog(@"left utility buttons open");
-            break;
-        case 2:
-            NSLog(@"right utility buttons open");
-            break;
-        default:
-            break;
-    }
-}
-
-
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
-{
-    [cell hideUtilityButtonsAnimated:YES];
-    ContactShowModel *model = isSearch? self.searchDataArray[cell.tag] : self.dataArray[cell.tag];
-    model.remarks = [model.remarks base64DecodedString]?:model.remarks;
-    model.username = [model.username base64DecodedString]?:model.username;
-    switch (index) {
-        case 0:
-        {
-            PersonCodeViewController *vc = [[PersonCodeViewController alloc] initWithUserId:model.userId userNaem:model.remarks];
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-        case 1:
-        {
-            EditTextViewController *vc = [[EditTextViewController alloc] initWithType:EditFriendAlis friendModel:model];
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-
-        default:
-            break;
-    }
-}
-
-- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
-{
-    // allow just one cell's utility button to be open at once
-    return YES;
-}
-
-- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state
-{
-    switch (state) {
-        case 1:
-            // set to NO to disable all left utility buttons appearing
-            return YES;
-            break;
-        case 2:
-            // set to NO to disable all right utility buttons appearing
-            return YES;
-            break;
-        default:
-            break;
-    }
-    
-    return YES;
-}
-
-- (NSArray *)rightButtons
-{
-    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:
-     MAIN_PURPLE_COLOR
-                                                icon:[UIImage imageNamed:@"icon_forward"]];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:
-     MAIN_PURPLE_COLOR
-                                                icon:[UIImage imageNamed:@"icon_writing"]];
-    
-    return rightUtilityButtons;
-}
-*/
-
 #pragma mark - Transition
 - (void)jumpToChat:(FriendModel *)friendM {
     ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:friendM];
@@ -383,18 +297,6 @@
     [self sendGetFriendNoti];
 }
 
-//// 有人请求加你为好友的红点通知
-//- (void) requestAddFriendNoti:(NSNotification *) noti {
-//    if (![[self.navigationController.viewControllers lastObject] isKindOfClass:[NewRequestsViewController class]]) {
-////        [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-//        [self refreshAddContactHD];
-//        // 通知tabbar 红点显示通知
-//    } else {
-//        AppD.showNewFriendAddRequestRedDot = NO;
-//    }
-//    [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
-//    
-//}
 
 - (void) getFriendListNoti:(NSNotification *) noti {
     
@@ -437,14 +339,6 @@
     [_tableV reloadData];
     [self refreshAddContactHD];
 
-//    NSArray *finfAlls = [FriendModel bg_findAll:FRIEND_LIST_TABNAME];
-//    if (self.dataArray.count > 0) {
-//        [self.dataArray removeAllObjects];
-//    }
-//    if (finfAlls && finfAlls.count > 0) {
-//        [self.dataArray addObjectsFromArray:finfAlls];
-//    }
-//    [_tableV reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)contactHDShow:(NSNotification *)noti {

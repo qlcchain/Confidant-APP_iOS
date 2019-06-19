@@ -491,7 +491,6 @@
                      [self showMenuWithItemX:_wave_right.frame.size.width/2];
                  }
              }
-            
         }
             break;
         case UIGestureRecognizerStateChanged:

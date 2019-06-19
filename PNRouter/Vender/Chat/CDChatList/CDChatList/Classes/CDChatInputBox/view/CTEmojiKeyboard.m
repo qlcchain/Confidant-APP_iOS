@@ -8,28 +8,19 @@
 #import "CTEmojiKeyboard.h"
 #import "CTinputHelper.h"
 #import "CTInPutMacro.h"
+#import "EmojModel.h"
+#import "EmoticonCell.h"
+#import "ExpressionCillectionLayout.h"
 
-@interface EmojiBut: UIButton
 
-@end
-
-@implementation EmojiBut
--(CGRect)imageRectForContentRect:(CGRect)contentRect{
-    CGRect oldrect = [super imageRectForContentRect:contentRect];
-        return CGRectInset(oldrect, -ScreenWidth * 0.005, -ScreenWidth * 0.005);
-}
-@end
-
-@interface CTEmojiKeyboard()<UIScrollViewDelegate>
+@interface CTEmojiKeyboard()<UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 {
     
     UIButton *sendButton;
-    
-    NSMutableArray <NSMutableArray <UIButton*> *> *emojiButs; // 表情按钮
+    UICollectionView *collectV;
+    NSMutableArray *dataArray;
 
-    
     NSMutableArray <UIView *> *containers; // 包含 scrollview pageView
-    NSMutableArray <UIScrollView*> *scrollViews; // 表情scrollview
     NSMutableArray <UIPageControl*> *pageCtrs; // segment
     NSMutableArray <UIButton*> *tabButtons; // 切换按钮
     
@@ -58,6 +49,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
            [single initUI];
         });
+
     });
     return single;
 }
@@ -76,6 +68,12 @@
         bottomBarAeraH = 44;
     }
     
+    
+    NSInteger rowCount = 7;
+    if (SCREEN_WIDTH > 375) {
+        rowCount = 8;
+    }
+    
     emojInsetTop = 12.0f;  // 顶部内边距
     emojiSize = CGSizeMake(ScreenWidth * 0.112, ScreenWidth * 0.112);
     emojInsetLeft_Right = (ScreenWidth - emojiSize.width * 8) * 0.5; // 左右距离
@@ -83,7 +81,6 @@
     emojInsetBottom = 5.0f; // scrollview 底部内边距
     
     pageViewH = 20; //
-    
 
     // scrollview大小
     CGSize scrollViewSize = CGSizeMake(ScreenWidth, emojInsetTop + emojiSize.height * 3 + emojiLineSpace * 2 + emojInsetBottom);
@@ -93,32 +90,101 @@
     
     
     containers = [NSMutableArray arrayWithCapacity:arrs.count];
-    scrollViews = [NSMutableArray arrayWithCapacity:arrs.count];
     pageCtrs = [NSMutableArray arrayWithCapacity:arrs.count];
     tabButtons = [NSMutableArray arrayWithCapacity:arrs.count];
+    dataArray = [NSMutableArray array];
+    
     
     emojiDic = CTinputHelper.share.emojDic;
-    UIImage *emojiDelete = CTinputHelper.share.imageDic[@"emojiDelete"];
-
-    emojiButs = [NSMutableArray array];
-    
+ 
     for (int i = 0; i < arrs.count; i++){
+        
+        NSArray <NSString *>*empjiNames = arrs[i];
+        for (NSUInteger j = 0; j < empjiNames.count; j++) {
+            
+        
+            
+            if (j != 0) {
+                if (j % ((rowCount*3)-1) == 0) {
+                    EmojModel *model = [[EmojModel alloc] init];
+                    model.emjName = @"emojiDelete";
+                    model.isDel = YES;
+                    [dataArray addObject:model];
+                }
+            }
+            
+            EmojModel *model = [[EmojModel alloc] init];
+            model.emjName = empjiNames[j];
+            model.isDel = NO;
+            [dataArray addObject:model];
+            
+            if (j!= 0 && j == empjiNames.count - 1) {
+                EmojModel *model = [[EmojModel alloc] init];
+                model.emjName = @"emojiDelete";
+                model.isDel = YES;
+                [dataArray addObject:model];
+            }
+        }
+        
         // 每个scroll的container
         UIView *conain = [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.frame.size.width, self.frame.size.height - bottomBarAeraH -1)];
         conain.tag = i;
         [self addSubview:conain];
-        UIScrollView *scrol = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, scrollViewSize.width, scrollViewSize.height)];
-        scrol.backgroundColor = HexColor(0xF5F5F7);
-        scrol.showsHorizontalScrollIndicator = NO;
-        scrol.delegate = self;
-        scrol.pagingEnabled = YES;
-        scrol.alwaysBounceHorizontal = YES;
-        scrol.tag = i;
-        [conain addSubview:scrol];
         
+        ExpressionCillectionLayout *layout = [[ExpressionCillectionLayout alloc]init];
+        layout.itemSize = CGSizeMake((SCREEN_WIDTH-20)/rowCount, (scrollViewSize.height-20
+                                                           )/3);
+        layout.pageContentInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+        layout.itemSpacing = 0;
+        layout.lineSpacing = 0;
+        
+      //  UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+//        layout.itemSize = CGSizeMake(30, 30);
+//        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+//        layout.minimumLineSpacing = 15;
+//        layout.minimumInteritemSpacing = 15;
+        //每个分区的左右边距
+      //  CGFloat sectionOffset = (SCREEN_WIDTH - 8 * 30 - 7 * 15) / 2;
+        //分区内容偏移
+       // layout.sectionInset = UIEdgeInsetsMake(15, sectionOffset, 15, sectionOffset);
+        
+        UICollectionView *myCollectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, scrollViewSize.height) collectionViewLayout:layout];
+        myCollectionView.backgroundColor = HexColor(0xF5F5F7);
+       
+        myCollectionView.bounces = NO;
+        myCollectionView.pagingEnabled = YES;
+        myCollectionView.showsVerticalScrollIndicator = NO;
+        myCollectionView.showsHorizontalScrollIndicator = NO;
+        
+       
+        collectV = myCollectionView;
+        
+        [collectV registerClass:[EmoticonCell class] forCellWithReuseIdentifier:@"Emoticon"];
+        
+        //设置代理和数据源
+        collectV.delegate = self;
+        collectV.dataSource = self;
+        
+        [conain addSubview:collectV];
+        
+        
+        
+        
+//        UIScrollView *scrol = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, scrollViewSize.width, scrollViewSize.height)];
+//        scrol.backgroundColor = HexColor(0xF5F5F7);
+//        scrol.showsHorizontalScrollIndicator = NO;
+//        scrol.delegate = self;
+//        scrol.pagingEnabled = YES;
+//        scrol.alwaysBounceHorizontal = YES;
+//        scrol.tag = i;
+//        [conain addSubview:scrol];
+        
+        
+        
+        
+       /*
         // 表情页数
         NSUInteger emojiPages = (arrs[i].count % 23 != 0 ? 1 : 0) + arrs[i].count / 23;
-        
         // 设置scrollview contentsize
         scrol.contentSize = CGSizeMake(scrollViewSize.width * emojiPages, 0);
         
@@ -153,11 +219,17 @@
             }
             if (currentPage == 0 && i == 0) {
                 [scrol addSubview:but];
+            } else {
+                [moveButs addObject:but];
             }
             [arr addObject:but];
         }
+        
+        */
+        NSInteger emojiPages = 4;
         // pagecontroll
-        UIPageControl *control = [[UIPageControl alloc] initWithFrame:CGRectMake(0, scrol.frame.size.height, self.frame.size.width, pageViewH)];
+        UIPageControl *control = [[UIPageControl alloc] initWithFrame:CGRectMake(0, collectV.frame.size.height, self.frame.size.width, pageViewH)];
+        control.enabled = NO;
         control.backgroundColor = HexColor(0xF5F5F7);
         control.numberOfPages = emojiPages;
         control.pageIndicatorTintColor = [UIColor lightGrayColor];
@@ -165,7 +237,7 @@
         [conain addSubview:control];
         
         [containers addObject:conain];
-        [scrollViews addObject:scrol];
+       // [scrollViews addObject:scrol];
         [pageCtrs addObject:control];
     }
     
@@ -210,16 +282,32 @@
 }
 
 -(void)didMoveToSuperview {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        for (int i = 0; i < self->emojiButs.count; i++) {
-            UIScrollView *scrol = self->scrollViews[i];
-            for (UIButton *b in self->emojiButs[i]) {
-                if (!b.superview) {
-                    [scrol addSubview:b];
-                }
-            }
-        }
-    });
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//        for (int i = 0; i < self->emojiButs.count; i++) {
+//            UIScrollView *scrol = self->scrollViews[i];
+//            for (UIButton *b in self->emojiButs[i]) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if (!b.superview) {
+//                        [scrol addSubview:b];
+//                    }
+//                });
+//
+//            }
+//        }
+//    });
+    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        UIScrollView *scrol = self->scrollViews[0];
+//        for (UIButton *b in self->moveButs) {
+//            NSUInteger imagIdx = b.tag % 1000;
+//            if (imagIdx == 46) {
+//                break;
+//            }
+//            if (!b.superview) {
+//                [scrol addSubview:b];
+//            }
+//        }
+//    });
 }
 
 -(void)containSelectsss:(UIButton *)but{
@@ -238,13 +326,43 @@
     }
 }
 
+
+/*
 - (void)scrollViewDidScroll: (UIScrollView *) aScrollView
 {
     CGPoint offset = aScrollView.contentOffset;
     NSUInteger idx =  offset.x / aScrollView.frame.size.width;
     pageCtrs[aScrollView.tag].currentPage = idx;
+    
+    if (idx == 1) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIScrollView *scrol = self->scrollViews[0];
+            for (UIButton *b in self->moveButs) {
+                NSUInteger imagIdx = b.tag % 1000;
+                if (imagIdx == 69) {
+                    break;
+                }
+                if (!b.superview) {
+                    [scrol addSubview:b];
+                }
+            }
+        });
+    } else if (idx == 2) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIScrollView *scrol = self->scrollViews[0];
+            for (UIButton *b in self->moveButs) {
+                NSUInteger imagIdx = b.tag % 1000;
+                if (imagIdx == 92) {
+                    break;
+                }
+                if (!b.superview) {
+                    [scrol addSubview:b];
+                }
+            }
+        });
+    }
 }
-
+*/
 +(CTEmojiKeyboard *)keyBoard{
     
     [[CTEmojiKeyboard share] updateKeyBoard];
@@ -259,12 +377,9 @@
             but.backgroundColor = [UIColor whiteColor];
         }
     }
-    
+
     [self bringSubviewToFront:containers.firstObject];
-    
-    for (UIScrollView *scrol in scrollViews) {
-        [scrol setContentOffset:CGPointMake(0, 0)];
-    }
+
 }
 
 -(void)emojiButtonTabed:(UIButton *)but{
@@ -276,6 +391,15 @@
     [self.emojiDelegate emojiKeyboardSelectKey:name image:img];
 }
 
+-(void)emojiButtonTabedWithEmjModel:(EmojModel *) model{
+    if (model.isDel) {
+        [self.emojiDelegate emojiKeyboardSelectDelete];
+    } else {
+        [self.emojiDelegate emojiKeyboardSelectKey:model.emjName image:emojiDic[model.emjName]];
+    }
+}
+
+
 -(void)emojiButtonTabedDelete{
     [self.emojiDelegate emojiKeyboardSelectDelete];
 }
@@ -284,8 +408,91 @@
     [self.emojiDelegate emojiKeyboardSelectSend];
 }
 
--(void)layoutSubviews{
-    [super layoutSubviews];
+//-(void)layoutSubviews{
+//    [super layoutSubviews];
+//
+//}
+
+/*
+#pragma mark - UICollectionView DateSource
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return (dataArray.count / 24) + (dataArray.count % 24 == 0 ? 0 : 1);
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    if (((dataArray.count / 24) + (dataArray.count % 24 == 0 ? 0 : 1)) != section + 1) {
+        return 24;
+    }else {
+        return dataArray.count - 24 * section;
+    }
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *identifier = @"Emoticon";
+    EmoticonCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    
+    [self setCell:cell withIndexPath:indexPath];
+    
+    return cell;
+}
+
+- (void)setCell:(EmoticonCell *)cell withIndexPath:(NSIndexPath *)indexPath {
+    [cell.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    NSString *emjName = dataArray[indexPath.section * 24 + indexPath.row];
+    [cell.emoticonButton setImage:emojiDic[emjName] forState:UIControlStateNormal];
+}
+*/
+
+#pragma mark - CollectionView Delegate & DataSource
+-(void)refreshPageControl{
+    //ceil返回大于或者等于指定表达式的最小整数
+    pageCtrs[0].numberOfPages=ceil(collectV.contentSize.width)/CGRectGetWidth(collectV.bounds);
+    //floor向下取整
+    pageCtrs[0].currentPage=floor(collectV.contentOffset.x/CGRectGetWidth(collectV.bounds));
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    [self refreshPageControl];
+}
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshPageControl];
+    });
+    return dataArray.count;
+    
+}
+
+-(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *identifier = @"Emoticon";
+    EmoticonCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    cell.emoticonButton.tag = indexPath.row;
+    EmojModel *emjModel = dataArray[indexPath.row];
+    if (emjModel.isDel) {
+        UIImage *delImg = CTinputHelper.share.imageDic[@"emojiDelete"];
+        //cell.emoticonButton.image = delImg;
+        [cell.emoticonButton setImage:delImg forState:UIControlStateNormal];
+    } else {
+         //cell.emoticonButton.image = emojiDic[emjModel.emjName];
+         [cell.emoticonButton setImage:emojiDic[emjModel.emjName] forState:UIControlStateNormal];
+       
+    }
+   
+    //cell.emoticonButton.backgroundColor = [UIColor greenColor];
+    
+    @weakify_self
+    [cell setClickCellB:^(NSInteger row) {
+        EmojModel *model = self->dataArray[row];
+        [weakSelf emojiButtonTabedWithEmjModel:model];
+    }];
+    
+    return cell;
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"%ld",(long)indexPath.row);
     
 }
 

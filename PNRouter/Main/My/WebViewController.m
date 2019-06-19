@@ -21,6 +21,13 @@
 @end
 
 @implementation WebViewController
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_myWebView removeObserver:self
+                    forKeyPath:NSStringFromSelector(@selector(estimatedProgress))];
+}
+
 - (IBAction)clickBack:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
 }
@@ -46,12 +53,27 @@
                  forKeyPath:NSStringFromSelector(@selector(estimatedProgress))
                     options:0
                     context:nil];
+    //在web页面直接添加观察者
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(windowDidBecomeHidden:) name:UIWindowDidBecomeHiddenNotification object:nil];
 
     [_myWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
  
     
 }
 
+#pragma mark --当调用系统白播放视频时，系统默认会隐藏掉状态栏，通过此方法当视频退出后显示大状态栏
+-(void)windowDidBecomeHidden:(NSNotification *)noti{
+    
+    UIWindow * win = (UIWindow *)noti.object;
+    
+    if(win){
+        UIViewController *rootVC = win.rootViewController;
+        NSArray<__kindof UIViewController *> *vcs = rootVC.childViewControllers;
+        if([vcs.firstObject isKindOfClass:NSClassFromString(@"AVPlayerViewController")]){
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        }
+    }
+}
 
 #pragma mark - WKNavigationDelegate
 // 页面开始加载时调用
@@ -112,10 +134,6 @@
     }
 }
 
--(void)dealloc{
-    [_myWebView removeObserver:self
-                        forKeyPath:NSStringFromSelector(@selector(estimatedProgress))];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

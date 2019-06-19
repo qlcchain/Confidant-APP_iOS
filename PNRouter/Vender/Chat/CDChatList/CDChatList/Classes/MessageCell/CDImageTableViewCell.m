@@ -180,7 +180,8 @@
                                 friendID = data.ToId;
                             }
                             NSString *imgPath = [[SystemUtil getBaseFilePath:friendID] stringByAppendingPathComponent:filePath];
-                    
+                            NSData *fileData = [NSData dataWithContentsOfFile:imgPath];
+                            NSLog(@"md5 = %@,size = %lu",[MD5Util md5WithPath:imgPath],(unsigned long)fileData.length);
                             
                             if ([[MD5Util md5WithPath:imgPath] isEqualToString:data.fileMd5]) {
                                 

@@ -95,7 +95,7 @@
         [self dismissViewControllerAnimated:YES completion:^{
             if (weakSelf.addType == AddGroupMemberTypeBeforeCreate) {
                 if (weakSelf.selectArray.count > 0) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_NOTI object:weakSelf.selectArray];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:weakSelf.selectArray];
                 }
             }
         }];

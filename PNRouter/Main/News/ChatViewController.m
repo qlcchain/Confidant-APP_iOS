@@ -99,9 +99,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+/**
+ 将左边所有消息设为已读
+ */
 - (void) enterFore
 {
-   
     if (self.listView.msgArr.count > 0) {
         
         NSMutableArray *msgArr = [NSMutableArray array];
@@ -150,13 +152,16 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     return _imagePickerVc;
 }
 
-#pragma mark - Observe
+
+/**
+ 添加通知
+ */
 - (void)observe {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addMessage:) name:RECEIVE_MESSAGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addMessageBefore:) name:ADD_MESSAGE_BEFORE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteMessageSuccess:) name:DELET_MESSAGE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveDeleteMessage:) name:RECEIVE_DELET_MESSAGE_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageForward:) name:CHOOSE_FRIEND_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageForward:) name:CHOOSE_FRIEND_FOWARD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFileMessage:) name:RECEVIE_FILE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendSuccess:) name:FILE_SEND_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendTextMessageSuccess:) name:SEND_CHATMESSAGE_SUCCESS_NOTI object:nil];
@@ -176,17 +181,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 //    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
 //    vc.friendModel = _friendModel;
 //    [self.navigationController pushViewController:vc animated:YES];
-    
-//    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
-//    vc.inputType = DebugLogTypeSystem;
-//    [self.navigationController pushViewController:vc animated:YES];
-    
-
-    
+    DebugLogViewController *vc = [[DebugLogViewController alloc] init];
+    vc.inputType = DebugLogTypeSystem;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)leftAction:(id)sender {
-    
     NSString *textString = [self.msginputView getTextViewString];
     textString = [NSString trimWhitespaceAndNewline:textString];
     if (![[NSString getNotNullValue:textString] isEmptyString]) {
@@ -267,8 +267,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
 }
 
-#pragma mark - Operation
 
+/**
+ 更新好友头像
+ */
 - (void)sendUpdateAvatar {
     NSString *Fid = _friendModel.userId?:@"";
     NSString *Md5 = @"0";
@@ -279,6 +281,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
 }
 
+/**
+ 拉取消息
+ */
 - (void)pullMessageRequest {
     UserModel *userM = [UserModel getUserModel];
     NSString *MsgType = @"1"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
@@ -288,7 +293,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [SocketMessageUtil sendVersion5WithParams:params];
 }
 
-#pragma mark -初始化聊天界面
+/**
+ 初始化聊天框 输入框
+ */
 - (void) loadChatUI
 {
     // 初始化聊天界面
@@ -311,10 +318,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.view addSubview:input];
     
 }
-#pragma mark ChatListProtocol
-
+#pragma mark ----------- ChatListProtocol ---------
 -(void)chatlistBecomeFirstResponder{
-    [self.msginputView resignFirstResponder];
+   // [self.msginputView resignFirstResponder];
 }
 
 - (void)clickFileCellWithMsgMode:(CDChatMessage)msgModel withFilePath:(NSString *)filePath
@@ -335,6 +341,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSLog(@"%@",itemTitle);
     if ([itemTitle isEqualToString:@"Forward"]){ // 转发
         ChooseContactViewController *vc = [[ChooseContactViewController alloc] init];
+        vc.docOPenTag = 3;
         [self presentModalVC:vc animated:YES];
     }  else if ([itemTitle isEqualToString:@"Withdraw"]){ // 删除
         
@@ -343,7 +350,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(msgId)]];
         }
         
-        if (self.selectMessageModel.fileID > 0 && self.selectMessageModel.msgState == CDMessageStateSending) { // 是文件
+        if (self.selectMessageModel.fileID > 0 && self.selectMessageModel.messageStatu < 0) { // 是文件
             [self deleteMsg:msgId];
             if ([SystemUtil isSocketConnect]) {
                 @weakify_self
@@ -571,9 +578,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 
+/**
+ 下拉加载更多
 
-
-// 下拉加载更多
+ @param topMessage topMessage
+ @param finnished 完成回调
+ */
 - (void)chatlistLoadMoreMsg:(CDChatMessage)topMessage callback:(void (^)(CDChatMessageArray,BOOL))finnished {
     @weakify_self
     self.pullMoreB = ^(NSArray *arr) {
@@ -602,7 +612,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 //    });
 }
 
-#pragma mark CTInputViewProtocol
+#pragma mark------------ CTInputViewProtocol--------------
 
 - (void)inputViewPopAudioath:(NSURL *)path {
     
@@ -663,7 +673,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 
-// 调用系统相机
+/**
+ 调用系统相机
+
+ @param isCamera 是否是调用相机
+ */
 - (void)selectCamera:(BOOL)isCamera {
     AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (status == AVAuthorizationStatusRestricted || status == AVAuthorizationStatusDenied)
@@ -708,7 +722,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 
-#pragma UIImagePickerController delegate
+#pragma mark ------ UIImagePickerController delegate---------
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     
     [picker  dismissViewControllerAnimated:YES completion:nil];
@@ -738,16 +752,15 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             });
          }
     }
-   
-    
-    
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
-//调用系统相册
+/**
+ 调用相册
+ */
 - (void)selectImage{
 
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
@@ -758,7 +771,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 // 无相机权限 做一个友好的提示
                 dispatch_async(dispatch_get_main_queue(), ^{
                      [weakSelf.view endEditing:YES];
-                     [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
+                     [AppD.window showHint:@"Please allow access to the album in \"Settings - privacy - album\" on the iPhone"];
                 });
                
             } else {
@@ -779,7 +792,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
     
 }
-#pragma mark -发送更多回调
+#pragma mark -------点击聊天菜单回调---------
 - (void)inputViewPopCommand:(NSString *)string {
     if ([string isEqualToString:@"Album"]) {
         
@@ -880,9 +893,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
    
 }
 
+/**
+ 发送文件
 
-
-#pragma mark -发送文件
+ @param toId toid
+ @param fileName fileName
+ @param fileData fileData
+ @param fileId fileId
+ @param fileType fileType
+ @param messageId messageId
+ @param srcKey srcKey
+ @param dsKey dsKey
+ @param publicKey publicKey
+ @param msgKey msgKey
+ @param fileInfo fileInfo
+ */
 - (void) sendFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey msgKey:(NSString *) msgKey fileInfo:(NSString *) fileInfo
 {
     if ([SystemUtil isSocketConnect]) {
@@ -928,8 +953,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 
-
-// 输入框输出文字
+#pragma makr ------点击发送按钮回调--------
 - (void)inputViewPopSttring:(NSString *)string {
     // 去掉前后空格和换行符
     string = [NSString trimWhitespaceAndNewline:string];
@@ -988,7 +1012,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 
-#pragma mark - 当输入框frame变化是，会回调此方法
+#pragma mark ----当输入框frame变化是，会回调此方法---------
 - (void)inputViewWillUpdateFrame:(CGRect)newFrame animateDuration:(double)duration animateOption:(NSInteger)opti {
     //  当输入框因为多行文本变高时，listView需要做响应变化
     
@@ -1020,8 +1044,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     return YES;
 }
 
-#pragma mark - NOTI
-// 未发成功文件发送中通知
+#pragma mark --文件发送中通知--------
 - (void) fileSendingNoti:(NSNotification *) noti
 {
     NSArray *resultArr = noti.object;
@@ -1035,6 +1058,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }];
 }
+#pragma mark ---查询当前用户是不是自己好友通知-------
 - (void) queryFriendSuccess:(NSNotification *) noti
 {
     NSString *friendId = noti.object;
@@ -1045,7 +1069,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         [self.listView addMessagesToBottom:@[messageModel]];
     }
 }
-
+#pragma mark-----tox拉取文件成功通知-------
 - (void) fileToxPullSuccess:(NSNotification *) noti
 {
     NSArray *array = noti.object;
@@ -1107,6 +1131,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
     
 }
+#pragma mark----文件拉取成功通知---------
 - (void) filePullSuccess:(NSNotification *) noti
 {
     __block FileModel *model =(FileModel *) noti.object;
@@ -1124,7 +1149,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }];
 }
-
+#pragma mark ---消息已读通知----
 - (void) receiveRedMsg:(NSNotification *) noti
 {
     NSArray *arr = (NSArray *)noti.object;
@@ -1147,7 +1172,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }];
     }
 }
-
+#pragma mark --消息转发通知-----
 - (void) messageForward:(NSNotification *)noti {
    __block NSData *fileDatas = nil;
     NSArray *modeArray = (NSArray *)noti.object;
@@ -1341,7 +1366,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
     }];
 }
-
+#pragma mark --文件发送失败通知----
 - (void) fileSendFaield:(NSNotification *) noti
 {
     NSDictionary *resultDic = noti.object;
@@ -1357,7 +1382,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }];
 }
-
+#pragma mark --文件发送成功通知----
 - (void) fileSendSuccess:(NSNotification *) noti
 {
     NSArray *arr = (NSArray *)noti.object;
@@ -1406,7 +1431,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
 }
-
+#pragma mark -----收到文件消息通知------
 - (void) receiveFileMessage:(NSNotification *) noti
 {
     FileModel *fileModel = (FileModel *)noti.object;
@@ -1464,7 +1489,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.listView addMessagesToBottom:@[model]];
 }
 
-#pragma mark -消息发送成功通知
+#pragma mark ------消息发送成功通知-------
 - (void) sendTextMessageSuccess:(NSNotification *) noti
 {
     NSArray *array = noti.object;
@@ -1497,8 +1522,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }];
     }
 }
-
-
+#pragma mark ------收到文本消息通知--------
 - (void)addMessage:(NSNotification *)noti {
     CDMessageModel *revModel = noti.object;
     if (!revModel) {
@@ -1526,7 +1550,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
 }
 
-#pragma mark -得到一条文字消息 并添加到listview
+#pragma mark -----得到一条文字消息 并添加到listview------
 - (void) addMessagesToList:(CDMessageModel *) model
 {
     NSString *userId = [UserConfig getShareObject].userId;
@@ -1555,20 +1579,19 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
     [self.listView addMessagesToBottom:@[model]];
 }
-
+#pragma mark ------拉取消息成功通知-----
 - (void)addMessageBefore:(NSNotification *)noti {
     
     [self.listView stopRefresh];
-    
     NSArray *messageArr = noti.object;
-    
+
     
     if (self.listView.msgArr && self.listView.msgArr.count > 0) {
         if (_msgStartId == 0) {
             return;
         }
     }
-    
+
     NSMutableArray *msgArr = [NSMutableArray array];
     NSMutableArray *messageModelArr = [NSMutableArray array];
     [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -1721,18 +1744,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         _msgStartId = [((PayloadModel *)messageArr.firstObject).MsgId integerValue];
     }
 }
-
-#pragma mark -发送已读
-- (void) sendRedMsgWithMsgId:(NSString *) msgid
-{
-    UIApplicationState state = [UIApplication sharedApplication].applicationState;
-    BOOL result = (state != UIApplicationStateBackground);
-    if (result) {
-         [SendRequestUtil sendRedMsgWithFriendId:self.friendModel.userId msgid:msgid];
-    }
-   
-}
-
+#pragma mark ---删除消息成功通知-----
 - (void)deleteMessageSuccess:(NSNotification *)noti {
     
     NSString *MsgId = [NSString stringWithFormat:@"%@",noti.object];
@@ -1745,7 +1757,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
 }
-
+#pragma mark ---收到删除消息通知----
 - (void)receiveDeleteMessage:(NSNotification *)noti {
     
     NSArray *resultArr = noti.object;
@@ -1758,6 +1770,22 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 
+#pragma mark -----发送已读------
+- (void) sendRedMsgWithMsgId:(NSString *) msgid
+{
+    UIApplicationState state = [UIApplication sharedApplication].applicationState;
+    BOOL result = (state != UIApplicationStateBackground);
+    if (result) {
+        [SendRequestUtil sendRedMsgWithFriendId:self.friendModel.userId msgid:msgid];
+    }
+    
+}
+
+/**
+ 删除消息
+
+ @param MsgId msgid
+ */
 - (void)deleteMsg:(NSString *)MsgId {
     dispatch_async(dispatch_get_main_queue(), ^{
         __block BOOL isExist = NO;
@@ -1809,12 +1837,19 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     });
     
 }
-
+#pragma mark -----用户头像下载成功通知-----
 - (void)userHeadDownloadSuccess:(NSNotification *)noti {
 //    UserHeaderModel *model = noti.object;
     [_listView justReload];
 }
 
+/**
+ 生成用户头像视图
+
+ @param name 昵称
+ @param userKey 公钥
+ @return 头像视图
+ */
 - (UIView *) getHeadViewWithName:(NSString *)name userKey:(NSString *)userKey {
     UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     imgBackView.backgroundColor = [UIColor clearColor];
@@ -1827,6 +1862,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 
+/**
+ 跳转到选择图片vc
+
+ @param isImage 是
+ */
 - (void)pushTZImagePickerControllerWithIsSelectImgage:(BOOL) isImage {
     
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 columnNumber:3 delegate:self pushPhotoPickerVc:YES];
@@ -1970,6 +2010,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }];
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 }
+
+/**
+ 得到选择的视频
+
+ @param coverImage 视频封面图
+ @param phAsset phasset
+ */
 - (void) getPHAssetVedioWithOverImg:(UIImage *) coverImage phAsset:(PHAsset *)phAsset
 {
     PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
@@ -1992,6 +2039,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }}];
 }
+
+/**
+ 得到选中的图片并发送
+
+ @param img 图片
+ @param imgData 图片data
+ */
 - (void) sendImgageWithImage:(UIImage *) img imgData:(NSData *) imgData
 {
     NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
@@ -2044,6 +2098,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
     [self sendFileWithToid:self.friendModel.userId fileName:uploadFileName fileData:imgData fileId:msgid fileType:1 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
 }
+
+/**
+ 导出视频并发送
+
+ @param asset asset
+ @param evImage 封面图
+ */
 - (void)extractedVideWithAsset:(AVURLAsset *)asset evImage:(UIImage *) evImage
 {
     // [AppD.window showHudInView:AppD.window hint:@"File encrypting"];
@@ -2109,67 +2170,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 
-//#pragma mark -视频导出到本地完成 并发送
-//- (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
-//
-//    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-//    NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
-//    int msgid = [mill intValue];
-//    CDMessageModel *model = [[CDMessageModel alloc] init];
-//    model.msgType = CDMessageTypeMedia;
-//    model.messageStatu = -1;
-//    model.FromId = [UserConfig getShareObject].userId;
-//    model.ToId = self.friendModel.userId;
-//    model.msgState = CDMessageStateSending;
-//    model.messageId = [NSString stringWithFormat:@"%d",msgid];;
-//    model.fileID = msgid;
-//    CTDataConfig config = [CTData defaultConfig];
-//    config.isOwner = YES;
-//    model.willDisplayTime = YES;
-//    model.TimeStatmp = [NSDate getTimestampFromDate:[NSDate date]];
-//    model.publicKey = self.friendModel.publicKey;
-//    model.ctDataconfig = config;
-//    model.mediaImage = evImage;
-//    NSString *nkName = [UserModel getUserModel].username;
-//    NSString *userKey = [EntryModel getShareObject].signPublicKey;
-//    model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nkName userKey:userKey]];
-//    [self.listView addMessagesToBottom:@[model]];
-//
-//    //    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-//    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
-//    outputPath =  [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:outputPath];
-//    [TZImageManager manager].outputPath = outputPath;
-//    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetHighestQuality success:^(NSString *outputPath) {
-//        NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
-//        //UIImage *img = [SystemUtil thumbnailImageForVideo:url];
-//        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
-//
-//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//
-//            model.fileSize = mediaData.length;
-//            model.fileName = [[outputPath componentsSeparatedByString:@"/"] lastObject];
-//            // 生成32位对称密钥
-//            NSString *msgKey = [SystemUtil get32AESKey];
-//            NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-//            NSString *symmetKey = [symmetData base64EncodedString];
-//            // 好友公钥加密对称密钥
-//            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
-//            // 自己公钥加密对称密钥
-//            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
-//
-//            NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-//            mediaData = aesEncryptData(mediaData,msgKeyData);
-//
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self sendFileWithToid:self.friendModel.userId fileName:model.fileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey];
-//            });
-//        });
-//
-//
-//    } failure:^(NSString *errorMessage, NSError *error) {
-//        [self.view showHint:@"The current video format is not supported"];
-//    }];
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -2177,7 +2177,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 
-#pragma mark - UIDocumentPickerDelegate
+#pragma mark ------ UIDocumentPickerDelegate-------
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls NS_AVAILABLE_IOS(11_0) {
     NSLog(@"didPickDocumentsAtURLs:%@",urls);
     
@@ -2195,6 +2195,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSLog(@"didPickDocumentAtURL:%@",url);
    [self sendDocFileWithFileUrls:@[url]];
 }
+
+/**
+ 发送文档文件
+
+ @param urls 文件url
+ */
 - (void) sendDocFileWithFileUrls:(NSArray *) urls
 {
     if (urls && urls.count > 0) {
@@ -2251,15 +2257,22 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 
-#pragma mark - 保存图片视频
-// 保存图片到相册
+/**
+ 保存图片到相册
+
+ @param image 图片
+ */
 - (void)saveImage:(UIImage *)image{
     if (image) {
         UIImageWriteToSavedPhotosAlbum(image, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
     }
 }
 
-// 保存视频到相册
+/**
+ 保存视频到相册
+ 
+ @param videoPath 视频
+ */
 - (void)saveVideo:(NSString *)videoPath{
     if (videoPath) {
         if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoPath)) {
@@ -2272,35 +2285,25 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 //保存图片完成后调用的方法
 - (void) savedPhotoImage:(UIImage*)image didFinishSavingWithError: (NSError *)error contextInfo: (void *)contextInfo {
-    if (error) {
-        NSLog(@"保存图片出错%@", error.localizedDescription);
-    }
-    else {
-        NSLog(@"保存图片成功");
-        [AppD.window showHint:@"Save success."];
+    if (!error) {
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Saved"];
+    } else {
+        [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Save"];
     }
 }
 
 //保存视频完成之后的回调
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
-    if (error) {
-        NSLog(@"保存视频失败%@", error.localizedDescription);
-    }
-    else {
-        NSLog(@"保存视频成功");
-        [AppD.window showHint:@"Save success."];
+    if (!error) {
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Saved"];
+    } else {
+        [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Save"];
     }
     
 }
 
 
-
-
-
-
-
-
-#pragma mark -群聊发送文件
+#pragma mark --------群聊发送文件---------
 - (void) sendGroupFileWithToid:(NSString *) toId fileName:(NSString *) fileName fileData:(NSData *) fileData fileId:(int) fileId fileType:(int) fileType messageId:(NSString *) messageId srcKey:(NSString *) srcKey dsKey:(NSString *) dsKey publicKey:(NSString *) publicKey msgKey:(NSString *) msgKey fileInfo:(NSString *) fileInfo
 {
     if ([SystemUtil isSocketConnect]) {
@@ -2338,18 +2341,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
 }
-
-
-
-
-
-
-
-
-
+#pragma mark ----长按图片显示菜单--------
 - (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageIndexChanged:(NSUInteger)index data:(id<YBImageBrowserCellDataProtocol>)data
 {
-    NSLog(@"------------------------------------");
     YBImageBrowserSheetView *sheetView = imageBrowser.sheetView;
     NSMutableArray *mutArr = [self.actionArr mutableCopy];
     YBImageBrowseCellData *data1 = (YBImageBrowseCellData *)data;
@@ -2366,6 +2360,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }];
 }
 
+/**
+ 保存图片到本地
+
+ @param image image
+ */
 - (void)loadImageFinished:(UIImage *)image
 {
     UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), (__bridge void *)self);
@@ -2374,33 +2373,45 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     if (!error) {
-        [self.view showHint:@"Save Success"];
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Saved"];
     } else {
-        [self.view showHint:@"Save Failed"];
+        [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Save"];
     }
 }
 
+/**
+ 跳转到添加好友vc
 
-#pragma mark - Transition
+ @param friendId friendId
+ @param nickName nickName
+ @param signpk signpk
+ */
 - (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk
 {
-    
     FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
     [self.navigationController pushViewController:vc animated:YES];
     
 }
 
+/**
+ 跳转到codemsg vc
+
+ @param codeValue codeValue
+ */
 - (void) jumpCodeValueVCWithCodeValue:(NSString *) codeValue
 {
-    
     CodeMsgViewController *vc = [[CodeMsgViewController alloc] initWithCodeValue:codeValue];
     [browser presentViewController:vc animated:YES completion:nil];
     
 }
 
+/**
+ 导入帐户
+
+ @param values values
+ */
 - (void) showAlertImportAccount:(NSArray *) values
 {
-    
     NSString *signpk = values[1];
    // NSString *usersn = values[2];
     if ([signpk isEqualToString:[EntryModel getShareObject].signPrivateKey])
@@ -2457,6 +2468,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [browser presentViewController:vc animated:YES completion:nil];
 }
 
+/**
+ 切换圈子
+
+ @param values values
+ @param isMac yes:mac帐户 no: 普通帐户
+ */
 - (void) showAlertVCWithValues:(NSArray *) values isMac:(BOOL) isMac
 {
     self.view.hidden = YES;

@@ -21,4 +21,6 @@
 - (void)showHint:(NSString *)hint yOffset:(float)yOffset;
 - (void)showView:(UIView *)view hint:(NSString *)hint;
 - (void)showMiddleHint:(NSString *)hint;
+- (void)showSuccessHudInView:(UIView *)view hint:(NSString *)hint;
+- (void)showFaieldHudInView:(UIView *)view hint:(NSString *)hint;
 @end

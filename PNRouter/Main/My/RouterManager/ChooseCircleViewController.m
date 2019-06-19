@@ -227,7 +227,7 @@
         return;
     }
     isSwitchCircle = YES;
-    [self.view showHudInView:self.view hint:Connect_Cricle];
+    [self.view showHudInView:self.view hint:Switch_Cricle];
     RouterModel *selectRouterModel = model.routerM;
     // 发送退出请求
     [SendRequestUtil sendLogOut];
@@ -356,13 +356,19 @@
 #pragma mark -- 切换失败
 - (void) switchCircleFaieldWithHintString:(NSString *) hitStr
 {
-    AppD.currentRouterNumber = -1;
     [self.view hideHud];
+    [AppD.window showFaieldHudInView:AppD.window hint:Switch_Cricle_Failed];
+    
+    AppD.currentRouterNumber = -1;
     AppD.isSwitch = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-     [RouterConfig getRouterConfig].currentRouterIp = @"";
-    [AppD setRootLoginWithType:RouterType];
-    [AppD.window showHint:hitStr];
+    [RouterConfig getRouterConfig].currentRouterIp = @"";
+    
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+       
+        [AppD setRootLoginWithType:RouterType];
+    });
 }
 #pragma mark- --切换成功
 - (void) switchCircleSuccess
@@ -372,6 +378,9 @@
             return;
         }
     }
+    
+    [AppD.window showSuccessHudInView:AppD.window hint:@"Switched"];
+    
     // 发送获取好友列表和群组列表通知
     [[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_GROUP_LIST_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
@@ -384,7 +393,15 @@
     AppD.inLogin = YES;
     AppD.isSwitch = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self leftNavBarItemPressedWithPop:NO];
+    
+    @weakify_self
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        
+         [weakSelf leftNavBarItemPressedWithPop:NO];
+    });
+    
+   
     //[AppD.window showHint:@"Successful circle switching."];
 }
 // 检测find请求10秒内是否有返回
@@ -443,11 +460,19 @@
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     if (receiveDic) {
         NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
-       // NSString *routherid = receiveDic[@"params"][@"RouteId"];
+        
+        NSString *routherid = receiveDic[@"params"][@"RouteId"];
         NSString *usesn = receiveDic[@"params"][@"UserSn"];
         NSString *userid = receiveDic[@"params"][@"UserId"];
        // NSString *userName = receiveDic[@"params"][@"NickName"];
        
+        if (![[NSString getNotNullValue:routherid] isEmptyString]) {
+            [RouterConfig getRouterConfig].currentRouterToxid = routherid;
+        }
+        if (![[NSString getNotNullValue:usesn] isEmptyString]) {
+            [RouterConfig getRouterConfig].currentRouterSn = usesn;
+        }
+        
         if (retCode == 0) { //已激活
             isLoginRequest = NO;
             [SendRequestUtil sendUserLoginWithPass:usesn userid:userid showHud:NO];

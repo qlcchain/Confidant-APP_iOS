@@ -53,6 +53,9 @@ static NSString *Action_GetDiskTotalInfo = @"GetDiskTotalInfo";
 static NSString *Action_GetDiskDetailInfo = @"GetDiskDetailInfo";
 static NSString *Action_FormatDisk = @"FormatDisk";
 static NSString *Action_Reboot = @"Reboot";
+static NSString *Action_EnableQlcNode = @"EnableQlcNode";
+static NSString *Action_CheckQlcNode = @"CheckQlcNode";
+
 static NSString *Action_ResetRouterName = @"ResetRouterName";
 static NSString *Action_UploadAvatar = @"UploadAvatar";
 static NSString *Action_UpdateAvatar = @"UpdateAvatar";
@@ -92,6 +95,7 @@ static NSString *Action_DelUser = @"DelUser";
 + (void)sendVersion3WithParams:(NSDictionary *)params;
 + (void)sendVersion4WithParams:(NSDictionary *)params;
 + (void)sendVersion5WithParams:(NSDictionary *)params;
++ (void)sendVersion6WithParams:(NSDictionary *)params;
 + (void)sendRecevieMessageWithParams5:(NSDictionary *)params;
 // 回复router
 + (void)sendRecevieMessageWithParams:(NSDictionary *)params tempmsgid:(NSInteger) msgid;

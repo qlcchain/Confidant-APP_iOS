@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , assign) NSInteger CreateTime;
 @property (nonatomic , strong) NSString *UserKey;
 
-
+@property (nonatomic , strong) NSString *aliaName;
 @end
 
 NS_ASSUME_NONNULL_END

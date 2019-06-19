@@ -10,7 +10,9 @@
 #define CustomMacro_h
 // 是否要清人除数据
 #define CLEAR_DATA  @"CLEAR_DATA"
-#define Connect_Cricle @"Connect Circle..."
+#define Connect_Cricle @"Connect the Circle"
+#define Switch_Cricle @"Switch the Circle"
+#define Switch_Cricle_Failed @"Failed to Switch"
 // 数据库表名
 #define FRIEND_REQUEST_TABNAME  @"friend_requet_tableName"
 // 文件记录表
@@ -63,6 +65,12 @@ static NSInteger socketConnectStatusConnected = 2;
 static NSInteger socketConnectStatusDisconnecting = 3;
 static NSInteger socketConnectStatusDisconnected = 4;
 
+#pragma mark - HUD Text
+#define Loading_Str @"Loding..."
+#define Uploading_Str @"Uploading..."
+#define Switching_Str @"Switching..."
+#define Deleting_Str @"Deleting..."
+#define Updateing_Str @"Updateing..."
 
 #define User_Header_Size 500*1024      // 500KB
 #define Screen_Lock_Local @"Screen_Lock_Local"

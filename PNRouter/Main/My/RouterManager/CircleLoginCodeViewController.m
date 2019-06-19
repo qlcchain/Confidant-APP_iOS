@@ -147,9 +147,9 @@
     saveCount ++;
     if (saveCount == 1) {
         if (!error) {
-            [self.view showHint:@"Save Success"];
+            [AppD.window showSuccessHudInView:AppD.window hint:@"Saved"];
         } else {
-            [self.view showHint:@"Save Failed"];
+            [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Save"];
         }
     }
 }

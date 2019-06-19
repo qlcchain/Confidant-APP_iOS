@@ -38,7 +38,10 @@
     [self addGuidePageView];
 }
 
-// 添加引导页
+
+/**
+ 依次添加引导页
+ */
 - (void) addGuidePageView {
     GuidePageView1 *page1 = [GuidePageView1 loadGuidePageView1];
     page1.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -55,6 +58,11 @@
     [_mainScrollView addSubview:page3];
 }
 
+/**
+ 开始方法
+
+ @param btn sender
+ */
 - (void)startAction:(UIButton *)btn {
     [AppD judgeLogin];
 }

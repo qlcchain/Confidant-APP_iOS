@@ -12,6 +12,7 @@
 #import "RouterUserModel.h"
 #import "NSString+Base64.h"
 #import "RouterModel.h"
+#import "NSString+Trim.h"
 
 @interface AddNewMemberViewController ()<UITextFieldDelegate>
 
@@ -71,13 +72,26 @@
 }
 
 - (IBAction)qrCodeAction:(id)sender {
-    [SendRequestUtil sendPullTmpAccountWithShowHud:YES];
+    
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"Caution" message:@"Anyone with your Circle QR Code can create accounts in your Confidant Station without your permission. " preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Next" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+         [SendRequestUtil sendPullTmpAccountWithShowHud:YES];
+    }];
+    [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
+    [alertC addAction:alert1];
+    
+    UIAlertAction *alertCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertC addAction:alertCancel];
+    [self presentViewController:alertC animated:YES completion:nil];
+    
+   
 }
 
 #pragma -mark uitextfeildchange
 - (void) textFieldTextChange:(UITextField *) tf
 {
-    if ([tf.text.trim isEmptyString]) {
+    if (![NSString trimWhitespaceAndNewline:tf.text] || [NSString trimWhitespaceAndNewline:tf.text].length == 0) {
         _nextBtn.backgroundColor = RGB(213, 213, 213);
         _nextBtn.enabled = NO;
     } else {
@@ -111,7 +125,8 @@
     model.UserType = 2;
     model.Active = 0;
     model.Qrcode = qrCode;
-    model.NickName = _nameTF.text.trim;
+    model.NickName = [RouterModel getConnectRouter].name;
+    model.aliaName = [NSString trimWhitespaceAndNewline:_nameTF.text];
     [self jumpToTempQR:model];
 }
 

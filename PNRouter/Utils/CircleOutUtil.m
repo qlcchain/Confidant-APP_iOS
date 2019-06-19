@@ -87,7 +87,7 @@
 //        self.circleOutBlock = circleOutBlock;
 //    }
     
-    [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
+    [AppD.window showHudInView:AppD.window hint:Switch_Cricle];
     
     isSwitchCircle = YES;
     // 发送退出请求
@@ -266,8 +266,16 @@
     [AppD.window hideHud];
     AppD.isSwitch = NO;
     [RouterConfig getRouterConfig].currentRouterIp = @"";
-    [AppD setRootLoginWithType:RouterType];
-    [AppD.window showHint:hitStr];
+    
+    [AppD.window showFaieldHudInView:AppD.window hint:Switch_Cricle_Failed];
+    
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [AppD setRootLoginWithType:RouterType];
+    });
+    
+//    [AppD setRootLoginWithType:RouterType];
+//    [AppD.window showHint:hitStr];
 }
 #pragma mark- --切换成功
 - (void) switchCircleSuccess
@@ -278,6 +286,7 @@
             return;
         }
     }
+    [AppD.window showSuccessHudInView:AppD.window hint:@"Switched"];
     isSwitchCircle = NO;
     // 发送获取好友列表和群组列表通知
     //[[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_GROUP_LIST_NOTI object:nil];
@@ -290,7 +299,12 @@
     AppD.isLogOut = NO;
     AppD.inLogin = YES;
     AppD.isSwitch = NO;
-    [AppD setRootTabbarWithManager:AppD.manager];
+    
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+       [AppD setRootTabbarWithManager:AppD.manager];
+    });
+    
     
 }
 // 检测find请求10秒内是否有返回
@@ -375,10 +389,17 @@
         NSDictionary *receiveDic = (NSDictionary *)noti.object;
         if (receiveDic) {
             NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
-            // NSString *routherid = receiveDic[@"params"][@"RouteId"];
+            NSString *routherid = receiveDic[@"params"][@"RouteId"];
             NSString *usesn = receiveDic[@"params"][@"UserSn"];
             NSString *userid = receiveDic[@"params"][@"UserId"];
             // NSString *userName = receiveDic[@"params"][@"NickName"];
+            
+            if (![[NSString getNotNullValue:routherid] isEmptyString]) {
+                [RouterConfig getRouterConfig].currentRouterToxid = routherid;
+            }
+            if (![[NSString getNotNullValue:usesn] isEmptyString]) {
+                [RouterConfig getRouterConfig].currentRouterSn = usesn;
+            }
             
             if (retCode == 0) { //已激活
                 [AppD.window showHudInView:AppD.window hint:@"Login..."];

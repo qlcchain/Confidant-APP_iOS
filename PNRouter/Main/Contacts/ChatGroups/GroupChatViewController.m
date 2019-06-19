@@ -68,6 +68,7 @@
 #import "CircleOutUtil.h"
 #import "GroupMembersModel.h"
 #import "AtUserModel.h"
+#import "NSString+HexStr.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -121,6 +122,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+  //  [IQKeyboardManager sharedManager].enable = NO;
     NSString *showTitle = _groupModel.Remark&&_groupModel.Remark.length>0?_groupModel.Remark:_groupModel.GName;
     _lblNavTitle.text = [showTitle base64DecodedString]?:showTitle;
     isGroupChatViewController = YES;
@@ -129,6 +131,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
+   // [IQKeyboardManager sharedManager].enable = YES;
     isGroupChatViewController = NO;
 }
 - (void)dealloc
@@ -258,7 +261,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupFileSendFaield:) name:GROUP_FILE_SEND_FAIELD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxDownFileSuccess:) name:REVER_GROUP_FILE_PULL_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileSendingNoti:) name:FILE_SENDING_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageForward:) name:CHOOSE_FRIEND_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageForward:) name:CHOOSE_FRIEND_FOWARD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remindUserNoti:) name:REMIND_USER_SUCCESS_NOTI object:nil];
 }
 
@@ -302,7 +305,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 #pragma mark ChatListProtocol
 
 -(void)chatlistBecomeFirstResponder{
-    [self.msginputView resignFirstResponder];
+   // [self.msginputView resignFirstResponder];
 }
 
 - (void)clickFileCellWithMsgMode:(CDChatMessage)msgModel withFilePath:(NSString *)filePath {
@@ -344,6 +347,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSLog(@"%@",itemTitle);
     if ([itemTitle isEqualToString:@"Forward"]){ // 转发
         ChooseContactViewController *vc = [[ChooseContactViewController alloc] init];
+        vc.docOPenTag = 3;
         [self presentModalVC:vc animated:YES];
     }  else if ([itemTitle isEqualToString:@"Withdraw"]){ // 删除
         
@@ -352,7 +356,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgid"),bg_sqlValue(msgId)]];
         }
         
-        if (self.selectMessageModel.fileID > 0 && self.selectMessageModel.msgState == CDMessageStateSending) { // 是文件
+        if (self.selectMessageModel.fileID > 0 && (self.selectMessageModel.messageStatu < 0)) { // 是文件
             [self deleteMsg:msgId];
             if ([SystemUtil isSocketConnect]) {
                 @weakify_self
@@ -573,7 +577,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *insertString = [NSString stringWithFormat:kATFormat,clickMessage.userName];
     NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
     [string insertString:insertString atIndex:insertIndex];
-    if (string.length > 245) {
+    if ([string charactorNumber] >= fontMax) {
         [self.view showHint:@"The length of the sent content is out of range."];
         return;
     }
@@ -1640,6 +1644,20 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void) receivedMessgePushNoti:(NSNotification *) noti
 {
     PayloadModel *payloadModel = noti.object;
+    
+    // 去重
+    __block BOOL isExist = NO;
+    [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CDMessageModel *model = (id)obj;
+        if ([model.messageId integerValue] == [payloadModel.MsgId integerValue]) {
+            isExist = YES;
+            *stop = YES;
+        }
+    }];
+    if (isExist) {
+        return;
+    }
+    
     CDMessageModel *model = [[CDMessageModel alloc] init];
     
     model.FromId = payloadModel.From;
@@ -1956,12 +1974,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 //保存视频完成之后的回调
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
-    if (error) {
-        NSLog(@"保存视频失败%@", error.localizedDescription);
-    }
-    else {
-        NSLog(@"保存视频成功");
-        [AppD.window showHint:@"Save success."];
+    if (!error) {
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Saved"];
+    } else {
+        [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Save"];
     }
 }
 
@@ -1987,7 +2003,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
             NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
             [string insertString:insertString atIndex:insertIndex];
-            if (string.length > 245) {
+            if ([string charactorNumber] >= fontMax) {
                 [self.view showHint:@"The length of the sent content is out of range."];
                 return;
             }
@@ -2022,7 +2038,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         NSString *insertString = [NSString stringWithFormat:kATFormat,@"All"];
         NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
         [string insertString:insertString atIndex:insertIndex];
-        if (string.length > 245) {
+        if ([string charactorNumber] >= fontMax) {
             [self.view showHint:@"The length of the sent content is out of range."];
             return;
         }
@@ -2321,9 +2337,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     if (!error) {
-        [self.view showHint:@"Save Success"];
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Saved"];
     } else {
-        [self.view showHint:@"Save Failed"];
+        [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Save"];
     }
 }
 
