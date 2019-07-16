@@ -47,6 +47,7 @@
 #import "LoginDeviceViewController.h"
 #import "UserConfig.h"
 #import "ChatListModel.h"
+#import "LeftViewController.h"
 
 // 引入 JPush 功能所需头文件
 #import "JPUSHService.h"
@@ -80,6 +81,8 @@
 //         [JPUSHService setBadge:0];
 //    }
     
+  //  NSString *userids= [UserModel getUserModel].userId;
+  //  [KeyCUtil deleteWithKey:userids];
     
     // 配置Bugly
     [self configBugly];
@@ -215,6 +218,7 @@
 - (void)setRootLoginWithType:(LoginType) type {
     [AppD addTransitionAnimation];
     AppD.isLoginMac = NO;
+    
     LoginViewController *vc = [[LoginViewController alloc] initWithLoginType:type];
     AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];
 }
@@ -290,12 +294,13 @@
        // AppD.manager = nil; tox_stop
         AppD.currentRouterNumber = -1;
     }
-    // 设置当前路由
-   // [RouterModel updateRouterConnectStatusWithSn:[RoutherConfig getRouterConfig].currentRouterSn];
     // 我们要把系统windown的rootViewController替换掉
+    
     PNTabbarViewController  *tabbarC = [[PNTabbarViewController alloc] initWithManager:manager];
+    LeftViewController *leftMenuViewController = [[LeftViewController alloc] init];
+    _sideMenuViewController = [[YJSideMenu alloc] initWithContentViewController:tabbarC leftMenuViewController:leftMenuViewController];
     [AppD addTransitionAnimation];
-    AppD.window.rootViewController = tabbarC;
+    AppD.window.rootViewController = _sideMenuViewController;
     AppD.inLogin = YES;
 }
 

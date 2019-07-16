@@ -137,6 +137,7 @@
     // 设置标题的属性
     [childController.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:TABBARTEXT_DEFAULT_COLOR} forState:UIControlStateNormal];
     [childController.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:TABBARTEXT_SELECT_COLOR} forState:UIControlStateSelected];
+    
     PNNavViewController *nav = [[PNNavViewController alloc] initWithRootViewController:childController];
     
     // 设置item的标题

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "PNTabbarViewController.h"
 #import "LoginViewController.h"
+#import "YJSideMenu.h"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -31,6 +33,10 @@
 // 外部文件打开的url
 @property (nonatomic ,strong) NSURL *fileURL;
 //@property (nonatomic ,strong) NSData *devToken;
+// 左侧左栏
+@property (nonatomic ,strong) YJSideMenu *sideMenuViewController;
+// 当前是不是emailpage
+@property (nonatomic ,assign) BOOL isEmailPage;
 
 /**
  app是否正在进行登录操作

@@ -6,6 +6,7 @@
 //  Copyright © 2018年 旷自辉. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "PNBaseViewController.h"
 
 @interface NewsViewController : PNBaseViewController

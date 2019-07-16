@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PNEmailOptionEnumView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bm0-bK-is9">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <action selector="clickBackAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="B3L-uC-jqX"/>
+                    </connections>
+                </button>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCe-MN-KdX" customClass="SkyRadiusView">
+                    <rect key="frame" x="0.0" y="352" width="375" height="315"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="i5W-P0-yI8">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="315"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="315" id="4fm-J6-2QT"/>
+                        <constraint firstItem="i5W-P0-yI8" firstAttribute="leading" secondItem="nCe-MN-KdX" secondAttribute="leading" id="9EC-8o-add"/>
+                        <constraint firstItem="i5W-P0-yI8" firstAttribute="top" secondItem="nCe-MN-KdX" secondAttribute="top" id="C4C-65-0cK"/>
+                        <constraint firstAttribute="bottom" secondItem="i5W-P0-yI8" secondAttribute="bottom" id="cau-m5-6fm"/>
+                        <constraint firstAttribute="trailing" secondItem="i5W-P0-yI8" secondAttribute="trailing" id="yIF-wz-egr"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightRadius" value="YES"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftRadius" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="bm0-bK-is9" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="9Cu-lD-uVz"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="nCe-MN-KdX" secondAttribute="bottom" id="Cio-K2-QCG"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="nCe-MN-KdX" secondAttribute="trailing" id="PcI-mH-gPo"/>
+                <constraint firstItem="bm0-bK-is9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="YuD-US-8yN"/>
+                <constraint firstItem="nCe-MN-KdX" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="aya-61-NC0"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="bm0-bK-is9" secondAttribute="trailing" id="ldW-3R-dVw"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="bm0-bK-is9" secondAttribute="bottom" id="t9Q-JI-kak"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="backBtn" destination="bm0-bK-is9" id="IoL-po-BKz"/>
+                <outlet property="backContraintBottom" destination="Cio-K2-QCG" id="nSN-75-z5a"/>
+                <outlet property="backView" destination="nCe-MN-KdX" id="bAf-8m-L5R"/>
+                <outlet property="mainTabView" destination="i5W-P0-yI8" id="pfj-zx-whE"/>
+            </connections>
+            <point key="canvasLocation" x="129" y="-36"/>
+        </view>
+    </objects>
+</document>

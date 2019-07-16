@@ -82,7 +82,6 @@
 }
 
 + (UserModel *)getUserModel {
-    
     NSString *modeJson = [KeyCUtil getKeyValueWithKey:USER_LOCAL];
     UserModel *userM = nil;
     if (!modeJson || [modeJson isEmptyString]) {

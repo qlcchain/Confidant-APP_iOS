@@ -47,6 +47,7 @@ def demo_pods
     pod 'YBImageBrowser'
     pod 'TZImagePickerController' #iOS8 and later
     # pod 'TYAttributedLabel', '~> 2.6.2'
+    pod 'mailcore2-ios'
 end
 
 

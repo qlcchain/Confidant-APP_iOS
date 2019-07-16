@@ -36,6 +36,7 @@ PODS:
     - libopus-patched-config/float (= 1.1)
   - libopus-patched-config/float (1.1)
   - libsodium (1.0.12)
+  - mailcore2-ios (0.6.4)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - MJExtension (3.0.15.1)
@@ -74,6 +75,7 @@ DEPENDENCIES:
   - KeychainAccess
   - libopus-patched-config
   - libsodium
+  - mailcore2-ios
   - Masonry
   - MBProgressHUD
   - MJExtension
@@ -103,6 +105,7 @@ SPEC REPOS:
     - KeychainAccess
     - libopus-patched-config
     - libsodium
+    - mailcore2-ios
     - Masonry
     - MBProgressHUD
     - MJExtension
@@ -139,6 +142,7 @@ SPEC CHECKSUMS:
   KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
   libopus-patched-config: 12321105eb4b96e869b7957f3122345fd67928c3
   libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
+  mailcore2-ios: 3ff0be2fa553d4da9c11d39c11d51863c768f24f
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
@@ -153,6 +157,6 @@ SPEC CHECKSUMS:
   YBImageBrowser: b378a73a92ec4dcdebf2b7c18903cb62479b9cfa
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
 
-PODFILE CHECKSUM: 7207ab45ee903bca9d932414746e26e2dc2a95cc
+PODFILE CHECKSUM: 7e33279e3c06951d80a89568896ed8fa686a4a0a
 
 COCOAPODS: 1.5.3

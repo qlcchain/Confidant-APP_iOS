@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="AttchCollectionCell">
+            <rect key="frame" x="0.0" y="0.0" width="114" height="98"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="114" height="98"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KqG-ZS-954">
+                        <rect key="frame" x="0.0" y="0.0" width="114" height="98"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt" translatesAutoresizingMaskIntoConstraints="NO" id="Keb-wJ-fm4">
+                                <rect key="frame" x="40" y="8" width="34" height="34"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LSU-6n-TMx">
+                                <rect key="frame" x="16" y="46" width="82" height="16.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" id="alh-GZ-2GH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zW6-sw-h1b">
+                                <rect key="frame" x="42.5" y="66.5" width="29.5" height="14"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                <color key="textColor" red="0.58039215690000001" green="0.58823529409999997" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="LSU-6n-TMx" secondAttribute="trailing" constant="16" id="4k8-6i-7J8"/>
+                            <constraint firstItem="LSU-6n-TMx" firstAttribute="top" secondItem="Keb-wJ-fm4" secondAttribute="bottom" constant="4" id="SDR-Pa-Yj9"/>
+                            <constraint firstItem="LSU-6n-TMx" firstAttribute="leading" secondItem="KqG-ZS-954" secondAttribute="leading" constant="16" id="UQ3-4e-IvT"/>
+                            <constraint firstItem="LSU-6n-TMx" firstAttribute="centerX" secondItem="KqG-ZS-954" secondAttribute="centerX" id="fLQ-yf-7yP"/>
+                            <constraint firstItem="zW6-sw-h1b" firstAttribute="centerX" secondItem="KqG-ZS-954" secondAttribute="centerX" id="ioD-It-jvD"/>
+                            <constraint firstItem="Keb-wJ-fm4" firstAttribute="centerX" secondItem="KqG-ZS-954" secondAttribute="centerX" id="mTH-IJ-HGL"/>
+                            <constraint firstItem="zW6-sw-h1b" firstAttribute="top" secondItem="LSU-6n-TMx" secondAttribute="bottom" constant="4" id="uAT-o0-5aF"/>
+                            <constraint firstItem="LSU-6n-TMx" firstAttribute="centerY" secondItem="KqG-ZS-954" secondAttribute="centerY" constant="5" id="vCR-NX-3gd"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="KqG-ZS-954" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="68f-7K-oF8"/>
+                <constraint firstAttribute="trailing" secondItem="KqG-ZS-954" secondAttribute="trailing" id="EPt-LJ-NCW"/>
+                <constraint firstItem="KqG-ZS-954" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="TP8-qQ-Ww1"/>
+                <constraint firstAttribute="bottom" secondItem="KqG-ZS-954" secondAttribute="bottom" id="jWs-Gz-fg6"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <size key="customSize" width="114" height="98"/>
+            <connections>
+                <outlet property="backV" destination="KqG-ZS-954" id="gIQ-es-juj"/>
+                <outlet property="headImgV" destination="Keb-wJ-fm4" id="LgZ-4P-8sh"/>
+                <outlet property="lblCount" destination="zW6-sw-h1b" id="6hc-dn-UnH"/>
+                <outlet property="lblName" destination="LSU-6n-TMx" id="JSk-Yx-ehu"/>
+            </connections>
+            <point key="canvasLocation" x="95.652173913043484" y="59.598214285714285"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="txt" width="34" height="34"/>
+    </resources>
+</document>
