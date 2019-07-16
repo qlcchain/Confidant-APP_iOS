@@ -15,6 +15,7 @@
 #import "EmailListInfo.h"
 #import "EmailUserModel.h"
 #import "NSDate+Category.h"
+#import "PNEmailOptionEnumView.h"
 //#import <WebKit/WebKit.h>
 
 @interface PNEmailDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIWebViewDelegate>//WKNavigationDelegate
@@ -34,6 +35,8 @@
 @property (nonatomic ,strong) EmailListInfo *emailInfo;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (nonatomic ,strong) UIScrollView *wbScrollView;
+
+@property (nonatomic, strong) PNEmailOptionEnumView *enumView;
 
 @end
 
@@ -80,8 +83,13 @@
 - (IBAction)clickBackBtn:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
 }
-- (IBAction)ClickRightBtn:(id)sender {
-    
+- (IBAction)ClickRightBtn:(UIButton *)sender {
+    if (sender.tag == 30) {
+        if (!self.enumView) {
+            self.enumView = [PNEmailOptionEnumView loadPNEmailOptionEnumView];
+        }
+        [self.enumView showEmailOptionEnumView];
+    }
 }
 
 
@@ -89,7 +97,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_GRAY_COLOR;
     _lblFloderName.text = self.emailInfo.floderName;
-    
     [_progressView setTrackTintColor:[UIColor colorWithRed:240.0/255
                                                      green:240.0/255
                                                       blue:240.0/255
@@ -149,7 +156,7 @@
         CGFloat itemW = (SCREEN_WIDTH-32-4)/2;
         CGFloat itemH = itemW*(128.0/170);
         CGFloat rows = self.emailInfo.attachCount/2 + self.emailInfo.attachCount%2;
-        return rows*itemH+((rows-1)*4)+32;
+        return rows*itemH+((rows-1)*4)+32+38;
     }
     return 0;
 }

@@ -23,7 +23,7 @@
                         <action selector="clickBackAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="B3L-uC-jqX"/>
                     </connections>
                 </button>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCe-MN-KdX" customClass="SkyRadiusView">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCe-MN-KdX">
                     <rect key="frame" x="0.0" y="352" width="375" height="315"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="i5W-P0-yI8">
@@ -39,13 +39,6 @@
                         <constraint firstAttribute="bottom" secondItem="i5W-P0-yI8" secondAttribute="bottom" id="cau-m5-6fm"/>
                         <constraint firstAttribute="trailing" secondItem="i5W-P0-yI8" secondAttribute="trailing" id="yIF-wz-egr"/>
                     </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightRadius" value="YES"/>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftRadius" value="YES"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="16"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -62,7 +55,7 @@
             <connections>
                 <outlet property="backBtn" destination="bm0-bK-is9" id="IoL-po-BKz"/>
                 <outlet property="backContraintBottom" destination="Cio-K2-QCG" id="nSN-75-z5a"/>
-                <outlet property="backView" destination="nCe-MN-KdX" id="bAf-8m-L5R"/>
+                <outlet property="backView" destination="nCe-MN-KdX" id="06u-9X-Xvv"/>
                 <outlet property="mainTabView" destination="i5W-P0-yI8" id="pfj-zx-whE"/>
             </connections>
             <point key="canvasLocation" x="129" y="-36"/>

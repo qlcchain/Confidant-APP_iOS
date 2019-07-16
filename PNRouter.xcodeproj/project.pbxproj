@@ -511,6 +511,8 @@
 		7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392791421FAF356003AAD58 /* UploadFileManager.m */; };
 		73976A49225C990B0001E276 /* OtherFileOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73976A47225C990B0001E276 /* OtherFileOpenViewController.m */; };
 		73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73976A48225C990B0001E276 /* OtherFileOpenViewController.xib */; };
+		73A0E53322DDB5890004CED7 /* HeadReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A0E53122DDB5890004CED7 /* HeadReusableView.m */; };
+		73A0E53422DDB5890004CED7 /* HeadReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A0E53222DDB5890004CED7 /* HeadReusableView.xib */; };
 		73A4867021B94B220062C34F /* ConnectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A4866F21B94B220062C34F /* ConnectView.m */; };
 		73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A4867121B94B3A0062C34F /* ConnectView.xib */; };
 		73AC8F50223F9E64000E60D5 /* GroupListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC8F4E223F9E64000E60D5 /* GroupListCell.m */; };
@@ -1595,6 +1597,9 @@
 		73976A46225C990B0001E276 /* OtherFileOpenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherFileOpenViewController.h; sourceTree = "<group>"; };
 		73976A47225C990B0001E276 /* OtherFileOpenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherFileOpenViewController.m; sourceTree = "<group>"; };
 		73976A48225C990B0001E276 /* OtherFileOpenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherFileOpenViewController.xib; sourceTree = "<group>"; };
+		73A0E53022DDB5890004CED7 /* HeadReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeadReusableView.h; sourceTree = "<group>"; };
+		73A0E53122DDB5890004CED7 /* HeadReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeadReusableView.m; sourceTree = "<group>"; };
+		73A0E53222DDB5890004CED7 /* HeadReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeadReusableView.xib; sourceTree = "<group>"; };
 		73A4866E21B94B220062C34F /* ConnectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectView.h; sourceTree = "<group>"; };
 		73A4866F21B94B220062C34F /* ConnectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectView.m; sourceTree = "<group>"; };
 		73A4867121B94B3A0062C34F /* ConnectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectView.xib; sourceTree = "<group>"; };
@@ -2782,6 +2787,9 @@
 				73E7744322DD639C001C652E /* PNEmailOptionEnumView.h */,
 				73E7744422DD639C001C652E /* PNEmailOptionEnumView.m */,
 				73E7744622DD63AD001C652E /* PNEmailOptionEnumView.xib */,
+				73A0E53022DDB5890004CED7 /* HeadReusableView.h */,
+				73A0E53122DDB5890004CED7 /* HeadReusableView.m */,
+				73A0E53222DDB5890004CED7 /* HeadReusableView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4197,6 +4205,7 @@
 				58BA8DA6221E73FF00E6DE95 /* ContactTableCell.xib in Resources */,
 				584B439A21FEF79300D1F21A /* DiskDetailCell.xib in Resources */,
 				584A447A21460AD800608122 /* MyViewController.xib in Resources */,
+				73A0E53422DDB5890004CED7 /* HeadReusableView.xib in Resources */,
 				7330F50E214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib in Resources */,
 				732DCEE2223788A300B2A2CA /* AddGroupMenuViewController.xib in Resources */,
 				73E7742122D8302F001C652E /* EmailTopDetailCell.xib in Resources */,
@@ -4388,6 +4397,7 @@
 				585AEE532140D2280098A070 /* HMScanner.m in Sources */,
 				583BF94F21F809000078A2A8 /* FilePreviewViewController.m in Sources */,
 				73001A1D21904897003D07CC /* DDRSAWrapper+openssl.m in Sources */,
+				73A0E53322DDB5890004CED7 /* HeadReusableView.m in Sources */,
 				7330F4F42149147200FF4EEC /* ChatImageDrawer.m in Sources */,
 				737883FC21ACF2970033A189 /* OCTManagerFactory.m in Sources */,
 				7330F3A8214679BF00FF4EEC /* ShareCollectionCell.m in Sources */,

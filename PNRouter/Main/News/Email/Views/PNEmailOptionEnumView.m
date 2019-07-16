@@ -25,7 +25,7 @@
 - (NSArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = @[@[@"sheet_mark",@"Mark Unread"],@[@"tabbar_stars_unselected_h",@"Star"],@[@"statusbar_download_node",@"Node back up"],@[@"sheet_move",@"Move to"],@[@"statusbar_delete",@"Delete"]];
+        _dataArray = @[@[@"sheet_mark ",@"Mark Unread"],@[@"tabbar_stars_unselected_h",@"Star"],@[@"statusbar_download_node",@"Node back up"],@[@"sheet_move",@"Move to"],@[@"statusbar_delete",@"Delete"]];
     }
     return _dataArray;
 }
@@ -35,7 +35,7 @@
     PNEmailOptionEnumView *view = [[[NSBundle mainBundle] loadNibNamed:@"PNEmailOptionEnumView" owner:self options:nil] lastObject];
     view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     view.backContraintBottom.constant = -315;
-    
+    [view layoutIfNeeded];
     view.mainTabView.delegate = view;
     view.mainTabView.dataSource = view;
     view.mainTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -48,6 +48,10 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_backView.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:CGSizeMake(16,16)];//圆角大小
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];    maskLayer.frame = _backView.bounds;    maskLayer.path = maskPath.CGPath;
+    _backView.layer.mask = maskLayer;
+    
 }
 - (IBAction)clickBackAction:(id)sender {
     [self hideEmailOptionEnumView];

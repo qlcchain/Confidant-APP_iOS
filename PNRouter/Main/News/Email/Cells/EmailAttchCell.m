@@ -11,6 +11,7 @@
 #import "AttchImgageCell.h"
 #import <MailCore/MailCore.h>
 #import "SystemUtil.h"
+#import "HeadReusableView.h"
 
 
 @interface EmailAttchCell ()<UICollectionViewDelegate,UICollectionViewDataSource>
@@ -41,6 +42,7 @@
     
     [_collectionV registerNib:[UINib nibWithNibName:AttchCollectionCellResue bundle:nil] forCellWithReuseIdentifier:AttchCollectionCellResue];
      [_collectionV registerNib:[UINib nibWithNibName:AttchImgageCellResue bundle:nil] forCellWithReuseIdentifier:AttchImgageCellResue];
+    [_collectionV registerNib:[UINib nibWithNibName:HeadReusableViewResue bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HeadReusableViewResue];
     
     _collectionV.delegate = self;
     _collectionV.dataSource = self;
@@ -120,5 +122,23 @@
  */
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
     return 4;
+}
+
+/**
+ 创建区头视图和区尾视图
+ */
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
+    if (kind == UICollectionElementKindSectionHeader){
+        HeadReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:HeadReusableViewResue forIndexPath:indexPath];
+        return headerView;
+    }
+    return nil;
+}
+
+/**
+ 区头大小
+ */
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
+    return CGSizeMake(SCREEN_WIDTH-32,HeadReusableViewHeight);
 }
 @end

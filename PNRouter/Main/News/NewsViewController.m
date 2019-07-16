@@ -44,6 +44,9 @@
 #import "PNEmailDetailViewController.h"
 #import "EmailUserModel.h"
 
+#import <MJRefresh/MJRefresh.h>
+
+
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate> {
     BOOL isSearch;
 }
@@ -221,6 +224,14 @@
     _emailTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _emailTabView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_emailTabView registerNib:[UINib nibWithNibName:EmailListCellResue bundle:nil] forCellReuseIdentifier:EmailListCellResue];
+    
+    // 上拉刷新
+    _emailTabView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        // 增加5条假数据
+       
+    }];
+    // 默认先隐藏footer
+   // _emailTabView.mj_footer.hidden = YES;
     
    
     NSLog(@"userid = %@",[UserModel getUserModel].userId);
