@@ -138,7 +138,7 @@
             model.hostname = hostName;
             model.port = port;
             model.connectionType = MCOConnectionTypeTLS;
-            model.Type = 3;
+            model.Type = 2;
             [EmailAccountModel addEmailAccountWith:model];
             model.isConnect = YES;
             [EmailAccountModel updateEmailAccountConnectStatus:model];

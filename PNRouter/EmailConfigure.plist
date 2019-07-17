@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>2</key>
+	<dict>
+		<key>Inbox</key>
+		<string>INBOX</string>
+		<key>Drafts</key>
+		<string>Drafts</string>
+		<key>Sent</key>
+		<string>Sent Messages</string>
+		<key>Spam</key>
+		<string>Junk</string>
+		<key>Trash</key>
+		<string>Deleted Messages</string>
+	</dict>
+	<key>3</key>
+	<dict>
+		<key>Spam</key>
+		<string>垃圾邮件</string>
+		<key>Trash</key>
+		<string>已删除</string>
+		<key>Inbox</key>
+		<string>INBOX</string>
+		<key>Drafts</key>
+		<string>草稿箱</string>
+		<key>Sent</key>
+		<string>已发送</string>
+	</dict>
+</dict>
+</plist>

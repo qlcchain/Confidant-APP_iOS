@@ -35,9 +35,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     if (AppD.isEmailPage) {
-         _lblTitle.text = @"Email";
+        _lblTitle.text = @"Email";
     } else {
-         _lblTitle.text = @"Message";
+        _lblTitle.text = @"Message";
     }
     [_mainTabView reloadData];
     [super viewWillAppear:animated];
@@ -54,13 +54,19 @@
 {
     if (!_emailFolders) {
         _emailFolders =[NSMutableArray array];
+        NSArray *floderArr = @[@"Inbox",@"Node backed up",@"Starred",@"Drafts",@"Sent",@"Spam",@"Trash"];
+        for (int i = 0; i<floderArr.count; i++) {
+            FloderModel *model = [[FloderModel alloc] init];
+            model.name = floderArr[i];
+            [_emailFolders addObject:model];
+        }
     }
     return _emailFolders;
 }
 - (NSMutableArray *) messageDataArray
 {
     if (!_messageDataArray) {
-      NSArray *routerArr =  [RouterModel getLocalRouters];
+        NSArray *routerArr =  [RouterModel getLocalRouters];
         _messageDataArray =[NSMutableArray arrayWithObjects:routerArr,@[@"Add a New Circle"],nil];
     }
     return _messageDataArray;
@@ -142,9 +148,9 @@
             [folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
                 cell.lblCount.text = [NSString stringWithFormat:@"%d",info.messageCount];
             }];
-//            UIView *selectBackView = [[UIView alloc] initWithFrame:cell.bounds];
-//            selectBackView.backgroundColor = MAIN_PURPLE_COLOR;
-//            cell.selectedBackgroundView = selectBackView;
+            //            UIView *selectBackView = [[UIView alloc] initWithFrame:cell.bounds];
+            //            selectBackView.backgroundColor = MAIN_PURPLE_COLOR;
+            //            cell.selectedBackgroundView = selectBackView;
             if (_selectRow == indexPath.row) {
                 cell.contentView.backgroundColor = MAIN_ZS_COLOR;
                 cell.lblContent.textColor = MAIN_WHITE_COLOR;
@@ -231,7 +237,7 @@
         model.count = [cell.lblCount.text intValue];
         [self clickFloderHideMenuViewController:model];
     }
-   
+    
 }
 
 #pragma mark -----------通知回调----------
@@ -275,6 +281,19 @@
         if (error) {
             [weakSelf.view showHint:[NSString stringWithFormat:@"%@",error]];
         } else {
+            
+            [self.emailFolders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                FloderModel *model = obj;
+                [folders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    MCOIMAPFolder *floder = obj;
+                    if (model) {
+                        
+                    }
+                }];
+                
+            }];
+            
+            
             [weakSelf.emailFolders addObjectsFromArray:folders];
         }
         [weakSelf.mainTabView reloadData];

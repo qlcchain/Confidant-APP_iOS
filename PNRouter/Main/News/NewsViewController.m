@@ -47,6 +47,7 @@
 #import <MJRefresh/MJRefresh.h>
 
 
+
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate> {
     BOOL isSearch;
 }
@@ -98,13 +99,13 @@
  */
 - (void) addNoti
 {
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:ADD_MESSAGE_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:ADD_MESSAGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecketFaieldNoti:) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupQuitSuccessNoti:) name:GroupQuit_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageListUpdateNoti:) name:MessageList_Update_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherFileOpenNoti:) name:OTHER_FILE_OPEN_NOTI object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailAccountChangeNoti:) name:EMIAL_ACCOUNT_CHANGE_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailAccountChangeNoti:) name:EMIAL_ACCOUNT_CHANGE_NOTI object:nil];
     
 }
 // 搜索
@@ -129,14 +130,14 @@
         CGFloat lineLeft = SCREEN_WIDTH/2;
         CGFloat scrollW = SCREEN_WIDTH;
         if (sender.tag == 10) {
-             lineLeft = 0;
-             scrollW = 0;
+            lineLeft = 0;
+            scrollW = 0;
             AppD.isEmailPage = NO;
         } else {
             AppD.isEmailPage = YES;
-             if (!self.floderModel && EmailManage.sharedEmailManage.imapSeeion){
-                 [self firstPullEmailList];
-             }
+            if (!self.floderModel && EmailManage.sharedEmailManage.imapSeeion){
+                [self firstPullEmailList];
+            }
         }
         [self updateTopTitle];
         
@@ -153,14 +154,15 @@
 // 第一次拉取收件箱邮件
 - (void) firstPullEmailList
 {
+    _page = 1;
     _lblTitle.text = @"Inbox";
     EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
     if (!accountModel) {
-         _lblSubTitle.text = @"Not Configured";
+        _lblSubTitle.text = @"Not Configured";
     } else {
-         _lblSubTitle.text = accountModel.User;
+        _lblSubTitle.text = accountModel.User;
     }
-   
+    
     self.floderModel = [[FloderModel alloc] init];
     self.floderModel.path = @"INBOX";
     self.floderModel.name = @"INBOX";
@@ -179,31 +181,31 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _page = 0;
+    _page = 1;
     _pageCount = 10;
     
     AppD.sideMenuViewController.delegate = self;
     AppD.isEmailPage = NO;
     
-     [UploadFileManager getShareObject];
-     [FileDownUtil getShareObject];
+    [UploadFileManager getShareObject];
+    [FileDownUtil getShareObject];
     
     _scrollContraintW.constant = SCREEN_WIDTH*2;
     _mianScrollerView.delegate = self;
     _mianScrollerView.bounces = NO;
     
-     self.view.backgroundColor = MAIN_GRAY_COLOR;
+    self.view.backgroundColor = MAIN_GRAY_COLOR;
     _menuBackView.backgroundColor = MAIN_GRAY_COLOR;
     _topBackView.backgroundColor = MAIN_GRAY_COLOR;
     
     self.selectBtn = [_menuBackView viewWithTag:10];
     self.selectBtn.selected = YES;
-
+    
     [self updateTopTitle];
     
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
-  
+    
     _searchTF.delegate = self;
     _searchTF.enablesReturnKeyAutomatically = YES; //这里设置为无文字就灰色不可点
     _searchTF.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -225,15 +227,15 @@
     _emailTabView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_emailTabView registerNib:[UINib nibWithNibName:EmailListCellResue bundle:nil] forCellReuseIdentifier:EmailListCellResue];
     
-    // 上拉刷新
-    _emailTabView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        // 增加5条假数据
-       
+    // 设置回调（一旦进入刷新状态就会调用这个refreshingBlock）
+    @weakify_self
+    _emailTabView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf pullEmailList];
     }];
-    // 默认先隐藏footer
-   // _emailTabView.mj_footer.hidden = YES;
+    MJRefreshAutoNormalFooter *footerView = (MJRefreshAutoNormalFooter *)_emailTabView.mj_footer;
+    [footerView setRefreshingTitleHidden:YES];
+    [footerView setTitle:@"" forState:MJRefreshStateIdle];
     
-   
     NSLog(@"userid = %@",[UserModel getUserModel].userId);
     [self chatMessageChangeNoti:nil];
     [self addNoti];
@@ -271,7 +273,7 @@
 
 /**
  添加好友跳转
-
+ 
  @param friendId 好友id
  @param nickName 好友昵称
  @param signpk 好友签名公钥
@@ -296,14 +298,14 @@
         tempArr = [self sortWith:tempArr];
     }
     [self.dataArray  addObjectsFromArray:tempArr];
-
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CHATS_HD_NOTI object:self.dataArray];
     [_tableV reloadData];
 }
 
 /**
  添加searchtf 监听
-
+ 
  */
 -(void)addTargetMethod{
     [_searchTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
@@ -311,7 +313,7 @@
 
 /**
  seartf 文本改变方法
-
+ 
  @param tf seartf
  */
 - (void) textFieldTextChange:(UITextField *) tf
@@ -377,7 +379,7 @@
     return EmailListCellHeight;
 }
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-
+    
     if (tableView == _tableV) {
         NewsCell *cell = [tableView dequeueReusableCellWithIdentifier:NewsCellResue];
         ChatListModel *model = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
@@ -410,7 +412,7 @@
         }
         return cell;
     }
-   
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -454,9 +456,30 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         EmailListInfo *model = self.emailDataArray[indexPath.row];
         model.floderName = self.floderModel.name;
+        model.floderPath = self.floderModel.path;
         PNEmailDetailViewController *vc = [[PNEmailDetailViewController alloc] initWithEmailListModer:model];
         [self.navigationController pushViewController:vc animated:YES];
+        
+        // 设为已读
+        if (model.Read == 0) {
+            model.Read = 1;
+            [_emailTabView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self setEmailReadWithUid:model.uid];
+        }
     }
+}
+
+#pragma mark ----email 设为已读操作 ----------
+- (void)setEmailReadWithUid:(NSInteger)uid {
+    
+    MCOIndexSet *uids = [MCOIndexSet indexSetWithIndex:uid];
+    MCOIMAPOperation *op = [EmailManage.sharedEmailManage.imapSeeion storeFlagsOperationWithFolder:self.floderModel.path
+                                                                                              uids:uids
+                                                                                              kind: MCOIMAPStoreFlagsRequestKindSet
+                                                                                             flags:MCOMessageFlagSeen];
+    [op start:^(NSError * _Nullable error) {
+        NSLog(@"store star flag 's error: %@",error);
+    }];
 }
 
 #pragma mark - SWTableViewDelegate
@@ -480,7 +503,7 @@
 
 /**
  选择cell菜单回调
-
+ 
  @param cell cell
  @param index index
  */
@@ -490,8 +513,8 @@
     switch (index) {
         case 0:
         {
-           // 删除
-             ChatListModel *chatModel = isSearch? self.searchDataArray[cell.tag] : self.dataArray[cell.tag];
+            // 删除
+            ChatListModel *chatModel = isSearch? self.searchDataArray[cell.tag] : self.dataArray[cell.tag];
             [_tableV beginUpdates];
             isSearch? [self.searchDataArray removeObject:chatModel] : [self.dataArray removeObject:chatModel];
             // 删除本地聊天记录
@@ -536,15 +559,15 @@
 
 /**
  设置cell右边button icon
-
+ 
  @return 所有button
  */
 - (NSArray *)rightButtons
 {
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-//    [rightUtilityButtons sw_addUtilityButtonWithColor:
-//     MAIN_PURPLE_COLOR
-//                                                 icon:[UIImage imageNamed:@"icon_up"]];
+    //    [rightUtilityButtons sw_addUtilityButtonWithColor:
+    //     MAIN_PURPLE_COLOR
+    //                                                 icon:[UIImage imageNamed:@"icon_up"]];
     [rightUtilityButtons sw_addUtilityButtonWithColor:
      MAIN_PURPLE_COLOR
                                                  icon:[UIImage imageNamed:@"icon_delete"]];
@@ -565,7 +588,7 @@
 
 /**
  根据时间排序
-
+ 
  @param array 排序前array
  @return 排序后的array
  */
@@ -586,7 +609,7 @@
 
 /**
  socket连接失败，显示top通知
-
+ 
  @param noti noti
  */
 - (void) reloadSecketFaieldNoti:(NSNotification *) noti
@@ -634,6 +657,7 @@
 
 - (void) emailAccountChangeNoti:(NSNotification *) noti
 {
+    
     [self firstPullEmailList];
 }
 
@@ -689,26 +713,36 @@
 }
 - (void)sideMenu:(YJSideMenu *)sideMenu didHideMenuViewController:(UIViewController *)menuViewController selectFloderPath:(FloderModel *)floderModel
 {
-    NSLog(@"flodername = %@",floderModel.name);
-    _lblTitle.text = floderModel.name;
-    self.floderModel = floderModel;
-    
-    if (self.emailDataArray.count > 0) {
-        [self.emailDataArray removeAllObjects];
-        [_emailTabView reloadData];
-    }
-    
-    if (floderModel.count == 0) {
+    NSLog(@"flodername = %@---floderpath = %@",floderModel.name,floderModel.path);
+    if ([self.floderModel.path isEqualToString:floderModel.path]) {
         return;
     }
-    
+    _lblTitle.text = floderModel.name;
+    self.floderModel = floderModel;
+    _page = 1;
     [self pullEmailList];
     
 }
 // 拉取邮件列表
 - (void) pullEmailList
 {
-    [self.view showHudInView:self.view hint:@"Loading"];
+    if (_page == 1) {
+        self.emailTabView.mj_footer.hidden = YES;
+    }
+    
+    if (self.emailDataArray.count > 0 && _page == 1) {
+        [self.emailDataArray removeAllObjects];
+        [_emailTabView reloadData];
+    }
+    
+    if (self.floderModel.count == 0) {
+        self.emailTabView.mj_footer.hidden = YES;
+        return;
+    }
+    if (_page == 1) {
+        [self.view showHudInView:self.view hint:@"Loading"];
+    }
+    
     MCOIMAPMessagesRequestKind requestKind = (MCOIMAPMessagesRequestKind)
     (MCOIMAPMessagesRequestKindHeaders |MCOIMAPMessagesRequestKindStructure |
      
@@ -718,8 +752,9 @@
     
     uint64_t locationf = 1;
     uint64_t lengthf = 10;
-    if (self.floderModel.count >_pageCount) {
-        locationf = self.floderModel.count - _pageCount+1;
+    CGFloat syCount = self.floderModel.count - self.emailDataArray.count;
+    if (syCount > 10) {
+        locationf = syCount - _pageCount+1;
     }
     MCOIndexSet *numbers = [MCOIndexSet indexSetWithRange:MCORangeMake(locationf, lengthf)];
     
@@ -731,12 +766,31 @@
     [imapMessagesFetchOp start:^(NSError *error, NSArray *messages, MCOIndexSet *vanishedMessages) {
         
         if (error) {
-            [weakSelf.view hideHud];
+            if (weakSelf.page == 1) {
+                [weakSelf.view hideHud];
+            } else {
+                weakSelf.emailTabView.mj_footer.hidden = NO;
+            }
             [weakSelf.view showHint:@"Failed to pull mail."];
+            [weakSelf.emailTabView.mj_footer endRefreshing];
         } else {
             // 倒序
-            NSArray *messageArray = [[messages reverseObjectEnumerator] allObjects];
+            weakSelf.page ++;
+            //NSArray *messageArray = [[messages reverseObjectEnumerator] allObjects];
+            // [weakSelf tranEmailListInfoWithArr:messageArray];
+            
+            // 根据uid 排序
+            NSMutableArray *messageArray = [NSMutableArray arrayWithArray:messages];
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"uid" ascending:NO];
+            [messageArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+            // 转换mode
             [weakSelf tranEmailListInfoWithArr:messageArray];
+            
+            if (syCount > 10) {
+                self.emailTabView.mj_footer.hidden = NO;
+            } else {
+                self.emailTabView.mj_footer.hidden = YES;
+            }
         }
     }];
 }
@@ -746,7 +800,7 @@
     NSMutableArray *tempArray = [NSMutableArray array];
     @weakify_self
     [messageArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-       EmailListInfo *listInfo = [[EmailListInfo alloc] init];
+        EmailListInfo *listInfo = [[EmailListInfo alloc] init];
         MCOIMAPMessage *message = obj;
         MCOMessageHeader *headrMessage = message.header;
         MCOAddress *address = headrMessage.from;
@@ -805,13 +859,13 @@
         listInfo.messageid = headrMessage.messageID;
         listInfo.fromName = address.displayName?:@"";
         listInfo.From = address.mailbox;
-       // listInfo.toName = toAddress.displayName?:@"";
+        // listInfo.toName = toAddress.displayName?:@"";
         listInfo.Subject = message.header.subject;
         listInfo.revDate = message.header.receivedDate;
         [tempArray addObject:listInfo];
     }];
     
-   __block int endCount = 0;
+    __block int endCount = 0;
     for (int i =0; i<tempArray.count; i++) {
         EmailListInfo *info = tempArray[i];
         MCOIMAPFetchContentOperation * fetchContentOp = [EmailManage.sharedEmailManage.imapSeeion fetchMessageOperationWithFolder:self.floderModel.path uid:info.uid];
@@ -842,6 +896,7 @@
                 [weakSelf.view hideHud];
                 [weakSelf.emailDataArray addObjectsFromArray:tempArray];
                 [weakSelf.emailTabView reloadData];
+                [weakSelf.emailTabView.mj_footer endRefreshing];
             }
         }];
     }

@@ -606,6 +606,8 @@
 		73F9D619224B110200D7B228 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F9D618224B110200D7B228 /* NSString+Trim.m */; };
 		73FD079921D74979001B89CB /* FriendRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73FD079721D74979001B89CB /* FriendRequestViewController.m */; };
 		73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FD079821D74979001B89CB /* FriendRequestViewController.xib */; };
+		73FE5B2422DF561E004D0655 /* EmailConfigure.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73FE5B2322DF561E004D0655 /* EmailConfigure.plist */; };
+		73FE5B2722DF56FE004D0655 /* EmailFloderConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73FE5B2622DF56FE004D0655 /* EmailFloderConfig.m */; };
 		815FEEED645E5889A42F8CA0 /* libPods-PNRouter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C33670BA720BB01C8243AF /* libPods-PNRouter.a */; };
 /* End PBXBuildFile section */
 
@@ -1753,6 +1755,9 @@
 		73FD079621D74979001B89CB /* FriendRequestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendRequestViewController.h; sourceTree = "<group>"; };
 		73FD079721D74979001B89CB /* FriendRequestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendRequestViewController.m; sourceTree = "<group>"; };
 		73FD079821D74979001B89CB /* FriendRequestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendRequestViewController.xib; sourceTree = "<group>"; };
+		73FE5B2322DF561E004D0655 /* EmailConfigure.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EmailConfigure.plist; sourceTree = "<group>"; };
+		73FE5B2522DF56FE004D0655 /* EmailFloderConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailFloderConfig.h; sourceTree = "<group>"; };
+		73FE5B2622DF56FE004D0655 /* EmailFloderConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailFloderConfig.m; sourceTree = "<group>"; };
 		8647286DB46B2002FAE9C2DA /* Pods-PNRouter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PNRouter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PNRouter/Pods-PNRouter.debug.xcconfig"; sourceTree = "<group>"; };
 		C936D75EB18FB2D69610E30C /* Pods-PNRouter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PNRouter.release.xcconfig"; path = "Pods/Target Support Files/Pods-PNRouter/Pods-PNRouter.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2334,6 +2339,7 @@
 		585AEE12213F6EDE0098A070 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73FE5B2322DF561E004D0655 /* EmailConfigure.plist */,
 				7301A894226EB875006225FA /* Privacy Policy.html */,
 				7301A895226EB876006225FA /* Terms of Service.html */,
 				7330F46B2147AD2B00FF4EEC /* Expression.bundle */,
@@ -3870,6 +3876,8 @@
 		73E773FD22D5C2B7001C652E /* ShareConfig */ = {
 			isa = PBXGroup;
 			children = (
+				73FE5B2522DF56FE004D0655 /* EmailFloderConfig.h */,
+				73FE5B2622DF56FE004D0655 /* EmailFloderConfig.m */,
 				73E773FE22D5C2F1001C652E /* EmailManage.h */,
 				73E773FF22D5C2F1001C652E /* EmailManage.m */,
 			);
@@ -4238,6 +4246,7 @@
 				7330F46C2147AD2B00FF4EEC /* InputViewBundle.bundle in Resources */,
 				73060557217719A5005A0E13 /* VPNFileInputView.xib in Resources */,
 				586D4176224B57CE002008C6 /* ChooseCircleViewController.xib in Resources */,
+				73FE5B2422DF561E004D0655 /* EmailConfigure.plist in Resources */,
 				7330F3992146563600FF4EEC /* MyDetailViewController.xib in Resources */,
 				730951AC22D2DC6E001BA82E /* PNEmailMenuView.xib in Resources */,
 				587C52D8215CBA9A006787FB /* QRViewController.xib in Resources */,
@@ -4422,6 +4431,7 @@
 				7330F4EF2149147200FF4EEC /* CDImageTableViewCell.m in Sources */,
 				581FDF5821F024170068C120 /* toxencryptsave.m in Sources */,
 				58F5E4C0222CD45A00695F0A /* PNBackgroundView.m in Sources */,
+				73FE5B2722DF56FE004D0655 /* EmailFloderConfig.m in Sources */,
 				7330F37E2146118800FF4EEC /* UIImage+RoundedCorner.m in Sources */,
 				7378840A21ACF2970033A189 /* OCTCallTimer.m in Sources */,
 				7330F47E2148A74200FF4EEC /* KeyCUtil.m in Sources */,

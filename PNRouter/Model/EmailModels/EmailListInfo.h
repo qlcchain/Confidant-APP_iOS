@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *EmailPath;
 
 @property (nonatomic ,strong) NSString *floderName;
+@property (nonatomic ,strong) NSString *floderPath;
 // 附件
 @property (nonatomic ,strong) NSMutableArray *attchArray;
 // 收件人
