@@ -12,10 +12,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PNEmailDetailViewController">
             <connections>
+                <outlet property="forwardBtn" destination="fdU-Eu-mrG" id="M5M-EF-K7N"/>
                 <outlet property="lblFloderName" destination="wJK-zD-ctt" id="bu5-2K-Y6x"/>
                 <outlet property="mainTabV" destination="IWt-PE-XJQ" id="2at-Mu-vcD"/>
                 <outlet property="nodeBtn" destination="tPW-Yz-KHa" id="X4h-6x-OWW"/>
                 <outlet property="progressView" destination="ERP-u4-Sv2" id="nvz-bl-vmc"/>
+                <outlet property="replyBtn" destination="kXC-XT-MC3" id="Rv6-Jj-Agj"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -84,7 +86,7 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="38" id="gn7-DN-CnJ"/>
                             </constraints>
-                            <state key="normal" image="tabbar_backups"/>
+                            <state key="normal" image="Node backed up"/>
                             <connections>
                                 <action selector="ClickRightBtn:" destination="-1" eventType="touchUpInside" id="xW3-Mf-Y2b"/>
                             </connections>
@@ -108,10 +110,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HEb-cn-O3x">
-                    <rect key="frame" x="0.0" y="64" width="375" height="553"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="521"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IWt-PE-XJQ">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="553"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="521"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ERP-u4-Sv2">
@@ -132,6 +134,45 @@
                         <constraint firstAttribute="trailing" secondItem="ERP-u4-Sv2" secondAttribute="trailing" id="lTE-X6-PoM"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xdc-Hq-cfy">
+                    <rect key="frame" x="0.0" y="585" width="375" height="82"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kXC-XT-MC3">
+                            <rect key="frame" x="16" y="16" width="163.5" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="SgJ-7D-UGH"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <state key="normal" title="Reply" image="btn_reply">
+                                <color key="titleColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="clickReplyAction:" destination="-1" eventType="touchUpInside" id="DJD-yX-oM2"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fdU-Eu-mrG">
+                            <rect key="frame" x="195.5" y="16" width="163.5" height="50"/>
+                            <color key="backgroundColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="S28-Jf-Uhc"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <state key="normal" title="Forward"/>
+                            <connections>
+                                <action selector="clickForwardAction:" destination="-1" eventType="touchUpInside" id="7D3-qM-xig"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="fdU-Eu-mrG" secondAttribute="trailing" constant="16" id="FTa-ut-NW1"/>
+                        <constraint firstItem="kXC-XT-MC3" firstAttribute="centerY" secondItem="xdc-Hq-cfy" secondAttribute="centerY" id="Ffe-mB-2Fe"/>
+                        <constraint firstItem="fdU-Eu-mrG" firstAttribute="leading" secondItem="kXC-XT-MC3" secondAttribute="trailing" constant="16" id="efT-n0-XbT"/>
+                        <constraint firstItem="kXC-XT-MC3" firstAttribute="leading" secondItem="xdc-Hq-cfy" secondAttribute="leading" constant="16" id="gMB-kL-2jk"/>
+                        <constraint firstItem="fdU-Eu-mrG" firstAttribute="width" secondItem="kXC-XT-MC3" secondAttribute="width" id="gN0-Ci-oUS"/>
+                        <constraint firstItem="fdU-Eu-mrG" firstAttribute="centerY" secondItem="xdc-Hq-cfy" secondAttribute="centerY" id="pQn-AN-PQG"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -139,18 +180,23 @@
                 <constraint firstItem="HEb-cn-O3x" firstAttribute="top" secondItem="bcJ-VT-LR9" secondAttribute="bottom" id="5i6-Pa-0N8"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="bcJ-VT-LR9" secondAttribute="trailing" id="ELv-by-nvc"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="HEb-cn-O3x" secondAttribute="trailing" id="JnF-RH-KHi"/>
+                <constraint firstItem="xdc-Hq-cfy" firstAttribute="top" secondItem="HEb-cn-O3x" secondAttribute="bottom" id="JnV-8H-oQN"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="xdc-Hq-cfy" secondAttribute="trailing" id="KX5-Z1-8Mi"/>
+                <constraint firstItem="xdc-Hq-cfy" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="OR5-vx-Enk"/>
                 <constraint firstItem="bcJ-VT-LR9" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="PMC-U2-Z7E"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="HEb-cn-O3x" secondAttribute="bottom" constant="50" id="pNM-Nd-vgm"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="xdc-Hq-cfy" secondAttribute="bottom" id="ojq-pM-Pf1"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="HEb-cn-O3x" secondAttribute="bottom" constant="82" id="pNM-Nd-vgm"/>
                 <constraint firstItem="bcJ-VT-LR9" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="s62-fi-80A"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-57" y="-357"/>
+            <point key="canvasLocation" x="-58.399999999999999" y="-357.57121439280365"/>
         </view>
     </objects>
     <resources>
+        <image name="Node backed up" width="16" height="16"/>
+        <image name="btn_reply" width="24" height="24"/>
         <image name="statusbar_delete" width="24" height="24"/>
         <image name="statusbar_hedo" width="24" height="24"/>
         <image name="statusbar_left_returns" width="24" height="24"/>
-        <image name="tabbar_backups" width="16" height="16"/>
     </resources>
 </document>

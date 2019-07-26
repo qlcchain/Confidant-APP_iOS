@@ -18,6 +18,8 @@
 #endif
 
 #define kATFormat  @"@%@ "
+#define kContactFormat  @"%@、"
+#define kCFormat  @"、"
 #define kATRegular @"@[\\u4e00-\\u9fa5\\w\\-\\_]+ "
 
 #ifdef __OBJC__

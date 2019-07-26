@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EmailErrorAlertView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8D-mX-uro">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </button>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cnK-23-4XU">
+                    <rect key="frame" x="35" y="205.5" width="305" height="216"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zht-H1-len">
+                            <rect key="frame" x="0.0" y="0.0" width="305" height="50"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security Verification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Gl-WS-r7N">
+                                    <rect key="frame" x="76" y="15.5" width="153" height="19"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
+                                    <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q8r-AA-VRx">
+                                    <rect key="frame" x="255" y="0.0" width="50" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="50" id="VWP-6y-djB"/>
+                                        <constraint firstAttribute="height" constant="50" id="oke-14-5jx"/>
+                                    </constraints>
+                                    <state key="normal" image="statusbar_close"/>
+                                    <connections>
+                                        <action selector="clickCloseBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="DLd-2y-8o2"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="q8r-AA-VRx" secondAttribute="bottom" id="1tv-zy-j0M"/>
+                                <constraint firstItem="4Gl-WS-r7N" firstAttribute="centerY" secondItem="zht-H1-len" secondAttribute="centerY" id="NJx-8S-EXQ"/>
+                                <constraint firstItem="4Gl-WS-r7N" firstAttribute="centerX" secondItem="zht-H1-len" secondAttribute="centerX" id="PSx-ao-Whz"/>
+                                <constraint firstAttribute="height" constant="50" id="Vqc-M6-1cT"/>
+                                <constraint firstAttribute="trailing" secondItem="q8r-AA-VRx" secondAttribute="trailing" id="gFx-hn-lvv"/>
+                                <constraint firstItem="q8r-AA-VRx" firstAttribute="top" secondItem="zht-H1-len" secondAttribute="top" id="q3y-Mf-kD7"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iXv-zd-IvS">
+                            <rect key="frame" x="16" y="50" width="273" height="1"/>
+                            <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="1PB-jq-mwb"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="“imap.域名.com”Username or password is incorrect, or the IMAP service is not available" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMg-w5-P11">
+                            <rect key="frame" x="16" y="71" width="273" height="56"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="zht-H1-len" secondAttribute="trailing" id="3un-9h-pMW"/>
+                        <constraint firstItem="zht-H1-len" firstAttribute="leading" secondItem="cnK-23-4XU" secondAttribute="leading" id="4C8-fb-BEr"/>
+                        <constraint firstItem="iXv-zd-IvS" firstAttribute="top" secondItem="zht-H1-len" secondAttribute="bottom" id="KDg-5h-axe"/>
+                        <constraint firstAttribute="width" constant="305" id="T2P-R8-PcO"/>
+                        <constraint firstAttribute="trailing" secondItem="NMg-w5-P11" secondAttribute="trailing" constant="16" id="US2-gy-xCF"/>
+                        <constraint firstItem="zht-H1-len" firstAttribute="top" secondItem="cnK-23-4XU" secondAttribute="top" id="g5C-6v-QKU"/>
+                        <constraint firstItem="NMg-w5-P11" firstAttribute="leading" secondItem="cnK-23-4XU" secondAttribute="leading" constant="16" id="hle-go-uT8"/>
+                        <constraint firstItem="iXv-zd-IvS" firstAttribute="leading" secondItem="cnK-23-4XU" secondAttribute="leading" constant="16" id="o2z-Bk-hjJ"/>
+                        <constraint firstAttribute="height" constant="216" id="shz-Gh-Jcg"/>
+                        <constraint firstAttribute="trailing" secondItem="iXv-zd-IvS" secondAttribute="trailing" constant="16" id="xIt-Hh-vJk"/>
+                        <constraint firstItem="NMg-w5-P11" firstAttribute="top" secondItem="iXv-zd-IvS" secondAttribute="bottom" constant="20" id="ypI-bi-Rcs"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="w8D-mX-uro" secondAttribute="trailing" id="B1b-WE-rjm"/>
+                <constraint firstItem="w8D-mX-uro" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="FHm-Xe-6O9"/>
+                <constraint firstItem="cnK-23-4XU" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Nmk-QT-zjA"/>
+                <constraint firstAttribute="bottom" secondItem="w8D-mX-uro" secondAttribute="bottom" id="Of0-fX-m42"/>
+                <constraint firstItem="cnK-23-4XU" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-20" id="agn-LY-pVg"/>
+                <constraint firstItem="w8D-mX-uro" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="m14-qt-b93"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="backView" destination="cnK-23-4XU" id="lFW-2E-CFt"/>
+                <outlet property="bottomH" destination="agn-LY-pVg" id="gpc-ph-saE"/>
+                <outlet property="lblContent" destination="NMg-w5-P11" id="cSm-1s-6lK"/>
+            </connections>
+            <point key="canvasLocation" x="192.80000000000001" y="24.7376311844078"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="statusbar_close" width="24" height="24"/>
+    </resources>
+</document>

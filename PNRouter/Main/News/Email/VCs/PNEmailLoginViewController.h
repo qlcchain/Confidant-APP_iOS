@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PNEmailLoginViewController : PNBaseViewController
-
+- (instancetype) initWithEmailType:(int) type;
 @end
 
 NS_ASSUME_NONNULL_END

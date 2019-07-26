@@ -12,6 +12,7 @@
 #import "NSString+Trim.h"
 #import "EmailAccountModel.h"
 #import "RSAUtil.h"
+#import "EmailErrorAlertView.h"
 
 @interface PNEmailLoginViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIView *topView;
@@ -21,11 +22,29 @@
 @property (weak, nonatomic) IBOutlet UIButton *advanceBtn;
 @property (weak, nonatomic) IBOutlet UIView *emailBackView;
 @property (weak, nonatomic) IBOutlet UIView *passwordBackView;
+@property (nonatomic ,assign) int emailType;
+@property (nonatomic ,strong) NSString *typeName;
 
 @end
 
 @implementation PNEmailLoginViewController
-
+- (instancetype) initWithEmailType:(int) type
+{
+    if (self = [super init]) {
+        self.emailType = type;
+        if (type == 3) {
+            self.typeName = @"163.com";
+        } else if (type == 2) {
+            self.typeName = @"qq.com";
+        } else if (type == 1) {
+            self.typeName = @"exmail.qq.com";
+        } else {
+            self.typeName = @"gmail.com";
+        }
+        _emailNameTF.placeholder = [NSString stringWithFormat:@"example@%@",self.typeName];
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // 配置UI
@@ -34,8 +53,12 @@
     _emailNameTF.delegate = self;
     _passwordTF.delegate = self;
     
-    _emailNameTF.text = @"kuangzihui@163.com";
-    _passwordTF.text = @"applela19890712";
+//    _emailNameTF.text = @"emaildev@qlink.mobi";
+//    _passwordTF.text = @"Qlcchain@123";
+    //ffykftwymsxnbfgg
+    
+   // _emailNameTF.text = @"554932628@qq.com";
+   // _passwordTF.text = @"ffykftwymsxnbfgg";
 }
 // 配置UI
 - (void) configUI
@@ -95,11 +118,15 @@
         if ([name isEmailAddress]) {
             NSArray *strings = [name componentsSeparatedByString:@"@"];
             if (strings.count == 2) {
-                NSString *emailType = [strings lastObject];
-                NSArray *names = [emailType componentsSeparatedByString:@"."];
+                NSString *emailT = [strings lastObject];
+                if (![emailT isEqualToString:self.typeName] && self.emailType !=1) {
+                    [self.view showHint:@"Email format error."];
+                    return;
+                }
+                NSArray *names = [emailT componentsSeparatedByString:@"."];
                 if (names.count == 2) {
-                    hostName = [NSString stringWithFormat:@"imap.%@",emailType];
-                    smtpHostName = [NSString stringWithFormat:@"smtp.%@",emailType];
+                    hostName = [NSString stringWithFormat:@"imap.%@",self.typeName];
+                    smtpHostName = [NSString stringWithFormat:@"smtp.%@",self.typeName];
                 } else {
                     [self.view showHint:@"Email format error."];
                     return;
@@ -138,7 +165,7 @@
             model.hostname = hostName;
             model.port = port;
             model.connectionType = MCOConnectionTypeTLS;
-            model.Type = 2;
+            model.Type = self.emailType;
             [EmailAccountModel addEmailAccountWith:model];
             model.isConnect = YES;
             [EmailAccountModel updateEmailAccountConnectStatus:model];
@@ -148,8 +175,12 @@
             [weakSelf clickCloseAction:nil];
             [AppD.window showHint:@"login successed."];
         } else {
-            [AppD.window showHint:@"login failure."];
-            NSLog(@"login account failure: %@\n", error);
+            
+            
+            EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
+            alertView.lblContent.text = [NSString stringWithFormat:@"\"imap.%@\" Username or password is incorrect, or the IMAP service is not available",self.typeName];
+            [alertView showEmailAttchSelView];
+   
         }
     }];
 

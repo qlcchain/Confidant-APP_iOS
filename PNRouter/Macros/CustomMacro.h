@@ -20,6 +20,7 @@
 #define FRIEND_LIST_TABNAME  @"friend_list_tableName"
 // 好友聊天记录表
 #define FRIEND_CHAT_TABNAME  @"FRIEND_CHAT_TABNAME"
+
 // 消息缓存表
 #define CHAT_CACHE_TABNAME  @"CHAT_CACHE_TABNAME"
 // 群组标识
@@ -28,6 +29,9 @@
 #define UserHeader_Table @"UserHeader_Table"
 // 群组请求通知表
 #define Group_New_Requests_TABNAME  @"Group_New_Requests_TABNAME"
+
+// email 最近联系人
+#define EMAIL_CONTACT_TABNAME  @"EMAIL_CONTACT_TABNAME"
 
 // 请求超时时间
 #define REQEUST_TIME  20
@@ -65,6 +69,15 @@ static NSInteger socketConnectStatusConnecting = 1;
 static NSInteger socketConnectStatusConnected = 2;
 static NSInteger socketConnectStatusDisconnecting = 3;
 static NSInteger socketConnectStatusDisconnected = 4;
+
+#pragma mark----email floder name
+static NSString *Inbox = @"Inbox";
+static NSString *Node_backed_up = @"Node backed up";
+static NSString *Starred = @"Starred";
+static NSString *Drafts = @"Drafts";
+static NSString *Sent = @"Sent";
+static NSString *Spam = @"Spam";
+static NSString *Trash = @"Trash";
 
 #pragma mark - HUD Text
 #define Loading_Str @"Loding..."

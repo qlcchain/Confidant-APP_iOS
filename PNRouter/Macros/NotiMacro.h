@@ -165,7 +165,10 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 // ---------------------邮件----------------------
 #define EMIAL_LOGIN_SUCCESS_NOTI  @"EMIAL_LOGIN_SUCCESS_NOTI"
 #define EMIAL_ACCOUNT_CHANGE_NOTI  @"EMIAL_ACCOUNT_CHANGE_NOTI"
-
+// 0 未读 1 加星 2 移动 3 删除
+#define EMIAL_FLAGS_CHANGE_NOTI  @"EMIAL_FLAGS_CHANGE_NOTI"
+// 最近联系人选白择
+#define EMIAL_CONTACT_SEL_NOTI  @"EMIAL_CONTACT_SEL_NOTI"
 
 // ---------------------群组----------------------
 #define CREATE_GROUP_SUCCESS_NOTI  @"CREATE_GROUP_SUCCESS_NOTI"

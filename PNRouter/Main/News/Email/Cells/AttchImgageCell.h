@@ -15,6 +15,7 @@ static NSString *AttchImgageCellResue = @"AttchImgageCell";
 @property (weak, nonatomic) IBOutlet UIView *backV;
 @property (weak, nonatomic) IBOutlet UIImageView *headImgV;
 @property (weak, nonatomic) IBOutlet UILabel *lblCount;
+@property (weak, nonatomic) IBOutlet UIImageView *backImgView;
 
 @end
 

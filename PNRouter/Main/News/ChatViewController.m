@@ -762,7 +762,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
  调用相册
  */
 - (void)selectImage{
-
+    
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     @weakify_self
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
@@ -789,8 +789,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
         }
     }];
-    
-    
 }
 #pragma mark -------点击聊天菜单回调---------
 - (void)inputViewPopCommand:(NSString *)string {
@@ -871,7 +869,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 if (authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [weakSelf.view endEditing:YES];
-                         [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
+                         [AppD.window showHint:@"Please allow access to album in \"Settings - privacy - album\" of iPhone"];
                     });
                     // 无相机权限 做一个友好的提示
                    

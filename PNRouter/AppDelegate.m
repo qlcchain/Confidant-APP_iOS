@@ -81,8 +81,9 @@
 //         [JPUSHService setBadge:0];
 //    }
     
-  //  NSString *userids= [UserModel getUserModel].userId;
-  //  [KeyCUtil deleteWithKey:userids];
+//    NSString *userids= [UserModel getUserModel].userId;
+//    [KeyCUtil deleteWithKey:userids];
+    
     
     // 配置Bugly
     [self configBugly];

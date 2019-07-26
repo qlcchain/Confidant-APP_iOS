@@ -29,4 +29,11 @@
 + (NSString *)stringWithHexNumber:(NSUInteger)hexNumber;
 // 得到字符串字节数
 - (NSUInteger)charactorNumber;
+
+#pragma mark 十进制转二进制
++ (NSString *)convertBinarySystemFromDecimalSystem:(NSString *)decimal;
++ (NSString *)convertDecimalSystemFromBinarySystem:(NSString *)binary;
+
+//获取拼音首字母(传入汉字字符串, 返回大写拼音首字母)
++ (NSString *) firstCharactor:(NSString *)pString;
 @end

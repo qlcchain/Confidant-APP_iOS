@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) NSString *hostname;
 @property (nonatomic , assign) int port;
 @property (nonatomic ,assign) int connectionType;
+@property (nonatomic ,assign) int unReadCount;
 @property (nonatomic , strong) NSString *UserPass;
 @property (nonatomic , assign) int Type;
 @property (nonatomic , assign) BOOL isConnect;
@@ -26,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL) isEixtEmailAccount:(EmailAccountModel *) accountModel;
 + (void) updateEmailAccountPass:(EmailAccountModel *) accountModel;
 + (void) updateEmailAccountConnectStatus:(EmailAccountModel *) accountModel;
++ (void) updateEmailAccountUnReadCount:(EmailAccountModel *) accountModel;
 @end
 
 NS_ASSUME_NONNULL_END

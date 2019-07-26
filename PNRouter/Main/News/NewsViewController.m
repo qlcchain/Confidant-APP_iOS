@@ -42,16 +42,20 @@
 #import "EmailListInfo.h"
 #import "EmailAccountModel.h"
 #import "PNEmailDetailViewController.h"
+#import "PNEmailSendViewController.h"
 #import "EmailUserModel.h"
+#import "EmailAttchModel.h"
 
 #import <MJRefresh/MJRefresh.h>
-
-
+#import "EmailOptionUtil.h"
+#import "NSString+HexStr.h"
+#import "EmailDataBaseUtil.h"
 
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate> {
     BOOL isSearch;
+    BOOL isRequestFloderCount;
+    NSInteger selRow;
 }
-
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (weak, nonatomic) IBOutlet UIView *searchBackView;
@@ -75,6 +79,8 @@
 @property (nonatomic ,assign) int page;
 @property (nonatomic ,assign) int pageCount;
 @property (nonatomic , strong) FloderModel *floderModel;
+@property (nonatomic ,assign) NSInteger currentEmailCount; // 当前邮件总数
+@property (nonatomic ,assign) BOOL isRefresh; // 是不是上拉刷新
 @end
 
 @implementation NewsViewController
@@ -106,6 +112,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherFileOpenNoti:) name:OTHER_FILE_OPEN_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailAccountChangeNoti:) name:EMIAL_ACCOUNT_CHANGE_NOTI object:nil];
+    // 邮件flags 改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailFlagsChangeNoti:) name:EMIAL_FLAGS_CHANGE_NOTI object:nil];
     
 }
 // 搜索
@@ -155,31 +163,33 @@
 - (void) firstPullEmailList
 {
     _page = 1;
-    _lblTitle.text = @"Inbox";
-    EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
-    if (!accountModel) {
+    if (!EmailManage.sharedEmailManage.imapSeeion) {
+        _lblTitle.text = @"Email";
         _lblSubTitle.text = @"Not Configured";
     } else {
-        _lblSubTitle.text = accountModel.User;
+        self.floderModel = [[FloderModel alloc] init];
+        self.floderModel.path = @"INBOX";
+        self.floderModel.name = @"Inbox";
+        MCOIMAPFolderInfoOperation * folderInfoOperation = [EmailManage.sharedEmailManage.imapSeeion folderInfoOperation:self.floderModel.path];
+        [self.view showHudInView:self.view hint:@"Loading"];
+       
+        @weakify_self
+        [folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
+            if (error) {
+                [weakSelf.view hideHud];
+                [weakSelf.view showHint:@"Failed to pull mail."];
+            } else {
+                isRequestFloderCount = YES;
+                weakSelf.floderModel.count = info.messageCount;
+                [weakSelf pullEmailList];
+            }
+        }];
     }
-    
-    self.floderModel = [[FloderModel alloc] init];
-    self.floderModel.path = @"INBOX";
-    self.floderModel.name = @"INBOX";
-    MCOIMAPFolderInfoOperation * folderInfoOperation = [EmailManage.sharedEmailManage.imapSeeion folderInfoOperation:self.floderModel.path];
-    @weakify_self
-    [folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
-        if (error) {
-            [weakSelf.view showHint:@"Failed to pull mail."];
-        } else {
-            weakSelf.floderModel.count = info.messageCount;
-            [weakSelf pullEmailList];
-        }
-    }];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
     _page = 1;
     _pageCount = 10;
@@ -226,6 +236,13 @@
     _emailTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _emailTabView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_emailTabView registerNib:[UINib nibWithNibName:EmailListCellResue bundle:nil] forCellReuseIdentifier:EmailListCellResue];
+    // 上拉刷新
+    _emailTabView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(sendPullNewEmailList)];
+    // Hide the time
+    ((MJRefreshStateHeader *)_emailTabView.mj_header).lastUpdatedTimeLabel.hidden = YES;
+    // Hide the status
+    ((MJRefreshStateHeader *)_emailTabView.mj_header).stateLabel.hidden = YES;
+  
     
     // 设置回调（一旦进入刷新状态就会调用这个refreshingBlock）
     @weakify_self
@@ -236,6 +253,10 @@
     [footerView setRefreshingTitleHidden:YES];
     [footerView setTitle:@"" forState:MJRefreshStateIdle];
     
+    if ([EmailAccountModel getLocalAllEmailAccounts].count == 0) {
+        footerView.hidden = YES;
+    }
+    
     NSLog(@"userid = %@",[UserModel getUserModel].userId);
     [self chatMessageChangeNoti:nil];
     [self addNoti];
@@ -245,14 +266,40 @@
         [self performSelector:@selector(jumpOtherFileVC) withObject:self afterDelay:1.0];
     }
 }
+// 拉取新邮件
+- (void) sendPullNewEmailList
+{
+    
+    MCOIMAPFolderInfoOperation * folderInfoOperation = [EmailManage.sharedEmailManage.imapSeeion folderInfoOperation:self.floderModel.path];
+    @weakify_self
+    [folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
+        if (error) {
+            [weakSelf.emailTabView.mj_header endRefreshing];
+        } else {
+            if (weakSelf.floderModel.count != info.messageCount) {
+                weakSelf.isRefresh = YES;
+                weakSelf.currentEmailCount = weakSelf.floderModel.count;
+                weakSelf.floderModel.count = info.messageCount;
+                [weakSelf pullEmailList];
+            } else {
+                [weakSelf.emailTabView.mj_header endRefreshing];
+            }
+        }
+    }];
+}
 
 // 更新头部标题
 - (void) updateTopTitle
 {
     if (AppD.isEmailPage) {
-        _lblTitle.text = self.floderModel.name;
         EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
-        _lblSubTitle.text = accountModel.User;
+        if (accountModel) {
+            _lblTitle.text = self.floderModel.name;
+            _lblSubTitle.text = accountModel.User;
+        } else {
+            _lblTitle.text = @"Email";
+            _lblSubTitle.text = @"Not Configured";
+        }
     } else {
         _lblTitle.text = @"Message";
         _lblSubTitle.text = [RouterModel getConnectRouter].name;
@@ -405,11 +452,16 @@
             cell.attachImgView.hidden = NO;
             cell.lblAttCount.text = [NSString stringWithFormat:@"%d",listInfo.attachCount];
         }
-        if (listInfo.Read == 0) {
+        
+        if (listInfo.Read %2 == 0 && ![self.floderModel.name isEqualToString:Drafts] && ![self.floderModel.name isEqualToString:Sent]) {
             cell.readView.hidden = NO;
+            cell.lblContent.textColor = MAIN_PURPLE_COLOR;
         } else {
             cell.readView.hidden = YES;
+            cell.lblContent.textColor = RGB(148, 150, 161);
         }
+        // 获取read 二进制的第三位，1为加星  0 为没有
+        cell.lableImgView.hidden = ![EmailOptionUtil checkEmailStar:listInfo.Read];
         return cell;
     }
     
@@ -457,30 +509,29 @@
         EmailListInfo *model = self.emailDataArray[indexPath.row];
         model.floderName = self.floderModel.name;
         model.floderPath = self.floderModel.path;
-        PNEmailDetailViewController *vc = [[PNEmailDetailViewController alloc] initWithEmailListModer:model];
-        [self.navigationController pushViewController:vc animated:YES];
+        selRow = indexPath.row;
         
-        // 设为已读
-        if (model.Read == 0) {
-            model.Read = 1;
-            [_emailTabView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self setEmailReadWithUid:model.uid];
+        if ([self.floderModel.name isEqualToString:Drafts]) { //草稿箱
+            PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:model sendType:DraftEmail];
+            [self presentModalVC:vc animated:YES];
+            
+        } else {
+            PNEmailDetailViewController *vc = [[PNEmailDetailViewController alloc] initWithEmailListModer:model];
+            [self.navigationController pushViewController:vc animated:YES];
+            // 设为已读
+            if (model.Read == 0) {
+                model.Read = 1;
+                [_emailTabView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                // 设为已读
+                [EmailOptionUtil setEmailReaded:YES uid:model.uid folderPath:model.floderPath complete:^(BOOL success) {
+                    
+                }];
+            }
         }
+        
     }
 }
 
-#pragma mark ----email 设为已读操作 ----------
-- (void)setEmailReadWithUid:(NSInteger)uid {
-    
-    MCOIndexSet *uids = [MCOIndexSet indexSetWithIndex:uid];
-    MCOIMAPOperation *op = [EmailManage.sharedEmailManage.imapSeeion storeFlagsOperationWithFolder:self.floderModel.path
-                                                                                              uids:uids
-                                                                                              kind: MCOIMAPStoreFlagsRequestKindSet
-                                                                                             flags:MCOMessageFlagSeen];
-    [op start:^(NSError * _Nullable error) {
-        NSLog(@"store star flag 's error: %@",error);
-    }];
-}
 
 #pragma mark - SWTableViewDelegate
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
@@ -655,11 +706,27 @@
     [self presentModalVC:vc animated:YES];
 }
 
+#pragma mark ------------email 通知回调-------------------
+// 邮箱帐号改变
 - (void) emailAccountChangeNoti:(NSNotification *) noti
 {
-    
     [self firstPullEmailList];
 }
+// 邮件flags改变
+- (void) emailFlagsChangeNoti:(NSNotification *) noti
+{
+    int optionType = [noti.object intValue];
+    if (optionType == 0 || optionType == 1) { // 未读 和 加星
+         [self.emailTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:selRow inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    } else if (optionType == 2 || optionType == 3) { // 移动到  和 删除
+        
+        [self.emailDataArray removeObjectAtIndex:selRow];
+        [self.emailTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:selRow inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        self.floderModel.count--;
+    }
+   
+}
+
 
 #pragma mark - Layz
 - (UILabel *)lblTop {
@@ -713,34 +780,47 @@
 }
 - (void)sideMenu:(YJSideMenu *)sideMenu didHideMenuViewController:(UIViewController *)menuViewController selectFloderPath:(FloderModel *)floderModel
 {
+    [self.view hideHud];
     NSLog(@"flodername = %@---floderpath = %@",floderModel.name,floderModel.path);
-    if ([self.floderModel.path isEqualToString:floderModel.path]) {
+    if ([self.floderModel.name isEqualToString:floderModel.name]) {
         return;
     }
     _lblTitle.text = floderModel.name;
     self.floderModel = floderModel;
     _page = 1;
-    [self pullEmailList];
-    
+    if (self.floderModel.path.length > 0) {
+         [self pullEmailList];
+    } else {
+        if (self.emailDataArray.count > 0) {
+            [self.emailDataArray removeAllObjects];
+            [_emailTabView reloadData];
+        }
+       
+    }
 }
 // 拉取邮件列表
 - (void) pullEmailList
 {
-    if (_page == 1) {
-        self.emailTabView.mj_footer.hidden = YES;
-    }
-    
-    if (self.emailDataArray.count > 0 && _page == 1) {
-        [self.emailDataArray removeAllObjects];
-        [_emailTabView reloadData];
-    }
-    
-    if (self.floderModel.count == 0) {
-        self.emailTabView.mj_footer.hidden = YES;
-        return;
-    }
-    if (_page == 1) {
-        [self.view showHudInView:self.view hint:@"Loading"];
+    if (_isRefresh) { // 上拉
+        
+    } else {
+        if (_page == 1) {
+            self.emailTabView.mj_footer.hidden = YES;
+        }
+        
+        if (self.emailDataArray.count > 0 && _page == 1) {
+            [self.emailDataArray removeAllObjects];
+            [_emailTabView reloadData];
+        }
+        
+        if (self.floderModel.count == 0) {
+            self.emailTabView.mj_footer.hidden = YES;
+            return;
+        }
+        if (_page == 1 && !isRequestFloderCount) {
+            [self.view showHudInView:self.view hint:@"Loading"];
+        }
+        isRequestFloderCount = NO;
     }
     
     MCOIMAPMessagesRequestKind requestKind = (MCOIMAPMessagesRequestKind)
@@ -752,10 +832,17 @@
     
     uint64_t locationf = 1;
     uint64_t lengthf = 10;
-    CGFloat syCount = self.floderModel.count - self.emailDataArray.count;
-    if (syCount > 10) {
-        locationf = syCount - _pageCount+1;
+    if (_isRefresh) {
+        lengthf = self.floderModel.count - self.currentEmailCount;
+        locationf = self.currentEmailCount+1;
+    } else {
+        CGFloat syCount = self.floderModel.count - self.emailDataArray.count;
+        if (syCount > 10) {
+            locationf = syCount - _pageCount;
+            lengthf = 9;
+        }
     }
+    
     MCOIndexSet *numbers = [MCOIndexSet indexSetWithRange:MCORangeMake(locationf, lengthf)];
     
     MCOIMAPFetchMessagesOperation *imapMessagesFetchOp = [EmailManage.sharedEmailManage.imapSeeion fetchMessagesByNumberOperationWithFolder:self.floderModel.path
@@ -766,16 +853,26 @@
     [imapMessagesFetchOp start:^(NSError *error, NSArray *messages, MCOIndexSet *vanishedMessages) {
         
         if (error) {
-            if (weakSelf.page == 1) {
-                [weakSelf.view hideHud];
+            if (weakSelf.isRefresh) { // 是上拉刷新
+                weakSelf.floderModel.count = (int) weakSelf.currentEmailCount;
+                weakSelf.isRefresh = NO;
+                [weakSelf.view showHint:@"Failed to pull mail."];
+                [weakSelf.emailTabView.mj_header endRefreshing];
             } else {
-                weakSelf.emailTabView.mj_footer.hidden = NO;
+                if (weakSelf.page == 1) {
+                    [weakSelf.view hideHud];
+                } else {
+                    weakSelf.emailTabView.mj_footer.hidden = NO;
+                }
+                [weakSelf.view showHint:@"Failed to pull mail."];
+                [weakSelf.emailTabView.mj_footer endRefreshing];
             }
-            [weakSelf.view showHint:@"Failed to pull mail."];
-            [weakSelf.emailTabView.mj_footer endRefreshing];
+            
         } else {
             // 倒序
-            weakSelf.page ++;
+            if (!weakSelf.isRefresh) {
+                 weakSelf.page ++;
+            }
             //NSArray *messageArray = [[messages reverseObjectEnumerator] allObjects];
             // [weakSelf tranEmailListInfoWithArr:messageArray];
             
@@ -786,17 +883,23 @@
             // 转换mode
             [weakSelf tranEmailListInfoWithArr:messageArray];
             
-            if (syCount > 10) {
-                self.emailTabView.mj_footer.hidden = NO;
-            } else {
-                self.emailTabView.mj_footer.hidden = YES;
+            if (!weakSelf.isRefresh) {
+                if (messages.count == 10) {
+                    weakSelf.emailTabView.mj_footer.hidden = NO;
+                } else {
+                    weakSelf.emailTabView.mj_footer.hidden = YES;
+                }
             }
+            
         }
     }];
 }
 // 转换成 emaillistinfo
 - (void) tranEmailListInfoWithArr:(NSArray *) messageArray
 {
+    
+    EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
+    
     NSMutableArray *tempArray = [NSMutableArray array];
     @weakify_self
     [messageArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -820,7 +923,6 @@
                 [listInfo.toUserArray addObject:userM];
             }
         }
-        
         // 获取多个抄送人
         NSArray *ccAddressArray = headrMessage.cc;
         if (ccAddressArray) {
@@ -855,14 +957,19 @@
         
         
         listInfo.uid = message.uid;
+        
         listInfo.Read = message.flags;
         listInfo.messageid = headrMessage.messageID;
+        NSLog(@"-----messageid------%@",listInfo.messageid);
         listInfo.fromName = address.displayName?:@"";
         listInfo.From = address.mailbox;
-        // listInfo.toName = toAddress.displayName?:@"";
         listInfo.Subject = message.header.subject;
         listInfo.revDate = message.header.receivedDate;
         [tempArray addObject:listInfo];
+        
+        if (![self.floderModel.name isEqualToString:Spam]) {
+             [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:listInfo.fromName userAddress:listInfo.From];
+        }
     }];
     
     __block int endCount = 0;
@@ -879,24 +986,56 @@
             MCOMessageParser *messageParser = [MCOMessageParser messageParserWithData:data];
             info.attachCount = (int)messageParser.attachments.count;
             NSString *content = [messageParser plainTextBodyRenderingAndStripWhitespace:YES];
-            NSString *htmlContent = [messageParser htmlBodyRendering];
-            htmlContent =[htmlContent componentsSeparatedByString:@"<hr/>"][0];
+            NSString *htmlContents = [messageParser htmlBodyRendering];
             NSArray *attchArray = messageParser.attachments;
+            if (attchArray && attchArray.count > 0) {
+                 //去除附件
+                NSString *attHtml =[[htmlContents componentsSeparatedByString:@"<hr/>"] lastObject];
+                NSRange range = [htmlContents rangeOfString:attHtml];
+                NSString *htmlRangeContents = [htmlContents substringWithRange:NSMakeRange(0, range.location)];
+                if (htmlContents && htmlContents.length > 0) {
+                    htmlContents = htmlRangeContents;
+                }
+            }
             [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 EmailListInfo *listModel = obj;
+               
                 if ([messageParser.header.messageID isEqualToString:listModel.messageid]) {
+                    
+                     NSLog(@"-----uid------%@",messageParser.header.messageID);
+                    
                     listModel.content = content;
-                    listModel.htmlContent = htmlContent;
-                    listModel.attchArray = [NSMutableArray arrayWithArray:attchArray?:@[]];
+                    listModel.htmlContent = htmlContents;
+                    // 转换附件类型
+                    listModel.attchArray = [NSMutableArray array];                    if (attchArray) {
+                        [attchArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                            MCOAttachment *attInfo = obj;
+                            EmailAttchModel *attModel = [[EmailAttchModel alloc] init];
+                            attModel.attId = attInfo.uniqueID;
+                            attModel.attName = attInfo.filename;
+                            attModel.attData = attInfo.data;
+                            [listModel.attchArray addObject:attModel];
+                        }];
+                    }
                     *stop = YES;
                 }
             }];
             // 判断是否完成
             if (endCount == tempArray.count) {
-                [weakSelf.view hideHud];
+                
                 [weakSelf.emailDataArray addObjectsFromArray:tempArray];
                 [weakSelf.emailTabView reloadData];
-                [weakSelf.emailTabView.mj_footer endRefreshing];
+                
+                if (weakSelf.isRefresh) {
+                    weakSelf.isRefresh = NO;
+                    [weakSelf.emailTabView.mj_header endRefreshing];
+                } else {
+                    [weakSelf.view hideHud];
+                    [weakSelf.emailTabView.mj_footer endRefreshing];
+                }
+                
+               
+               
             }
         }];
     }

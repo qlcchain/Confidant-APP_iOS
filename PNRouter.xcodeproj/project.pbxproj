@@ -274,6 +274,14 @@
 		730951AC22D2DC6E001BA82E /* PNEmailMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730951AB22D2DC6E001BA82E /* PNEmailMenuView.xib */; };
 		730951AF22D2DC8D001BA82E /* PNMessageMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 730951AE22D2DC8D001BA82E /* PNMessageMenuView.m */; };
 		730951B222D2DCA0001BA82E /* PNEmailMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 730951B122D2DCA0001BA82E /* PNEmailMenuView.m */; };
+		730AE07B22E9504900E0BC67 /* SIXEditorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE07022E9504700E0BC67 /* SIXEditorView.m */; };
+		730AE07C22E9504900E0BC67 /* SIXEditorToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE07222E9504800E0BC67 /* SIXEditorToolBar.m */; };
+		730AE07D22E9504900E0BC67 /* SIXEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 730AE07522E9504800E0BC67 /* SIXEditor.bundle */; };
+		730AE07E22E9504900E0BC67 /* SIXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE07822E9504900E0BC67 /* SIXHTMLParser.m */; };
+		730AE07F22E9504900E0BC67 /* SIXEditorInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE07922E9504900E0BC67 /* SIXEditorInputView.m */; };
+		730AE08022E9504900E0BC67 /* SIXEditorInputManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE07A22E9504900E0BC67 /* SIXEditorInputManager.m */; };
+		730AE08322EADA5600E0BC67 /* EmailErrorAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE08222EADA5600E0BC67 /* EmailErrorAlertView.m */; };
+		730AE08522EADA6100E0BC67 /* EmailErrorAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730AE08422EADA6100E0BC67 /* EmailErrorAlertView.xib */; };
 		73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6B219BB59B00510B48 /* RouterConfig.m */; };
 		73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6E219BF4E900510B48 /* NSString+SHA256.m */; };
 		73121A74219C26E900510B48 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A72219C26E900510B48 /* LoginViewController.m */; };
@@ -387,6 +395,12 @@
 		7330F520214B460A00FF4EEC /* NotifactionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F51B214B460A00FF4EEC /* NotifactionView.m */; };
 		7330F524214BF4B500FF4EEC /* SocketAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F523214BF4B500FF4EEC /* SocketAlertView.m */; };
 		7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F525214BF4C000FF4EEC /* SocketAlertView.xib */; };
+		733EE47F22E1B2DB0042457C /* PNEmailMoveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 733EE47D22E1B2DB0042457C /* PNEmailMoveViewController.m */; };
+		733EE48022E1B2DB0042457C /* PNEmailMoveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 733EE47E22E1B2DB0042457C /* PNEmailMoveViewController.xib */; };
+		733EE48422E1B9290042457C /* EmailMoveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 733EE48222E1B9290042457C /* EmailMoveCell.m */; };
+		733EE48522E1B9290042457C /* EmailMoveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 733EE48322E1B9290042457C /* EmailMoveCell.xib */; };
+		733EE48922E54F410042457C /* PNEmailSendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 733EE48722E54F410042457C /* PNEmailSendViewController.m */; };
+		733EE48A22E54F410042457C /* PNEmailSendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 733EE48822E54F410042457C /* PNEmailSendViewController.xib */; };
 		734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734B793721A7EAAF0068AA2C /* UserManagerViewController.m */; };
 		734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */; };
 		734ED8C9226038B1002F1960 /* CircleLoginCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734ED8C7226038B1002F1960 /* CircleLoginCodeViewController.m */; };
@@ -509,6 +523,10 @@
 		7392791121F72203003AAD58 /* DiskManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392790F21F72203003AAD58 /* DiskManagerViewController.m */; };
 		7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7392791021F72203003AAD58 /* DiskManagerViewController.xib */; };
 		7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392791421FAF356003AAD58 /* UploadFileManager.m */; };
+		7393918722E062810033C203 /* PNEmailPreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7393918522E062810033C203 /* PNEmailPreViewController.m */; };
+		7393918822E062810033C203 /* PNEmailPreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7393918622E062810033C203 /* PNEmailPreViewController.xib */; };
+		7393918B22E068280033C203 /* EmailAttchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7393918A22E068280033C203 /* EmailAttchModel.m */; };
+		7393918E22E15B200033C203 /* EmailOptionUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7393918D22E15B200033C203 /* EmailOptionUtil.m */; };
 		73976A49225C990B0001E276 /* OtherFileOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73976A47225C990B0001E276 /* OtherFileOpenViewController.m */; };
 		73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73976A48225C990B0001E276 /* OtherFileOpenViewController.xib */; };
 		73A0E53322DDB5890004CED7 /* HeadReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A0E53122DDB5890004CED7 /* HeadReusableView.m */; };
@@ -517,6 +535,12 @@
 		73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A4867121B94B3A0062C34F /* ConnectView.xib */; };
 		73AC8F50223F9E64000E60D5 /* GroupListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC8F4E223F9E64000E60D5 /* GroupListCell.m */; };
 		73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */; };
+		73B18D0822E5B017000D52A9 /* PNEmailContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B18D0622E5B017000D52A9 /* PNEmailContactViewController.m */; };
+		73B18D0922E5B017000D52A9 /* PNEmailContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B18D0722E5B017000D52A9 /* PNEmailContactViewController.xib */; };
+		73B6432322E5C6C2003A4EA5 /* EmailContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B6432122E5C6C2003A4EA5 /* EmailContactCell.m */; };
+		73B6432422E5C6C2003A4EA5 /* EmailContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B6432222E5C6C2003A4EA5 /* EmailContactCell.xib */; };
+		73B6432722E83CEC003A4EA5 /* PNEmailAttchSelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B6432622E83CEC003A4EA5 /* PNEmailAttchSelView.m */; };
+		73B6432922E83CF6003A4EA5 /* PNEmailAttchSelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B6432822E83CF6003A4EA5 /* PNEmailAttchSelView.xib */; };
 		73C4B55B22375C660018146C /* FileConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C4B55A22375C660018146C /* FileConfig.m */; };
 		73C4B55F223783500018146C /* GroupChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C4B55D223783500018146C /* GroupChatListViewController.m */; };
 		73C4B560223783500018146C /* GroupChatListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C4B55E223783500018146C /* GroupChatListViewController.xib */; };
@@ -556,6 +580,9 @@
 		73E3C71122D49F4F00D7C9C6 /* CircleNamewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E3C70F22D49F4F00D7C9C6 /* CircleNamewCell.xib */; };
 		73E3C71522D5793700D7C9C6 /* PNEmailLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E3C71322D5793700D7C9C6 /* PNEmailLoginViewController.m */; };
 		73E3C71622D5793700D7C9C6 /* PNEmailLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E3C71422D5793700D7C9C6 /* PNEmailLoginViewController.xib */; };
+		73E48CF522E59FC300AB0732 /* UITextViewWithPlaceHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E48CF422E59FC300AB0732 /* UITextViewWithPlaceHolder.m */; };
+		73E48CF822E5A7CA00AB0732 /* EmailContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E48CF722E5A7CA00AB0732 /* EmailContactModel.m */; };
+		73E48CFB22E5AAA600AB0732 /* EmailDataBaseUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E48CFA22E5AAA600AB0732 /* EmailDataBaseUtil.m */; };
 		73E7422A227EC0C4007BA73A /* AtUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E74229227EC0C4007BA73A /* AtUserModel.m */; };
 		73E773FB22D58F2C001C652E /* EmailFloderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E773F922D58F2C001C652E /* EmailFloderCell.m */; };
 		73E773FC22D58F2C001C652E /* EmailFloderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E773FA22D58F2C001C652E /* EmailFloderCell.xib */; };
@@ -590,6 +617,8 @@
 		73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */; };
 		73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CC32159CD980048866B /* ChooseContactCell.m */; };
 		73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CC42159CD980048866B /* ChooseContactCell.xib */; };
+		73F102CF22DF646800E7D257 /* PNEmailTypeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F102CD22DF646800E7D257 /* PNEmailTypeSelectView.m */; };
+		73F102D022DF646800E7D257 /* PNEmailTypeSelectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F102CE22DF646800E7D257 /* PNEmailTypeSelectView.xib */; };
 		73F55A082238D398003155D2 /* InvitationQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */; };
 		73F55A092238D398003155D2 /* InvitationQRCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */; };
 		73F55A0C223F3F69003155D2 /* GroupInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A0B223F3F69003155D2 /* GroupInfoModel.m */; };
@@ -1139,6 +1168,21 @@
 		730951AE22D2DC8D001BA82E /* PNMessageMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNMessageMenuView.m; sourceTree = "<group>"; };
 		730951B022D2DCA0001BA82E /* PNEmailMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailMenuView.h; sourceTree = "<group>"; };
 		730951B122D2DCA0001BA82E /* PNEmailMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailMenuView.m; sourceTree = "<group>"; };
+		730AE06F22E9504700E0BC67 /* SIXEditorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXEditorView.h; sourceTree = "<group>"; };
+		730AE07022E9504700E0BC67 /* SIXEditorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXEditorView.m; sourceTree = "<group>"; };
+		730AE07122E9504700E0BC67 /* SIXEditorToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXEditorToolBar.h; sourceTree = "<group>"; };
+		730AE07222E9504800E0BC67 /* SIXEditorToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXEditorToolBar.m; sourceTree = "<group>"; };
+		730AE07322E9504800E0BC67 /* SIXEditorInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXEditorInputManager.h; sourceTree = "<group>"; };
+		730AE07422E9504800E0BC67 /* SIXEditorHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXEditorHeader.h; sourceTree = "<group>"; };
+		730AE07522E9504800E0BC67 /* SIXEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SIXEditor.bundle; sourceTree = "<group>"; };
+		730AE07622E9504800E0BC67 /* SIXEditorInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXEditorInputView.h; sourceTree = "<group>"; };
+		730AE07722E9504900E0BC67 /* SIXHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXHTMLParser.h; sourceTree = "<group>"; };
+		730AE07822E9504900E0BC67 /* SIXHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXHTMLParser.m; sourceTree = "<group>"; };
+		730AE07922E9504900E0BC67 /* SIXEditorInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXEditorInputView.m; sourceTree = "<group>"; };
+		730AE07A22E9504900E0BC67 /* SIXEditorInputManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXEditorInputManager.m; sourceTree = "<group>"; };
+		730AE08122EADA5600E0BC67 /* EmailErrorAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailErrorAlertView.h; sourceTree = "<group>"; };
+		730AE08222EADA5600E0BC67 /* EmailErrorAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailErrorAlertView.m; sourceTree = "<group>"; };
+		730AE08422EADA6100E0BC67 /* EmailErrorAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailErrorAlertView.xib; sourceTree = "<group>"; };
 		73121A6A219BB59B00510B48 /* RouterConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterConfig.h; sourceTree = "<group>"; };
 		73121A6B219BB59B00510B48 /* RouterConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterConfig.m; sourceTree = "<group>"; };
 		73121A6D219BF4E900510B48 /* NSString+SHA256.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SHA256.h"; sourceTree = "<group>"; };
@@ -1342,6 +1386,15 @@
 		7330F522214BF4B500FF4EEC /* SocketAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAlertView.h; sourceTree = "<group>"; };
 		7330F523214BF4B500FF4EEC /* SocketAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketAlertView.m; sourceTree = "<group>"; };
 		7330F525214BF4C000FF4EEC /* SocketAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SocketAlertView.xib; sourceTree = "<group>"; };
+		733EE47C22E1B2DB0042457C /* PNEmailMoveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailMoveViewController.h; sourceTree = "<group>"; };
+		733EE47D22E1B2DB0042457C /* PNEmailMoveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailMoveViewController.m; sourceTree = "<group>"; };
+		733EE47E22E1B2DB0042457C /* PNEmailMoveViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailMoveViewController.xib; sourceTree = "<group>"; };
+		733EE48122E1B9290042457C /* EmailMoveCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailMoveCell.h; sourceTree = "<group>"; };
+		733EE48222E1B9290042457C /* EmailMoveCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailMoveCell.m; sourceTree = "<group>"; };
+		733EE48322E1B9290042457C /* EmailMoveCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailMoveCell.xib; sourceTree = "<group>"; };
+		733EE48622E54F410042457C /* PNEmailSendViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailSendViewController.h; sourceTree = "<group>"; };
+		733EE48722E54F410042457C /* PNEmailSendViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailSendViewController.m; sourceTree = "<group>"; };
+		733EE48822E54F410042457C /* PNEmailSendViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailSendViewController.xib; sourceTree = "<group>"; };
 		734B793621A7EAAF0068AA2C /* UserManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManagerViewController.h; sourceTree = "<group>"; };
 		734B793721A7EAAF0068AA2C /* UserManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManagerViewController.m; sourceTree = "<group>"; };
 		734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserManagerViewController.xib; sourceTree = "<group>"; };
@@ -1596,6 +1649,13 @@
 		7392791021F72203003AAD58 /* DiskManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskManagerViewController.xib; sourceTree = "<group>"; };
 		7392791321FAF356003AAD58 /* UploadFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadFileManager.h; sourceTree = "<group>"; };
 		7392791421FAF356003AAD58 /* UploadFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFileManager.m; sourceTree = "<group>"; };
+		7393918422E062810033C203 /* PNEmailPreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailPreViewController.h; sourceTree = "<group>"; };
+		7393918522E062810033C203 /* PNEmailPreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailPreViewController.m; sourceTree = "<group>"; };
+		7393918622E062810033C203 /* PNEmailPreViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailPreViewController.xib; sourceTree = "<group>"; };
+		7393918922E068280033C203 /* EmailAttchModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailAttchModel.h; sourceTree = "<group>"; };
+		7393918A22E068280033C203 /* EmailAttchModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailAttchModel.m; sourceTree = "<group>"; };
+		7393918C22E15B200033C203 /* EmailOptionUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailOptionUtil.h; sourceTree = "<group>"; };
+		7393918D22E15B200033C203 /* EmailOptionUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailOptionUtil.m; sourceTree = "<group>"; };
 		73976A46225C990B0001E276 /* OtherFileOpenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherFileOpenViewController.h; sourceTree = "<group>"; };
 		73976A47225C990B0001E276 /* OtherFileOpenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherFileOpenViewController.m; sourceTree = "<group>"; };
 		73976A48225C990B0001E276 /* OtherFileOpenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherFileOpenViewController.xib; sourceTree = "<group>"; };
@@ -1608,6 +1668,15 @@
 		73AC8F4D223F9E64000E60D5 /* GroupListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupListCell.h; sourceTree = "<group>"; };
 		73AC8F4E223F9E64000E60D5 /* GroupListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupListCell.m; sourceTree = "<group>"; };
 		73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupListCell.xib; sourceTree = "<group>"; };
+		73B18D0522E5B017000D52A9 /* PNEmailContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailContactViewController.h; sourceTree = "<group>"; };
+		73B18D0622E5B017000D52A9 /* PNEmailContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailContactViewController.m; sourceTree = "<group>"; };
+		73B18D0722E5B017000D52A9 /* PNEmailContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailContactViewController.xib; sourceTree = "<group>"; };
+		73B6432022E5C6C2003A4EA5 /* EmailContactCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailContactCell.h; sourceTree = "<group>"; };
+		73B6432122E5C6C2003A4EA5 /* EmailContactCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailContactCell.m; sourceTree = "<group>"; };
+		73B6432222E5C6C2003A4EA5 /* EmailContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailContactCell.xib; sourceTree = "<group>"; };
+		73B6432522E83CEC003A4EA5 /* PNEmailAttchSelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailAttchSelView.h; sourceTree = "<group>"; };
+		73B6432622E83CEC003A4EA5 /* PNEmailAttchSelView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailAttchSelView.m; sourceTree = "<group>"; };
+		73B6432822E83CF6003A4EA5 /* PNEmailAttchSelView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailAttchSelView.xib; sourceTree = "<group>"; };
 		73C4B55922375C660018146C /* FileConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileConfig.h; sourceTree = "<group>"; };
 		73C4B55A22375C660018146C /* FileConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileConfig.m; sourceTree = "<group>"; };
 		73C4B55C223783500018146C /* GroupChatListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupChatListViewController.h; sourceTree = "<group>"; };
@@ -1671,6 +1740,12 @@
 		73E3C71222D5793700D7C9C6 /* PNEmailLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailLoginViewController.h; sourceTree = "<group>"; };
 		73E3C71322D5793700D7C9C6 /* PNEmailLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailLoginViewController.m; sourceTree = "<group>"; };
 		73E3C71422D5793700D7C9C6 /* PNEmailLoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailLoginViewController.xib; sourceTree = "<group>"; };
+		73E48CF322E59FC300AB0732 /* UITextViewWithPlaceHolder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UITextViewWithPlaceHolder.h; sourceTree = "<group>"; };
+		73E48CF422E59FC300AB0732 /* UITextViewWithPlaceHolder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UITextViewWithPlaceHolder.m; sourceTree = "<group>"; };
+		73E48CF622E5A7CA00AB0732 /* EmailContactModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailContactModel.h; sourceTree = "<group>"; };
+		73E48CF722E5A7CA00AB0732 /* EmailContactModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailContactModel.m; sourceTree = "<group>"; };
+		73E48CF922E5AAA600AB0732 /* EmailDataBaseUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailDataBaseUtil.h; sourceTree = "<group>"; };
+		73E48CFA22E5AAA600AB0732 /* EmailDataBaseUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailDataBaseUtil.m; sourceTree = "<group>"; };
 		73E74228227EC0C4007BA73A /* AtUserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AtUserModel.h; sourceTree = "<group>"; };
 		73E74229227EC0C4007BA73A /* AtUserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AtUserModel.m; sourceTree = "<group>"; };
 		73E773F822D58F2C001C652E /* EmailFloderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailFloderCell.h; sourceTree = "<group>"; };
@@ -1727,6 +1802,9 @@
 		73EE8CC22159CD980048866B /* ChooseContactCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactCell.h; sourceTree = "<group>"; };
 		73EE8CC32159CD980048866B /* ChooseContactCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactCell.m; sourceTree = "<group>"; };
 		73EE8CC42159CD980048866B /* ChooseContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseContactCell.xib; sourceTree = "<group>"; };
+		73F102CC22DF646800E7D257 /* PNEmailTypeSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailTypeSelectView.h; sourceTree = "<group>"; };
+		73F102CD22DF646800E7D257 /* PNEmailTypeSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailTypeSelectView.m; sourceTree = "<group>"; };
+		73F102CE22DF646800E7D257 /* PNEmailTypeSelectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailTypeSelectView.xib; sourceTree = "<group>"; };
 		73F55A052238D398003155D2 /* InvitationQRCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvitationQRCodeViewController.h; sourceTree = "<group>"; };
 		73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvitationQRCodeViewController.m; sourceTree = "<group>"; };
 		73F55A072238D398003155D2 /* InvitationQRCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvitationQRCodeViewController.xib; sourceTree = "<group>"; };
@@ -2713,6 +2791,7 @@
 		730951A522D2DBF1001BA82E /* Email */ = {
 			isa = PBXGroup;
 			children = (
+				730AE06E22E94FDD00E0BC67 /* HtmlEditView */,
 				73E773FD22D5C2B7001C652E /* ShareConfig */,
 				73E3C6DE22D2F45500D7C9C6 /* YJSideMenu */,
 				730951A622D2DBF1001BA82E /* Cells */,
@@ -2761,6 +2840,12 @@
 				7322F4E422DD84A300932F28 /* EmailOptionCell.h */,
 				7322F4E522DD84A300932F28 /* EmailOptionCell.m */,
 				7322F4E622DD84A300932F28 /* EmailOptionCell.xib */,
+				733EE48122E1B9290042457C /* EmailMoveCell.h */,
+				733EE48222E1B9290042457C /* EmailMoveCell.m */,
+				733EE48322E1B9290042457C /* EmailMoveCell.xib */,
+				73B6432022E5C6C2003A4EA5 /* EmailContactCell.h */,
+				73B6432122E5C6C2003A4EA5 /* EmailContactCell.m */,
+				73B6432222E5C6C2003A4EA5 /* EmailContactCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2777,6 +2862,21 @@
 				73E7741822D8239A001C652E /* PNEmailDetailViewController.h */,
 				73E7741922D8239A001C652E /* PNEmailDetailViewController.m */,
 				73E7741A22D8239A001C652E /* PNEmailDetailViewController.xib */,
+				73F102CC22DF646800E7D257 /* PNEmailTypeSelectView.h */,
+				73F102CD22DF646800E7D257 /* PNEmailTypeSelectView.m */,
+				73F102CE22DF646800E7D257 /* PNEmailTypeSelectView.xib */,
+				7393918422E062810033C203 /* PNEmailPreViewController.h */,
+				7393918522E062810033C203 /* PNEmailPreViewController.m */,
+				7393918622E062810033C203 /* PNEmailPreViewController.xib */,
+				733EE47C22E1B2DB0042457C /* PNEmailMoveViewController.h */,
+				733EE47D22E1B2DB0042457C /* PNEmailMoveViewController.m */,
+				733EE47E22E1B2DB0042457C /* PNEmailMoveViewController.xib */,
+				733EE48622E54F410042457C /* PNEmailSendViewController.h */,
+				733EE48722E54F410042457C /* PNEmailSendViewController.m */,
+				733EE48822E54F410042457C /* PNEmailSendViewController.xib */,
+				73B18D0522E5B017000D52A9 /* PNEmailContactViewController.h */,
+				73B18D0622E5B017000D52A9 /* PNEmailContactViewController.m */,
+				73B18D0722E5B017000D52A9 /* PNEmailContactViewController.xib */,
 			);
 			path = VCs;
 			sourceTree = "<group>";
@@ -2796,8 +2896,35 @@
 				73A0E53022DDB5890004CED7 /* HeadReusableView.h */,
 				73A0E53122DDB5890004CED7 /* HeadReusableView.m */,
 				73A0E53222DDB5890004CED7 /* HeadReusableView.xib */,
+				73E48CF322E59FC300AB0732 /* UITextViewWithPlaceHolder.h */,
+				73E48CF422E59FC300AB0732 /* UITextViewWithPlaceHolder.m */,
+				73B6432522E83CEC003A4EA5 /* PNEmailAttchSelView.h */,
+				73B6432622E83CEC003A4EA5 /* PNEmailAttchSelView.m */,
+				73B6432822E83CF6003A4EA5 /* PNEmailAttchSelView.xib */,
+				730AE08122EADA5600E0BC67 /* EmailErrorAlertView.h */,
+				730AE08222EADA5600E0BC67 /* EmailErrorAlertView.m */,
+				730AE08422EADA6100E0BC67 /* EmailErrorAlertView.xib */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		730AE06E22E94FDD00E0BC67 /* HtmlEditView */ = {
+			isa = PBXGroup;
+			children = (
+				730AE07522E9504800E0BC67 /* SIXEditor.bundle */,
+				730AE07422E9504800E0BC67 /* SIXEditorHeader.h */,
+				730AE07322E9504800E0BC67 /* SIXEditorInputManager.h */,
+				730AE07A22E9504900E0BC67 /* SIXEditorInputManager.m */,
+				730AE07622E9504800E0BC67 /* SIXEditorInputView.h */,
+				730AE07922E9504900E0BC67 /* SIXEditorInputView.m */,
+				730AE07122E9504700E0BC67 /* SIXEditorToolBar.h */,
+				730AE07222E9504800E0BC67 /* SIXEditorToolBar.m */,
+				730AE06F22E9504700E0BC67 /* SIXEditorView.h */,
+				730AE07022E9504700E0BC67 /* SIXEditorView.m */,
+				730AE07722E9504900E0BC67 /* SIXHTMLParser.h */,
+				730AE07822E9504900E0BC67 /* SIXHTMLParser.m */,
+			);
+			path = HtmlEditView;
 			sourceTree = "<group>";
 		};
 		7330F34D21460FCF00FF4EEC /* Tabbar */ = {
@@ -3880,6 +4007,10 @@
 				73FE5B2622DF56FE004D0655 /* EmailFloderConfig.m */,
 				73E773FE22D5C2F1001C652E /* EmailManage.h */,
 				73E773FF22D5C2F1001C652E /* EmailManage.m */,
+				7393918C22E15B200033C203 /* EmailOptionUtil.h */,
+				7393918D22E15B200033C203 /* EmailOptionUtil.m */,
+				73E48CF922E5AAA600AB0732 /* EmailDataBaseUtil.h */,
+				73E48CFA22E5AAA600AB0732 /* EmailDataBaseUtil.m */,
 			);
 			path = ShareConfig;
 			sourceTree = "<group>";
@@ -3897,6 +4028,10 @@
 				73E7741622D71BBD001C652E /* EmailAccountModel.m */,
 				73E7742222D87372001C652E /* EmailUserModel.h */,
 				73E7742322D87372001C652E /* EmailUserModel.m */,
+				7393918922E068280033C203 /* EmailAttchModel.h */,
+				7393918A22E068280033C203 /* EmailAttchModel.m */,
+				73E48CF622E5A7CA00AB0732 /* EmailContactModel.h */,
+				73E48CF722E5A7CA00AB0732 /* EmailContactModel.m */,
 			);
 			path = EmailModels;
 			sourceTree = "<group>";
@@ -4109,6 +4244,7 @@
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
 				73F55A11223F78C4003155D2 /* GroupChatViewController.xib in Resources */,
+				7393918822E062810033C203 /* PNEmailPreViewController.xib in Resources */,
 				5886FB9821F5C2390052EDD0 /* UploadAlertView.xib in Resources */,
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
 				7308AB09224B5BBF0003E689 /* UsedSpaceTableViewCell.xib in Resources */,
@@ -4119,6 +4255,7 @@
 				73E3C70722D4813800D7C9C6 /* EmailListCell.xib in Resources */,
 				58BA8DA0221E73AC00E6DE95 /* ContactsHeadView.xib in Resources */,
 				73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */,
+				730AE07D22E9504900E0BC67 /* SIXEditor.bundle in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				73E3C71622D5793700D7C9C6 /* PNEmailLoginViewController.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
@@ -4134,6 +4271,7 @@
 				7330F509214A71BC00FF4EEC /* AddFriendViewController.xib in Resources */,
 				584B43AA21FF0B9800D1F21A /* ConfigDiskCell.xib in Resources */,
 				7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */,
+				73B6432922E83CF6003A4EA5 /* PNEmailAttchSelView.xib in Resources */,
 				731C6311225209F100C05CA7 /* CodeMsgViewController.xib in Resources */,
 				73899CC62152011000962B14 /* GuidePageView1.xib in Resources */,
 				58A23A7E223F6BC00098AED5 /* GroupMemberView.xib in Resources */,
@@ -4142,6 +4280,7 @@
 				584A447F21460AFE00608122 /* FileViewController.xib in Resources */,
 				73194EA02255EE580047F50C /* FileListCell.xib in Resources */,
 				73899CC42152011000962B14 /* GuidePageView2.xib in Resources */,
+				733EE48522E1B9290042457C /* EmailMoveCell.xib in Resources */,
 				581FDF6321F172E00068C120 /* ModifyActivateCodeViewController.xib in Resources */,
 				7322F4E822DD84A300932F28 /* EmailOptionCell.xib in Resources */,
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
@@ -4151,6 +4290,7 @@
 				581DE4E32238D9D10056D4F8 /* CreateGroupChatViewController.xib in Resources */,
 				73E7744222DC87F3001C652E /* AttchImgageCell.xib in Resources */,
 				583B2B3722378E6600E6238D /* NewRequestsViewController.xib in Resources */,
+				733EE48022E1B2DB0042457C /* PNEmailMoveViewController.xib in Resources */,
 				58A23A83223F936D0098AED5 /* AddGroupMemberViewController.xib in Resources */,
 				581DE4E82238ED250056D4F8 /* GroupDetailsViewController.xib in Resources */,
 				73E3C71122D49F4F00D7C9C6 /* CircleNamewCell.xib in Resources */,
@@ -4211,6 +4351,7 @@
 				7330F3A4214671C000FF4EEC /* ShareView.xib in Resources */,
 				7330F3D42147A98D00FF4EEC /* messageHistory.json in Resources */,
 				58BA8DA6221E73FF00E6DE95 /* ContactTableCell.xib in Resources */,
+				73B18D0922E5B017000D52A9 /* PNEmailContactViewController.xib in Resources */,
 				584B439A21FEF79300D1F21A /* DiskDetailCell.xib in Resources */,
 				584A447A21460AD800608122 /* MyViewController.xib in Resources */,
 				73A0E53422DDB5890004CED7 /* HeadReusableView.xib in Resources */,
@@ -4232,8 +4373,11 @@
 				586838032240959500B8ACB8 /* GroupMembersViewController.xib in Resources */,
 				583BF94A21F70FBC0078A2A8 /* TaskCompletedCell.xib in Resources */,
 				581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */,
+				73B6432422E5C6C2003A4EA5 /* EmailContactCell.xib in Resources */,
+				730AE08522EADA6100E0BC67 /* EmailErrorAlertView.xib in Resources */,
 				581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */,
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
+				73F102D022DF646800E7D257 /* PNEmailTypeSelectView.xib in Resources */,
 				7330F3C421476E9300FF4EEC /* UserInfoCell.xib in Resources */,
 				584B43AF21FFEE0600D1F21A /* ReconfigDiskViewController.xib in Resources */,
 				7330F39F214666E400FF4EEC /* PersonCodeViewController.xib in Resources */,
@@ -4252,6 +4396,7 @@
 				587C52D8215CBA9A006787FB /* QRViewController.xib in Resources */,
 				7330F3C9214771D900FF4EEC /* BottonCell.xib in Resources */,
 				73780F08221EA9A400D2DDCF /* AccountCodeViewController.xib in Resources */,
+				733EE48A22E54F410042457C /* PNEmailSendViewController.xib in Resources */,
 				5825A24021FAC03700E6194B /* ChooseShareContactViewController.xib in Resources */,
 				5868380922409A1400B8ACB8 /* GroupMembersHeaderView.xib in Resources */,
 			);
@@ -4353,9 +4498,11 @@
 				73194E9F2255EE580047F50C /* FileListCell.m in Sources */,
 				737882A821ACF05E0033A189 /* SSLSecurity.swift in Sources */,
 				583BF94421F70FAC0078A2A8 /* TaskOngoingCell.m in Sources */,
+				7393918B22E068280033C203 /* EmailAttchModel.m in Sources */,
 				73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */,
 				737883FF21ACF2970033A189 /* OCTCall.m in Sources */,
 				7378840821ACF2970033A189 /* OCTObject.m in Sources */,
+				73B6432722E83CEC003A4EA5 /* PNEmailAttchSelView.m in Sources */,
 				5825A24721FB0B8E00E6194B /* FileListModel.m in Sources */,
 				73060558217719A5005A0E13 /* VPNFileInputView.m in Sources */,
 				58E3A5792243366E00F9D9E7 /* GroupVerifyModel.m in Sources */,
@@ -4375,6 +4522,7 @@
 				580CFE4E2227B7FD00460B41 /* UIViewController+MemoryLeak.m in Sources */,
 				581FDF4521F024170068C120 /* onion.m in Sources */,
 				7330F3982146563600FF4EEC /* MyDetailViewController.m in Sources */,
+				730AE07B22E9504900E0BC67 /* SIXEditorView.m in Sources */,
 				58BA8DA5221E73FF00E6DE95 /* ContactTableCell.m in Sources */,
 				73625763214213B300D7FD6B /* UILabel+Block.m in Sources */,
 				73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */,
@@ -4422,9 +4570,11 @@
 				585AEE19213F71990098A070 /* PNBaseViewController.m in Sources */,
 				737883F521ACF2970033A189 /* OCTRealmManager.m in Sources */,
 				5886FB9C21F5D7AF0052EDD0 /* PNNavView.m in Sources */,
+				730AE08322EADA5600E0BC67 /* EmailErrorAlertView.m in Sources */,
 				73E7741222D70CC6001C652E /* TFHppleElement.m in Sources */,
 				73EE8CBE2154E5330048866B /* ChooseContactViewController.m in Sources */,
 				7378840421ACF2970033A189 /* OCTChat.m in Sources */,
+				733EE48422E1B9290042457C /* EmailMoveCell.m in Sources */,
 				7330F3712146118800FF4EEC /* UIImage+Blur.m in Sources */,
 				731C6310225209F100C05CA7 /* CodeMsgViewController.m in Sources */,
 				7330F47B2147DBB800FF4EEC /* StringUtil.m in Sources */,
@@ -4461,6 +4611,7 @@
 				587C52D2215CB6B6006787FB /* SkyRadiusView.m in Sources */,
 				7378840F21ACF2970033A189 /* OCTFileTools.m in Sources */,
 				7330F39321464DCD00FF4EEC /* MyCell.m in Sources */,
+				7393918E22E15B200033C203 /* EmailOptionUtil.m in Sources */,
 				586D4177224B57CE002008C6 /* ChooseCircleViewController.m in Sources */,
 				73E7741422D70CC6001C652E /* TFHpple.m in Sources */,
 				730951B222D2DCA0001BA82E /* PNEmailMenuView.m in Sources */,
@@ -4489,6 +4640,7 @@
 				581FDF4121F024170068C120 /* mono_time.m in Sources */,
 				7330F3C321476E9300FF4EEC /* UserInfoCell.m in Sources */,
 				7330F3752146118800FF4EEC /* UIImage+BetterFace.m in Sources */,
+				73B18D0822E5B017000D52A9 /* PNEmailContactViewController.m in Sources */,
 				73E7741B22D8239A001C652E /* PNEmailDetailViewController.m in Sources */,
 				7317447421F072110018BA50 /* EntryModel.m in Sources */,
 				581FDF3D21F024160068C120 /* toxav_old.m in Sources */,
@@ -4500,6 +4652,7 @@
 				7378842321AD364E0033A189 /* Base58Util.swift in Sources */,
 				5825A23821F9CA9F00E6194B /* FilePreviewDownloadViewController.m in Sources */,
 				7330F4F32149147200FF4EEC /* ChatListInfo.m in Sources */,
+				730AE07F22E9504900E0BC67 /* SIXEditorInputView.m in Sources */,
 				58F5E4C7222F9A1600695F0A /* FileRenameHelper.m in Sources */,
 				737882A721ACF05E0033A189 /* Compression.swift in Sources */,
 				584B43A521FF0AE700D1F21A /* ConfigDiskHeaderView.m in Sources */,
@@ -4529,6 +4682,7 @@
 				7303310F21D22422007C4063 /* UserConfig.m in Sources */,
 				58B41EEA21F98845004676CA /* PNDocumentPickerViewController.m in Sources */,
 				7330F3A2214671B600FF4EEC /* ShareView.m in Sources */,
+				733EE47F22E1B2DB0042457C /* PNEmailMoveViewController.m in Sources */,
 				73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */,
 				582BFE47221D264200D8C2C8 /* CreateAccountViewController.m in Sources */,
 				7356429D222630D800DC0BCB /* ChatModel.m in Sources */,
@@ -4548,6 +4702,7 @@
 				58A23A79223BC43F0098AED5 /* DDLog+CSLoggerExtension.m in Sources */,
 				7306054421748BD5005A0E13 /* VoiceConvert.mm in Sources */,
 				584B438F21FEE11D00D1F21A /* DiskManagementCell.m in Sources */,
+				73F102CF22DF646800E7D257 /* PNEmailTypeSelectView.m in Sources */,
 				7330F3792146118800FF4EEC /* UIImage+Merge.m in Sources */,
 				73D31B1F218025270034B2B9 /* RMDisplayLabel.m in Sources */,
 				7378840521ACF2970033A189 /* OCTMessageFile.m in Sources */,
@@ -4571,6 +4726,7 @@
 				7360B85221FC3269008FB181 /* FileData.m in Sources */,
 				7378841C21ACF2970033A189 /* OCTSubmanagerFriendsImpl.m in Sources */,
 				58A23A76223BC43F0098AED5 /* CSContextWhitelistFilterLogFormatter.m in Sources */,
+				730AE07C22E9504900E0BC67 /* SIXEditorToolBar.m in Sources */,
 				736257B22142149300D7FD6B /* UIView+Toast.m in Sources */,
 				7378840621ACF2970033A189 /* OCTCall+Utilities.m in Sources */,
 				7378841D21ACF2970033A189 /* OCTSubmanagerChatsImpl.m in Sources */,
@@ -4597,6 +4753,8 @@
 				7330F4F82149147200FF4EEC /* CTInputBoxDrawer.m in Sources */,
 				73625762214213B300D7FD6B /* UILabel+Copy.m in Sources */,
 				583BF94921F70FBC0078A2A8 /* TaskCompletedCell.m in Sources */,
+				7393918722E062810033C203 /* PNEmailPreViewController.m in Sources */,
+				73E48CF822E5A7CA00AB0732 /* EmailContactModel.m in Sources */,
 				73F55A10223F78C4003155D2 /* GroupChatViewController.m in Sources */,
 				73E7740022D5C2F1001C652E /* EmailManage.m in Sources */,
 				580CFE482227B7FD00460B41 /* UIView+MemoryLeak.m in Sources */,
@@ -4645,6 +4803,7 @@
 				588F8CED220178FC000D7966 /* UploadFileHelper.m in Sources */,
 				73194E95225598C30047F50C /* SendFileListViewController.m in Sources */,
 				73780F07221EA9A400D2DDCF /* AccountCodeViewController.m in Sources */,
+				730AE08022E9504900E0BC67 /* SIXEditorInputManager.m in Sources */,
 				58BD2E5E21475E020091A77D /* HWUserdefault.m in Sources */,
 				73E2FB6E21A7F3FD00DAED52 /* RouterUserModel.m in Sources */,
 				7378841721ACF2970033A189 /* OCTSubmanagerObjectsImpl.m in Sources */,
@@ -4656,6 +4815,7 @@
 				737883F721ACF2970033A189 /* OCTManagerConfiguration.m in Sources */,
 				581FDF4421F024170068C120 /* crypto_core.m in Sources */,
 				581FDF3821F024160068C120 /* groupav.m in Sources */,
+				733EE48922E54F410042457C /* PNEmailSendViewController.m in Sources */,
 				736257812142143F00D7FD6B /* NSString+HexStr.m in Sources */,
 				582BFE56221D3D2700D8C2C8 /* RouterAliasViewController.m in Sources */,
 				73E7743222D88698001C652E /* EmailContentCell.m in Sources */,
@@ -4715,6 +4875,7 @@
 				7330F37B2146118800FF4EEC /* UIImage+Capture.m in Sources */,
 				73E3C71022D49F4F00D7C9C6 /* CircleNamewCell.m in Sources */,
 				581FDF3A21F024160068C120 /* bwcontroller.m in Sources */,
+				730AE07E22E9504900E0BC67 /* SIXHTMLParser.m in Sources */,
 				736257A62142149300D7FD6B /* UIView+ViewController.m in Sources */,
 				58326918224B75A50058CDB8 /* LogOutCell.m in Sources */,
 				585AEE5921421DD70098A070 /* SocketMessageUtil.m in Sources */,
@@ -4726,6 +4887,7 @@
 				7362573D213E8B3200D7FD6B /* AppDelegate.m in Sources */,
 				73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */,
 				7330F4F92149147200FF4EEC /* CTInputConfiguration.m in Sources */,
+				73E48CFB22E5AAA600AB0732 /* EmailDataBaseUtil.m in Sources */,
 				7330F3D22147A97700FF4EEC /* BaseMsgModel.m in Sources */,
 				7330F5012149147200FF4EEC /* CDMessageModel.m in Sources */,
 				7322F4E722DD84A300932F28 /* EmailOptionCell.m in Sources */,
@@ -4742,6 +4904,7 @@
 				7378841321ACF2970033A189 /* OCTFileBaseOperation.m in Sources */,
 				587C52BC215C7050006787FB /* RouterDetailViewController.m in Sources */,
 				581FDF4F21F024170068C120 /* TCP_connection.m in Sources */,
+				73B6432322E5C6C2003A4EA5 /* EmailContactCell.m in Sources */,
 				583B2B3622378E6600E6238D /* NewRequestsViewController.m in Sources */,
 				7378840B21ACF2970033A189 /* OCTMessageText.m in Sources */,
 				7330F4F72149147200FF4EEC /* CTinputHelper.m in Sources */,
@@ -4755,6 +4918,7 @@
 				73E7742D22D87BFC001C652E /* EmailTimeCell.m in Sources */,
 				580CFE442227B7FD00460B41 /* PTBPerformanceWindow.m in Sources */,
 				7330F50D214A74FA00FF4EEC /* AddFriendCellTableViewCell.m in Sources */,
+				73E48CF522E59FC300AB0732 /* UITextViewWithPlaceHolder.m in Sources */,
 				581FDF6721F173AC0068C120 /* ModifyRouterPWViewController.m in Sources */,
 				581FDF5121F024170068C120 /* onion_client.m in Sources */,
 				7353944E2266CF140004CE85 /* CircleMemberDetailViewController.m in Sources */,

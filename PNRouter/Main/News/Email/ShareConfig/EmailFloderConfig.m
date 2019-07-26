@@ -13,7 +13,7 @@ singleton_implementation(EmailFloderConfig)
 
 + (NSDictionary *) getFloderConfigWithEmailType:(int) type
 {
-   NSString *filePath = [[NSBundle mainBundle] pathForResource:@"EmailConfigigure" ofType:@"plist"];
+   NSString *filePath = [[NSBundle mainBundle] pathForResource:@"EmailConfigure" ofType:@"plist"];
     NSDictionary *floderDic = [NSDictionary dictionaryWithContentsOfFile:filePath];
     return [floderDic objectForKey:[NSString stringWithFormat:@"%d",type]];
 }

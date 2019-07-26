@@ -8,13 +8,14 @@
 
 #import "EmailAccountModel.h"
 #import "KeyCUtil.h"
-#import "UserModel.h"
+
+static NSString *emailKey = @"emailKey_arr";
 
 @implementation EmailAccountModel
 
 + (NSArray *) getLocalAllEmailAccounts
 {
-    NSString *userid = [UserModel getUserModel].userId;
+    NSString *userid = emailKey; //[UserModel getUserModel].userId;
     NSArray *emailAccountArr = [KeyCUtil getRouterWithKey:userid]?:@[];
     NSMutableArray *resultArr = [NSMutableArray array];
     [emailAccountArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -29,7 +30,7 @@
         accountModel.isConnect = YES;
     }
     if (![EmailAccountModel isEixtEmailAccount:accountModel]) {
-        NSString *userid = [UserModel getUserModel].userId;
+        NSString *userid = emailKey;//[UserModel getUserModel].userId;
         [KeyCUtil saveRouterTokeychainWithValue:accountModel.mj_keyValues key:userid];
     }
 }
@@ -48,7 +49,7 @@
 }
 + (void) updateEmailAccountPass:(EmailAccountModel *) accountModel
 {
-    NSString *userid = [UserModel getUserModel].userId;
+    NSString *userid = emailKey;//[UserModel getUserModel].userId;
     NSArray *emailAccounts = [KeyCUtil getRouterWithKey:userid]?:@[];
     NSMutableArray *resultArr = [NSMutableArray array];
     [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -61,9 +62,24 @@
     
     [KeyCUtil saveRouterTokeychainWithArr:resultArr key:userid];
 }
++ (void) updateEmailAccountUnReadCount:(EmailAccountModel *) accountModel
+{
+    NSString *userid = emailKey;//[UserModel getUserModel].userId;
+    NSArray *emailAccounts = [KeyCUtil getRouterWithKey:userid]?:@[];
+    NSMutableArray *resultArr = [NSMutableArray array];
+    [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        EmailAccountModel *model = [EmailAccountModel getObjectWithKeyValues:obj];
+        if ([model.User isEqualToString:accountModel.User]) {
+            model.unReadCount = accountModel.unReadCount;
+        }
+        [resultArr addObject:model.mj_keyValues];
+    }];
+    
+    [KeyCUtil saveRouterTokeychainWithArr:resultArr key:userid];
+}
 + (void) updateEmailAccountConnectStatus:(EmailAccountModel *) accountModel
 {
-    NSString *userid = [UserModel getUserModel].userId;
+    NSString *userid = emailKey;//[UserModel getUserModel].userId;
     NSArray *emailAccounts = [KeyCUtil getRouterWithKey:userid]?:@[];
     NSMutableArray *resultArr = [NSMutableArray array];
     [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -82,7 +98,7 @@
 + (EmailAccountModel *) getConnectEmailAccount
 {
    __block EmailAccountModel *accountModel = nil;
-    NSString *userid = [UserModel getUserModel].userId;
+    NSString *userid = emailKey;//[UserModel getUserModel].userId;
     NSArray *emailAccounts = [KeyCUtil getRouterWithKey:userid]?:@[];
     [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         EmailAccountModel *model = [EmailAccountModel getObjectWithKeyValues:obj];

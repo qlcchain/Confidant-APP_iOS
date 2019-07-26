@@ -71,7 +71,7 @@
                 // 无相机权限 做一个友好的提示
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.currentVC.view endEditing:YES];
-                    [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
+                    [AppD.window showHint:@"Please allow access to album in \"Settings - privacy - album\" of iPhone"];
                 });
                 
             } else {
@@ -97,7 +97,7 @@
             if (authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.currentVC.view endEditing:YES];
-                    [AppD.window showHint:@"请在iPhone的""设置-隐私-相册""中允许访问相册"];
+                    [AppD.window showHint:@"Please allow access to album in \"Settings - privacy - album\" of iPhone"];
                 });
                 // 无相机权限 做一个友好的提示
                 
