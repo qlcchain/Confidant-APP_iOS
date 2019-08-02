@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 NS_ASSUME_NONNULL_BEGIN
 
 static NSString *EmailFloderCellResue = @"EmailFloderCell";
@@ -18,6 +19,7 @@ static NSString *EmailFloderCellResue = @"EmailFloderCell";
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
 @property (weak, nonatomic) IBOutlet UILabel *lblCount;
+
 
 @end
 

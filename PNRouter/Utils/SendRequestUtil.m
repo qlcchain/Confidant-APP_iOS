@@ -17,6 +17,7 @@
 #import "UserConfig.h"
 #import "EntryModel.h"
 #import "PNRouter-Swift.h"
+#import "EmailAccountModel.h"
 
 @implementation SendRequestUtil
 
@@ -466,6 +467,35 @@
         [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_CheckQlcNode};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
+
+//------------------------email ----------------------
++ (void) sendEmailFileWithFileid:(NSString *) fileid fileSize:(NSNumber *) fileSize fileMd5:(NSString *) fileMd5 mailInfo:(NSString *) mailInfo ShowHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Uploading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    
+    NSDictionary *params = @{@"Action":Action_BakupEmail,@"Type":@(accountM.Type),@"FileId":fileid,@"FileSize":fileSize,@"FileMd5":fileMd5,@"User":[accountM.User base64EncodedString],@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"MailInfo":mailInfo?:@""};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
++ (void) sendEmailConfigWithEmailAddress:(NSString *) address type:(NSNumber *) type configJson:(NSString *) configJosn ShowHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_SaveEmailConf,@"Type":type,@"Version":@(1),@"User":[address base64EncodedString],@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"Config":configJosn?:@""};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
++ (void) sendEmailUserkeyWithUsers:(NSString *) users unum:(NSNumber *) num ShowHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_GetUmailKey,@"Unum":num,@"Users":users};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 @end

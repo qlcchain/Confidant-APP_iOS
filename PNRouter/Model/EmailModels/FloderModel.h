@@ -7,6 +7,7 @@
 //
 
 #import "BBaseModel.h"
+#import <MailCore/MailCore.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) NSString *path;
 @property (nonatomic , strong) NSString *name;
 @property (nonatomic , assign) int count;
+@property (nonatomic, strong) MCOIMAPFolderInfoOperation *folderInfoOperation;
 @end
 
 NS_ASSUME_NONNULL_END

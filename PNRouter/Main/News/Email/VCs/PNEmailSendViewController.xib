@@ -25,12 +25,14 @@
                 <outlet property="contentTF" destination="pCd-pz-i4n" id="YSm-pJ-A0r"/>
                 <outlet property="lblSend" destination="bCB-Gg-BON" id="lzg-Mv-DU4"/>
                 <outlet property="lblTitle" destination="rvJ-IL-QVy" id="Lbz-Od-dZK"/>
+                <outlet property="myWebView" destination="pDS-4v-ENt" id="qtE-LU-jq7"/>
                 <outlet property="sendBtn" destination="IOa-5D-zZP" id="oZl-2c-cG2"/>
                 <outlet property="subContraintH" destination="Vn0-H5-BjE" id="qiB-cg-WBi"/>
                 <outlet property="subTF" destination="C7G-Bb-YaY" id="5Nk-lo-Hh0"/>
                 <outlet property="toTF" destination="5Qe-la-qcG" id="wkB-Xl-pq9"/>
                 <outlet property="toTFH" destination="Zbt-md-ADd" id="T8R-EB-aLd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="webH" destination="N9g-fg-a7T" id="LrJ-G4-jfh"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -93,7 +95,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gwx-pB-HvR">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="493"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="421"/>
                                     <subviews>
                                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22U-Yb-Cpd">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
@@ -299,13 +301,13 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRq-Li-zKa">
-                                            <rect key="frame" x="0.0" y="221" width="375" height="242"/>
+                                            <rect key="frame" x="0.0" y="221" width="375" height="170"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e1O-rI-jri">
-                                                    <rect key="frame" x="16" y="16" width="343" height="210"/>
+                                                    <rect key="frame" x="16" y="16" width="343" height="138"/>
                                                     <subviews>
                                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="l1r-5f-1Is">
-                                                            <rect key="frame" x="0.0" y="160" width="343" height="50"/>
+                                                            <rect key="frame" x="0.0" y="88" width="343" height="50"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="50" id="FyF-yA-c50"/>
@@ -318,10 +320,10 @@
                                                             </collectionViewFlowLayout>
                                                         </collectionView>
                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pCd-pz-i4n" customClass="SIXEditorView">
-                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="150"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="80"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="150" id="cBD-sl-hP4"/>
+                                                                <constraint firstAttribute="height" constant="80" id="cBD-sl-hP4"/>
                                                             </constraints>
                                                             <color key="textColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -330,16 +332,26 @@
                                                                 <userDefinedRuntimeAttribute type="string" keyPath="placeHolder" value="Compose email"/>
                                                             </userDefinedRuntimeAttributes>
                                                         </textView>
+                                                        <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pDS-4v-ENt">
+                                                            <rect key="frame" x="0.0" y="80" width="343" height="0.0"/>
+                                                            <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" id="N9g-fg-a7T"/>
+                                                            </constraints>
+                                                        </webView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="l1r-5f-1Is" secondAttribute="bottom" id="3Zd-dt-L4J"/>
                                                         <constraint firstItem="pCd-pz-i4n" firstAttribute="top" secondItem="e1O-rI-jri" secondAttribute="top" id="47g-1X-za3"/>
                                                         <constraint firstAttribute="trailing" secondItem="pCd-pz-i4n" secondAttribute="trailing" id="60j-Ze-Cxr"/>
+                                                        <constraint firstAttribute="trailing" secondItem="pDS-4v-ENt" secondAttribute="trailing" id="6Sh-ob-ql4"/>
+                                                        <constraint firstItem="pDS-4v-ENt" firstAttribute="top" secondItem="pCd-pz-i4n" secondAttribute="bottom" id="6ZY-Az-2HS"/>
                                                         <constraint firstAttribute="trailing" secondItem="l1r-5f-1Is" secondAttribute="trailing" id="F17-75-px8"/>
                                                         <constraint firstItem="l1r-5f-1Is" firstAttribute="leading" secondItem="e1O-rI-jri" secondAttribute="leading" id="GSb-IW-hUh"/>
-                                                        <constraint firstItem="l1r-5f-1Is" firstAttribute="top" secondItem="pCd-pz-i4n" secondAttribute="bottom" constant="10" id="Nfs-n4-PP5"/>
                                                         <constraint firstItem="pCd-pz-i4n" firstAttribute="leading" secondItem="e1O-rI-jri" secondAttribute="leading" id="SER-pG-JAs"/>
+                                                        <constraint firstItem="l1r-5f-1Is" firstAttribute="top" secondItem="pDS-4v-ENt" secondAttribute="bottom" constant="8" id="Yp3-xy-mwx"/>
+                                                        <constraint firstItem="pDS-4v-ENt" firstAttribute="leading" secondItem="e1O-rI-jri" secondAttribute="leading" id="ezo-0F-cx3"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -352,7 +364,7 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2rH-2t-ISB">
-                                            <rect key="frame" x="0.0" y="463" width="375" height="30"/>
+                                            <rect key="frame" x="0.0" y="391" width="375" height="30"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sent from" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCB-Gg-BON">
                                                     <rect key="frame" x="16" y="0.0" width="52.5" height="30"/>

@@ -155,23 +155,23 @@ NSString * const ImagePlaceholderTag = @"\U0000fffc";
     }];
     
     //为了调整图片尺寸 需要在图片名后面拼接有图片宽高 例如：img-880x568.jpg
-    [mAttributedString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, mAttributedString.length) options:(NSAttributedStringEnumerationLongestEffectiveRangeNotRequired) usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
-        
-        if ([value isKindOfClass:[NSTextAttachment class]]) {
-            NSTextAttachment *attachment = value;
-            NSString *imageName = [[attachment.fileWrapper.preferredFilename stringByDeletingPathExtension] stringByDeletingPathExtension];
-            NSArray *sizeArr = [[imageName componentsSeparatedByString:@"-"].lastObject componentsSeparatedByString:@"x"];
-            if (sizeArr.count == 2) {
-                CGFloat width0 = [sizeArr[0] floatValue];
-                CGFloat height0 = [sizeArr[1] floatValue];
-                attachment.bounds = CGRectMake(0, 0, width, width * height0 / width0);
-                ;
-                //NSLog(@"%@:%@", imageName, NSStringFromCGRect(attachment.bounds));
-            } else {
-                attachment.bounds = CGRectMake(0, 0, width, width * 0.5);
-            }
-        }
-    }];
+//    [mAttributedString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, mAttributedString.length) options:(NSAttributedStringEnumerationLongestEffectiveRangeNotRequired) usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+//
+//        if ([value isKindOfClass:[NSTextAttachment class]]) {
+//            NSTextAttachment *attachment = value;
+//            NSString *imageName = [[attachment.fileWrapper.preferredFilename stringByDeletingPathExtension] stringByDeletingPathExtension];
+//            NSArray *sizeArr = [[imageName componentsSeparatedByString:@"-"].lastObject componentsSeparatedByString:@"x"];
+//            if (sizeArr.count == 2) {
+//                CGFloat width0 = [sizeArr[0] floatValue];
+//                CGFloat height0 = [sizeArr[1] floatValue];
+//                attachment.bounds = CGRectMake(0, 0, width, width * height0 / width0);
+//                ;
+//                //NSLog(@"%@:%@", imageName, NSStringFromCGRect(attachment.bounds));
+//            } else {
+//                attachment.bounds = CGRectMake(0, 0, width, width * 0.5);
+//            }
+//        }
+//    }];
     return mAttributedString.copy;
 }
 

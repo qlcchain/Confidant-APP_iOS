@@ -11,7 +11,7 @@
 #import "PNEmailContactViewController.h"
 #import "EmailContactModel.h"
 #import "EmailUserModel.h"
-
+#import "HXAttributedString.h"
 
 #import "AttchCollectionCell.h"
 #import "AttchImgageCell.h"
@@ -33,10 +33,20 @@
 #import "EmailManage.h"
 #import "EmailAccountModel.h"
 #import "EmailOptionUtil.h"
+#import "NSString+RegexCategory.h"
+#import "EntryModel.h"
 //#import <IQKeyboardManager/IQKeyboardManager.h>
 
+
+#import "NSData+Base64.h"
+#import "NSString+Base64.h"
+#import "LibsodiumUtil.h"
+#import "AESCipher.h"
+#import "EmailUserKeyModel.h"
+#import "MCOCIDURLProtocol.h"
+
 @interface PNEmailSendViewController ()<UITextViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UINavigationControllerDelegate,
-UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate,YBImageBrowserDelegate>
+UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate,YBImageBrowserDelegate,UIWebViewDelegate>
 {
     YBImageBrowser *browser;
 }
@@ -65,6 +75,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bccBackH;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ccBackH;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *webH;
+@property (weak, nonatomic) IBOutlet UIWebView *myWebView;
 
 @property (nonatomic, strong) NSMutableArray *toContacts;
 @property (nonatomic, strong) NSMutableArray *ccContacts;
@@ -75,12 +87,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property (nonatomic, strong) NSMutableArray *attchArray;
 
 @property (nonatomic ,strong) PNEmailAttchSelView *selAttchView;
+// 转发时是否包含附件
+@property (nonatomic, assign) BOOL isShowAttchs;
+
+@property (nonatomic, strong) NSMutableString *htmlContent;
+@property (nonatomic, strong) MCOMessageParser *messageParser;
 @end
 
 @implementation PNEmailSendViewController
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+     _myWebView.delegate = nil;
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -174,7 +192,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     // 构建邮件体的发送内容
     MCOMessageBuilder *messageBuilder = [[MCOMessageBuilder alloc] init];
     // 发送人
-    messageBuilder.header.from = [MCOAddress addressWithDisplayName:[[accountM.User componentsSeparatedByString:@"@"] lastObject]  mailbox:accountM.User];
+    messageBuilder.header.from = [MCOAddress addressWithDisplayName:[[accountM.User componentsSeparatedByString:@"@"] firstObject]  mailbox:accountM.User];
     // 收件人（多人）
     NSMutableArray *toArr = [NSMutableArray array];
     [self.toContacts enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -215,16 +233,32 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }];
         messageBuilder.attachments = attachMents;
     }
+    // 添加正文里的附加资源
+    if (self.emailInfo && self.emailInfo.parserData) {
+      MCOMessageParser *msgPaser = [MCOMessageParser messageParserWithData:self.emailInfo.parserData];
+        NSArray *inattachments = msgPaser.htmlInlineAttachments;
+        for (MCOAttachment*attachment in inattachments) {
+            [messageBuilder addRelatedAttachment:attachment];
+            //添加html正文里的附加资源（图片）
+        }
+    }
+    
     return messageBuilder;
 }
 - (void) saveDraft {
     
     MCOMessageBuilder *messageBuilder = [self getSendMessageBuilder];
+    
+   
+   
     @weakify_self
     [SIXHTMLParser htmlStringWithAttributedText:_contentTF.attributedText
                                     orignalHtml:@""
                            andCompletionHandler:^(NSString *html) {
                                
+                               if (weakSelf.emailInfo.htmlContent && weakSelf.emailInfo.htmlContent.length > 0) {
+                                   html = [html stringByAppendingString:weakSelf.emailInfo.htmlContent];
+                               }
                                [messageBuilder setHTMLBody:html];
                                // 发送邮件
                                NSData * rfc822Data =[messageBuilder data];
@@ -237,31 +271,64 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (IBAction)clickSendAction:(id)sender {
     [self.view endEditing:YES];
     
-    MCOMessageBuilder *messageBuilder = [self getSendMessageBuilder];
-
-    @weakify_self
-    [self.view showHudInView:self.view hint:@"Sending…"];
-    [SIXHTMLParser htmlStringWithAttributedText:_contentTF.attributedText
-                                    orignalHtml:@""
-                           andCompletionHandler:^(NSString *html) {
-                               
-                               [messageBuilder setHTMLBody:html];
-                               // 发送邮件
-                               NSData * rfc822Data =[messageBuilder data];
-                               MCOSMTPSendOperation *sendOperation = [EmailManage.sharedEmailManage.smtpSession sendOperationWithData:rfc822Data];
-                               [sendOperation start:^(NSError *error) {
-                                   [weakSelf.view hideHud];
-                                   if (error == nil) {
-                                       [AppD.window showHint:@"send successed"];
-                                       [weakSelf leftNavBarItemPressedWithPop:NO];
-                                   } else {
-                                       [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"send failure"];
-                                   }
-                               }];
-    }];
-    
-
-    
+    NSMutableArray *emails = [NSMutableArray array];
+    if (self.toContacts && self.toContacts.count > 0) {
+       __block BOOL isEmail = YES;
+        [self.toContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailContactModel *contactM = obj;
+            if (![contactM.userAddress isEmailAddress]) {
+                isEmail = NO;
+                *stop = YES;
+            }
+            [emails addObject:[contactM.userAddress base64EncodedString]];
+        }];
+        if (!isEmail) {
+            [self.view showHint:@"To: Not a valid email address"];
+            return;
+        }
+        
+        
+    }
+    if (self.ccContacts && self.ccContacts.count > 0) {
+        __block BOOL isEmail = YES;
+        [self.ccContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailContactModel *contactM = obj;
+            if (![contactM.userAddress isEmailAddress]) {
+                isEmail = NO;
+                *stop = YES;
+            }
+            [emails addObject:[contactM.userAddress base64EncodedString]];
+        }];
+        if (!isEmail) {
+            [self.view showHint:@"Cc: Not a valid email address"];
+            return;
+        }
+       
+        
+    }
+    if (self.bccContacts && self.bccContacts.count > 0) {
+        __block BOOL isEmail = YES;
+        [self.bccContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailContactModel *contactM = obj;
+            if (![contactM.userAddress isEmailAddress]) {
+                isEmail = NO;
+                *stop = YES;
+            }
+            [emails addObject:[contactM.userAddress base64EncodedString]];
+        }];
+        if (!isEmail) {
+            [self.view showHint:@"Bcc: Not a valid email address"];
+            return;
+        }
+        
+    }
+    if (emails.count <= 30) {
+        [self.view showHudInView:self.view hint:@"Sending…" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        NSString *emailStrings = [emails componentsJoinedByString:@","];
+        [SendRequestUtil sendEmailUserkeyWithUsers:emailStrings unum:@(emails.count) ShowHud:NO];
+    } else {
+        [self sendEmailWithShowLoading:YES keys:nil];
+    }
     
     /*
      如果邮件是回复或者转发，原邮件中往往有附件以及正文中有其他图片资源，
@@ -294,6 +361,99 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 */
 }
 
+- (void) sendEmailWithShowLoading:(BOOL) isLoading keys:(NSArray *) userKeys
+{
+    MCOMessageBuilder *messageBuilder = [self getSendMessageBuilder];
+    NSString *symmetKey = @"";
+    NSString *msgKey = @"";
+    if (userKeys && userKeys.count > 0) {
+        // 生成32位对称密钥
+        msgKey = [SystemUtil getDoc32AESKey];
+        NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+        symmetKey = [symmetData base64EncodedString];
+        // 好友公钥加密对称密钥
+      //  NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
+        // 自己公钥加密对称密钥
+       // NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+        
+        NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+        if (messageBuilder.textBody && messageBuilder.textBody.length > 0) {
+            messageBuilder.textBody = aesEncryptString(messageBuilder.textBody, [msgKey substringToIndex:16]);
+        }
+        if (messageBuilder.attachments && messageBuilder.attachments.count > 0) {
+            [messageBuilder.attachments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                MCOAttachment *attachment = obj;
+                attachment.data = aesEncryptData(attachment.data,msgKeyData);
+            }];
+        }
+ 
+    }
+    @weakify_self
+    if (isLoading) {
+         [self.view showHudInView:self.view hint:@"Sending…"];
+    }
+    [SIXHTMLParser htmlStringWithAttributedText:_contentTF.attributedText
+                                    orignalHtml:@""
+                           andCompletionHandler:^(NSString *html) {
+                               
+                               __block NSString *keys = @"";
+                               if (userKeys && userKeys.count>0) {
+                                   
+                                   [userKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                       EmailUserKeyModel *userKeyM = obj;
+                                       keys = [keys stringByAppendingString:userKeyM.User];
+                                       keys = [keys stringByAppendingString:@"&&"];
+                                       // 签名转加密
+                                       NSString *pubKey = [LibsodiumUtil getFriendEnPublickkeyWithFriendSignPublicKey:userKeyM.PubKey];
+                                       NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:pubKey];
+                                       keys = [keys stringByAppendingString:dsKey];
+                                       keys = [keys stringByAppendingString:@"##"];
+                                   }];
+                                   
+                                   EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+                                   // 加上自己加密key ，方便已发送解密
+                                   keys = [keys stringByAppendingString:[accountM.User base64EncodedString]];
+                                   keys = [keys stringByAppendingString:@"&&"];
+                                   NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+                                   keys = [keys stringByAppendingString:dsKey];
+                               }
+                               
+                               html = [html stringByAppendingString:self.emailInfo.htmlContent?:@""];
+                               if (keys.length > 0) {
+                                   html = aesEncryptString(html, [msgKey substringToIndex:16]);
+                                   NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'%@\'></span>",keys];
+                                   html = [html stringByAppendingString:userKeyStr];
+                        
+                               }
+                               [messageBuilder setHTMLBody:html];
+                               // 发送邮件
+                               NSData * rfc822Data =[messageBuilder data];
+                               MCOSMTPSendOperation *sendOperation = [EmailManage.sharedEmailManage.smtpSession sendOperationWithData:rfc822Data];
+                               [sendOperation start:^(NSError *error) {
+                                   [weakSelf.view hideHud];
+                                   if (error == nil) {
+                                       // 保存到已发送
+                                       [EmailOptionUtil copySent:rfc822Data complete:^(BOOL success) {
+                                       }];
+                                       [weakSelf leftNavBarItemPressedWithPop:NO];
+                                       [AppD.window showSuccessHudInView:AppD.window hint:@"Successed"];
+                                       // [AppD.window showHint:@"send successed"];
+                                   } else {
+                                       [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"send failure"];
+                                   }
+                               }];
+                           }];
+}
+
+- (instancetype) initWithEmailListInfo:(EmailListInfo *) info sendType:(EmailSendType)type isShowAttch:(BOOL)isShowAttch
+{
+    if (self = [super init]) {
+        self.emailInfo = info;
+        self.sendType = type;
+        self.isShowAttchs = isShowAttch;
+    }
+    return self;
+}
 - (instancetype) initWithEmailListInfo:(EmailListInfo *) info sendType:(EmailSendType)type
 {
     if (self = [super init]) {
@@ -305,13 +465,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void) addNoti
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectContactNoti:) name:EMIAL_CONTACT_SEL_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getEmailUserKeyNoti:) name:EMAIL_GETKEY_NOTI object:nil];
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = MAIN_GRAY_COLOR;
-   
-    
     _bccBackH.constant = 0;
     _ccBackH.constant = 0;
      _sendBtn.enabled = NO;
@@ -349,9 +509,38 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     _attchCollectinView.delegate = self;
     _attchCollectinView.dataSource = self;
     
+    if (self.emailInfo && self.emailInfo.htmlContent) {
+        
+        _webH.constant = 50;
+        
+        NSMutableString * html = [NSMutableString string];
+        NSString *originStr = @"<div>------------ Original ------------</div>";
+        if (self.sendType == DraftEmail) {
+            originStr = @"";
+        }
+        [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
+         @"<body>%@%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
+         @"</iframe></html>", mainJavascript, mainStyle,originStr,self.emailInfo.htmlContent];
+        self.htmlContent = html;
+        
+        self.messageParser = [MCOMessageParser messageParserWithData:self.emailInfo.parserData];
+        self.myWebView.scrollView.bounces = NO;
+        //           self.wbScrollView.scrollEnabled = NO;
+        //            self.myWebView.delegate = self;
+        //           self.myWebView.scalesPageToFit = YES;
+        [self.myWebView setAutoresizingMask:(UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth)];
+        [self.myWebView setDelegate:self];
+        
+        [self.myWebView loadHTMLString:self.htmlContent baseURL:nil];
+    }
+    
+    
+    NSString*defaultStr = @"<br/><br/><br/>Send from Confidant<br/>";
+    [self contentTFLoadData:defaultStr];
     
     if (_sendType == ReplyEmail) {
         
+       
         _lblTitle.text = [NSString stringWithFormat:@"Re: %@",self.emailInfo.fromName];
         
         // 更新 to 联系人
@@ -366,17 +555,48 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         [self textDidChange:_toTF];
         
         // 更新标题
-        _subTF.text = [NSString stringWithFormat:@"Re: %@",self.emailInfo.Subject?:@""];
+        if (self.emailInfo.Subject && [self.emailInfo.Subject containsString:@"Re:"]) {
+            _subTF.text = self.emailInfo.Subject;
+        } else {
+            _subTF.text = [NSString stringWithFormat:@"Re: %@",self.emailInfo.Subject?:@""];
+        }
+        
         [self textDidChange:_subTF];
         
-        // 更新正文
-    
-        NSMutableString*fullBodyHtml = [NSMutableString stringWithFormat:@"<br/><br/><br/>-------------Original-------------<br/>%@",self.emailInfo.htmlContent];
-        [self contentTFLoadData:fullBodyHtml];
+        [self performSelector:@selector(textViewBecomeFirstResponder:) withObject:self.contentTF afterDelay:0.5];
         
     } else if (_sendType == NewEmail) { // 新邮件
         _lblTitle.text = @"New Email";
         [self performSelector:@selector(textViewBecomeFirstResponder:) withObject:_toTF afterDelay:0.5];
+    } else if (_sendType == ForwardEmail) { // 转发
+        
+        // 更新标题
+        if (self.emailInfo.Subject && [self.emailInfo.Subject containsString:@"Fwd:"]) {
+            _subTF.text = self.emailInfo.Subject;
+            _lblTitle.text = self.emailInfo.Subject;
+        } else {
+            _subTF.text = [NSString stringWithFormat:@"Fwd: %@",self.emailInfo.Subject?:@""];
+            _lblTitle.text = [NSString stringWithFormat:@"Fwd: %@",self.emailInfo.Subject?:@""];
+        }
+        
+        
+        [self textDidChange:_subTF];
+        
+        // 附件
+        if (self.emailInfo.attchArray && self.emailInfo.attchArray.count > 0 && _isShowAttchs) {
+            @weakify_self
+            [self.emailInfo.attchArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                EmailAttchModel *attchM = obj;
+                [weakSelf addAttchReloadCollectionWithAttch:attchM];
+            }];
+        }
+        
+        // 更新正文
+//        NSMutableString*fullBodyHtml = [NSMutableString stringWithFormat:@"<br/><br/><br/>Here are the forwarded emails<br/>%@",self.emailInfo.htmlContent];
+//        [self contentTFLoadData:fullBodyHtml];
+        
+         [self performSelector:@selector(textViewBecomeFirstResponder:) withObject:_toTF afterDelay:0.5];
+        
     } else if (_sendType == DraftEmail) { // 草稿箱
         if (self.emailInfo.Subject && self.emailInfo.Subject.length > 0) {
              _lblTitle.text = self.emailInfo.Subject;
@@ -478,8 +698,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                weakSelf.contentTF.attributedText = attributedText;
                                weakSelf.contentTF.font = [UIFont systemFontOfSize:16];
                                [weakSelf textDidChange:weakSelf.contentTF];
-                               [weakSelf performSelector:@selector(textViewBecomeFirstResponder:) withObject:weakSelf.contentTF afterDelay:0.5];
+//                               if (weakSelf.toTF.text.length > 0) {
+//                                   [weakSelf performSelector:@selector(textViewBecomeFirstResponder:) withObject:weakSelf.contentTF afterDelay:0.5];
+//                               }
                            }];
+    
+    
+    
+    
 }
 - (void) textViewBecomeFirstResponder:(UITextView *) txtView
 {
@@ -578,9 +804,27 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
         }
     }];
-    
+}
+- (void) getEmailUserKeyNoti:(NSNotification *) noti
+{
+    NSDictionary *dic = noti.object;
+    NSInteger retCode = [dic[@"RetCode"] integerValue];
+    NSString *Payload = dic[@"Payload"];
+    if (retCode == 0 && Payload) { // 需要加密
+        NSArray *payloadArr = [EmailUserKeyModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+         [self sendEmailWithShowLoading:NO keys:payloadArr];
+    } else {
+        [self sendEmailWithShowLoading:NO keys:nil];
+    }
 }
 
+
+
+
+
+
+
+#pragma mark -----------------textview--------------------
 - (void) textFormatWithTextView:(UITextView *) textView
 {
     if (textView.text.length>0) {
@@ -826,9 +1070,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             _subContraintH.constant = height;
         }
     } else if (textView == _contentTF) {
-        if (height < 150) {
-            _contentContraintH.constant = 150;
-        } else if (height > 150) {
+        if (height < 80) {
+            _contentContraintH.constant = 80;
+        } else if (height > 80) {
             _contentContraintH.constant = height;
         }
     }
@@ -877,10 +1121,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (attachment.attName && attachment.attName.length > 0) {
         fileHz = [[attachment.attName componentsSeparatedByString:@"."] lastObject];
     }
-    if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"] || fileHz.length == 0) {
+    
+    if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"] || !attachment.attData) {
         
         AttchImgageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:AttchImgageCellResue forIndexPath:indexPath];
-        if (fileHz.length == 0) {
+        if (!attachment.attData) {
             cell.lblCount.text = @"";
             cell.backImgView.hidden = YES;
             cell.headImgV.image = [UIImage imageNamed:@"add_pictures"];
@@ -1398,6 +1643,150 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         */
         
     }
+}
+
+
+
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    NSLog(@"----didFailLoadWithError---------");
+    //  [self.view showHint:@"Mail load failed"];
+}
+-(void)webViewDidFinishLoad:(UIWebView *)webView{
+    NSLog(@"----webViewDidFinishLoad---------");
+    //若已经加载完成，则显示webView并return
+        CGFloat newHeight =  [[webView stringByEvaluatingJavaScriptFromString: @"document.body.scrollHeight "] floatValue];
+        newHeight = webView.scrollView.contentSize.height;
+        NSLog(@"--%f---%f",newHeight,webView.scrollView.contentSize.height);
+        if (newHeight > _webH.constant) {
+            _webH.constant = newHeight;
+        }
+}
+
+
+#pragma mark - webview
+
+- (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSString* requestURL = request.URL.absoluteString;
+    
+    if (navigationType == UIWebViewNavigationTypeLinkClicked)
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:requestURL] options:@{} completionHandler:^(BOOL success) {
+            
+        }];
+        return NO;
+    } else {
+        NSURLRequest*responseRequest = [self webView:webView resource:nil willSendRequest:request redirectResponse:nil fromDataSource:nil];
+        if(responseRequest== request) {
+            return YES;
+        } else {
+            [webView loadRequest:responseRequest];
+            return NO;
+        }
+    }
+    //    NSURLRequest*responseRequest = [self webView:webView resource:nil willSendRequest:request redirectResponse:nil fromDataSource:nil];
+    //    if(responseRequest== request) {
+    //        return YES;
+    //    } else {
+    //        [webView loadRequest:responseRequest];
+    //        return NO;
+    //    }
+}
+
+- (NSURLRequest *)webView:(UIWebView *)sender resource:(id)identifier willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse fromDataSource:(id)dataSource
+
+{
+    if ([[[request URL] scheme] isEqualToString:@"x-mailcore-msgviewloaded"]) {
+        [self _loadImages];
+    }
+    return request;
+}
+
+//加载网页中的图片
+
+- (void) _loadImages
+{
+    
+    NSString * result = [self.myWebView stringByEvaluatingJavaScriptFromString:@"findCIDImageURL()"];
+    
+    NSLog(@"-----加载网页中的图片-----");
+    
+    NSLog(@"%@", result);
+    
+    if (result==nil || [result isEqualToString:@""]) {
+        return;
+    }
+    
+    NSData * data = [result dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error = nil;
+    NSArray * imagesURLStrings = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    for(NSString * urlString in imagesURLStrings) {
+        MCOAbstractPart * part =nil;
+        NSURL * url;
+        url = [NSURL URLWithString:urlString];
+        if ([MCOCIDURLProtocol isCID:url]) {
+            part = [self _partForCIDURL:url];
+        } else if ([MCOCIDURLProtocol isXMailcoreImage:url]) {
+            NSString * specifier = [url resourceSpecifier];
+            NSString * partUniqueID = specifier;
+            part = [self _partForUniqueID:partUniqueID];
+        }
+        if (part == nil)
+            continue;
+        NSString * partUniqueID = [part uniqueID];
+        MCOAttachment * attachment = (MCOAttachment *) [_messageParser partForUniqueID:partUniqueID];
+        NSData * data =[attachment data];
+        if (data!=nil) {
+            //获取文件路径
+            NSString *tmpDirectory =NSTemporaryDirectory();
+            NSString *filePath=[tmpDirectory stringByAppendingPathComponent : attachment.filename ];
+            NSFileManager *fileManger=[NSFileManager defaultManager];
+            if (![fileManger fileExistsAtPath:filePath]) {//不存在就去请求加载
+                NSData *attachmentData=[attachment data];
+                [attachmentData writeToFile:filePath atomically:YES];
+                NSLog(@"资源：%@已经下载至%@", attachment.filename,filePath);
+            }
+            NSURL * cacheURL = [NSURL fileURLWithPath:filePath];
+            
+            NSDictionary * args =@{@"URLKey": urlString,@"LocalPathKey": cacheURL.absoluteString};
+            NSString * jsonString = [self _jsonEscapedStringFromDictionary:args];
+            NSString * replaceScript = [NSString stringWithFormat:@"replaceImageSrc(%@)", jsonString];
+            [self.myWebView stringByEvaluatingJavaScriptFromString:replaceScript];
+        }
+    }
+}
+
+- (NSString *)_jsonEscapedStringFromDictionary:(NSDictionary *)dictionary
+
+{
+    NSData * json = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
+    NSString * jsonString = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
+    return jsonString;
+    
+}
+
+- (NSURL *) _cacheJPEGImageData:(NSData *)imageData withFilename:(NSString *)filename
+
+{
+    NSString * path = [[NSTemporaryDirectory()stringByAppendingPathComponent:filename]stringByAppendingPathExtension:@"jpg"];
+    [imageData writeToFile:path atomically:YES];
+    return [NSURL fileURLWithPath:path];
+    
+}
+
+- (MCOAbstractPart *) _partForCIDURL:(NSURL *)url
+
+{
+    return [_messageParser partForContentID:[url resourceSpecifier]];
+}
+
+- (MCOAbstractPart *) _partForUniqueID:(NSString *)partUniqueID
+
+{
+    return [_messageParser partForUniqueID:partUniqueID];
+    
 }
 
 

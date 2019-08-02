@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) copyEmailToFloderWithFloderPath:(NSString *) floderPath toFloderName:(NSString *) toFloderName uid:(NSInteger) uid isDel:(BOOL) isDel complete:(void (^)(BOOL success)) complete;
 // 判断是否为加星
 + (BOOL) checkEmailStar:(int) flags;
++ (void)copySent:(NSData *)data complete:(void (^)(BOOL success)) complete;
 @end
 
 NS_ASSUME_NONNULL_END

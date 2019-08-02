@@ -58,7 +58,10 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ABu-xr-Bgx">
-                        <rect key="frame" x="276" y="40" width="7" height="14"/>
+                        <rect key="frame" x="281" y="40" width="7" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="7" id="6Ut-4I-RbG"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                         <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -108,7 +111,7 @@
                     <constraint firstItem="XmM-Wj-wrG" firstAttribute="leading" secondItem="JY5-im-WOh" secondAttribute="trailing" constant="12" id="SDG-Vs-Q8d"/>
                     <constraint firstItem="JY5-im-WOh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="XPR-qX-bdy"/>
                     <constraint firstItem="kBN-Ck-rnh" firstAttribute="centerY" secondItem="mk0-xW-35F" secondAttribute="centerY" id="a9d-Sj-1Rf"/>
-                    <constraint firstItem="kBN-Ck-rnh" firstAttribute="leading" secondItem="ABu-xr-Bgx" secondAttribute="trailing" constant="8" id="aHw-UP-9QF"/>
+                    <constraint firstItem="kBN-Ck-rnh" firstAttribute="leading" secondItem="ABu-xr-Bgx" secondAttribute="trailing" constant="3" id="aHw-UP-9QF"/>
                     <constraint firstItem="Boo-8L-ODM" firstAttribute="top" secondItem="mk0-xW-35F" secondAttribute="bottom" constant="4" id="byF-47-eu9"/>
                     <constraint firstItem="Boo-8L-ODM" firstAttribute="leading" secondItem="mk0-xW-35F" secondAttribute="leading" id="cCr-VA-GM5"/>
                     <constraint firstItem="mk0-xW-35F" firstAttribute="top" secondItem="XmM-Wj-wrG" secondAttribute="bottom" constant="3" id="cXe-vy-cbY"/>

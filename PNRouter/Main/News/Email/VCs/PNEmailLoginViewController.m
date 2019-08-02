@@ -24,10 +24,15 @@
 @property (weak, nonatomic) IBOutlet UIView *passwordBackView;
 @property (nonatomic ,assign) int emailType;
 @property (nonatomic ,strong) NSString *typeName;
+@property (nonatomic ,strong) EmailAccountModel *accountM;
 
 @end
 
 @implementation PNEmailLoginViewController
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (instancetype) initWithEmailType:(int) type
 {
     if (self = [super init]) {
@@ -50,6 +55,8 @@
     // 配置UI
     [self configUI];
     
+    [self addNoti];
+    
     _emailNameTF.delegate = self;
     _passwordTF.delegate = self;
     
@@ -59,6 +66,17 @@
     
    // _emailNameTF.text = @"554932628@qq.com";
    // _passwordTF.text = @"ffykftwymsxnbfgg";
+    
+     _emailNameTF.text = @"kuangzihui1989@gmail.com";
+     _passwordTF.text = @"applela19890712";
+    
+//     _emailNameTF.text = @"kuangzihui@163.com";
+//    _passwordTF.text = @"applela19890712";
+}
+// 添加通知
+- (void) addNoti
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailConfigNoti:) name:EMAIL_CONFIG_NOTI object:nil];
 }
 // 配置UI
 - (void) configUI
@@ -141,6 +159,14 @@
         }
     }
     
+    _accountM = [[EmailAccountModel alloc] init];
+    _accountM.User = name;
+    _accountM.UserPass = pass;
+    _accountM.hostname = hostName;
+    _accountM.port = port;
+    _accountM.connectionType = MCOConnectionTypeTLS;
+    _accountM.Type = self.emailType;
+    _accountM.isConnect = YES;
     
     MCOIMAPSession *imapSession = [[MCOIMAPSession alloc] init];
     imapSession.hostname = hostName;
@@ -149,34 +175,17 @@
     imapSession.password = pass;
     imapSession.connectionType = MCOConnectionTypeTLS;
     
-    EmailManage.sharedEmailManage.imapSeeion = imapSession;
-    
-    [self.view showHudInView:self.view hint:@"Login..."];
+    [self.view showHudInView:self.view hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+   
     MCOIMAPOperation *imapOperation = [imapSession checkAccountOperation];
-    __weak typeof(self) weakSelf = self;
+    @weakify_self
     [imapOperation start:^(NSError * __nullable error) {
-        [weakSelf.view hideHud];
+       
         if (error == nil) {
-            
-            // 保存到本地
-            EmailAccountModel *model = [[EmailAccountModel alloc] init];
-            model.User = name;
-            model.UserPass = pass;
-            model.hostname = hostName;
-            model.port = port;
-            model.connectionType = MCOConnectionTypeTLS;
-            model.Type = self.emailType;
-            [EmailAccountModel addEmailAccountWith:model];
-            model.isConnect = YES;
-            [EmailAccountModel updateEmailAccountConnectStatus:model];
-            
-             [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
-            
-            [weakSelf clickCloseAction:nil];
-            [AppD.window showHint:@"login successed."];
+            [SendRequestUtil sendEmailConfigWithEmailAddress:name type:@(weakSelf.emailType) configJson:@"" ShowHud:NO];
         } else {
             
-            
+            [weakSelf.view hideHud];
             EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
             alertView.lblContent.text = [NSString stringWithFormat:@"\"imap.%@\" Username or password is incorrect, or the IMAP service is not available",self.typeName];
             [alertView showEmailAttchSelView];
@@ -203,6 +212,26 @@
         self.loginBtn.alpha = 0.5;
     }
     return NO;
+}
+
+
+#pragma mark ----------------通知回调-----------------
+- (void) emailConfigNoti:(NSNotification *) noti
+{
+    NSDictionary *dic = noti.object;
+    NSInteger retCode = [dic[@"RetCode"] integerValue];
+    if (retCode == 0) { // 成功
+        // 保存到本地
+        [EmailAccountModel addEmailAccountWith:_accountM];
+        [EmailAccountModel updateEmailAccountConnectStatus:_accountM];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
+        
+        [self clickCloseAction:nil];
+        [AppD.window showHint:@"login successed."];
+    } else {
+        [self.view showHint:@"Configuration quantity exceeds limit."];
+    }
 }
 /*
 #pragma mark - Navigation

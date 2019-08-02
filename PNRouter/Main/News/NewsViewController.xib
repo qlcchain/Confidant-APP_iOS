@@ -164,23 +164,33 @@
                             <rect key="frame" x="0.0" y="0.0" width="750" height="525"/>
                             <subviews>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xu8-ax-pyl">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="525"/>
+                                    <rect key="frame" x="0.0" y="1" width="375" height="524"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </tableView>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jMO-L5-t0l">
-                                    <rect key="frame" x="375" y="0.0" width="375" height="525"/>
+                                    <rect key="frame" x="375" y="1" width="375" height="524"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </tableView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hv2-ak-8zJ">
+                                    <rect key="frame" x="0.0" y="0.0" width="750" height="1"/>
+                                    <color key="backgroundColor" red="0.45882352941176469" green="0.45098039215686275" blue="0.50196078431372548" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="9yb-ty-kuM"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="deviceRGB"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="jMO-L5-t0l" secondAttribute="bottom" id="0J9-wl-4S8"/>
                                 <constraint firstAttribute="width" constant="750" id="6XR-17-18A"/>
+                                <constraint firstItem="Hv2-ak-8zJ" firstAttribute="top" secondItem="Uhx-v9-lpy" secondAttribute="top" id="6nH-ih-mfj"/>
                                 <constraint firstItem="jMO-L5-t0l" firstAttribute="leading" secondItem="xu8-ax-pyl" secondAttribute="trailing" id="91e-vd-8qr"/>
                                 <constraint firstAttribute="bottom" secondItem="xu8-ax-pyl" secondAttribute="bottom" id="IJn-aS-lae"/>
-                                <constraint firstItem="xu8-ax-pyl" firstAttribute="top" secondItem="Uhx-v9-lpy" secondAttribute="top" id="PyB-fj-L26"/>
                                 <constraint firstItem="xu8-ax-pyl" firstAttribute="leading" secondItem="Uhx-v9-lpy" secondAttribute="leading" id="Q2I-Oa-a19"/>
-                                <constraint firstItem="jMO-L5-t0l" firstAttribute="top" secondItem="Uhx-v9-lpy" secondAttribute="top" id="Wus-7a-ccU"/>
+                                <constraint firstItem="xu8-ax-pyl" firstAttribute="top" secondItem="Hv2-ak-8zJ" secondAttribute="bottom" id="Spi-Qz-e3Q"/>
+                                <constraint firstAttribute="trailing" secondItem="Hv2-ak-8zJ" secondAttribute="trailing" id="VFS-GY-CGi"/>
+                                <constraint firstItem="jMO-L5-t0l" firstAttribute="top" secondItem="Hv2-ak-8zJ" secondAttribute="bottom" id="fRG-ze-qGB"/>
+                                <constraint firstItem="Hv2-ak-8zJ" firstAttribute="leading" secondItem="Uhx-v9-lpy" secondAttribute="leading" id="lmt-MC-H56"/>
                                 <constraint firstItem="xu8-ax-pyl" firstAttribute="width" secondItem="jMO-L5-t0l" secondAttribute="width" id="qh4-P7-LzX"/>
                                 <constraint firstAttribute="trailing" secondItem="jMO-L5-t0l" secondAttribute="trailing" id="xtp-bq-E74"/>
                             </constraints>

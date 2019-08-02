@@ -81,7 +81,10 @@ static NSString *Action_GroupSysPush = @"GroupSysPush";
 static NSString *Action_GroupDelMsg = @"GroupDelMsg";
 static NSString *Action_DelUser = @"DelUser";
 
-
+#pragma mark -------------Email-----------------
+static NSString *Action_BakupEmail = @"BakupEmail";
+static NSString *Action_SaveEmailConf = @"SaveEmailConf";
+static NSString *Action_GetUmailKey = @"CheckmailUkey";
 
 @class FriendModel;
 

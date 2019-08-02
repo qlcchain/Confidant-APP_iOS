@@ -19,6 +19,7 @@
 #import "PNEmailTypeSelectView.h"
 #import "PNEmailLoginViewController.h"
 #import "StringUtil.h"
+#import "EmailDataBaseUtil.h"
 
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *menuBackView;
@@ -42,7 +43,7 @@
     } else {
         _lblTitle.text = @"Message";
     }
-    [_mainTabView reloadData];
+    [self getFloaderEmailCount];
     [super viewWillAppear:animated];
 }
 #pragma mark --layz-------------
@@ -150,19 +151,17 @@
             FloderModel *floderM = self.emailFolders[indexPath.row];
             //解决中文folder乱码问题
             cell.lblContent.text = floderM.name;
-            NSString *floderPath = floderM.path;
+            
             if (floderM.path.length == 0) {
                 cell.lblCount.text = @"";
-            } else {
-                MCOIMAPFolderInfoOperation * folderInfoOperation = [EmailManage.sharedEmailManage.imapSeeion folderInfoOperation:floderPath];
-                [folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
-                    
-                    if (info.messageCount == 0) {
-                        cell.lblCount.text = @"";
-                    } else {
-                        cell.lblCount.text = [NSString stringWithFormat:@"%d",info.messageCount];
+                if ([floderM.name isEqualToString:Starred]) {
+                    NSInteger startCount = [EmailDataBaseUtil getStartCount];
+                    if (startCount > 0) {
+                        cell.lblCount.text = [NSString stringWithFormat:@"%ld",(long)startCount];
                     }
-                }];
+                }
+            } else {
+                cell.lblCount.text = [NSString stringWithFormat:@"%@",floderM.count==0? @"":[NSString stringWithFormat:@"%d",floderM.count]];
             }
            
             
@@ -343,9 +342,9 @@
         FloderModel *model = obj;
         model.path = [floderDic objectForKey:model.name]?:@"";
     }];
-    [_mainTabView reloadData];
+    [self getFloaderEmailCount];
     
-//    MCOIMAPFetchFoldersOperation *imapFetchFolderOp = [EmailManage.sharedEmailManage.imapSeeion fetchAllFoldersOperation];
+ //   MCOIMAPFetchFoldersOperation *imapFetchFolderOp = [EmailManage.sharedEmailManage.imapSeeion fetchAllFoldersOperation];
 //    @weakify_self
 //    [imapFetchFolderOp start:^(NSError * error, NSArray * folders) {
 //        [folders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -353,6 +352,7 @@
 //            NSLog(@"path = %@,name= %@",info.path,[EmailManage.sharedEmailManage.imapSeeion.defaultNamespace componentsFromPath:info.path][0]);
 //        }];
 //    }];
+    
     
     /*
     [self.view showHudInView:self.view hint:@"Loading"];
@@ -401,5 +401,26 @@
     }];
     */
     [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_ACCOUNT_CHANGE_NOTI object:nil];
+}
+
+- (void) getFloaderEmailCount
+{
+    @weakify_self
+    __block NSInteger finshCount = 0;
+    [self.emailFolders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FloderModel *model = obj;
+        if (model.path && model.path.length > 0) {
+            MCOIMAPFolderInfoOperation * folderInfoOperation = [EmailManage.sharedEmailManage.imapSeeion folderInfoOperation:model.path];
+            model.folderInfoOperation = folderInfoOperation;
+            
+            [model.folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
+                finshCount++;
+                model.count = info.messageCount;
+                if (finshCount == 5) {
+                    [weakSelf.mainTabView reloadData];
+                }
+            }];
+        }
+    }];
 }
 @end

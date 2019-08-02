@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 static NSString *HeadReusableViewResue = @"HeadReusableView";
-#define HeadReusableViewHeight 38
+#define HeadReusableViewHeight 35
 
 @interface HeadReusableView : UICollectionReusableView
 

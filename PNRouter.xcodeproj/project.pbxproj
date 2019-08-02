@@ -282,6 +282,12 @@
 		730AE08022E9504900E0BC67 /* SIXEditorInputManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE07A22E9504900E0BC67 /* SIXEditorInputManager.m */; };
 		730AE08322EADA5600E0BC67 /* EmailErrorAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE08222EADA5600E0BC67 /* EmailErrorAlertView.m */; };
 		730AE08522EADA6100E0BC67 /* EmailErrorAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730AE08422EADA6100E0BC67 /* EmailErrorAlertView.xib */; };
+		730AE09522EE983F00E0BC67 /* MCOCIDURLProtocol.mm in Sources */ = {isa = PBXBuildFile; fileRef = 730AE09422EE983F00E0BC67 /* MCOCIDURLProtocol.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		730AE09822EED71B00E0BC67 /* EmailAttchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE09722EED71B00E0BC67 /* EmailAttchView.m */; };
+		730AE09A22EED72500E0BC67 /* EmailAttchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730AE09922EED72500E0BC67 /* EmailAttchView.xib */; };
+		730AE09D22F0413400E0BC67 /* HXAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE09C22F0413400E0BC67 /* HXAttributedString.m */; };
+		730AE0A022F13E6100E0BC67 /* EmailStarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE09F22F13E6100E0BC67 /* EmailStarModel.m */; };
+		730AE0A322F2B4D800E0BC67 /* EmailUserKeyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE0A222F2B4D800E0BC67 /* EmailUserKeyModel.m */; };
 		73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6B219BB59B00510B48 /* RouterConfig.m */; };
 		73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6E219BF4E900510B48 /* NSString+SHA256.m */; };
 		73121A74219C26E900510B48 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A72219C26E900510B48 /* LoginViewController.m */; };
@@ -1183,6 +1189,17 @@
 		730AE08122EADA5600E0BC67 /* EmailErrorAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailErrorAlertView.h; sourceTree = "<group>"; };
 		730AE08222EADA5600E0BC67 /* EmailErrorAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailErrorAlertView.m; sourceTree = "<group>"; };
 		730AE08422EADA6100E0BC67 /* EmailErrorAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailErrorAlertView.xib; sourceTree = "<group>"; };
+		730AE09322EE983F00E0BC67 /* MCOCIDURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOCIDURLProtocol.h; sourceTree = "<group>"; };
+		730AE09422EE983F00E0BC67 /* MCOCIDURLProtocol.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOCIDURLProtocol.mm; sourceTree = "<group>"; };
+		730AE09622EED71B00E0BC67 /* EmailAttchView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailAttchView.h; sourceTree = "<group>"; };
+		730AE09722EED71B00E0BC67 /* EmailAttchView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailAttchView.m; sourceTree = "<group>"; };
+		730AE09922EED72500E0BC67 /* EmailAttchView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailAttchView.xib; sourceTree = "<group>"; };
+		730AE09B22F0413400E0BC67 /* HXAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HXAttributedString.h; sourceTree = "<group>"; };
+		730AE09C22F0413400E0BC67 /* HXAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HXAttributedString.m; sourceTree = "<group>"; };
+		730AE09E22F13E6100E0BC67 /* EmailStarModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailStarModel.h; sourceTree = "<group>"; };
+		730AE09F22F13E6100E0BC67 /* EmailStarModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailStarModel.m; sourceTree = "<group>"; };
+		730AE0A122F2B4D800E0BC67 /* EmailUserKeyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailUserKeyModel.h; sourceTree = "<group>"; };
+		730AE0A222F2B4D800E0BC67 /* EmailUserKeyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailUserKeyModel.m; sourceTree = "<group>"; };
 		73121A6A219BB59B00510B48 /* RouterConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterConfig.h; sourceTree = "<group>"; };
 		73121A6B219BB59B00510B48 /* RouterConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterConfig.m; sourceTree = "<group>"; };
 		73121A6D219BF4E900510B48 /* NSString+SHA256.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SHA256.h"; sourceTree = "<group>"; };
@@ -2791,6 +2808,7 @@
 		730951A522D2DBF1001BA82E /* Email */ = {
 			isa = PBXGroup;
 			children = (
+				730AE09222EE983F00E0BC67 /* common */,
 				730AE06E22E94FDD00E0BC67 /* HtmlEditView */,
 				73E773FD22D5C2B7001C652E /* ShareConfig */,
 				73E3C6DE22D2F45500D7C9C6 /* YJSideMenu */,
@@ -2904,6 +2922,9 @@
 				730AE08122EADA5600E0BC67 /* EmailErrorAlertView.h */,
 				730AE08222EADA5600E0BC67 /* EmailErrorAlertView.m */,
 				730AE08422EADA6100E0BC67 /* EmailErrorAlertView.xib */,
+				730AE09622EED71B00E0BC67 /* EmailAttchView.h */,
+				730AE09722EED71B00E0BC67 /* EmailAttchView.m */,
+				730AE09922EED72500E0BC67 /* EmailAttchView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2911,6 +2932,8 @@
 		730AE06E22E94FDD00E0BC67 /* HtmlEditView */ = {
 			isa = PBXGroup;
 			children = (
+				730AE09B22F0413400E0BC67 /* HXAttributedString.h */,
+				730AE09C22F0413400E0BC67 /* HXAttributedString.m */,
 				730AE07522E9504800E0BC67 /* SIXEditor.bundle */,
 				730AE07422E9504800E0BC67 /* SIXEditorHeader.h */,
 				730AE07322E9504800E0BC67 /* SIXEditorInputManager.h */,
@@ -2925,6 +2948,15 @@
 				730AE07822E9504900E0BC67 /* SIXHTMLParser.m */,
 			);
 			path = HtmlEditView;
+			sourceTree = "<group>";
+		};
+		730AE09222EE983F00E0BC67 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				730AE09322EE983F00E0BC67 /* MCOCIDURLProtocol.h */,
+				730AE09422EE983F00E0BC67 /* MCOCIDURLProtocol.mm */,
+			);
+			path = common;
 			sourceTree = "<group>";
 		};
 		7330F34D21460FCF00FF4EEC /* Tabbar */ = {
@@ -4032,6 +4064,10 @@
 				7393918A22E068280033C203 /* EmailAttchModel.m */,
 				73E48CF622E5A7CA00AB0732 /* EmailContactModel.h */,
 				73E48CF722E5A7CA00AB0732 /* EmailContactModel.m */,
+				730AE09E22F13E6100E0BC67 /* EmailStarModel.h */,
+				730AE09F22F13E6100E0BC67 /* EmailStarModel.m */,
+				730AE0A122F2B4D800E0BC67 /* EmailUserKeyModel.h */,
+				730AE0A222F2B4D800E0BC67 /* EmailUserKeyModel.m */,
 			);
 			path = EmailModels;
 			sourceTree = "<group>";
@@ -4309,6 +4345,7 @@
 				586D417C224B609F002008C6 /* ChooseCircleCell.xib in Resources */,
 				7330F38E214645BA00FF4EEC /* MyHeadView.xib in Resources */,
 				583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */,
+				730AE09A22EED72500E0BC67 /* EmailAttchView.xib in Resources */,
 				7330F3B421475A3E00FF4EEC /* ContactsCell.xib in Resources */,
 				73E773FC22D58F2C001C652E /* EmailFloderCell.xib in Resources */,
 				584A448421460B0800608122 /* NewsViewController.xib in Resources */,
@@ -4599,6 +4636,7 @@
 				583BF90121F6B3EE0078A2A8 /* TaskListViewController.m in Sources */,
 				7330F5002149147200FF4EEC /* AATVoiceHudAlert.m in Sources */,
 				581FDF4621F024170068C120 /* state.m in Sources */,
+				730AE0A322F2B4D800E0BC67 /* EmailUserKeyModel.m in Sources */,
 				73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */,
 				5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */,
 				585AEE22213F71F40098A070 /* BBaseModel.m in Sources */,
@@ -4712,12 +4750,14 @@
 				7330F4F12149147200FF4EEC /* CDSystemTableViewCell.m in Sources */,
 				58A23A7C223F6BB20098AED5 /* GroupMemberView.m in Sources */,
 				581FDF4921F024170068C120 /* logger.m in Sources */,
+				730AE09D22F0413400E0BC67 /* HXAttributedString.m in Sources */,
 				73A4867021B94B220062C34F /* ConnectView.m in Sources */,
 				73F6B98022A002760053AAB4 /* EmojModel.m in Sources */,
 				7330F4F02149147200FF4EEC /* CDAudioTableViewCell.m in Sources */,
 				7330F4FF2149147200FF4EEC /* CTTextView.m in Sources */,
 				73D31B20218025270034B2B9 /* RMDownloadIndicator.m in Sources */,
 				73E7741722D71BBD001C652E /* EmailAccountModel.m in Sources */,
+				730AE09522EE983F00E0BC67 /* MCOCIDURLProtocol.mm in Sources */,
 				7362575B214213AA00D7FD6B /* NSDate+Category.m in Sources */,
 				73D00EBB215F792F0013E20D /* SocketManageUtil.m in Sources */,
 				581DE4E72238ED250056D4F8 /* GroupDetailsViewController.m in Sources */,
@@ -4828,6 +4868,7 @@
 				58BD2E722148E3170091A77D /* ToastUtil.m in Sources */,
 				7330F3AE21475A0600FF4EEC /* GroupCell.m in Sources */,
 				581FDF5021F024170068C120 /* tox.m in Sources */,
+				730AE09822EED71B00E0BC67 /* EmailAttchView.m in Sources */,
 				7378840D21ACF2970033A189 /* OCTAudioQueue.m in Sources */,
 				58A23A77223BC43F0098AED5 /* CSFileLogger.m in Sources */,
 				737883F621ACF2970033A189 /* OCTDefaultFileStorage.m in Sources */,
@@ -4847,6 +4888,7 @@
 				581FDF4721F024170068C120 /* net_crypto.m in Sources */,
 				736257AD2142149300D7FD6B /* UIView+Gradient.m in Sources */,
 				73E3C6E922D2F47000D7C9C6 /* LeftViewController.m in Sources */,
+				730AE0A022F13E6100E0BC67 /* EmailStarModel.m in Sources */,
 				585AEE522140D2280098A070 /* HMScannerMaskView.m in Sources */,
 				580CFE112224DD8200460B41 /* PNUnlockView.m in Sources */,
 				73E7743722DC6097001C652E /* EmailAttchCell.m in Sources */,

@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddGroupMenuViewController">
             <connections>
                 <outlet property="addNewMemberHeight" destination="Z89-um-3Nk" id="UWi-lh-0ht"/>
-                <outlet property="emailHeight" destination="4vD-yR-DKZ" id="19Q-ao-RF4"/>
+                <outlet property="emailHeight" destination="4vD-yR-DKZ" id="4du-Z0-Qry"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -225,7 +225,7 @@
                                 <constraint firstItem="EXG-FE-pnw" firstAttribute="top" secondItem="yID-tS-fuU" secondAttribute="top" constant="10" id="uvj-ay-yC2"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wJO-HH-ovl">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wJO-HH-ovl">
                             <rect key="frame" x="0.0" y="66" width="375" height="56"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="send_mail" translatesAutoresizingMaskIntoConstraints="NO" id="I5D-PR-E6B">

@@ -438,7 +438,7 @@
     
     NSString *action = receiveDic[@"params"][@"Action"];
     
-    if (!([action isEqualToString:Action_login] || [action isEqualToString: Action_Register] || [action isEqualToString: Action_Recovery] || [action isEqualToString: Action_RouterLogin] || [action isEqualToString: Action_ResetRouterKey] || [action isEqualToString: Action_ResetUserIdcode] || [action isEqualToString: Action_ResetRouterName])) {
+    if (!([action isEqualToString:Action_login] || [action isEqualToString: Action_Register] || [action isEqualToString: Action_Recovery] || [action isEqualToString: Action_RouterLogin] || [action isEqualToString: Action_ResetRouterKey] || [action isEqualToString: Action_ResetUserIdcode] || [action isEqualToString: Action_ResetRouterName] || [action isEqualToString: Action_SaveEmailConf])) {
         if (AppD.isLogOut) {
             return;
         }
@@ -591,6 +591,10 @@
         [SocketMessageUtil handleEnableQlcNode:receiveDic];
     }else if ([action isEqualToString:Action_CheckQlcNode]) { // 检测qlc节点
         [SocketMessageUtil handleCheckQlcNode:receiveDic];
+    } else if ([action isEqualToString:Action_SaveEmailConf]) { // 配置邮箱
+        [SocketMessageUtil handleSaveEmailConf:receiveDic];
+    } else if ([action isEqualToString:Action_GetUmailKey]) { // 查询邮箱密钥
+        [SocketMessageUtil handleGetUmailKey:receiveDic];
     }
 }
 
@@ -1638,6 +1642,25 @@
     } else {
     }
 }
+
+
+#pragma mark-----------------------邮箱--------------------
++ (void) handleSaveEmailConf:(NSDictionary *)receiveDic {
+    
+    [AppD.window hideHud];
+   // NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_CONFIG_NOTI object:receiveDic[@"params"]];
+  
+}
++ (void) handleGetUmailKey:(NSDictionary *)receiveDic {
+    
+    //[AppD.window hideHud];
+    // NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_GETKEY_NOTI object:receiveDic[@"params"]];
+    
+}
+
+
 
 
 

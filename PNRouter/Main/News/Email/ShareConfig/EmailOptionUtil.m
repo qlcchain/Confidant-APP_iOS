@@ -113,6 +113,28 @@
     }];
 }
 
+// copy 到已发送
++ (void)copySent:(NSData *)data complete:(void (^)(BOOL success)) complete
+{
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    if (accountM.Type != 2) { // 目前只有qq邮箱需要手动维护
+        complete(YES);
+        return;
+    }
+    // 读取本地配置
+    NSDictionary *floderConfigDic = [EmailFloderConfig getFloderConfigWithEmailType:accountM.Type];
+    NSString *folder = floderConfigDic[Sent];
+    MCOIMAPAppendMessageOperation *op = [EmailManage.sharedEmailManage.imapSeeion appendMessageOperationWithFolder:folder messageData:data flags:MCOMessageFlagMDNSent];
+    [op start:^(NSError *error, uint32_t createdUID) {
+        NSLog(@"create sent message :%@",@(createdUID));
+        if (error) {
+            complete(NO);
+        }else{
+            complete(YES);
+        }
+    }];
+}
+
 // 复制邮件到 -指定文件夹 是否删除原邮件
 + (void) copyEmailToFloderWithFloderPath:(NSString *) floderPath toFloderName:(NSString *) toFloderName uid:(NSInteger) uid isDel:(BOOL) isDel complete:(void (^)(BOOL success)) complete
 {

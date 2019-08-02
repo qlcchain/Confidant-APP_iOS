@@ -274,6 +274,7 @@
         [playod enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             RouterUserModel *model = obj;
             model.NickName = [model.NickName base64DecodedString]?:[model.Mnemonic base64DecodedString];
+            model.Mnemonic = model.Mnemonic?[model.Mnemonic base64DecodedString]:@"";
             // 1 派生类。2 普通类 3 临时类
             /* if (model.UserType == 1) {
              [supperArray addObject:model];

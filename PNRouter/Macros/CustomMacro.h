@@ -32,6 +32,9 @@
 
 // email 最近联系人
 #define EMAIL_CONTACT_TABNAME  @"EMAIL_CONTACT_TABNAME"
+// email 星标邮件
+#define EMAIL_STAR_TABNAME  @"EMAIL_STAR_TABNAME"
+
 
 // 请求超时时间
 #define REQEUST_TIME  20
@@ -88,5 +91,52 @@ static NSString *Trash = @"Trash";
 
 #define User_Header_Size 500*1024      // 500KB
 #define Screen_Lock_Local @"Screen_Lock_Local"
+
+
+
+static NSString * mainJavascript = @"\
+var imageElements = function() {\
+var imageNodes = document.getElementsByTagName('img');\
+return [].slice.call(imageNodes);\
+};\
+\
+var findCIDImageURL = function() {\
+var images = imageElements();\
+\
+var imgLinks = [];\
+for (var i = 0; i < images.length; i++) {\
+var url = images[i].getAttribute('src');\
+if (url.indexOf('cid:') == 0 || url.indexOf('x-mailcore-image:') == 0)\
+imgLinks.push(url);\
+}\
+return JSON.stringify(imgLinks);\
+};\
+\
+var replaceImageSrc = function(info) {\
+var images = imageElements();\
+\
+for (var i = 0; i < images.length; i++) {\
+var url = images[i].getAttribute('src');\
+if (url.indexOf(info.URLKey) == 0) {\
+images[i].setAttribute('src', info.LocalPathKey);\
+break;\
+}\
+}\
+};\
+";
+
+static NSString * mainStyle = @"\
+body {\
+font-family: Helvetica;\
+font-size: 14px;\
+word-wrap: break-word;\
+-webkit-text-size-adjust:none;\
+-webkit-nbsp-mode: space;\
+}\
+\
+pre {\
+white-space: pre-wrap;\
+}\
+";
 
 #endif /* CustomMacro_h */

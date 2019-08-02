@@ -56,10 +56,14 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSArray *typeArr = self.dataArray[indexPath.row];
-    if (![typeArr[1] isEqualToString:@"4"]) {
-        if (_clickRowBlock) {
-            _clickRowBlock(self,typeArr);
-        }
+//    if (![typeArr[1] isEqualToString:@"4"]) {
+//        if (_clickRowBlock) {
+//            _clickRowBlock(self,typeArr);
+//        }
+//    }
+    
+    if (_clickRowBlock) {
+        _clickRowBlock(self,typeArr);
     }
     
 }

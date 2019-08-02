@@ -260,7 +260,7 @@
     [self addNotifcation];
     [self showAddNewMember];
     if (!EmailManage.sharedEmailManage.imapSeeion) {
-        _emailHeight = 0;
+        _emailHeight.constant = 0;
     }
 }
 

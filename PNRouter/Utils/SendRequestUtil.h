@@ -70,6 +70,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendDelUserWithFromTid:(NSString *) fromTid toTid:(NSString *) toTid sn:(NSString *) sn showHud:(BOOL) showHud;
 + (void) sendQLCNodeWithEnable:(NSNumber *) enable seed:(NSString *) seed showHud:(BOOL) showHud;
 + (void) sendCheckNodeWithShowHud:(BOOL) showHud;
+
+//------------------------email ----------------------
++ (void) sendEmailFileWithFileid:(NSString *) fileid fileSize:(NSNumber *) fileSize fileMd5:(NSString *) fileMd5 mailInfo:(NSString *) mailInfo ShowHud:(BOOL) showHud;
++ (void) sendEmailConfigWithEmailAddress:(NSString *) address type:(NSNumber *) type configJson:(NSString *) configJosn ShowHud:(BOOL) showHud;
++ (void) sendEmailUserkeyWithUsers:(NSString *) users unum:(NSNumber *) num ShowHud:(BOOL) showHud;
 @end
 
 NS_ASSUME_NONNULL_END
