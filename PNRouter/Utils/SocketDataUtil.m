@@ -303,9 +303,7 @@ struct ResultFile {
                 if ([weakSelf.toid isEmptyString]) {
                      [AppD.window hideHud];
                     if (weakSelf.fileType == 7) {
-                        [AppD.window showFaieldHudInView:AppD.window hint:@"Upload failed."];
-                       
-                       // [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_UPLOAD_NODE_NOTI object:@(0)];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_UPLOAD_NODE_NOTI object:@[@(1)]];
                     }
                 }
             }
@@ -526,10 +524,7 @@ struct ResultFile {
                 if (self.fileType == 6) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:UPLOAD_HEAD_DATA_NOTI object:@[@(self.retCode),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
                 } else if (self.fileType == 7) { // email 上传完成
-                    
-                    [SendRequestUtil sendEmailFileWithFileid:self.fileid fileSize:@(self.fileData.length) fileMd5:[MD5Util md5WithData:self.fileData] mailInfo:@"" ShowHud:NO];
-                    
-                    //[[NSNotificationCenter defaultCenter]ll postNotificationName:EMIAL_UPLOAD_NODE_NOTI object:@(0)];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_UPLOAD_NODE_NOTI object:@[@(0),self.fileid,@(self.fileData.length),[MD5Util md5WithData:self.fileData]]];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
                 }

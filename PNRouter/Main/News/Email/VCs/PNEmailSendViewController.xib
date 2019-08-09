@@ -25,6 +25,7 @@
                 <outlet property="contentTF" destination="pCd-pz-i4n" id="YSm-pJ-A0r"/>
                 <outlet property="lblSend" destination="bCB-Gg-BON" id="lzg-Mv-DU4"/>
                 <outlet property="lblTitle" destination="rvJ-IL-QVy" id="Lbz-Od-dZK"/>
+                <outlet property="lockImgView" destination="KSa-eS-PHf" id="tVC-O2-KBE"/>
                 <outlet property="myWebView" destination="pDS-4v-ENt" id="qtE-LU-jq7"/>
                 <outlet property="sendBtn" destination="IOa-5D-zZP" id="oZl-2c-cG2"/>
                 <outlet property="subContraintH" destination="Vn0-H5-BjE" id="qiB-cg-WBi"/>
@@ -74,6 +75,13 @@
                                 <action selector="clickSendAction:" destination="-1" eventType="touchUpInside" id="OCZ-Nq-rQ5"/>
                             </connections>
                         </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="email_lock" translatesAutoresizingMaskIntoConstraints="NO" id="KSa-eS-PHf">
+                            <rect key="frame" x="317" y="13" width="18" height="18"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="18" id="59O-IG-f52"/>
+                                <constraint firstAttribute="width" constant="18" id="uT8-Zp-6l6"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -82,6 +90,8 @@
                         <constraint firstAttribute="height" constant="44" id="6Nc-2X-Irs"/>
                         <constraint firstItem="rvJ-IL-QVy" firstAttribute="centerX" secondItem="nlQ-RA-Q8M" secondAttribute="centerX" id="ATF-hO-jCz"/>
                         <constraint firstItem="FnV-IJ-iC6" firstAttribute="leading" secondItem="nlQ-RA-Q8M" secondAttribute="leading" constant="4" id="FLv-MV-UTl"/>
+                        <constraint firstAttribute="trailing" secondItem="KSa-eS-PHf" secondAttribute="trailing" constant="40" id="OaW-uN-dUH"/>
+                        <constraint firstItem="KSa-eS-PHf" firstAttribute="centerY" secondItem="nlQ-RA-Q8M" secondAttribute="centerY" id="PPx-YR-vbl"/>
                         <constraint firstAttribute="trailing" secondItem="IOa-5D-zZP" secondAttribute="trailing" id="RJj-Wl-wuw"/>
                         <constraint firstItem="IOa-5D-zZP" firstAttribute="leading" secondItem="rvJ-IL-QVy" secondAttribute="trailing" constant="16" id="UIw-1z-94Y"/>
                         <constraint firstItem="rvJ-IL-QVy" firstAttribute="centerY" secondItem="nlQ-RA-Q8M" secondAttribute="centerY" id="Zk1-f5-s5F"/>
@@ -519,6 +529,7 @@
         </view>
     </objects>
     <resources>
+        <image name="email_lock" width="16" height="16"/>
         <image name="statusbar_close" width="24" height="24"/>
         <image name="statusbar_sendout_h" width="24" height="24"/>
         <image name="statusbar_sendout_n" width="24" height="24"/>

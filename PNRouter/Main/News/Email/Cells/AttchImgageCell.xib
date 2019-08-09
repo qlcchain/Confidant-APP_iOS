@@ -41,14 +41,27 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="08l-l2-QXA">
+                                <rect key="frame" x="-5" y="-5" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="hMN-q1-434"/>
+                                    <constraint firstAttribute="width" constant="40" id="vFX-YV-6MB"/>
+                                </constraints>
+                                <state key="normal" image="tabbar_delete"/>
+                                <connections>
+                                    <action selector="clickCloseBtn:" destination="gTV-IL-0wX" eventType="touchUpInside" id="hO9-F9-vMv"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="08l-l2-QXA" firstAttribute="top" secondItem="vfZ-Sp-bHw" secondAttribute="top" constant="-5" id="0SI-Nq-R3Z"/>
                             <constraint firstAttribute="trailing" secondItem="REI-vp-erJ" secondAttribute="trailing" id="Djy-R4-Wjf"/>
                             <constraint firstAttribute="trailing" secondItem="kir-2o-453" secondAttribute="trailing" id="Etz-uj-sBx"/>
                             <constraint firstAttribute="bottom" secondItem="DG1-3h-29F" secondAttribute="bottom" id="OHE-mg-WK3"/>
                             <constraint firstAttribute="trailing" secondItem="DG1-3h-29F" secondAttribute="trailing" constant="5" id="X5f-x8-aoU"/>
                             <constraint firstItem="DG1-3h-29F" firstAttribute="leading" secondItem="vfZ-Sp-bHw" secondAttribute="leading" constant="5" id="cJV-dz-ldl"/>
+                            <constraint firstItem="08l-l2-QXA" firstAttribute="leading" secondItem="vfZ-Sp-bHw" secondAttribute="leading" constant="-5" id="eDe-A2-7s6"/>
                             <constraint firstItem="kir-2o-453" firstAttribute="leading" secondItem="vfZ-Sp-bHw" secondAttribute="leading" id="fY3-0N-dut"/>
                             <constraint firstItem="REI-vp-erJ" firstAttribute="top" secondItem="vfZ-Sp-bHw" secondAttribute="top" id="htB-jN-c9X"/>
                             <constraint firstAttribute="bottom" secondItem="kir-2o-453" secondAttribute="bottom" id="nga-ws-POi"/>
@@ -69,10 +82,14 @@
             <connections>
                 <outlet property="backImgView" destination="kir-2o-453" id="iY2-Bm-XTd"/>
                 <outlet property="backV" destination="vfZ-Sp-bHw" id="upO-LR-3iW"/>
+                <outlet property="closeBtn" destination="08l-l2-QXA" id="l8l-RP-8Or"/>
                 <outlet property="headImgV" destination="REI-vp-erJ" id="8eh-4A-90Z"/>
                 <outlet property="lblCount" destination="DG1-3h-29F" id="AKj-J3-fZ7"/>
             </connections>
             <point key="canvasLocation" x="1.4492753623188408" y="130.91517857142856"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="tabbar_delete" width="16" height="16"/>
+    </resources>
 </document>

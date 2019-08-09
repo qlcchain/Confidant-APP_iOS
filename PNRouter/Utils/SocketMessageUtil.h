@@ -85,6 +85,12 @@ static NSString *Action_DelUser = @"DelUser";
 static NSString *Action_BakupEmail = @"BakupEmail";
 static NSString *Action_SaveEmailConf = @"SaveEmailConf";
 static NSString *Action_GetUmailKey = @"CheckmailUkey";
+static NSString *Action_BakMailsNum = @"BakMailsNum";
+static NSString *Action_PullMailList = @"PullMailList";
+static NSString *Action_DelEmail = @"DelEmail";
+
+
+
 
 @class FriendModel;
 

@@ -33,24 +33,14 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        //NSString *userName = [NSString getNotNullValue:_routerUserModel.NickName];
-        if (_routerUserModel.Active == 1) { //  && ![userName isEqualToString:@"tempUser"]
-            if (_routerUserModel.UserType !=3) {
-                 _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name",@"Circle Name"],@[@"Circle Login QR Code"],@[@"Joining time"],@[@"Remove"]]];
-            } else {
-                _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Circle Login QR Code"],@[@"Joining time"],@[@"Remove"]]];
-            }
-            
+       
+        if (_routerUserModel.UserType == 1) {
+            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name",@"Circle Name"],@[@"Circle Login QR Code"],@[@"Joining time"]]];
+        } else if (_routerUserModel.UserType == 3) {
+            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Circle Login QR Code"],@[@"Joining time"],@[@"Remove"]]];
         } else {
-            if (_routerUserModel.UserType !=3) {
-                _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name",@"Circle Name"],@[@"Circle Login QR Code"],@[@"Joining time"]]];
-            } else {
-                _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Circle Login QR Code"],@[@"Joining time"]]];
-            }
-            
+            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name",@"Circle Name"],@[@"Circle Login QR Code"],@[@"Joining time"],@[@"Remove"]]];
         }
-        
-        
     }
     return _dataArray;
 }

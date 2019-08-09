@@ -440,7 +440,7 @@
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"Remove..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_DelUser,@"From":fromTid,@"To":toTid,@"Sn":sn};
+    NSDictionary *params = @{@"Action":Action_DelUser,@"From":fromTid,@"To":toTid?:@"",@"Sn":sn?:@""};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 + (void) sendRebootWithToxid:(NSString *) toxID showHud:(BOOL)showHud
@@ -471,7 +471,7 @@
 }
 
 //------------------------email ----------------------
-+ (void) sendEmailFileWithFileid:(NSString *) fileid fileSize:(NSNumber *) fileSize fileMd5:(NSString *) fileMd5 mailInfo:(NSString *) mailInfo ShowHud:(BOOL)showHud
++ (void) sendEmailFileWithFileid:(NSString *) fileid fileSize:(NSNumber *) fileSize fileMd5:(NSString *) fileMd5 mailInfo:(NSString *) mailInfo srcKey:(NSString *) srcKey uid:(NSNumber *) uid ShowHud:(BOOL) showHud
 {
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:Uploading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
@@ -479,7 +479,7 @@
     
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     
-    NSDictionary *params = @{@"Action":Action_BakupEmail,@"Type":@(accountM.Type),@"FileId":fileid,@"FileSize":fileSize,@"FileMd5":fileMd5,@"User":[accountM.User base64EncodedString],@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"MailInfo":mailInfo?:@""};
+    NSDictionary *params = @{@"Action":Action_BakupEmail,@"Type":@(accountM.Type),@"FileId":fileid,@"FileSize":fileSize,@"FileMd5":fileMd5,@"User":[accountM.User base64EncodedString],@"UserKey":srcKey?:@"",@"MailInfo":mailInfo?:@"",@"Uuid":uid};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 + (void) sendEmailConfigWithEmailAddress:(NSString *) address type:(NSNumber *) type configJson:(NSString *) configJosn ShowHud:(BOOL) showHud
@@ -487,6 +487,7 @@
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
+    address = [address lowercaseString];
     NSDictionary *params = @{@"Action":Action_SaveEmailConf,@"Type":type,@"Version":@(1),@"User":[address base64EncodedString],@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"Config":configJosn?:@""};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
@@ -496,6 +497,34 @@
         [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     NSDictionary *params = @{@"Action":Action_GetUmailKey,@"Unum":num,@"Users":users};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
++ (void) sendEmailCheckNodeCountShowHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    NSDictionary *params = @{@"Action":Action_BakMailsNum,@"User":[accountM.User base64EncodedString]};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
+
++ (void) sendPullEmailWithStarid:(NSNumber *) starId num:(NSNumber *) num showHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    NSDictionary *params = @{@"Action":Action_PullMailList,@"User":[accountM.User base64EncodedString],@"Type":@(accountM.Type)};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
++ (void) sendEmailDelNodeWithUid:(NSNumber *) uid showHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Deleting_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    NSDictionary *params = @{@"Action":Action_DelEmail,@"Type":@(accountM.Type),@"MailId":uid};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 @end

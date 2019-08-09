@@ -11,12 +11,15 @@
 NS_ASSUME_NONNULL_BEGIN
 static NSString *AttchImgageCellResue = @"AttchImgageCell";
 
+typedef void(^ClickCloseBlock)(NSInteger tag);
+
 @interface AttchImgageCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UIView *backV;
 @property (weak, nonatomic) IBOutlet UIImageView *headImgV;
 @property (weak, nonatomic) IBOutlet UILabel *lblCount;
 @property (weak, nonatomic) IBOutlet UIImageView *backImgView;
-
+@property (weak, nonatomic) IBOutlet UIButton *closeBtn;
+@property (nonatomic ,copy) ClickCloseBlock closeBlock;
 @end
 
 NS_ASSUME_NONNULL_END

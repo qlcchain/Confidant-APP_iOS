@@ -21,7 +21,7 @@
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </button>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cnK-23-4XU">
-                    <rect key="frame" x="35" y="205.5" width="305" height="216"/>
+                    <rect key="frame" x="35" y="223.5" width="305" height="180"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zht-H1-len">
                             <rect key="frame" x="0.0" y="0.0" width="305" height="50"/>
@@ -78,7 +78,7 @@
                         <constraint firstItem="zht-H1-len" firstAttribute="top" secondItem="cnK-23-4XU" secondAttribute="top" id="g5C-6v-QKU"/>
                         <constraint firstItem="NMg-w5-P11" firstAttribute="leading" secondItem="cnK-23-4XU" secondAttribute="leading" constant="16" id="hle-go-uT8"/>
                         <constraint firstItem="iXv-zd-IvS" firstAttribute="leading" secondItem="cnK-23-4XU" secondAttribute="leading" constant="16" id="o2z-Bk-hjJ"/>
-                        <constraint firstAttribute="height" constant="216" id="shz-Gh-Jcg"/>
+                        <constraint firstAttribute="height" constant="180" id="shz-Gh-Jcg"/>
                         <constraint firstAttribute="trailing" secondItem="iXv-zd-IvS" secondAttribute="trailing" constant="16" id="xIt-Hh-vJk"/>
                         <constraint firstItem="NMg-w5-P11" firstAttribute="top" secondItem="iXv-zd-IvS" secondAttribute="bottom" constant="20" id="ypI-bi-Rcs"/>
                     </constraints>

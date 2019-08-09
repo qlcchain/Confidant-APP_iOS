@@ -59,6 +59,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,strong) NSString *deKey;
 
+@property (nonatomic, assign) BOOL isFetch;
+
+// 当前cellRow
+@property (nonatomic ,assign) NSInteger currentRow;
 @end
 
 NS_ASSUME_NONNULL_END

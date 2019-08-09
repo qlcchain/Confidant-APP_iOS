@@ -107,6 +107,9 @@
                         failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure {
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@%@",[RequestService getInstance].prefix_Url,url];
+    if ([SystemUtil filePathisExist:filePath]) {
+        [SystemUtil removeDocmentFilePath:filePath];
+    }
     NSURLSessionDownloadTask *downloadTask = [AFHTTPClientV2 downFileWithBaseURLStr:requestUrl filePath:filePath progressBlock:^(CGFloat progress) {
         if (progressBlock) {
             progressBlock(progress);

@@ -26,7 +26,7 @@
 #import "PNDocumentPickerViewController.h"
 #import "TZImagePickerController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-
+#import "NSString+Trim.h"
 
 #import "SIXEditorView.h"
 #import "SIXHTMLParser.h"
@@ -44,6 +44,7 @@
 #import "AESCipher.h"
 #import "EmailUserKeyModel.h"
 #import "MCOCIDURLProtocol.h"
+#import "PNEmailPreViewController.h"
 
 @interface PNEmailSendViewController ()<UITextViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate,YBImageBrowserDelegate,UIWebViewDelegate>
@@ -81,7 +82,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property (nonatomic, strong) NSMutableArray *toContacts;
 @property (nonatomic, strong) NSMutableArray *ccContacts;
 @property (nonatomic, strong) NSMutableArray *bccContacts;
-
+    @property (weak, nonatomic) IBOutlet UIImageView *lockImgView;
+    
 @property (nonatomic ,strong) UITextView *selTextView;
 
 @property (nonatomic, strong) NSMutableArray *attchArray;
@@ -92,6 +94,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 @property (nonatomic, strong) NSMutableString *htmlContent;
 @property (nonatomic, strong) MCOMessageParser *messageParser;
+    @property (nonatomic, assign) BOOL isSend;
 @end
 
 @implementation PNEmailSendViewController
@@ -234,14 +237,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         messageBuilder.attachments = attachMents;
     }
     // 添加正文里的附加资源
-    if (self.emailInfo && self.emailInfo.parserData) {
-      MCOMessageParser *msgPaser = [MCOMessageParser messageParserWithData:self.emailInfo.parserData];
-        NSArray *inattachments = msgPaser.htmlInlineAttachments;
-        for (MCOAttachment*attachment in inattachments) {
-            [messageBuilder addRelatedAttachment:attachment];
-            //添加html正文里的附加资源（图片）
-        }
-    }
+//    if (self.emailInfo && self.emailInfo.parserData) {
+//      MCOMessageParser *msgPaser = [MCOMessageParser messageParserWithData:self.emailInfo.parserData];
+//        NSArray *inattachments = msgPaser.htmlInlineAttachments;
+//        for (MCOAttachment*attachment in inattachments) {
+//            [messageBuilder addRelatedAttachment:attachment];
+//            //添加html正文里的附加资源（图片）
+//        }
+//    }
     
     return messageBuilder;
 }
@@ -268,6 +271,68 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                [weakSelf leftNavBarItemPressedWithPop:NO];
                            }];
 }
+- (void) checkIsEncode
+{
+    NSMutableArray *emails = [NSMutableArray array];
+    if (self.toContacts && self.toContacts.count > 0) {
+        __block BOOL isEmail = YES;
+        [self.toContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailContactModel *contactM = obj;
+            contactM.userAddress = [NSString trimWhitespace:contactM.userAddress];
+            if (![contactM.userAddress isEmailAddress]) {
+                isEmail = NO;
+                *stop = YES;
+            }
+            [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
+        }];
+        if (!isEmail) {
+            _lockImgView.hidden = YES;
+            return;
+        }
+        
+        
+    }
+    if (self.ccContacts && self.ccContacts.count > 0) {
+        __block BOOL isEmail = YES;
+        [self.ccContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailContactModel *contactM = obj;
+            contactM.userAddress = [NSString trimWhitespace:contactM.userAddress];
+            if (![contactM.userAddress isEmailAddress]) {
+                isEmail = NO;
+                *stop = YES;
+            }
+            [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
+        }];
+        if (!isEmail) {
+            _lockImgView.hidden = YES;
+            return;
+        }
+    }
+    if (self.bccContacts && self.bccContacts.count > 0) {
+        __block BOOL isEmail = YES;
+        [self.bccContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailContactModel *contactM = obj;
+            contactM.userAddress = [NSString trimWhitespace:contactM.userAddress];
+            if (![contactM.userAddress isEmailAddress]) {
+                isEmail = NO;
+                *stop = YES;
+            }
+            [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
+        }];
+        if (!isEmail) {
+            _lockImgView.hidden = YES;
+            return;
+        }
+    }
+    if (emails.count <= 30) {
+        self.isSend = NO;
+        NSString *emailStrings = [emails componentsJoinedByString:@","];
+        [SendRequestUtil sendEmailUserkeyWithUsers:emailStrings unum:@(emails.count) ShowHud:NO];
+    } else {
+        _lockImgView.hidden = YES;
+        return;
+    }
+}
 - (IBAction)clickSendAction:(id)sender {
     [self.view endEditing:YES];
     
@@ -276,11 +341,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
        __block BOOL isEmail = YES;
         [self.toContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             EmailContactModel *contactM = obj;
+            contactM.userAddress = [NSString trimWhitespace:contactM.userAddress];
             if (![contactM.userAddress isEmailAddress]) {
                 isEmail = NO;
                 *stop = YES;
             }
-            [emails addObject:[contactM.userAddress base64EncodedString]];
+            [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
         }];
         if (!isEmail) {
             [self.view showHint:@"To: Not a valid email address"];
@@ -293,28 +359,28 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         __block BOOL isEmail = YES;
         [self.ccContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             EmailContactModel *contactM = obj;
+            contactM.userAddress = [NSString trimWhitespace:contactM.userAddress];
             if (![contactM.userAddress isEmailAddress]) {
                 isEmail = NO;
                 *stop = YES;
             }
-            [emails addObject:[contactM.userAddress base64EncodedString]];
+            [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
         }];
         if (!isEmail) {
             [self.view showHint:@"Cc: Not a valid email address"];
             return;
         }
-       
-        
     }
     if (self.bccContacts && self.bccContacts.count > 0) {
         __block BOOL isEmail = YES;
         [self.bccContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             EmailContactModel *contactM = obj;
+            contactM.userAddress = [NSString trimWhitespace:contactM.userAddress];
             if (![contactM.userAddress isEmailAddress]) {
                 isEmail = NO;
                 *stop = YES;
             }
-            [emails addObject:[contactM.userAddress base64EncodedString]];
+            [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
         }];
         if (!isEmail) {
             [self.view showHint:@"Bcc: Not a valid email address"];
@@ -323,10 +389,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
     }
     if (emails.count <= 30) {
+        self.isSend = YES;
         [self.view showHudInView:self.view hint:@"Sending…" userInteractionEnabled:NO hideTime:REQEUST_TIME];
         NSString *emailStrings = [emails componentsJoinedByString:@","];
         [SendRequestUtil sendEmailUserkeyWithUsers:emailStrings unum:@(emails.count) ShowHud:NO];
     } else {
+        _lockImgView.hidden = YES;
         [self sendEmailWithShowLoading:YES keys:nil];
     }
     
@@ -384,6 +452,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [messageBuilder.attachments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 MCOAttachment *attachment = obj;
                 attachment.data = aesEncryptData(attachment.data,msgKeyData);
+                NSLog(@"---length = %ld",attachment.data.length);
             }];
         }
  
@@ -420,11 +489,19 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                
                                html = [html stringByAppendingString:self.emailInfo.htmlContent?:@""];
                                if (keys.length > 0) {
+                                   if ([html containsString:confidantEmialText]) {
+                                       html = [html stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
+                                   }
                                    html = aesEncryptString(html, [msgKey substringToIndex:16]);
                                    NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'%@\'></span>",keys];
                                    html = [html stringByAppendingString:userKeyStr];
-                        
+                                   html = [html stringByAppendingString:confidantHtmlStr];
+                               } else {
+                                   if (![html containsString:confidantEmialText]) {
+                                       html = [html stringByAppendingString:confidantHtmlStr];
+                                   }
                                }
+                               
                                [messageBuilder setHTMLBody:html];
                                // 发送邮件
                                NSData * rfc822Data =[messageBuilder data];
@@ -451,6 +528,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         self.emailInfo = info;
         self.sendType = type;
         self.isShowAttchs = isShowAttch;
+
     }
     return self;
 }
@@ -534,10 +612,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         [self.myWebView loadHTMLString:self.htmlContent baseURL:nil];
     }
     
-    
-    NSString*defaultStr = @"<br/><br/><br/>Send from Confidant<br/>";
-    [self contentTFLoadData:defaultStr];
-    
     if (_sendType == ReplyEmail) {
         
        
@@ -587,7 +661,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             @weakify_self
             [self.emailInfo.attchArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 EmailAttchModel *attchM = obj;
-                [weakSelf addAttchReloadCollectionWithAttch:attchM];
+                EmailAttchModel *attchNew = [[EmailAttchModel alloc] init];
+                attchNew.attName = attchM.attName;
+                if (weakSelf.emailInfo.deKey && weakSelf.emailInfo.deKey.length > 0) {
+                    attchNew.attData = aesDecryptData(attchM.attData, [weakSelf.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding]);
+                } else {
+                    attchNew.attData = attchM.attData;
+                }
+                [weakSelf addAttchReloadCollectionWithAttch:attchNew];
             }];
         }
         
@@ -676,10 +757,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
        
     }
     
+    _lockImgView.hidden = YES;
+    
     if (_subTF.text.trim.length > 0 && _toTF.text.trim.length > 0) {
         if (!_sendBtn.selected) {
             _sendBtn.selected = YES;
             _sendBtn.enabled = YES;
+            [self checkIsEncode];
         }
     } else {
         _sendBtn.selected = NO;
@@ -804,6 +888,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
         }
     }];
+    
+    
+    if (_subTF.text.trim.length > 0 && _toTF.text.trim.length > 0) {
+        if (!_sendBtn.selected) {
+            _sendBtn.selected = YES;
+            _sendBtn.enabled = YES;
+        }
+    } else {
+        _sendBtn.selected = NO;
+        _sendBtn.enabled = NO;
+    }
+    
+    if (contacts && contacts.count>0) {
+        [self checkIsEncode];
+    }
 }
 - (void) getEmailUserKeyNoti:(NSNotification *) noti
 {
@@ -812,9 +911,24 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *Payload = dic[@"Payload"];
     if (retCode == 0 && Payload) { // 需要加密
         NSArray *payloadArr = [EmailUserKeyModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
-         [self sendEmailWithShowLoading:NO keys:payloadArr];
+        
+        if (payloadArr && payloadArr.count > 0) {
+            _lockImgView.hidden = NO;
+        } else {
+            _lockImgView.hidden = YES;
+        }
+        
+        if (_isSend) {
+            _isSend = NO;
+            [self sendEmailWithShowLoading:NO keys:payloadArr];
+        }
+        
     } else {
-        [self sendEmailWithShowLoading:NO keys:nil];
+        _lockImgView.hidden = YES;
+        if (_isSend) {
+            _isSend = NO;
+            [self sendEmailWithShowLoading:NO keys:nil];
+        }
     }
 }
 
@@ -888,11 +1002,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 {
      if (textView == _toTF || textView == _ccTF || textView == _bccTF) {
          [self textFormatWithTextView:textView];
+         [self checkIsEncode];
      }
 }
 - (void)textViewDidChange:(UITextView *)textView
 {
-    
     if (_subTF.text.trim.length > 0 && _toTF.text.trim.length > 0) {
         if (!_sendBtn.selected) {
             _sendBtn.selected = YES;
@@ -909,6 +1023,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (textView == _toTF || textView == _ccTF || textView == _bccTF) {
         if ([text isEqualToString:@"\n"]) { // 点击return时
             [self textFormatWithTextView:textView];
+            [self checkIsEncode];
             return NO;
         }
 
@@ -1080,11 +1195,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 
 
-
-
-
-
-
 // 更新collection高度  附件数量
 - (void) updateCollectionHeight
 {
@@ -1125,7 +1235,23 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"] || !attachment.attData) {
         
         AttchImgageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:AttchImgageCellResue forIndexPath:indexPath];
+        cell.tag = indexPath.item;
+        cell.closeBtn.hidden = NO;
+        
+        @weakify_self
+        [cell setCloseBlock:^(NSInteger tag) {
+            [collectionView performBatchUpdates:^{
+                [weakSelf.attchArray removeObjectAtIndex:tag];
+                [collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:tag inSection:0]]];
+            }completion:^(BOOL finished){
+                [collectionView reloadData];
+                [weakSelf updateCollectionHeight];
+            }];
+            
+        }];
+        
         if (!attachment.attData) {
+            cell.closeBtn.hidden = YES;
             cell.lblCount.text = @"";
             cell.backImgView.hidden = YES;
             cell.headImgV.image = [UIImage imageNamed:@"add_pictures"];
@@ -1135,12 +1261,28 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             cell.lblCount.text = [SystemUtil transformedValue:attachment.attData.length];
             cell.backImgView.hidden = NO;
             cell.headImgV.image = [UIImage imageWithData:attachment.attData];
+            
             cell.backV.backgroundColor = MAIN_WHITE_COLOR;
             cell.headImgV.contentMode = UIViewContentModeScaleAspectFill;
         }
         return cell;
     } else {
         AttchCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:AttchCollectionCellResue forIndexPath:indexPath];
+        
+        @weakify_self
+        [cell setCloseBlock:^(NSInteger tag) {
+            [collectionView performBatchUpdates:^{
+                [weakSelf.attchArray removeObjectAtIndex:tag];
+                [collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:tag inSection:0]]];
+            }completion:^(BOOL finished){
+                [collectionView reloadData];
+                [weakSelf updateCollectionHeight];
+                
+            }];
+        }];
+        
+        cell.tag = indexPath.item;
+        cell.closeBtn.hidden = NO;
         cell.lblName.text = attachment.attName;
         NSArray *names = [attachment.attName componentsSeparatedByString:@"."];
         if (names && names.count>1) {
@@ -1185,6 +1327,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.view endEditing:YES];
     if (indexPath.row == self.attchArray.count-1) { // 最后一个为添加附件
         [self.selAttchView showEmailAttchSelView];
+    } else {
+        EmailAttchModel*attachment = self.attchArray[indexPath.item];
+        PNEmailPreViewController *vc = [[PNEmailPreViewController alloc] initWithFileName:attachment.attName fileData:attachment.attData];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 /**

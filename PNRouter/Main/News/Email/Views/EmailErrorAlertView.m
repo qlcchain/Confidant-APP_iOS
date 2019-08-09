@@ -24,7 +24,7 @@
     view.backView.layer.cornerRadius = 8;
     view.backView.layer.masksToBounds = YES;
     
-    view.bottomH.constant = SCREEN_HEIGHT/2+ 108;
+    view.bottomH.constant = SCREEN_HEIGHT/2+ 90;
     [view layoutIfNeeded];
     
     return view;
@@ -45,7 +45,7 @@
 
 - (void) hideEmailAttchSelView
 {
-    _bottomH.constant = SCREEN_HEIGHT/2+ 108;
+    _bottomH.constant = SCREEN_HEIGHT/2+ 90;
     @weakify_self
     [UIView animateWithDuration:0.3 animations:^{
         [weakSelf layoutIfNeeded];

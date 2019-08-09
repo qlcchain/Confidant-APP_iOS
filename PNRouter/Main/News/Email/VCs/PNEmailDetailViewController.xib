@@ -17,7 +17,9 @@
                 <outlet property="forwardBtn" destination="fdU-Eu-mrG" id="M5M-EF-K7N"/>
                 <outlet property="lblFloderName" destination="wJK-zD-ctt" id="bu5-2K-Y6x"/>
                 <outlet property="mainTabV" destination="Bcl-LL-J7l" id="0d1-IP-bfk"/>
+                <outlet property="moreW" destination="rIK-l2-AKT" id="jzc-Di-rFE"/>
                 <outlet property="nodeBtn" destination="tPW-Yz-KHa" id="X4h-6x-OWW"/>
+                <outlet property="nodeW" destination="gn7-DN-CnJ" id="6ts-9j-YAs"/>
                 <outlet property="progressView" destination="ERP-u4-Sv2" id="nvz-bl-vmc"/>
                 <outlet property="replyBtn" destination="kXC-XT-MC3" id="Rv6-Jj-Agj"/>
                 <outlet property="tabH" destination="07P-Os-jRO" id="t7E-Er-cw8"/>
@@ -66,7 +68,7 @@
                                 <constraint firstItem="wJK-zD-ctt" firstAttribute="leading" secondItem="dNB-S9-Fx1" secondAttribute="trailing" id="xjE-a8-c5d"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Sx-GX-0hx">
+                        <button opaque="NO" clipsSubviews="YES" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Sx-GX-0hx">
                             <rect key="frame" x="332" y="0.0" width="38" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="38" id="rIK-l2-AKT"/>
@@ -86,7 +88,7 @@
                                 <action selector="ClickRightBtn:" destination="-1" eventType="touchUpInside" id="5vd-vM-rku"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPW-Yz-KHa">
+                        <button opaque="NO" clipsSubviews="YES" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPW-Yz-KHa">
                             <rect key="frame" x="256" y="0.0" width="38" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="38" id="gn7-DN-CnJ"/>
@@ -129,7 +131,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RYk-xA-N4X">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="328"/>
                                     <subviews>
-                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bcl-LL-J7l">
+                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bcl-LL-J7l">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>

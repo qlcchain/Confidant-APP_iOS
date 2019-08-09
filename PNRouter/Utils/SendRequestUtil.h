@@ -72,9 +72,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendCheckNodeWithShowHud:(BOOL) showHud;
 
 //------------------------email ----------------------
-+ (void) sendEmailFileWithFileid:(NSString *) fileid fileSize:(NSNumber *) fileSize fileMd5:(NSString *) fileMd5 mailInfo:(NSString *) mailInfo ShowHud:(BOOL) showHud;
++ (void) sendEmailFileWithFileid:(NSString *) fileid fileSize:(NSNumber *) fileSize fileMd5:(NSString *) fileMd5 mailInfo:(NSString *) mailInfo srcKey:(NSString *) srcKey uid:(NSNumber *) uid ShowHud:(BOOL) showHud;
 + (void) sendEmailConfigWithEmailAddress:(NSString *) address type:(NSNumber *) type configJson:(NSString *) configJosn ShowHud:(BOOL) showHud;
 + (void) sendEmailUserkeyWithUsers:(NSString *) users unum:(NSNumber *) num ShowHud:(BOOL) showHud;
++ (void) sendEmailCheckNodeCountShowHud:(BOOL) showHud;
++ (void) sendPullEmailWithStarid:(NSNumber *) starId num:(NSNumber *) num showHud:(BOOL) showHud;
++ (void) sendEmailDelNodeWithUid:(NSNumber *) uid showHud:(BOOL) showHud;
 @end
 
 NS_ASSUME_NONNULL_END

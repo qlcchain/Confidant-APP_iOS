@@ -132,7 +132,7 @@ typedef enum : NSUInteger {
     
     NSString *userType = [_connectRouteM.userSn substringWithRange:NSMakeRange(0, 2)];
     [_routerArr removeAllObjects];
-    if (![userType isEqualToString:@"01"]) { // 管理员
+    if ([userType isEqualToString:@"01"]) { // 管理员
         // 查看磁盘
         [self sendGetDiskTotalInfo];
         // 查看节点水状态

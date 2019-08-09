@@ -128,7 +128,7 @@ break;\
 static NSString * mainStyle = @"\
 body {\
 font-family: Helvetica;\
-font-size: 14px;\
+font-size: 16px;\
 word-wrap: break-word;\
 -webkit-text-size-adjust:none;\
 -webkit-nbsp-mode: space;\
@@ -138,5 +138,18 @@ pre {\
 white-space: pre-wrap;\
 }\
 ";
+
+static NSString *confidantEmialStr = @" This is an encrypted email, use MyConfidant to decrypt this email.";
+static NSString *confidantEmialText = @"This is an encrypted email, use MyConfidant to decrypt this email.";
+
+static NSString *confidantHtmlStr = @"<div myconfidantbegin=''><br />\
+<br />\
+<br />\
+<span>This is an encrypted email, use MyConfidant to decrypt this email.</span></div>";
+
+static NSString *htmlHead = @"<div style=\"padding-bottom: 20px;\"></div><div><html xmlns=\"http://www.w3.org/1999/xhtml\">\
+<head>\
+<title></title>\
+</head>";
 
 #endif /* CustomMacro_h */

@@ -407,10 +407,29 @@
 		733EE48522E1B9290042457C /* EmailMoveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 733EE48322E1B9290042457C /* EmailMoveCell.xib */; };
 		733EE48922E54F410042457C /* PNEmailSendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 733EE48722E54F410042457C /* PNEmailSendViewController.m */; };
 		733EE48A22E54F410042457C /* PNEmailSendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 733EE48822E54F410042457C /* PNEmailSendViewController.xib */; };
+		7341A84922F8111D001AF7C2 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 7341A84522F8111B001AF7C2 /* SSZipArchive.m */; };
+		7341A86122F81146001AF7C2 /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A84D22F8113C001AF7C2 /* hmac.c */; };
+		7341A86222F81146001AF7C2 /* aestab.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A84F22F8113D001AF7C2 /* aestab.c */; };
+		7341A86322F81146001AF7C2 /* pwd2key.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A85122F8113E001AF7C2 /* pwd2key.c */; };
+		7341A86422F81146001AF7C2 /* entropy.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A85222F8113E001AF7C2 /* entropy.c */; };
+		7341A86522F81146001AF7C2 /* prng.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A85322F8113F001AF7C2 /* prng.c */; };
+		7341A86622F81146001AF7C2 /* aescrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A85522F8113F001AF7C2 /* aescrypt.c */; };
+		7341A86722F81146001AF7C2 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A85A22F81142001AF7C2 /* sha1.c */; };
+		7341A86822F81146001AF7C2 /* fileenc.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A85D22F81144001AF7C2 /* fileenc.c */; };
+		7341A86922F81146001AF7C2 /* aeskey.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A86022F81146001AF7C2 /* aeskey.c */; };
+		7341A87322F81157001AF7C2 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A86A22F81153001AF7C2 /* zip.c */; };
+		7341A87422F81157001AF7C2 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A86C22F81154001AF7C2 /* mztools.c */; };
+		7341A87522F81157001AF7C2 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A87022F81156001AF7C2 /* ioapi.c */; };
+		7341A87622F81158001AF7C2 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 7341A87122F81157001AF7C2 /* unzip.c */; };
+		7341A87A22FC1603001AF7C2 /* PNSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7341A87822FC1603001AF7C2 /* PNSearchViewController.m */; };
+		7341A87B22FC1603001AF7C2 /* PNSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7341A87922FC1603001AF7C2 /* PNSearchViewController.xib */; };
+		7341A88022FD571D001AF7C2 /* PNEmailEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7341A87E22FD571D001AF7C2 /* PNEmailEditViewController.m */; };
+		7341A88122FD571D001AF7C2 /* PNEmailEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7341A87F22FD571D001AF7C2 /* PNEmailEditViewController.xib */; };
 		734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734B793721A7EAAF0068AA2C /* UserManagerViewController.m */; };
 		734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */; };
 		734ED8C9226038B1002F1960 /* CircleLoginCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734ED8C7226038B1002F1960 /* CircleLoginCodeViewController.m */; };
 		734ED8CA226038B1002F1960 /* CircleLoginCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734ED8C8226038B1002F1960 /* CircleLoginCodeViewController.xib */; };
+		735320E022F7CCA9007B4A70 /* EmailNodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 735320DF22F7CCA9007B4A70 /* EmailNodeModel.m */; };
 		7353944E2266CF140004CE85 /* CircleMemberDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7353944C2266CF140004CE85 /* CircleMemberDetailViewController.m */; };
 		7353944F2266CF140004CE85 /* CircleMemberDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353944D2266CF140004CE85 /* CircleMemberDetailViewController.xib */; };
 		7356429D222630D800DC0BCB /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7356429C222630D800DC0BCB /* ChatModel.m */; };
@@ -1412,12 +1431,54 @@
 		733EE48622E54F410042457C /* PNEmailSendViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailSendViewController.h; sourceTree = "<group>"; };
 		733EE48722E54F410042457C /* PNEmailSendViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailSendViewController.m; sourceTree = "<group>"; };
 		733EE48822E54F410042457C /* PNEmailSendViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailSendViewController.xib; sourceTree = "<group>"; };
+		7341A84522F8111B001AF7C2 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		7341A84622F8111C001AF7C2 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		7341A84722F8111C001AF7C2 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		7341A84822F8111D001AF7C2 /* SSZipCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipCommon.h; sourceTree = "<group>"; };
+		7341A84C22F8113B001AF7C2 /* brg_endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brg_endian.h; sourceTree = "<group>"; };
+		7341A84D22F8113C001AF7C2 /* hmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hmac.c; sourceTree = "<group>"; };
+		7341A84E22F8113C001AF7C2 /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hmac.h; sourceTree = "<group>"; };
+		7341A84F22F8113D001AF7C2 /* aestab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aestab.c; sourceTree = "<group>"; };
+		7341A85022F8113D001AF7C2 /* entropy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = entropy.h; sourceTree = "<group>"; };
+		7341A85122F8113E001AF7C2 /* pwd2key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pwd2key.c; sourceTree = "<group>"; };
+		7341A85222F8113E001AF7C2 /* entropy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = entropy.c; sourceTree = "<group>"; };
+		7341A85322F8113F001AF7C2 /* prng.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = prng.c; sourceTree = "<group>"; };
+		7341A85422F8113F001AF7C2 /* prng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prng.h; sourceTree = "<group>"; };
+		7341A85522F8113F001AF7C2 /* aescrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aescrypt.c; sourceTree = "<group>"; };
+		7341A85622F81140001AF7C2 /* brg_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brg_types.h; sourceTree = "<group>"; };
+		7341A85722F81141001AF7C2 /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha1.h; sourceTree = "<group>"; };
+		7341A85822F81141001AF7C2 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
+		7341A85922F81142001AF7C2 /* aesopt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aesopt.h; sourceTree = "<group>"; };
+		7341A85A22F81142001AF7C2 /* sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha1.c; sourceTree = "<group>"; };
+		7341A85B22F81143001AF7C2 /* aes_via_ace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes_via_ace.h; sourceTree = "<group>"; };
+		7341A85C22F81144001AF7C2 /* aestab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aestab.h; sourceTree = "<group>"; };
+		7341A85D22F81144001AF7C2 /* fileenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fileenc.c; sourceTree = "<group>"; };
+		7341A85E22F81145001AF7C2 /* pwd2key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwd2key.h; sourceTree = "<group>"; };
+		7341A85F22F81145001AF7C2 /* fileenc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileenc.h; sourceTree = "<group>"; };
+		7341A86022F81146001AF7C2 /* aeskey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aeskey.c; sourceTree = "<group>"; };
+		7341A86A22F81153001AF7C2 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		7341A86B22F81153001AF7C2 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		7341A86C22F81154001AF7C2 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		7341A86D22F81155001AF7C2 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		7341A86E22F81155001AF7C2 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		7341A86F22F81156001AF7C2 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		7341A87022F81156001AF7C2 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		7341A87122F81157001AF7C2 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		7341A87222F81157001AF7C2 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		7341A87722FC1603001AF7C2 /* PNSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNSearchViewController.h; sourceTree = "<group>"; };
+		7341A87822FC1603001AF7C2 /* PNSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNSearchViewController.m; sourceTree = "<group>"; };
+		7341A87922FC1603001AF7C2 /* PNSearchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNSearchViewController.xib; sourceTree = "<group>"; };
+		7341A87D22FD571D001AF7C2 /* PNEmailEditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailEditViewController.h; sourceTree = "<group>"; };
+		7341A87E22FD571D001AF7C2 /* PNEmailEditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailEditViewController.m; sourceTree = "<group>"; };
+		7341A87F22FD571D001AF7C2 /* PNEmailEditViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailEditViewController.xib; sourceTree = "<group>"; };
 		734B793621A7EAAF0068AA2C /* UserManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManagerViewController.h; sourceTree = "<group>"; };
 		734B793721A7EAAF0068AA2C /* UserManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManagerViewController.m; sourceTree = "<group>"; };
 		734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserManagerViewController.xib; sourceTree = "<group>"; };
 		734ED8C6226038B1002F1960 /* CircleLoginCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleLoginCodeViewController.h; sourceTree = "<group>"; };
 		734ED8C7226038B1002F1960 /* CircleLoginCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleLoginCodeViewController.m; sourceTree = "<group>"; };
 		734ED8C8226038B1002F1960 /* CircleLoginCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CircleLoginCodeViewController.xib; sourceTree = "<group>"; };
+		735320DE22F7CCA9007B4A70 /* EmailNodeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailNodeModel.h; sourceTree = "<group>"; };
+		735320DF22F7CCA9007B4A70 /* EmailNodeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailNodeModel.m; sourceTree = "<group>"; };
 		7353944B2266CF140004CE85 /* CircleMemberDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleMemberDetailViewController.h; sourceTree = "<group>"; };
 		7353944C2266CF140004CE85 /* CircleMemberDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleMemberDetailViewController.m; sourceTree = "<group>"; };
 		7353944D2266CF140004CE85 /* CircleMemberDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CircleMemberDetailViewController.xib; sourceTree = "<group>"; };
@@ -2305,6 +2366,7 @@
 		584A447521460A0100608122 /* My */ = {
 			isa = PBXGroup;
 			children = (
+				7341A87C22FD5282001AF7C2 /* New Group */,
 				7392790D21F721CF003AAD58 /* DisManager */,
 				587C52B3215C6F4A006787FB /* RouterManager */,
 				7330F39A214666C300FF4EEC /* QRCode */,
@@ -2808,6 +2870,7 @@
 		730951A522D2DBF1001BA82E /* Email */ = {
 			isa = PBXGroup;
 			children = (
+				735320E422F80FFA007B4A70 /* SSZipArch */,
 				730AE09222EE983F00E0BC67 /* common */,
 				730AE06E22E94FDD00E0BC67 /* HtmlEditView */,
 				73E773FD22D5C2B7001C652E /* ShareConfig */,
@@ -2895,6 +2958,12 @@
 				73B18D0522E5B017000D52A9 /* PNEmailContactViewController.h */,
 				73B18D0622E5B017000D52A9 /* PNEmailContactViewController.m */,
 				73B18D0722E5B017000D52A9 /* PNEmailContactViewController.xib */,
+				7341A87722FC1603001AF7C2 /* PNSearchViewController.h */,
+				7341A87822FC1603001AF7C2 /* PNSearchViewController.m */,
+				7341A87922FC1603001AF7C2 /* PNSearchViewController.xib */,
+				7341A87D22FD571D001AF7C2 /* PNEmailEditViewController.h */,
+				7341A87E22FD571D001AF7C2 /* PNEmailEditViewController.m */,
+				7341A87F22FD571D001AF7C2 /* PNEmailEditViewController.xib */,
 			);
 			path = VCs;
 			sourceTree = "<group>";
@@ -3430,6 +3499,70 @@
 				7330F525214BF4C000FF4EEC /* SocketAlertView.xib */,
 			);
 			path = CustomAlertView;
+			sourceTree = "<group>";
+		};
+		7341A84A22F81123001AF7C2 /* AES */ = {
+			isa = PBXGroup;
+			children = (
+				7341A85B22F81143001AF7C2 /* aes_via_ace.h */,
+				7341A85822F81141001AF7C2 /* aes.h */,
+				7341A85522F8113F001AF7C2 /* aescrypt.c */,
+				7341A86022F81146001AF7C2 /* aeskey.c */,
+				7341A85922F81142001AF7C2 /* aesopt.h */,
+				7341A84F22F8113D001AF7C2 /* aestab.c */,
+				7341A85C22F81144001AF7C2 /* aestab.h */,
+				7341A84C22F8113B001AF7C2 /* brg_endian.h */,
+				7341A85622F81140001AF7C2 /* brg_types.h */,
+				7341A85222F8113E001AF7C2 /* entropy.c */,
+				7341A85022F8113D001AF7C2 /* entropy.h */,
+				7341A85D22F81144001AF7C2 /* fileenc.c */,
+				7341A85F22F81145001AF7C2 /* fileenc.h */,
+				7341A84D22F8113C001AF7C2 /* hmac.c */,
+				7341A84E22F8113C001AF7C2 /* hmac.h */,
+				7341A85322F8113F001AF7C2 /* prng.c */,
+				7341A85422F8113F001AF7C2 /* prng.h */,
+				7341A85122F8113E001AF7C2 /* pwd2key.c */,
+				7341A85E22F81145001AF7C2 /* pwd2key.h */,
+				7341A85A22F81142001AF7C2 /* sha1.c */,
+				7341A85722F81141001AF7C2 /* sha1.h */,
+			);
+			path = AES;
+			sourceTree = "<group>";
+		};
+		7341A84B22F8112A001AF7C2 /* MInZip */ = {
+			isa = PBXGroup;
+			children = (
+				7341A86D22F81155001AF7C2 /* crypt.h */,
+				7341A87022F81156001AF7C2 /* ioapi.c */,
+				7341A86E22F81155001AF7C2 /* ioapi.h */,
+				7341A86C22F81154001AF7C2 /* mztools.c */,
+				7341A86F22F81156001AF7C2 /* mztools.h */,
+				7341A87122F81157001AF7C2 /* unzip.c */,
+				7341A87222F81157001AF7C2 /* unzip.h */,
+				7341A86A22F81153001AF7C2 /* zip.c */,
+				7341A86B22F81153001AF7C2 /* zip.h */,
+			);
+			path = MInZip;
+			sourceTree = "<group>";
+		};
+		7341A87C22FD5282001AF7C2 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		735320E422F80FFA007B4A70 /* SSZipArch */ = {
+			isa = PBXGroup;
+			children = (
+				7341A84B22F8112A001AF7C2 /* MInZip */,
+				7341A84A22F81123001AF7C2 /* AES */,
+				7341A84622F8111C001AF7C2 /* SSZipArchive.h */,
+				7341A84522F8111B001AF7C2 /* SSZipArchive.m */,
+				7341A84822F8111D001AF7C2 /* SSZipCommon.h */,
+				7341A84722F8111C001AF7C2 /* ZipArchive.h */,
+			);
+			path = SSZipArch;
 			sourceTree = "<group>";
 		};
 		7362572F213E8B3200D7FD6B = {
@@ -4068,6 +4201,8 @@
 				730AE09F22F13E6100E0BC67 /* EmailStarModel.m */,
 				730AE0A122F2B4D800E0BC67 /* EmailUserKeyModel.h */,
 				730AE0A222F2B4D800E0BC67 /* EmailUserKeyModel.m */,
+				735320DE22F7CCA9007B4A70 /* EmailNodeModel.h */,
+				735320DF22F7CCA9007B4A70 /* EmailNodeModel.m */,
 			);
 			path = EmailModels;
 			sourceTree = "<group>";
@@ -4331,6 +4466,7 @@
 				581DE4E82238ED250056D4F8 /* GroupDetailsViewController.xib in Resources */,
 				73E3C71122D49F4F00D7C9C6 /* CircleNamewCell.xib in Resources */,
 				583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */,
+				7341A87B22FC1603001AF7C2 /* PNSearchViewController.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
 				582BFE38221688C200D8C2C8 /* DiskAlertView.xib in Resources */,
 				582BFE3A221688C200D8C2C8 /* DiskToastView.xib in Resources */,
@@ -4400,6 +4536,7 @@
 				73741801221E9B8F008EE243 /* SettingViewController.xib in Resources */,
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
 				73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */,
+				7341A88122FD571D001AF7C2 /* PNEmailEditViewController.xib in Resources */,
 				73E7744722DD63AD001C652E /* PNEmailOptionEnumView.xib in Resources */,
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
 				583B2B2F223109A900E6238D /* PNDefaultHeaderView.xib in Resources */,
@@ -4533,6 +4670,7 @@
 				5868380C22409E8700B8ACB8 /* GroupMembersModel.m in Sources */,
 				73D00E9A215A05960013E20D /* ChooseRecipientAlertView.m in Sources */,
 				73194E9F2255EE580047F50C /* FileListCell.m in Sources */,
+				735320E022F7CCA9007B4A70 /* EmailNodeModel.m in Sources */,
 				737882A821ACF05E0033A189 /* SSLSecurity.swift in Sources */,
 				583BF94421F70FAC0078A2A8 /* TaskOngoingCell.m in Sources */,
 				7393918B22E068280033C203 /* EmailAttchModel.m in Sources */,
@@ -4551,6 +4689,7 @@
 				583B2B3B22389F5A00E6238D /* NewRequestsGroupChatsCell1.m in Sources */,
 				584B439921FEF79300D1F21A /* DiskDetailCell.m in Sources */,
 				73E7740722D5EA76001C652E /* FloderModel.m in Sources */,
+				7341A86222F81146001AF7C2 /* aestab.c in Sources */,
 				581FDF5421F024170068C120 /* tox_api.m in Sources */,
 				7330F4F22149147200FF4EEC /* CDBaseMsgCell.m in Sources */,
 				580CFE492227B7FD00460B41 /* UITouch+MemoryLeak.m in Sources */,
@@ -4650,9 +4789,12 @@
 				7378840F21ACF2970033A189 /* OCTFileTools.m in Sources */,
 				7330F39321464DCD00FF4EEC /* MyCell.m in Sources */,
 				7393918E22E15B200033C203 /* EmailOptionUtil.m in Sources */,
+				7341A86522F81146001AF7C2 /* prng.c in Sources */,
 				586D4177224B57CE002008C6 /* ChooseCircleViewController.m in Sources */,
 				73E7741422D70CC6001C652E /* TFHpple.m in Sources */,
+				7341A87522F81157001AF7C2 /* ioapi.c in Sources */,
 				730951B222D2DCA0001BA82E /* PNEmailMenuView.m in Sources */,
+				7341A87A22FC1603001AF7C2 /* PNSearchViewController.m in Sources */,
 				58BD2E6121475E960091A77D /* RouterModel.m in Sources */,
 				73E7742022D8302F001C652E /* EmailTopDetailCell.m in Sources */,
 				737882A921ACF05E0033A189 /* WebSocket.swift in Sources */,
@@ -4666,6 +4808,7 @@
 				73E773FB22D58F2C001C652E /* EmailFloderCell.m in Sources */,
 				7378841021ACF2970033A189 /* OCTFileDataInput.m in Sources */,
 				7378840E21ACF2970033A189 /* OCTFilePathInput.m in Sources */,
+				7341A87622F81158001AF7C2 /* unzip.c in Sources */,
 				7362576B2142142D00D7FD6B /* NSData+Base64.m in Sources */,
 				732DCEE1223788A300B2A2CA /* AddGroupMenuViewController.m in Sources */,
 				581FDF3621F024160068C120 /* msi.m in Sources */,
@@ -4679,6 +4822,7 @@
 				7330F3C321476E9300FF4EEC /* UserInfoCell.m in Sources */,
 				7330F3752146118800FF4EEC /* UIImage+BetterFace.m in Sources */,
 				73B18D0822E5B017000D52A9 /* PNEmailContactViewController.m in Sources */,
+				7341A86722F81146001AF7C2 /* sha1.c in Sources */,
 				73E7741B22D8239A001C652E /* PNEmailDetailViewController.m in Sources */,
 				7317447421F072110018BA50 /* EntryModel.m in Sources */,
 				581FDF3D21F024160068C120 /* toxav_old.m in Sources */,
@@ -4716,6 +4860,7 @@
 				737883FB21ACF2970033A189 /* OCTSendMessageOperation.m in Sources */,
 				581FDF5D21F16D350068C120 /* LoginDeviceViewController.m in Sources */,
 				7378840C21ACF2970033A189 /* OCTAudioEngine.m in Sources */,
+				7341A87422F81157001AF7C2 /* mztools.c in Sources */,
 				7330F4EC2149147200FF4EEC /* CellCaculator.m in Sources */,
 				7303310F21D22422007C4063 /* UserConfig.m in Sources */,
 				58B41EEA21F98845004676CA /* PNDocumentPickerViewController.m in Sources */,
@@ -4723,6 +4868,7 @@
 				733EE47F22E1B2DB0042457C /* PNEmailMoveViewController.m in Sources */,
 				73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */,
 				582BFE47221D264200D8C2C8 /* CreateAccountViewController.m in Sources */,
+				7341A86822F81146001AF7C2 /* fileenc.c in Sources */,
 				7356429D222630D800DC0BCB /* ChatModel.m in Sources */,
 				73E7742822D87B27001C652E /* EmailUserCell.m in Sources */,
 				7378840321ACF2970033A189 /* OCTFriendRequest.m in Sources */,
@@ -4732,6 +4878,7 @@
 				7330F4E52149147200FF4EEC /* CTHelper.m in Sources */,
 				7378840221ACF2970033A189 /* OCTFriend.m in Sources */,
 				73E3C6E422D2F45500D7C9C6 /* YJSideMenu.m in Sources */,
+				7341A86322F81146001AF7C2 /* pwd2key.c in Sources */,
 				5825A24A21FC3ACB00E6194B /* OperationRecordModel.m in Sources */,
 				730605622179B3C0005A0E13 /* MediaTableViewCell.m in Sources */,
 				7378840721ACF2970033A189 /* OCTMessageCall.m in Sources */,
@@ -4741,6 +4888,7 @@
 				7306054421748BD5005A0E13 /* VoiceConvert.mm in Sources */,
 				584B438F21FEE11D00D1F21A /* DiskManagementCell.m in Sources */,
 				73F102CF22DF646800E7D257 /* PNEmailTypeSelectView.m in Sources */,
+				7341A86422F81146001AF7C2 /* entropy.c in Sources */,
 				7330F3792146118800FF4EEC /* UIImage+Merge.m in Sources */,
 				73D31B1F218025270034B2B9 /* RMDisplayLabel.m in Sources */,
 				7378840521ACF2970033A189 /* OCTMessageFile.m in Sources */,
@@ -4815,8 +4963,10 @@
 				7330F4FE2149147200FF4EEC /* CTEmojiKeyboard.m in Sources */,
 				73E7740422D5D91E001C652E /* EmailInfo.m in Sources */,
 				581FDF4821F024170068C120 /* TCP_client.m in Sources */,
+				7341A86622F81146001AF7C2 /* aescrypt.c in Sources */,
 				73E3C71522D5793700D7C9C6 /* PNEmailLoginViewController.m in Sources */,
 				580CFE412227B7FD00460B41 /* PTBCPUMonitor.m in Sources */,
+				7341A86922F81146001AF7C2 /* aeskey.c in Sources */,
 				734ED8C9226038B1002F1960 /* CircleLoginCodeViewController.m in Sources */,
 				7330F4EA2149147200FF4EEC /* MagnifiterView.m in Sources */,
 				73869114214CEC63003CF6A3 /* ChatListModel.m in Sources */,
@@ -4889,6 +5039,7 @@
 				736257AD2142149300D7FD6B /* UIView+Gradient.m in Sources */,
 				73E3C6E922D2F47000D7C9C6 /* LeftViewController.m in Sources */,
 				730AE0A022F13E6100E0BC67 /* EmailStarModel.m in Sources */,
+				7341A84922F8111D001AF7C2 /* SSZipArchive.m in Sources */,
 				585AEE522140D2280098A070 /* HMScannerMaskView.m in Sources */,
 				580CFE112224DD8200460B41 /* PNUnlockView.m in Sources */,
 				73E7743722DC6097001C652E /* EmailAttchCell.m in Sources */,
@@ -4896,6 +5047,7 @@
 				7330F4F62149147200FF4EEC /* ChatConfiguration.m in Sources */,
 				7330F512214A790400FF4EEC /* FriendModel.m in Sources */,
 				73625754213E8CA500D7FD6B /* SocketUtil.swift in Sources */,
+				7341A88022FD571D001AF7C2 /* PNEmailEditViewController.m in Sources */,
 				737883F821ACF2970033A189 /* OCTPixelBufferPool.m in Sources */,
 				732DCEE6223796B800B2A2CA /* AddNewMemberViewController.m in Sources */,
 				583B2B4022389F6600E6238D /* NewRequestsGroupChatsCell2.m in Sources */,
@@ -4960,6 +5112,7 @@
 				73E7742D22D87BFC001C652E /* EmailTimeCell.m in Sources */,
 				580CFE442227B7FD00460B41 /* PTBPerformanceWindow.m in Sources */,
 				7330F50D214A74FA00FF4EEC /* AddFriendCellTableViewCell.m in Sources */,
+				7341A87322F81157001AF7C2 /* zip.c in Sources */,
 				73E48CF522E59FC300AB0732 /* UITextViewWithPlaceHolder.m in Sources */,
 				581FDF6721F173AC0068C120 /* ModifyRouterPWViewController.m in Sources */,
 				581FDF5121F024170068C120 /* onion_client.m in Sources */,
@@ -4980,6 +5133,7 @@
 				580CFE462227B7FD00460B41 /* UINavigationController+MemoryLeak.m in Sources */,
 				73E3C70622D4813800D7C9C6 /* EmailListCell.m in Sources */,
 				73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */,
+				7341A86122F81146001AF7C2 /* hmac.c in Sources */,
 				581FDF3B21F024160068C120 /* ring_buffer.m in Sources */,
 				73D00E932159DADF0013E20D /* ChooseDownView.m in Sources */,
 				73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */,

@@ -20,6 +20,7 @@
 #import "PNEmailLoginViewController.h"
 #import "StringUtil.h"
 #import "EmailDataBaseUtil.h"
+#import "UserConfig.h"
 
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *menuBackView;
@@ -29,7 +30,9 @@
 @property (nonatomic,assign) NSInteger selectRow;
 @property (nonatomic ,strong) NSMutableArray *emailFolders;
 @property (nonatomic ,strong) NSMutableArray *emails;
-@end
+@property (nonatomic, assign) BOOL isEmailPage;
+    @property (weak, nonatomic) IBOutlet UIButton *editBtn;
+    @end
 
 @implementation LeftViewController
 - (void)dealloc
@@ -43,7 +46,12 @@
     } else {
         _lblTitle.text = @"Message";
     }
+    if (!_isEmailPage && AppD.isEmailPage) {
+        _isEmailPage = AppD.isEmailPage;
+        [_mainTabView reloadData];
+    }
     [self getFloaderEmailCount];
+    
     [super viewWillAppear:animated];
 }
 #pragma mark --layz-------------
@@ -75,7 +83,10 @@
     }
     return _messageDataArray;
 }
-
+- (IBAction)clcikEditAction:(id)sender {
+    
+}
+    
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -97,6 +108,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailLoginSuccessNoti:) name:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
     // 邮件删除和移动通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailFalgsChangeSuccessNoti:) name:EMIAL_FLAGS_CHANGE_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailNodeCountSuccessNoti:) name:EMAIL_NODE_COUNT_NOTI object:nil];
+    
     
 }
 
@@ -158,6 +171,12 @@
                     NSInteger startCount = [EmailDataBaseUtil getStartCount];
                     if (startCount > 0) {
                         cell.lblCount.text = [NSString stringWithFormat:@"%ld",(long)startCount];
+                    }
+                } else if ([floderM.name isEqualToString:Node_backed_up]){
+                    if (floderM.count == 0) {
+                        cell.lblCount.text = @"";
+                    } else {
+                        cell.lblCount.text = [NSString stringWithFormat:@"%d",floderM.count];
                     }
                 }
             } else {
@@ -303,6 +322,23 @@
         [self.mainTabView reloadData];
     }
 }
+- (void) emailNodeCountSuccessNoti:(NSNotification *) noti
+{
+    NSDictionary *dic = noti.object;
+    NSInteger retCode = [dic[@"RetCode"] integerValue];
+    if (retCode == 0) {
+        int numCount =[dic[@"Num"] intValue];
+        NSString *toid = dic[@"ToId"];
+        if ([toid isEqualToString:[UserConfig getShareObject].userId]) {
+            FloderModel *floderM = self.emailFolders[1];
+            floderM.count = numCount;
+            [_mainTabView reloadData];
+        }
+    }
+
+}
+    
+    
 
 - (void) pullFloder{
     
@@ -405,22 +441,31 @@
 
 - (void) getFloaderEmailCount
 {
-    @weakify_self
-    __block NSInteger finshCount = 0;
-    [self.emailFolders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        FloderModel *model = obj;
-        if (model.path && model.path.length > 0) {
-            MCOIMAPFolderInfoOperation * folderInfoOperation = [EmailManage.sharedEmailManage.imapSeeion folderInfoOperation:model.path];
-            model.folderInfoOperation = folderInfoOperation;
-            
-            [model.folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
-                finshCount++;
-                model.count = info.messageCount;
-                if (finshCount == 5) {
-                    [weakSelf.mainTabView reloadData];
-                }
-            }];
-        }
-    }];
+    
+    
+    // check 节点邮箱数量
+    EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
+    _editBtn.hidden = accountModel? NO:YES;
+    if (accountModel) {
+        @weakify_self
+        __block NSInteger finshCount = 0;
+        [self.emailFolders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FloderModel *model = obj;
+            if (model.path && model.path.length > 0) {
+                MCOIMAPFolderInfoOperation * folderInfoOperation = [EmailManage.sharedEmailManage.imapSeeion folderInfoOperation:model.path];
+                model.folderInfoOperation = folderInfoOperation;
+                
+                [model.folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
+                    finshCount++;
+                    model.count = info.messageCount;
+                    if (finshCount == 5) {
+                        [weakSelf.mainTabView reloadData];
+                    }
+                }];
+            }
+        }];
+        [SendRequestUtil sendEmailCheckNodeCountShowHud:NO];
+    }
+    
 }
 @end

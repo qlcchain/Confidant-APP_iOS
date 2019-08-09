@@ -15,8 +15,9 @@
                 <outlet property="lblTitle" destination="14g-Ce-0SR" id="R9U-1v-IJk"/>
                 <outlet property="mainTabV" destination="k1o-Gf-hxt" id="99f-hT-TKM"/>
                 <outlet property="nextBtn" destination="vH2-7D-1hb" id="qwD-VQ-zYp"/>
-                <outlet property="searchBar" destination="YKM-6c-0SW" id="edb-d3-xd7"/>
+                <outlet property="searBackView" destination="8Hs-ko-LQt" id="eD2-vl-9zA"/>
                 <outlet property="searchDisplayController" destination="qoZ-18-yAm" id="9vW-FH-YVW"/>
+                <outlet property="searchTF" destination="Imu-gy-Wd4" id="ufb-pG-xtV"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -75,27 +76,38 @@
                     <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y3i-Ok-nh8">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y3i-Ok-nh8">
                     <rect key="frame" x="0.0" y="64" width="375" height="56"/>
-                    <subviews>
-                        <searchBar clipsSubviews="YES" contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKM-6c-0SW">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <color key="tintColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="-1" id="45B-Ys-Y6b"/>
-                            </connections>
-                        </searchBar>
-                    </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="YKM-6c-0SW" firstAttribute="top" secondItem="y3i-Ok-nh8" secondAttribute="top" id="ED8-4o-rci"/>
-                        <constraint firstItem="YKM-6c-0SW" firstAttribute="leading" secondItem="y3i-Ok-nh8" secondAttribute="leading" id="YOJ-9y-aAN"/>
-                        <constraint firstAttribute="trailing" secondItem="YKM-6c-0SW" secondAttribute="trailing" id="iEs-IH-3Hq"/>
                         <constraint firstAttribute="height" constant="56" id="mBE-M1-WzZ"/>
-                        <constraint firstAttribute="bottom" secondItem="YKM-6c-0SW" secondAttribute="bottom" id="saj-MQ-JlD"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Hs-ko-LQt">
+                    <rect key="frame" x="16" y="74" width="343" height="36"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_search" translatesAutoresizingMaskIntoConstraints="NO" id="ugU-a9-m9K">
+                            <rect key="frame" x="8" y="11.5" width="14" height="13"/>
+                        </imageView>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Imu-gy-Wd4">
+                            <rect key="frame" x="30" y="0.0" width="305" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="305" id="rBT-NE-2Lc"/>
+                            </constraints>
+                            <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="ugU-a9-m9K" firstAttribute="centerY" secondItem="8Hs-ko-LQt" secondAttribute="centerY" id="0C3-Qi-RbN"/>
+                        <constraint firstAttribute="trailing" secondItem="Imu-gy-Wd4" secondAttribute="trailing" constant="8" id="4O8-gO-NI6"/>
+                        <constraint firstAttribute="bottom" secondItem="Imu-gy-Wd4" secondAttribute="bottom" id="6X8-tR-wSQ"/>
+                        <constraint firstItem="Imu-gy-Wd4" firstAttribute="leading" secondItem="ugU-a9-m9K" secondAttribute="trailing" constant="8" id="AGx-XO-gKm"/>
+                        <constraint firstItem="ugU-a9-m9K" firstAttribute="leading" secondItem="8Hs-ko-LQt" secondAttribute="leading" constant="8" id="UUO-7y-wad"/>
+                        <constraint firstItem="Imu-gy-Wd4" firstAttribute="top" secondItem="8Hs-ko-LQt" secondAttribute="top" id="Wfr-m4-pcs"/>
+                        <constraint firstAttribute="height" constant="36" id="uHm-RG-lU8"/>
                     </constraints>
                 </view>
             </subviews>
@@ -104,21 +116,24 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="k1o-Gf-hxt" secondAttribute="trailing" id="Eel-5v-mEh"/>
                 <constraint firstItem="k1o-Gf-hxt" firstAttribute="top" secondItem="y3i-Ok-nh8" secondAttribute="bottom" id="Gxk-OZ-Xuo"/>
                 <constraint firstItem="DWX-Wd-YM7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JHo-q1-blI"/>
+                <constraint firstItem="8Hs-ko-LQt" firstAttribute="top" secondItem="DWX-Wd-YM7" secondAttribute="bottom" constant="10" id="Phm-xw-GfJ"/>
                 <constraint firstItem="y3i-Ok-nh8" firstAttribute="top" secondItem="DWX-Wd-YM7" secondAttribute="bottom" id="XvT-ZP-TMy"/>
                 <constraint firstItem="k1o-Gf-hxt" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="b9g-cd-Mkm"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="y3i-Ok-nh8" secondAttribute="trailing" id="bae-Np-sJo"/>
+                <constraint firstItem="k1o-Gf-hxt" firstAttribute="top" secondItem="8Hs-ko-LQt" secondAttribute="bottom" constant="10" id="bs3-xw-D7f"/>
+                <constraint firstItem="8Hs-ko-LQt" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="dv5-2C-VKf"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="k1o-Gf-hxt" secondAttribute="bottom" id="kG6-eO-uru"/>
                 <constraint firstItem="y3i-Ok-nh8" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="lbo-Z2-d4i"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="8Hs-ko-LQt" secondAttribute="trailing" constant="16" id="pBY-ea-rz9"/>
                 <constraint firstItem="DWX-Wd-YM7" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="psK-5x-7lC"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="DWX-Wd-YM7" secondAttribute="trailing" id="tRL-1L-0Jp"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="32.799999999999997" y="-103.89805097451276"/>
+            <point key="canvasLocation" x="-335" y="-331"/>
         </view>
         <searchDisplayController id="qoZ-18-yAm">
             <connections>
                 <outlet property="delegate" destination="-1" id="57w-IH-biy"/>
-                <outlet property="searchBar" destination="YKM-6c-0SW" id="dPV-NO-9eI"/>
                 <outlet property="searchContentsController" destination="-1" id="IG7-jU-xDi"/>
                 <outlet property="searchResultsDataSource" destination="-1" id="YaP-Z8-ixD"/>
                 <outlet property="searchResultsDelegate" destination="-1" id="k01-q6-ckH"/>
@@ -126,6 +141,7 @@
         </searchDisplayController>
     </objects>
     <resources>
+        <image name="icon_search" width="14" height="13.5"/>
         <image name="statusbar_close" width="24" height="24"/>
     </resources>
 </document>

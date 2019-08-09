@@ -48,6 +48,7 @@ def demo_pods
     pod 'TZImagePickerController' #iOS8 and later
     # pod 'TYAttributedLabel', '~> 2.6.2'
     pod 'mailcore2-ios'
+    #pod 'SSZipArchive'
 end
 
 

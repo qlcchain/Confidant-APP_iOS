@@ -14,6 +14,7 @@
 #import "RSAUtil.h"
 #import "EmailErrorAlertView.h"
 
+
 @interface PNEmailLoginViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UITextField *emailNameTF;
@@ -67,8 +68,8 @@
    // _emailNameTF.text = @"554932628@qq.com";
    // _passwordTF.text = @"ffykftwymsxnbfgg";
     
-     _emailNameTF.text = @"kuangzihui1989@gmail.com";
-     _passwordTF.text = @"applela19890712";
+//     _emailNameTF.text = @"qlink.mobi@gmail.com";
+//     _passwordTF.text = @"applela19890712";
     
 //     _emailNameTF.text = @"kuangzihui@163.com";
 //    _passwordTF.text = @"applela19890712";
@@ -103,16 +104,17 @@
 - (IBAction)clickLoginAction:(id)sender {
     
     [self.view endEditing:YES];
-    
-    if (![_emailNameTF.text.trim isEmailAddress]) {
+    NSString *emailName = [NSString trimWhitespace:_emailNameTF.text];
+    NSString *emailPass = [NSString trimWhitespace:_passwordTF.text];
+    if (![emailName isEmailAddress]) {
         [self.view showHint:@"Email format error."];
         return;
     }
-    if (_passwordTF.text.trim.length == 0) {
+    if (emailPass.length == 0) {
         [self.view showHint:@"Please enter password."];
         return;
     }
-    [self loginImapEmailName:_emailNameTF.text pass:_passwordTF.text];
+    [self loginImapEmailName:emailName pass:emailPass];
 }
 - (IBAction)clickAdanceAction:(id)sender {
     
@@ -186,8 +188,13 @@
         } else {
             
             [weakSelf.view hideHud];
+            NSLog(@"ERROR = %@",error.domain);
+            NSString *errorStr = [NSString stringWithFormat:@"\"imap.%@\" Username or password is incorrect, or the IMAP service is not available",self.typeName];
+            if (error.code == 1) {
+                errorStr = @"Unable to connect to email server.";
+            }
             EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
-            alertView.lblContent.text = [NSString stringWithFormat:@"\"imap.%@\" Username or password is incorrect, or the IMAP service is not available",self.typeName];
+            alertView.lblContent.text = errorStr;
             [alertView showEmailAttchSelView];
    
         }
@@ -226,11 +233,16 @@
         [EmailAccountModel updateEmailAccountConnectStatus:_accountM];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
-        
+        [self.view hideHud];
         [self clickCloseAction:nil];
         [AppD.window showHint:@"login successed."];
     } else {
-        [self.view showHint:@"Configuration quantity exceeds limit."];
+        [self.view hideHud];
+        if (retCode == 2) {
+            [self.view showHint:@"The mailbox has been configured"];
+        } else {
+            [self.view showHint:@"Configuration quantity exceeds limit."];
+        }
     }
 }
 /*
