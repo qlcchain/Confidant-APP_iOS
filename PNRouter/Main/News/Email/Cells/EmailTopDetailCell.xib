@@ -66,7 +66,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SNY-JK-4LL">
-                                        <rect key="frame" x="244" y="0.0" width="44" height="44"/>
+                                        <rect key="frame" x="244" y="3" width="44" height="41"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="3kp-WR-ACX"/>
                                         </constraints>
@@ -86,7 +86,7 @@
                                     <constraint firstItem="bhN-Qq-u8R" firstAttribute="top" secondItem="j68-QE-e7g" secondAttribute="top" id="7uR-XZ-bG7"/>
                                     <constraint firstItem="v4f-ms-oHv" firstAttribute="top" secondItem="j68-QE-e7g" secondAttribute="top" constant="3" id="9Ic-Wv-hIt"/>
                                     <constraint firstAttribute="height" constant="44" id="FKu-WQ-XUO"/>
-                                    <constraint firstItem="SNY-JK-4LL" firstAttribute="top" secondItem="j68-QE-e7g" secondAttribute="top" id="HH5-Ml-OnW"/>
+                                    <constraint firstItem="SNY-JK-4LL" firstAttribute="top" secondItem="j68-QE-e7g" secondAttribute="top" constant="3" id="HH5-Ml-OnW"/>
                                     <constraint firstItem="CXO-Kt-uFQ" firstAttribute="leading" secondItem="v4f-ms-oHv" secondAttribute="trailing" constant="8" id="IXh-Gt-Azd"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CXO-Kt-uFQ" secondAttribute="trailing" id="MRZ-I9-o15"/>
                                     <constraint firstItem="bhN-Qq-u8R" firstAttribute="leading" secondItem="j68-QE-e7g" secondAttribute="leading" id="VAy-5P-ghM"/>

@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EmailManage : NSObject
 
-@property (nonatomic , strong) MCOSMTPSession *smtpSession;
-@property (nonatomic , strong) MCOIMAPSession *imapSeeion;
+@property (nonatomic , strong,nullable) MCOSMTPSession *smtpSession;
+@property (nonatomic , strong,nullable) MCOIMAPSession *imapSeeion;
 
 singleton_interface(EmailManage)
 

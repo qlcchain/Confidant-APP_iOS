@@ -20,6 +20,7 @@
 #define FRIEND_LIST_TABNAME  @"friend_list_tableName"
 // 好友聊天记录表
 #define FRIEND_CHAT_TABNAME  @"FRIEND_CHAT_TABNAME"
+
 // 消息缓存表
 #define CHAT_CACHE_TABNAME  @"CHAT_CACHE_TABNAME"
 // 群组标识
@@ -28,6 +29,12 @@
 #define UserHeader_Table @"UserHeader_Table"
 // 群组请求通知表
 #define Group_New_Requests_TABNAME  @"Group_New_Requests_TABNAME"
+
+// email 最近联系人
+#define EMAIL_CONTACT_TABNAME  @"EMAIL_CONTACT_TABNAME"
+// email 星标邮件
+#define EMAIL_STAR_TABNAME  @"EMAIL_STAR_TABNAME"
+
 
 // 请求超时时间
 #define REQEUST_TIME  20
@@ -66,6 +73,15 @@ static NSInteger socketConnectStatusConnected = 2;
 static NSInteger socketConnectStatusDisconnecting = 3;
 static NSInteger socketConnectStatusDisconnected = 4;
 
+#pragma mark----email floder name
+static NSString *Inbox = @"Inbox";
+static NSString *Node_backed_up = @"Node backed up";
+static NSString *Starred = @"Starred";
+static NSString *Drafts = @"Drafts";
+static NSString *Sent = @"Sent";
+static NSString *Spam = @"Spam";
+static NSString *Trash = @"Trash";
+
 #pragma mark - HUD Text
 #define Loading_Str @"Loding..."
 #define Uploading_Str @"Uploading..."
@@ -75,5 +91,65 @@ static NSInteger socketConnectStatusDisconnected = 4;
 
 #define User_Header_Size 500*1024      // 500KB
 #define Screen_Lock_Local @"Screen_Lock_Local"
+
+
+
+static NSString * mainJavascript = @"\
+var imageElements = function() {\
+var imageNodes = document.getElementsByTagName('img');\
+return [].slice.call(imageNodes);\
+};\
+\
+var findCIDImageURL = function() {\
+var images = imageElements();\
+\
+var imgLinks = [];\
+for (var i = 0; i < images.length; i++) {\
+var url = images[i].getAttribute('src');\
+if (url.indexOf('cid:') == 0 || url.indexOf('x-mailcore-image:') == 0)\
+imgLinks.push(url);\
+}\
+return JSON.stringify(imgLinks);\
+};\
+\
+var replaceImageSrc = function(info) {\
+var images = imageElements();\
+\
+for (var i = 0; i < images.length; i++) {\
+var url = images[i].getAttribute('src');\
+if (url.indexOf(info.URLKey) == 0) {\
+images[i].setAttribute('src', info.LocalPathKey);\
+break;\
+}\
+}\
+};\
+";
+
+static NSString * mainStyle = @"\
+body {\
+font-family: Helvetica;\
+font-size: 16px;\
+word-wrap: break-word;\
+-webkit-text-size-adjust:none;\
+-webkit-nbsp-mode: space;\
+}\
+\
+pre {\
+white-space: pre-wrap;\
+}\
+";
+
+static NSString *confidantEmialStr = @" This is an encrypted email, use MyConfidant to decrypt this email.";
+static NSString *confidantEmialText = @"This is an encrypted email, use MyConfidant to decrypt this email.";
+
+static NSString *confidantHtmlStr = @"<div myconfidantbegin=''><br />\
+<br />\
+<br />\
+<span>This is an encrypted email, use MyConfidant to decrypt this email.</span></div>";
+
+static NSString *htmlHead = @"<div style=\"padding-bottom: 20px;\"></div><div><html xmlns=\"http://www.w3.org/1999/xhtml\">\
+<head>\
+<title></title>\
+</head>";
 
 #endif /* CustomMacro_h */

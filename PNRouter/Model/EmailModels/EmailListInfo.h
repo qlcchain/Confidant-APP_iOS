@@ -7,6 +7,8 @@
 //
 
 #import "BBaseModel.h"
+#import <BGFMDB/BGFMDB.h>
+#import <MailCore/MailCore.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 //2：qq邮箱
 //3：163邮箱
 //4：gmail邮箱
+@property (nonatomic , strong) NSString *emailAddress;
 @property (nonatomic , assign) int Type;
 @property (nonatomic , assign) int uid;
 @property (nonatomic , strong) NSString *messageid;
@@ -24,10 +27,12 @@ NS_ASSUME_NONNULL_BEGIN
 //2.发件箱
 //3.草稿箱
 //4.垃圾箱
-@property (nonatomic , assign) int Label;
 @property (nonatomic , assign) int Read;
 @property (nonatomic ,strong) NSString *From;
-@property (nonatomic ,strong) NSString *To;
+@property (nonatomic ,strong) NSString *ToJson;
+@property (nonatomic ,strong) NSString *ccJsons;
+@property (nonatomic ,strong) NSString *bccJsons;
+
 @property (nonatomic ,strong) NSString *Subject;
 @property (nonatomic ,strong) NSString *fromName;
 @property (nonatomic ,strong) NSString *toName;
@@ -38,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *EmailPath;
 
 @property (nonatomic ,strong) NSString *floderName;
+@property (nonatomic ,strong) NSString *floderPath;
 // 附件
 @property (nonatomic ,strong) NSMutableArray *attchArray;
 // 收件人
@@ -46,7 +52,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSMutableArray *ccUserArray;
 // 密送人
 @property (nonatomic ,strong) NSMutableArray *bccUserArray;
+// parseData
+@property (nonatomic, strong) NSData *parserData;
 
+@property (nonatomic, strong) MCOIMAPFetchContentOperation *fetchContentOp;
+
+@property (nonatomic ,strong) NSString *deKey;
+
+@property (nonatomic, assign) BOOL isFetch;
+
+// 当前cellRow
+@property (nonatomic ,assign) NSInteger currentRow;
 @end
 
 NS_ASSUME_NONNULL_END

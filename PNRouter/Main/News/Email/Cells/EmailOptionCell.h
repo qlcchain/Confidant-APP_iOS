@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 static NSString *EmailOptionCellResue = @"EmailOptionCell";
 #define EmailOptionCellHeight 60
+#define EmailOptionCellHeight2 56
 
 @interface EmailOptionCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;

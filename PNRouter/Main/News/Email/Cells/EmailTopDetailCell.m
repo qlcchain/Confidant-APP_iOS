@@ -11,6 +11,8 @@
 #import "NSDate+Category.h"
 #import "EmailAccountModel.h"
 #import "PNDefaultHeaderView.h"
+#import "EmailUserModel.h"
+#import "EmailOptionUtil.h"
 
 @implementation EmailTopDetailCell
 
@@ -36,12 +38,21 @@
     _lblFromAlisa.text = model.fromName;
     _lblMonthTime.text =  [model.revDate minuteDescription];
     
+    // 获取read 二进制的第三位，1为加星  0 为没有
+   
+    _lableImgView.hidden = ![EmailOptionUtil checkEmailStar:model.Read];
+    
     
    EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
     if (![model.From isEqualToString:accountModel.User]) {
         _lblToName.text = @"To me";
     } else {
-        _lblToName.text = [NSString stringWithFormat:@"To %@",model.toName];
+        if (model.toUserArray && model.toUserArray.count > 0) {
+           EmailUserModel *userModel = model.toUserArray[0];
+             _lblToName.text = [NSString stringWithFormat:@"To %@",userModel.userName];
+        } else {
+             _lblToName.text = @"";
+        }
     }
     
     UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:@"" Name:[StringUtil getUserNameFirstWithName:model.fromName]];

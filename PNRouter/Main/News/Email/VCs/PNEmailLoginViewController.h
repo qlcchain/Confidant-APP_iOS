@@ -10,8 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PNEmailLoginViewController : PNBaseViewController
+typedef enum : NSUInteger {
+    LoginEmail,
+    ConfigEmail
+} EmailOptionType;
 
+@interface PNEmailLoginViewController : PNBaseViewController
+@property (nonatomic, assign) EmailOptionType optionType;
+- (instancetype) initWithEmailType:(int) type optionType:(EmailOptionType) optionType;
 @end
 
 NS_ASSUME_NONNULL_END

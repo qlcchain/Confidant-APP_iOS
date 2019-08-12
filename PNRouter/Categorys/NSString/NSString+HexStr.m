@@ -220,4 +220,68 @@
     return strLength;
 }
 
+#pragma mark 十进制转二进制
++ (NSString *)convertBinarySystemFromDecimalSystem:(NSString *)decimal
+{
+    NSInteger num = [decimal intValue];
+    NSInteger remainder = 0;      //余数
+    NSInteger divisor = 0;        //除数
+    
+    NSString * prepare = @"";
+    
+    while (true){
+        
+        remainder = num%2;
+        divisor = num/2;
+        num = divisor;
+        prepare = [prepare stringByAppendingFormat:@"%ld",remainder];
+        
+        if (divisor == 0){
+            
+            break;
+        }
+    }
+    
+    NSString * result = @"";
+    
+    for (NSInteger i = prepare.length - 1; i >= 0; i --){
+        
+        result = [result stringByAppendingFormat:@"%@",
+                  [prepare substringWithRange:NSMakeRange(i , 1)]];
+    }
+    
+    return result;
+}
+#pragma mark 二进制转十进制
++ (NSString *)convertDecimalSystemFromBinarySystem:(NSString *)binary
+{
+    NSInteger ll = 0 ;
+    NSInteger  temp = 0 ;
+    for (NSInteger i = 0; i < binary.length; i ++){
+        
+        temp = [[binary substringWithRange:NSMakeRange(i, 1)] intValue];
+        temp = temp * powf(2, binary.length - i - 1);
+        ll += temp;
+    }
+    
+    NSString * result = [NSString stringWithFormat:@"%ld",ll];
+    
+    return result;
+}
+
+
+//获取拼音首字母(传入汉字字符串, 返回大写拼音首字母)
++ (NSString *) firstCharactor:(NSString *)pString
+{
+    //转成了可变字符串
+    NSMutableString *pStr = [NSMutableString stringWithString:pString];
+    //先转换为带声调的拼音
+    CFStringTransform((CFMutableStringRef)pStr,NULL, kCFStringTransformMandarinLatin,NO);
+    //再转换为不带声调的拼音
+    CFStringTransform((CFMutableStringRef)pStr,NULL, kCFStringTransformStripDiacritics,NO);
+    //转化为大写拼音
+    NSString *pPinYin = [pStr capitalizedString];
+    //获取并返回首字母
+    return [pPinYin substringToIndex:1];
+}
 @end

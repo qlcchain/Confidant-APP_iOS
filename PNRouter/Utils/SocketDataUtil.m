@@ -214,6 +214,110 @@ struct ResultFile {
 //    return parames;
 //}
 
+- (void) sendEmailToId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSString *) fileid fileType:(uint32_t) fileType srcKey:(NSString *)srcKey
+{
+   NSString *base58FileName = [Base58Util Base58EncodeWithCodeName:fileName];
+    self.fileType = fileType;
+    self.fileData = imgData;
+    self.toid = toid;
+    self.fileid = fileid;
+    currentSegseq = 1;
+    uint32_t action = fileType;
+    uint32_t segseq = 1;
+    uint32_t offset = 0;
+    uint32_t millFileid = (int)fileid;
+    uint16_t crc = 0;
+    uint32_t magic = 0x0dadc0de;
+    
+    sendFileSizeMax = [FileConfig sharedFileConfig].uploadFileMaxSize;
+    uint32_t sendFileSize = imgData.length>sendFileSizeMax?sendFileSizeMax:(uint32_t)imgData.length;
+    uint8_t segMoreBlg = 0;
+    if (imgData.length > sendFileSizeMax) {
+        segMoreBlg = 1;
+    }
+    
+    HTONL(action);
+    HTONL(magic);
+    HTONL(sendFileSize);
+    HTONL(segseq);
+    HTONL(offset);
+    HTONL(millFileid);
+    HTONS(crc);
+    
+    NSData *sendData = nil;
+    if (segMoreBlg == 1) {
+        sendData = [self.fileData subdataWithRange:NSMakeRange(offset, sendFileSizeMax)];
+    } else {
+        sendData = [self.fileData subdataWithRange:NSMakeRange(offset, self.fileData.length-offset)];
+    }
+    
+    sendFile.magic = magic;
+    sendFile.action = action;
+    sendFile.segsize = sendFileSize;
+    sendFile.segseq = segseq;
+    sendFile.offset = offset;
+    sendFile.fileid = millFileid;
+    sendFile.crc = crc;
+    sendFile.segmore = segMoreBlg;
+    sendFile.cotinue = 0;
+    
+    if (![toid isEmptyString]) {
+        memcpy(sendFile.toid, [toid cStringUsingEncoding:NSASCIIStringEncoding],[toid length]);
+    }
+    memcpy(sendFile.srcKey, [srcKey cStringUsingEncoding:NSASCIIStringEncoding],[srcKey length]);
+    
+    sendFile.porperty[0] = '\0';
+    sendFile.Ver[0] = '\1';
+    
+    memcpy(sendFile.filename, [base58FileName cStringUsingEncoding:NSASCIIStringEncoding],[base58FileName length]);
+    memcpy(sendFile.fromid,[[UserConfig getShareObject].userId cStringUsingEncoding:NSASCIIStringEncoding],[[UserConfig getShareObject].userId length]);
+    
+    // 结构体转data
+    NSData *myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
+    NSMutableData *mutData = [NSMutableData dataWithData:myData];
+    [mutData appendData:sendData];
+    uint16_t crc16 = [mutData hexadecimalUint16];
+    HTONS(crc16);
+    sendFile.crc = crc16;
+
+    myData = [NSData dataWithBytes:&sendFile length:sizeof(sendFile)];
+    mutData = [NSMutableData dataWithData:myData];
+    [mutData appendData:sendData];
+    
+    @weakify_self
+    [_fileUtil setOnConnect:^{
+        NSLog(@"%@--%@",[weakSelf.fileUtil class],weakSelf.fileUtil.socket);
+        [weakSelf sendFileData:mutData];
+    }];
+    
+    [_fileUtil setOnDisconnect:^(NSError * error, NSString * url) {
+        if (!weakSelf.isCancel) {
+            if (self->sendFinsh) {
+                [[SocketManageUtil getShareObject] clearDisConnectSocket];
+            } else {
+                if (weakSelf.retCode == 0) {
+                    weakSelf.retCode = 2;
+                }
+                [[SocketManageUtil getShareObject] clearDisConnectSocket];
+                
+                if ([weakSelf.toid isEmptyString]) {
+                     [AppD.window hideHud];
+                    if (weakSelf.fileType == 7) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_UPLOAD_NODE_NOTI object:@[@(1)]];
+                    }
+                }
+            }
+        }
+    }];
+    
+    [_fileUtil setReceiveFileText:^(NSString * fileMsg) {
+        [weakSelf receiveFileText:fileMsg];
+    }];
+    [_fileUtil setReceiveFileData:^(NSData * fileData) {
+        [weakSelf receiveFileData:fileData];
+    }];
+}
+
 - (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSInteger)fileid fileType:(uint32_t) fileType messageid:(NSString *)messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey isGroup:(BOOL)isGroup
 {
     
@@ -419,6 +523,8 @@ struct ResultFile {
             if ([self.toid isEmptyString]) {
                 if (self.fileType == 6) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:UPLOAD_HEAD_DATA_NOTI object:@[@(self.retCode),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
+                } else if (self.fileType == 7) { // email 上传完成
+                    [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_UPLOAD_NODE_NOTI object:@[@(0),self.fileid,@(self.fileData.length),[MD5Util md5WithData:self.fileData]]];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
                 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>4</key>
+	<dict>
+		<key>Inbox</key>
+		<string>INBOX</string>
+		<key>Drafts</key>
+		<string>[Gmail]/&amp;g0l6Pw-</string>
+		<key>Sent</key>
+		<string>[Gmail]/&amp;XfJT0ZCuTvY-</string>
+		<key>Spam</key>
+		<string>[Gmail]/&amp;V4NXPpCuTvY-</string>
+		<key>Trash</key>
+		<string>[Gmail]/&amp;XfJSIJZkkK5O9g-</string>
+	</dict>
+	<key>1</key>
+	<dict>
+		<key>Inbox</key>
+		<string>INBOX</string>
+		<key>Drafts</key>
+		<string>&amp;g0l6P3ux-</string>
+		<key>Sent</key>
+		<string>&amp;XfJT0ZAB-</string>
+		<key>Spam</key>
+		<string>&amp;V4NXPpCuTvY-</string>
+		<key>Trash</key>
+		<string>&amp;XfJSIJZk-</string>
+	</dict>
+	<key>2</key>
+	<dict>
+		<key>Inbox</key>
+		<string>INBOX</string>
+		<key>Drafts</key>
+		<string>Drafts</string>
+		<key>Sent</key>
+		<string>Sent Messages</string>
+		<key>Spam</key>
+		<string>Junk</string>
+		<key>Trash</key>
+		<string>Deleted Messages</string>
+	</dict>
+	<key>3</key>
+	<dict>
+		<key>Spam</key>
+		<string>&amp;V4NXPpCuTvY-</string>
+		<key>Trash</key>
+		<string>&amp;XfJSIJZk-</string>
+		<key>Inbox</key>
+		<string>INBOX</string>
+		<key>Drafts</key>
+		<string>&amp;g0l6P3ux-</string>
+		<key>Sent</key>
+		<string>&amp;XfJT0ZAB-</string>
+	</dict>
+</dict>
+</plist>

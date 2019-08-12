@@ -125,7 +125,36 @@
     }
     return connectURL;
 }
-
++ (NSString *)getDocEmailBasePath
+{
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"%@/emails",@"Documents"];
+    NSString *docPath = [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    BOOL isexit = [manage fileExistsAtPath:docPath isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        if (isexit && !isDir) {
+            [SystemUtil removeDocmentFilePath:docPath];
+        }
+        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+}
++ (NSString *)getDocEmailAttchFilePathWithUid:(int) uid user:(NSString *)user
+{
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"%@/emails/%@",@"Documents",user];
+    NSString *docPath = [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    BOOL isexit = [manage fileExistsAtPath:docPath isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        if (isexit && !isDir) {
+            [SystemUtil removeDocmentFilePath:docPath];
+        }
+        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSHomeDirectory() stringByAppendingPathComponent:[filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d",uid]]];
+}
 
 + (NSString *) getBaseFilePath:(NSString *) friendid
 {
@@ -222,6 +251,17 @@
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
     NSString *filePath = @"upload_video";
+    BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
+}
+    
++ (NSString *)getTempEmailAttchFilePath {
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = @"email_tempPath";
     BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] isDirectory:&isDir];
     if (!isexit || !isDir) {
         [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];

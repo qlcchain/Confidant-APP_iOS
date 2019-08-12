@@ -555,7 +555,6 @@ static UIColor *InputHexColor(int hexColor){
 - (void) setTextViewString:(NSString *) textString delayTime:(CGFloat) delayTime
 {
     self.textView.text = textString;
-    
     [self performSelector:@selector(textBecomeFirstResponder) withObject:self afterDelay:0.5];
 }
 

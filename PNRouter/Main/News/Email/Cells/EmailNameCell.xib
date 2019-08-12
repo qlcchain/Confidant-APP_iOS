@@ -34,7 +34,7 @@
                         <color key="textColor" red="0.40000000000000002" green="0.27450980392156865" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99+" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MIB-Gb-OOK">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99+" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MIB-Gb-OOK">
                         <rect key="frame" x="48" y="19" width="25" height="16"/>
                         <color key="backgroundColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -76,6 +76,7 @@
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="connectImgView" destination="iz1-Zu-Wfa" id="2Dv-F6-n5m"/>
+                <outlet property="countContraintW" destination="nCv-cJ-jNK" id="zBL-1L-xzL"/>
                 <outlet property="headImgView" destination="6BE-HV-GGZ" id="fRz-WS-hW6"/>
                 <outlet property="lblCount" destination="MIB-Gb-OOK" id="gQb-hM-pFb"/>
                 <outlet property="lblFirstName" destination="WQa-wq-bBe" id="oTj-jc-C8h"/>

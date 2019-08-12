@@ -12,6 +12,8 @@
 #import "NSString+Trim.h"
 #import "EmailAccountModel.h"
 #import "RSAUtil.h"
+#import "EmailErrorAlertView.h"
+
 
 @interface PNEmailLoginViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIView *topView;
@@ -21,21 +23,58 @@
 @property (weak, nonatomic) IBOutlet UIButton *advanceBtn;
 @property (weak, nonatomic) IBOutlet UIView *emailBackView;
 @property (weak, nonatomic) IBOutlet UIView *passwordBackView;
+@property (nonatomic ,assign) int emailType;
+@property (nonatomic ,strong) NSString *typeName;
+@property (nonatomic ,strong) EmailAccountModel *accountM;
+@property (weak, nonatomic) IBOutlet UILabel *navTitle;
 
 @end
 
 @implementation PNEmailLoginViewController
-
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (instancetype) initWithEmailType:(int) type optionType:(EmailOptionType)optionType
+{
+    if (self = [super init]) {
+        self.emailType = type;
+        self.optionType = optionType;
+        if (type == 3) {
+            self.typeName = @"163.com";
+        } else if (type == 2) {
+            self.typeName = @"qq.com";
+        } else if (type == 1) {
+            self.typeName = @"exmail.qq.com";
+        } else {
+            self.typeName = @"gmail.com";
+        }
+        _emailNameTF.placeholder = [NSString stringWithFormat:@"example@%@",self.typeName];
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // 配置UI
     [self configUI];
     
+    [self addNoti];
+    
     _emailNameTF.delegate = self;
     _passwordTF.delegate = self;
     
-    _emailNameTF.text = @"kuangzihui@163.com";
-    _passwordTF.text = @"applela19890712";
+    if (self.optionType == ConfigEmail) {
+        _navTitle.text = @"Configure";
+        _emailNameTF.enabled = NO;
+        EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+        _emailNameTF.text = accountM.User;
+        [_loginBtn setTitle:@"Configure" forState:UIControlStateNormal];
+    }
+}
+// 添加通知
+- (void) addNoti
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailConfigNoti:) name:EMAIL_CONFIG_NOTI object:nil];
 }
 // 配置UI
 - (void) configUI
@@ -62,16 +101,17 @@
 - (IBAction)clickLoginAction:(id)sender {
     
     [self.view endEditing:YES];
-    
-    if (![_emailNameTF.text.trim isEmailAddress]) {
+    NSString *emailName = [NSString trimWhitespace:_emailNameTF.text];
+    NSString *emailPass = [NSString trimWhitespace:_passwordTF.text];
+    if (![emailName isEmailAddress]) {
         [self.view showHint:@"Email format error."];
         return;
     }
-    if (_passwordTF.text.trim.length == 0) {
+    if (emailPass.length == 0) {
         [self.view showHint:@"Please enter password."];
         return;
     }
-    [self loginImapEmailName:_emailNameTF.text pass:_passwordTF.text];
+    [self loginImapEmailName:emailName pass:emailPass];
 }
 - (IBAction)clickAdanceAction:(id)sender {
     
@@ -95,11 +135,15 @@
         if ([name isEmailAddress]) {
             NSArray *strings = [name componentsSeparatedByString:@"@"];
             if (strings.count == 2) {
-                NSString *emailType = [strings lastObject];
-                NSArray *names = [emailType componentsSeparatedByString:@"."];
+                NSString *emailT = [strings lastObject];
+                if (![emailT isEqualToString:self.typeName] && self.emailType !=1) {
+                    [self.view showHint:@"Email format error."];
+                    return;
+                }
+                NSArray *names = [emailT componentsSeparatedByString:@"."];
                 if (names.count == 2) {
-                    hostName = [NSString stringWithFormat:@"imap.%@",emailType];
-                    smtpHostName = [NSString stringWithFormat:@"smtp.%@",emailType];
+                    hostName = [NSString stringWithFormat:@"imap.%@",self.typeName];
+                    smtpHostName = [NSString stringWithFormat:@"smtp.%@",self.typeName];
                 } else {
                     [self.view showHint:@"Email format error."];
                     return;
@@ -114,6 +158,14 @@
         }
     }
     
+    _accountM = [[EmailAccountModel alloc] init];
+    _accountM.User = name;
+    _accountM.UserPass = pass;
+    _accountM.hostname = hostName;
+    _accountM.port = port;
+    _accountM.connectionType = MCOConnectionTypeTLS;
+    _accountM.Type = self.emailType;
+    _accountM.isConnect = YES;
     
     MCOIMAPSession *imapSession = [[MCOIMAPSession alloc] init];
     imapSession.hostname = hostName;
@@ -122,34 +174,42 @@
     imapSession.password = pass;
     imapSession.connectionType = MCOConnectionTypeTLS;
     
-    EmailManage.sharedEmailManage.imapSeeion = imapSession;
-    
-    [self.view showHudInView:self.view hint:@"Login..."];
+    NSString *hitStr = @"Login...";
+    if (self.optionType == ConfigEmail) {
+        hitStr = @"Configure...";
+    }
+    [self.view showHudInView:self.view hint:hitStr userInteractionEnabled:NO hideTime:REQEUST_TIME];
+   
     MCOIMAPOperation *imapOperation = [imapSession checkAccountOperation];
-    __weak typeof(self) weakSelf = self;
+    @weakify_self
     [imapOperation start:^(NSError * __nullable error) {
-        [weakSelf.view hideHud];
+       
         if (error == nil) {
-            
-            // 保存到本地
-            EmailAccountModel *model = [[EmailAccountModel alloc] init];
-            model.User = name;
-            model.UserPass = pass;
-            model.hostname = hostName;
-            model.port = port;
-            model.connectionType = MCOConnectionTypeTLS;
-            model.Type = 3;
-            [EmailAccountModel addEmailAccountWith:model];
-            model.isConnect = YES;
-            [EmailAccountModel updateEmailAccountConnectStatus:model];
-            
-             [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
-            
-            [weakSelf clickCloseAction:nil];
-            [AppD.window showHint:@"login successed."];
+            if (weakSelf.optionType == ConfigEmail) {
+                
+                // 更改密码
+                [EmailAccountModel updateEmailAccountPass:weakSelf.accountM];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
+                [self.view hideHud];
+                [self clickCloseAction:nil];
+                [AppD.window showHint:@"Configure successed."];
+                
+            } else {
+                [SendRequestUtil sendEmailConfigWithEmailAddress:name type:@(weakSelf.emailType) configJson:@"" ShowHud:NO];
+            }
         } else {
-            [AppD.window showHint:@"login failure."];
-            NSLog(@"login account failure: %@\n", error);
+            
+            [weakSelf.view hideHud];
+            NSLog(@"ERROR = %@",error.domain);
+            NSString *errorStr = [NSString stringWithFormat:@"\"imap.%@\" Username or password is incorrect, or the IMAP service is not available",self.typeName];
+            if (error.code == 1) {
+                errorStr = @"Unable to connect to email server.";
+            }
+            EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
+            alertView.lblContent.text = errorStr;
+            [alertView showEmailAttchSelView];
+   
         }
     }];
 
@@ -172,6 +232,31 @@
         self.loginBtn.alpha = 0.5;
     }
     return NO;
+}
+
+
+#pragma mark ----------------通知回调-----------------
+- (void) emailConfigNoti:(NSNotification *) noti
+{
+    NSDictionary *dic = noti.object;
+    NSInteger retCode = [dic[@"RetCode"] integerValue];
+    if (retCode == 0) { // 成功
+        // 保存到本地
+        [EmailAccountModel addEmailAccountWith:_accountM];
+        [EmailAccountModel updateEmailAccountConnectStatus:_accountM];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
+        [self.view hideHud];
+        [self clickCloseAction:nil];
+        [AppD.window showHint:@"login successed."];
+    } else {
+        [self.view hideHud];
+        if (retCode == 2) {
+            [self.view showHint:@"The mailbox has been configured"];
+        } else {
+            [self.view showHint:@"Configuration quantity exceeds limit."];
+        }
+    }
 }
 /*
 #pragma mark - Navigation

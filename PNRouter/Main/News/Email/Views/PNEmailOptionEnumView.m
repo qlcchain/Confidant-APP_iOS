@@ -11,6 +11,8 @@
 
 @interface PNEmailOptionEnumView()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic ,strong) NSArray *dataArray;
+@property (nonatomic ,assign) BOOL isStar;
+@property (nonatomic ,assign) BOOL isShowMove;
 @end
 
 @implementation PNEmailOptionEnumView
@@ -57,8 +59,11 @@
     [self hideEmailOptionEnumView];
 }
 
-- (void) showEmailOptionEnumView
+- (void) showEmailOptionEnumViewWithStar:(BOOL) isStar isShowMove:(BOOL)isShowMove
 {
+    _isStar = isStar;
+    _isShowMove = isShowMove;
+    [self.mainTabView reloadData];
     [AppD.window addSubview:self];
     _backContraintBottom.constant = 0;
     @weakify_self
@@ -85,6 +90,11 @@
 }
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == 3) {
+        if (!_isShowMove) {
+            return 0;
+        }
+    }
     return EmailOptionCellHeight;
 }
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -94,6 +104,9 @@
     NSString *content = self.dataArray[indexPath.row][1];
     cell.headImgView.image = [UIImage imageNamed:imgName];
     cell.lblName.text = content;
+    if ([content isEqualToString:@"Star"] && _isStar) {
+        cell.lblName.text = @"Cancel Star";
+    }
     return cell;
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

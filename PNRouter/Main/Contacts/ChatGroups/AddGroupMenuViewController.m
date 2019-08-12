@@ -30,11 +30,14 @@
 #import "SystemUtil.h"
 #import "InvitationQRCodeViewController.h"
 #import "PNNavViewController.h"
+#import "EmailManage.h"
+#import "PNEmailSendViewController.h"
 
 @interface AddGroupMenuViewController ()
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *addNewMemberHeight; // 56
 @property (nonatomic ,strong) NSString *codeResultValue;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *emailHeight;
 
 @end
 
@@ -149,6 +152,9 @@
         AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:rid];
         [self presentModalVC:vc animated:YES];
        // [self jumpToCircleCode];
+    } else if (sender.tag == 50) { // new email
+        PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:nil sendType:NewEmail];
+        [self presentModalVC:vc animated:YES];
     }
 }
 
@@ -253,6 +259,9 @@
     [super viewDidLoad];
     [self addNotifcation];
     [self showAddNewMember];
+    if (!EmailManage.sharedEmailManage.imapSeeion) {
+        _emailHeight.constant = 0;
+    }
 }
 
 #pragma mark - Operation

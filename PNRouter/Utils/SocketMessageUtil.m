@@ -438,7 +438,7 @@
     
     NSString *action = receiveDic[@"params"][@"Action"];
     
-    if (!([action isEqualToString:Action_login] || [action isEqualToString: Action_Register] || [action isEqualToString: Action_Recovery] || [action isEqualToString: Action_RouterLogin] || [action isEqualToString: Action_ResetRouterKey] || [action isEqualToString: Action_ResetUserIdcode] || [action isEqualToString: Action_ResetRouterName])) {
+    if (!([action isEqualToString:Action_login] || [action isEqualToString: Action_Register] || [action isEqualToString: Action_Recovery] || [action isEqualToString: Action_RouterLogin] || [action isEqualToString: Action_ResetRouterKey] || [action isEqualToString: Action_ResetUserIdcode] || [action isEqualToString: Action_ResetRouterName] || [action isEqualToString: Action_SaveEmailConf])) {
         if (AppD.isLogOut) {
             return;
         }
@@ -591,6 +591,20 @@
         [SocketMessageUtil handleEnableQlcNode:receiveDic];
     }else if ([action isEqualToString:Action_CheckQlcNode]) { // 检测qlc节点
         [SocketMessageUtil handleCheckQlcNode:receiveDic];
+    } else if ([action isEqualToString:Action_SaveEmailConf]) { // 配置邮箱
+        [SocketMessageUtil handleSaveEmailConf:receiveDic];
+    } else if ([action isEqualToString:Action_GetUmailKey]) { // 查询邮箱密钥
+        [SocketMessageUtil handleGetUmailKey:receiveDic];
+    } else if ([action isEqualToString:Action_BakMailsNum]) { // 查询节点邮件数量
+        [SocketMessageUtil handleBakMailsNum:receiveDic];
+    } else if ([action isEqualToString:Action_BakupEmail]) { // 上传到节点
+        [SocketMessageUtil handleBakupEmail:receiveDic];
+    } else if ([action isEqualToString:Action_PullMailList]) { // 拉取节点邮件
+        [SocketMessageUtil handleBakPullMailList:receiveDic];
+    } else if ([action isEqualToString:Action_DelEmail]) { // 删除节点邮件
+        [SocketMessageUtil handleDelEmail:receiveDic];
+    } else if ([action isEqualToString:Action_DelEmailConf]) { // 删除邮箱配置
+        [SocketMessageUtil handleDelEmailConf:receiveDic];
     }
 }
 
@@ -1637,6 +1651,49 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:CHECK_QLC_NODE_SUCCESS_NOTI object:receiveDic[@"params"]];
     } else {
     }
+}
+
+
+#pragma mark-----------------------邮箱--------------------
++ (void) handleSaveEmailConf:(NSDictionary *)receiveDic {
+    
+    [AppD.window hideHud];
+   // NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_CONFIG_NOTI object:receiveDic[@"params"]];
+  
+}
++ (void) handleGetUmailKey:(NSDictionary *)receiveDic {
+    
+    //[AppD.window hideHud];
+    // NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_GETKEY_NOTI object:receiveDic[@"params"]];
+    
+}
++ (void) handleBakMailsNum:(NSDictionary *)receiveDic {
+        
+    //[AppD.window hideHud];
+    // NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_NODE_COUNT_NOTI object:receiveDic[@"params"]];
+    
+}
++ (void) handleBakupEmail:(NSDictionary *) receiveDic {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_NODE_UPLOAD_NOTI object:receiveDic[@"params"]];
+}
++ (void) handleBakPullMailList:(NSDictionary *) receiveDic {
+    
+    [AppD.window hideHud];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_PULL_NODE_NOTI object:receiveDic[@"params"]];
+}
++ (void) handleDelEmail:(NSDictionary *) receiveDic {
+    
+    [AppD.window hideHud];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_DEL_NODE_NOTI object:receiveDic[@"params"]];
+}
++ (void) handleDelEmailConf:(NSDictionary *) receiveDic {
+    
+    [AppD.window hideHud];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_DEL_CONFIG_NOTI object:receiveDic[@"params"]];
 }
 
 

@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backContraintBottom;
 @property (nonatomic, copy) ClickEnumBlock emumBlock;
 + (instancetype) loadPNEmailOptionEnumView;
-- (void) showEmailOptionEnumView;
+- (void) showEmailOptionEnumViewWithStar:(BOOL) isStar isShowMove:(BOOL) isShowMove;
 
 @end
 

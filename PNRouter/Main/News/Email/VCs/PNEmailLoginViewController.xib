@@ -16,6 +16,7 @@
                 <outlet property="emailBackView" destination="dHS-PS-niN" id="fO0-8c-Lm3"/>
                 <outlet property="emailNameTF" destination="V2W-bw-ZjJ" id="cfE-2Y-hT7"/>
                 <outlet property="loginBtn" destination="BQA-Vx-wFm" id="PY6-J8-03f"/>
+                <outlet property="navTitle" destination="VAP-Xm-att" id="ucZ-zR-tWh"/>
                 <outlet property="passwordBackView" destination="aDS-Bc-Ha1" id="R3D-Vn-FVK"/>
                 <outlet property="passwordTF" destination="rA3-lk-ybY" id="O2W-7g-Z50"/>
                 <outlet property="topView" destination="MZC-Dm-SpC" id="Ny1-OD-8kK"/>
@@ -30,8 +31,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MZC-Dm-SpC">
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAP-Xm-att">
-                            <rect key="frame" x="121" y="9" width="133" height="26"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAP-Xm-att">
+                            <rect key="frame" x="160" y="9" width="55" height="26"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                             <color key="textColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -69,7 +70,7 @@
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_email_account" translatesAutoresizingMaskIntoConstraints="NO" id="Qcu-OV-c6a">
                             <rect key="frame" x="15" y="13" width="24" height="24"/>
                         </imageView>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="QQ Enterprise Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="V2W-bw-ZjJ">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enterprise Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="V2W-bw-ZjJ">
                             <rect key="frame" x="51" y="0.0" width="287" height="50"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="textColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -126,7 +127,7 @@
                         <constraint firstAttribute="height" constant="50" id="k8Z-dC-piM"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                    <state key="normal" title="Login to Circle">
+                    <state key="normal" title="Login">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>

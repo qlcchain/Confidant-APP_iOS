@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MailCore/MailCore.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,6 +25,10 @@ static NSString *EmailListCellResue = @"EmailListCell";
 @property (weak, nonatomic) IBOutlet UIImageView *attachImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblAttCount;
 @property (weak, nonatomic) IBOutlet UIView *readView;
+    @property (weak, nonatomic) IBOutlet UIImageView *lockImgView;
+    @property (weak, nonatomic) IBOutlet NSLayoutConstraint *starW;
+    
+@property (nonatomic, strong) MCOIMAPMessageRenderingOperation *messageRenderingOperation;
 
 @end
 

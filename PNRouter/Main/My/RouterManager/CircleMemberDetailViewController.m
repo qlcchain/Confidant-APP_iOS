@@ -14,6 +14,7 @@
 #import "NSDate+Category.h"
 #import "UserConfig.h"
 #import "InvitationQRCodeViewController.h"
+#import "NSString+Base64.h"
 
 @interface CircleMemberDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
@@ -32,11 +33,13 @@
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
-        //NSString *userName = [NSString getNotNullValue:_routerUserModel.NickName];
-        if (_routerUserModel.Active == 1) { //  && ![userName isEqualToString:@"tempUser"]
+       
+        if (_routerUserModel.UserType == 1) {
+            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name",@"Circle Name"],@[@"Circle Login QR Code"],@[@"Joining time"]]];
+        } else if (_routerUserModel.UserType == 3) {
             _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Circle Login QR Code"],@[@"Joining time"],@[@"Remove"]]];
         } else {
-            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name"],@[@"Circle Login QR Code"],@[@"Joining time"]]];
+            _dataArray = [NSMutableArray arrayWithArray:@[@[@"Profile Photo",@"Name",@"Circle Name"],@[@"Circle Login QR Code"],@[@"Joining time"],@[@"Remove"]]];
         }
     }
     return _dataArray;
@@ -100,7 +103,11 @@
         } else {
             cell.lblSubContent.hidden = NO;
             if (indexPath.section == 0) {
-                 cell.lblSubContent.text = _routerUserModel.NickName;
+                if (indexPath.row == 1) {
+                    cell.lblSubContent.text = _routerUserModel.NickName;
+                } else {
+                    cell.lblSubContent.text = _routerUserModel.Mnemonic;
+                }
             } else if (indexPath.section == 1) {
                 cell.rightContraintW.constant = 8;
                 cell.lblSubContent.hidden = YES;

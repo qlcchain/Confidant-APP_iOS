@@ -21,6 +21,7 @@
 #import "UserModel.h"
 #import "FriendDetailViewController.h"
 
+
 @interface GroupDetailsViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *headImgView;
