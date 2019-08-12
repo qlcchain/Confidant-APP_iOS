@@ -95,6 +95,7 @@
         @weakify_self
         [finfAlls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             EmailContactModel *model = obj;
+            NSLog(@"----updatetime = %@",model.bg_updateTime);
             NSString *nameKey = [NSString firstCharactor:model.userName];
             NSArray *keys = [weakSelf.dataDic allKeys];
             if ([keys containsObject:nameKey]) {

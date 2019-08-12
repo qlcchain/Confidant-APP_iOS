@@ -88,7 +88,7 @@ static NSString *Action_GetUmailKey = @"CheckmailUkey";
 static NSString *Action_BakMailsNum = @"BakMailsNum";
 static NSString *Action_PullMailList = @"PullMailList";
 static NSString *Action_DelEmail = @"DelEmail";
-
+static NSString *Action_DelEmailConf = @"DelEmailConf";
 
 
 

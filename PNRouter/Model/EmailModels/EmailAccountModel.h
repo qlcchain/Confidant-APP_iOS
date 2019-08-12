@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) updateEmailAccountPass:(EmailAccountModel *) accountModel;
 + (void) updateEmailAccountConnectStatus:(EmailAccountModel *) accountModel;
 + (void) updateEmailAccountUnReadCount:(EmailAccountModel *) accountModel;
++ (void)deleteEmailWithUser:(NSString *) user;
++ (void) updateFirstEmailConnect;
 @end
 
 NS_ASSUME_NONNULL_END

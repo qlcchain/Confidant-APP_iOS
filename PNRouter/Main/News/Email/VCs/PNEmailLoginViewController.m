@@ -26,6 +26,7 @@
 @property (nonatomic ,assign) int emailType;
 @property (nonatomic ,strong) NSString *typeName;
 @property (nonatomic ,strong) EmailAccountModel *accountM;
+@property (weak, nonatomic) IBOutlet UILabel *navTitle;
 
 @end
 
@@ -34,10 +35,11 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-- (instancetype) initWithEmailType:(int) type
+- (instancetype) initWithEmailType:(int) type optionType:(EmailOptionType)optionType
 {
     if (self = [super init]) {
         self.emailType = type;
+        self.optionType = optionType;
         if (type == 3) {
             self.typeName = @"163.com";
         } else if (type == 2) {
@@ -61,18 +63,13 @@
     _emailNameTF.delegate = self;
     _passwordTF.delegate = self;
     
-//    _emailNameTF.text = @"emaildev@qlink.mobi";
-//    _passwordTF.text = @"Qlcchain@123";
-    //ffykftwymsxnbfgg
-    
-   // _emailNameTF.text = @"554932628@qq.com";
-   // _passwordTF.text = @"ffykftwymsxnbfgg";
-    
-//     _emailNameTF.text = @"qlink.mobi@gmail.com";
-//     _passwordTF.text = @"applela19890712";
-    
-//     _emailNameTF.text = @"kuangzihui@163.com";
-//    _passwordTF.text = @"applela19890712";
+    if (self.optionType == ConfigEmail) {
+        _navTitle.text = @"Configure";
+        _emailNameTF.enabled = NO;
+        EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+        _emailNameTF.text = accountM.User;
+        [_loginBtn setTitle:@"Configure" forState:UIControlStateNormal];
+    }
 }
 // 添加通知
 - (void) addNoti
@@ -177,14 +174,30 @@
     imapSession.password = pass;
     imapSession.connectionType = MCOConnectionTypeTLS;
     
-    [self.view showHudInView:self.view hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    NSString *hitStr = @"Login...";
+    if (self.optionType == ConfigEmail) {
+        hitStr = @"Configure...";
+    }
+    [self.view showHudInView:self.view hint:hitStr userInteractionEnabled:NO hideTime:REQEUST_TIME];
    
     MCOIMAPOperation *imapOperation = [imapSession checkAccountOperation];
     @weakify_self
     [imapOperation start:^(NSError * __nullable error) {
        
         if (error == nil) {
-            [SendRequestUtil sendEmailConfigWithEmailAddress:name type:@(weakSelf.emailType) configJson:@"" ShowHud:NO];
+            if (weakSelf.optionType == ConfigEmail) {
+                
+                // 更改密码
+                [EmailAccountModel updateEmailAccountPass:weakSelf.accountM];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
+                [self.view hideHud];
+                [self clickCloseAction:nil];
+                [AppD.window showHint:@"Configure successed."];
+                
+            } else {
+                [SendRequestUtil sendEmailConfigWithEmailAddress:name type:@(weakSelf.emailType) configJson:@"" ShowHud:NO];
+            }
         } else {
             
             [weakSelf.view hideHud];

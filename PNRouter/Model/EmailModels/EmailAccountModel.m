@@ -62,6 +62,25 @@ static NSString *emailKey = @"emailKey_arr";
     
     [KeyCUtil saveRouterTokeychainWithArr:resultArr key:userid];
 }
++ (void) updateFirstEmailConnect
+{
+    NSString *userid = emailKey;//[UserModel getUserModel].userId;
+    NSArray *emailAccounts = [KeyCUtil getRouterWithKey:userid]?:@[];
+    if (emailAccounts.count == 0) {
+        return;
+    }
+    NSMutableArray *resultArr = [NSMutableArray array];
+    [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        EmailAccountModel *model = [EmailAccountModel getObjectWithKeyValues:obj];
+        if (idx == 0) {
+            model.isConnect = YES;
+        } else {
+            model.isConnect = NO;
+        }
+        [resultArr addObject:model.mj_keyValues];
+    }];
+    [KeyCUtil saveRouterTokeychainWithArr:resultArr key:userid];
+}
 + (void) updateEmailAccountUnReadCount:(EmailAccountModel *) accountModel
 {
     NSString *userid = emailKey;//[UserModel getUserModel].userId;
@@ -91,7 +110,6 @@ static NSString *emailKey = @"emailKey_arr";
         }
         [resultArr addObject:model.mj_keyValues];
     }];
-    
     [KeyCUtil saveRouterTokeychainWithArr:resultArr key:userid];
 }
 
@@ -108,5 +126,17 @@ static NSString *emailKey = @"emailKey_arr";
         }
     }];
     return accountModel;
+}
+
++ (void)deleteEmailWithUser:(NSString *) user {
+    NSArray *emailAccounts = [KeyCUtil getRouterWithKey:emailKey]?:@[];
+    NSMutableArray *dicArr = [NSMutableArray array];
+    [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        EmailAccountModel *model = [EmailAccountModel getObjectWithKeyValues:obj];
+        if (![model.User isEqualToString:user]) {
+            [dicArr addObject:model.mj_keyValues];
+        }
+    }];
+    [KeyCUtil saveRouterTokeychainWithArr:dicArr key:emailKey];
 }
 @end

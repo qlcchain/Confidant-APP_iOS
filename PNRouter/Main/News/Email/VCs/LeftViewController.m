@@ -21,7 +21,7 @@
 #import "StringUtil.h"
 #import "EmailDataBaseUtil.h"
 #import "UserConfig.h"
-
+#import "PNEmailEditViewController.h"
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *menuBackView;
 @property (weak, nonatomic) IBOutlet UITableView *mainTabView;
@@ -46,10 +46,12 @@
     } else {
         _lblTitle.text = @"Message";
     }
-    if (!_isEmailPage && AppD.isEmailPage) {
-        _isEmailPage = AppD.isEmailPage;
-        [_mainTabView reloadData];
-    }
+    
+//    if (!_isEmailPage && AppD.isEmailPage) {
+//        _isEmailPage = AppD.isEmailPage;
+//        [_mainTabView reloadData];
+//    }
+    
     [self getFloaderEmailCount];
     
     [super viewWillAppear:animated];
@@ -84,7 +86,8 @@
     return _messageDataArray;
 }
 - (IBAction)clcikEditAction:(id)sender {
-    
+    PNEmailEditViewController *vc = [[PNEmailEditViewController alloc] init];
+    [self presentModalVC:vc animated:YES];
 }
     
 - (void)viewDidLoad {
@@ -109,6 +112,8 @@
     // 邮件删除和移动通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailFalgsChangeSuccessNoti:) name:EMIAL_FLAGS_CHANGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailNodeCountSuccessNoti:) name:EMAIL_NODE_COUNT_NOTI object:nil];
+    // 删除邮箱通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(delEmailConfigSuccessNoti:) name:EMAIL_DEL_CONFIG_SUCCESS_NOTI object:nil];
     
     
 }
@@ -274,7 +279,7 @@
             @weakify_self
             [vc setClickRowBlock:^(PNBaseViewController * _Nonnull vc, NSArray * _Nonnull arr) {
                 [vc dismissViewControllerAnimated:NO completion:nil];
-                PNEmailLoginViewController *loginVC  = [[PNEmailLoginViewController alloc] initWithEmailType:[arr[1] intValue]];
+                PNEmailLoginViewController *loginVC  = [[PNEmailLoginViewController alloc] initWithEmailType:[arr[1] intValue] optionType:LoginEmail];
                 [weakSelf presentModalVC:loginVC animated:YES];
             }];
         }
@@ -337,7 +342,25 @@
     }
 
 }
-    
+- (void) delEmailConfigSuccessNoti:(NSNotification *) noti
+{
+    NSArray *emailAccounts = [EmailAccountModel getLocalAllEmailAccounts];
+    if (emailAccounts.count == 0) {
+        [EmailManage sharedEmailManage].imapSeeion = nil;
+        [EmailManage sharedEmailManage].smtpSession = nil;
+        [self.emailFolders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FloderModel *model = obj;
+            model.count = 0;
+        }];
+        if (self.emails.count > 0) {
+            [self.emails removeAllObjects];
+            [_mainTabView reloadData];
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_NO_CONFIG_NOTI object:nil];
+    } else {
+        [self pullFloder];
+    }
+}
     
 
 - (void) pullFloder{
@@ -380,14 +403,14 @@
     }];
     [self getFloaderEmailCount];
     
- //   MCOIMAPFetchFoldersOperation *imapFetchFolderOp = [EmailManage.sharedEmailManage.imapSeeion fetchAllFoldersOperation];
-//    @weakify_self
-//    [imapFetchFolderOp start:^(NSError * error, NSArray * folders) {
-//        [folders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            MCOIMAPFolder *info = obj;
-//            NSLog(@"path = %@,name= %@",info.path,[EmailManage.sharedEmailManage.imapSeeion.defaultNamespace componentsFromPath:info.path][0]);
-//        }];
-//    }];
+    MCOIMAPFetchFoldersOperation *imapFetchFolderOp = [EmailManage.sharedEmailManage.imapSeeion fetchAllFoldersOperation];
+    @weakify_self
+    [imapFetchFolderOp start:^(NSError * error, NSArray * folders) {
+        [folders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            MCOIMAPFolder *info = obj;
+            NSLog(@"path = %@,name= %@",info.path,[EmailManage.sharedEmailManage.imapSeeion.defaultNamespace componentsFromPath:info.path][0]);
+        }];
+    }];
     
     
     /*
@@ -441,8 +464,6 @@
 
 - (void) getFloaderEmailCount
 {
-    
-    
     // check 节点邮箱数量
     EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
     _editBtn.hidden = accountModel? NO:YES;
@@ -465,7 +486,8 @@
             }
         }];
         [SendRequestUtil sendEmailCheckNodeCountShowHud:NO];
+    } else {
+         [_mainTabView reloadData];
     }
-    
 }
 @end

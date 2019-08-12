@@ -132,6 +132,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullEmailNoti:) name:EMAIL_PULL_NODE_NOTI object:nil];
     // 搜索界面点击 邮件或消息状态发生改变
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(MessageStatusChangeNoti:) name:SEARCH_MODEL_STATUS_CHANGE_NOTI object:nil];
+    // 删除邮箱通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noEmailConfigNoti:) name:EMAIL_NO_CONFIG_NOTI object:nil];
     
 }
 // 搜索
@@ -217,6 +219,8 @@
     } else {
         _lblTitle.text = @"Email";
         _lblSubTitle.text = @"Not Configured";
+        _emailTabView.mj_footer.hidden = YES;
+        _emailTabView.mj_header.hidden = YES;
     }
 
 }
@@ -875,6 +879,19 @@
         [_tableV reloadData];
     }
 }
+- (void) noEmailConfigNoti:(NSNotification *) noti
+{
+    _lblTitle.text = @"Email";
+    _lblSubTitle.text = @"Not Configured";
+    _emailTabView.mj_footer.hidden = YES;
+    _emailTabView.mj_header.hidden = YES;
+    
+    if (self.emailDataArray.count > 0) {
+        [self.emailDataArray removeAllObjects];
+        [self.emailTabView reloadData];
+    }
+}
+
 /**
  根据时间排序
  
@@ -1148,6 +1165,9 @@
         
         if (self.floderModel.count == 0) {
             self.emailTabView.mj_footer.hidden = YES;
+            if (isRequestFloderCount) {
+                [self.view hideHud];
+            }
             return;
         }
         if (_page == 1 && !isRequestFloderCount) {

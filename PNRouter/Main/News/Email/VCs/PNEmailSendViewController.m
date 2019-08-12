@@ -46,6 +46,8 @@
 #import "MCOCIDURLProtocol.h"
 #import "PNEmailPreViewController.h"
 
+#import "EmailDataBaseUtil.h"
+
 @interface PNEmailSendViewController ()<UITextViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate,YBImageBrowserDelegate,UIWebViewDelegate>
 {
@@ -335,7 +337,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 - (IBAction)clickSendAction:(id)sender {
     [self.view endEditing:YES];
-    
+    EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
     NSMutableArray *emails = [NSMutableArray array];
     if (self.toContacts && self.toContacts.count > 0) {
        __block BOOL isEmail = YES;
@@ -347,13 +349,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 *stop = YES;
             }
             [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
+            [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:contactM.userName userAddress:contactM.userAddress];
         }];
         if (!isEmail) {
             [self.view showHint:@"To: Not a valid email address"];
             return;
         }
-        
-        
     }
     if (self.ccContacts && self.ccContacts.count > 0) {
         __block BOOL isEmail = YES;
@@ -365,6 +366,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 *stop = YES;
             }
             [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
+            [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:contactM.userName userAddress:contactM.userAddress];
         }];
         if (!isEmail) {
             [self.view showHint:@"Cc: Not a valid email address"];
@@ -381,12 +383,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 *stop = YES;
             }
             [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
+            [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:contactM.userName userAddress:contactM.userAddress];
         }];
         if (!isEmail) {
             [self.view showHint:@"Bcc: Not a valid email address"];
             return;
         }
-        
     }
     if (emails.count <= 30) {
         self.isSend = YES;
@@ -397,6 +399,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         _lockImgView.hidden = YES;
         [self sendEmailWithShowLoading:YES keys:nil];
     }
+    
+    
     
     /*
      如果邮件是回复或者转发，原邮件中往往有附件以及正文中有其他图片资源，
@@ -436,7 +440,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *msgKey = @"";
     if (userKeys && userKeys.count > 0) {
         // 生成32位对称密钥
-        msgKey = [SystemUtil getDoc32AESKey];
+        msgKey = [SystemUtil get32AESKey];
         NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
         symmetKey = [symmetData base64EncodedString];
         // 好友公钥加密对称密钥
@@ -1773,20 +1777,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         attchM.attName = [fileUrl lastPathComponent];
         [self addAttchReloadCollectionWithAttch:attchM];
         
-        
-       /*
-        // 生成32位对称密钥
-        NSString *msgKey = [SystemUtil getDoc32AESKey];
-        NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *symmetKey = [symmetData base64EncodedString];
-        // 好友公钥加密对称密钥
-        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:self.friendModel.publicKey];
-        // 自己公钥加密对称密钥
-        NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
-        
-        NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-        txtData = aesEncryptData(txtData,msgKeyData);
-        */
         
     }
 }

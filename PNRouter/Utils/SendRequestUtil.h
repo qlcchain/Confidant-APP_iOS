@@ -78,6 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendEmailCheckNodeCountShowHud:(BOOL) showHud;
 + (void) sendPullEmailWithStarid:(NSNumber *) starId num:(NSNumber *) num showHud:(BOOL) showHud;
 + (void) sendEmailDelNodeWithUid:(NSNumber *) uid showHud:(BOOL) showHud;
++ (void) sendEmailDelConfigWithShowHud:(BOOL) showHud;
 @end
 
 NS_ASSUME_NONNULL_END

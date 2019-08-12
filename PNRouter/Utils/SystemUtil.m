@@ -125,7 +125,21 @@
     }
     return connectURL;
 }
-
++ (NSString *)getDocEmailBasePath
+{
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"%@/emails",@"Documents"];
+    NSString *docPath = [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    BOOL isexit = [manage fileExistsAtPath:docPath isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        if (isexit && !isDir) {
+            [SystemUtil removeDocmentFilePath:docPath];
+        }
+        [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+}
 + (NSString *)getDocEmailAttchFilePathWithUid:(int) uid user:(NSString *)user
 {
     NSFileManager *manage = [NSFileManager defaultManager];

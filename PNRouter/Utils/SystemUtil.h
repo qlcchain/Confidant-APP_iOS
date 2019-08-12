@@ -58,5 +58,5 @@
     
 + (NSString *)getTempEmailAttchFilePath;
 + (NSString *)getDocEmailAttchFilePathWithUid:(int) uid user:(NSString *) user;
-
++ (NSString *)getDocEmailBasePath;
 @end

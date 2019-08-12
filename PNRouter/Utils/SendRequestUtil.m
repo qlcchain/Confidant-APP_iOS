@@ -527,5 +527,14 @@
     NSDictionary *params = @{@"Action":Action_DelEmail,@"Type":@(accountM.Type),@"MailId":uid};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
++ (void) sendEmailDelConfigWithShowHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Deleting_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    NSDictionary *params = @{@"Action":Action_DelEmailConf,@"Type":@(accountM.Type),@"User":[[accountM.User lowercaseString] base64EncodedString]};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
 @end
 
