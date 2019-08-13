@@ -22,8 +22,10 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_backV.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:CGSizeMake(16,16)];//圆角大小
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];    maskLayer.frame = _backV.bounds;    maskLayer.path = maskPath.CGPath;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, SCREEN_WIDTH, CGRectGetHeight(_backV.bounds)) byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:CGSizeMake(16,16)];//圆角大小
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = CGRectMake(0, 0, SCREEN_WIDTH, CGRectGetHeight(_backV.bounds));//_backV.bounds;
+    maskLayer.path = maskPath.CGPath;
     _backV.layer.mask = maskLayer;
     
 }

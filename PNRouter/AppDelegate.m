@@ -83,7 +83,7 @@
     
 
    // [KeyCUtil deleteWithKey:@"emailKey_arr"];
-    
+    // [KeyCUtil deleteAllKey];
     
     // 配置Bugly
     [self configBugly];

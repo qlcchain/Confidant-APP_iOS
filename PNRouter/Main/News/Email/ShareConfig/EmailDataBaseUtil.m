@@ -10,10 +10,11 @@
 #import "EmailContactModel.h"
 #import "EmailListInfo.h"
 #import "EmailAccountModel.h"
+#import "NSDate+Category.h"
 
 @implementation EmailDataBaseUtil
 
-+ (void) insertDataWithUser:(NSString *) user userName:(NSString *) userName  userAddress:(NSString *) userAddress
++ (void) insertDataWithUser:(NSString *) user userName:(NSString *) userName  userAddress:(NSString *) userAddress date:(NSDate *) revDate
 {
     NSString *whereSql = [NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"user"),bg_sqlValue(user),bg_sqlKey(@"userAddress"),bg_sqlValue(userAddress)];
     
@@ -24,7 +25,14 @@
         model.user = user;
         model.userName = userName;
         model.userAddress = userAddress;
+        model.revDate = [NSDate getTimestampFromDate:revDate];
         [model bg_save];
+    } else {
+        EmailContactModel *model = array[0];
+        if ([NSDate getTimestampFromDate:revDate] > model.revDate) {
+             model.revDate = [NSDate getTimestampFromDate:revDate];
+             [model bg_saveOrUpdate];
+        }
     }
 //    [EmailContactModel bg_findAsync:EMAIL_CONTACT_TABNAME where:whereSql complete:^(NSArray * _Nullable array) {
 //

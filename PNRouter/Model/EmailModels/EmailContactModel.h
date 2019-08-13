@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *user;
 @property (nonatomic ,strong) NSString *userName;
 @property (nonatomic ,strong) NSString *userAddress;
-
+@property (nonatomic ,assign) NSInteger revDate;
 @property (nonatomic ,assign) BOOL isSel;
 
 @end
