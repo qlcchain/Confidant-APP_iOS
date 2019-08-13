@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class EmailListInfo;
 @interface EmailDataBaseUtil : NSObject
 
-+ (void) insertDataWithUser:(NSString *) user userName:(NSString *) userName  userAddress:(NSString *) userAddress;
++ (void) insertDataWithUser:(NSString *) user userName:(NSString *) userName  userAddress:(NSString *) userAddress  date:(NSDate *) revDate;
 
 + (void) addEmialStarWithEmialInfo:(EmailListInfo *) emailInfo;
 + (void) delEmialStarWithEmialInfo:(EmailListInfo *) emailInfo;

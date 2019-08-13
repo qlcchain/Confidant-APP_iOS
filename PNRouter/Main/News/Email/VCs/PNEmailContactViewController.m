@@ -92,10 +92,23 @@
     NSArray *finfAlls = [EmailContactModel bg_find:EMAIL_CONTACT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"user"),bg_sqlValue(accountM.User)]];
     if (finfAlls) {
         [self.emailContacts addObjectsFromArray:finfAlls];
+        
+        // 按时间降序
+        finfAlls =[finfAlls sortedArrayUsingComparator:^NSComparisonResult(id obj1,id obj2) {
+            EmailContactModel *object1 = (EmailContactModel *)obj1;
+            EmailContactModel *object2 = (EmailContactModel *)obj2;
+            if (object1.revDate < object2.revDate) {
+                return NSOrderedDescending;
+            } else if (object1.revDate > object2.revDate) {
+                return NSOrderedAscending;
+            }
+            return NSOrderedSame;
+        }];
+        
+        
         @weakify_self
         [finfAlls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             EmailContactModel *model = obj;
-            NSLog(@"----updatetime = %@",model.bg_updateTime);
             NSString *nameKey = [NSString firstCharactor:model.userName];
             NSArray *keys = [weakSelf.dataDic allKeys];
             if ([keys containsObject:nameKey]) {
@@ -106,6 +119,8 @@
                 [weakSelf.dataDic setValue:array forKey:nameKey];
             }
         }];
+        NSArray *recArray = finfAlls.count>10 ? [finfAlls subarrayWithRange:NSMakeRange(0, 9)] : finfAlls;
+        [self.dataDic setValue:recArray forKey:@""];
     }
     
 }
@@ -130,6 +145,9 @@
 {
     if (_isSearch) {
         return @"";
+    }
+    if (section == 0) {
+        return @"Recent contacts";
     }
      NSArray *keys = [[self.dataDic allKeys]  sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     return [keys objectAtIndex:section];

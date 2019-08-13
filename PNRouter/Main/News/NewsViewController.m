@@ -1358,7 +1358,7 @@
         [tempArray addObject:listInfo];
         
         if (![self.floderModel.name isEqualToString:Spam]) {
-             [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:listInfo.fromName userAddress:listInfo.From];
+             [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:listInfo.fromName userAddress:listInfo.From date:listInfo.revDate];
         }
         
         MCOIMAPFetchContentOperation * fetchContentOp = [EmailManage.sharedEmailManage.imapSeeion fetchMessageOperationWithFolder:self.floderModel.path uid:listInfo.uid];

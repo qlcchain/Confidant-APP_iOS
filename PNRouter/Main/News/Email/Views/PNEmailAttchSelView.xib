@@ -110,7 +110,6 @@
                                                 </label>
                                                 <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CqR-yY-j8E">
                                                     <rect key="frame" x="0.0" y="0.0" width="93.5" height="70"/>
-                                                    <state key="normal" title="Button"/>
                                                     <connections>
                                                         <action selector="clickItemAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="O7v-NR-cr1"/>
                                                     </connections>
@@ -173,7 +172,6 @@
                                                 </label>
                                                 <button opaque="NO" tag="40" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kD2-Cz-Qvx">
                                                     <rect key="frame" x="0.0" y="0.0" width="93.5" height="70"/>
-                                                    <state key="normal" title="Button"/>
                                                     <connections>
                                                         <action selector="clickItemAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="rQI-TX-0Zu"/>
                                                     </connections>

@@ -349,7 +349,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 *stop = YES;
             }
             [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
-            [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:contactM.userName userAddress:contactM.userAddress];
+            [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:contactM.userName userAddress:contactM.userAddress date:[NSDate date]];
         }];
         if (!isEmail) {
             [self.view showHint:@"To: Not a valid email address"];
@@ -366,7 +366,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 *stop = YES;
             }
             [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
-            [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:contactM.userName userAddress:contactM.userAddress];
+            [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:contactM.userName userAddress:contactM.userAddress date:[NSDate date]];
         }];
         if (!isEmail) {
             [self.view showHint:@"Cc: Not a valid email address"];
@@ -383,7 +383,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 *stop = YES;
             }
             [emails addObject:[[contactM.userAddress lowercaseString] base64EncodedString]];
-            [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:contactM.userName userAddress:contactM.userAddress];
+            [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:contactM.userName userAddress:contactM.userAddress date:[NSDate date]];
         }];
         if (!isEmail) {
             [self.view showHint:@"Bcc: Not a valid email address"];
