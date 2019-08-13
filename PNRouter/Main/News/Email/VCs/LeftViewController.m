@@ -403,14 +403,14 @@
     }];
     [self getFloaderEmailCount];
     
-    MCOIMAPFetchFoldersOperation *imapFetchFolderOp = [EmailManage.sharedEmailManage.imapSeeion fetchAllFoldersOperation];
-    @weakify_self
-    [imapFetchFolderOp start:^(NSError * error, NSArray * folders) {
-        [folders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            MCOIMAPFolder *info = obj;
-            NSLog(@"path = %@,name= %@",info.path,[EmailManage.sharedEmailManage.imapSeeion.defaultNamespace componentsFromPath:info.path][0]);
-        }];
-    }];
+//    MCOIMAPFetchFoldersOperation *imapFetchFolderOp = [EmailManage.sharedEmailManage.imapSeeion fetchAllFoldersOperation];
+//    @weakify_self
+//    [imapFetchFolderOp start:^(NSError * error, NSArray * folders) {
+//        [folders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            MCOIMAPFolder *info = obj;
+//            NSLog(@"path = %@,name= %@",info.path,[EmailManage.sharedEmailManage.imapSeeion.defaultNamespace componentsFromPath:info.path][0]);
+//        }];
+//    }];
     
     
     /*
