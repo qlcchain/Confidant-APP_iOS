@@ -38,6 +38,7 @@
 
 // 请求超时时间
 #define REQEUST_TIME  20
+#define REQEUST_TIME_60  60
 #define RADIUS 3.0f
 #define BACK_TIME @"BACK_TIME"
 #define Bugly_AppID @"d22a5845f9"

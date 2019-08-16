@@ -22,7 +22,7 @@
 - (NSArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = @[@[@"QQMAILBOX",@"1"],@[@"QQmail",@"2"],@[@"163mail",@"3"],@[@"Gmail",@"4"]];
+        _dataArray = @[@[@"QQMAILBOX",@"1",@"email_icon_qqmailbox"],@[@"QQmail",@"2",@"email_icon_qq"],@[@"163mail",@"3",@"email_icon_163"],@[@"Gmail",@"4",@"email_icon_google"],@[@"Outlook、Hotmail、Live",@"5",@"email_icon_outlook"],@[@"iCloud",@"6",@"email_icon_icloud"]/*@[@"Yahoo!",@"7",@"email_icon_yahoo"],@[@"Other (IMAP)",@"0",@"email_icon_other"]*/];
     }
     return _dataArray;
 }
@@ -49,7 +49,7 @@
 {
     EmailOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailOptionCellResue];
     cell.lblName.text = self.dataArray[indexPath.row][0];
-    cell.headImgView.image = [UIImage imageNamed:self.dataArray[indexPath.row][0]];
+    cell.headImgView.image = [UIImage imageNamed:self.dataArray[indexPath.row][2]];
     return cell;
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

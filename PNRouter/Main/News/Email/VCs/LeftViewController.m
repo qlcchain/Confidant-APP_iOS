@@ -22,6 +22,8 @@
 #import "EmailDataBaseUtil.h"
 #import "UserConfig.h"
 #import "PNEmailEditViewController.h"
+#import "PNEmailConfigViewController.h"
+
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *menuBackView;
 @property (weak, nonatomic) IBOutlet UITableView *mainTabView;
@@ -75,6 +77,8 @@
             [_emailFolders addObject:model];
         }
     }
+    
+    
     return _emailFolders;
 }
 - (NSMutableArray *) messageDataArray
@@ -138,6 +142,10 @@
         if (section == 2) {
             if (self.emails.count == 0) {
                 return 0;
+            }
+            EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
+            if (accountModel && accountModel.Type == 6) {
+                return 3;
             }
             return self.emailFolders.count;
         }
@@ -279,8 +287,13 @@
             @weakify_self
             [vc setClickRowBlock:^(PNBaseViewController * _Nonnull vc, NSArray * _Nonnull arr) {
                 [vc dismissViewControllerAnimated:NO completion:nil];
-                PNEmailLoginViewController *loginVC  = [[PNEmailLoginViewController alloc] initWithEmailType:[arr[1] intValue] optionType:LoginEmail];
-                [weakSelf presentModalVC:loginVC animated:YES];
+                if ([arr[1] intValue] == 0) {
+                    PNEmailConfigViewController *vc = [[PNEmailConfigViewController alloc] init];
+                    [weakSelf presentModalVC:vc animated:YES];
+                } else {
+                    PNEmailLoginViewController *loginVC  = [[PNEmailLoginViewController alloc] initWithEmailType:[arr[1] intValue] optionType:LoginEmail];
+                    [weakSelf presentModalVC:loginVC animated:YES];
+                }
             }];
         }
     } else if (indexPath.section == 2) {
@@ -307,7 +320,7 @@
                 accountModel.isConnect = YES;
                 [EmailAccountModel updateEmailAccountConnectStatus:accountModel];
                 // 拉取文件夹
-                [self pullFloder];
+                [self emailLoginSuccessNoti:nil];
             }
             
         }
@@ -318,6 +331,11 @@
 #pragma mark -----------通知回调----------
 - (void) emailLoginSuccessNoti:(NSNotification *) noti
 {
+    [self.emailFolders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FloderModel *model = obj;
+        model.count = 0;
+    }];
+    [_mainTabView reloadData];
     [self pullFloder];
 }
 - (void) emailFalgsChangeSuccessNoti:(NSNotification *) noti
@@ -383,15 +401,31 @@
         imapSession.connectionType = accountModel.connectionType;
         EmailManage.sharedEmailManage.imapSeeion = imapSession;
         
+        
         MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
-        smtpSession.hostname = [accountModel.hostname stringByReplacingOccurrencesOfString:@"imap" withString:@"smtp"];
-        smtpSession.port = 465;
-        smtpSession.username = accountModel.User;;
+        if (accountModel.smtpHostname && accountModel.smtpHostname.length > 0) {
+            smtpSession.hostname = accountModel.smtpHostname;
+        } else {
+            smtpSession.hostname = [accountModel.hostname stringByReplacingOccurrencesOfString:@"imap" withString:@"smtp"];
+        }
+        if (accountModel.smtpPort > 0) {
+            smtpSession.port = accountModel.smtpPort;
+        } else {
+            smtpSession.port =  465;
+        }
+        smtpSession.username = accountModel.User;
         smtpSession.password = accountModel.UserPass;
-        smtpSession.connectionType = accountModel.connectionType;
+        if (accountModel.smtpConnectionType > 0) {
+            smtpSession.connectionType = accountModel.smtpConnectionType;
+        } else {
+            smtpSession.connectionType = accountModel.connectionType;
+        }
+        
         smtpSession.authType = MCOAuthTypeSASLLogin;
         smtpSession.timeout = 60.0;
         EmailManage.sharedEmailManage.smtpSession = smtpSession;
+        
+       
     }
     
     // 获取email 文件夹配置
@@ -464,8 +498,15 @@
 
 - (void) getFloaderEmailCount
 {
+    
+    
+    
     // check 节点邮箱数量
     EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
+    
+    // 获取email 文件夹配置
+   // NSDictionary *floderDic = [EmailFloderConfig getFloderConfigWithEmailType:accountModel.Type];
+    
     _editBtn.hidden = accountModel? NO:YES;
     if (accountModel) {
         @weakify_self
@@ -479,7 +520,7 @@
                 [model.folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
                     finshCount++;
                     model.count = info.messageCount;
-                    if (finshCount == 5) {
+                    if (finshCount == 5 || (accountModel.Type == 6)) {
                         [weakSelf.mainTabView reloadData];
                     }
                 }];

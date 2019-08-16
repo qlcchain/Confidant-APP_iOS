@@ -16,6 +16,7 @@
 NSString const *kInitVector = @"AABBCCDDEEFFGGHH";
 size_t const kKeySize = kCCKeySizeAES128;
 
+
 NSData * cipherOperation(NSData *contentData, NSData *keyData, CCOperation operation) {
     NSUInteger dataLength = contentData.length;
     
@@ -106,3 +107,22 @@ NSData * aesDecryptData(NSData *contentData, NSData *keyData) {
     NSCAssert(keyData.length == kKeySize, hint);
     return cipherOperation(contentData, keyData, kCCDecrypt);
 }
+
+
+
+NSString * aes32EncryptString(NSString *content, NSString *key) {
+    if (!content || [content isEmptyString] || key.length !=32) {
+        return @"";
+    }
+    NSCParameterAssert(content);
+    NSCParameterAssert(key);
+    
+    NSData *contentData = [content dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *encrptedData = aesEncryptData(contentData, keyData);
+    return [encrptedData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+}
+NSString * aes32DecryptString(NSString *content, NSString *key);
+
+NSData * aes32EncryptData(NSData *data, NSData *key);
+NSData * aes32DecryptData(NSData *data, NSData *key);

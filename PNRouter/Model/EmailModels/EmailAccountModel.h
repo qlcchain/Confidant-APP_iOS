@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EmailAccountModel : BBaseModel
 
+@property (nonatomic , strong) NSString *userName;
 @property (nonatomic , strong) NSString *User;
 @property (nonatomic , strong) NSString *hostname;
 @property (nonatomic , assign) int port;
@@ -20,6 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) NSString *UserPass;
 @property (nonatomic , assign) int Type;
 @property (nonatomic , assign) BOOL isConnect;
+
+
+@property (nonatomic , assign) int smtpPort;
+@property (nonatomic , strong) NSString *smtpHostname;
+@property (nonatomic ,assign) int smtpConnectionType;
+@property (nonatomic , strong) NSString *smtpUserName;
+@property (nonatomic , strong) NSString *smtpUserPass;
 
 + (NSArray *) getLocalAllEmailAccounts;
 + (EmailAccountModel *) getConnectEmailAccount;

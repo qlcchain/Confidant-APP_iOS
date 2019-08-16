@@ -697,7 +697,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.view endEditing:YES];
-            [AppD.window showHint:@"Denied or Restricted"];
+             [AppD.window showHint:@"Please allow access to album in \"Settings - privacy - album\" of iPhone"];
         });
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{

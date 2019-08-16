@@ -92,7 +92,7 @@
     // 配置IQKeyboardManager
     [self keyboardManagerConfig];
     // 配置DDLog
-  //  [self configDDLog];
+    [self configDDLog];
     // 配置聊天
     [self configChat];
     // 打开时改变文件上传下载状态
