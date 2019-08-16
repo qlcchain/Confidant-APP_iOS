@@ -48,11 +48,18 @@
 
 #import "EmailDataBaseUtil.h"
 
+#import "PNEmailContactView.h"
+
+#import <IQKeyboardManager/IQKeyboardManager.h>
+
 @interface PNEmailSendViewController ()<UITextViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate,YBImageBrowserDelegate,UIWebViewDelegate>
 {
     YBImageBrowser *browser;
 }
+
+@property (nonatomic, strong) PNEmailContactView *contactView;
+
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UITextView *toTF;
@@ -81,11 +88,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *webH;
 @property (weak, nonatomic) IBOutlet UIWebView *myWebView;
 
+@property (nonatomic, strong) NSMutableArray *contactArray;
+
 @property (nonatomic, strong) NSMutableArray *toContacts;
 @property (nonatomic, strong) NSMutableArray *ccContacts;
 @property (nonatomic, strong) NSMutableArray *bccContacts;
     @property (weak, nonatomic) IBOutlet UIImageView *lockImgView;
-    
+@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
+
 @property (nonatomic ,strong) UITextView *selTextView;
 
 @property (nonatomic, strong) NSMutableArray *attchArray;
@@ -107,11 +117,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = NO;
    // [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self.view endEditing:YES];
+    [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = YES;
     [super viewWillDisappear:animated];
     
    //[IQKeyboardManager sharedManager].enableAutoToolbar = YES;
@@ -392,7 +404,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
     if (emails.count <= 30) {
         self.isSend = YES;
-        [self.view showHudInView:self.view hint:@"Sending…" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [self.view showHudInView:self.view hint:@"Sending…" userInteractionEnabled:NO hideTime:REQEUST_TIME_60];
         NSString *emailStrings = [emails componentsJoinedByString:@","];
         [SendRequestUtil sendEmailUserkeyWithUsers:emailStrings unum:@(emails.count) ShowHud:NO];
     } else {
@@ -463,7 +475,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
     @weakify_self
     if (isLoading) {
-         [self.view showHudInView:self.view hint:@"Sending…"];
+         [self.view showHudInView:self.view hint:@"Sending…" userInteractionEnabled:NO hideTime:REQEUST_TIME_60];
     }
     [SIXHTMLParser htmlStringWithAttributedText:_contentTF.attributedText
                                     orignalHtml:@""
@@ -578,6 +590,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     _subTF.layoutManager.allowsNonContiguousLayout = NO;
     _contentTF.layoutManager.allowsNonContiguousLayout = NO;
 
+     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     
     _contentTF.editable = YES;
     if (@available(iOS 11.0, *)) {
@@ -618,7 +631,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
     if (_sendType == ReplyEmail) {
         
-       
         _lblTitle.text = [NSString stringWithFormat:@"Re: %@",self.emailInfo.fromName];
         
         // 更新 to 联系人
@@ -627,10 +639,72 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         contactM.userAddress = self.emailInfo.From;
         [self.toContacts addObject:contactM];
         
-        NSString *insertString = [NSString stringWithFormat:kContactFormat,contactM.userName];
-        _toTF.text = insertString;
+       __block NSString *toNames = [NSString stringWithFormat:kContactFormat,contactM.userName];
+        
+        if (self.emailInfo.toUserArray) {
+            @weakify_self
+            [self.emailInfo.toUserArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                
+                EmailUserModel *userM = obj;
+                NSComparisonResult resultCompare = [userM.userAddress caseInsensitiveCompare:accountM.User];
+                if (resultCompare != NSOrderedSame) {
+                    EmailContactModel *cotactM = [[EmailContactModel alloc] init];
+                    cotactM.userName = userM.userName;
+                    cotactM.userAddress = userM.userAddress;
+                    [weakSelf.toContacts addObject:cotactM];
+                    
+                    toNames = [toNames stringByAppendingString:[NSString stringWithFormat:kContactFormat,userM.userName]];
+                }
+            }];
+        }
+        _toTF.text = toNames;
         // 更新高度
         [self textDidChange:_toTF];
+        
+        // cc
+        if (self.emailInfo.ccUserArray && self.emailInfo.ccUserArray.count > 0) {
+            __block NSString *ccNames = @"";
+            @weakify_self
+            [self.emailInfo.ccUserArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                
+                EmailUserModel *userM = obj;
+                NSComparisonResult resultCompare = [userM.userAddress caseInsensitiveCompare:accountM.User];
+                if (resultCompare != NSOrderedSame) {
+                    EmailContactModel *cotactM = [[EmailContactModel alloc] init];
+                    cotactM.userName = userM.userName;
+                    cotactM.userAddress = userM.userAddress;
+                    [weakSelf.ccContacts addObject:cotactM];
+                    
+                    ccNames = [ccNames stringByAppendingString:[NSString stringWithFormat:kContactFormat,userM.userName]];
+                }
+            }];
+            _ccTF.text = ccNames;
+            // 更新高度
+            [self textDidChange:_ccTF];
+        }
+        
+        // bcc
+        if (self.emailInfo.bccUserArray && self.emailInfo.bccUserArray.count > 0) {
+            __block NSString *bccNames = @"";
+            @weakify_self
+            [self.emailInfo.bccUserArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                
+                EmailUserModel *userM = obj;
+                NSComparisonResult resultCompare = [userM.userAddress caseInsensitiveCompare:accountM.User];
+                if (resultCompare != NSOrderedSame) {
+                    EmailContactModel *cotactM = [[EmailContactModel alloc] init];
+                    cotactM.userName = userM.userName;
+                    cotactM.userAddress = userM.userAddress;
+                    [weakSelf.bccContacts addObject:cotactM];
+                    
+                    bccNames = [bccNames stringByAppendingString:[NSString stringWithFormat:kContactFormat,userM.userName]];
+                }
+            }];
+            _bccTF.text = bccNames;
+            // 更新高度
+            [self textDidChange:_bccTF];
+        }
+       
         
         // 更新标题
         if (self.emailInfo.Subject && [self.emailInfo.Subject containsString:@"Re:"]) {
@@ -774,6 +848,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         _sendBtn.enabled = NO;
     }
     
+    @weakify_self
+    [EmailContactModel bg_findAsync:EMAIL_CONTACT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"user"),bg_sqlValue(accountM.User)] complete:^(NSArray * _Nullable array) {
+        [weakSelf.contactArray addObjectsFromArray:array];
+    }];
+    
 }
 
 - (void) contentTFLoadData:(NSString *) htmlString
@@ -804,12 +883,75 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 #pragma mark -----------layz----------------
+- (PNEmailContactView *)contactView
+{
+    if (!_contactView) {
+        _contactView = [PNEmailContactView loadPNEmailContactView];
+        _contactView.hidden = YES;
+        [self.view addSubview:_contactView];
+        
+        @weakify_self
+        [_contactView setContactBlock:^(EmailContactModel * _Nonnull contactModel) {
+            
+           weakSelf.contactView.hidden = YES;
+           
+            NSMutableArray *tempArray = nil;
+            if (weakSelf.selContactType == 1) {
+                tempArray = weakSelf.toContacts;
+                
+            } else if (weakSelf.selContactType == 2) {
+                tempArray = weakSelf.ccContacts;
+                
+            } else {
+                tempArray = weakSelf.bccContacts;
+            }
+            
+            // 删除原有内容
+           NSArray *kcfArray = [weakSelf.selTextView.text componentsSeparatedByString:kCFormat];
+            NSMutableArray *kcfMutArray = [NSMutableArray arrayWithArray:kcfArray];
+            [kcfMutArray removeLastObject];
+            
+            NSString *textString = @"";
+            if (kcfMutArray.count > 0) {
+                textString = [kcfMutArray componentsJoinedByString:kCFormat];
+                textString = [textString stringByAppendingString:kCFormat];
+            }
+            weakSelf.selTextView.text = textString;
+            
+            __block BOOL isExit = NO;
+            [tempArray enumerateObjectsUsingBlock:^(EmailContactModel *obj1, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([contactModel.userAddress isEqualToString:obj1.userAddress]) {
+                    isExit = YES;
+                    *stop = YES;
+                }
+            }];
+            if (!isExit) {
+                NSInteger insertIndex = weakSelf.selTextView.text.length;
+                NSString *insertString = [NSString stringWithFormat:kContactFormat,contactModel.userName];
+                NSMutableString *string = [NSMutableString stringWithString:weakSelf.selTextView.text];
+                [string insertString:insertString atIndex:insertIndex];
+                weakSelf.selTextView.text = string;
+                // 更新高度
+                [weakSelf textDidChange:weakSelf.selTextView];
+                [tempArray addObject:contactModel];
+            }
+        }];
+    }
+    return _contactView;
+}
 - (NSMutableArray *)toContacts
 {
     if (!_toContacts) {
         _toContacts = [NSMutableArray array];
     }
     return _toContacts;
+}
+- (NSMutableArray *)contactArray
+{
+    if (!_contactArray) {
+        _contactArray = [NSMutableArray array];
+    }
+    return _contactArray;
 }
 - (NSMutableArray *)ccContacts
 {
@@ -869,7 +1011,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             tempArray = self.bccContacts;
         }
         [tempArray enumerateObjectsUsingBlock:^(EmailContactModel *obj1, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([obj.userName isEqualToString:obj1.userName]) {
+            if ([obj.userAddress isEqualToString:obj1.userAddress]) {
                 isExit = YES;
                 *stop = YES;
             }
@@ -964,7 +1106,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         __block BOOL isExit = NO;
         [tempArray enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([toAddress isEqualToString:obj.userName]) {
+            if ([toAddress isEqualToString:obj.userAddress]) {
                 isExit = YES;
                 *stop = YES;
             }
@@ -1005,6 +1147,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
      if (textView == _toTF || textView == _ccTF || textView == _bccTF) {
+         
+         self.contactView.hidden = YES;
+         _mainScrollView.scrollEnabled = YES;
+         
          [self textFormatWithTextView:textView];
          [self checkIsEncode];
      }
@@ -1021,11 +1167,73 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         _sendBtn.enabled = NO;
     }
     [self textDidChange:textView];
+    
+    
+    if (textView == _ccTF || textView == _toTF || textView == _bccTF) {
+        NSString *textStr = textView.text.trim;
+        if (textStr && textStr.length > 0) {
+            if (self.contactArray.count > 0) {
+                textStr = [[textStr componentsSeparatedByString:kCFormat] lastObject];
+                __block NSMutableArray *tempArr = [NSMutableArray array];
+                [self.contactArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    EmailContactModel *model = obj;
+                    NSString *userName = [model.userName lowercaseString];
+                    NSString *userAddress = [model.userAddress lowercaseString];
+                    
+                    if ([userName containsString:[textStr lowercaseString]] || [userAddress containsString:[textStr lowercaseString]]) {
+                        [tempArr addObject:model];
+                    }
+                }];
+                
+                if (tempArr.count > 0) {
+                    
+                    CGFloat contentY = 0;
+                    CGFloat currentTFH = 0;
+                    
+                    if (textView == _ccTF) {
+                        self.selContactType = 2;
+                        self.selTextView = _ccTF;
+                        currentTFH = _ccTFH.constant+22;
+                        contentY = _toTFH.constant+22;
+                        [_mainScrollView setContentOffset:CGPointMake(0,contentY) animated:NO];
+                    } else if (textView == _bccTF) {
+                        self.selContactType = 3;
+                        self.selTextView = _bccTF;
+                        currentTFH = _bccTFH.constant+22;
+                        contentY = _ccTFH.constant+22+_toTFH.constant+22;
+                        [_mainScrollView setContentOffset:CGPointMake(0,contentY ) animated:NO];
+                    } else {
+                        self.selContactType = 1;
+                        self.selTextView = _toTF;
+                        currentTFH = _toTFH.constant+22;
+                        [_mainScrollView setContentOffset:CGPointMake(0, contentY) animated:NO];
+                    }
+                    self.contactView.hidden = NO;
+                    self.contactView.frame = CGRectMake(0, NAVIGATION_BAR_HEIGHT+currentTFH, SCREEN_WIDTH, SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT-currentTFH);
+                    _mainScrollView.scrollEnabled = NO;
+                    [self.contactView setLoadDataArray:tempArr];
+                    
+                } else {
+                    self.contactView.hidden = YES;
+                    _mainScrollView.scrollEnabled = YES;
+                }
+            }
+            
+        } else {
+            self.contactView.hidden = YES;
+            _mainScrollView.scrollEnabled = YES;
+        }
+    }
+    
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     
     if (textView == _toTF || textView == _ccTF || textView == _bccTF) {
         if ([text isEqualToString:@"\n"]) { // 点击return时
+            
+            self.contactView.hidden = YES;
+            _mainScrollView.scrollEnabled = YES;
+            
             [self textFormatWithTextView:textView];
             [self checkIsEncode];
             return NO;
@@ -1069,10 +1277,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     NSRange matchMange = [valueRange rangeValue];
                     NSRange newRange = NSMakeRange(matchMange.location, matchMange.length+1);
                     
-                    if (NSLocationInRange(range.location, newRange))
+                    if (NSLocationInRange(range.location, newRange) && newRange.length+newRange.location <= string.length)
                     {
                         inAt = YES;
                         index = matchMange.location;
+                        
                         [string replaceCharactersInRange:newRange withString:@""];
                         [tempArray removeObject:atModel];
                         break;
@@ -1391,7 +1600,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (status == AVAuthorizationStatusRestricted || status == AVAuthorizationStatusDenied)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [AppD.window showHint:@"Denied or Restricted"];
+             [AppD.window showHint:@"Please allow access to album in \"Settings - privacy - album\" of iPhone"];
         });
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{

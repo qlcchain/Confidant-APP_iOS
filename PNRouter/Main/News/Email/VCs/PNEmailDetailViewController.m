@@ -395,7 +395,10 @@
                         }
                     }];
                 } else if (row == 2) { // 保存节点
-                    [weakSelf saveEmailToNode];
+                    if ([SystemUtil isSocketConnect]) {
+                         [weakSelf saveEmailToNode];
+                    }
+                   
                 } else if (row == 3) { // 移动to
                     
                     PNEmailMoveViewController *vc = [[PNEmailMoveViewController alloc] initWithFloderPath:weakSelf.emailInfo.floderPath uid:weakSelf.emailInfo.uid];
@@ -449,7 +452,9 @@
             }
         }];
     } else {
-        [self saveEmailToNode];
+        if ([SystemUtil isSocketConnect]) {
+            [self saveEmailToNode];
+        }
     }
 }
 
@@ -985,7 +990,7 @@
         // 公钥加密 json
         jsonString = aesEncryptString(jsonString, [self.msgKey substringToIndex:16]);
         
-        [SendRequestUtil sendEmailFileWithFileid:results[1] fileSize:results[2] fileMd5:results[3] mailInfo:jsonString srcKey:self.srcKey uid:@(self.emailInfo.uid)  ShowHud:NO];
+        [SendRequestUtil sendEmailFileWithFileid:results[1] fileSize:results[2] fileMd5:results[3] mailInfo:jsonString srcKey:self.srcKey uid:[NSString stringWithFormat:@"%@_%d",self.emailInfo.floderName,self.emailInfo.uid]  ShowHud:NO];
         
     } else { // 失败
         [AppD.window hideHud];
@@ -999,6 +1004,8 @@
     NSInteger retCode = [dic[@"RetCode"] integerValue];
     if (retCode == 0) {
         [AppD.window showSuccessHudInView:AppD.window hint:@"Success."];
+    } else if (retCode == 1) {
+        [AppD.window showFaieldHudInView:AppD.window hint:@"This email is backed up"];
     } else {
         [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Upload"];
     }

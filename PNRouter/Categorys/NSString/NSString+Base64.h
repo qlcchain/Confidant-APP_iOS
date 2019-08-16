@@ -14,4 +14,5 @@
 - (NSString *)base64EncodedString;
 - (NSString *)base64DecodedString;
 - (NSData *)base64DecodedData;
++ (NSString *)base64StringFromData:(NSData *)data length:(NSUInteger)length;
 @end

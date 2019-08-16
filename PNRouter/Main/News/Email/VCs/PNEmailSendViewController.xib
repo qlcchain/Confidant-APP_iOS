@@ -26,6 +26,7 @@
                 <outlet property="lblSend" destination="bCB-Gg-BON" id="lzg-Mv-DU4"/>
                 <outlet property="lblTitle" destination="rvJ-IL-QVy" id="Lbz-Od-dZK"/>
                 <outlet property="lockImgView" destination="KSa-eS-PHf" id="tVC-O2-KBE"/>
+                <outlet property="mainScrollView" destination="Ta7-Bw-fBl" id="qPh-wN-vKK"/>
                 <outlet property="myWebView" destination="pDS-4v-ENt" id="qtE-LU-jq7"/>
                 <outlet property="sendBtn" destination="IOa-5D-zZP" id="oZl-2c-cG2"/>
                 <outlet property="subContraintH" destination="Vn0-H5-BjE" id="qiB-cg-WBi"/>

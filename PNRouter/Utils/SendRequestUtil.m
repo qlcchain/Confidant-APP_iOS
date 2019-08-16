@@ -471,17 +471,17 @@
 }
 
 //------------------------email ----------------------
-+ (void) sendEmailFileWithFileid:(NSString *) fileid fileSize:(NSNumber *) fileSize fileMd5:(NSString *) fileMd5 mailInfo:(NSString *) mailInfo srcKey:(NSString *) srcKey uid:(NSNumber *) uid ShowHud:(BOOL) showHud
++ (void) sendEmailFileWithFileid:(NSString *) fileid fileSize:(NSNumber *) fileSize fileMd5:(NSString *) fileMd5 mailInfo:(NSString *) mailInfo srcKey:(NSString *) srcKey uid:(NSString *) uid ShowHud:(BOOL) showHud
 {
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:Uploading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
-    
     NSDictionary *params = @{@"Action":Action_BakupEmail,@"Type":@(accountM.Type),@"FileId":fileid,@"FileSize":fileSize,@"FileMd5":fileMd5,@"User":[accountM.User base64EncodedString],@"UserKey":srcKey?:@"",@"MailInfo":mailInfo?:@"",@"Uuid":uid};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
+
 + (void) sendEmailConfigWithEmailAddress:(NSString *) address type:(NSNumber *) type configJson:(NSString *) configJosn ShowHud:(BOOL) showHud
 {
     if (showHud) {

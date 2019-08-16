@@ -12,4 +12,5 @@
 + (NSData *)dataWithBase64EncodedString:(NSString *)string;
 - (NSString *)base64EncodedStringWithWrapWidth:(NSUInteger)wrapWidth;
 - (NSString *)base64EncodedString;
++ (NSData *)base64DataFromString:(NSString *)string;
 @end

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MailCore/MailCore.h>
+#import <SWTableViewCell/SWTableViewCell.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,7 +16,7 @@ static NSString *EmailListCellResue = @"EmailListCell";
 #define EmailListCellHeight 96
 
 
-@interface EmailListCell : UITableViewCell
+@interface EmailListCell : SWTableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblTtile;
 @property (weak, nonatomic) IBOutlet UILabel *lblSubTitle;

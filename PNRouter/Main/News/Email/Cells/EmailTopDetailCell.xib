@@ -61,14 +61,18 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Abby Moran" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEo-vv-dXd">
                                         <rect key="frame" x="56" y="24" width="77" height="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17" id="FDi-yZ-Mfa"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67450980390000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SNY-JK-4LL">
-                                        <rect key="frame" x="244" y="3" width="44" height="41"/>
+                                        <rect key="frame" x="244" y="12.5" width="44" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="3kp-WR-ACX"/>
+                                            <constraint firstAttribute="height" constant="40" id="l3M-j1-ijr"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <state key="normal" title="Details">
@@ -81,16 +85,15 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="SNY-JK-4LL" firstAttribute="centerY" secondItem="wEo-vv-dXd" secondAttribute="centerY" id="0BI-V4-z3g"/>
                                     <constraint firstAttribute="bottom" secondItem="bhN-Qq-u8R" secondAttribute="bottom" id="0OZ-qx-E6M"/>
                                     <constraint firstItem="CXO-Kt-uFQ" firstAttribute="centerY" secondItem="v4f-ms-oHv" secondAttribute="centerY" id="1Hf-ih-wAF"/>
                                     <constraint firstItem="bhN-Qq-u8R" firstAttribute="top" secondItem="j68-QE-e7g" secondAttribute="top" id="7uR-XZ-bG7"/>
                                     <constraint firstItem="v4f-ms-oHv" firstAttribute="top" secondItem="j68-QE-e7g" secondAttribute="top" constant="3" id="9Ic-Wv-hIt"/>
                                     <constraint firstAttribute="height" constant="44" id="FKu-WQ-XUO"/>
-                                    <constraint firstItem="SNY-JK-4LL" firstAttribute="top" secondItem="j68-QE-e7g" secondAttribute="top" constant="3" id="HH5-Ml-OnW"/>
                                     <constraint firstItem="CXO-Kt-uFQ" firstAttribute="leading" secondItem="v4f-ms-oHv" secondAttribute="trailing" constant="8" id="IXh-Gt-Azd"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CXO-Kt-uFQ" secondAttribute="trailing" id="MRZ-I9-o15"/>
                                     <constraint firstItem="bhN-Qq-u8R" firstAttribute="leading" secondItem="j68-QE-e7g" secondAttribute="leading" id="VAy-5P-ghM"/>
-                                    <constraint firstAttribute="bottom" secondItem="SNY-JK-4LL" secondAttribute="bottom" id="bCd-SA-Z6m"/>
                                     <constraint firstAttribute="trailing" secondItem="SNY-JK-4LL" secondAttribute="trailing" id="bpj-9O-K81"/>
                                     <constraint firstItem="v4f-ms-oHv" firstAttribute="leading" secondItem="bhN-Qq-u8R" secondAttribute="trailing" constant="12" id="paN-KK-I34"/>
                                     <constraint firstAttribute="bottom" secondItem="wEo-vv-dXd" secondAttribute="bottom" constant="3" id="pqY-Ly-oVu"/>
@@ -139,7 +142,7 @@
                 <outlet property="lblToName" destination="wEo-vv-dXd" id="7Ct-yd-12V"/>
                 <outlet property="lineView" destination="gFt-0f-756" id="m3p-7K-QbT"/>
             </connections>
-            <point key="canvasLocation" x="-162.31884057971016" y="71.316964285714278"/>
+            <point key="canvasLocation" x="-252.17391304347828" y="60.9375"/>
         </tableViewCell>
     </objects>
     <resources>
