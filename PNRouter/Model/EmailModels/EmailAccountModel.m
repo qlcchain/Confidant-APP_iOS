@@ -104,7 +104,7 @@ static NSString *emailKey = @"emailKey_arr";
     [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         EmailAccountModel *model = [EmailAccountModel getObjectWithKeyValues:obj];
         if ([model.User isEqualToString:accountModel.User]) {
-            model.isConnect = accountModel.isConnect;
+            model.isConnect = YES;
         } else {
             model.isConnect = NO;
         }

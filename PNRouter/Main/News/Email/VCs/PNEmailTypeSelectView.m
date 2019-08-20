@@ -22,7 +22,7 @@
 - (NSArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = @[@[@"QQMAILBOX",@"1",@"email_icon_qqmailbox"],@[@"QQmail",@"2",@"email_icon_qq"],@[@"163mail",@"3",@"email_icon_163"],@[@"Gmail",@"4",@"email_icon_google"],@[@"Outlook、Hotmail、Live",@"5",@"email_icon_outlook"],@[@"iCloud",@"6",@"email_icon_icloud"]/*@[@"Yahoo!",@"7",@"email_icon_yahoo"],@[@"Other (IMAP)",@"0",@"email_icon_other"]*/];
+        _dataArray = @[@[@"QQMAILBOX",@"1",@"email_icon_qqmailbox"],@[@"QQmail",@"2",@"email_icon_qq"],@[@"163mail",@"3",@"email_icon_163"],@[@"Gmail",@"4",@"email_icon_google"],@[@"Outlook、Hotmail、Live",@"5",@"email_icon_outlook"],@[@"iCloud",@"6",@"email_icon_icloud"]/*@[@"Yahoo!",@"7",@"email_icon_yahoo"]*/,@[@"Other (IMAP)",@"255",@"email_icon_other"]];
     }
     return _dataArray;
 }

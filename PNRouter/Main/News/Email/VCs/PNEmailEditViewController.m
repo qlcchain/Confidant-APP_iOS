@@ -11,6 +11,7 @@
 #import "LogOutCell.h"
 #import "MyCell.h"
 #import "PNEmailLoginViewController.h"
+#import "PNEmailConfigViewController.h"
 #import "SystemUtil.h"
 
 
@@ -40,7 +41,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_WHITE_COLOR;
    
-    NSDictionary *typeNameDic = @{@"1":@"QQMAILBOX",@"2":@"QQmail",@"3":@"163mail",@"4":@"Gmail"};
+    NSDictionary *typeNameDic = @{@"1":@"email_icon_qqmailbox",@"2":@"email_icon_qq",@"3":@"email_icon_163",@"4":@"email_icon_google",@"5":@"email_icon_outlook",@"6":@"email_icon_icloud",@"255":@"email_icon_other"};
     
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     NSString *imgkey = [NSString stringWithFormat:@"%d",accountM.Type];
@@ -101,8 +102,14 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
-    PNEmailLoginViewController *vc = [[PNEmailLoginViewController alloc] initWithEmailType:accountM.Type optionType:ConfigEmail];
-    [self presentModalVC:vc animated:YES];
+    if (accountM.Type == 255) {
+        PNEmailConfigViewController *vc = [[PNEmailConfigViewController alloc] initWithIsEdit:YES];
+        [self presentModalVC:vc animated:YES];
+    } else {
+        PNEmailLoginViewController *vc = [[PNEmailLoginViewController alloc] initWithEmailType:accountM.Type optionType:ConfigEmail];
+        [self presentModalVC:vc animated:YES];
+    }
+    
 }
 
 // 删除邮件

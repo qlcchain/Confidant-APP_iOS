@@ -7,11 +7,9 @@
 //
 
 #import "PNBaseViewController.h"
-
 NS_ASSUME_NONNULL_BEGIN
-
 @interface PNEmailConfigViewController : PNBaseViewController
-
+- (instancetype) initWithIsEdit:(BOOL) isEdit;
 @end
 
 NS_ASSUME_NONNULL_END

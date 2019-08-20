@@ -67,6 +67,7 @@
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate> {
     BOOL isSearch;
     BOOL isRequestFloderCount;
+    int startId;
     NSInteger selEmailRow;
     NSInteger selMessageRow;
 }
@@ -1035,6 +1036,7 @@
 - (void) emailAccountChangeNoti:(NSNotification *) noti
 {
     _emailTabView.mj_header.hidden = NO;
+    [self.view hideHud];
     [self firstPullEmailList];
 }
 - (void) pullEmailNoti:(NSNotification *) noti
@@ -1042,50 +1044,62 @@
     NSDictionary *dic = noti.object;
     NSInteger retCode = [dic[@"RetCode"] integerValue];
     if (retCode == 0) {
-        
         @weakify_self
         NSArray *Payloads = dic[@"Payload"];
-        [Payloads enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSDictionary *payloadDic = obj;
-            NSString *dsKey = payloadDic[@"Userkey"]?:@"";
-            
-            NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:dsKey];
-            if (datakey && datakey.length >= 16) {
-                
-                datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-                
-                NSString *emialJosn = aesDecryptString(payloadDic[@"MailInfo"], datakey);
-                EmailNodeModel *nodeM = [EmailNodeModel getObjectWithKeyValues:[emialJosn mj_JSONObject]];
-                EmailListInfo *emailM = [[EmailListInfo alloc] init];
-                emailM.Read = (int)nodeM.flags;
-                emailM.attachCount = (int)nodeM.attchCount;
-                emailM.Subject = nodeM.subTitle;
-                emailM.fromName = nodeM.fromName;
-                emailM.From = nodeM.fromEmailBox;
-                emailM.content = nodeM.content;
-                emailM.revDate = [NSDate dateWithTimeIntervalSince1970:nodeM.revDate];
-                emailM.EmailPath = payloadDic[@"EmailPath"]?:@"";
-                emailM.uid = [payloadDic[@"Id"] intValue];
-                emailM.deKey = datakey;
-                
-                if (nodeM.toUserJosn && nodeM.toUserJosn.length > 0) {
-                    NSArray *tojs = [nodeM.toUserJosn mj_JSONObject];
-                    emailM.toUserArray = [EmailUserModel mj_objectArrayWithKeyValuesArray:tojs];
-                }
-                if (nodeM.ccUserJosn && nodeM.ccUserJosn.length > 0) {
-                    NSArray *tojs = [nodeM.ccUserJosn mj_JSONObject];
-                    emailM.ccUserArray = [EmailUserModel mj_objectArrayWithKeyValuesArray:tojs];
-                }
-                if (nodeM.bccUserJosn && nodeM.bccUserJosn.length > 0) {
-                    NSArray *tojs = [nodeM.bccUserJosn mj_JSONObject];
-                    emailM.bccUserArray = [EmailUserModel mj_objectArrayWithKeyValuesArray:tojs];
-                }
-                [weakSelf.emailDataArray addObject:emailM];
+        if (Payloads && Payloads.count > 0) {
+            if (Payloads.count == 10) {
+                 self.emailTabView.mj_footer.hidden = NO;
+            } else {
+                [_emailTabView.mj_footer endRefreshing];
+                self.emailTabView.mj_footer.hidden = YES;
             }
-        }];
-        [self.emailTabView reloadData];
+            __block NSMutableArray *tempArray = [NSMutableArray arrayWithCapacity:Payloads.count];
+            [Payloads enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSDictionary *payloadDic = obj;
+                NSString *dsKey = payloadDic[@"Userkey"]?:@"";
+                
+                NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:dsKey];
+                if (datakey && datakey.length >= 16) {
+                    
+                    datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                    
+                    NSString *emialJosn = aesDecryptString(payloadDic[@"MailInfo"], datakey);
+                    EmailNodeModel *nodeM = [EmailNodeModel getObjectWithKeyValues:[emialJosn mj_JSONObject]];
+                    EmailListInfo *emailM = [[EmailListInfo alloc] init];
+                    emailM.Read = (int)nodeM.flags;
+                    emailM.attachCount = (int)nodeM.attchCount;
+                    emailM.Subject = nodeM.subTitle;
+                    emailM.fromName = nodeM.fromName;
+                    emailM.From = nodeM.fromEmailBox;
+                    emailM.content = nodeM.content;
+                    emailM.revDate = [NSDate dateWithTimeIntervalSince1970:nodeM.revDate];
+                    emailM.EmailPath = payloadDic[@"EmailPath"]?:@"";
+                    emailM.uid = [payloadDic[@"Id"] intValue];
+                    emailM.deKey = datakey;
+                    
+                    if (nodeM.toUserJosn && nodeM.toUserJosn.length > 0) {
+                        NSArray *tojs = [nodeM.toUserJosn mj_JSONObject];
+                        emailM.toUserArray = [EmailUserModel mj_objectArrayWithKeyValuesArray:tojs];
+                    }
+                    if (nodeM.ccUserJosn && nodeM.ccUserJosn.length > 0) {
+                        NSArray *tojs = [nodeM.ccUserJosn mj_JSONObject];
+                        emailM.ccUserArray = [EmailUserModel mj_objectArrayWithKeyValuesArray:tojs];
+                    }
+                    if (nodeM.bccUserJosn && nodeM.bccUserJosn.length > 0) {
+                        NSArray *tojs = [nodeM.bccUserJosn mj_JSONObject];
+                        emailM.bccUserArray = [EmailUserModel mj_objectArrayWithKeyValuesArray:tojs];
+                    }
+                    [tempArray addObject:emailM];
+                }
+            }];
+            [self.emailDataArray addObjectsFromArray:tempArray];
+            [self.emailTabView reloadData];
+        }
     } else {
         [self.view showHint:@"pull faield."];
+        if (startId == 0) {
+            [_emailTabView.mj_footer endRefreshing];
+        }
     }
 }
     
@@ -1213,13 +1227,32 @@
                 });
             }];
         } else if ([self.floderModel.name isEqualToString:Node_backed_up]){ // 节点邮件
-            [SendRequestUtil sendPullEmailWithStarid:@(0) num:@(50) showHud:YES];
+            
+            [self pullEmailList];
         }
     }
 }
 // 拉取邮件列表
 - (void) pullEmailList
 {
+    // 拉取节点邮件
+    if ([self.floderModel.name isEqualToString:Node_backed_up]) {
+        if (self.emailDataArray.count == 0) {
+            self.emailTabView.mj_footer.hidden = YES;
+            startId = 0;
+        } else {
+            EmailListInfo *emailM = [self.emailDataArray lastObject];
+            startId = emailM.uid;
+        }
+        if (startId == 0) {
+            [SendRequestUtil sendPullEmailWithStarid:@(startId) num:@(10) showHud:YES];
+        } else {
+            [SendRequestUtil sendPullEmailWithStarid:@(startId) num:@(10) showHud:NO];
+        }
+        
+        return;
+    }
+    
     if (_isRefresh) { // 上拉
         
     } else {
@@ -1250,15 +1283,9 @@
     
     uint64_t locationf = 1;
     uint64_t lengthf = 10;
-    if (_isRefresh) {
-        if (_maxUid == 0) {
-            lengthf = self.floderModel.count - self.currentEmailCount-1;
-            locationf = self.currentEmailCount+1;
-        } else {
-            lengthf = 9;
-            locationf = _maxUid+1;
-        }
-        
+    if (_isRefresh && _maxUid >0) {
+        lengthf = 9;
+        locationf = _maxUid+1;
     } else {
         CGFloat syCount = self.floderModel.count - self.emailDataArray.count;
         if (syCount > 10) {

@@ -89,7 +89,7 @@
 {
     //[EmailContactModel bg_drop:EMAIL_CONTACT_TABNAME];
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
-    NSArray *finfAlls = [EmailContactModel bg_find:EMAIL_CONTACT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"user"),bg_sqlValue(accountM.User)]];
+    NSArray *finfAlls = [EmailContactModel bg_find:EMAIL_CONTACT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"user"),bg_sqlValue(accountM.User),bg_sqlKey(@"userName"),bg_sqlValue(@"")]];
     if (finfAlls) {
         [self.emailContacts addObjectsFromArray:finfAlls];
         

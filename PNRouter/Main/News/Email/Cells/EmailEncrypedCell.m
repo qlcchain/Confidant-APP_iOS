@@ -1,25 +1,18 @@
 //
-//  EmailConfigCell.m
+//  EmailEncrypedCell.m
 //  PNRouter
 //
-//  Created by 旷自辉 on 2019/8/14.
+//  Created by 旷自辉 on 2019/8/19.
 //  Copyright © 2019 旷自辉. All rights reserved.
 //
 
-#import "EmailConfigCell.h"
+#import "EmailEncrypedCell.h"
 
-@implementation EmailConfigCell
+@implementation EmailEncrypedCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    _backView.layer.masksToBounds = YES;
-    _backView.layer.cornerRadius = 8.0f;
     // Initialization code
-}
-- (IBAction)clickButtonAction:(id)sender {
-    if (_backBlock) {
-        _backBlock(self.tag);
-    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

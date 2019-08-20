@@ -12,6 +12,8 @@
 #import "EmailManage.h"
 #import "NSString+Trim.h"
 #import "NSString+RegexCategory.h"
+#import "PNEmailEncrypedViewController.h"
+#import "EmailErrorAlertView.h"
 
 static NSString *Email = @"Email";
 static NSString *HostName = @"Host Name";
@@ -25,10 +27,24 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
 @property (weak, nonatomic) IBOutlet UITableView *mainTabView;
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) EmailAccountModel *accountM;
+@property (nonatomic, assign) NSInteger currentSection;
+@property (nonatomic, assign) BOOL isEdit;
 
 @end
 
 @implementation PNEmailConfigViewController
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.view endEditing:YES];
+    [super viewWillDisappear:animated];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+     
+}
 - (NSArray *)dataArray
 {
     if (!_dataArray) {
@@ -36,17 +52,30 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
     }
     return _dataArray;
 }
+
+- (instancetype)initWithIsEdit:(BOOL)isEdit
+{
+    if (self = [super init]) {
+        self.isEdit = isEdit;
+        if (isEdit) {
+            self.accountM = [EmailAccountModel getConnectEmailAccount];
+        }
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_GRAY_COLOR;
     
-    _accountM = [[EmailAccountModel alloc] init];
-    _accountM.connectionType = MCOConnectionTypeTLS;
-    _accountM.smtpConnectionType = MCOConnectionTypeTLS;
-    _accountM.port = 993;
-    _accountM.smtpPort = 465;
-    _accountM.Type = 0;
-    
+    if (!_isEdit) {
+        _accountM = [[EmailAccountModel alloc] init];
+        _accountM.connectionType = MCOConnectionTypeTLS;
+        _accountM.smtpConnectionType = MCOConnectionTypeTLS;
+        _accountM.port = 993;
+        _accountM.smtpPort = 465;
+        _accountM.Type = 255;
+    }
     
     _mainTabView.delegate = self;
     _mainTabView.dataSource = self;
@@ -54,6 +83,20 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
     
     [_mainTabView registerNib:[UINib nibWithNibName:EmailConfigCellResue bundle:nil] forCellReuseIdentifier:EmailConfigCellResue];
     
+    [self performSelector:@selector(tfBecomeFirst) withObject:nil afterDelay:0.7];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectEntrypedNoti:) name:EMAIL_ENTRYPED_CHOOSE_NOTI object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailConfigNoti:) name:EMAIL_CONFIG_NOTI object:nil];
+    
+    
+}
+- (void) tfBecomeFirst
+{
+    EmailConfigCell *cell = [_mainTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    if (cell) {
+        [cell.contentTF becomeFirstResponder];
+    }
 }
 #pragma mark --------------IBOut btn clickaction------------
 - (IBAction)clickCloseBtn:(id)sender {
@@ -80,6 +123,55 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
         [self.view showHint:@"Please enter port."];
         return;
     }
+    
+    
+    MCOIMAPSession *imapSession = [[MCOIMAPSession alloc] init];
+    imapSession.hostname = _accountM.hostname;
+    imapSession.port = _accountM.port;
+    imapSession.username = _accountM.User;
+    imapSession.password = _accountM.UserPass;
+    imapSession.connectionType = _accountM.connectionType;
+    
+    NSString *hitStr = @"Verification...";
+    
+    [self.view showHudInView:self.view hint:hitStr userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    
+    MCOIMAPOperation *imapOperation = [imapSession checkAccountOperation];
+    @weakify_self
+    [imapOperation start:^(NSError * __nullable error) {
+        
+        if (error == nil) {
+           
+            if (weakSelf.isEdit) {
+                
+                // 更改密码
+                [EmailAccountModel updateEmailAccountPass:weakSelf.accountM];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
+                [weakSelf.view hideHud];
+                [weakSelf clickCloseBtn:nil];
+                [AppD.window showHint:@"Verification successed."];
+                
+            } else {
+                [SendRequestUtil sendEmailConfigWithEmailAddress:weakSelf.accountM.User type:@(255) configJson:@"" ShowHud:NO];
+            }
+            
+            
+        } else {
+            
+            [weakSelf.view hideHud];
+            NSLog(@"ERROR = %@",error.domain);
+            NSString *errorStr = [NSString stringWithFormat:@"\"%@\" Username or password is incorrect, or the IMAP service is not available",weakSelf.accountM.User];
+            if (error.code == 1) {
+                errorStr = @"Unable to connect to email server.";
+            }
+            EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
+            alertView.lblContent.text = errorStr;
+            [alertView showEmailAttchSelView];
+            
+        }
+    }];
+    
 }
 
 
@@ -120,32 +212,56 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
     
     EmailConfigCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailConfigCellResue];
     NSArray *arry = self.dataArray[indexPath.section];
+    cell.tag = indexPath.section;
     cell.lblTitle.text = arry[indexPath.row];
     cell.contentTF.enabled = YES;
     cell.arrowImgV.hidden = YES;
+    cell.backBtn.hidden = YES;
     cell.contentTF.tag = indexPath.section*10 + indexPath.row;
     cell.contentTF.keyboardType =  UIKeyboardTypeDefault;
+    cell.contentTF.secureTextEntry = NO;
     if (!cell.contentTF.delegate) {
         cell.contentTF.delegate = self;
         [cell.contentTF addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
     }
+    
+    @weakify_self
+    [cell setBackBlock:^(NSInteger section) {
+       
+        weakSelf.currentSection = section;
+        int contectType = 4;
+        if (indexPath.section == 1) {
+            contectType = weakSelf.accountM.connectionType;
+        } else {
+            contectType = weakSelf.accountM.smtpConnectionType;
+        }
+        PNEmailEncrypedViewController *vc = [[PNEmailEncrypedViewController alloc] initWithConnectType:contectType];
+        [weakSelf presentModalVC:vc animated:YES];
+    }];
    
     
     if (indexPath.section == 0) {
         if ([arry[indexPath.row] isEqualToString:Email]) {
-            cell.contentTF.placeholder = @"user@example.com";
+            
             cell.contentTF.text = _accountM.User;
+            if (_isEdit) {
+                cell.contentTF.enabled = NO;
+            } else {
+                cell.contentTF.placeholder = @"user@example.com";
+                cell.contentTF.keyboardType = UIKeyboardTypeEmailAddress;
+            }
         }
     } else if (indexPath.section == 1) {
         if ([arry[indexPath.row] isEqualToString:HostName]) {
             cell.contentTF.placeholder = @"imap.example.com";
-            cell.contentTF.text = _accountM.User;
+            cell.contentTF.text = _accountM.hostname;
         } else if ([arry[indexPath.row] isEqualToString:UserName]) {
             cell.contentTF.placeholder = @"Optional";
             cell.contentTF.text = _accountM.userName;
         } else if ([arry[indexPath.row] isEqualToString:Password]) {
             cell.contentTF.placeholder = @"Required";
             cell.contentTF.text = _accountM.UserPass;
+            cell.contentTF.secureTextEntry = YES;
         } else if ([arry[indexPath.row] isEqualToString:Port]) {
             cell.contentTF.keyboardType = UIKeyboardTypeNumberPad;
             cell.contentTF.placeholder = @"Required";
@@ -154,6 +270,7 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
             
             cell.contentTF.enabled = NO;
             cell.arrowImgV.hidden = NO;
+            cell.backBtn.hidden = NO;
             if (_accountM.connectionType == MCOConnectionTypeClear) {
                 cell.contentTF.text = @"None";
             } else if (_accountM.connectionType == MCOConnectionTypeStartTLS) {
@@ -161,7 +278,6 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
             } else {
                 cell.contentTF.text = @"SSL/TLS";
             }
-            
         }
     } else {
         if ([arry[indexPath.row] isEqualToString:HostName]) {
@@ -173,6 +289,7 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
         } else if ([arry[indexPath.row] isEqualToString:Password]) {
             cell.contentTF.placeholder = @"Optional";
             cell.contentTF.text = _accountM.smtpUserPass;
+            cell.contentTF.secureTextEntry = YES;
         } else if ([arry[indexPath.row] isEqualToString:Port]) {
             cell.contentTF.keyboardType = UIKeyboardTypeNumberPad;
             cell.contentTF.placeholder = @"Required";
@@ -180,6 +297,7 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
         } else if ([arry[indexPath.row] isEqualToString:Encrypted]) {
             cell.contentTF.enabled = NO;
             cell.arrowImgV.hidden = NO;
+            cell.backBtn.hidden = NO;
             if (_accountM.smtpConnectionType == MCOConnectionTypeClear) {
                 cell.contentTF.text = @"None";
             } else if (_accountM.smtpConnectionType == MCOConnectionTypeStartTLS) {
@@ -194,10 +312,18 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *arry = self.dataArray[indexPath.section];
-    if ([arry[indexPath.row] isEqualToString:Encrypted]) {
-        NSLog(@"-----------");
-    }
+//    NSArray *arry = self.dataArray[indexPath.section];
+//    if ([arry[indexPath.row] isEqualToString:Encrypted]) {
+//        _currentSection = indexPath.section;
+//        int contectType = 4;
+//        if (indexPath.section == 1) {
+//            contectType = self.accountM.connectionType;
+//        } else {
+//            contectType = self.accountM.smtpConnectionType;
+//        }
+//        PNEmailEncrypedViewController *vc = [[PNEmailEncrypedViewController alloc] initWithConnectType:contectType];
+//        [self presentModalVC:vc animated:YES];
+//    }
 }
 
 
@@ -238,6 +364,64 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
         }
     }
     
+}
+
+
+
+#pragma mark---------------通知--------------------
+- (void) selectEntrypedNoti:(NSNotification *) noti
+{
+    int connectType = [noti.object intValue];
+    if (_currentSection == 1) {
+        self.accountM.connectionType = connectType;
+        
+    } else {
+        self.accountM.smtpConnectionType = connectType;
+    }
+    
+    if (connectType == 1) {
+        if (_currentSection == 1) {
+            self.accountM.port = 143;
+        } else {
+            self.accountM.smtpPort = 25;
+        }
+    } else if (connectType == 2) {
+        if (_currentSection == 1) {
+            self.accountM.port = 993;
+        } else {
+            self.accountM.smtpPort = 587;
+        }
+    } else {
+        if (_currentSection == 1) {
+            self.accountM.port = 993;
+        } else {
+            self.accountM.smtpPort = 465;
+        }
+    }
+    
+    [_mainTabView reloadSections:[NSIndexSet indexSetWithIndex:_currentSection] withRowAnimation:UITableViewRowAnimationNone];
+}
+- (void) emailConfigNoti:(NSNotification *) noti
+{
+    NSDictionary *dic = noti.object;
+    NSInteger retCode = [dic[@"RetCode"] integerValue];
+    if (retCode == 0) { // 成功
+        // 保存到本地
+        [EmailAccountModel addEmailAccountWith:_accountM];
+        [EmailAccountModel updateEmailAccountConnectStatus:_accountM];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
+        [self.view hideHud];
+        [self clickCloseBtn:nil];
+        [AppD.window showHint:@"Verification successed."];
+    } else {
+        [self.view hideHud];
+        if (retCode == 2) {
+            [self.view showHint:@"The mailbox has been configured"];
+        } else {
+            [self.view showHint:@"Configuration quantity exceeds limit."];
+        }
+    }
 }
 /*
 #pragma mark - Navigation
