@@ -470,7 +470,14 @@
     if (AppD.showTouch) {
          AppD.showTouch = NO;
         [FingerprintVerificationUtil show];
+    } else {
+        if (self.selectRouther.isOpen) {
+            [self loginAction:nil];
+        }
     }
+    
+    
+    
 }
 
 
@@ -594,7 +601,7 @@
 #pragma mark -touch验证成功通知
 - (void) touchModifySuccess:(NSNotification *) noti
 {
-    if ([RouterModel getLoginOpenRouter]) {
+    if (self.selectRouther.isOpen) {
         [self loginAction:nil];
     }
 }

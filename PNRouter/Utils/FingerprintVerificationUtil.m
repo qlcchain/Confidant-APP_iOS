@@ -206,6 +206,7 @@
 + (void)show {
     NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
     if ([screenLock boolValue] == NO) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TOUCH_MODIFY_SUCCESS_NOTI object:nil];
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{

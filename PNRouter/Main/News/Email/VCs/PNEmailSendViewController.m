@@ -522,6 +522,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                // 发送邮件
                                NSData * rfc822Data =[messageBuilder data];
                                MCOSMTPSendOperation *sendOperation = [EmailManage.sharedEmailManage.smtpSession sendOperationWithData:rfc822Data];
+                               /*
+                               [sendOperation setProgress:^(unsigned int current, unsigned int maximum) {
+                                   NSLog(@"----%d--------%d",current,maximum);
+                               }];*/
+                               
                                [sendOperation start:^(NSError *error) {
                                    [weakSelf.view hideHud];
                                    if (error == nil) {
@@ -535,6 +540,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                        [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"send failure"];
                                    }
                                }];
+                               
+                               
                            }];
 }
 

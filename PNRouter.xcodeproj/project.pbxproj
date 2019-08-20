@@ -646,6 +646,10 @@
 		73E7744222DC87F3001C652E /* AttchImgageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E7744022DC87F3001C652E /* AttchImgageCell.xib */; };
 		73E7744522DD639C001C652E /* PNEmailOptionEnumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E7744422DD639C001C652E /* PNEmailOptionEnumView.m */; };
 		73E7744722DD63AD001C652E /* PNEmailOptionEnumView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E7744622DD63AD001C652E /* PNEmailOptionEnumView.xib */; };
+		73ED4B23230A78F400AF4B51 /* PNEmailEncrypedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73ED4B21230A78F400AF4B51 /* PNEmailEncrypedViewController.m */; };
+		73ED4B24230A78F400AF4B51 /* PNEmailEncrypedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B22230A78F400AF4B51 /* PNEmailEncrypedViewController.xib */; };
+		73ED4B28230A803700AF4B51 /* EmailEncrypedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73ED4B26230A803700AF4B51 /* EmailEncrypedCell.m */; };
+		73ED4B29230A803700AF4B51 /* EmailEncrypedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B27230A803700AF4B51 /* EmailEncrypedCell.xib */; };
 		73EE8CBE2154E5330048866B /* ChooseContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CBC2154E5330048866B /* ChooseContactViewController.m */; };
 		73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */; };
 		73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CC32159CD980048866B /* ChooseContactCell.m */; };
@@ -1895,6 +1899,12 @@
 		73E7744322DD639C001C652E /* PNEmailOptionEnumView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailOptionEnumView.h; sourceTree = "<group>"; };
 		73E7744422DD639C001C652E /* PNEmailOptionEnumView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailOptionEnumView.m; sourceTree = "<group>"; };
 		73E7744622DD63AD001C652E /* PNEmailOptionEnumView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailOptionEnumView.xib; sourceTree = "<group>"; };
+		73ED4B20230A78F400AF4B51 /* PNEmailEncrypedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailEncrypedViewController.h; sourceTree = "<group>"; };
+		73ED4B21230A78F400AF4B51 /* PNEmailEncrypedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailEncrypedViewController.m; sourceTree = "<group>"; };
+		73ED4B22230A78F400AF4B51 /* PNEmailEncrypedViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailEncrypedViewController.xib; sourceTree = "<group>"; };
+		73ED4B25230A803700AF4B51 /* EmailEncrypedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailEncrypedCell.h; sourceTree = "<group>"; };
+		73ED4B26230A803700AF4B51 /* EmailEncrypedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailEncrypedCell.m; sourceTree = "<group>"; };
+		73ED4B27230A803700AF4B51 /* EmailEncrypedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailEncrypedCell.xib; sourceTree = "<group>"; };
 		73EE8CBB2154E5330048866B /* ChooseContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactViewController.h; sourceTree = "<group>"; };
 		73EE8CBC2154E5330048866B /* ChooseContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactViewController.m; sourceTree = "<group>"; };
 		73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseContactViewController.xib; sourceTree = "<group>"; };
@@ -2953,6 +2963,9 @@
 				7321A3F92303DC7900D9B97A /* EmailConfigCell.h */,
 				7321A3FA2303DC7900D9B97A /* EmailConfigCell.m */,
 				7321A3FB2303DC7900D9B97A /* EmailConfigCell.xib */,
+				73ED4B25230A803700AF4B51 /* EmailEncrypedCell.h */,
+				73ED4B26230A803700AF4B51 /* EmailEncrypedCell.m */,
+				73ED4B27230A803700AF4B51 /* EmailEncrypedCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2993,6 +3006,9 @@
 				7321A3F42303B25F00D9B97A /* PNEmailConfigViewController.h */,
 				7321A3F52303B25F00D9B97A /* PNEmailConfigViewController.m */,
 				7321A3F62303B25F00D9B97A /* PNEmailConfigViewController.xib */,
+				73ED4B20230A78F400AF4B51 /* PNEmailEncrypedViewController.h */,
+				73ED4B21230A78F400AF4B51 /* PNEmailEncrypedViewController.m */,
+				73ED4B22230A78F400AF4B51 /* PNEmailEncrypedViewController.xib */,
 			);
 			path = VCs;
 			sourceTree = "<group>";
@@ -4444,6 +4460,7 @@
 			files = (
 				587C52B8215C7027006787FB /* RouterManagerViewController.xib in Resources */,
 				583BF90721F6B4140078A2A8 /* UploadFilesViewController.xib in Resources */,
+				73ED4B29230A803700AF4B51 /* EmailEncrypedCell.xib in Resources */,
 				586837FF224092B600B8ACB8 /* ChooseRemindMemberViewController.xib in Resources */,
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
@@ -4528,6 +4545,7 @@
 				73E7742922D87B27001C652E /* EmailUserCell.xib in Resources */,
 				734ED8CA226038B1002F1960 /* CircleLoginCodeViewController.xib in Resources */,
 				73E7742E22D87BFC001C652E /* EmailTimeCell.xib in Resources */,
+				73ED4B24230A78F400AF4B51 /* PNEmailEncrypedViewController.xib in Resources */,
 				58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */,
 				737883EE21ACF2970033A189 /* nodes.json in Resources */,
 				73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */,
@@ -4930,6 +4948,7 @@
 				7330F3792146118800FF4EEC /* UIImage+Merge.m in Sources */,
 				73D31B1F218025270034B2B9 /* RMDisplayLabel.m in Sources */,
 				7378840521ACF2970033A189 /* OCTMessageFile.m in Sources */,
+				73ED4B23230A78F400AF4B51 /* PNEmailEncrypedViewController.m in Sources */,
 				5875E4C6216C8B7000B1A9A6 /* YWFilePreviewView.m in Sources */,
 				7330F4ED2149147200FF4EEC /* SDImageCache+ChatCaculator.m in Sources */,
 				736257A42142149300D7FD6B /* UIView+Debug.m in Sources */,
@@ -5178,6 +5197,7 @@
 				581FDF3B21F024160068C120 /* ring_buffer.m in Sources */,
 				73D00E932159DADF0013E20D /* ChooseDownView.m in Sources */,
 				733B6AB7230548E7003660F8 /* PNEmailContactView.m in Sources */,
+				73ED4B28230A803700AF4B51 /* EmailEncrypedCell.m in Sources */,
 				73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */,
 				73E7740A22D6DDF7001C652E /* EmailListInfo.m in Sources */,
 				734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */,

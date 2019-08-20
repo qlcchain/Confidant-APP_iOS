@@ -258,8 +258,8 @@ static NSString *strgmail = @"Step 1: Check that IMAP is turned on\n1. On your c
                 [EmailAccountModel updateEmailAccountPass:weakSelf.accountM];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
-                [self.view hideHud];
-                [self clickCloseAction:nil];
+                [weakSelf.view hideHud];
+                [weakSelf clickCloseAction:nil];
                 [AppD.window showHint:@"Configure successed."];
                 
             } else {

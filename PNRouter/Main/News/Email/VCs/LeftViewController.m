@@ -144,7 +144,7 @@
                 return 0;
             }
             EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
-            if (accountModel && accountModel.Type == 6) {
+            if (accountModel && (accountModel.Type == 6 || accountModel.Type == 255)) {
                 return 3;
             }
             return self.emailFolders.count;
@@ -287,8 +287,8 @@
             @weakify_self
             [vc setClickRowBlock:^(PNBaseViewController * _Nonnull vc, NSArray * _Nonnull arr) {
                 [vc dismissViewControllerAnimated:NO completion:nil];
-                if ([arr[1] intValue] == 0) {
-                    PNEmailConfigViewController *vc = [[PNEmailConfigViewController alloc] init];
+                if ([arr[1] intValue] == 255) {
+                    PNEmailConfigViewController *vc = [[PNEmailConfigViewController alloc] initWithIsEdit:NO];
                     [weakSelf presentModalVC:vc animated:YES];
                 } else {
                     PNEmailLoginViewController *loginVC  = [[PNEmailLoginViewController alloc] initWithEmailType:[arr[1] intValue] optionType:LoginEmail];
@@ -520,7 +520,7 @@
                 [model.folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
                     finshCount++;
                     model.count = info.messageCount;
-                    if (finshCount == 5 || (accountModel.Type == 6)) {
+                    if (finshCount == 5 || (accountModel.Type == 6) || (accountModel.Type == 255)) {
                         [weakSelf.mainTabView reloadData];
                     }
                 }];

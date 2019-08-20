@@ -13,11 +13,16 @@ static NSString * _Nullable EmailConfigCellResue = @"EmailConfigCell";
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^ClickBackBlock)(NSInteger section);
+
 @interface EmailConfigCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UITextField *contentTF;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UIView *backView;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImgV;
+@property (weak, nonatomic) IBOutlet UIButton *backBtn;
+
+@property (nonatomic, copy) ClickBackBlock backBlock;
 
 @end
 
