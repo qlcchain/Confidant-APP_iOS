@@ -35,6 +35,7 @@
 #import "EmailOptionUtil.h"
 #import "NSString+RegexCategory.h"
 #import "EntryModel.h"
+#import "UserConfig.h"
 //#import <IQKeyboardManager/IQKeyboardManager.h>
 
 
@@ -483,7 +484,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                
                                __block NSString *keys = @"";
                                if (userKeys && userKeys.count>0) {
-                                   
                                    [userKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                                        EmailUserKeyModel *userKeyM = obj;
                                        keys = [keys stringByAppendingString:userKeyM.User];
@@ -502,20 +502,31 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                    NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
                                    keys = [keys stringByAppendingString:dsKey];
                                }
+                               if (weakSelf.sendType == ReplyEmail) {
+                                   html =[html stringByAppendingString:@"<br/><br/><br/><div>----------------- Original -----------------</div>"];
+                               } else if (weakSelf.sendType == ForwardEmail) {
+                                   html =[html stringByAppendingString:@"<br/><br/><br/><div>----------------- Fwd -----------------</div>"];
+                               }
                                
-                               html = [html stringByAppendingString:self.emailInfo.htmlContent?:@""];
+                               html = [html stringByAppendingString:weakSelf.emailInfo.htmlContent?:@""];
+                               
                                if (keys.length > 0) {
                                    if ([html containsString:confidantEmialText]) {
                                        html = [html stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
                                    }
                                    html = aesEncryptString(html, [msgKey substringToIndex:16]);
-                                   NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'%@\'></span>",keys];
+                                   NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'userid:%@###%@\'></span>",[UserConfig getShareObject].userId,keys];
                                    html = [html stringByAppendingString:userKeyStr];
                                    html = [html stringByAppendingString:confidantHtmlStr];
                                } else {
+                                   
+                                   NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'%@\'></span>",[UserConfig getShareObject].userId];
+                                   html = [html stringByAppendingString:userKeyStr];
+                                   
                                    if (![html containsString:confidantEmialText]) {
                                        html = [html stringByAppendingString:confidantHtmlStr];
                                    }
+                                   
                                }
                                
                                [messageBuilder setHTMLBody:html];
@@ -533,6 +544,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                        // 保存到已发送
                                        [EmailOptionUtil copySent:rfc822Data complete:^(BOOL success) {
                                        }];
+                                       // 添加对方为好友
+                                       if (weakSelf.emailInfo.friendId && weakSelf.emailInfo.friendId.length > 0) {
+                                           NSString *friendid = [weakSelf.emailInfo.friendId stringByReplacingOccurrencesOfString:@"userid:" withString:@""];
+                                           // 发送好友请求
+                                           if (![friendid isEqualToString:[UserConfig getShareObject].userId]) {
+                                               
+                                              NSString *msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
+                                               msg = [msg base64EncodedString];
+                                               
+                                               [SendRequestUtil sendAddFriendWithFriendId:friendid msg:msg showHud:NO];
+                                           }
+                                       }
                                        [weakSelf leftNavBarItemPressedWithPop:NO];
                                        [AppD.window showSuccessHudInView:AppD.window hint:@"Successed"];
                                        // [AppD.window showHint:@"send successed"];
@@ -616,9 +639,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         _webH.constant = 50;
         
         NSMutableString * html = [NSMutableString string];
-        NSString *originStr = @"<div>------------ Original ------------</div>";
+        NSString *originStr = @"<div>----------------- Original -----------------</div>";
         if (self.sendType == DraftEmail) {
             originStr = @"";
+        } else if (self.sendType == ForwardEmail) {
+            originStr = @"<div>----------------- Fwd -----------------</div>";
         }
         [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
          @"<body>%@%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"

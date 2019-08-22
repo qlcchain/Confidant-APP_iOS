@@ -600,15 +600,53 @@
                         enStr = [enStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                         enStr = [enStr stringByReplacingOccurrencesOfString:@"'" withString:@""];
                         
-                        NSArray *emailUserkeys = [enStr componentsSeparatedByString:@"##"];
-                        if (emailUserkeys && emailUserkeys.count > 0) {
-                            [emailUserkeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                                NSString *uks = obj;
-                                NSArray *userkeys = [uks componentsSeparatedByString:@"&amp;&amp;"];
-                                if ([accountM.User isEqualToString:[userkeys[0] base64DecodedString]]) {
-                                    dsKey = userkeys[1];
+                        NSArray *spanArr = [enStr componentsSeparatedByString:@"###"];
+                        // 判断是否有 friendid
+                        BOOL isEncry = YES;
+                        if (spanArr.count == 2) {
+                            listInfo.friendId = [spanArr firstObject];
+                            enStr = spanArr[1];
+                        } else {
+                            NSString *userkeysStr = spanArr[0];
+                            if ([userkeysStr containsString:@"userid:"]) {
+                                listInfo.friendId = userkeysStr;
+                                isEncry = NO;
+                                
+                                // 替换正文body ，截取掉 span标签
+                                NSString *bodyStr = [htmlContents componentsSeparatedByString:@"</body>"][0];
+                                NSArray *bodys = [bodyStr componentsSeparatedByString:@"<body>"];
+                                bodyStr = [bodys lastObject];
+                                
+                                if (listInfo.attachCount > 0) {
+                                    NSString *attchHtml = bodys[0];
+                                    htmlContents = [htmlContents stringByReplacingOccurrencesOfString:attchHtml withString:htmlHead];
                                 }
-                            }];
+                                
+                                NSString *spanStr2 = @"";
+                                NSArray *spanArray2 = [bodyStr componentsSeparatedByString:@"<span style='display:none'"];
+                                if (spanArray2 && spanArray2.count <2) {
+                                    spanStr2 = [bodyStr componentsSeparatedByString:@"<span style=\"display:none\""][0];
+                                } else {
+                                    spanStr2 = spanArray2[0];
+                                }
+
+                                if (spanStr2.length > 0) {
+                                    htmlContents = [htmlContents stringByReplacingOccurrencesOfString:bodyStr withString:[spanStr2 stringByAppendingString:confidantHtmlStr]];
+                                }
+                                
+                            }
+                        }
+                        if (isEncry) {
+                            NSArray *emailUserkeys = [enStr componentsSeparatedByString:@"##"];
+                            if (emailUserkeys && emailUserkeys.count > 0) {
+                                [emailUserkeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                    NSString *uks = obj;
+                                    NSArray *userkeys = [uks componentsSeparatedByString:@"&amp;&amp;"];
+                                    if ([accountM.User isEqualToString:[userkeys[0] base64DecodedString]]) {
+                                        dsKey = userkeys[1];
+                                    }
+                                }];
+                            }
                         }
                     }
                 } //htmlContents && htmlContents.length > 0
@@ -1366,13 +1404,7 @@
             [weakSelf tranEmailListInfoWithArr:messageArray];
            // [weakSelf.emailDataArray addObjectsFromArray:messageArray];
             
-            if (!weakSelf.isRefresh) {
-                if (messages.count == 10) {
-                    weakSelf.emailTabView.mj_footer.hidden = NO;
-                } else {
-                    weakSelf.emailTabView.mj_footer.hidden = YES;
-                }
-            }
+            
             
 //            [weakSelf.emailTabView reloadData];
 //
@@ -1486,7 +1518,13 @@
     } else {
         [weakSelf.view hideHud];
         [weakSelf.emailTabView.mj_footer endRefreshing];
+        if (messageArray.count == 10) {
+            weakSelf.emailTabView.mj_footer.hidden = NO;
+        } else {
+            weakSelf.emailTabView.mj_footer.hidden = YES;
+        }
     }
+    
     
     return;
     
@@ -1643,7 +1681,8 @@
     NSData *data = [html dataUsingEncoding:NSUnicodeStringEncoding];
     NSAttributedString *attriStr = [[NSAttributedString alloc] initWithData:data options:dic documentAttributes:nil error:nil];
     NSString *str = attriStr.string;
-    str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+    str = [NSString trimWhitespaceAndNewline:str];
+   // str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     return str;
     
 }

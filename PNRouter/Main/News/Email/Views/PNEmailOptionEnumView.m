@@ -109,6 +109,9 @@
     if ([content isEqualToString:@"Star"] && _isStar) {
         cell.lblName.text = @"Cancel Star";
     }
+    if ([content isEqualToString:@"Node back up"] && _isBakUp) {
+        cell.headImgView.image = [UIImage imageNamed:[imgName stringByAppendingString:@"_backups"]];
+    }
     return cell;
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

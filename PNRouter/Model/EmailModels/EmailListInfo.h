@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) NSString *messageid;
 @property (nonatomic , assign) int attachCount;
 @property (nonatomic , strong) NSDate *revDate;
+@property (nonatomic , strong) NSString *friendId;
 //1.收件箱
 //2.发件箱
 //3.草稿箱

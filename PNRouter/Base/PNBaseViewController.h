@@ -32,8 +32,10 @@
 - (void) moveAllNavgationViewController;
 - (void)setRootVCWithVC:(PNBaseViewController *) vc;
 - (void)jumpToQR;
+- (void) parsePowTempCode;
 - (void)jumpToCircleQR;
 - (void) scanSuccessfulWithIsMacd:(BOOL) isMac;
+- (void) parsePowTempCodeBlock;
 - (void) scanSuccessfulWithIsAccount:(NSArray *) values;
 
 - (void)showEmptyViewToView:(UIView *)view img:(UIImage *)img title:(NSString *)title;

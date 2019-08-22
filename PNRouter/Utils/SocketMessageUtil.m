@@ -605,6 +605,8 @@
         [SocketMessageUtil handleDelEmail:receiveDic];
     } else if ([action isEqualToString:Action_DelEmailConf]) { // 删除邮箱配置
         [SocketMessageUtil handleDelEmailConf:receiveDic];
+    } else if ([action isEqualToString:Action_BakMailsCheck]) { // 查询邮件是否备份
+        [SocketMessageUtil handleBakMailsCheck:receiveDic];
     }
 }
 
@@ -1685,6 +1687,18 @@
     [AppD.window hideHud];
     [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_PULL_NODE_NOTI object:receiveDic[@"params"]];
 }
++ (void) handleBakMailsCheck:(NSDictionary *) receiveDic {
+    
+     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        NSInteger result = [receiveDic[@"params"][@"Result"] integerValue];
+        if (result == 1) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_BAK_NODE_NOTI object:nil];
+        }
+    }
+    
+}
+
 + (void) handleDelEmail:(NSDictionary *) receiveDic {
     
     [AppD.window hideHud];

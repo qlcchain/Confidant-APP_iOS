@@ -247,6 +247,27 @@
     _emptyView = nil;
 }
 
+#pragma mark------------默认pow码解析 --------------------
+- (void) parsePowTempCode
+{
+    NSArray *codeValues = [powStr componentsSeparatedByString:@","];
+    NSString *result = aesDecryptString(codeValues[1],AES_KEY);
+    result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+    
+    NSString *toxid = [result substringWithRange:NSMakeRange(6, 76)];
+    NSString *sn = [result substringWithRange:NSMakeRange(result.length-32, 32)];
+   
+    
+    [RouterConfig getRouterConfig].currentRouterToxid = toxid;
+    [RouterConfig getRouterConfig].currentRouterSn = sn;
+    [RouterConfig getRouterConfig].currentRouterIp = @"";
+    
+    [self parsePowTempCodeBlock];
+}
+- (void)parsePowTempCodeBlock
+{
+}
+
 #pragma mark - Transition
 - (void)jumpToQR {
     [RouterConfig getRouterConfig].currentRouterMAC = @"";

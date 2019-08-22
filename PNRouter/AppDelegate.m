@@ -82,8 +82,8 @@
 //    }
     
 
-   // [KeyCUtil deleteWithKey:@"emailKey_arr"];
-    // [KeyCUtil deleteAllKey];
+   // [KeyCUtil deleteWithKey:ROUTER_ARR];
+   //  [KeyCUtil deleteAllKey];
     
     // 配置Bugly
     [self configBugly];

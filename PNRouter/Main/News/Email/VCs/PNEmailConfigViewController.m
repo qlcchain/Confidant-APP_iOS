@@ -134,36 +134,63 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
     
     NSString *hitStr = @"Verification...";
     
-    [self.view showHudInView:self.view hint:hitStr userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    [self.view showHudInView:self.view hint:hitStr userInteractionEnabled:NO hideTime:REQEUST_TIME_60];
     
     MCOIMAPOperation *imapOperation = [imapSession checkAccountOperation];
     @weakify_self
     [imapOperation start:^(NSError * __nullable error) {
         
         if (error == nil) {
-           
-            if (weakSelf.isEdit) {
-                
-                // 更改密码
-                [EmailAccountModel updateEmailAccountPass:weakSelf.accountM];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
-                [weakSelf.view hideHud];
-                [weakSelf clickCloseBtn:nil];
-                [AppD.window showHint:@"Verification successed."];
-                
-            } else {
-                [SendRequestUtil sendEmailConfigWithEmailAddress:weakSelf.accountM.User type:@(255) configJson:@"" ShowHud:NO];
-            }
             
+            // 验证smtp
+            MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
+            smtpSession.hostname = weakSelf.accountM.smtpHostname;
+            smtpSession.port = weakSelf.accountM.smtpPort;
             
+            smtpSession.username = weakSelf.accountM.User;
+            smtpSession.password = weakSelf.accountM.UserPass;
+            smtpSession.connectionType = weakSelf.accountM.smtpConnectionType;
+            
+            smtpSession.authType = MCOAuthTypeSASLLogin;
+            smtpSession.timeout = 60.0;
+            
+            MCOAddress *addressM = [MCOAddress addressWithMailbox:weakSelf.accountM.User];
+            MCOSMTPOperation *smtpOperation = [smtpSession checkAccountOperationWithFrom:addressM];
+            
+            [smtpOperation start:^(NSError * _Nullable error) {
+                if (error == nil) {
+                    if (weakSelf.isEdit) {
+                        // 更改密码
+                        [EmailAccountModel updateEmailAccountPass:weakSelf.accountM];
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
+                        [weakSelf.view hideHud];
+                        [weakSelf clickCloseBtn:nil];
+                        [AppD.window showHint:@"Verification successed."];
+                        
+                    } else {
+                        
+                        [SendRequestUtil sendEmailConfigWithEmailAddress:weakSelf.accountM.User type:@(255) configJson:@"" ShowHud:NO];
+                    }
+                } else {
+                    [weakSelf.view hideHud];
+                    NSLog(@"ERROR = %@",error.domain);
+                    NSString *errorStr = [NSString stringWithFormat:@"\"%@\" Username or password is incorrect, or the SMTP service is not available",weakSelf.accountM.User];
+                    if (error.code == 1) {
+                        errorStr = @"Unable to connect to email SMTP server.";
+                    }
+                    EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
+                    alertView.lblContent.text = errorStr;
+                    [alertView showEmailAttchSelView];
+                }
+            }];
         } else {
             
             [weakSelf.view hideHud];
             NSLog(@"ERROR = %@",error.domain);
             NSString *errorStr = [NSString stringWithFormat:@"\"%@\" Username or password is incorrect, or the IMAP service is not available",weakSelf.accountM.User];
             if (error.code == 1) {
-                errorStr = @"Unable to connect to email server.";
+                errorStr = @"Unable to connect to email IMAP server.";
             }
             EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
             alertView.lblContent.text = errorStr;

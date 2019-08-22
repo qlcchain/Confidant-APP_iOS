@@ -14,6 +14,7 @@ typedef void(^ClickEnumBlock)(NSInteger row);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PNEmailOptionEnumView : UIView
+@property (nonatomic, assign) BOOL isBakUp;
 @property (weak, nonatomic) IBOutlet UIButton *backBtn;
 @property (weak, nonatomic) IBOutlet UITableView *mainTabView;
 @property (weak, nonatomic) IBOutlet UIView *backView;
