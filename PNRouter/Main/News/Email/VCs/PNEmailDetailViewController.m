@@ -48,7 +48,9 @@
 @interface PNEmailDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIWebViewDelegate,SSZipArchiveDelegate>//WKNavigationDelegate
 {
     BOOL isLoadingFinished;
+    
 }
+@property (nonatomic ,assign) BOOL isBakNode;
 @property (nonatomic ,assign) BOOL isMove;
 @property (nonatomic ,assign) BOOL isHidden;
 @property (weak, nonatomic) IBOutlet UILabel *lblFloderName;
@@ -162,6 +164,9 @@
             
             
         } else {
+            
+            [SendRequestUtil sendEmailCheckNodeWithUid:[NSString stringWithFormat:@"%@_%d",self.emailInfo.floderName,self.emailInfo.uid]  showHud:NO];
+            
             NSMutableString * html = [NSMutableString string];
             [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
              @"<body>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
@@ -431,12 +436,13 @@
             isShowMove = YES;
         }
         BOOL isStar = [EmailOptionUtil checkEmailStar:self.emailInfo.Read];
+        self.enumView.isBakUp = _isBakNode;
         [self.enumView showEmailOptionEnumViewWithStar:isStar? YES:NO isShowMove:isShowMove];
         
     } else if (sender.tag == 20) { // 删除邮件
         
         if ([self.emailInfo.floderName isEqualToString:Node_backed_up]) {
-            [SendRequestUtil sendEmailDelNodeWithUid:@(self.emailInfo.uid) showHud:YES];
+            [SendRequestUtil sendEmailDelNodeWithUid:[NSString stringWithFormat:@"%@_%d",self.emailInfo.floderName,self.emailInfo.uid]  showHud:YES];
             return;
         }
         
@@ -553,6 +559,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailFileUploadNoti:) name:EMIAL_UPLOAD_NODE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailUploadNodeNoti:) name:EMAIL_NODE_UPLOAD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailDelNodeNoti:) name:EMAIL_DEL_NODE_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkEmailBakNodeNoti:) name:EMAIL_BAK_NODE_NOTI object:nil];
     
 }
 
@@ -854,6 +861,11 @@
 #pragma mark ---------------保存到节点-------------
 - (void) saveEmailToNode
 {
+    if (_isBakNode) {
+        [AppD.window showHint:@"This email is backed up."];
+        return;
+    }
+    
     [AppD.window showHudInView:AppD.window hint:Uploading_Str];
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -1003,11 +1015,13 @@
     NSDictionary *dic = noti.object;
     NSInteger retCode = [dic[@"RetCode"] integerValue];
     if (retCode == 0) {
+        _isBakNode = YES;
+        [_nodeBtn setImage:[UIImage imageNamed:@"statusbar_download_node_backups"] forState:UIControlStateNormal];
         [AppD.window showSuccessHudInView:AppD.window hint:@"Success."];
     } else if (retCode == 1) {
-        [AppD.window showFaieldHudInView:AppD.window hint:@"This email is backed up"];
+        [AppD.window showFaieldHudInView:AppD.window hint:@"This email is backed up."];
     } else {
-        [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Upload"];
+        [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Upload."];
     }
 }
 - (void) emailDelNodeNoti:(NSNotification *) noti
@@ -1020,5 +1034,11 @@
     } else {
         [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Delete"];
     }
+}
+
+- (void) checkEmailBakNodeNoti:(NSNotification *) noti
+{
+    _isBakNode = YES;
+    [_nodeBtn setImage:[UIImage imageNamed:@"statusbar_download_node_backups"] forState:UIControlStateNormal];
 }
 @end

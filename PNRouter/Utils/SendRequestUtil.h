@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code showHUD:(BOOL) isShow;
 + (void) sendUserLoginWithPass:(NSString *) usersn userid:(NSString *) userid showHud:(BOOL) showHud;
 + (void) sendPullUserListWithShowLoad:(BOOL)show;
-+ (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg;
++ (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg showHud:(BOOL) showHud;
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId;
 + (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic;
 + (void) sendRedMsgWithFriendId:(NSString *) friendId msgid:(NSString *) msgId;
@@ -77,8 +77,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendEmailUserkeyWithUsers:(NSString *) users unum:(NSNumber *) num ShowHud:(BOOL) showHud;
 + (void) sendEmailCheckNodeCountShowHud:(BOOL) showHud;
 + (void) sendPullEmailWithStarid:(NSNumber *) starId num:(NSNumber *) num showHud:(BOOL) showHud;
-+ (void) sendEmailDelNodeWithUid:(NSNumber *) uid showHud:(BOOL) showHud;
++ (void) sendEmailDelNodeWithUid:(NSString *) uid showHud:(BOOL) showHud;
 + (void) sendEmailDelConfigWithShowHud:(BOOL) showHud;
++ (void) sendEmailCheckNodeWithUid:(NSString *) uid showHud:(BOOL) showHud;
 @end
 
 NS_ASSUME_NONNULL_END

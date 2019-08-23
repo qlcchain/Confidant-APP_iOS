@@ -74,9 +74,12 @@
     NSDictionary *params = @{@"Action":Action_CreateNormalUser,@"RouterId":routerId,@"AdminUserId":userM.userId,@"Mnemonic":mnemonic,@"IdentifyCode":@""};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
-+ (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg
++ (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg showHud:(BOOL)showHud
 {
-    [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":@"AddFriendReq",@"NickName":[userM.username base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId?:@"",@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"Msg":msg?:@""};
     [SocketMessageUtil sendVersion4WithParams:params];
@@ -518,7 +521,7 @@
     NSDictionary *params = @{@"Action":Action_PullMailList,@"User":[accountM.User base64EncodedString],@"Type":@(accountM.Type)};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
-+ (void) sendEmailDelNodeWithUid:(NSNumber *) uid showHud:(BOOL) showHud
++ (void) sendEmailDelNodeWithUid:(NSString *) uid showHud:(BOOL) showHud
 {
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:Deleting_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
@@ -534,6 +537,16 @@
     }
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     NSDictionary *params = @{@"Action":Action_DelEmailConf,@"Type":@(accountM.Type),@"User":[[accountM.User lowercaseString] base64EncodedString]};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
+
++ (void) sendEmailCheckNodeWithUid:(NSString *) uid showHud:(BOOL) showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Deleting_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    NSDictionary *params = @{@"Action":Action_BakMailsCheck,@"User":[[accountM.User lowercaseString] base64EncodedString],@"Uuid":uid};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 @end

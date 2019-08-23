@@ -119,21 +119,14 @@
         [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
         isLogin = YES;
         [self sendGB];
-        
-            // 发送登陆请求
-//            sendCount = 0;
-//            [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
-//        } else {
-//
-////            [AppD.window showHudInView:AppD.window hint:Connect_Cricle];
-////            NSString *connectURL = [SystemUtil connectUrl];
-////            [SocketUtil.shareInstance connectWithUrl:connectURL];
-//        }
     } else {
+        
+        if (self.selectRouther) {
+            [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
+            [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
+            isLogin = YES;
+        }
         [RouterConfig getRouterConfig].currentRouterMAC = @"";
-        [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
-        [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
-        isLogin = YES;
         [self sendGB];
     }
 }
@@ -198,6 +191,18 @@
     
     [self presentViewController:vc animated:YES completion:nil];
 
+}
+
+- (void) parsePowTempCodeBlock
+{
+    _lblRoutherName.text = @"pow node";
+    _loginBtn.enabled = YES;
+    _lblRoutherName.textColor = [UIColor whiteColor];
+    _loginBtn.backgroundColor = [UIColor whiteColor];
+    _lblDesc.text = @"*Select to re-join a circle or scan to join a new one.";
+    [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_down_gray"] forState:UIControlStateNormal];
+    _circleDefaultLab.hidden = NO;
+    _circleDefaultImgV.hidden = YES;
 }
 
 /**
@@ -464,6 +469,11 @@
     NSArray *routeArr = [RouterModel getLocalRouters];
     [_showRouterArr addObjectsFromArray:routeArr];
     
+    // 默认设置为pow node
+    if (routeArr.count == 0) {
+        [self parsePowTempCode];
+    }
+    
     [self addObserve];
     [self appOptionWithLoginType:_loginType];
     
@@ -475,9 +485,6 @@
             [self loginAction:nil];
         }
     }
-    
-    
-    
 }
 
 
@@ -500,6 +507,7 @@
  */
 - (void) changeLogintStatu
 {
+    
     _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back!",[UserModel getUserModel].username]?:@"";
     if (self.selectRouther) {
         [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;

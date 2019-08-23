@@ -14,14 +14,14 @@
 #import "RSAUtil.h"
 #import "EmailErrorAlertView.h"
 
-static NSString *strqq = @"Step 1: Check that IMAP is turned on\n1. On your computer, open QQ Mail.\n2. In the top right, click Settings.\n3. Find POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV.\n4. Enable IMAP/SMTP.\n\nStep 2: Get authorization to log in the third-party Email client\n1. Generate authorization code.\n2. Check the SMS message sent by QQ Mail.\n3. Fill in the authorization code.\n\nThen enter your Email address and password to log in.";
+static NSString *strqq = @"Step A: Check that IMAP is turned on\n1. On your computer, open QQ Mail.\n2. In the top right, click Settings.\n3. Find POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV.\n4. Enable IMAP/SMTP.\n\nStep B: Get authorization to log in the third-party Email client\n1. Generate authorization code.\n2. Check the SMS message sent by QQ Mail.\n3. Fill in the authorization code.\n\nThen enter your Email address and password to log in.";
 
-static NSString *str163 = @"Step 1: Check that IMAP is turned on\n1. On your computer, open 163 Mail.\n2. In the top right, click Settings.\n3. Click Settings.\n4. Click POP3/SMTP/IMAP tab.\n5. In the POP3/SMTP/IMAP setting section, select Enable IMAP/SMTP.\n6. Click Save Changes.\n\nStep 2: Get authorization to log in the third-party Email client\n1. Pass security verification.\n2. Set up authorization code.\n3. Click Confirm.\n\nThen enter your Email address and password to log in.";
+static NSString *str163 = @"Step A: Check that IMAP is turned on\n1. On your computer, open 163 Mail.\n2. In the top right, click Settings.\n3. Click Settings.\n4. Click POP3/SMTP/IMAP tab.\n5. In the POP3/SMTP/IMAP setting section, select Enable IMAP/SMTP.\n6. Click Save Changes.\n\nStep B: Get authorization to log in the third-party Email client\n1. Pass security verification.\n2. Set up authorization code.\n3. Click Confirm.\n\nThen enter your Email address and password to log in.";
 
-static NSString *strgmail = @"Step 1: Check that IMAP is turned on\n1. On your computer, open Gmail.\n2. In the top right, click Settings.\n3. Click Settings.\n 4. Click the Forwarding and POP/IMAP tab.\n5. In the \"IMAP access\" section, select Enable IMAP.\n6. Click Save Changes.\n\n\nStep 2: Allow less secure apps\n 1. In the top right, click Account.\n2. Click Security in the left bar.\n3. Turn on Less secure app access.\n4. Open the alert email sent by Google.\n5. Confirm the turn on activity.\n\nThen enter your Email address and password to log in.";
+static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your computer, open Gmail.\n2. In the top right, click Settings.\n3. Click Settings.\n 4. Click the Forwarding and POP/IMAP tab.\n5. In the \"IMAP access\" section, select Enable IMAP.\n6. Click Save Changes.\n\n\nStep B: Allow less secure apps\n 1. In the top right, click Account.\n2. Click Security in the left bar.\n3. Turn on Less secure app access.\n4. Open the alert email sent by Google.\n5. Confirm the turn on activity.\n\nThen enter your Email address and password to log in.";
 
 
-@interface PNEmailLoginViewController ()<UITextFieldDelegate>
+@interface PNEmailLoginViewController ()<UITextFieldDelegate,UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UITextField *emailNameTF;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTF;
@@ -37,7 +37,10 @@ static NSString *strgmail = @"Step 1: Check that IMAP is turned on\n1. On your c
 @property (weak, nonatomic) IBOutlet UIImageView *emailIconImgV;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollerView;
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
+@property (weak, nonatomic) IBOutlet UIWebView *mainWebView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *webH;
 
+@property (nonatomic, strong) NSString *htmlPath;
 
 @end
 
@@ -71,6 +74,8 @@ static NSString *strgmail = @"Step 1: Check that IMAP is turned on\n1. On your c
             self.typeName = @"icloud.com";
             self.iconName = @"email_icon_icloud_n";
         }
+        
+        self.htmlPath = [NSString stringWithFormat:@"guidance_notes_%d",type];
     }
     return self;
 }
@@ -115,6 +120,14 @@ static NSString *strgmail = @"Step 1: Check that IMAP is turned on\n1. On your c
     }
     
     _emailNameTF.placeholder = [NSString stringWithFormat:@"example@%@",self.typeName];
+    _mainWebView.delegate = self;
+    NSString *pathUrl = [[NSBundle mainBundle] pathForResource:self.htmlPath ofType:@"html"];
+    if (pathUrl) {
+        NSURL *fileUrl = [NSURL fileURLWithPath:pathUrl];
+        [_mainWebView loadRequest:[NSURLRequest requestWithURL:fileUrl]];
+    } else {
+        _mainWebView.hidden = YES;
+    }
 }
 // 添加通知
 - (void) addNoti
@@ -143,6 +156,15 @@ static NSString *strgmail = @"Step 1: Check that IMAP is turned on\n1. On your c
 }
 #pragma mark -----xib btnaction----------
 
+- (IBAction)passOpenAction:(UIButton *)sender {
+    
+    sender.selected = !sender.selected;
+    if (sender.isSelected) {
+        _passwordTF.secureTextEntry = NO;
+    } else {
+        _passwordTF.secureTextEntry = YES;
+    }
+}
 - (IBAction)clickLoginAction:(id)sender {
     
     [self.view endEditing:YES];
@@ -337,14 +359,18 @@ static NSString *strgmail = @"Step 1: Check that IMAP is turned on\n1. On your c
         }
     }
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)webViewDidFinishLoad:(UIWebView *)webView{
+    NSLog(@"----webViewDidFinishLoad---------");
+    //若已经加载完成，则显示webView并return
+    CGFloat newHeight =  [[webView stringByEvaluatingJavaScriptFromString: @"document.body.scrollHeight "] floatValue];
+    newHeight = webView.scrollView.contentSize.height;
+    NSLog(@"--%f---%f",newHeight,webView.scrollView.contentSize.height);
+    if (newHeight > _webH.constant) {
+        _webH.constant = newHeight;
+    }
+    // 更改body背景色
+    [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.background='#F5F5F5'"];
 }
-*/
 
 @end

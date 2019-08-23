@@ -610,8 +610,26 @@
                                 }
                             }];
                         }
+                        
                     }
                 } //htmlContents && htmlContents.length > 0
+                
+                
+                NSArray *useridArr = [htmlContents componentsSeparatedByString:@"confidantuserid=\n"];
+                
+                if (useridArr && useridArr.count == 2) {
+                    
+                    NSString *useridLastStr = [useridArr lastObject];
+                    useridLastStr = [useridLastStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                    useridLastStr = [useridLastStr stringByReplacingOccurrencesOfString:@"'" withString:@""];
+                  
+                    
+                    NSString *friendid = [useridLastStr componentsSeparatedByString:@"></span>"][0];
+                    friendid = [friendid stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                    friendid = [friendid stringByReplacingOccurrencesOfString:@"'" withString:@""];
+                    
+                    listInfo.friendId = friendid;
+                }
                 
                 // 解密正文
                 if (dsKey.length > 0) {
@@ -627,7 +645,6 @@
                             NSString *attchHtml = bodys[0];
                            htmlContents = [htmlContents stringByReplacingOccurrencesOfString:attchHtml withString:htmlHead];
                         }
-                        
                         
                         NSString *spanStr = @"";
                         NSArray *spanArray = [enStr componentsSeparatedByString:@"<span style='display:none'"];
@@ -662,7 +679,31 @@
                         
                         listInfo.deKey = datakey;
                     }
-                } // dsKey.length > 0
+                } else { // dsKey.length > 0
+                    
+                    // 替换正文body ，截取掉 span标签
+                    NSString *bodyStr = [htmlContents componentsSeparatedByString:@"</body>"][0];
+                    NSArray *bodys = [bodyStr componentsSeparatedByString:@"<body>"];
+                    bodyStr = [bodys lastObject];
+                    
+                    if (listInfo.attachCount > 0) {
+                        NSString *attchHtml = bodys[0];
+                        htmlContents = [htmlContents stringByReplacingOccurrencesOfString:attchHtml withString:htmlHead];
+                    }
+                    
+                    NSString *spanStr2 = @"";
+                    NSArray *spanArray2 = [bodyStr componentsSeparatedByString:@"<span style='display:none'"];
+                    if (spanArray2 && spanArray2.count <2) {
+                        spanStr2 = [bodyStr componentsSeparatedByString:@"<span style=\"display:none\""][0];
+                    } else {
+                        spanStr2 = spanArray2[0];
+                    }
+                    
+                    if (spanStr2.length > 0) {
+                        htmlContents = [htmlContents stringByReplacingOccurrencesOfString:bodyStr withString:[spanStr2 stringByAppendingString:confidantHtmlStr]];
+                    }
+
+                }
                 
                 // 获取附件
                 NSArray *attchArray = messageParser.attachments;
@@ -1366,13 +1407,7 @@
             [weakSelf tranEmailListInfoWithArr:messageArray];
            // [weakSelf.emailDataArray addObjectsFromArray:messageArray];
             
-            if (!weakSelf.isRefresh) {
-                if (messages.count == 10) {
-                    weakSelf.emailTabView.mj_footer.hidden = NO;
-                } else {
-                    weakSelf.emailTabView.mj_footer.hidden = YES;
-                }
-            }
+            
             
 //            [weakSelf.emailTabView reloadData];
 //
@@ -1486,7 +1521,13 @@
     } else {
         [weakSelf.view hideHud];
         [weakSelf.emailTabView.mj_footer endRefreshing];
+        if (messageArray.count == 10) {
+            weakSelf.emailTabView.mj_footer.hidden = NO;
+        } else {
+            weakSelf.emailTabView.mj_footer.hidden = YES;
+        }
     }
+    
     
     return;
     
@@ -1643,7 +1684,8 @@
     NSData *data = [html dataUsingEncoding:NSUnicodeStringEncoding];
     NSAttributedString *attriStr = [[NSAttributedString alloc] initWithData:data options:dic documentAttributes:nil error:nil];
     NSString *str = attriStr.string;
-    str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+    str = [NSString trimWhitespaceAndNewline:str];
+   // str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     return str;
     
 }

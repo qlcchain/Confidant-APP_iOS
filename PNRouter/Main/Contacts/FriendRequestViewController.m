@@ -32,14 +32,14 @@
 }
 - (IBAction)sendApplicationAction:(id)sender {
     [self.view endEditing:YES];
-    NSString *msg = _msgTF.text?:@"";
-    if (msg && ![msg isEmptyString]) {
+    NSString *msg = _msgTF.text.trim?:@"";
+    if (msg && msg.length>0) {
         msg = [msg base64EncodedString];
     } else {
         msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
         msg = [msg base64EncodedString];
     }
-    [SendRequestUtil sendAddFriendWithFriendId:self.userId msg:msg];
+    [SendRequestUtil sendAddFriendWithFriendId:self.userId msg:msg showHud:YES];
 }
 
 - (instancetype) initWithNickname:(NSString *) nickName userId:(NSString *) userId signpk:(NSString *) signpk

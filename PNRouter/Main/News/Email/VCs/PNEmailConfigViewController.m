@@ -29,7 +29,8 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
 @property (nonatomic, strong) EmailAccountModel *accountM;
 @property (nonatomic, assign) NSInteger currentSection;
 @property (nonatomic, assign) BOOL isEdit;
-
+@property (nonatomic, assign) BOOL isEditPass;
+@property (nonatomic, assign) BOOL isEditSmtpPass;
 @end
 
 @implementation PNEmailConfigViewController
@@ -134,36 +135,63 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
     
     NSString *hitStr = @"Verification...";
     
-    [self.view showHudInView:self.view hint:hitStr userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    [self.view showHudInView:self.view hint:hitStr userInteractionEnabled:NO hideTime:REQEUST_TIME_60];
     
     MCOIMAPOperation *imapOperation = [imapSession checkAccountOperation];
     @weakify_self
     [imapOperation start:^(NSError * __nullable error) {
         
         if (error == nil) {
-           
-            if (weakSelf.isEdit) {
-                
-                // 更改密码
-                [EmailAccountModel updateEmailAccountPass:weakSelf.accountM];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
-                [weakSelf.view hideHud];
-                [weakSelf clickCloseBtn:nil];
-                [AppD.window showHint:@"Verification successed."];
-                
-            } else {
-                [SendRequestUtil sendEmailConfigWithEmailAddress:weakSelf.accountM.User type:@(255) configJson:@"" ShowHud:NO];
-            }
             
+            // 验证smtp
+            MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
+            smtpSession.hostname = weakSelf.accountM.smtpHostname;
+            smtpSession.port = weakSelf.accountM.smtpPort;
             
+            smtpSession.username = weakSelf.accountM.User;
+            smtpSession.password = weakSelf.accountM.UserPass;
+            smtpSession.connectionType = weakSelf.accountM.smtpConnectionType;
+            
+            smtpSession.authType = MCOAuthTypeSASLLogin;
+            smtpSession.timeout = 60.0;
+            
+            MCOAddress *addressM = [MCOAddress addressWithMailbox:weakSelf.accountM.User];
+            MCOSMTPOperation *smtpOperation = [smtpSession checkAccountOperationWithFrom:addressM];
+            
+            [smtpOperation start:^(NSError * _Nullable error) {
+                if (error == nil) {
+                    if (weakSelf.isEdit) {
+                        // 更改密码
+                        [EmailAccountModel updateEmailAccountPass:weakSelf.accountM];
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
+                        [weakSelf.view hideHud];
+                        [weakSelf clickCloseBtn:nil];
+                        [AppD.window showHint:@"Verification successed."];
+                        
+                    } else {
+                        
+                        [SendRequestUtil sendEmailConfigWithEmailAddress:weakSelf.accountM.User type:@(255) configJson:@"" ShowHud:NO];
+                    }
+                } else {
+                    [weakSelf.view hideHud];
+                    NSLog(@"ERROR = %@",error.domain);
+                    NSString *errorStr = [NSString stringWithFormat:@"\"%@\" Username or password is incorrect, or the SMTP service is not available",weakSelf.accountM.User];
+                    if (error.code == 1) {
+                        errorStr = @"Unable to connect to email SMTP server.";
+                    }
+                    EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
+                    alertView.lblContent.text = errorStr;
+                    [alertView showEmailAttchSelView];
+                }
+            }];
         } else {
             
             [weakSelf.view hideHud];
             NSLog(@"ERROR = %@",error.domain);
             NSString *errorStr = [NSString stringWithFormat:@"\"%@\" Username or password is incorrect, or the IMAP service is not available",weakSelf.accountM.User];
             if (error.code == 1) {
-                errorStr = @"Unable to connect to email server.";
+                errorStr = @"Unable to connect to email IMAP server.";
             }
             EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
             alertView.lblContent.text = errorStr;
@@ -217,6 +245,7 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
     cell.contentTF.enabled = YES;
     cell.arrowImgV.hidden = YES;
     cell.backBtn.hidden = YES;
+    cell.passOpenW.constant = 0;
     cell.contentTF.tag = indexPath.section*10 + indexPath.row;
     cell.contentTF.keyboardType =  UIKeyboardTypeDefault;
     cell.contentTF.secureTextEntry = NO;
@@ -259,9 +288,21 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
             cell.contentTF.placeholder = @"Optional";
             cell.contentTF.text = _accountM.userName;
         } else if ([arry[indexPath.row] isEqualToString:Password]) {
+            
             cell.contentTF.placeholder = @"Required";
-            cell.contentTF.text = _accountM.UserPass;
-            cell.contentTF.secureTextEntry = YES;
+            if (_isEdit) {
+                if (_isEditPass) {
+                    cell.contentTF.text = _accountM.UserPass;
+                } else {
+                    cell.contentTF.text = @"";
+                }
+                
+            } else {
+                cell.contentTF.text = _accountM.UserPass;
+            }
+            
+            cell.contentTF.secureTextEntry = !cell.isPassOpen;
+            cell.passOpenW.constant = 30;
         } else if ([arry[indexPath.row] isEqualToString:Port]) {
             cell.contentTF.keyboardType = UIKeyboardTypeNumberPad;
             cell.contentTF.placeholder = @"Required";
@@ -288,8 +329,18 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
             cell.contentTF.text = _accountM.smtpUserName;
         } else if ([arry[indexPath.row] isEqualToString:Password]) {
             cell.contentTF.placeholder = @"Optional";
-            cell.contentTF.text = _accountM.smtpUserPass;
-            cell.contentTF.secureTextEntry = YES;
+            if (_isEdit) {
+                if (_isEditSmtpPass) {
+                    cell.contentTF.text = _accountM.smtpUserPass;
+                } else {
+                    cell.contentTF.text = @"";
+                }
+            } else {
+                cell.contentTF.text = _accountM.smtpUserPass;
+            }
+            
+            cell.contentTF.secureTextEntry = !cell.isPassOpen;
+            cell.passOpenW.constant = 30;
         } else if ([arry[indexPath.row] isEqualToString:Port]) {
             cell.contentTF.keyboardType = UIKeyboardTypeNumberPad;
             cell.contentTF.placeholder = @"Required";
@@ -348,6 +399,9 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
         } else if (row == 1) {
             _accountM.userName = content;
         } else if (row == 2) {
+            if (_isEdit) {
+                _isEditPass = YES;
+            }
             _accountM.UserPass = content;
         } else if (row == 3) {
             _accountM.port = [content intValue];
@@ -358,6 +412,9 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
         } else if (row == 1) {
             _accountM.smtpUserName = content;
         } else if (row == 2) {
+            if (_isEdit) {
+                _isEditSmtpPass = YES;
+            }
             _accountM.smtpUserPass = content;
         } else if (row == 3) {
             _accountM.smtpPort = [content intValue];

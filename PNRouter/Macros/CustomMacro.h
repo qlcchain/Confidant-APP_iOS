@@ -140,17 +140,19 @@ white-space: pre-wrap;\
 }\
 ";
 
-static NSString *confidantEmialStr = @" This is an encrypted email, use MyConfidant to decrypt this email.";
-static NSString *confidantEmialText = @"This is an encrypted email, use MyConfidant to decrypt this email.";
+static NSString *confidantEmialStr = @" Sent from MyConfidant, the app for encrypted email.";
+static NSString *confidantEmialText = @"Sent from MyConfidant, the app for encrypted email.";
 
 static NSString *confidantHtmlStr = @"<div myconfidantbegin=''><br />\
 <br />\
 <br />\
-<span>This is an encrypted email, use MyConfidant to decrypt this email.</span></div>";
+<span>Sent from MyConfidant, the app for encrypted email.</span></div>";
 
 static NSString *htmlHead = @"<div style=\"padding-bottom: 20px;\"></div><div><html xmlns=\"http://www.w3.org/1999/xhtml\">\
 <head>\
 <title></title>\
 </head>";
+
+static NSString *powStr = @"type_1,4I9ZEscX7qE+wDhD3upcjFqsJIifbrVAb0h32amY+5+omDkMxzvZhzaIalTBXGUWvzYuPnTkhEq+nlJOOB2W9LluSbX0YCQbQrs2NNBuSH8zQabb4b7Ln6Jtqec2ZklfGY5eRxp9mu5HFPEZq9AmN3hARwOQSnykZ3c/eCkR4TI=";
 
 #endif /* CustomMacro_h */

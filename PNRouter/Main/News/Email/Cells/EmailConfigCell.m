@@ -21,6 +21,15 @@
         _backBlock(self.tag);
     }
 }
+- (IBAction)openPassAction:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    if (sender.isSelected) {
+        _contentTF.secureTextEntry = NO;
+    } else {
+        _contentTF.secureTextEntry = YES;
+    }
+    _isPassOpen = !_contentTF.secureTextEntry;
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

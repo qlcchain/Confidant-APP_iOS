@@ -45,6 +45,12 @@
     NSString *userHeaderImg64Str = [UserHeaderModel getUserHeaderImg64StrWithKey:userKey];
     if (userHeaderImg64Str) {
         resultImg = [UIImage imageWithData:[NSData dataWithBase64EncodedString:userHeaderImg64Str]];
+        if (!resultImg) {
+            PNDefaultHeaderView *view = [PNDefaultHeaderView loadView];
+            view.nameLab.text = name;
+            view.nameLab.font = [UIFont systemFontOfSize:18];
+            resultImg = [view convertViewToImage];
+        }
     } else {
         PNDefaultHeaderView *view = [PNDefaultHeaderView loadView];
         view.nameLab.text = name;

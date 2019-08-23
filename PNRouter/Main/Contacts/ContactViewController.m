@@ -249,7 +249,6 @@
     cell.contactChatB = ^(ContactRouterModel * _Nonnull crModel) {
         [weakSelf jumpToChat:[weakSelf getFriendModelWithContactShowModel:model contactRouterModel:crModel]];
     };
-    
     cell.tag = indexPath.row;
 //    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
 //    cell.delegate = self;
