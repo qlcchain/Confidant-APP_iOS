@@ -515,13 +515,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                        html = [html stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
                                    }
                                    html = aesEncryptString(html, [msgKey substringToIndex:16]);
-                                   NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'userid:%@###%@\'></span>",[UserConfig getShareObject].userId,keys];
+                                   NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'%@\'></span>",keys];
+                                   
+                                   NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' confidantuserid=\'%@\'></span>",[UserConfig getShareObject].userId];
+                                   
                                    html = [html stringByAppendingString:userKeyStr];
+                                   html = [html stringByAppendingString:friendID];
                                    html = [html stringByAppendingString:confidantHtmlStr];
                                } else {
                                    
-                                   NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'%@\'></span>",[UserConfig getShareObject].userId];
-                                   html = [html stringByAppendingString:userKeyStr];
+                                   NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' confidantuserid=\'%@\'></span>",[UserConfig getShareObject].userId];
+                                   html = [html stringByAppendingString:friendID];
                                    
                                    if (![html containsString:confidantEmialText]) {
                                        html = [html stringByAppendingString:confidantHtmlStr];
@@ -546,14 +550,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                        }];
                                        // 添加对方为好友
                                        if (weakSelf.emailInfo.friendId && weakSelf.emailInfo.friendId.length > 0) {
-                                           NSString *friendid = [weakSelf.emailInfo.friendId stringByReplacingOccurrencesOfString:@"userid:" withString:@""];
+                                          
                                            // 发送好友请求
-                                           if (![friendid isEqualToString:[UserConfig getShareObject].userId]) {
+                                           if (![weakSelf.emailInfo.friendId isEqualToString:[UserConfig getShareObject].userId]) {
                                                
                                               NSString *msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
                                                msg = [msg base64EncodedString];
                                                
-                                               [SendRequestUtil sendAddFriendWithFriendId:friendid msg:msg showHud:NO];
+                                               [SendRequestUtil sendAddFriendWithFriendId:weakSelf.emailInfo.friendId msg:msg showHud:NO];
                                            }
                                        }
                                        [weakSelf leftNavBarItemPressedWithPop:NO];

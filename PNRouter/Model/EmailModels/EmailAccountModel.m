@@ -56,6 +56,15 @@ static NSString *emailKey = @"emailKey_arr";
         EmailAccountModel *model = [EmailAccountModel getObjectWithKeyValues:obj];
         if ([model.User isEqualToString:accountModel.User]) {
             model.UserPass = accountModel.UserPass;
+            model.smtpUserPass = accountModel.smtpUserName;
+            model.port = accountModel.port;
+            model.smtpPort = accountModel.smtpPort;
+            model.connectionType = accountModel.connectionType;
+            model.smtpConnectionType = accountModel.smtpConnectionType;
+            model.userName = accountModel.userName;
+            model.smtpUserName = accountModel.smtpUserName;
+            model.hostname = accountModel.hostname;
+            model.smtpHostname = accountModel.smtpHostname;
         }
         [resultArr addObject:model.mj_keyValues];
     }];

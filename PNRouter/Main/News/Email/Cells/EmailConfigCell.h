@@ -21,6 +21,8 @@ typedef void(^ClickBackBlock)(NSInteger section);
 @property (weak, nonatomic) IBOutlet UIView *backView;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImgV;
 @property (weak, nonatomic) IBOutlet UIButton *backBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *passOpenW;
+@property (nonatomic ,assign) BOOL isPassOpen;
 
 @property (nonatomic, copy) ClickBackBlock backBlock;
 

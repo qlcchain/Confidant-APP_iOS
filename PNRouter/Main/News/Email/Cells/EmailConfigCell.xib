@@ -23,7 +23,7 @@
                         <rect key="frame" x="16" y="47" width="288" height="50"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8Ri-MM-36G">
-                                <rect key="frame" x="10" y="0.0" width="268" height="50"/>
+                                <rect key="frame" x="10" y="0.0" width="238" height="50"/>
                                 <color key="textColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -31,6 +31,17 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabbar_arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="nBA-fB-JQL">
                                 <rect key="frame" x="262" y="17" width="16" height="16"/>
                             </imageView>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a0P-S0-Zwx">
+                                <rect key="frame" x="248" y="0.0" width="30" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="L2y-Mp-C7C"/>
+                                </constraints>
+                                <state key="normal" image="tabbar_shut"/>
+                                <state key="selected" image="tabbar_open"/>
+                                <connections>
+                                    <action selector="openPassAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="efo-f9-SXh"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hWF-bT-VmX">
                                 <rect key="frame" x="0.0" y="0.0" width="288" height="50"/>
                                 <connections>
@@ -41,15 +52,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="8Ri-MM-36G" firstAttribute="top" secondItem="wed-0h-794" secondAttribute="top" id="1Nr-Ec-XeJ"/>
-                            <constraint firstAttribute="trailing" secondItem="8Ri-MM-36G" secondAttribute="trailing" constant="10" id="6F8-Nw-QbU"/>
+                            <constraint firstItem="a0P-S0-Zwx" firstAttribute="top" secondItem="wed-0h-794" secondAttribute="top" id="90w-HP-fh3"/>
                             <constraint firstItem="hWF-bT-VmX" firstAttribute="leading" secondItem="wed-0h-794" secondAttribute="leading" id="Ikg-no-dut"/>
+                            <constraint firstItem="a0P-S0-Zwx" firstAttribute="leading" secondItem="8Ri-MM-36G" secondAttribute="trailing" id="aLa-wG-n3H"/>
                             <constraint firstAttribute="trailing" secondItem="nBA-fB-JQL" secondAttribute="trailing" constant="10" id="b2o-kz-xIZ"/>
+                            <constraint firstAttribute="bottom" secondItem="a0P-S0-Zwx" secondAttribute="bottom" id="dyC-da-mDR"/>
                             <constraint firstAttribute="bottom" secondItem="hWF-bT-VmX" secondAttribute="bottom" id="iN9-z2-gvu"/>
                             <constraint firstItem="8Ri-MM-36G" firstAttribute="leading" secondItem="wed-0h-794" secondAttribute="leading" constant="10" id="k4W-xm-pEo"/>
                             <constraint firstAttribute="bottom" secondItem="8Ri-MM-36G" secondAttribute="bottom" id="msh-0X-XJW"/>
                             <constraint firstItem="hWF-bT-VmX" firstAttribute="top" secondItem="wed-0h-794" secondAttribute="top" id="nVW-Ui-g9C"/>
                             <constraint firstItem="nBA-fB-JQL" firstAttribute="centerY" secondItem="wed-0h-794" secondAttribute="centerY" id="ur2-Su-tBb"/>
                             <constraint firstAttribute="trailing" secondItem="hWF-bT-VmX" secondAttribute="trailing" id="wop-GY-dRx"/>
+                            <constraint firstAttribute="trailing" secondItem="a0P-S0-Zwx" secondAttribute="trailing" constant="10" id="yWp-uh-2d1"/>
                             <constraint firstAttribute="height" constant="50" id="zbg-NY-dEB"/>
                         </constraints>
                     </view>
@@ -77,11 +91,14 @@
                 <outlet property="backView" destination="wed-0h-794" id="29Y-z4-mJR"/>
                 <outlet property="contentTF" destination="8Ri-MM-36G" id="EF8-Ab-QSA"/>
                 <outlet property="lblTitle" destination="CnD-g2-3te" id="HwM-8x-Sif"/>
+                <outlet property="passOpenW" destination="L2y-Mp-C7C" id="bW5-JT-JAd"/>
             </connections>
             <point key="canvasLocation" x="76.811594202898561" y="91.40625"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="tabbar_arrow_right" width="16" height="16"/>
+        <image name="tabbar_open" width="16" height="16"/>
+        <image name="tabbar_shut" width="16" height="16"/>
     </resources>
 </document>

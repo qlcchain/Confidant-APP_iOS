@@ -650,6 +650,12 @@
 		73ED4B24230A78F400AF4B51 /* PNEmailEncrypedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B22230A78F400AF4B51 /* PNEmailEncrypedViewController.xib */; };
 		73ED4B28230A803700AF4B51 /* EmailEncrypedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73ED4B26230A803700AF4B51 /* EmailEncrypedCell.m */; };
 		73ED4B29230A803700AF4B51 /* EmailEncrypedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B27230A803700AF4B51 /* EmailEncrypedCell.xib */; };
+		73ED4B34230FDCFF00AF4B51 /* guidance_notes_5.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B2E230FDCFE00AF4B51 /* guidance_notes_5.html */; };
+		73ED4B37230FDCFF00AF4B51 /* guidance_notes_1.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B31230FDCFE00AF4B51 /* guidance_notes_1.html */; };
+		73ED4B39230FDCFF00AF4B51 /* guidance_notes_6.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B33230FDCFF00AF4B51 /* guidance_notes_6.html */; };
+		73ED4B3D230FDE2100AF4B51 /* guidance_notes_4.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B3A230FDE2000AF4B51 /* guidance_notes_4.html */; };
+		73ED4B3E230FDE2100AF4B51 /* guidance_notes_2.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B3B230FDE2000AF4B51 /* guidance_notes_2.html */; };
+		73ED4B3F230FDE2100AF4B51 /* guidance_notes_3.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B3C230FDE2100AF4B51 /* guidance_notes_3.html */; };
 		73EE8CBE2154E5330048866B /* ChooseContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CBC2154E5330048866B /* ChooseContactViewController.m */; };
 		73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */; };
 		73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CC32159CD980048866B /* ChooseContactCell.m */; };
@@ -1905,6 +1911,12 @@
 		73ED4B25230A803700AF4B51 /* EmailEncrypedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailEncrypedCell.h; sourceTree = "<group>"; };
 		73ED4B26230A803700AF4B51 /* EmailEncrypedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailEncrypedCell.m; sourceTree = "<group>"; };
 		73ED4B27230A803700AF4B51 /* EmailEncrypedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailEncrypedCell.xib; sourceTree = "<group>"; };
+		73ED4B2E230FDCFE00AF4B51 /* guidance_notes_5.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_5.html; sourceTree = "<group>"; };
+		73ED4B31230FDCFE00AF4B51 /* guidance_notes_1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_1.html; sourceTree = "<group>"; };
+		73ED4B33230FDCFF00AF4B51 /* guidance_notes_6.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_6.html; sourceTree = "<group>"; };
+		73ED4B3A230FDE2000AF4B51 /* guidance_notes_4.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_4.html; sourceTree = "<group>"; };
+		73ED4B3B230FDE2000AF4B51 /* guidance_notes_2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_2.html; sourceTree = "<group>"; };
+		73ED4B3C230FDE2100AF4B51 /* guidance_notes_3.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_3.html; sourceTree = "<group>"; };
 		73EE8CBB2154E5330048866B /* ChooseContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactViewController.h; sourceTree = "<group>"; };
 		73EE8CBC2154E5330048866B /* ChooseContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactViewController.m; sourceTree = "<group>"; };
 		73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseContactViewController.xib; sourceTree = "<group>"; };
@@ -2527,6 +2539,12 @@
 		585AEE12213F6EDE0098A070 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73ED4B31230FDCFE00AF4B51 /* guidance_notes_1.html */,
+				73ED4B3B230FDE2000AF4B51 /* guidance_notes_2.html */,
+				73ED4B3C230FDE2100AF4B51 /* guidance_notes_3.html */,
+				73ED4B3A230FDE2000AF4B51 /* guidance_notes_4.html */,
+				73ED4B2E230FDCFE00AF4B51 /* guidance_notes_5.html */,
+				73ED4B33230FDCFF00AF4B51 /* guidance_notes_6.html */,
 				73FE5B2322DF561E004D0655 /* EmailConfigure.plist */,
 				7301A894226EB875006225FA /* Privacy Policy.html */,
 				7301A895226EB876006225FA /* Terms of Service.html */,
@@ -4463,6 +4481,7 @@
 				73ED4B29230A803700AF4B51 /* EmailEncrypedCell.xib in Resources */,
 				586837FF224092B600B8ACB8 /* ChooseRemindMemberViewController.xib in Resources */,
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
+				73ED4B39230FDCFF00AF4B51 /* guidance_notes_6.html in Resources */,
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
 				73F55A11223F78C4003155D2 /* GroupChatViewController.xib in Resources */,
@@ -4516,6 +4535,7 @@
 				733EE48022E1B2DB0042457C /* PNEmailMoveViewController.xib in Resources */,
 				58A23A83223F936D0098AED5 /* AddGroupMemberViewController.xib in Resources */,
 				581DE4E82238ED250056D4F8 /* GroupDetailsViewController.xib in Resources */,
+				73ED4B37230FDCFF00AF4B51 /* guidance_notes_1.html in Resources */,
 				73E3C71122D49F4F00D7C9C6 /* CircleNamewCell.xib in Resources */,
 				583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */,
 				7341A87B22FC1603001AF7C2 /* PNSearchViewController.xib in Resources */,
@@ -4561,6 +4581,7 @@
 				583BF94021F708B30078A2A8 /* DetailInformationCell.xib in Resources */,
 				7330F3A9214679BF00FF4EEC /* ShareCollectionCell.xib in Resources */,
 				73E7743822DC6097001C652E /* EmailAttchCell.xib in Resources */,
+				73ED4B34230FDCFF00AF4B51 /* guidance_notes_5.html in Resources */,
 				73F55A092238D398003155D2 /* InvitationQRCodeViewController.xib in Resources */,
 				582BFE4D221D26DF00D8C2C8 /* ImportAccountViewController.xib in Resources */,
 				73E3C6E822D2F47000D7C9C6 /* LeftViewController.xib in Resources */,
@@ -4574,6 +4595,7 @@
 				584B439021FEE11D00D1F21A /* DiskManagementCell.xib in Resources */,
 				58E3A57E2248711E00F9D9E7 /* SettingCell.xib in Resources */,
 				58F5E4C2222CD46E00695F0A /* PNBackgroundView.xib in Resources */,
+				73ED4B3E230FDE2100AF4B51 /* guidance_notes_2.html in Resources */,
 				7330F51F214B460A00FF4EEC /* NotifactionView.xib in Resources */,
 				73E3C6F322D3456300D7C9C6 /* WebViewController.xib in Resources */,
 				7330F3A4214671C000FF4EEC /* ShareView.xib in Resources */,
@@ -4612,9 +4634,11 @@
 				7330F39F214666E400FF4EEC /* PersonCodeViewController.xib in Resources */,
 				7330F46D2147AD2B00FF4EEC /* Expression.bundle in Resources */,
 				7303310B21C7A2FD007C4063 /* mysong.mp3 in Resources */,
+				73ED4B3D230FDE2100AF4B51 /* guidance_notes_4.html in Resources */,
 				7386910B214CC7D3003CF6A3 /* EditTextViewController.xib in Resources */,
 				583BF93621F6F4B00078A2A8 /* FileMoreAlertView.xib in Resources */,
 				583BF92521F6C3050078A2A8 /* UploadFilesHeaderView.xib in Resources */,
+				73ED4B3F230FDE2100AF4B51 /* guidance_notes_3.html in Resources */,
 				58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */,
 				7330F46C2147AD2B00FF4EEC /* InputViewBundle.bundle in Resources */,
 				73060557217719A5005A0E13 /* VPNFileInputView.xib in Resources */,

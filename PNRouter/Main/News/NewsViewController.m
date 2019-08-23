@@ -600,56 +600,36 @@
                         enStr = [enStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                         enStr = [enStr stringByReplacingOccurrencesOfString:@"'" withString:@""];
                         
-                        NSArray *spanArr = [enStr componentsSeparatedByString:@"###"];
-                        // 判断是否有 friendid
-                        BOOL isEncry = YES;
-                        if (spanArr.count == 2) {
-                            listInfo.friendId = [spanArr firstObject];
-                            enStr = spanArr[1];
-                        } else {
-                            NSString *userkeysStr = spanArr[0];
-                            if ([userkeysStr containsString:@"userid:"]) {
-                                listInfo.friendId = userkeysStr;
-                                isEncry = NO;
-                                
-                                // 替换正文body ，截取掉 span标签
-                                NSString *bodyStr = [htmlContents componentsSeparatedByString:@"</body>"][0];
-                                NSArray *bodys = [bodyStr componentsSeparatedByString:@"<body>"];
-                                bodyStr = [bodys lastObject];
-                                
-                                if (listInfo.attachCount > 0) {
-                                    NSString *attchHtml = bodys[0];
-                                    htmlContents = [htmlContents stringByReplacingOccurrencesOfString:attchHtml withString:htmlHead];
+                        NSArray *emailUserkeys = [enStr componentsSeparatedByString:@"##"];
+                        if (emailUserkeys && emailUserkeys.count > 0) {
+                            [emailUserkeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                NSString *uks = obj;
+                                NSArray *userkeys = [uks componentsSeparatedByString:@"&amp;&amp;"];
+                                if ([accountM.User isEqualToString:[userkeys[0] base64DecodedString]]) {
+                                    dsKey = userkeys[1];
                                 }
-                                
-                                NSString *spanStr2 = @"";
-                                NSArray *spanArray2 = [bodyStr componentsSeparatedByString:@"<span style='display:none'"];
-                                if (spanArray2 && spanArray2.count <2) {
-                                    spanStr2 = [bodyStr componentsSeparatedByString:@"<span style=\"display:none\""][0];
-                                } else {
-                                    spanStr2 = spanArray2[0];
-                                }
-
-                                if (spanStr2.length > 0) {
-                                    htmlContents = [htmlContents stringByReplacingOccurrencesOfString:bodyStr withString:[spanStr2 stringByAppendingString:confidantHtmlStr]];
-                                }
-                                
-                            }
+                            }];
                         }
-                        if (isEncry) {
-                            NSArray *emailUserkeys = [enStr componentsSeparatedByString:@"##"];
-                            if (emailUserkeys && emailUserkeys.count > 0) {
-                                [emailUserkeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                                    NSString *uks = obj;
-                                    NSArray *userkeys = [uks componentsSeparatedByString:@"&amp;&amp;"];
-                                    if ([accountM.User isEqualToString:[userkeys[0] base64DecodedString]]) {
-                                        dsKey = userkeys[1];
-                                    }
-                                }];
-                            }
-                        }
+                        
                     }
                 } //htmlContents && htmlContents.length > 0
+                
+                
+                NSArray *useridArr = [htmlContents componentsSeparatedByString:@"confidantuserid=\n"];
+                
+                if (useridArr && useridArr.count == 2) {
+                    
+                    NSString *useridLastStr = [useridArr lastObject];
+                    useridLastStr = [useridLastStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                    useridLastStr = [useridLastStr stringByReplacingOccurrencesOfString:@"'" withString:@""];
+                  
+                    
+                    NSString *friendid = [useridLastStr componentsSeparatedByString:@"></span>"][0];
+                    friendid = [friendid stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                    friendid = [friendid stringByReplacingOccurrencesOfString:@"'" withString:@""];
+                    
+                    listInfo.friendId = friendid;
+                }
                 
                 // 解密正文
                 if (dsKey.length > 0) {
@@ -665,7 +645,6 @@
                             NSString *attchHtml = bodys[0];
                            htmlContents = [htmlContents stringByReplacingOccurrencesOfString:attchHtml withString:htmlHead];
                         }
-                        
                         
                         NSString *spanStr = @"";
                         NSArray *spanArray = [enStr componentsSeparatedByString:@"<span style='display:none'"];
@@ -700,7 +679,31 @@
                         
                         listInfo.deKey = datakey;
                     }
-                } // dsKey.length > 0
+                } else { // dsKey.length > 0
+                    
+                    // 替换正文body ，截取掉 span标签
+                    NSString *bodyStr = [htmlContents componentsSeparatedByString:@"</body>"][0];
+                    NSArray *bodys = [bodyStr componentsSeparatedByString:@"<body>"];
+                    bodyStr = [bodys lastObject];
+                    
+                    if (listInfo.attachCount > 0) {
+                        NSString *attchHtml = bodys[0];
+                        htmlContents = [htmlContents stringByReplacingOccurrencesOfString:attchHtml withString:htmlHead];
+                    }
+                    
+                    NSString *spanStr2 = @"";
+                    NSArray *spanArray2 = [bodyStr componentsSeparatedByString:@"<span style='display:none'"];
+                    if (spanArray2 && spanArray2.count <2) {
+                        spanStr2 = [bodyStr componentsSeparatedByString:@"<span style=\"display:none\""][0];
+                    } else {
+                        spanStr2 = spanArray2[0];
+                    }
+                    
+                    if (spanStr2.length > 0) {
+                        htmlContents = [htmlContents stringByReplacingOccurrencesOfString:bodyStr withString:[spanStr2 stringByAppendingString:confidantHtmlStr]];
+                    }
+
+                }
                 
                 // 获取附件
                 NSArray *attchArray = messageParser.attachments;
