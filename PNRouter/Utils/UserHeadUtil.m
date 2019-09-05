@@ -16,7 +16,6 @@
 #import "NSData+Base64.h"
 #import "ChatListDataUtil.h"
 #import "UserModel.h"
-#import "EntryModel.h"
 #import "SocketDataUtil.h"
 #import "SocketCountUtil.h"
 #import "SocketManageUtil.h"

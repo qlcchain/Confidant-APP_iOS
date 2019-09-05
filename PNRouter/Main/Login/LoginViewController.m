@@ -22,11 +22,10 @@
 #import "UserConfig.h"
 #import "FingerprintVerificationUtil.h"
 #import "NSString+Base64.h"
-#import "LibsodiumUtil.h"
 #import "UserHeadUtil.h"
-#import "EntryModel.h"
 #import "CSLogMacro.h"
 #import "NSData+Base64.h"
+#import "UserPrivateKeyUtil.h"
 
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate> {
@@ -171,7 +170,7 @@
             // 清除所有数据
             [SystemUtil clearAppAllData];
             // 更改私钥
-            [LibsodiumUtil changeUserPrivater:values[1]];
+            [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:values[1]];
             NSString *name = [values[3] base64DecodedString];
             [UserModel createUserLocalWithName:name];
             // 删除所有路由

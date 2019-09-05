@@ -30,8 +30,7 @@
 #import "SocketManageUtil.h"
 #import "SystemUtil.h"
 #import "NSData+Base64.h"
-#import "LibsodiumUtil.h"
-#import "EntryModel.h"
+
 #import "AESCipher.h"
 #import "EmailDataBaseUtil.h"
 #import "EmailAccountModel.h"

@@ -6,7 +6,6 @@
 //  Copyright © 2018年 旷自辉. All rights reserved.
 //
 
-#import "BBaseModel.h"
 
 @interface UserModel : BBaseModel
 

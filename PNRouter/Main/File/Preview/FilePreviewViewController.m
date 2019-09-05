@@ -11,8 +11,6 @@
 #import "FileMoreAlertView.h"
 #import "FileListModel.h"
 #import "DetailInformationViewController.h"
-#import "LibsodiumUtil.h"
-#import "EntryModel.h"
 #import "NSString+Base64.h"
 #import "AESCipher.h"
 #import "SystemUtil.h"
@@ -31,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+  
 }
 
 - (void)viewDidAppear:(BOOL)animated {

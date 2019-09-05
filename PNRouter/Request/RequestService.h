@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AFHTTPClientV2.h"
-#import "BBaseModel.h"
+
 
 @interface RequestService : NSObject
 

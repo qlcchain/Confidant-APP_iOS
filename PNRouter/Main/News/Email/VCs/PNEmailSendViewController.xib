@@ -83,6 +83,13 @@
                                 <constraint firstAttribute="width" constant="18" id="uT8-Zp-6l6"/>
                             </constraints>
                         </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zFb-Vf-NOt">
+                            <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.45882352941176469" green="0.45098039215686275" blue="0.50196078431372548" alpha="0.099582619863013699" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="n0a-q8-HK0"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -90,12 +97,15 @@
                         <constraint firstItem="rvJ-IL-QVy" firstAttribute="leading" secondItem="FnV-IJ-iC6" secondAttribute="trailing" constant="16" id="3wI-ks-Hdq"/>
                         <constraint firstAttribute="height" constant="44" id="6Nc-2X-Irs"/>
                         <constraint firstItem="rvJ-IL-QVy" firstAttribute="centerX" secondItem="nlQ-RA-Q8M" secondAttribute="centerX" id="ATF-hO-jCz"/>
+                        <constraint firstAttribute="bottom" secondItem="zFb-Vf-NOt" secondAttribute="bottom" id="BJh-28-1jr"/>
                         <constraint firstItem="FnV-IJ-iC6" firstAttribute="leading" secondItem="nlQ-RA-Q8M" secondAttribute="leading" constant="4" id="FLv-MV-UTl"/>
+                        <constraint firstItem="zFb-Vf-NOt" firstAttribute="leading" secondItem="nlQ-RA-Q8M" secondAttribute="leading" id="KyO-9i-csN"/>
                         <constraint firstAttribute="trailing" secondItem="KSa-eS-PHf" secondAttribute="trailing" constant="40" id="OaW-uN-dUH"/>
                         <constraint firstItem="KSa-eS-PHf" firstAttribute="centerY" secondItem="nlQ-RA-Q8M" secondAttribute="centerY" id="PPx-YR-vbl"/>
                         <constraint firstAttribute="trailing" secondItem="IOa-5D-zZP" secondAttribute="trailing" id="RJj-Wl-wuw"/>
                         <constraint firstItem="IOa-5D-zZP" firstAttribute="leading" secondItem="rvJ-IL-QVy" secondAttribute="trailing" constant="16" id="UIw-1z-94Y"/>
                         <constraint firstItem="rvJ-IL-QVy" firstAttribute="centerY" secondItem="nlQ-RA-Q8M" secondAttribute="centerY" id="Zk1-f5-s5F"/>
+                        <constraint firstAttribute="trailing" secondItem="zFb-Vf-NOt" secondAttribute="trailing" id="dMQ-gv-yaN"/>
                         <constraint firstItem="IOa-5D-zZP" firstAttribute="centerY" secondItem="nlQ-RA-Q8M" secondAttribute="centerY" id="gcN-N8-1Vx"/>
                     </constraints>
                 </view>

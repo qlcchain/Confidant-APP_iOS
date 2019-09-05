@@ -33,8 +33,6 @@
 #import "RouterUserModel.h"
 #import "MutManagerUtil.h"
 #import "UserConfig.h"
-#import "EntryModel.h"
-#import "LibsodiumUtil.h"
 #import "FileDownUtil.h"
 #import "RouterConfig.h"
 #import "ChatModel.h"
@@ -2254,7 +2252,7 @@
 {
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_PullFriend,@"UserId":userM.userId?:@""};
-    [SocketMessageUtil sendVersion4WithParams:params];
+    [SocketMessageUtil sendVersion6WithParams:params];
 }
 #pragma -mark 发送data文件
 + (void) sendDataFileNeedSynch:(NSInteger) synch

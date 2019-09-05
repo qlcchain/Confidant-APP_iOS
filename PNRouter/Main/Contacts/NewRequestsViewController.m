@@ -19,7 +19,6 @@
 #import "NewRequestsGroupChatsCell1.h"
 #import "NewRequestsGroupChatsCell2.h"
 #import "GroupVerifyModel.h"
-#import "LibsodiumUtil.h"
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
 

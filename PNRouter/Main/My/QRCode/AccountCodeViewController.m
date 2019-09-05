@@ -10,7 +10,6 @@
 #import "UserModel.h"
 #import "HMScanner.h"
 #import "NSString+Base64.h"
-#import "EntryModel.h"
 #import "UIView+Visuals.h"
 #import "UIImage+RoundedCorner.h"
 #import <YBImageBrowser/YBImageBrowser.h>

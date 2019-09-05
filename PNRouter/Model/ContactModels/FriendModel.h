@@ -6,7 +6,7 @@
 //  Copyright © 2018年 旷自辉. All rights reserved.
 //
 
-#import "BBaseModel.h"
+
 #import <BGFMDB/BGFMDB.h>
 
 @interface FriendModel : BBaseModel
@@ -14,6 +14,7 @@
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *remarks;
 @property (nonatomic, copy) NSString *company;
+@property (nonatomic, copy) NSString *Mails;
 @property (nonatomic, copy) NSString *publicKey;
 @property (nonatomic, copy) NSString *signPublicKey;
 @property (nonatomic, copy) NSString *position;

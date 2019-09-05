@@ -10,7 +10,6 @@
 #import "UserModel.h"
 #import "NSString+Base64.h"
 #import "PNDefaultHeaderView.h"
-#import "EntryModel.h"
 #import <YBImageBrowser/YBImageBrowser.h>
 
 @implementation MyHeadView

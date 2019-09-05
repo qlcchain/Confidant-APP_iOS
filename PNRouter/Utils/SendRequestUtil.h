@@ -80,6 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendEmailDelNodeWithUid:(NSString *) uid showHud:(BOOL) showHud;
 + (void) sendEmailDelConfigWithShowHud:(BOOL) showHud;
 + (void) sendEmailCheckNodeWithUid:(NSString *) uid showHud:(BOOL) showHud;
++ (void) sendEmailSendNotiWithEmails:(NSString *) emails showHud:(BOOL) showHud;
 @end
 
 NS_ASSUME_NONNULL_END

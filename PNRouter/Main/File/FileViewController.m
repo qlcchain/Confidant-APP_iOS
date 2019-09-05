@@ -32,7 +32,6 @@
 #import "NSString+Base64.h"
 #import "ChooseContactViewController.h"
 #import "FriendModel.h"
-#import "LibsodiumUtil.h"
 #import "FileRenameHelper.h"
 #import "AESCipher.h"
 

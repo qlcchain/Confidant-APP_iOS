@@ -227,15 +227,24 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
     }
     return 30;
 }
-- (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 30)];
+    headView.backgroundColor = RGBP(117, 115, 128,0.1);
+    
+    UILabel *lblContent = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, SCREEN_WIDTH-32, 30)];
+    lblContent.backgroundColor = [UIColor clearColor];
     if (section == 1) {
-        return @"Incoming Mail Server";
+        lblContent.text = @"Incoming Mail Server";
     } else if (section == 2) {
-        return @"Outgoing Mail Server";
+        lblContent.text = @"Outgoing Mail Server";
     }
-    return nil;
+    lblContent.textColor = RGB(148, 150, 161);
+    lblContent.font = [UIFont systemFontOfSize:14];
+    [headView addSubview:lblContent];
+    return headView;
 }
+
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     EmailConfigCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailConfigCellResue];

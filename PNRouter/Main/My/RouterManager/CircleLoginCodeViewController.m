@@ -19,7 +19,6 @@
 #import "UIView+Screenshot.h"
 #import "UserConfig.h"
 #import "HMScanner.h"
-#import "EntryModel.h"
 #import "NSString+Base64.h"
 
 @interface CircleLoginCodeViewController ()

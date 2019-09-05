@@ -30,7 +30,7 @@
 #import "NSData+Base64.h"
 #import "ChatListDataUtil.h"
 #import "UserConfig.h"
-#import "EntryModel.h"
+
 
 #if TARGET_OS_IPHONE
 @import MobileCoreServices;

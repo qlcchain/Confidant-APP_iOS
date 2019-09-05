@@ -34,14 +34,12 @@
 #import "EmailAccountModel.h"
 #import "EmailOptionUtil.h"
 #import "NSString+RegexCategory.h"
-#import "EntryModel.h"
 #import "UserConfig.h"
 //#import <IQKeyboardManager/IQKeyboardManager.h>
 
 
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
-#import "LibsodiumUtil.h"
 #import "AESCipher.h"
 #import "EmailUserKeyModel.h"
 #import "MCOCIDURLProtocol.h"
@@ -90,7 +88,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property (weak, nonatomic) IBOutlet UIWebView *myWebView;
 
 @property (nonatomic, strong) NSMutableArray *contactArray;
-
+@property (nonatomic, strong) NSString *emailStrings;
 @property (nonatomic, strong) NSMutableArray *toContacts;
 @property (nonatomic, strong) NSMutableArray *ccContacts;
 @property (nonatomic, strong) NSMutableArray *bccContacts;
@@ -406,8 +404,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (emails.count <= 30) {
         self.isSend = YES;
         [self.view showHudInView:self.view hint:@"Sending…" userInteractionEnabled:NO hideTime:REQEUST_TIME_60];
-        NSString *emailStrings = [emails componentsJoinedByString:@","];
-        [SendRequestUtil sendEmailUserkeyWithUsers:emailStrings unum:@(emails.count) ShowHud:NO];
+        self.emailStrings = [emails componentsJoinedByString:@","];
+        [SendRequestUtil sendEmailUserkeyWithUsers:self.emailStrings unum:@(emails.count) ShowHud:NO];
     } else {
         _lockImgView.hidden = YES;
         [self sendEmailWithShowLoading:YES keys:nil];
@@ -548,6 +546,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                        // 保存到已发送
                                        [EmailOptionUtil copySent:rfc822Data complete:^(BOOL success) {
                                        }];
+                                       // 发送推送请求
+                                       [SendRequestUtil sendEmailSendNotiWithEmails:weakSelf.emailStrings showHud:NO];
                                        // 添加对方为好友
                                        if (weakSelf.emailInfo.friendId && weakSelf.emailInfo.friendId.length > 0) {
                                           
@@ -1451,8 +1451,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     CGFloat itemH = itemW*(128.0/170);
     CGFloat rows = self.attchArray.count/2 + self.attchArray.count%2;
     CGFloat collectionH = rows*itemH+((rows-1)*4);
-    
-    [_attCountBtn setTitle:[NSString stringWithFormat:@" %lu",self.attchArray.count-1] forState:UIControlStateNormal];
+    if (self.attchArray.count-1 == 0) {
+        _attCountBtn.hidden = YES;
+    } else {
+        _attCountBtn.hidden = NO;
+        [_attCountBtn setTitle:[NSString stringWithFormat:@" %lu",self.attchArray.count-1] forState:UIControlStateNormal];
+    }
     _AttCollectionContraintH.constant = collectionH;
 }
 

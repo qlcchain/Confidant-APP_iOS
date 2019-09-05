@@ -163,7 +163,6 @@
 		585AEE19213F71990098A070 /* PNBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE17213F71990098A070 /* PNBaseViewController.m */; };
 		585AEE1E213F71E00098A070 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE1C213F71E00098A070 /* ChatViewController.m */; };
 		585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 585AEE1D213F71E00098A070 /* ChatViewController.xib */; };
-		585AEE22213F71F40098A070 /* BBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE20213F71F40098A070 /* BBaseModel.m */; };
 		585AEE512140D2280098A070 /* HMScannerBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE4B2140D2280098A070 /* HMScannerBorder.m */; };
 		585AEE522140D2280098A070 /* HMScannerMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE4C2140D2280098A070 /* HMScannerMaskView.m */; };
 		585AEE532140D2280098A070 /* HMScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 585AEE4D2140D2280098A070 /* HMScanner.m */; };
@@ -292,7 +291,6 @@
 		73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6E219BF4E900510B48 /* NSString+SHA256.m */; };
 		73121A74219C26E900510B48 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A72219C26E900510B48 /* LoginViewController.m */; };
 		73121A75219C26E900510B48 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73121A73219C26E900510B48 /* LoginViewController.xib */; };
-		7317447421F072110018BA50 /* EntryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7317447321F072110018BA50 /* EntryModel.m */; };
 		73194E91225360520047F50C /* ChatImgCacheUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E90225360520047F50C /* ChatImgCacheUtil.m */; };
 		73194E95225598C30047F50C /* SendFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73194E93225598C30047F50C /* SendFileListViewController.m */; };
 		73194E96225598C30047F50C /* SendFileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73194E94225598C30047F50C /* SendFileListViewController.xib */; };
@@ -646,14 +644,16 @@
 		73E7744222DC87F3001C652E /* AttchImgageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E7744022DC87F3001C652E /* AttchImgageCell.xib */; };
 		73E7744522DD639C001C652E /* PNEmailOptionEnumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E7744422DD639C001C652E /* PNEmailOptionEnumView.m */; };
 		73E7744722DD63AD001C652E /* PNEmailOptionEnumView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E7744622DD63AD001C652E /* PNEmailOptionEnumView.xib */; };
+		73EAC67A23150CD4002C1637 /* guidance_notes_1.html in Resources */ = {isa = PBXBuildFile; fileRef = 73EAC67823150CD4002C1637 /* guidance_notes_1.html */; };
+		73EAC67B23150CD4002C1637 /* guidance_notes_4.html in Resources */ = {isa = PBXBuildFile; fileRef = 73EAC67923150CD4002C1637 /* guidance_notes_4.html */; };
+		73EAC9832320F5B5002C1637 /* UserPrivateKeyUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EAC9822320F5B5002C1637 /* UserPrivateKeyUtil.m */; };
+		73EAC9852320F9E2002C1637 /* LibsodiumSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73EAC9842320F9E2002C1637 /* LibsodiumSDK.framework */; };
 		73ED4B23230A78F400AF4B51 /* PNEmailEncrypedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73ED4B21230A78F400AF4B51 /* PNEmailEncrypedViewController.m */; };
 		73ED4B24230A78F400AF4B51 /* PNEmailEncrypedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B22230A78F400AF4B51 /* PNEmailEncrypedViewController.xib */; };
 		73ED4B28230A803700AF4B51 /* EmailEncrypedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73ED4B26230A803700AF4B51 /* EmailEncrypedCell.m */; };
 		73ED4B29230A803700AF4B51 /* EmailEncrypedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B27230A803700AF4B51 /* EmailEncrypedCell.xib */; };
 		73ED4B34230FDCFF00AF4B51 /* guidance_notes_5.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B2E230FDCFE00AF4B51 /* guidance_notes_5.html */; };
-		73ED4B37230FDCFF00AF4B51 /* guidance_notes_1.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B31230FDCFE00AF4B51 /* guidance_notes_1.html */; };
 		73ED4B39230FDCFF00AF4B51 /* guidance_notes_6.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B33230FDCFF00AF4B51 /* guidance_notes_6.html */; };
-		73ED4B3D230FDE2100AF4B51 /* guidance_notes_4.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B3A230FDE2000AF4B51 /* guidance_notes_4.html */; };
 		73ED4B3E230FDE2100AF4B51 /* guidance_notes_2.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B3B230FDE2000AF4B51 /* guidance_notes_2.html */; };
 		73ED4B3F230FDE2100AF4B51 /* guidance_notes_3.html in Resources */ = {isa = PBXBuildFile; fileRef = 73ED4B3C230FDE2100AF4B51 /* guidance_notes_3.html */; };
 		73EE8CBE2154E5330048866B /* ChooseContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CBC2154E5330048866B /* ChooseContactViewController.m */; };
@@ -673,7 +673,6 @@
 		73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806521DF87490047C3DA /* DebugLogViewController.m */; };
 		73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F8806721DF874A0047C3DA /* DebugLogViewController.xib */; };
 		73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806A21DF87AE0047C3DA /* DDLogUtil.m */; };
-		73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */; };
 		73F9A11A219973C80011FAA5 /* ReviceRadio.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F9A119219973C80011FAA5 /* ReviceRadio.m */; };
 		73F9D619224B110200D7B228 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F9D618224B110200D7B228 /* NSString+Trim.m */; };
 		73FD079921D74979001B89CB /* FriendRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73FD079721D74979001B89CB /* FriendRequestViewController.m */; };
@@ -1023,8 +1022,6 @@
 		585AEE1B213F71E00098A070 /* ChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		585AEE1C213F71E00098A070 /* ChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		585AEE1D213F71E00098A070 /* ChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
-		585AEE20213F71F40098A070 /* BBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBaseModel.m; sourceTree = "<group>"; };
-		585AEE21213F71F40098A070 /* BBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBaseModel.h; sourceTree = "<group>"; };
 		585AEE4A2140D2280098A070 /* HMScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMScanner.h; sourceTree = "<group>"; };
 		585AEE4B2140D2280098A070 /* HMScannerBorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMScannerBorder.m; sourceTree = "<group>"; };
 		585AEE4C2140D2280098A070 /* HMScannerMaskView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMScannerMaskView.m; sourceTree = "<group>"; };
@@ -1244,8 +1241,6 @@
 		73121A71219C26E900510B48 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		73121A72219C26E900510B48 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		73121A73219C26E900510B48 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
-		7317447221F072110018BA50 /* EntryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntryModel.h; sourceTree = "<group>"; };
-		7317447321F072110018BA50 /* EntryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EntryModel.m; sourceTree = "<group>"; };
 		73194E8F225360520047F50C /* ChatImgCacheUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatImgCacheUtil.h; sourceTree = "<group>"; };
 		73194E90225360520047F50C /* ChatImgCacheUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatImgCacheUtil.m; sourceTree = "<group>"; };
 		73194E92225598C30047F50C /* SendFileListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendFileListViewController.h; sourceTree = "<group>"; };
@@ -1905,6 +1900,11 @@
 		73E7744322DD639C001C652E /* PNEmailOptionEnumView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailOptionEnumView.h; sourceTree = "<group>"; };
 		73E7744422DD639C001C652E /* PNEmailOptionEnumView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailOptionEnumView.m; sourceTree = "<group>"; };
 		73E7744622DD63AD001C652E /* PNEmailOptionEnumView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailOptionEnumView.xib; sourceTree = "<group>"; };
+		73EAC67823150CD4002C1637 /* guidance_notes_1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_1.html; sourceTree = "<group>"; };
+		73EAC67923150CD4002C1637 /* guidance_notes_4.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_4.html; sourceTree = "<group>"; };
+		73EAC9812320F5B5002C1637 /* UserPrivateKeyUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserPrivateKeyUtil.h; sourceTree = "<group>"; };
+		73EAC9822320F5B5002C1637 /* UserPrivateKeyUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserPrivateKeyUtil.m; sourceTree = "<group>"; };
+		73EAC9842320F9E2002C1637 /* LibsodiumSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LibsodiumSDK.framework; sourceTree = "<group>"; };
 		73ED4B20230A78F400AF4B51 /* PNEmailEncrypedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailEncrypedViewController.h; sourceTree = "<group>"; };
 		73ED4B21230A78F400AF4B51 /* PNEmailEncrypedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailEncrypedViewController.m; sourceTree = "<group>"; };
 		73ED4B22230A78F400AF4B51 /* PNEmailEncrypedViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailEncrypedViewController.xib; sourceTree = "<group>"; };
@@ -1912,9 +1912,7 @@
 		73ED4B26230A803700AF4B51 /* EmailEncrypedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailEncrypedCell.m; sourceTree = "<group>"; };
 		73ED4B27230A803700AF4B51 /* EmailEncrypedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailEncrypedCell.xib; sourceTree = "<group>"; };
 		73ED4B2E230FDCFE00AF4B51 /* guidance_notes_5.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_5.html; sourceTree = "<group>"; };
-		73ED4B31230FDCFE00AF4B51 /* guidance_notes_1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_1.html; sourceTree = "<group>"; };
 		73ED4B33230FDCFF00AF4B51 /* guidance_notes_6.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_6.html; sourceTree = "<group>"; };
-		73ED4B3A230FDE2000AF4B51 /* guidance_notes_4.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_4.html; sourceTree = "<group>"; };
 		73ED4B3B230FDE2000AF4B51 /* guidance_notes_2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_2.html; sourceTree = "<group>"; };
 		73ED4B3C230FDE2100AF4B51 /* guidance_notes_3.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = guidance_notes_3.html; sourceTree = "<group>"; };
 		73EE8CBB2154E5330048866B /* ChooseContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactViewController.h; sourceTree = "<group>"; };
@@ -1945,8 +1943,6 @@
 		73F8806721DF874A0047C3DA /* DebugLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DebugLogViewController.xib; sourceTree = "<group>"; };
 		73F8806A21DF87AE0047C3DA /* DDLogUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLogUtil.m; sourceTree = "<group>"; };
 		73F8806B21DF87AF0047C3DA /* DDLogUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLogUtil.h; sourceTree = "<group>"; };
-		73F8806F21ED7EE00047C3DA /* LibsodiumUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibsodiumUtil.h; sourceTree = "<group>"; };
-		73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibsodiumUtil.m; sourceTree = "<group>"; };
 		73F9A118219973C80011FAA5 /* ReviceRadio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReviceRadio.h; sourceTree = "<group>"; };
 		73F9A119219973C80011FAA5 /* ReviceRadio.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReviceRadio.m; sourceTree = "<group>"; };
 		73F9D617224B110200D7B228 /* NSString+Trim.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
@@ -1987,6 +1983,7 @@
 				7306054521748BD5005A0E13 /* libopencore-amrwb.a in Frameworks */,
 				7306054621748BD5005A0E13 /* libopencore-amrnb.a in Frameworks */,
 				815FEEED645E5889A42F8CA0 /* libPods-PNRouter.a in Frameworks */,
+				73EAC9852320F9E2002C1637 /* LibsodiumSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1996,6 +1993,7 @@
 		55980B67464FF41D9AB2E171 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				73EAC9842320F9E2002C1637 /* LibsodiumSDK.framework */,
 				730330EE21C76E86007C4063 /* CoreTelephony.framework */,
 				730330EC21C76E7C007C4063 /* CFNetwork.framework */,
 				730330EA21C76E72007C4063 /* MobileCoreServices.framework */,
@@ -2539,10 +2537,10 @@
 		585AEE12213F6EDE0098A070 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				73ED4B31230FDCFE00AF4B51 /* guidance_notes_1.html */,
+				73EAC67823150CD4002C1637 /* guidance_notes_1.html */,
+				73EAC67923150CD4002C1637 /* guidance_notes_4.html */,
 				73ED4B3B230FDE2000AF4B51 /* guidance_notes_2.html */,
 				73ED4B3C230FDE2100AF4B51 /* guidance_notes_3.html */,
-				73ED4B3A230FDE2000AF4B51 /* guidance_notes_4.html */,
 				73ED4B2E230FDCFE00AF4B51 /* guidance_notes_5.html */,
 				73ED4B33230FDCFF00AF4B51 /* guidance_notes_6.html */,
 				73FE5B2322DF561E004D0655 /* EmailConfigure.plist */,
@@ -2572,8 +2570,6 @@
 				7330F50F214A78DB00FF4EEC /* ContactModels */,
 				7330F3D12147A97700FF4EEC /* BaseMsgModel.h */,
 				7330F3D02147A97700FF4EEC /* BaseMsgModel.m */,
-				585AEE21213F71F40098A070 /* BBaseModel.h */,
-				585AEE20213F71F40098A070 /* BBaseModel.m */,
 				58BD2E5F21475E960091A77D /* RouterModel.h */,
 				58BD2E6021475E960091A77D /* RouterModel.m */,
 				58BD2E6221475ED10091A77D /* UserModel.h */,
@@ -2590,8 +2586,6 @@
 				73E2FB6D21A7F3FD00DAED52 /* RouterUserModel.m */,
 				7303310D21D22422007C4063 /* UserConfig.h */,
 				7303310E21D22422007C4063 /* UserConfig.m */,
-				7317447221F072110018BA50 /* EntryModel.h */,
-				7317447321F072110018BA50 /* EntryModel.m */,
 				5825A24521FB0B8E00E6194B /* FileListModel.h */,
 				5825A24621FB0B8E00E6194B /* FileListModel.m */,
 				7360B85021FC3269008FB181 /* FileData.h */,
@@ -3721,8 +3715,6 @@
 				738677A321B168C7003A8568 /* MutManagerUtil.m */,
 				73682AE821C3D2D700E3E1A0 /* ToxPullFileTimerUtil.h */,
 				73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */,
-				73F8806F21ED7EE00047C3DA /* LibsodiumUtil.h */,
-				73F8807021ED7EE00047C3DA /* LibsodiumUtil.m */,
 				7392791321FAF356003AAD58 /* UploadFileManager.h */,
 				7392791421FAF356003AAD58 /* UploadFileManager.m */,
 				7360B85321FC632A008FB181 /* FileDownUtil.h */,
@@ -3741,6 +3733,8 @@
 				73194E90225360520047F50C /* ChatImgCacheUtil.m */,
 				73216786225B2E5C00383D61 /* CircleOutUtil.h */,
 				73216787225B2E5C00383D61 /* CircleOutUtil.m */,
+				73EAC9812320F5B5002C1637 /* UserPrivateKeyUtil.h */,
+				73EAC9822320F5B5002C1637 /* UserPrivateKeyUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -4527,6 +4521,7 @@
 				7322F4E822DD84A300932F28 /* EmailOptionCell.xib in Resources */,
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
 				7353944F2266CF140004CE85 /* CircleMemberDetailViewController.xib in Resources */,
+				73EAC67B23150CD4002C1637 /* guidance_notes_4.html in Resources */,
 				582BFE57221D3D2700D8C2C8 /* RouterAliasViewController.xib in Resources */,
 				73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */,
 				581DE4E32238D9D10056D4F8 /* CreateGroupChatViewController.xib in Resources */,
@@ -4535,7 +4530,6 @@
 				733EE48022E1B2DB0042457C /* PNEmailMoveViewController.xib in Resources */,
 				58A23A83223F936D0098AED5 /* AddGroupMemberViewController.xib in Resources */,
 				581DE4E82238ED250056D4F8 /* GroupDetailsViewController.xib in Resources */,
-				73ED4B37230FDCFF00AF4B51 /* guidance_notes_1.html in Resources */,
 				73E3C71122D49F4F00D7C9C6 /* CircleNamewCell.xib in Resources */,
 				583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */,
 				7341A87B22FC1603001AF7C2 /* PNSearchViewController.xib in Resources */,
@@ -4616,6 +4610,7 @@
 				7341A88122FD571D001AF7C2 /* PNEmailEditViewController.xib in Resources */,
 				73E7744722DD63AD001C652E /* PNEmailOptionEnumView.xib in Resources */,
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
+				73EAC67A23150CD4002C1637 /* guidance_notes_1.html in Resources */,
 				583B2B2F223109A900E6238D /* PNDefaultHeaderView.xib in Resources */,
 				73121A75219C26E900510B48 /* LoginViewController.xib in Resources */,
 				73E03B4C21DDF88A005DF993 /* DHTnodes.json in Resources */,
@@ -4634,7 +4629,6 @@
 				7330F39F214666E400FF4EEC /* PersonCodeViewController.xib in Resources */,
 				7330F46D2147AD2B00FF4EEC /* Expression.bundle in Resources */,
 				7303310B21C7A2FD007C4063 /* mysong.mp3 in Resources */,
-				73ED4B3D230FDE2100AF4B51 /* guidance_notes_4.html in Resources */,
 				7386910B214CC7D3003CF6A3 /* EditTextViewController.xib in Resources */,
 				583BF93621F6F4B00078A2A8 /* FileMoreAlertView.xib in Resources */,
 				583BF92521F6C3050078A2A8 /* UploadFilesHeaderView.xib in Resources */,
@@ -4823,6 +4817,7 @@
 				7306054721748BD5005A0E13 /* amrFileCodec.mm in Sources */,
 				7378841B21ACF2970033A189 /* OCTSubmanagerCallsImpl.m in Sources */,
 				585AEE19213F71990098A070 /* PNBaseViewController.m in Sources */,
+				73EAC9832320F5B5002C1637 /* UserPrivateKeyUtil.m in Sources */,
 				737883F521ACF2970033A189 /* OCTRealmManager.m in Sources */,
 				5886FB9C21F5D7AF0052EDD0 /* PNNavView.m in Sources */,
 				730AE08322EADA5600E0BC67 /* EmailErrorAlertView.m in Sources */,
@@ -4857,7 +4852,6 @@
 				730AE0A322F2B4D800E0BC67 /* EmailUserKeyModel.m in Sources */,
 				73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */,
 				5833A51E214F520E00ED69A7 /* UIColor+Random.m in Sources */,
-				585AEE22213F71F40098A070 /* BBaseModel.m in Sources */,
 				7378841221ACF2970033A189 /* OCTFileUploadOperation.m in Sources */,
 				581FDF6221F172E00068C120 /* ModifyActivateCodeViewController.m in Sources */,
 				73E3C6ED22D3453400D7C9C6 /* TermsViewController.m in Sources */,
@@ -4904,7 +4898,6 @@
 				7341A86722F81146001AF7C2 /* sha1.c in Sources */,
 				73E7741B22D8239A001C652E /* PNEmailDetailViewController.m in Sources */,
 				7321A3F323028C0E00D9B97A /* AESCrypt.m in Sources */,
-				7317447421F072110018BA50 /* EntryModel.m in Sources */,
 				581FDF3D21F024160068C120 /* toxav_old.m in Sources */,
 				73001A262191328C003D07CC /* RSAModel.m in Sources */,
 				581FDF4021F024170068C120 /* network.m in Sources */,
@@ -4946,7 +4939,6 @@
 				58B41EEA21F98845004676CA /* PNDocumentPickerViewController.m in Sources */,
 				7330F3A2214671B600FF4EEC /* ShareView.m in Sources */,
 				733EE47F22E1B2DB0042457C /* PNEmailMoveViewController.m in Sources */,
-				73F8807121ED7EE00047C3DA /* LibsodiumUtil.m in Sources */,
 				582BFE47221D264200D8C2C8 /* CreateAccountViewController.m in Sources */,
 				7341A86822F81146001AF7C2 /* fileenc.c in Sources */,
 				7356429D222630D800DC0BCB /* ChatModel.m in Sources */,
@@ -5446,6 +5438,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PNRouter/Vender/toxcore/ios",
+					"$(PROJECT_DIR)/PNRouter",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/PNRouter/PNRouterPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = (
@@ -5463,6 +5457,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
 					"$(PROJECT_DIR)/PNRouter/Vender/openssl",
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
+					"$(PROJECT_DIR)/PNRouter",
 				);
 				MiSDKRun = debug;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
@@ -5490,6 +5485,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PNRouter/Vender/toxcore/ios",
+					"$(PROJECT_DIR)/PNRouter",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/PNRouter/PNRouterPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = (
@@ -5507,6 +5504,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
 					"$(PROJECT_DIR)/PNRouter/Vender/openssl",
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
+					"$(PROJECT_DIR)/PNRouter",
 				);
 				MiSDKRun = online;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;

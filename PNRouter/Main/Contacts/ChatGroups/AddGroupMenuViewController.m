@@ -24,14 +24,13 @@
 #import "NSString+RegexCategory.h"
 #import "AESCipher.h"
 #import "CircleOutUtil.h"
-#import "EntryModel.h"
-#import "LibsodiumUtil.h"
 #import "NSString+Base64.h"
 #import "SystemUtil.h"
 #import "InvitationQRCodeViewController.h"
 #import "PNNavViewController.h"
 #import "EmailManage.h"
 #import "PNEmailSendViewController.h"
+#import "UserPrivateKeyUtil.h"
 
 @interface AddGroupMenuViewController ()
 
@@ -191,7 +190,8 @@
             // 清除所有数据
             [SystemUtil clearAppAllData];
             // 更改私钥
-            [LibsodiumUtil changeUserPrivater:values[1]];
+            [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:values[1]];
+            
             NSString *name = [values[3] base64DecodedString];
             [UserModel createUserLocalWithName:name];
             // 删除所有路由

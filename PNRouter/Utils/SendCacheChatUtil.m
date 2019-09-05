@@ -11,8 +11,6 @@
 #import "UserModel.h"
 #import "NSDate+Category.h"
 #import "SocketMessageUtil.h"
-#import "LibsodiumUtil.h"
-#import "EntryModel.h"
 #import "SocketDataUtil.h"
 #import "SocketManageUtil.h"
 #import "AESCipher.h"

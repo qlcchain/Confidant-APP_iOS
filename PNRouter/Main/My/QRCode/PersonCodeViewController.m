@@ -11,7 +11,7 @@
 #import "ShareView.h"
 #import "UserModel.h"
 #import "NSString+Base64.h"
-#import "EntryModel.h"
+
 #import "PNDefaultHeaderView.h"
 #import <YBImageBrowser/YBImageBrowser.h>
 #import "UIView+Visuals.h"
