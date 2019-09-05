@@ -8,9 +8,9 @@
 
 #import "ImportAccountViewController.h"
 #import "QRViewController.h"
-#import "LibsodiumUtil.h"
 #import "UserModel.h"
 #import "NSString+Base64.h"
+#import "UserPrivateKeyUtil.h"
 
 @interface ImportAccountViewController ()
 
@@ -42,7 +42,7 @@
             NSString *type = codeValues[0];
             if ([[NSString getNotNullValue:type] isEqualToString:@"type_3"]) {
                 
-                [LibsodiumUtil changeUserPrivater:codeValues[1]];
+                [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:codeValues[1]];
                 NSString *name = [codeValues[3] base64DecodedString];
                 [UserModel createUserLocalWithName:name];
                 [AppD setRootLoginWithType:ImportType];

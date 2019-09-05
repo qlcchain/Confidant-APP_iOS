@@ -15,8 +15,6 @@
 #import "NSDate+Category.h"
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
-#import "LibsodiumUtil.h"
-#import "EntryModel.h"
 #import "AESCipher.h"
 #import "SocketDataUtil.h"
 #import "SocketManageUtil.h"

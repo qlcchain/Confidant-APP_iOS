@@ -19,8 +19,6 @@
 #import "SocketCountUtil.h"
 #import "NSString+Base64.h"
 #import "NSData+Base64.h"
-#import "LibsodiumUtil.h"
-#import "EntryModel.h"
 #import "AESCipher.h"
 #import "SocketManageUtil.h"
 #import "MD5Util.h"

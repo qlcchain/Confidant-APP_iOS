@@ -47,13 +47,23 @@
                                 <constraint firstAttribute="width" constant="44" id="BQs-Ms-5D4"/>
                             </constraints>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nIQ-SS-s01">
+                            <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.45882352941176469" green="0.45098039215686275" blue="0.50196078431372548" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="ft5-Ek-Aqf"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="Q7h-tz-2Ca" firstAttribute="leading" secondItem="ved-8n-IoN" secondAttribute="leading" constant="5" id="1Tr-i9-0Ps"/>
+                        <constraint firstAttribute="trailing" secondItem="nIQ-SS-s01" secondAttribute="trailing" id="3z0-5j-698"/>
                         <constraint firstItem="Zq6-wP-ahU" firstAttribute="centerY" secondItem="ved-8n-IoN" secondAttribute="centerY" id="6E2-HZ-sTR"/>
                         <constraint firstAttribute="trailing" secondItem="LZO-nU-0zr" secondAttribute="trailing" constant="5" id="C73-Up-XRR"/>
                         <constraint firstItem="Zq6-wP-ahU" firstAttribute="leading" secondItem="Q7h-tz-2Ca" secondAttribute="trailing" constant="5" id="DAp-AE-noq"/>
+                        <constraint firstAttribute="bottom" secondItem="nIQ-SS-s01" secondAttribute="bottom" id="Owt-P0-m2d"/>
+                        <constraint firstItem="nIQ-SS-s01" firstAttribute="leading" secondItem="ved-8n-IoN" secondAttribute="leading" id="gl2-Jd-BoY"/>
                         <constraint firstItem="Q7h-tz-2Ca" firstAttribute="centerY" secondItem="ved-8n-IoN" secondAttribute="centerY" id="gte-El-kBK"/>
                         <constraint firstItem="Zq6-wP-ahU" firstAttribute="centerX" secondItem="ved-8n-IoN" secondAttribute="centerX" id="kJj-gK-n2e"/>
                         <constraint firstItem="LZO-nU-0zr" firstAttribute="top" secondItem="ved-8n-IoN" secondAttribute="top" id="omk-7n-Tiy"/>
@@ -77,7 +87,7 @@
                 <constraint firstItem="ved-8n-IoN" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="upI-jW-7L6"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="124" y="-55"/>
+            <point key="canvasLocation" x="124" y="-55.322338830584712"/>
         </view>
     </objects>
     <resources>

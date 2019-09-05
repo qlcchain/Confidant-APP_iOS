@@ -16,9 +16,8 @@
 #import "EditTextViewController.h"
 #import "UserConfig.h"
 #import "PNRouter-Swift.h"
-#import "LibsodiumUtil.h"
 #import "SystemUtil.h"
-#import "EntryModel.h"
+
 #import "AESCipher.h"
 #import "SocketDataUtil.h"
 #import "SocketManageUtil.h"

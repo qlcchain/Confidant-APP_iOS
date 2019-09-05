@@ -52,8 +52,6 @@
 #import "EmailDataBaseUtil.h"
 
 #import "NSData+Base64.h"
-#import "LibsodiumUtil.h"
-#import "EntryModel.h"
 #import "AESCipher.h"
 #import "NSString+Base64.h"
 #import "EmailNodeModel.h"

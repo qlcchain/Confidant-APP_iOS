@@ -26,11 +26,9 @@
 //#import "MiPushSDK.h"
 #import "RunInBackground.h"
 #import "RSAModel.h"
-#import "LibsodiumUtil.h"
 #import "OperationRecordModel.h"
 #import "CreateAccountViewController.h"
 #import "UserModel.h"
-#import "EntryModel.h"
 #import "NSDate+Category.h"
 #import "FingerprintVerificationUtil.h"
 #import "PNUnlockView.h"
@@ -48,6 +46,7 @@
 #import "UserConfig.h"
 #import "ChatListModel.h"
 #import "LeftViewController.h"
+#import "UserPrivateKeyUtil.h"
 
 // 引入 JPush 功能所需头文件
 #import "JPUSHService.h"
@@ -92,7 +91,7 @@
     // 配置IQKeyboardManager
     [self keyboardManagerConfig];
     // 配置DDLog
-   // [self configDDLog];
+  //  [self configDDLog];
     // 配置聊天
     [self configChat];
     // 打开时改变文件上传下载状态
@@ -102,8 +101,9 @@
     [[SendCacheChatUtil getSendCacheChatUtilShare] deleteCacheFileNollData];
   //  [RSAModel getRSAModel];
     // 得到签名，加密 公私钥对
-    EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickey];
-    [LibsodiumUtil changeUserPrivater:model.signPrivateKey];
+    NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
+    EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickeyWithModelJson:modelJson];
+    [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:model.signPrivateKey];
     [self.window makeKeyAndVisible];
     return YES;
 }

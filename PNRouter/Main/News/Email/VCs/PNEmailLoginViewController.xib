@@ -51,14 +51,24 @@
                                 <action selector="clickCloseAction:" destination="-1" eventType="touchUpInside" id="jwJ-Xm-fdP"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k8e-En-LNw">
+                            <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.45882352941176469" green="0.45098039215686275" blue="0.50196078431372548" alpha="0.10097388698630137" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="aM3-hh-xoj"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="VAP-Xm-att" firstAttribute="centerX" secondItem="MZC-Dm-SpC" secondAttribute="centerX" id="0lx-0d-cGv"/>
                         <constraint firstAttribute="height" constant="44" id="43P-ua-0q0"/>
                         <constraint firstItem="VAP-Xm-att" firstAttribute="centerY" secondItem="MZC-Dm-SpC" secondAttribute="centerY" id="8bL-Mx-BVI"/>
+                        <constraint firstItem="k8e-En-LNw" firstAttribute="leading" secondItem="MZC-Dm-SpC" secondAttribute="leading" id="Gq4-Kf-3w1"/>
                         <constraint firstItem="8br-r5-eVP" firstAttribute="leading" secondItem="MZC-Dm-SpC" secondAttribute="leading" constant="5" id="RrH-wZ-zlB"/>
                         <constraint firstItem="8br-r5-eVP" firstAttribute="centerY" secondItem="MZC-Dm-SpC" secondAttribute="centerY" id="WxE-vc-g65"/>
+                        <constraint firstAttribute="bottom" secondItem="k8e-En-LNw" secondAttribute="bottom" id="f0U-SV-jZQ"/>
+                        <constraint firstAttribute="trailing" secondItem="k8e-En-LNw" secondAttribute="trailing" id="fuq-Lv-YEw"/>
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O8k-cJ-VhU">
@@ -234,7 +244,7 @@
                 <constraint firstItem="O8k-cJ-VhU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="x1F-nh-fxF"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-1583.2" y="-215.44227886056973"/>
+            <point key="canvasLocation" x="-1639.2" y="-242.42878560719643"/>
         </view>
     </objects>
     <resources>

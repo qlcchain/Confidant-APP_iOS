@@ -41,8 +41,6 @@
 #import "RSAUtil.h"
 #import "UserConfig.h"
 #import "DebugLogViewController.h"
-#import "LibsodiumUtil.h"
-#import "EntryModel.h"
 #import "PNDocumentPickerViewController.h"
 #import "ChatModel.h"
 #import "PNDefaultHeaderView.h"
@@ -60,6 +58,7 @@
 #import "RouterConfig.h"
 #import "RouterModel.h"
 #import "CircleOutUtil.h"
+#import "UserPrivateKeyUtil.h"
 
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
@@ -2438,7 +2437,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             // 清除所有数据
             [SystemUtil clearAppAllData];
             // 更改私钥
-            [LibsodiumUtil changeUserPrivater:values[1]];
+            [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:values[1]];
             NSString *name = [values[3] base64DecodedString];
             [UserModel createUserLocalWithName:name];
             // 删除所有路由

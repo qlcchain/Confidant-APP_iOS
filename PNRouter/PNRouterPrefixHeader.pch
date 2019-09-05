@@ -32,7 +32,7 @@
         #import <Masonry/Masonry.h>
         #import <MJExtension/MJExtension.h>
         #import <CocoaLumberjack/CocoaLumberjack.h>
-
+        #import <LibsodiumSDK/LibsodiumSDK.h>
         // 宏
         #import "ServerMacro.h"
         #import "CustomMacro.h"

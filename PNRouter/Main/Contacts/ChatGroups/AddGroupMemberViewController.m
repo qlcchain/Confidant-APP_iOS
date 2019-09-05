@@ -15,7 +15,6 @@
 #import "ChooseContactHeaderView.h"
 #import "FriendModel.h"
 #import "GroupInfoModel.h"
-#import "LibsodiumUtil.h"
 #import "NSData+Base64.h"
 
 @interface AddGroupMemberViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>

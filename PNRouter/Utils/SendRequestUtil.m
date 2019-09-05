@@ -15,7 +15,7 @@
 #import "HeartBeatUtil.h"
 #import "AFHTTPClientV2.h"
 #import "UserConfig.h"
-#import "EntryModel.h"
+
 #import "PNRouter-Swift.h"
 #import "EmailAccountModel.h"
 
@@ -548,6 +548,16 @@
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     NSDictionary *params = @{@"Action":Action_BakMailsCheck,@"User":[[accountM.User lowercaseString] base64EncodedString],@"Uuid":uid};
     [SocketMessageUtil sendVersion6WithParams:params];
+}
+
++ (void) sendEmailSendNotiWithEmails:(NSString *)emails showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    NSDictionary *params = @{@"Action":Action_MailSendNotice,@"MailsTo":emails};
+    [SocketMessageUtil sendVersion6WithParams:params];
+    
 }
 @end
 

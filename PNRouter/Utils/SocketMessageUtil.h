@@ -90,6 +90,7 @@ static NSString *Action_PullMailList = @"PullMailList";
 static NSString *Action_DelEmail = @"DelEmail";
 static NSString *Action_DelEmailConf = @"DelEmailConf";
 static NSString *Action_BakMailsCheck = @"BakMailsCheck";
+static NSString *Action_MailSendNotice = @"MailSendNotice";
 
 
 @class FriendModel;

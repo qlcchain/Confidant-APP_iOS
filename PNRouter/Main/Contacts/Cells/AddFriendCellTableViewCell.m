@@ -11,7 +11,6 @@
 #import "NSDate+Category.h"
 #import "NSString+Base64.h"
 #import "PNDefaultHeaderView.h"
-#import "EntryModel.h"
 
 @implementation AddFriendCellTableViewCell
 

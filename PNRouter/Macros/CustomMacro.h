@@ -53,6 +53,7 @@
 #define TABBARTEXT_SELECT_COLOR UIColorFromRGB(0x2c2c2c)
 #define TABBARTEXT_DEFAULT_COLOR UIColorFromRGB(0xb3b3b3)
 
+#define libkey @"libkey"
 #define ROUTER_ARR @"router_arrys" // 本地储存的路由器
 #define USER_LOCAL @"user_local" // 本地储存的用户信息
 #define VERSION_KEY @"version_key" // 存储当前版本

@@ -11,7 +11,7 @@
 #import "NSString+Base64.h"
 #import "RouterUserModel.h"
 #import "PNDefaultHeaderView.h"
-#import "EntryModel.h"
+
 
 @implementation ContactsCell
 

@@ -15,7 +15,7 @@
 #import "UserConfig.h"
 #import "NSString+Base64.h"
 #import "PNDefaultHeaderView.h"
-#import "EntryModel.h"
+
 
 @interface FileCell ()
 

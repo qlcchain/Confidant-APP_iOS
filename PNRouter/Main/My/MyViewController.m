@@ -21,11 +21,11 @@
 #import "OCTSubmanagerUser.h"
 #import "PersonCodeViewController.h"
 #import "RMDownloadIndicator.h"
-#import "LibsodiumUtil.h"
+
 //#import <toxcore/crypto_core.h>
 #import "crypto_core.h"
 #import <libsodium/crypto_box.h>
-#import "EntryModel.h"
+
 #import "SettingViewController.h"
 #import "PTBPerformanceCenter.h"
 #import "WebViewController.h"

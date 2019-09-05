@@ -41,13 +41,23 @@
                                 <action selector="clickBackAction:" destination="-1" eventType="touchUpInside" id="m3u-Z2-gSO"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Jn-sp-hu1">
+                            <rect key="frame" x="0.0" y="43" width="414" height="1"/>
+                            <color key="backgroundColor" red="0.45882352941176469" green="0.45098039215686275" blue="0.50196078431372548" alpha="0.10046553938356165" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="7IY-tG-CZc"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="qAF-RD-BOg" firstAttribute="centerY" secondItem="KyK-gK-g7e" secondAttribute="centerY" id="4Mq-as-EXl"/>
                         <constraint firstItem="o1m-E7-BcN" firstAttribute="leading" secondItem="KyK-gK-g7e" secondAttribute="leading" constant="5" id="8s0-Hx-7FE"/>
                         <constraint firstAttribute="height" constant="44" id="FaH-YW-QRp"/>
+                        <constraint firstAttribute="bottom" secondItem="2Jn-sp-hu1" secondAttribute="bottom" id="LBS-W2-kTP"/>
+                        <constraint firstAttribute="trailing" secondItem="2Jn-sp-hu1" secondAttribute="trailing" id="RG3-eZ-6s3"/>
                         <constraint firstItem="qAF-RD-BOg" firstAttribute="centerX" secondItem="KyK-gK-g7e" secondAttribute="centerX" id="evn-sT-3Jn"/>
+                        <constraint firstItem="2Jn-sp-hu1" firstAttribute="leading" secondItem="KyK-gK-g7e" secondAttribute="leading" id="gRu-d0-X9U"/>
                         <constraint firstItem="o1m-E7-BcN" firstAttribute="centerY" secondItem="KyK-gK-g7e" secondAttribute="centerY" id="lIa-iR-asa"/>
                     </constraints>
                 </view>
@@ -67,7 +77,7 @@
                 <constraint firstItem="BKL-6g-Ya9" firstAttribute="top" secondItem="KyK-gK-g7e" secondAttribute="bottom" id="yyu-bb-Ek6"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="39" y="-37"/>
+            <point key="canvasLocation" x="37.681159420289859" y="-37.5"/>
         </view>
     </objects>
     <resources>

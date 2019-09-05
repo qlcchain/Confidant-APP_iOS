@@ -22,7 +22,6 @@
 #import "PersonCodeViewController.h"
 #import "EditTextViewController.h"
 #import "FriendRequestViewController.h"
-#import "LibsodiumUtil.h"
 #import "ContactShowModel.h"
 #import "ChatViewController.h"
 #import "NewRequestsViewController.h"

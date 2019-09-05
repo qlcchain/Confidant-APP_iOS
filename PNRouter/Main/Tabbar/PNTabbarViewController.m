@@ -27,7 +27,6 @@
 #import "UserConfig.h"
 #import "HeartBeatUtil.h"
 #import "RouterConfig.h"
-#import "LibsodiumUtil.h"
 #import <AFNetworking/AFNetworking.h>
 #import "AFHTTPClientV2.h"
 #import "ReviceRadio.h"

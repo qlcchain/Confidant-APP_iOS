@@ -12,7 +12,7 @@
 #import "NSString+Base64.h"
 #import "UserConfig.h"
 #import "UserHeaderModel.h"
-#import "EntryModel.h"
+
 
 @implementation UserModel
 

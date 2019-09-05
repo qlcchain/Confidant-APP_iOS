@@ -55,14 +55,24 @@
                                 <action selector="clickConfirmAction:" destination="-1" eventType="touchUpInside" id="JZe-hd-nyj"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sXO-om-AeK">
+                            <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.45882352941176469" green="0.45098039215686275" blue="0.50196078431372548" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="4Ed-8G-KmG"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="4Rp-2Y-zQJ" firstAttribute="leading" secondItem="fQO-KB-Exj" secondAttribute="leading" constant="5" id="EQl-wr-0lh"/>
                         <constraint firstItem="vh9-Nq-0hq" firstAttribute="centerY" secondItem="fQO-KB-Exj" secondAttribute="centerY" id="FeO-xa-Nak"/>
+                        <constraint firstItem="sXO-om-AeK" firstAttribute="leading" secondItem="fQO-KB-Exj" secondAttribute="leading" id="IHq-52-4Kd"/>
                         <constraint firstAttribute="height" constant="44" id="Kv3-iz-bvF"/>
                         <constraint firstItem="GDE-mj-xUa" firstAttribute="centerY" secondItem="fQO-KB-Exj" secondAttribute="centerY" id="Uos-Kr-Xjy"/>
                         <constraint firstItem="vh9-Nq-0hq" firstAttribute="centerX" secondItem="fQO-KB-Exj" secondAttribute="centerX" id="fZo-jg-JaD"/>
+                        <constraint firstAttribute="bottom" secondItem="sXO-om-AeK" secondAttribute="bottom" id="gKo-JT-pqu"/>
+                        <constraint firstAttribute="trailing" secondItem="sXO-om-AeK" secondAttribute="trailing" id="kXh-GV-oEf"/>
                         <constraint firstItem="4Rp-2Y-zQJ" firstAttribute="centerY" secondItem="fQO-KB-Exj" secondAttribute="centerY" id="mUt-sN-hW8"/>
                         <constraint firstAttribute="trailing" secondItem="GDE-mj-xUa" secondAttribute="trailing" id="w86-Y5-XDK"/>
                     </constraints>
@@ -83,7 +93,7 @@
                 <constraint firstItem="Eq3-7C-Tja" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="nPp-om-NLL"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="126" y="-73"/>
+            <point key="canvasLocation" x="125.59999999999999" y="-73.313343328335833"/>
         </view>
     </objects>
     <resources>

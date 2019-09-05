@@ -11,8 +11,7 @@
 #import "SystemUtil.h"
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
-#import "LibsodiumUtil.h"
-#import "EntryModel.h"
+
 #import "GroupInfoModel.h"
 #import "GroupMemberView.h"
 #import "GroupChatViewController.h"
