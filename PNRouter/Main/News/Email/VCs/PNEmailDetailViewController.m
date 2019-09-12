@@ -775,7 +775,7 @@
     
     NSLog(@"-----加载网页中的图片-----");
     
-    NSLog(@"%@", result);
+    NSLog(@"cid = %@", result);
     
     if (result==nil || [result isEqualToString:@""]) {
         return;
@@ -788,6 +788,9 @@
         MCOAbstractPart * part =nil;
         NSURL * url;
         url = [NSURL URLWithString:urlString];
+        if (!url) {
+            continue;
+        }
         if ([MCOCIDURLProtocol isCID:url]) {
             part = [self _partForCIDURL:url];
         } else if ([MCOCIDURLProtocol isXMailcoreImage:url]) {
@@ -805,8 +808,12 @@
                 NSString *tmpDirectory =NSTemporaryDirectory();
                 NSString *filePath=[tmpDirectory stringByAppendingPathComponent : attachment.filename ];
                 NSFileManager *fileManger=[NSFileManager defaultManager];
+                
                 if (![fileManger fileExistsAtPath:filePath]) {//不存在就去请求加载
                     NSData *attachmentData=[attachment data];
+                    if (_emailInfo.deKey && _emailInfo.deKey.length > 0) {
+                        attachmentData = aesDecryptData(attachmentData, [self.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding]);
+                    }
                     [attachmentData writeToFile:filePath atomically:YES];
                     NSLog(@"资源：%@已经下载至%@", attachment.filename,filePath);
                 }

@@ -249,15 +249,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }];
         messageBuilder.attachments = attachMents;
     }
+    
     // 添加正文里的附加资源
-//    if (self.emailInfo && self.emailInfo.parserData) {
-//      MCOMessageParser *msgPaser = [MCOMessageParser messageParserWithData:self.emailInfo.parserData];
-//        NSArray *inattachments = msgPaser.htmlInlineAttachments;
-//        for (MCOAttachment*attachment in inattachments) {
-//            [messageBuilder addRelatedAttachment:attachment];
-//            //添加html正文里的附加资源（图片）
-//        }
-//    }
+    if (self.emailInfo && self.emailInfo.parserData) {
+      MCOMessageParser *msgPaser = [MCOMessageParser messageParserWithData:self.emailInfo.parserData];
+        NSArray *inattachments = msgPaser.htmlInlineAttachments;
+        for (MCOAttachment*attachment in inattachments) {
+            [attachment setInlineAttachment:YES];
+            [attachment setAttachment:YES];
+            [messageBuilder addRelatedAttachment:attachment];
+            //添加html正文里的附加资源（图片）
+        }
+    }
     
     return messageBuilder;
 }
@@ -410,38 +413,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         _lockImgView.hidden = YES;
         [self sendEmailWithShowLoading:YES keys:nil];
     }
-    
-    
-    
-    /*
-     如果邮件是回复或者转发，原邮件中往往有附件以及正文中有其他图片资源，
-     如果有需要你可将原文原封不动的也带过去，这里发送的正文就可以如下配置
-     */
-//    NSString * bodyHtml = self.emailInfo.htmlContent;
-//
-//    [SIXHTMLParser htmlStringWithAttributedText:_contentTF.attributedText
-//                                    orignalHtml:@""
-//                           andCompletionHandler:^(NSString *html) {
-//
-//
-//                           }];
-    
-    /*
-    NSString *body = _contentTF.text;
-    NSMutableString*fullBodyHtml = [NSMutableString stringWithFormat:@"%@<br/>-------------原始邮件-------------<br/>%@",[body stringByReplacingOccurrencesOfString:@"\n"withString:@"<br/>"],bodyHtml];
-    [messageBuilder setHTMLBody:fullBodyHtml];
-    
-    // 添加正文里的附加资源
-    NSArray *inattachments = msgPaser.htmlInlineAttachments;
-    for (MCOAttachment*attachmentininattachments) {
-        [messageBuilder addRelatedAttachment:attachment];    //添加html正文里的附加资源（图片）
-    }
-    
-    // 添加邮件附件
-    for (MCOAttachment*attachmentinattachments) {
-        [builder addAttachment:attachment];    //添加附件
-    }
-*/
 }
 
 - (void) sendEmailWithShowLoading:(BOOL) isLoading keys:(NSArray *) userKeys
@@ -463,6 +434,15 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         if (messageBuilder.textBody && messageBuilder.textBody.length > 0) {
             messageBuilder.textBody = aesEncryptString(messageBuilder.textBody, [msgKey substringToIndex:16]);
         }
+        // 资源文件加密
+        if (messageBuilder.relatedAttachments && messageBuilder.relatedAttachments.count > 0) {
+            [messageBuilder.relatedAttachments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                MCOAttachment *attachment = obj;
+                attachment.data = aesEncryptData(attachment.data,msgKeyData);
+                NSLog(@"---length = %ld",attachment.data.length);
+            }];
+        }
+        // 附件文件加密
         if (messageBuilder.attachments && messageBuilder.attachments.count > 0) {
             [messageBuilder.attachments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 MCOAttachment *attachment = obj;
@@ -479,7 +459,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [SIXHTMLParser htmlStringWithAttributedText:_contentTF.attributedText
                                     orignalHtml:@""
                            andCompletionHandler:^(NSString *html) {
-                               
+                               NSString *writeHtml = html?:@"";
                                __block NSString *keys = @"";
                                if (userKeys && userKeys.count>0) {
                                    [userKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -501,37 +481,36 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                    keys = [keys stringByAppendingString:dsKey];
                                }
                                if (weakSelf.sendType == ReplyEmail) {
-                                   html =[html stringByAppendingString:@"<br/><br/><br/><div>----------------- Original -----------------</div>"];
+                                   writeHtml =[writeHtml stringByAppendingString:@"<br/><br/><br/><div>----------------- Original -----------------</div>"];
                                } else if (weakSelf.sendType == ForwardEmail) {
-                                   html =[html stringByAppendingString:@"<br/><br/><br/><div>----------------- Fwd -----------------</div>"];
+                                   writeHtml =[writeHtml stringByAppendingString:@"<br/><br/><br/><div>----------------- Fwd -----------------</div>"];
                                }
                                
-                               html = [html stringByAppendingString:weakSelf.emailInfo.htmlContent?:@""];
+                               writeHtml = [writeHtml stringByAppendingString:weakSelf.emailInfo.htmlContent?:@""];
                                
                                if (keys.length > 0) {
-                                   if ([html containsString:confidantEmialText]) {
-                                       html = [html stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
+                                   if ([writeHtml containsString:confidantEmialText]) {
+                                       writeHtml = [writeHtml stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
                                    }
-                                   html = aesEncryptString(html, [msgKey substringToIndex:16]);
+                                   writeHtml = aesEncryptString(writeHtml, [msgKey substringToIndex:16]);
                                    NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'%@\'></span>",keys];
                                    
                                    NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' confidantuserid=\'%@\'></span>",[UserConfig getShareObject].userId];
                                    
-                                   html = [html stringByAppendingString:userKeyStr];
-                                   html = [html stringByAppendingString:friendID];
-                                   html = [html stringByAppendingString:confidantHtmlStr];
+                                   writeHtml = [writeHtml stringByAppendingString:userKeyStr];
+                                   writeHtml = [writeHtml stringByAppendingString:friendID];
+                                   writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
                                } else {
                                    
                                    NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' confidantuserid=\'%@\'></span>",[UserConfig getShareObject].userId];
-                                   html = [html stringByAppendingString:friendID];
+                                   writeHtml = [writeHtml stringByAppendingString:friendID];
                                    
-                                   if (![html containsString:confidantEmialText]) {
-                                       html = [html stringByAppendingString:confidantHtmlStr];
+                                   if (![writeHtml containsString:@"Sent from MyConfidant"]) {
+                                       writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
                                    }
-                                   
                                }
                                
-                               [messageBuilder setHTMLBody:html];
+                               [messageBuilder setHTMLBody:writeHtml];
                                // 发送邮件
                                NSData * rfc822Data =[messageBuilder data];
                                MCOSMTPSendOperation *sendOperation = [EmailManage.sharedEmailManage.smtpSession sendOperationWithData:rfc822Data];
@@ -550,25 +529,22 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                        [SendRequestUtil sendEmailSendNotiWithEmails:weakSelf.emailStrings showHud:NO];
                                        // 添加对方为好友
                                        if (weakSelf.emailInfo.friendId && weakSelf.emailInfo.friendId.length > 0) {
-                                          
+
                                            // 发送好友请求
                                            if (![weakSelf.emailInfo.friendId isEqualToString:[UserConfig getShareObject].userId]) {
-                                               
+
                                               NSString *msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
                                                msg = [msg base64EncodedString];
-                                               
+
                                                [SendRequestUtil sendAddFriendWithFriendId:weakSelf.emailInfo.friendId msg:msg showHud:NO];
                                            }
                                        }
                                        [weakSelf leftNavBarItemPressedWithPop:NO];
                                        [AppD.window showSuccessHudInView:AppD.window hint:@"Successed"];
-                                       // [AppD.window showHint:@"send successed"];
                                    } else {
                                        [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"send failure"];
                                    }
                                }];
-                               
-                               
                            }];
 }
 
@@ -754,7 +730,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         [self performSelector:@selector(textViewBecomeFirstResponder:) withObject:self.contentTF afterDelay:0.5];
         
     } else if (_sendType == NewEmail) { // 新邮件
-        _lblTitle.text = @"New Email";
+        _lblTitle.text = @"Compose";
         [self performSelector:@selector(textViewBecomeFirstResponder:) withObject:_toTF afterDelay:0.5];
     } else if (_sendType == ForwardEmail) { // 转发
         

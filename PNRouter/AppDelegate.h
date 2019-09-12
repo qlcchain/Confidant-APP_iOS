@@ -24,6 +24,7 @@
 @property (nonatomic ,assign) BOOL isWifiConnect;
 @property (nonatomic ,assign) BOOL isConnect; // 记录当前是不是已连接。如果是就不用再管第二次udp
 @property (nonatomic ,assign) BOOL isScaner;
+@property (nonatomic ,assign) BOOL isRegister;
 @property (nonatomic ,assign) BOOL isDisConnectLogin;
 @property (nonatomic ,copy) NSString *regId;
 @property (nonatomic ,assign) BOOL isLoginMac;

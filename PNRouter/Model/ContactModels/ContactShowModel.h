@@ -14,19 +14,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *Id;
 @property (nonatomic, strong) NSString *RouteId;
 @property (nonatomic, strong) NSString *RouteName;
-
+@property (nonatomic, strong) NSString *Mails;
 @end
 
 @interface ContactShowModel : BBaseModel
 
 @property (nonatomic, strong) NSString *RouteName;
+@property (nonatomic, strong) NSString *Mails;
 @property (nonatomic, strong) NSString *Index;
 @property (nonatomic, strong) NSString *Name;
 @property (nonatomic, strong) NSString *Remarks;
 @property (nonatomic, strong) NSString *UserKey;
 @property (nonatomic, strong) NSNumber *Status;
 @property (nonatomic, strong) NSString *publicKey;
-//@property (nonatomic, strong) NSString *remarks;
 @property (nonatomic, strong) NSMutableArray *routerArr;
 
 @property (nonatomic) BOOL showCell;

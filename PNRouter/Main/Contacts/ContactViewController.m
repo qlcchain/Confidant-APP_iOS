@@ -274,6 +274,7 @@
     friendM.signPublicKey = contactShowM.UserKey;
     friendM.RouteId = contactRouterM.RouteId;
     friendM.RouteName = contactRouterM.RouteName;
+    friendM.Mails = contactRouterM.Mails;
     
     return friendM;
 }
@@ -370,13 +371,13 @@
             showM.showArrow = NO;
             showM.Index = friendM.Index;
             showM.Name = friendM.username;
+            showM.Mails = friendM.Mails;
             showM.Remarks = friendM.remarks;
             showM.RouteName = friendM.RouteName;
             showM.UserKey = friendM.signPublicKey;
             showM.publicKey = friendM.publicKey;
             showM.Status = @(friendM.onLineStatu);
             showM.routerArr = [NSMutableArray array];
-//            showM.remarks = friendM.remarks;
             ContactRouterModel *routerM = [ContactRouterModel new];
             routerM.Id = friendM.userId;
             routerM.RouteId = friendM.RouteId;
@@ -390,6 +391,7 @@
             routerM.Id = friendM.userId;
             routerM.RouteId = friendM.RouteId;
             routerM.RouteName = friendM.RouteName;
+            routerM.Mails = friendM.Mails;
             if (existShowM.routerArr.count >= 1) {
                 existShowM.showArrow = YES;
             }

@@ -194,7 +194,7 @@
 
 - (void) parsePowTempCodeBlock
 {
-    _lblRoutherName.text = @"pow node";
+    _lblRoutherName.text = @"Default node";
     _loginBtn.enabled = YES;
     _lblRoutherName.textColor = [UIColor whiteColor];
     _loginBtn.backgroundColor = [UIColor whiteColor];

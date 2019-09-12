@@ -144,6 +144,7 @@ white-space: pre-wrap;\
 static NSString *confidantEmialStr = @" Sent from MyConfidant, the app for encrypted email.";
 static NSString *confidantEmialText = @"Sent from MyConfidant, the app for encrypted email.";
 
+
 static NSString *confidantHtmlStr = @"<div myconfidantbegin=''><br />\
 <br />\
 <br />\

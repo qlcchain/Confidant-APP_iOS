@@ -163,8 +163,6 @@
     sendCount++;
     if (sendCount == 4) {
         dispatch_async(dispatch_get_main_queue(), ^{
-//            [AppD.window hideHud];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:GB_FINASH_NOTI object:nil];
             [self sendFailedNoti];
         });
         return;
@@ -200,7 +198,6 @@
     }
     
     setsockopt(brdcFd, SOL_SOCKET, SO_BROADCAST, &optval, sizeof(int));
-    
     struct sockaddr_in theirAddr;
     memset(&theirAddr, 0, sizeof(struct sockaddr_in));
     theirAddr.sin_family = AF_INET;
