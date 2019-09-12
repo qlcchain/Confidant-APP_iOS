@@ -640,6 +640,7 @@
 + (void) handleRegiserRouter:(NSDictionary *) receiveDic
 {
     [AppD.window hideHud];
+    AppD.isRegister = NO;
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
         
@@ -663,7 +664,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:REGISTER_PUSH_NOTI object:nil];
         // 发送未完成消息
         [[SendCacheChatUtil getSendCacheChatUtilShare] start];
-        
+        AppD.isRegister = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_REGISTER_RECEVIE_NOTI object:receiveDic];
     } else {
         
@@ -1252,6 +1253,7 @@
 }
 
 + (void)handleLogin:(NSDictionary *)receiveDic {
+    
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     NSString *userId = receiveDic[@"params"][@"UserId"];

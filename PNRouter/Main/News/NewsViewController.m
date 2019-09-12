@@ -135,6 +135,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(MessageStatusChangeNoti:) name:SEARCH_MODEL_STATUS_CHANGE_NOTI object:nil];
     // 删除邮箱通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noEmailConfigNoti:) name:EMAIL_NO_CONFIG_NOTI object:nil];
+    // 新注册用户默认添加节点管理员到chat
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addOwnerToChatNoti:) name:ADD_OWNER_CHAT_NOTI object:nil];
     
 }
 // 搜索
@@ -228,6 +230,7 @@
 }
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     
     _page = 1;
@@ -631,6 +634,7 @@
                 
                 // 解密正文
                 if (dsKey.length > 0) {
+                    
                     NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:dsKey];
                     if (datakey && datakey.length >= 16) {
                         datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
@@ -696,13 +700,11 @@
                     } else {
                         spanStr2 = spanArray2[0];
                     }
-                    
-                    if (spanStr2.length > 0) {
+                    if ([htmlContents containsString:confidantEmialText]) {
                         htmlContents = [htmlContents stringByReplacingOccurrencesOfString:bodyStr withString:[spanStr2 stringByAppendingString:confidantHtmlStr]];
                     }
 
                 }
-                
                 // 获取附件
                 NSArray *attchArray = messageParser.attachments;
                 if (attchArray && attchArray.count > 0) {
@@ -979,6 +981,17 @@
         EmailAccountModel *accountM = obj;
         [SendRequestUtil sendEmailConfigWithEmailAddress:[accountM.User lowercaseString] type:@(accountM.Type) configJson:@"" ShowHud:NO];
     }];
+}
+- (void) addOwnerToChatNoti:(NSNotification *) noti
+{
+    FriendModel *friendM = [ChatListDataUtil getShareObject].friendArray[0];
+    ChatListModel *chatM = [[ChatListModel alloc] init];
+    chatM.myID = [UserConfig getShareObject].userId;
+    chatM.friendID = friendM.userId;
+    chatM.lastMessage = @"";
+    chatM.chatTime = [NSDate date];
+    [[ChatListDataUtil getShareObject] addFriendModel:chatM];
+    
 }
 - (void) MessageStatusChangeNoti:(NSNotification *) noti
 {

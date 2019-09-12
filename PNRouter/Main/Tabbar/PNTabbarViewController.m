@@ -85,7 +85,7 @@
     [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"Contacts" imageName:@"btn_contacts"];
     [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"Me" imageName:@"btn_my"];
     
-    [self sendFriendAndGroupList];
+    
      // socket 断开连接通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketDisconnectNoti:) name:SOCKET_DISCONNECT_NOTI object:nil];
     // socket 连接的通知
@@ -107,6 +107,8 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullGroupSucess:) name:PULL_GROUP_SUCCESS_NOTI object:nil];
     // 得新拉取好友和群组列表消息
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendFriendAndGroupList) name:GET_FRIEND_GROUP_LIST_NOTI object:nil];
+    
+    [self sendFriendAndGroupList];
     
 }
 
@@ -362,12 +364,14 @@
         NSArray *friendArr = [FriendModel mj_objectArrayWithKeyValuesArray:modelArr];
         [friendArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             FriendModel *model = obj;
-//            if (model.remarks && ![model.remarks isEmptyString]) {
-//                model.username = model.remarks;
-//            }
             model.publicKey = [LibsodiumUtil getFriendEnPublickkeyWithFriendSignPublicKey:model.signPublicKey];
         }];
         [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
+        if (AppD.isRegister && friendArr.count == 1) {
+            // 新注册用户默认 chat页面添加owenr
+            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_OWNER_CHAT_NOTI object:nil];
+        }
+        
     }
 }
 

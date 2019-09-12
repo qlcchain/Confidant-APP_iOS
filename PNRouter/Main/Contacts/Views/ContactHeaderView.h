@@ -13,13 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 @class ContactShowModel;
 
 static NSString *ContactHeaderViewReuse = @"ContactHeaderView";
-#define ContactHeaderViewHeight 56
+#define ContactHeaderViewHeight 65
 
 //typedef void(^ContactSelectBlock)(NSInteger headerSection);
 typedef void(^ContactShowCellBlock)(NSInteger headerSection);
 
 @interface ContactHeaderView : UITableViewHeaderFooterView
 
+@property (weak, nonatomic) IBOutlet UILabel *lblEmailName;
 @property (weak, nonatomic) IBOutlet UILabel *lblRouterName;
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;

@@ -707,7 +707,6 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     if (!_backgroundView) {
         _backgroundView = [PNBackgroundView getInstance];
     }
-    
     return _backgroundView;
 }
 

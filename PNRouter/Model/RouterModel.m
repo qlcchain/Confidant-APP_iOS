@@ -156,6 +156,8 @@
     if (!isExist) {
         DDLogDebug(@"新添加一个本地Router");
         [KeyCUtil saveRouterTokeychainWithValue:routerM.mj_keyValues key:ROUTER_ARR];
+    } else { // 修改routername
+        [RouterModel updateCircleName:routerM.name usersn:usersn];
     }
 }
 
@@ -260,6 +262,11 @@
     [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
         model.isConnected = [model.userSn isEqualToString:sn]?YES:NO;
+        if (model.isConnected) {
+            if (!model.isOpen && !model.isOwerClose) {
+                model.isOpen = YES;
+            }
+        }
         [dicArr addObject:model.mj_keyValues];
     }];
     
@@ -277,7 +284,10 @@
     [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
             model.isOpen = [model.userSn isEqualToString:sn]?isOpen:NO;
-            [dicArr addObject:model.mj_keyValues];
+        if (!isOpen) {
+            model.isOwerClose = YES;
+        }
+        [dicArr addObject:model.mj_keyValues];
     }];
     
     [KeyCUtil saveRouterTokeychainWithArr:dicArr key:ROUTER_ARR];

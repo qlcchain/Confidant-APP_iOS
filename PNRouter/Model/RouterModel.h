@@ -13,6 +13,7 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *userSn;
 @property (nonatomic, assign) BOOL isOpen;
+@property (nonatomic, assign) BOOL isOwerClose;
 @property (nonatomic, copy) NSString *userid;
 @property (nonatomic, copy) NSString *userPass;
 @property (nonatomic, assign) int routerToxNumber;

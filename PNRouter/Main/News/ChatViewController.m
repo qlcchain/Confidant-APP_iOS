@@ -226,7 +226,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [super viewDidLoad];
     
     self.view.backgroundColor = RGB(246, 246, 246);
-    _lblNavTitle.text = self.friendModel.username;
+    if (self.friendModel.remarks && self.friendModel.remarks.length > 0) {
+        _lblNavTitle.text = self.friendModel.remarks;
+    } else {
+        _lblNavTitle.text = self.friendModel.username;
+    }
+    
     [self observe];
     [self loadChatUI];
     _msgStartId = 0;
@@ -1715,9 +1720,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     } else {
                         model.fileName = chatModel.fileName;
                     }
-                    
-                    
-                    
                 }
                 [messageModelArr addObject:model];
             }];
