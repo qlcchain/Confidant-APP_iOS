@@ -49,6 +49,18 @@ def demo_pods
     # pod 'TYAttributedLabel', '~> 2.6.2'
     pod 'mailcore2-ios'
     #pod 'SSZipArchive'
+    # qlc chain 支持库
+    pod 'APIKit'
+    pod 'JSONRPCKit'
+    pod 'PromiseKit'
+    pod 'Result'
+    pod 'CryptoSwift'
+    
+    # aes
+    pod 'CocoaSecurity'
+    #google 登陆
+    pod'GoogleSignIn'
+
 end
 
 

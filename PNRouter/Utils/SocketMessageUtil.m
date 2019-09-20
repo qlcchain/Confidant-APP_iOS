@@ -1788,6 +1788,7 @@
     NSString *MsgId = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"MsgId"]];
     NSString *Msg = receiveDic[@"params"][@"Msg"];
     NSString *gId = receiveDic[@"params"][@"GId"];
+    NSNumber *AssocId = receiveDic[@"params"][@"AssocId"];
     NSString *ToId = receiveDic[@"params"][@"ToId"];
     NSString *UserKey = receiveDic[@"params"][@"UserKey"];
     NSString *GName = receiveDic[@"params"][@"Gname"];
@@ -1795,12 +1796,13 @@
     NSString *Repeat = receiveDic[@"params"][@"Repeat"];
     NSString *sendMsgID = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
     
-     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_MESSAGE_SEND_SUCCESS_NOTI object:@[@(retCode),gId,MsgId,sendMsgID]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_MESSAGE_SEND_SUCCESS_NOTI object:@[@(retCode),gId,MsgId,sendMsgID,AssocId?:@(0)]];
     
     if (retCode == 0) {
         // 添加到chatlist
         ChatListModel *chatListModel = [[ChatListModel alloc] init];
         chatListModel.myID = ToId;
+        chatListModel.AssocId = AssocId? [AssocId integerValue]:0;
         chatListModel.isGroup = YES;
         chatListModel.friendID = [UserConfig getShareObject].userId;
         chatListModel.groupID = gId;
@@ -1812,12 +1814,15 @@
         // 解密消息
         // 自己私钥解密
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:UserKey];
-        // 截取前16位
-        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-        if (datakey) {
-            chatListModel.lastMessage = aesDecryptString(Msg, datakey);
-            [[ChatListDataUtil getShareObject] addFriendModel:chatListModel];
+        if (datakey && datakey.length > 0) {
+            // 截取前16位
+            datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+            if (datakey) {
+                chatListModel.lastMessage = aesDecryptString(Msg, datakey);
+                [[ChatListDataUtil getShareObject] addFriendModel:chatListModel];
+            }
         }
+        
     } else {
         
     }
@@ -1934,6 +1939,7 @@
     ChatListModel *chatListModel = [[ChatListModel alloc] init];
     chatListModel.myID = [UserConfig getShareObject].userId;
     chatListModel.friendID = messageModel.From;
+    chatListModel.AssocId = messageModel.AssocId;
     chatListModel.isGroup = YES;
     chatListModel.isATYou = isAT;
     chatListModel.groupID = messageModel.GId;

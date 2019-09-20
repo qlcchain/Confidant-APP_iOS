@@ -588,6 +588,8 @@
         [itmes addObject:item];
     }
     
+    
+    
     if (itmes.count > 0) {
         UIMenuController *menu = [UIMenuController sharedMenuController];
          [menu setMenuItems:itmes];
@@ -632,6 +634,7 @@
         [self.tableView.msgDelegate clickChatMenuItem:@"Save" withMsgMode:self.msgModal];
     }
 }
+
 
 
 #pragma mark ---点击头像手势

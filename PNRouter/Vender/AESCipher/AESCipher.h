@@ -16,3 +16,4 @@ NSString * aesDecryptString(NSString *content, NSString *key);
 NSData * aesEncryptData(NSData *data, NSData *key);
 NSData * aesDecryptData(NSData *data, NSData *key);
 
+NSString * aes32EncryptString(NSString *content, NSString *key);

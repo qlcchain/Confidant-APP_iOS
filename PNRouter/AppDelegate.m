@@ -53,9 +53,12 @@
 // iOS10 注册 APNs 所需头文件
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
+
+// google
+#import <GoogleSignIn/GoogleSignIn.h>
 #endif
 
-@interface AppDelegate () <BuglyDelegate,JPUSHRegisterDelegate> //MiPushSDKDelegate,UNUserNotificationCenterDelegate
+@interface AppDelegate () <BuglyDelegate,JPUSHRegisterDelegate,GIDSignInDelegate> //MiPushSDKDelegate,UNUserNotificationCenterDelegate
 {
     BOOL isBackendRun;
     BOOL isFingerprintOn;
@@ -83,6 +86,9 @@
 
    // [KeyCUtil deleteWithKey:ROUTER_ARR];
    //  [KeyCUtil deleteAllKey];
+    // 配置google认证
+    [GIDSignIn sharedInstance].clientID = CLIENT_ID;
+    [GIDSignIn sharedInstance].delegate = self;
     
     // 配置Bugly
     [self configBugly];
@@ -550,8 +556,8 @@
         } else {
             self.fileURL = url;
         }
-        
-        
+    } else {
+        [[GIDSignIn sharedInstance] handleURL:url sourceApplication:@"" annotation:nil];
     }
     
     return YES;
@@ -727,5 +733,37 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     }
     return messageCount;
 }
+
+
+#pragma singin delegate----------------------------
+
+- (void)signIn:(GIDSignIn *)signIn
+didSignInForUser:(GIDGoogleUser *)user
+     withError:(NSError *)error {
+    if (error != nil) {
+        if (error.code == kGIDSignInErrorCodeHasNoAuthInKeychain) {
+            NSLog(@"The user has not signed in before or they have since signed out.");
+        } else {
+            NSLog(@"%@", error.localizedDescription);
+        }
+        return;
+    }
+    // Perform any operations on signed in user here.
+    NSString *userId = user.userID;                  // For client-side use only!
+    NSString *idToken = user.authentication.idToken; // Safe to send to the server
+    NSString *fullName = user.profile.name;
+    NSString *givenName = user.profile.givenName;
+    NSString *familyName = user.profile.familyName;
+    NSString *email = user.profile.email;
+    // ...
+}
+
+- (void)signIn:(GIDSignIn *)signIn
+didDisconnectWithUser:(GIDGoogleUser *)user
+
+     withError:(NSError *)error {
+    NSLog(@"error = %@",error);
+}
+
 
 @end

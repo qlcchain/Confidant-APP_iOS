@@ -169,6 +169,7 @@ typedef enum : NSUInteger {
 //@property (nonatomic) NSInteger MsgId;
 //@property (nonatomic) NSInteger MessgeType;
 @property (nonatomic,assign) NSInteger TimeStatmp;
+@property (nonatomic,assign) NSInteger AssocId;
 @property (nonatomic, copy) NSString *srckey;
 @property (nonatomic, copy) NSString *dskey;
 @property (nonatomic, copy) NSString *publicKey;

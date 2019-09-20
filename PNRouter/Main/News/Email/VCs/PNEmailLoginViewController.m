@@ -13,6 +13,9 @@
 #import "EmailAccountModel.h"
 #import "RSAUtil.h"
 #import "EmailErrorAlertView.h"
+#import "GTMOAuth2ViewControllerTouch.h"
+
+
 
 static NSString *strqq = @"Step A: Check that IMAP is turned on\n1. On your computer, open QQ Mail.\n2. In the top right, click Settings.\n3. Find POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV.\n4. Enable IMAP/SMTP.\n\nStep B: Get authorization to log in the third-party Email client\n1. Generate authorization code.\n2. Check the SMS message sent by QQ Mail.\n3. Fill in the authorization code.\n\nThen enter your Email address and password to log in.";
 
@@ -81,7 +84,7 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+   // self.navigationController.navigationBarHidden = NO;
     NSDictionary *contentDic = @{@"1":strqq,@"2":strqq,@"3":str163,@"4":strgmail};
     NSString *contentStr = contentDic[[NSString stringWithFormat:@"%d",self.emailType]];
     if (contentStr && contentStr.length>0) {
@@ -243,6 +246,13 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
     _accountM.smtpHostname = smtpHostName;
     _accountM.port = port;
     
+//    if (self.emailType == 4) {
+//
+//        [self startOAuth2];
+//
+//        return;
+//    }
+    
     if (self.emailType == 5) { // outlook
         _accountM.smtpPort = 587;
         _accountM.smtpConnectionType = MCOConnectionTypeStartTLS;
@@ -262,6 +272,7 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
     imapSession.username = name;
     imapSession.password = pass;
     imapSession.connectionType = MCOConnectionTypeTLS;
+    imapSession.authType = MCOAuthTypeSASLLogin;
     
     NSString *hitStr = @"Login...";
     if (self.optionType == ConfigEmail) {
@@ -371,6 +382,90 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
     }
     // 更改body背景色
     [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.background='#F5F5F5'"];
+}
+
+
+
+- (void) startOAuth2
+{
+    [self loadWithAuth:nil];
+    
+    return;
+    
+    GTMOAuth2Authentication * auth = [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:KEYCHAIN_ITEM_NAME
+                                                                                           clientID:CLIENT_ID
+                                                                                       clientSecret:CLIENT_SECRET];
+    
+    if ([auth refreshToken] == nil) {
+        @weakify_self
+        GTMOAuth2ViewControllerTouch *viewController = [GTMOAuth2ViewControllerTouch controllerWithScope:@"https://mail.google.com/"
+                                                                                                clientID:CLIENT_ID
+                                                                                            clientSecret:CLIENT_SECRET
+                                                                                        keychainItemName:KEYCHAIN_ITEM_NAME
+                                                                                       completionHandler:^(GTMOAuth2ViewControllerTouch *viewController, GTMOAuth2Authentication *retrievedAuth, NSError *error) {
+                                                                                           [weakSelf loadWithAuth:retrievedAuth];
+                                                                                       }];
+        [self.navigationController pushViewController:viewController
+                                             animated:YES];
+    }
+    else {
+        [auth beginTokenFetchWithDelegate:self
+                        didFinishSelector:@selector(auth:finishedRefreshWithFetcher:error:)];
+    }
+}
+
+- (void)auth:(GTMOAuth2Authentication *)auth
+finishedRefreshWithFetcher:(GTMHTTPFetcher *)fetcher
+       error:(NSError *)error {
+    [self loadWithAuth:auth];
+}
+
+- (void)loadWithAuth:(GTMOAuth2Authentication *) auth
+{
+    // 4/rAEa65tNaHcIzoRvnqXaAqFk6J0PbK6APR99XLOCfg5nvPMdcML60dI
+    NSString *accessToken = @"4/rAFMldrVJzm3hq0yRtUUn_IcJLKlzZq3ONttemLgdQFiBwt5u-AOUEg";
+    NSString *hostname = _accountM.hostname;
+    //[self loadAccountWithUsername:[auth userEmail] password:_accountM.UserPass hostname:hostname oauth2Token:[auth accessToken]];
+    [self loadAccountWithUsername:_accountM.User password:_accountM.UserPass hostname:hostname oauth2Token:accessToken];
+}
+- (void)loadAccountWithUsername:(NSString *)username
+                       password:(NSString *)password
+                       hostname:(NSString *)hostname
+                    oauth2Token:(NSString *)oauth2Token
+{
+    MCOIMAPSession *imapSession = [[MCOIMAPSession alloc] init];
+    imapSession.hostname = hostname;
+    imapSession.port = 993;
+    imapSession.username = username;
+    imapSession.password = password;
+    if (oauth2Token != nil) {
+        imapSession.OAuth2Token = oauth2Token;
+        imapSession.authType = MCOAuthTypeXOAuth2;
+    }
+    imapSession.connectionType = MCOConnectionTypeTLS;
+    @weakify_self
+    imapSession.connectionLogger = ^(void * connectionID, MCOConnectionLogType type, NSData * data) {
+        @synchronized(weakSelf) {
+            if (type != MCOConnectionLogTypeSentPrivate) {
+                    NSLog(@"event logged:%p %i withData: %@", connectionID, type, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+                
+            }
+        }
+    };
+    
+   
+    NSLog(@"checking account");
+    MCOIMAPOperation *imapCheckOp = [imapSession checkAccountOperation];
+    [imapCheckOp start:^(NSError *error) {
+
+        if (error == nil) {
+            NSLog(@"finished checking account.");
+        } else {
+            NSLog(@"error loading account: %@", error);
+        }
+
+    }];
+   
 }
 
 @end

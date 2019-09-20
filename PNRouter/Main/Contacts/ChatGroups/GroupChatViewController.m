@@ -394,6 +394,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         } else if (msgModel.msgType == CDMessageTypeMedia) {
             [self saveVideo:filePath];
         }
+    } else if ([itemTitle isEqualToString:@"React"]) { // 回复
+       // _msginputView.isReact = YES;
+       // [_msginputView setReactString:self.selectMessageModel.msg];
+        
     }
 }
 //cell 的点击事件
@@ -1448,7 +1452,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void) sendMessageSuccessNoti:(NSNotification *) noti
 {
     NSArray *resultArr = noti.object;
-    if (resultArr && resultArr.count == 4) {
+    if (resultArr && resultArr.count == 5) {
         if ([resultArr[1] isEqualToString: self.groupModel.GId]) {
             
             NSString *sendMsgid = resultArr[3];
@@ -1460,6 +1464,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 if ([model.messageId integerValue] == [sendMsgid integerValue]) {
                     if ([resultArr[0] integerValue] == 0) { // 发送成功
                         model.messageId = msgid;
+                        model.AssocId = [resultArr[4] integerValue];
                         model.msgState = CDMessageStateNormal;
                         model.messageStatu = 1;
                         [weakSelf.listView updateMessage:model];
@@ -1501,6 +1506,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             model.isLeft = NO;
         }
         model.ToId = self.groupModel.GId;
+        model.AssocId = payloadModel.AssocId;
         model.isGroup = YES;
         model.isAdmin = self.groupModel.UserType+GROUP_IDF;
         if (payloadModel.FileInfo && payloadModel.FileInfo.length>0) {
@@ -1663,6 +1669,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.userName = [payloadModel.UserName base64DecodedString]?:@"";
     model.isLeft = YES;
     model.ToId = self.groupModel.GId;
+    model.AssocId = payloadModel.AssocId;
     model.isGroup = YES;
     model.isAdmin = self.groupModel.UserType+GROUP_IDF;
     if (payloadModel.FileInfo && payloadModel.FileInfo.length>0) {

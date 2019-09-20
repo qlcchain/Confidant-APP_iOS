@@ -16,7 +16,7 @@
 #import "NSString+RegexCategory.h"
 #import "NSString+HexStr.h"
 
-
+static CGFloat reactH = 35;
 
 @interface EmojiTextAttachment : NSTextAttachment
 @property(strong, nonatomic) NSString *emojiTag;
@@ -55,12 +55,15 @@
     CTMoreKeyBoard *moreKeyboard;
 }
 @property (nonatomic, strong) CTTextView *textView;
+@property (nonatomic, strong) UIView *textBackView;
 @property (nonatomic, strong) UIButton *voiceBut;
 @property BOOL isRecordTouchingOutSide; // 手指是否在输入栏内部
 @property (nonatomic, strong) UIButton *recordBut;
 @property (nonatomic, strong) UIButton *emojiBut;
 @property (nonatomic, strong) UIButton *moreBut;
+@property (nonatomic, strong) UIButton *reactBut;
 @property (nonatomic, strong) NSArray *buttons;
+
 // 容器视图  包含除输入框外的所有视图
 @property (nonatomic, strong) UIView *containerView;
 
@@ -103,19 +106,45 @@ static UIColor *InputHexColor(int hexColor){
     [self.containerView addSubview:v1];
     self.voiceBut = v1;
     
+    
+    
     // 输入框
-    CTTextView *textView = [[CTTextView alloc] initWithFrame:config.inputViewRect];
-    textView.font = config.stringFont;
-    self.textView = textView;
-    self.textView.maxNumberOfLines = 5;
-    self.textView.cornerRadius = 3.0f;
-    self.textView.returnKeyType = UIReturnKeySend;
-    self.textView.delegate = self;
+   
     
 //    textView.contentOffset = CGPointMake(0, -2);
 //    textView.contentSize = CGSizeMake(textView.contentSize.width,textView.contentSize.height - 4);
-  
-    [self addSubview:textView];
+
+    _textBackView = [[UIView alloc] initWithFrame:config.inputViewRect];
+    _textBackView.backgroundColor = [UIColor whiteColor];
+    _textBackView.layer.cornerRadius = 3.0f;
+    _textBackView.layer.masksToBounds = YES;
+    _textBackView.clipsToBounds = YES;
+    _textBackView.layer.borderWidth = 0.5f;
+    _textBackView.layer.borderColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0].CGColor;
+    
+    // 回复but内容
+    _reactBut = [[UIButton alloc] initWithFrame:CGRectMake(5, 0, _textBackView.frame.size.width-10, 0)];
+    _reactBut.backgroundColor = RGB(245, 245, 245);
+    _reactBut.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _reactBut.contentEdgeInsets = UIEdgeInsetsMake(0,3, 0, 3);
+    _reactBut.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    [_reactBut setTitleColor:RGB(128, 128, 128) forState:UIControlStateNormal];
+    _reactBut.titleLabel.font = config.stringFont;
+    _reactBut.layer.cornerRadius = 3.0f;
+    
+    
+    CTTextView *textView = [[CTTextView alloc] initWithFrame:CGRectMake(3, CGRectGetMaxY(_reactBut.frame),CGRectGetWidth(_reactBut.frame), config.inputViewRect.size.height)];
+    textView.font = config.stringFont;
+    self.textView = textView;
+    self.textView.maxNumberOfLines = 5;
+    self.textView.cornerRadius = 0.0f;
+    self.textView.returnKeyType = UIReturnKeySend;
+    self.textView.delegate = self;
+    
+    [_textBackView addSubview:_reactBut];
+    [_textBackView addSubview:textView];
+    [self addSubview:_textBackView];
     __weak __typeof__ (self) wself = self;
     [textView textValueDidChanged:^(NSString *text, CGFloat textHeight) {
         __strong __typeof (wself) sself = wself;
@@ -189,7 +218,88 @@ static UIColor *InputHexColor(int hexColor){
 -(NSArray *)buttons{
     return @[self.voiceBut, self.emojiBut, self.moreBut];
 }
-
+- (void) setReactString:(NSString *) reactString
+{
+    [_reactBut setTitle:reactString forState:UIControlStateNormal];
+}
+- (void)setIsReact:(BOOL)isReact
+{
+   
+    
+    if (isReact) {
+        if (_isReact) {
+            [self performSelector:@selector(textBecomeFirstResponder) withObject:self afterDelay:0.3];
+            return;
+        }
+         _isReact = isReact;
+        CGRect selfRect = self.frame;
+        selfRect.size.height += reactH;
+        selfRect.origin.y -= reactH;
+        
+        CGRect textBacktRect = _textBackView.frame;
+        textBacktRect.size.height += reactH;
+        
+        CGRect reactRect = _reactBut.frame;
+        reactRect.origin.y = 5;
+        reactRect.size.height = reactH-5;
+        
+        CGRect textRect = _textView.frame;
+        textRect.origin.y = CGRectGetMaxY(reactRect);
+        
+//        if ([self.delegate respondsToSelector:@selector(inputViewWillUpdateFrame:animateDuration:animateOption:)]){
+//            [self.delegate inputViewWillUpdateFrame:selfRect animateDuration:0.25 animateOption:7];
+//        }
+       // [UIView animateWithDuration:0.25f delay:0 options:7 animations:^{
+            self.frame = selfRect;
+            self.textBackView.frame = textBacktRect;
+            self.reactBut.frame = reactRect;
+            self.textView.frame = textRect;
+            if (self.textView.frame.size.height <= textRect.size.height) {
+                [self.textView contentToVerticalCenter];
+            }
+     //   } completion:^(BOOL finished) {
+            
+            
+     //   }];
+        
+        [self performSelector:@selector(textBecomeFirstResponder) withObject:self afterDelay:0.3];
+        
+    } else {
+        _isReact = isReact;
+        [_reactBut setTitle:@"" forState:UIControlStateNormal];
+        CGRect selfRect = self.frame;
+        selfRect.size.height -= reactH;
+        selfRect.origin.y += reactH;
+        
+        CGRect textBacktRect = _textBackView.frame;
+        textBacktRect.size.height -= reactH;
+        
+        CGRect reactRect = _reactBut.frame;
+        reactRect.origin.y = 0;
+        reactRect.size.height = 0;
+        
+        CGRect textRect = _textView.frame;
+        textRect.origin.y = CGRectGetMaxY(reactRect);
+        
+//        if ([self.delegate respondsToSelector:@selector(inputViewWillUpdateFrame:animateDuration:animateOption:)]){
+//            [self.delegate inputViewWillUpdateFrame:selfRect animateDuration:0.25 animateOption:7];
+//        }
+      //  [UIView animateWithDuration:0.25f delay:0 options:7 animations:^{
+            self.frame = selfRect;
+            self.textBackView.frame = textBacktRect;
+            self.reactBut.frame = reactRect;
+            self.textView.frame = textRect;
+            if (self.textView.frame.size.height <= textRect.size.height) {
+                [self.textView contentToVerticalCenter];
+            }
+      //  } completion:^(BOOL finished) {
+            
+            
+       // }];
+    }
+    
+   
+}
 #pragma mark 声音，表情  更多  按钮点击
 -(void)tagbut:(UIButton *)but{
     // 切换按钮icon
@@ -206,24 +316,36 @@ static UIColor *InputHexColor(int hexColor){
             tempTextViewHeight = self.textView.frame.size.height;
             [self updateLayout:CTinputHelper.share.config.emojiButtonRect.size.height];
             [self.textView resignFirstResponder];
-            [self.textView setHidden:YES];
+           // [self.textView setHidden:YES];
+            [self.textBackView setHidden:YES];
         } else {
             [self updateLayout:tempTextViewHeight];
             [self changeKeyBoard:nil];
-            [self.textView setHidden:NO];
+           // [self.textView setHidden:NO];
+            [self.textBackView setHidden:NO];
         }
     } else if (but.tag == 1) {
         // 表情
         if (self.emojiBut.isSelected) {
+            if (tempTextViewHeight > 0 && self.frame.size.height == 56) {
+                 [self updateLayout:tempTextViewHeight];
+                tempTextViewHeight = 0;
+            }
+           
             [emojiKeyboard updateKeyBoard];
             [self changeKeyBoard:emojiKeyboard];
         } else {
+           
             [self changeKeyBoard:nil];
         }
         
     } else if (but.tag == 2) {
         // 更多
         if (self.moreBut.isSelected) {
+            if (tempTextViewHeight > 0 && self.frame.size.height == 56) {
+                [self updateLayout:tempTextViewHeight];
+                tempTextViewHeight = 0;
+            }
             [self changeKeyBoard:[CTMoreKeyBoard keyBoard]];
         } else {
             [self changeKeyBoard:nil];
@@ -232,7 +354,8 @@ static UIColor *InputHexColor(int hexColor){
 }
 
 -(void)changeKeyBoard:(UIView *)keyboard{
-    [self.textView setHidden:NO];
+    //[self.textView setHidden:NO];
+    [self.textBackView setHidden:NO];
     self.textView.inputView = keyboard;
     [self.textView reloadInputViews];
     [self.textView becomeFirstResponder];
@@ -373,6 +496,11 @@ static UIColor *InputHexColor(int hexColor){
 //    } else
     
     if ([text isEqualToString:@""]) {
+        if (_textView.text.length == 0) { // 删除回复
+            if (_isReact) {
+                [self setIsReact:NO];
+            }
+        }
         NSRange selectRange = _textView.selectedRange;
         if (selectRange.length > 0)
         {
@@ -525,6 +653,7 @@ static UIColor *InputHexColor(int hexColor){
         [self.delegate inputViewPopSttring:plainStr];
     }
     self.textView.text = @"";
+    [self setIsReact:NO];
     [self.textView textDidChange];
 }
 
@@ -629,15 +758,34 @@ static UIColor *InputHexColor(int hexColor){
     
     // 输入框的高度变化
     CGFloat delta = config.inputViewRect.size.height - newTextViewHight;
+    
     // 根据输入框的变化修改整个视图的位置
+    if (_isReact) {
+        if (originRect.size.height == 56) {
+            originRect.origin.y -= reactH;
+            originRect.size.height += reactH;
+        }
+    } else {
+        if (originRect.size.height == 56+reactH) {
+            originRect.origin.y += reactH;
+            originRect.size.height -= reactH;
+        }
+    }
     CGRect newRect = CGRectOffset(originRect, 0, delta);
     newRect.size.height = newRect.size.height - delta;
+    
+    CGRect textViewBackRect = _textBackView.frame;
+    textViewBackRect.size.height = newRect.size.height - 16;
+    
+    
+    
     
     if ([self.delegate respondsToSelector:@selector(inputViewWillUpdateFrame:animateDuration:animateOption:)]){
         [self.delegate inputViewWillUpdateFrame:newRect animateDuration:0.25 animateOption:7];
     }
     [UIView animateWithDuration:0.25f delay:0 options:7 animations:^{
         self.frame = newRect;
+        self.textBackView.frame = textViewBackRect;
         self.textView.frame = newTextViewRect;
         if (self.textView.frame.size.height <= newTextViewRect.size.height) {
              [self.textView contentToVerticalCenter];

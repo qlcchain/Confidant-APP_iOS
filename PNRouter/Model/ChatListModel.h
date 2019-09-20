@@ -33,7 +33,7 @@
 @property (nonatomic ,strong) NSString *draftMessage;
 @property (nonatomic ,strong) NSString *routerName;
 @property (nonatomic, strong) NSNumber *unReadNum;
-
+@property (nonatomic, assign) NSInteger AssocId;
 @property (nonatomic, strong) NSString *groupShowName;
 
 @end

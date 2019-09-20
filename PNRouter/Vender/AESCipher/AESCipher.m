@@ -13,7 +13,6 @@
 
 
 //NSString const *kInitVector = @"A-16-Byte-String";
-NSString const *kInitVector = @"AABBCCDDEEFFGGHH";
 size_t const kKeySize = kCCKeySizeAES128;
 
 
