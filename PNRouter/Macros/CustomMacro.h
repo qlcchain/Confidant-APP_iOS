@@ -128,6 +128,8 @@ break;\
 ";
 
 static NSString * mainStyle = @"\
+p{max-width:100%;height:auto}\
+div{max-width:100%}\
 body {\
 font-family: Helvetica;\
 font-size: 16px;\
@@ -156,5 +158,12 @@ static NSString *htmlHead = @"<div style=\"padding-bottom: 20px;\"></div><div><h
 </head>";
 
 static NSString *powStr = @"type_1,4I9ZEscX7qE+wDhD3upcjFqsJIifbrVAb0h32amY+5+omDkMxzvZhzaIalTBXGUWvzYuPnTkhEq+nlJOOB2W9LluSbX0YCQbQrs2NNBuSH8zQabb4b7Ln6Jtqec2ZklfGY5eRxp9mu5HFPEZq9AmN3hARwOQSnykZ3c/eCkR4TI=";
+
+static NSString *kInitVector = @"AABBCCDDEEFFGGHH";
+
+
+#define CLIENT_ID @"873428561545-aui4v5nvn6b1dtodnthmmg5q1ci0vski.apps.googleusercontent.com"
+#define CLIENT_SECRET @"AIzaSyBEJx4j3x0PnN3GSPZzShHlFm7Y2Wv28Tw"
+#define KEYCHAIN_ITEM_NAME @"MailCore OAuth 2.0 Token"
 
 #endif /* CustomMacro_h */

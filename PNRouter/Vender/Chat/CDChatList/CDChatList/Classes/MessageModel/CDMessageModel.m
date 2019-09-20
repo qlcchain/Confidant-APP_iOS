@@ -74,6 +74,7 @@
 @synthesize isGroup;
 @synthesize fileKey;
 @synthesize isAdmin;
+@synthesize AssocId;
 
 -(instancetype)init:(NSDictionary *)dic{
     self = [super init];

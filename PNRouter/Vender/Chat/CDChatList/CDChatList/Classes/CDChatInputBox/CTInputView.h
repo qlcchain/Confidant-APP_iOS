@@ -27,6 +27,7 @@
  */
 @interface CTInputView : UIView
 @property (nonatomic , strong) NSMutableArray *atStrings;
+@property (nonatomic, assign) BOOL isReact;
 @property(nonatomic, weak) id<CTInputViewProtocol>delegate;
 -(void)turnButtonOnAtIndex:(NSInteger)idx;
 - (NSString *) getTextViewString;
@@ -38,4 +39,5 @@
 - (NSRange) selectedRange;
 - (void) setSelectedRange:(NSRange) range;
 - (void) setTextViewString:(NSString *) textString delayTime:(CGFloat) delayTime;
+- (void) setReactString:(NSString *) reactString;
 @end

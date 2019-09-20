@@ -312,14 +312,16 @@ typedef enum CTDisplayViewState : NSInteger {
     UIMenuItem *item2 = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(copycontent:)];
     UIMenuItem *item3 = [[UIMenuItem alloc] initWithTitle:@"All Select" action:@selector(selectAllContent:)];
     UIMenuItem *item4 = [[UIMenuItem alloc] initWithTitle:@"Forward" action:@selector(clickForwardItem:)];
-     UIMenuItem *item5 = [[UIMenuItem alloc] initWithTitle:@"Withdraw" action:@selector(clickWithdrawItem:)];
+    UIMenuItem *item5 = [[UIMenuItem alloc] initWithTitle:@"Withdraw" action:@selector(clickWithdrawItem:)];
+   // UIMenuItem *item6 = [[UIMenuItem alloc] initWithTitle:@"React" action:@selector(clickReactItem:)];
     if (self.isOwer) {
-       
         [menu setMenuItems:@[item2,item3,item4,item5]];
     } else {
         if (self.isAdmin == GROUP_IDF) {
-             [menu setMenuItems:@[item2,item3,item4,item5]];
+             //[menu setMenuItems:@[item2,item3,item4,item5,item6]];
+            [menu setMenuItems:@[item2,item3,item4,item5]];
         } else {
+           // [menu setMenuItems:@[item2,item3,item4,item6]];
             [menu setMenuItems:@[item2,item3,item4]];
         }
         
@@ -349,6 +351,14 @@ typedef enum CTDisplayViewState : NSInteger {
     if ([_labelDelegate respondsToSelector:@selector(selectMenuWithTag:)]) {
         [_labelDelegate selectMenuWithTag:@"Withdraw"];
     }
+}
+
+- (void) clickReactItem:(UIMenuController *) item
+{
+    if ([_labelDelegate respondsToSelector:@selector(selectMenuWithTag:)]) {
+        [_labelDelegate selectMenuWithTag:@"React"];
+    }
+    
 }
 
 -(void)hidMenu{
@@ -643,7 +653,7 @@ CGRect expangRectToRect(CGRect originR, CGSize target){
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
     
-    if (action == @selector(copycontent:) || action == @selector(selectAllContent:)|| action == @selector(clickSaveItem:)|| action == @selector(clickForwardItem:)|| action == @selector(clickWithdrawItem:)) {
+    if (action == @selector(copycontent:) || action == @selector(clickReactItem:) || action == @selector(selectAllContent:)|| action == @selector(clickSaveItem:)|| action == @selector(clickForwardItem:)|| action == @selector(clickWithdrawItem:)) {
         return YES;
     }
     return NO;

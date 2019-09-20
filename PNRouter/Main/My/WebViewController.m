@@ -43,6 +43,8 @@
         _lblTitle.text = @"Share with Friends";
     }
     
+    urlString = @"https://accounts.google.com/o/oauth2/auth?client_id=873428561545-aui4v5nvn6b1dtodnthmmg5q1ci0vski.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fmail.google.com%2F%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email";
+    
     [_progressView setTrackTintColor:[UIColor colorWithRed:240.0/255
                                                      green:240.0/255
                                                       blue:240.0/255

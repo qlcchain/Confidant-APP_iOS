@@ -52,17 +52,19 @@
 #import "EmailDataBaseUtil.h"
 
 #import "NSData+Base64.h"
-#import "AESCipher.h"
 #import "NSString+Base64.h"
 #import "EmailNodeModel.h"
 
 #import "NSString+Trim.h"
 #import "PNSearchViewController.h"
-
-#import "AESCrypt.h"
 #import "EmailErrorAlertView.h"
+#import "AESCipher.h"
+//#import <CocoaSecurity/CocoaSecurity.h>
 
-@interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate> {
+#import <QLCFramework/QLCFramework.h>
+#import <GoogleSignIn/GoogleSignIn.h>
+
+@interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate,GIDSignInUIDelegate> {
     BOOL isSearch;
     BOOL isRequestFloderCount;
     int startId;
@@ -232,6 +234,37 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+//    NSString *enKey = [SystemUtil get16AESKey];
+//   NSData *ivData = [kInitVector dataUsingEncoding:NSUTF8StringEncoding];
+//    CocoaSecurityResult *resultM = [CocoaSecurity aesEncrypt:@"123" key:[enKey dataUsingEncoding:NSUTF8StringEncoding] iv:ivData];
+//    NSLog(@"base = %@",resultM.base64);
+//
+//   resultM = [CocoaSecurity aesDecryptWithBase64:resultM.base64 key:[enKey dataUsingEncoding:NSUTF8StringEncoding] iv:ivData];
+//    NSLog(@"base = %@",resultM.utf8String);
+//    
+//    NSString *endeee = aesEncryptString(@"123", enKey);
+//
+//    NSLog(@"base = %@",endeee);
+    
+//    resultM = [CocoaSecurity aesDecryptWithBase64:resultM.base64 hexKey:enKey hexIv:kInitVector];
+//    NSLog(@"destr = %@",resultM.utf8String);
+    
+//    EntryModel *model = [EntryModel getShareObject];
+//
+//
+//    NSData *skData = [model.signPrivateKey base64DecodedData];
+//    const unsigned char *sk = [skData bytes];
+//
+//    NSString *seedStr = [[LibsodiumUtil charsToString:sk length:64] substringToIndex:64];
+//
+//    NSLog(@"seedStr = %@",seedStr);
+//    [[QLCWalletManage shareInstance] importWalletWithSeed:seedStr];
+//    NSLog(@"-----------%@",[QLCWalletManage shareInstance].walletAddress);
+    
+    
+
+    [GIDSignIn sharedInstance].uiDelegate = self;
     
     _page = 1;
     _pageCount = 10;
@@ -975,6 +1008,8 @@
 - (void) chatMessageChangeNoti:(NSNotification *) noti
 {
     [self updateData];
+    // 更新节点名字
+    _lblSubTitle.text = [RouterModel getConnectRouter].name;
     // 上传邮箱配置到节点
     NSArray *emails = [EmailAccountModel getLocalAllEmailAccounts];
     [emails enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -1235,17 +1270,19 @@
     self.floderModel = floderModel;
     _page = 1;
     _maxUid = 0;
+    
+    [_emailTabView.mj_footer endRefreshing];
+    [_emailTabView.mj_header endRefreshing];
+    _emailTabView.mj_footer.hidden = YES;
+    _emailTabView.mj_header.hidden = YES;
+    
     if (self.floderModel.path.length > 0) {
-         self.emailTabView.mj_header.hidden = NO;
          [self pullEmailList];
     } else {
         if (self.emailDataArray.count > 0) {
             [self.emailDataArray removeAllObjects];
             [_emailTabView reloadData];
         }
-        
-        _emailTabView.mj_footer.hidden = YES;
-        _emailTabView.mj_header.hidden = YES;
         
         if ([self.floderModel.name isEqualToString:Starred]) {
             EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
@@ -1505,6 +1542,9 @@
         listInfo.fromName = address.displayName?:@"";
         listInfo.fromName = [listInfo.fromName stringByReplacingOccurrencesOfString:@"\"" withString:@""];
         listInfo.From = address.mailbox;
+        if (listInfo.fromName.length == 0) {
+            listInfo.fromName = [address.mailbox componentsSeparatedByString:@"@"][0];
+        }
         listInfo.Subject = message.header.subject;
         listInfo.revDate = message.header.receivedDate;
         [tempArray addObject:listInfo];
@@ -1737,4 +1777,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+   // [[GIDSignIn sharedInstance] signOut];
+     
+  //  [[GIDSignIn sharedInstance] signIn];
+   // [GIDSignIn sharedInstance].presentingViewController = self;
+    // Automatically sign in the user.
+   // [[GIDSignIn sharedInstance] restorePreviousSignIn];
+}
+
+- (void)signIn:(GIDSignIn *)signIn presentViewController:(UIViewController *)viewController
+{
+    [self presentModalVC:viewController animated:YES];
+}
+- (void)signIn:(GIDSignIn *)signIn dismissViewController:(UIViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
 @end

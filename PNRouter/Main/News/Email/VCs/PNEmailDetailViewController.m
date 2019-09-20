@@ -167,9 +167,10 @@
             [SendRequestUtil sendEmailCheckNodeWithUid:[NSString stringWithFormat:@"%@_%d",self.emailInfo.floderName,self.emailInfo.uid]  showHud:NO];
             
             NSMutableString * html = [NSMutableString string];
+            
             [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
-             @"<body>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
-             @"</iframe></html>", mainJavascript, mainStyle, self.emailInfo.htmlContent];
+             @"<body>%@%@%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
+             @"</iframe></html>", mainJavascript,mainStyle,@"<div id=\"height\">", self.emailInfo.htmlContent,@"</div>"];
             self.htmlContent = html;
             if (self.emailInfo.parserData) {
                 self.messageParser = [MCOMessageParser messageParserWithData:self.emailInfo.parserData];
@@ -505,7 +506,7 @@
     self.wbScrollView.bounces = NO;
     //           self.wbScrollView.scrollEnabled = NO;
     //            self.myWebView.delegate = self;
-    //           self.myWebView.scalesPageToFit = YES;
+    self.myWebView.scalesPageToFit = NO;
     [self.myWebView setAutoresizingMask:(UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth)];
     self.myWebView.opaque = NO; //去掉底部黑色
     [self.myWebView setDelegate:self];
@@ -684,6 +685,22 @@
     //若已经加载完成，则显示webView并return
     if(!isLoadingFinished)
     {
+        
+        NSString *jsStr = @"function reSetImgFrame() { \
+        var imgs = document.getElementsByTagName('img'); \
+        for (var i = 0; i < imgs.length; i++) {\
+        var img = imgs[i];   \
+        var imgW = img.getAttribute('width');   \
+        var imgH = img.getAttribute('height');   \
+        img.style.maxWidth = %f;   \
+        img.style.maxHeight = imgH*(%f/imgW);   \
+        } \
+        }";
+        jsStr = [NSString stringWithFormat:jsStr,SCREEN_WIDTH,SCREEN_WIDTH];
+        [webView stringByEvaluatingJavaScriptFromString:jsStr];
+        [webView stringByEvaluatingJavaScriptFromString:@"reSetImgFrame()"];
+        
+        
         CGFloat newHeight =  [[webView stringByEvaluatingJavaScriptFromString: @"document.body.scrollHeight "] floatValue];
         
         newHeight = webView.scrollView.contentSize.height;

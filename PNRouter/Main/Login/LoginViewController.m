@@ -421,15 +421,15 @@
  */
 - (void) getCurrentSelectRouter
 {
-    if (AppD.showTouch) {
-        self.selectRouther = [RouterModel getLoginOpenRouter];
-        if (!self.selectRouther) {
-            self.selectRouther = [RouterModel getConnectRouter];
-        }
-    } else {
-        self.selectRouther = [RouterModel getConnectRouter];
-    }
-    
+//    if (AppD.showTouch) {
+//        self.selectRouther = [RouterModel getLoginOpenRouter];
+//        if (!self.selectRouther) {
+//            self.selectRouther = [RouterModel getConnectRouter];
+//        }
+//    } else {
+//        self.selectRouther = [RouterModel getConnectRouter];
+//    }
+    self.selectRouther = [RouterModel getConnectRouter];
 }
 
 - (void)viewDidAppear:(BOOL)animated
