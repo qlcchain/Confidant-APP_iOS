@@ -26,7 +26,6 @@ PODS:
   - CocoaLumberjack/Core (3.5.0)
   - CocoaLumberjack/Swift (3.5.0):
     - CocoaLumberjack/Core
-  - CocoaSecurity (1.2.4)
   - CryptoSwift (0.13.1)
   - FBRetainCycleDetector (0.1.4)
   - FLAnimatedImage (1.0.12)
@@ -97,7 +96,6 @@ DEPENDENCIES:
   - BGFMDB
   - Bugly
   - CocoaLumberjack/Swift
-  - CocoaSecurity
   - CryptoSwift
   - FBRetainCycleDetector
   - FLAnimatedImage
@@ -133,7 +131,6 @@ SPEC REPOS:
     - BGFMDB
     - Bugly
     - CocoaLumberjack
-    - CocoaSecurity
     - CryptoSwift
     - FBRetainCycleDetector
     - FLAnimatedImage
@@ -179,7 +176,6 @@ SPEC CHECKSUMS:
   BGFMDB: 48e6823027232402a678acc7f71484b1fc9171d0
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CocoaLumberjack: cffaa70a9336515228178e3669b71bd49d343850
-  CocoaSecurity: d288a6f87e0f363823d2cb83e753814a6944f71a
   CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
   FBRetainCycleDetector: 46f8179bbb1c587deee3ea838a1a3ee02acf5015
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
@@ -211,6 +207,6 @@ SPEC CHECKSUMS:
   YBImageBrowser: b378a73a92ec4dcdebf2b7c18903cb62479b9cfa
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
 
-PODFILE CHECKSUM: 76499da1b89dee1fc226a689ccfc254355ead848
+PODFILE CHECKSUM: 7df214473fdd32390d71b3885a7abef152804e32
 
 COCOAPODS: 1.5.3

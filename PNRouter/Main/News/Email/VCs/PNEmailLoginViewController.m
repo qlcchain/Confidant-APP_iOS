@@ -13,9 +13,6 @@
 #import "EmailAccountModel.h"
 #import "RSAUtil.h"
 #import "EmailErrorAlertView.h"
-#import "GTMOAuth2ViewControllerTouch.h"
-
-
 
 static NSString *strqq = @"Step A: Check that IMAP is turned on\n1. On your computer, open QQ Mail.\n2. In the top right, click Settings.\n3. Find POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV.\n4. Enable IMAP/SMTP.\n\nStep B: Get authorization to log in the third-party Email client\n1. Generate authorization code.\n2. Check the SMS message sent by QQ Mail.\n3. Fill in the authorization code.\n\nThen enter your Email address and password to log in.";
 
@@ -76,9 +73,15 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
         } else if (type == 6){
             self.typeName = @"icloud.com";
             self.iconName = @"email_icon_icloud_n";
+        } else if (type == 7){
+            self.typeName = @"office365.com";
+            self.iconName = @"email_icon_exchange_n";
         }
-        
-        self.htmlPath = [NSString stringWithFormat:@"guidance_notes_%d",type];
+        int htmlType = type;
+        if (htmlType == 7) {
+            htmlType = 5;
+        }
+        self.htmlPath = [NSString stringWithFormat:@"guidance_notes_%d",htmlType];
     }
     return self;
 }
@@ -131,6 +134,7 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
     } else {
         _mainWebView.hidden = YES;
     }
+    
 }
 // 添加通知
 - (void) addNoti
@@ -210,15 +214,15 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
             NSArray *strings = [name componentsSeparatedByString:@"@"];
             if (strings.count == 2) {
                 NSString *emailT = [strings lastObject];
-                if (self.emailType == 5) {
+                if (self.emailType == 5 || self.emailType == 7) {
                     
                 } else if (![emailT isEqualToString:self.typeName] && self.emailType !=1 && self.emailType !=4) {
                     [self.view showHint:@"Email format error."];
                     return;
                 }
                 NSArray *names = [emailT componentsSeparatedByString:@"."];
-                if (names.count == 2) {
-                    if (self.emailType == 5) {
+                if (names.count == 2 || names.count == 3) {
+                    if (self.emailType == 5 || self.emailType == 7) {
                         hostName = [NSString stringWithFormat:@"outlook.%@",self.typeName];
                     } else {
                         hostName = [NSString stringWithFormat:@"imap.%@",self.typeName];
@@ -253,7 +257,7 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
 //        return;
 //    }
     
-    if (self.emailType == 5) { // outlook
+    if (self.emailType == 5 || self.emailType == 7) { // outlook
         _accountM.smtpPort = 587;
         _accountM.smtpConnectionType = MCOConnectionTypeStartTLS;
     } else if (self.emailType == 6) {
@@ -272,7 +276,7 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
     imapSession.username = name;
     imapSession.password = pass;
     imapSession.connectionType = MCOConnectionTypeTLS;
-    imapSession.authType = MCOAuthTypeSASLLogin;
+   // imapSession.authType = MCOAuthTypeSASLLogin;
     
     NSString *hitStr = @"Login...";
     if (self.optionType == ConfigEmail) {
@@ -385,7 +389,7 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
 }
 
 
-
+/*
 - (void) startOAuth2
 {
     [self loadWithAuth:nil];
@@ -467,5 +471,5 @@ finishedRefreshWithFetcher:(GTMHTTPFetcher *)fetcher
     }];
    
 }
-
+*/
 @end

@@ -42,6 +42,7 @@
 #import "GroupMembersModel.h"
 #import "NSString+HexStr.h"
 #import "GroupVerifyModel.h"
+#import "PNSysPushModel.h"
 
 #define PLAY_TIME 10.0f
 #define PLAY_KEY @"PLAY_KEY"
@@ -88,7 +89,6 @@
             [SocketUtil.shareInstance sendWithText:text];
         }
     });
-    
 }
 
 /**
@@ -177,7 +177,7 @@
             [SocketUtil.shareInstance sendWithText:text];
         }
     });
-    
+
 }
 
 
@@ -605,6 +605,8 @@
         [SocketMessageUtil handleDelEmailConf:receiveDic];
     } else if ([action isEqualToString:Action_BakMailsCheck]) { // 查询邮件是否备份
         [SocketMessageUtil handleBakMailsCheck:receiveDic];
+    } else if ([action isEqualToString:Action_SysMsgPush]) { // 系统消息push
+        [SocketMessageUtil handleSysMsgPush:receiveDic];
     }
 }
 
@@ -1066,12 +1068,11 @@
     } else if (retCode == 1) { // 1：目标不可达
        
     } else if (retCode == 2) { // 2：其他错误
-        
         // 对方已经不是好友，删除记录.
-        [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(MsgId)]];
+        [ChatModel bg_delete:CHAT_CACHE_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"fromId"),bg_sqlValue(FromId),bg_sqlKey(@"msgid"),bg_sqlValue(sendMsgID)]];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SEND_CHATMESSAGE_SUCCESS_NOTI object:@[@(0),MsgId,sendMsgID?:@""]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SEND_CHATMESSAGE_SUCCESS_NOTI object:@[@(retCode),MsgId,sendMsgID?:@""]];
 }
 
 + (void)handlePushMsg:(NSDictionary *)receiveDic {
@@ -1083,6 +1084,8 @@
     NSString *signKey = receiveDic[@"params"][@"Sign"];
     NSString *nonceKey = receiveDic[@"params"][@"Nonce"];
     NSString *symmetkey = receiveDic[@"params"][@"PriKey"];
+    NSInteger AssocId = receiveDic[@"params"][@"AssocId"]? [receiveDic[@"params"][@"AssocId"] integerValue]:0;
+    
     
     // 回复路由
     NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
@@ -1093,6 +1096,7 @@
     CDMessageModel *model = [[CDMessageModel alloc] init];
     model.FromId = FromId;
     model.ToId = ToId;
+    model.AssocId = AssocId;
     model.TimeStatmp = [receiveDic[@"timestamp"] integerValue];
     model.messageId = MsgId;
     model.signKey = signKey;
@@ -1213,7 +1217,7 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     NSInteger MsgNum = [receiveDic[@"params"][@"MsgNum"] integerValue]; // 拉取的消息条数（默认10条，不能超过20条）
     NSString *Payload = receiveDic[@"params"][@"Payload"];
-    
+    NSInteger srcMsgId = [receiveDic[@"params"][@"SrcMsgId"] integerValue];
     NSString *friendId = receiveDic[@"params"][@"FriendId"];
     NSInteger more = [receiveDic[@"more"] integerValue];
 
@@ -1225,7 +1229,7 @@
         
         if (([SocketCountUtil getShareObject].chatToId && [[SocketCountUtil getShareObject].chatToId isEqualToString:friendId])) {
             NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
-            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_BEFORE_NOTI object:payloadArr];
+            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_BEFORE_NOTI object:@[payloadArr,@(MsgNum),@(srcMsgId)]];
         }
        
     } else if (retCode == 1) { // 1：用户没权限
@@ -1839,13 +1843,15 @@
     
     NSString *GId = receiveDic[@"params"][@"GId"];
     int userType = [receiveDic[@"params"][@"UserType"] intValue];
+    int msgNum = [receiveDic[@"params"][@"MsgNum"] intValue];
+    NSInteger srcMsgId = [receiveDic[@"params"][@"SrcMsgId"] integerValue];
     
     if (retCode == 0) { // 0：消息拉取成功
         
         
         if (([SocketCountUtil getShareObject].groupChatId && [[SocketCountUtil getShareObject].groupChatId isEqualToString:GId])) {
             NSArray *payloadArr = [PayloadModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
-            [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:@[payloadArr,@(userType)]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:@[payloadArr,@(userType),@(msgNum),@(srcMsgId)]];
         }
         
     } else {
@@ -2097,6 +2103,53 @@
         } else {
             [AppD.window showHint:@"Other error"];
         }
+    }
+}
+
+#pragma mark ---系统消息push 94
++ (void) handleSysMsgPush:(NSDictionary *)receiveDic {
+    
+//    Type
+//    新用户注册
+//    节点名称变更
+//    用户账户异常
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+
+    if (retCode == 0) { // 0：消息发送成功
+        
+       // 1. You have a new Circle member.
+       // 2. Your Circle name has been changed.
+       // 3. Unusual activity in your Circle member account
+        
+        PNSysPushModel *sysM = [PNSysPushModel getObjectWithKeyValues:receiveDic[@"params"]];
+        NSString *notiString = @"";
+        if (sysM.Type == 1) { // 新用户注册
+            notiString = @"You have a new Circle member.";
+        } else if (sysM.Type == 2) { // 节点名称变更
+            notiString = @"Your Circle name has been changed.";
+        } else { // 用户账户异常
+            notiString = @"Unusual activity in your Circle member account";
+        }
+        
+        // 弹出对方请求加您为好友的通知
+        NotifactionView *notiView = [NotifactionView loadNotifactionView];
+        notiView.lblTtile.text = notiString;
+        [notiView show];
+        // 播放系统声音
+        [SystemUtil playSystemSound];
+        
+        // 回复服务器已收到
+        NSString *retcode = @"0";
+        NSDictionary *params = @{@"Action":Action_SysMsgPush,@"Retcode":retcode,@"Msg":@"",@"ToId":sysM.ToId};
+        NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
+        [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
+        
+    } else {
+        // 回复服务器已收到
+        NSString *retcode = @"1";
+        NSDictionary *params = @{@"Action":Action_SysMsgPush,@"Retcode":retcode,@"Msg":@"",@"ToId":receiveDic[@"params"][@"ToId"]};
+        NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
+        [SocketMessageUtil sendRecevieMessageWithParams:params tempmsgid:tempmsgid];
     }
 }
 

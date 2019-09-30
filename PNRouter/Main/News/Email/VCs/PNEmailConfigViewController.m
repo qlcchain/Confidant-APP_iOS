@@ -152,7 +152,7 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
             smtpSession.password = weakSelf.accountM.UserPass;
             smtpSession.connectionType = weakSelf.accountM.smtpConnectionType;
             
-            smtpSession.authType = MCOAuthTypeSASLLogin;
+           // smtpSession.authType = MCOAuthTypeSASLLogin;
             smtpSession.timeout = 60.0;
             
             MCOAddress *addressM = [MCOAddress addressWithMailbox:weakSelf.accountM.User];

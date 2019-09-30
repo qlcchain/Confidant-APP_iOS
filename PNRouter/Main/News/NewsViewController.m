@@ -61,7 +61,7 @@
 #import "AESCipher.h"
 //#import <CocoaSecurity/CocoaSecurity.h>
 
-#import <QLCFramework/QLCFramework.h>
+//#import <QLCFramework/QLCFramework.h>
 #import <GoogleSignIn/GoogleSignIn.h>
 
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate,GIDSignInUIDelegate> {
@@ -1402,6 +1402,13 @@
     @weakify_self
     [imapMessagesFetchOp start:^(NSError *error, NSArray *messages, MCOIndexSet *vanishedMessages) {
         
+        if (EmailManage.sharedEmailManage.imapSeeion == nil) {
+            [weakSelf.view hideHud];
+            weakSelf.isRefresh = NO;
+            [weakSelf.emailTabView.mj_header endRefreshing];
+            [weakSelf.emailTabView.mj_footer endRefreshing];
+            return ;
+        }
         if (error) {
             if (weakSelf.isRefresh) { // 是上拉刷新
                 weakSelf.floderModel.count = (int) weakSelf.currentEmailCount;
@@ -1779,12 +1786,9 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-   // [[GIDSignIn sharedInstance] signOut];
-     
-  //  [[GIDSignIn sharedInstance] signIn];
-   // [GIDSignIn sharedInstance].presentingViewController = self;
-    // Automatically sign in the user.
-   // [[GIDSignIn sharedInstance] restorePreviousSignIn];
+  //  [[GIDSignIn sharedInstance] signOut];
+    [[GIDSignIn sharedInstance] signIn];
+ 
 }
 
 - (void)signIn:(GIDSignIn *)signIn presentViewController:(UIViewController *)viewController
@@ -1795,4 +1799,8 @@
 {
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
+
+//- (IBAction)didTapDisconnect:(id)sender {
+//    [[GIDSignIn sharedInstance] disconnect];
+//}
 @end

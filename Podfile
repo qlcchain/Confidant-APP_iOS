@@ -57,7 +57,7 @@ def demo_pods
     pod 'CryptoSwift'
     
     # aes
-    pod 'CocoaSecurity'
+    # pod 'CocoaSecurity'
     #google 登陆
     pod'GoogleSignIn'
 

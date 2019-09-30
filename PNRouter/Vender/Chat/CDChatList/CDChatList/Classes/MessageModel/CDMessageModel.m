@@ -75,6 +75,7 @@
 @synthesize fileKey;
 @synthesize isAdmin;
 @synthesize AssocId;
+@synthesize repModel;
 
 -(instancetype)init:(NSDictionary *)dic{
     self = [super init];

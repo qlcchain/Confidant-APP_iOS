@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PNEmailSendViewController : PNBaseViewController
 @property (nonatomic, assign) EmailSendType sendType;
 - (instancetype) initWithEmailListInfo:(EmailListInfo *) info sendType:(EmailSendType) type;
+- (instancetype) initWithEmailToAddress:(NSString *) toAddress sendType:(EmailSendType) type;
 - (instancetype) initWithEmailListInfo:(EmailListInfo *) info sendType:(EmailSendType) type isShowAttch:(BOOL) isShowAttch;
 @end
 

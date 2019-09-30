@@ -76,6 +76,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *AttCollectionContraintH;
 @property (nonatomic ,assign) int selContactType; // 1:收件人 2: 抄送人
 @property (nonatomic, strong) EmailListInfo *emailInfo;
+@property (nonatomic, strong) NSString *toAddress;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toTFH;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ccTFH;
@@ -566,6 +567,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
     return self;
 }
+- (instancetype) initWithEmailToAddress:(NSString *) toAddress sendType:(EmailSendType) type
+{
+    if (self = [super init]) {
+        self.toAddress = toAddress;;
+        self.sendType = type;
+    }
+    return self;
+}
 - (void) addNoti
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectContactNoti:) name:EMIAL_CONTACT_SEL_NOTI object:nil];
@@ -731,6 +740,18 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
     } else if (_sendType == NewEmail) { // 新邮件
         _lblTitle.text = @"Compose";
+        if (_toAddress && _toAddress.length > 0) {
+            // 更新 to 联系人
+            EmailContactModel *contactM = [[EmailContactModel alloc] init];
+            contactM.userName = [_toAddress componentsSeparatedByString:@"@"][0];
+            contactM.userAddress = _toAddress;
+            [self.toContacts addObject:contactM];
+            
+            NSString *toNames = [NSString stringWithFormat:kContactFormat,contactM.userName];
+            _toTF.text = toNames;
+            // 更新高度
+            [self textDidChange:_toTF];
+        }
         [self performSelector:@selector(textViewBecomeFirstResponder:) withObject:_toTF afterDelay:0.5];
     } else if (_sendType == ForwardEmail) { // 转发
         

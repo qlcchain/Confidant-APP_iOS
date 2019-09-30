@@ -41,5 +41,6 @@
 - (void) selectWithdrawItem:(UIMenuController *) item;
 - (void) selectForwardItem:(UIMenuController *) item;
 - (void)selectDownloadItem:(UIMenuController *)item;
+- (void) selectReactItem:(UIMenuController *) item;
 
 @end

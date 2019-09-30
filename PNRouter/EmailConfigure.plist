@@ -2,6 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>7</key>
+	<dict>
+		<key>Inbox</key>
+		<string>INBOX</string>
+		<key>Sent</key>
+		<string>&amp;XfJT0ZABkK5O9g-</string>
+		<key>Spam</key>
+		<string>&amp;V4NXPpCuTvY-</string>
+		<key>Trash</key>
+		<string>&amp;XfJSIJZkkK5O9g-</string>
+		<key>Drafts</key>
+		<string>&amp;g0l6Pw-</string>
+	</dict>
 	<key>255</key>
 	<dict>
 		<key>Inbox</key>

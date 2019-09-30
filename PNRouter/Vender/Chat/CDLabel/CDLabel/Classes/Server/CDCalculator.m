@@ -50,7 +50,7 @@
                 self.calComplete(data);
             }
         } else {
-            CTData *data = [CTData dataWithStr:text containerWithSize:containSize configuration:config];
+            CTData *data = [CTData dataWithStr:text containerWithSize:containSize configuration:config repMsgString:@""];
             [CDCalculator.share.cachedData setObject:data forKey:dataId];
             if (self.calComplete && self.label) { // 检查是否取消计算回调
                 self.calComplete(data);

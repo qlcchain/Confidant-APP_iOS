@@ -287,14 +287,9 @@
 		730AE09D22F0413400E0BC67 /* HXAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE09C22F0413400E0BC67 /* HXAttributedString.m */; };
 		730AE0A022F13E6100E0BC67 /* EmailStarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE09F22F13E6100E0BC67 /* EmailStarModel.m */; };
 		730AE0A322F2B4D800E0BC67 /* EmailUserKeyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE0A222F2B4D800E0BC67 /* EmailUserKeyModel.m */; };
-		730E3BD623307B23009AF1EE /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 730E3BC723307B23009AF1EE /* GTMOAuth2ViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		730E3BD723307B23009AF1EE /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730E3BC823307B23009AF1EE /* GTMOAuth2ViewTouch.xib */; };
-		730E3BD823307B23009AF1EE /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 730E3BCB23307B23009AF1EE /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		730E3BDB23307B23009AF1EE /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 730E3BD023307B23009AF1EE /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		730E3BDC23307B23009AF1EE /* GTMHTTPFetchHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 730E3BD223307B23009AF1EE /* GTMHTTPFetchHistory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		730E3BDD23307B23009AF1EE /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 730E3BD323307B23009AF1EE /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		730E3BFA2333760B009AF1EE /* QLCFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730E3BF82333760B009AF1EE /* QLCFramework.framework */; };
 		730E3BFB2333760B009AF1EE /* TrezorCrytoEd25519.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730E3BF92333760B009AF1EE /* TrezorCrytoEd25519.framework */; };
+		730E3BFE2338639F009AF1EE /* PNSysPushModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 730E3BFD2338639F009AF1EE /* PNSysPushModel.m */; };
+		730E3C002338660B009AF1EE /* QLCFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730E3BFF2338660B009AF1EE /* QLCFramework.framework */; };
 		73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6B219BB59B00510B48 /* RouterConfig.m */; };
 		73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6E219BF4E900510B48 /* NSString+SHA256.m */; };
 		73121A74219C26E900510B48 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A72219C26E900510B48 /* LoginViewController.m */; };
@@ -1251,19 +1246,10 @@
 		730AE09F22F13E6100E0BC67 /* EmailStarModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailStarModel.m; sourceTree = "<group>"; };
 		730AE0A122F2B4D800E0BC67 /* EmailUserKeyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailUserKeyModel.h; sourceTree = "<group>"; };
 		730AE0A222F2B4D800E0BC67 /* EmailUserKeyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailUserKeyModel.m; sourceTree = "<group>"; };
-		730E3BC523307B23009AF1EE /* GTMOAuth2SignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2SignIn.h; sourceTree = "<group>"; };
-		730E3BC723307B23009AF1EE /* GTMOAuth2ViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2ViewControllerTouch.m; sourceTree = "<group>"; };
-		730E3BC823307B23009AF1EE /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GTMOAuth2ViewTouch.xib; sourceTree = "<group>"; };
-		730E3BC923307B23009AF1EE /* GTMOAuth2ViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2ViewControllerTouch.h; sourceTree = "<group>"; };
-		730E3BCA23307B23009AF1EE /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2Authentication.h; sourceTree = "<group>"; };
-		730E3BCB23307B23009AF1EE /* GTMOAuth2SignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2SignIn.m; sourceTree = "<group>"; };
-		730E3BD023307B23009AF1EE /* GTMOAuth2Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2Authentication.m; sourceTree = "<group>"; };
-		730E3BD223307B23009AF1EE /* GTMHTTPFetchHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetchHistory.m; sourceTree = "<group>"; };
-		730E3BD323307B23009AF1EE /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
-		730E3BD423307B23009AF1EE /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
-		730E3BD523307B23009AF1EE /* GTMHTTPFetchHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetchHistory.h; sourceTree = "<group>"; };
-		730E3BF82333760B009AF1EE /* QLCFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QLCFramework.framework; sourceTree = "<group>"; };
 		730E3BF92333760B009AF1EE /* TrezorCrytoEd25519.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TrezorCrytoEd25519.framework; sourceTree = "<group>"; };
+		730E3BFC2338639F009AF1EE /* PNSysPushModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNSysPushModel.h; sourceTree = "<group>"; };
+		730E3BFD2338639F009AF1EE /* PNSysPushModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNSysPushModel.m; sourceTree = "<group>"; };
+		730E3BFF2338660B009AF1EE /* QLCFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QLCFramework.framework; sourceTree = "<group>"; };
 		73121A6A219BB59B00510B48 /* RouterConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterConfig.h; sourceTree = "<group>"; };
 		73121A6B219BB59B00510B48 /* RouterConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterConfig.m; sourceTree = "<group>"; };
 		73121A6D219BF4E900510B48 /* NSString+SHA256.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SHA256.h"; sourceTree = "<group>"; };
@@ -1997,7 +1983,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				730E3BFA2333760B009AF1EE /* QLCFramework.framework in Frameworks */,
 				730330E521C76E47007C4063 /* libxml2.tbd in Frameworks */,
 				730330EF21C76E86007C4063 /* CoreTelephony.framework in Frameworks */,
 				581FDF3521F024160068C120 /* vpx.framework in Frameworks */,
@@ -2013,6 +1998,7 @@
 				7306054621748BD5005A0E13 /* libopencore-amrnb.a in Frameworks */,
 				815FEEED645E5889A42F8CA0 /* libPods-PNRouter.a in Frameworks */,
 				730E3BFB2333760B009AF1EE /* TrezorCrytoEd25519.framework in Frameworks */,
+				730E3C002338660B009AF1EE /* QLCFramework.framework in Frameworks */,
 				73EAC9852320F9E2002C1637 /* LibsodiumSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2630,6 +2616,8 @@
 				583B2B3122311F3300E6238D /* UserHeaderModel.m */,
 				73F6B97E22A002760053AAB4 /* EmojModel.h */,
 				73F6B97F22A002760053AAB4 /* EmojModel.m */,
+				730E3BFC2338639F009AF1EE /* PNSysPushModel.h */,
+				730E3BFD2338639F009AF1EE /* PNSysPushModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2943,7 +2931,6 @@
 		730951A522D2DBF1001BA82E /* Email */ = {
 			isa = PBXGroup;
 			children = (
-				730E3BC323307B23009AF1EE /* gtm-oauth2 */,
 				735320E422F80FFA007B4A70 /* SSZipArch */,
 				730AE09222EE983F00E0BC67 /* common */,
 				730AE06E22E94FDD00E0BC67 /* HtmlEditView */,
@@ -3117,60 +3104,10 @@
 			path = common;
 			sourceTree = "<group>";
 		};
-		730E3BC323307B23009AF1EE /* gtm-oauth2 */ = {
-			isa = PBXGroup;
-			children = (
-				730E3BC423307B23009AF1EE /* Source */,
-				730E3BD123307B23009AF1EE /* HTTPFetcher */,
-			);
-			path = "gtm-oauth2";
-			sourceTree = "<group>";
-		};
-		730E3BC423307B23009AF1EE /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				730E3BC523307B23009AF1EE /* GTMOAuth2SignIn.h */,
-				730E3BC623307B23009AF1EE /* Touch */,
-				730E3BCA23307B23009AF1EE /* GTMOAuth2Authentication.h */,
-				730E3BCB23307B23009AF1EE /* GTMOAuth2SignIn.m */,
-				730E3BCC23307B23009AF1EE /* Mac */,
-				730E3BD023307B23009AF1EE /* GTMOAuth2Authentication.m */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
-		730E3BC623307B23009AF1EE /* Touch */ = {
-			isa = PBXGroup;
-			children = (
-				730E3BC723307B23009AF1EE /* GTMOAuth2ViewControllerTouch.m */,
-				730E3BC823307B23009AF1EE /* GTMOAuth2ViewTouch.xib */,
-				730E3BC923307B23009AF1EE /* GTMOAuth2ViewControllerTouch.h */,
-			);
-			path = Touch;
-			sourceTree = "<group>";
-		};
-		730E3BCC23307B23009AF1EE /* Mac */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Mac;
-			sourceTree = "<group>";
-		};
-		730E3BD123307B23009AF1EE /* HTTPFetcher */ = {
-			isa = PBXGroup;
-			children = (
-				730E3BD223307B23009AF1EE /* GTMHTTPFetchHistory.m */,
-				730E3BD323307B23009AF1EE /* GTMHTTPFetcher.m */,
-				730E3BD423307B23009AF1EE /* GTMHTTPFetcher.h */,
-				730E3BD523307B23009AF1EE /* GTMHTTPFetchHistory.h */,
-			);
-			path = HTTPFetcher;
-			sourceTree = "<group>";
-		};
 		730E3BE323333108009AF1EE /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				730E3BF82333760B009AF1EE /* QLCFramework.framework */,
+				730E3BFF2338660B009AF1EE /* QLCFramework.framework */,
 				730E3BF92333760B009AF1EE /* TrezorCrytoEd25519.framework */,
 			);
 			path = Framework;
@@ -4726,7 +4663,6 @@
 				73ED4B3F230FDE2100AF4B51 /* guidance_notes_3.html in Resources */,
 				58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */,
 				7330F46C2147AD2B00FF4EEC /* InputViewBundle.bundle in Resources */,
-				730E3BD723307B23009AF1EE /* GTMOAuth2ViewTouch.xib in Resources */,
 				73060557217719A5005A0E13 /* VPNFileInputView.xib in Resources */,
 				586D4176224B57CE002008C6 /* ChooseCircleViewController.xib in Resources */,
 				73FE5B2422DF561E004D0655 /* EmailConfigure.plist in Resources */,
@@ -4846,7 +4782,6 @@
 				7378840821ACF2970033A189 /* OCTObject.m in Sources */,
 				73B6432722E83CEC003A4EA5 /* PNEmailAttchSelView.m in Sources */,
 				5825A24721FB0B8E00E6194B /* FileListModel.m in Sources */,
-				730E3BDB23307B23009AF1EE /* GTMOAuth2Authentication.m in Sources */,
 				73060558217719A5005A0E13 /* VPNFileInputView.m in Sources */,
 				58E3A5792243366E00F9D9E7 /* GroupVerifyModel.m in Sources */,
 				7360B85521FC632A008FB181 /* FileDownUtil.m in Sources */,
@@ -5000,7 +4935,6 @@
 				583BF91F21F6B5D00078A2A8 /* SharedSettingsViewController.m in Sources */,
 				7378842321AD364E0033A189 /* Base58Util.swift in Sources */,
 				5825A23821F9CA9F00E6194B /* FilePreviewDownloadViewController.m in Sources */,
-				730E3BD823307B23009AF1EE /* GTMOAuth2SignIn.m in Sources */,
 				7330F4F32149147200FF4EEC /* ChatListInfo.m in Sources */,
 				730AE07F22E9504900E0BC67 /* SIXEditorInputView.m in Sources */,
 				58F5E4C7222F9A1600695F0A /* FileRenameHelper.m in Sources */,
@@ -5036,7 +4970,6 @@
 				733EE47F22E1B2DB0042457C /* PNEmailMoveViewController.m in Sources */,
 				582BFE47221D264200D8C2C8 /* CreateAccountViewController.m in Sources */,
 				7341A86822F81146001AF7C2 /* fileenc.c in Sources */,
-				730E3BDC23307B23009AF1EE /* GTMHTTPFetchHistory.m in Sources */,
 				7356429D222630D800DC0BCB /* ChatModel.m in Sources */,
 				73E7742822D87B27001C652E /* EmailUserCell.m in Sources */,
 				7378840321ACF2970033A189 /* OCTFriendRequest.m in Sources */,
@@ -5115,6 +5048,7 @@
 				73E48CF822E5A7CA00AB0732 /* EmailContactModel.m in Sources */,
 				73F55A10223F78C4003155D2 /* GroupChatViewController.m in Sources */,
 				73E7740022D5C2F1001C652E /* EmailManage.m in Sources */,
+				730E3BFE2338639F009AF1EE /* PNSysPushModel.m in Sources */,
 				580CFE482227B7FD00460B41 /* UIView+MemoryLeak.m in Sources */,
 				73869111214CEAA3003CF6A3 /* ChatListDataUtil.m in Sources */,
 				7330F4FA2149147200FF4EEC /* CTInputView.m in Sources */,
@@ -5183,9 +5117,7 @@
 				73D00EB5215F17670013E20D /* FileModel.m in Sources */,
 				58F178A5221FF376001CD0AF /* ChooseContactTableCell.m in Sources */,
 				73AC8F50223F9E64000E60D5 /* GroupListCell.m in Sources */,
-				730E3BDD23307B23009AF1EE /* GTMHTTPFetcher.m in Sources */,
 				7378841521ACF2970033A189 /* NSError+OCTFile.m in Sources */,
-				730E3BD623307B23009AF1EE /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				7330F3772146118800FF4EEC /* UIImage+Rotate.m in Sources */,
 				58BD2E722148E3170091A77D /* ToastUtil.m in Sources */,
 				7330F3AE21475A0600FF4EEC /* GroupCell.m in Sources */,
