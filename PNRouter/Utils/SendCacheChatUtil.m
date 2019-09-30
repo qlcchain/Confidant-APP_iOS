@@ -187,7 +187,7 @@ const NSInteger timerTime = 10;
         NSString *enMsg = aesEncryptString(model.messageMsg, datakey);
         // 发送消息
         dispatch_async(dispatch_get_main_queue(), ^{
-            [SendRequestUtil sendGroupMessageWithGid:model.toId point:model.atIds?:@"" msg:enMsg msgid:[NSString stringWithFormat:@"%ld",model.msgid]];
+            [SendRequestUtil sendGroupMessageWithGid:model.toId point:model.atIds?:@"" msg:enMsg msgid:[NSString stringWithFormat:@"%ld",model.msgid] repId:@(model.repMsgId)];
         });
         
     } else {
@@ -202,7 +202,7 @@ const NSInteger timerTime = 10;
         // 加密对称密钥
         NSString *enSymmetString = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetryString enPK:[EntryModel getShareObject].publicKey];
         
-        NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.toId?:@"",@"From":model.fromId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@""};
+        NSDictionary *params = @{@"Action":@"SendMsg",@"To":model.toId?:@"",@"From":model.fromId?:@"",@"Msg":msg?:@"",@"Sign":signString?:@"",@"Nonce":nonceString?:@"",@"PriKey":enSymmetString?:@"",@"AssocId":@(model.repMsgId)};
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:[NSString stringWithFormat:@"%ld",model.msgid]];

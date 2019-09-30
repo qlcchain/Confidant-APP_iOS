@@ -41,7 +41,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_WHITE_COLOR;
    
-    NSDictionary *typeNameDic = @{@"1":@"email_icon_qqmailbox",@"2":@"email_icon_qq",@"3":@"email_icon_163",@"4":@"email_icon_google",@"5":@"email_icon_outlook",@"6":@"email_icon_icloud",@"255":@"email_icon_other"};
+    NSDictionary *typeNameDic = @{@"1":@"email_icon_qqmailbox",@"2":@"email_icon_qq",@"3":@"email_icon_163",@"4":@"email_icon_google",@"5":@"email_icon_outlook",@"7":@"email_icon_exchange",@"6":@"email_icon_icloud",@"255":@"email_icon_other"};
     
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     NSString *imgkey = [NSString stringWithFormat:@"%d",accountM.Type];

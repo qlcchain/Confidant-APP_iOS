@@ -588,6 +588,11 @@
         [itmes addObject:item];
     }
     
+    if (self.msgModal.msgType == CDMessageTypeFile || self.msgModal.isLeft) {
+        UIMenuItem *item = [[UIMenuItem alloc] initWithTitle:@"React" action:@selector(selectReactItem:)];
+        [itmes addObject:item];
+    }
+    
     
     
     if (itmes.count > 0) {
@@ -634,7 +639,12 @@
         [self.tableView.msgDelegate clickChatMenuItem:@"Save" withMsgMode:self.msgModal];
     }
 }
-
+- (void) selectReactItem:(UIMenuController *) item
+{
+    if (self.tableView.msgDelegate) {
+        [self.tableView.msgDelegate clickChatMenuItem:@"React" withMsgMode:self.msgModal];
+    }
+}
 
 
 #pragma mark ---点击头像手势

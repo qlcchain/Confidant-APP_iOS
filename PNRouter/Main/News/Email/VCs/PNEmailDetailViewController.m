@@ -442,7 +442,7 @@
     } else if (sender.tag == 20) { // 删除邮件
         
         if ([self.emailInfo.floderName isEqualToString:Node_backed_up]) {
-            [SendRequestUtil sendEmailDelNodeWithUid:[NSString stringWithFormat:@"%@_%d",self.emailInfo.floderName,self.emailInfo.uid]  showHud:YES];
+            [SendRequestUtil sendEmailDelNodeWithUid:[NSString stringWithFormat:@"%d",self.emailInfo.uid]  showHud:YES];
             return;
         }
         

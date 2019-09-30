@@ -49,12 +49,12 @@ NSString *CTDataConfigIdentity(CTDataConfig config){
     return config;
 }
 
-+(CTData *)dataWithStr:(NSString *)msgString
-     containerWithSize: (CGSize)size{
-    return [self dataWithStr:msgString containerWithSize:size configuration:[self defaultConfig]];
++(CTData *)dataWithStr:(NSString *)msgString 
+     containerWithSize: (CGSize)size repMsgString:(NSString *)repMsgString{
+    return [self dataWithStr:msgString containerWithSize:size configuration:[self defaultConfig] repMsgString:repMsgString];
 }
 
-+(CTData *)dataWithStr:(NSString *)msgString containerWithSize:(CGSize)size configuration:(CTDataConfig)config{
++(CTData *)dataWithStr:(NSString *)msgString containerWithSize:(CGSize)size configuration:(CTDataConfig)config repMsgString:(NSString *)repMsgString{
     
     CTData *data = [[CTData alloc] init];
     data.config = config;
@@ -83,7 +83,19 @@ NSString *CTDataConfigIdentity(CTDataConfig config){
                           NSParagraphStyleAttributeName: paragraphStyle
                           };
     
+    
     NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:data.msgString attributes:dic];
+    if (repMsgString && repMsgString.length>0) {
+        NSDictionary *dic1 = @{
+                               NSFontAttributeName: [UIFont systemFontOfSize:14],
+                               NSForegroundColorAttributeName: [UIColor colorWithCGColor:RGB(153, 153, 153).CGColor],
+                               NSBackgroundColorAttributeName:[UIColor colorWithCGColor:config.backGroundColor],
+                               NSParagraphStyleAttributeName: paragraphStyle
+                               };
+        NSMutableAttributedString *attString1 =  [[NSMutableAttributedString alloc] initWithString:repMsgString attributes:dic1];
+        [attString insertAttributedString:attString1 atIndex:0];
+    }
+    
     
     
     /*

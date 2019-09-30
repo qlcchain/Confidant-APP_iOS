@@ -313,16 +313,16 @@ typedef enum CTDisplayViewState : NSInteger {
     UIMenuItem *item3 = [[UIMenuItem alloc] initWithTitle:@"All Select" action:@selector(selectAllContent:)];
     UIMenuItem *item4 = [[UIMenuItem alloc] initWithTitle:@"Forward" action:@selector(clickForwardItem:)];
     UIMenuItem *item5 = [[UIMenuItem alloc] initWithTitle:@"Withdraw" action:@selector(clickWithdrawItem:)];
-   // UIMenuItem *item6 = [[UIMenuItem alloc] initWithTitle:@"React" action:@selector(clickReactItem:)];
+    UIMenuItem *item6 = [[UIMenuItem alloc] initWithTitle:@"React" action:@selector(clickReactItem:)];
     if (self.isOwer) {
         [menu setMenuItems:@[item2,item3,item4,item5]];
     } else {
         if (self.isAdmin == GROUP_IDF) {
-             //[menu setMenuItems:@[item2,item3,item4,item5,item6]];
-            [menu setMenuItems:@[item2,item3,item4,item5]];
+            [menu setMenuItems:@[item2,item3,item4,item5,item6]];
+            //[menu setMenuItems:@[item2,item3,item4,item5]];
         } else {
-           // [menu setMenuItems:@[item2,item3,item4,item6]];
-            [menu setMenuItems:@[item2,item3,item4]];
+            [menu setMenuItems:@[item2,item3,item4,item6]];
+           // [menu setMenuItems:@[item2,item3,item4]];
         }
         
     }

@@ -11,6 +11,7 @@
 
 #import "ChatMacros.h"
 #import "CTData.h"
+#import "PayloadModel.h"
 @class ChatConfiguration;
 
 
@@ -189,6 +190,10 @@ typedef enum : NSUInteger {
  显示选择消息按钮（0：不显示   1：显示未选择   2：显示选择）
  */
 @property (nonatomic) NSInteger showSelectMsg;
+
+// 回复消息字段
+@property (nonatomic, strong)PayloadModel *repModel;
+
 
 @end
 

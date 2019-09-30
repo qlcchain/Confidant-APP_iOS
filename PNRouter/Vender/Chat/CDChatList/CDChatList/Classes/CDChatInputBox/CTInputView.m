@@ -15,6 +15,7 @@
 #import "AtUserModel.h"
 #import "NSString+RegexCategory.h"
 #import "NSString+HexStr.h"
+#import "NSString+Trim.h"
 
 static CGFloat reactH = 35;
 
@@ -224,8 +225,6 @@ static UIColor *InputHexColor(int hexColor){
 }
 - (void)setIsReact:(BOOL)isReact
 {
-   
-    
     if (isReact) {
         if (_isReact) {
             [self performSelector:@selector(textBecomeFirstResponder) withObject:self afterDelay:0.3];
@@ -265,6 +264,7 @@ static UIColor *InputHexColor(int hexColor){
         [self performSelector:@selector(textBecomeFirstResponder) withObject:self afterDelay:0.3];
         
     } else {
+        
         _isReact = isReact;
         [_reactBut setTitle:@"" forState:UIControlStateNormal];
         CGRect selfRect = self.frame;
@@ -649,12 +649,19 @@ static UIColor *InputHexColor(int hexColor){
 
 -(void)emojiKeyboardSelectSend{
     NSString *plainStr = [EmojiTextAttachment getPlainString: [self.textView.attributedText copy]];
-    if ([self.delegate respondsToSelector:@selector(inputViewPopSttring:)]) {
-        [self.delegate inputViewPopSttring:plainStr];
+    // 去掉前后空格和换行符
+    plainStr = [NSString trimWhitespaceAndNewline:plainStr];
+    if (plainStr && ![plainStr isEmptyString]) {
+        if ([self.delegate respondsToSelector:@selector(inputViewPopSttring:)]) {
+            [self.delegate inputViewPopSttring:plainStr];
+        }
+        self.textView.text = @"";
+        if (_isReact) {
+            [self setIsReact:NO];
+        }
+        [self.textView textDidChange];
     }
-    self.textView.text = @"";
-    [self setIsReact:NO];
-    [self.textView textDidChange];
+    
 }
 
 - (NSString *) getTextViewString

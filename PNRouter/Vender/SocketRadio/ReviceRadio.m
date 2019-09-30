@@ -182,7 +182,7 @@
         close(brdcFd);
         [self sendRadionMessageWithRouterid:routerid];
     }
-    char *ipAddress = [localIP UTF8String];
+     char *ipAddress = [localIP UTF8String];
      localAddr.sin_addr.s_addr = inet_addr(ipAddress);
      localAddr.sin_port = htons(0);
     setsockopt(brdcFd, SOL_SOCKET,SO_REUSEADDR, &optval, sizeof(int));
@@ -192,7 +192,6 @@
     {
         NSLog(@"绑定客户端时失败");
           close(brdcFd);
-        
         [self sendRadionMessageWithRouterid:routerid];
         return;
     }

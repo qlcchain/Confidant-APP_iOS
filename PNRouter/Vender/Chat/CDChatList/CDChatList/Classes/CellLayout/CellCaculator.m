@@ -59,7 +59,7 @@
     CDChatMessage data = msgArr[index];
     // 返回缓存中的高度
     // cell的高度会被保存，textlayout 目前还没有保存方案，
-    if (data.cellHeight && data.textlayout) {
+    if (data.cellHeight && data.textlayout && !data.repModel) {
         return data.cellHeight;
     }
     
@@ -150,9 +150,19 @@
     CGSize maxTextSize = CGSizeMake(msgData.chatConfig.bubbleMaxWidth - msgData.chatConfig.bubbleSharpAnglehorizInset - msgData.chatConfig.bubbleRoundAnglehorizInset,
                                     CGFLOAT_MAX);
     
+    NSString *repMsgString = @"";
+    if (msgData.AssocId > 0 && msgData.repModel) {
+        
+        if (msgData.repModel.MsgType == CDMessageTypeFile) {
+            repMsgString = [NSString stringWithFormat:@"%@: [file]: \"%@\"\n----------------------------\n",msgData.repModel.UserName,msgData.repModel.FileName];
+        } else {
+            repMsgString = [NSString stringWithFormat:@"%@: \"%@\"\n----------------------------\n",msgData.repModel.UserName,msgData.repModel.Msg];
+        }
+        
+    }
     CTData *data = [CTData dataWithStr:msgData.msg
                      containerWithSize:maxTextSize
-                         configuration:msgData.ctDataconfig];
+                         configuration:msgData.ctDataconfig repMsgString:repMsgString];
     
     msgData.textlayout = data;
     

@@ -61,6 +61,7 @@ static NSString *Action_UploadAvatar = @"UploadAvatar";
 static NSString *Action_UpdateAvatar = @"UpdateAvatar";
 static NSString *Action_FileRename = @"FileRename";
 static NSString *Action_PullTmpAccount = @"PullTmpAccount";
+static NSString *Action_SysMsgPush = @"SysMsgPush";
 
 // 群组的相关action
 static NSString *Action_CreateGroup = @"CreateGroup";

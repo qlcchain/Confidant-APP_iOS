@@ -69,6 +69,13 @@
 #import "NSString+HexStr.h"
 #import "UserPrivateKeyUtil.h"
 
+#import "NSString+RegexCategory.h"
+#import "PNEmailSendViewController.h"
+#import "EmailAccountModel.h"
+#import "PNEmailTypeSelectView.h"
+#import "PNEmailConfigViewController.h"
+#import "PNEmailLoginViewController.h"
+
 #define StatusH [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviH (44 + StatusH)
 #define ScreenW [UIScreen mainScreen].bounds.size.width
@@ -90,7 +97,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property(nonatomic, weak)CDChatListView *listView;
 @property(nonatomic, weak)CTInputView *msginputView;
 @property (nonatomic ,assign) NSInteger msgStartId;
-
+@property (nonatomic ,strong) CDMessageModel *repMessageModel;
 @property (nonatomic ,strong) CDMessageModel *selectMessageModel;
 @property (nonatomic, copy) PullMoreBlock pullMoreB;
 @property (nonatomic, strong) NSString *deleteMsgId;
@@ -99,6 +106,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 @property (nonatomic ,strong) NSMutableArray *actionArr;
 @property (nonatomic ,strong) NSMutableArray *atModels;
+
+@property (nonatomic, strong) UIWebView * callWebview;
+
 @end
 
 @implementation GroupChatViewController
@@ -269,7 +279,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *MsgType = @"0"; // 0：所有记录  1：纯聊天消息   2：文件传输记录
     NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(_msgStartId)]; // 从这个消息号往前（不包含该消息），为0表示默认从最新的消息回溯
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
-    [SendRequestUtil sendPullGroupMessageListWithGId:self.groupModel.GId MsgType:MsgType msgStartId:MsgStartId msgNum:MsgNum];
+    [SendRequestUtil sendPullGroupMessageListWithGId:self.groupModel.GId MsgType:MsgType msgStartId:MsgStartId msgNum:MsgNum srcMsgId:@"0"];
 }
 - (void) pullGroupFriend
 
@@ -395,8 +405,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [self saveVideo:filePath];
         }
     } else if ([itemTitle isEqualToString:@"React"]) { // 回复
-       // _msginputView.isReact = YES;
-       // [_msginputView setReactString:self.selectMessageModel.msg];
+        _msginputView.isReact = YES;
+        self.repMessageModel = (CDMessageModel *)msgModel;
+        if (self.selectMessageModel.msgType == CDMessageTypeFile) {
+            [_msginputView setReactString:self.selectMessageModel.fileName];
+        } else {
+            [_msginputView setReactString:self.selectMessageModel.msg];
+        }
+        
         
     }
 }
@@ -555,7 +571,51 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
             break;
         case ChatClickEventTypeTEXT:
-            [self.view makeToast:listInfo.clickedText duration:0.5 position:CSToastPositionCenter];
+           // [self.view makeToast:listInfo.clickedText duration:0.5 position:CSToastPositionCenter];
+            
+            if (listInfo.clickedText.length>4 && [[listInfo.clickedText substringToIndex:4] isEqualToString:@"www."]) {
+                listInfo.clickedText = [NSString stringWithFormat:@"https://%@",listInfo.clickedText];
+            }
+            if ([listInfo.clickedText isValidUrl]) { // 是url
+                
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:listInfo.clickedText] options:@{} completionHandler:^(BOOL success) {
+                    
+                }];
+                
+            } else if ([listInfo.clickedText isEmailAddress]) { // 是邮箱
+                
+                if ([EmailAccountModel getLocalAllEmailAccounts].count == 0) { // 绑定邮箱
+                    
+                    PNEmailTypeSelectView *vc = [[PNEmailTypeSelectView alloc] init];
+                    @weakify_self
+                    [vc setClickRowBlock:^(PNBaseViewController * _Nonnull vc, NSArray * _Nonnull arr) {
+                        [vc dismissViewControllerAnimated:NO completion:nil];
+                        if ([arr[1] intValue] == 255) {
+                            PNEmailConfigViewController *vc = [[PNEmailConfigViewController alloc] initWithIsEdit:NO];
+                            [weakSelf presentModalVC:vc animated:YES];
+                        } else {
+                            PNEmailLoginViewController *loginVC  = [[PNEmailLoginViewController alloc] initWithEmailType:[arr[1] intValue] optionType:LoginEmail];
+                            [weakSelf presentModalVC:loginVC animated:YES];
+                        }
+                    }];
+                    [self presentModalVC:vc animated:YES];
+                    
+                } else { // 发送邮件
+                    PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailToAddress:listInfo.clickedText sendType:NewEmail];
+                    [self presentModalVC:vc animated:YES];
+                }
+                
+                
+            } else if ([listInfo.clickedText isMobileNumber]) { // 是手机号
+                
+                NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"tel:%@",listInfo.clickedText];
+                if (!self.callWebview) {
+                    _callWebview = [[UIWebView alloc] init];
+                }
+                [_callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+                [self.view addSubview:_callWebview];
+            }
+           
             break;
     }
 }
@@ -900,9 +960,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 // 输入框输出文字
 - (void)inputViewPopSttring:(NSString *)string {
-    // 去掉前后换行符
-    string = [NSString trimNewline:string];
-    
+
+    // 去掉前后空格和换行符
+    string = [NSString trimWhitespaceAndNewline:string];
     if (string && ![string isEmptyString]) {
         
         CDMessageModel *model = [[CDMessageModel alloc] init];
@@ -917,8 +977,19 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.isGroup = YES;
         model.isAdmin = self.groupModel.UserType+GROUP_IDF;;
         model.msgState = CDMessageStateNormal;
-      
         model.messageStatu = -1;
+        
+        // 发送消息
+        if (_msginputView.isReact) {
+            model.repModel = [[PayloadModel alloc] init];
+            model.AssocId = [self.repMessageModel.messageId integerValue];
+            model.repModel.FileName = self.repMessageModel.fileName;
+            model.repModel.Msg = self.repMessageModel.msg;
+            model.repModel.MsgType = self.repMessageModel.msgType;
+            model.repModel.UserName = self.repMessageModel.userName;
+            model.repModel.TimeStamp = self.repMessageModel.TimeStatmp;
+        }
+        
         [self addMessagesToList:model];
         // 自己私钥解密
         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
@@ -945,13 +1016,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             // 清除所有@
             [self.msginputView.atStrings removeAllObjects];
         }
-        // 发送消息
-        [SendRequestUtil sendGroupMessageWithGid:self.groupModel.GId point:points msg:enMsg msgid:model.messageId];
+        NSInteger repMsgId = self.repMessageModel? [self.repMessageModel.messageId integerValue]:0;
+        [SendRequestUtil sendGroupMessageWithGid:self.groupModel.GId point:points msg:enMsg msgid:model.messageId repId:@(repMsgId)];
         
         if ([SystemUtil isSocketConnect]) {
             ChatModel *chatModel = [[ChatModel alloc] init];
             chatModel.fromId = model.FromId;
             chatModel.toId = model.ToId;
+            chatModel.repMsgId = repMsgId;
             chatModel.atIds = points;
             chatModel.toPublicKey = model.publicKey;
             chatModel.msgType = 0;
@@ -961,6 +1033,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             chatModel.bg_tableName = CHAT_CACHE_TABNAME;
             [chatModel bg_save];
         }
+        
+        self.repMessageModel = nil;
     }
 }
 #pragma mark -得到一条文字消息 并添加到listview
@@ -1464,7 +1538,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 if ([model.messageId integerValue] == [sendMsgid integerValue]) {
                     if ([resultArr[0] integerValue] == 0) { // 发送成功
                         model.messageId = msgid;
-                        model.AssocId = [resultArr[4] integerValue];
                         model.msgState = CDMessageStateNormal;
                         model.messageStatu = 1;
                         [weakSelf.listView updateMessage:model];
@@ -1481,6 +1554,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.listView stopRefresh];
     
     NSArray *resultArr = noti.object;
+    if (!resultArr) {
+        return;
+    }
     NSArray *messageArr = resultArr[0];
     self.groupModel.UserType = [resultArr[1] intValue];
     if (!messageArr || messageArr.count == 0) {
@@ -1491,6 +1567,54 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             return;
         }
     }
+    
+    if ([resultArr[2] intValue] == 1 && [resultArr[3] integerValue] > 0) { // 拉取回复消息的消息
+        PayloadModel *payloadM = messageArr[0];
+        @weakify_self
+        [self.listView.msgArr enumerateObjectsUsingBlock:^(CDChatMessage  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            CDMessageModel *messageM = (id)obj;
+            if (messageM.AssocId > 0 && messageM.AssocId == [payloadM.MsgId integerValue]) { // 找到对应回复消息
+                if ([messageM.messageId integerValue] == [resultArr[3] integerValue]) {
+                    // 自己私钥解密
+                    NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.groupModel.UserKey];
+                    if (!datakey || datakey.length == 0) {
+                        *stop = YES;
+                    }
+                    // 截取前16位
+                    datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+                    
+                    if (payloadM.MsgType == 0) { // 文字
+                        
+                        payloadM.Msg = aesDecryptString(payloadM.Msg, datakey);
+                        payloadM.UserName = [payloadM.UserName base64DecodedString]?:@"";
+                        messageM.repModel = payloadM;
+                        [weakSelf.listView updateMessage:messageM];
+                        
+                        if (weakSelf.listView.msgArr.count <= 10) {
+                            [weakSelf.listView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:weakSelf.listView.msgArr.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                        }
+                        
+                    } else if (payloadM.MsgType == CDMessageTypeFile) {
+                        
+                        if (payloadM.FileName && payloadM.FileName.length>0) {
+                            payloadM.FileName = [Base58Util Base58DecodeWithCodeName:payloadM.FileName];
+                        }
+                        payloadM.UserName = [payloadM.UserName base64DecodedString]?:@"";
+                        messageM.repModel = payloadM;
+                        [weakSelf.listView updateMessage:messageM];
+                        
+                        if (weakSelf.listView.msgArr.count <= 10) {
+                            [weakSelf.listView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:weakSelf.listView.msgArr.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                        }
+                    }
+                    
+                    *stop = YES;
+                }
+            }
+        }];
+        return;
+    }
+    
    // NSMutableArray *msgArr = [NSMutableArray array];
     NSMutableArray *messageModelArr = [NSMutableArray array];
     [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -1507,6 +1631,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
         model.ToId = self.groupModel.GId;
         model.AssocId = payloadModel.AssocId;
+        
         model.isGroup = YES;
         model.isAdmin = self.groupModel.UserType+GROUP_IDF;
         if (payloadModel.FileInfo && payloadModel.FileInfo.length>0) {
@@ -1620,19 +1745,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             _pullMoreB(messageModelArr);
         }
     }
-    // 发送已读
-//    if (msgArr.count > 0) {
-//        NSString *allMsgid = [msgArr componentsJoinedByString:@","];
-//        [self sendRedMsgWithMsgId:allMsgid];
-//    }
-    
-    
+
     if (messageArr && messageArr.count > 0) { // 更新最开始的消息id
         _msgStartId = [((PayloadModel *)messageArr.firstObject).MsgId integerValue];
     }
     
 #pragma mark - 查找暂无头像的用户 更新头像
     NSMutableArray *userIdArr = [NSMutableArray array];
+
     [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         PayloadModel *model = obj;
         if (model.From && model.From.length) {
@@ -1640,6 +1760,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             if (!userHeaderImg64Str) { // 如果没有头像
                 [userIdArr addObject:model.From];
             }
+        }
+        
+        // 查找回复消息内容
+        if (model.AssocId > 0) {
+            // 在服务器中查找回复消息
+            NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(model.AssocId+1)];
+            [SendRequestUtil sendPullGroupMessageListWithGId:self.groupModel.GId MsgType:@"0" msgStartId:MsgStartId msgNum:@"1" srcMsgId:model.MsgId];
         }
     }];
     [UpdateGroupMemberAvatarUtil updateAvatar:userIdArr];
@@ -1716,6 +1843,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     model.ctDataconfig = config;
     model.userThumImage =  [SystemUtil genterViewToImage:[self getHeadViewWithName:nickName userKey:signPK]];
     [self.listView addMessagesToBottom:@[model]];
+    
+    // 查找回复消息内容
+    if (model.AssocId > 0) {
+        // 在服务器中查找回复消息
+        NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(model.AssocId+1)];
+        [SendRequestUtil sendPullGroupMessageListWithGId:self.groupModel.GId MsgType:@"0" msgStartId:MsgStartId msgNum:@"1" srcMsgId:model.messageId];
+    }
 }
 - (void) receivedSysMessgePushNoti:(NSNotification *) noti {
     
@@ -2119,7 +2253,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 // aes加密
                 NSString *enMsg = aesEncryptString(weakSelf.selectMessageModel.msg, datakey);
                 // 发送消息
-                [SendRequestUtil sendGroupMessageWithGid:model.userId point:@"" msg:enMsg msgid:[NSString stringWithFormat:@"%ld",(long)tempMsgid]];
+                [SendRequestUtil sendGroupMessageWithGid:model.userId point:@"" msg:enMsg msgid:[NSString stringWithFormat:@"%ld",(long)tempMsgid] repId:@(0)];
                 
                 
             } else {

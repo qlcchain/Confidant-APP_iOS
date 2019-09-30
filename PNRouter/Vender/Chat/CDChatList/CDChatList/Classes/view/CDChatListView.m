@@ -263,6 +263,7 @@
         [self reloadRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationNone];
     } else {
         NSLog(@"-44--");
+        [self reloadData];
     }
     
     

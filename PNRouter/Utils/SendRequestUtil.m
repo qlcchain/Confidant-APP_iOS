@@ -41,7 +41,7 @@
          [AppD.window showHudInView:AppD.window hint:@"Register..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
    
-    NSDictionary *params = @{@"Action":@"Register",@"RouteId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":[RouterConfig getRouterConfig].currentRouterSn?:@"",@"Sign":@"",@"Pubkey":[EntryModel getShareObject].signPublicKey,@"NickName":userName};
+    NSDictionary *params = @{@"Action":@"Register",@"RouteId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":[RouterConfig getRouterConfig].currentRouterSn?:@"",@"Sign":@"",@"Pubkey":[EntryModel getShareObject].signPublicKey,@"NickName":userName,@"Termial":@(2)};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark - 用户登陆
@@ -54,7 +54,7 @@
     if (![[NSString getNotNullValue:usersn] isEmptyString]) {
         loginUsersn = usersn;
     }
-    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":loginUsersn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion],@"NickName":[[UserModel getUserModel].username base64EncodedString]};
+    NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":loginUsersn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion],@"NickName":[[UserModel getUserModel].username base64EncodedString],@"Termial":@(2)};
     [SocketMessageUtil sendVersion4WithParams:params];
     
 }
@@ -383,17 +383,16 @@
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark ---发送群组文字消息
-+ (void) sendGroupMessageWithGid:(NSString *) gid point:(NSString *) point msg:(NSString *) msg msgid:(NSString *) msgid
-{
++ (void) sendGroupMessageWithGid:(NSString *) gid point:(NSString *) point msg:(NSString *) msg msgid:(NSString *) msgid repId:(NSNumber *) repId{
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_GroupSendMsg,@"UserId":userM.userId?:@"",@"Point":point?:@"",@"GId":gid,@"Msg":msg};
+    NSDictionary *params = @{@"Action":Action_GroupSendMsg,@"UserId":userM.userId?:@"",@"Point":point?:@"",@"GId":gid,@"Msg":msg,@"AssocId":repId};
     [SocketMessageUtil sendGroupChatTextWithParams:params withSendMsgId:msgid];
 }
 #pragma mark --拉取群消息列表
-+ (void) sendPullGroupMessageListWithGId:(NSString *) gid MsgType:(NSString *) msgType msgStartId:(NSString *) msgStartId msgNum:(NSString *) msgNum
++ (void) sendPullGroupMessageListWithGId:(NSString *) gid MsgType:(NSString *) msgType msgStartId:(NSString *) msgStartId msgNum:(NSString *) msgNum srcMsgId:(NSString *) srcMsgId
 {
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum,@"MsgStartId":msgStartId};
+    NSDictionary *params = @{@"Action":Action_GroupMsgPull,@"UserId":userM.userId?:@"",@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"GId":gid,@"MsgType":msgType,@"MsgNum":msgNum,@"MsgStartId":msgStartId,@"SrcMsgId":srcMsgId};
     [SocketMessageUtil sendVersion5WithParams:params];
 }
 #pragma mark ---群组发送文件成功

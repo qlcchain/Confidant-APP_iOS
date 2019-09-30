@@ -74,7 +74,7 @@ NSString *CTDataConfigIdentity(CTDataConfig config);
 @property (strong, nonatomic) NSAttributedString *content;
 
 +(CTData *)dataWithStr:(NSString *)msgString
-     containerWithSize:(CGSize)size;
+     containerWithSize:(CGSize)size repMsgString:(NSString *) repMsgString;
 
 +(CTDataConfig)defaultConfig;
 
@@ -88,7 +88,7 @@ NSString *CTDataConfigIdentity(CTDataConfig config);
  */
 +(CTData *)dataWithStr:(NSString *)msgString
      containerWithSize: (CGSize)size
-         configuration:(CTDataConfig)config;
+         configuration:(CTDataConfig)config repMsgString:(NSString *) repMsgString;
 
 
 /**

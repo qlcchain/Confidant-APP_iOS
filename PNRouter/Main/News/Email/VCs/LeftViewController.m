@@ -421,7 +421,7 @@
             smtpSession.connectionType = accountModel.connectionType;
         }
         
-        smtpSession.authType = MCOAuthTypeSASLLogin;
+        //smtpSession.authType = MCOAuthTypeSASLLogin;
         smtpSession.timeout = 60.0;
         EmailManage.sharedEmailManage.smtpSession = smtpSession;
         
