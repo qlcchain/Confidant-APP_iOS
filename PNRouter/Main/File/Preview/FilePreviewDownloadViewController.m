@@ -11,7 +11,7 @@
 #import "FileListModel.h"
 #import "FileMoreAlertView.h"
 #import "DetailInformationViewController.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "SystemUtil.h"
 #import "RequestService.h"
 #import "FileData.h"
@@ -19,7 +19,7 @@
 //#import <JCDownloader/JCDownloadOperation.h>
 #import "RequestService.h"
 #import "NSDate+Category.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "OperationRecordModel.h"
 #import "UserConfig.h"
 #import "FileDownUtil.h"

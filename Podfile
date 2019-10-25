@@ -60,7 +60,7 @@ def demo_pods
     # pod 'CocoaSecurity'
     #google 登陆
     pod'GoogleSignIn'
-
+    pod 'GoogleAPIClientForREST'
 end
 
 

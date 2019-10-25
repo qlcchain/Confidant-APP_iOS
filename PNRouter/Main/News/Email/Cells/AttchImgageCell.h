@@ -20,6 +20,7 @@ typedef void(^ClickCloseBlock)(NSInteger tag);
 @property (weak, nonatomic) IBOutlet UIImageView *backImgView;
 @property (weak, nonatomic) IBOutlet UIButton *closeBtn;
 @property (nonatomic ,copy) ClickCloseBlock closeBlock;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadActivity;
 @end
 
 NS_ASSUME_NONNULL_END

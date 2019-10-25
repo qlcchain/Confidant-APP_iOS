@@ -7,7 +7,7 @@
 //
 
 #import "SocketDataUtil.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "SocketMessageUtil.h"
 #import "SystemUtil.h"
 #import "MD5Util.h"
@@ -15,7 +15,7 @@
 #import "NSDate+Category.h"
 #import "SocketManageUtil.h"
 #import "NSData+CRC16.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "UserConfig.h"
 #import "FileData.h"
 #import "NSDateFormatter+Category.h"

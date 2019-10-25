@@ -221,6 +221,34 @@ static UIColor *InputHexColor(int hexColor){
 }
 - (void) setReactString:(NSString *) reactString
 {
+    
+    // 替换中文表情显示
+    if (reactString.length > 0) {
+        // 处理表情   将所有[呵呵]换成占位字符  并计算图片位置
+        NSRegularExpression *regEmoji = [NSRegularExpression regularExpressionWithPattern:@"\\[[^\\[\\]]+?\\]"
+                                                                                  options:kNilOptions error:NULL];
+        //
+        NSArray<NSTextCheckingResult *> *emoticonResults = [regEmoji matchesInString:reactString
+                                                                             options:kNilOptions
+                                                                               range:NSMakeRange(0, reactString.length)];
+        if (emoticonResults && emoticonResults.count >0) {
+            
+            NSMutableArray *emjStrs = [NSMutableArray arrayWithCapacity:emoticonResults.count];
+            
+            for (NSTextCheckingResult *checkM in emoticonResults) {
+                NSString *emjStr = [reactString substringWithRange:checkM.range]?:@"";
+                [emjStrs addObject:emjStr];
+            }
+            for (NSString *enjCH in emjStrs) {
+                NSString *emjEnStr = CTinputHelper.share.emojEnDic[enjCH]?:@"";
+                if (emjEnStr.length > 0) {
+                    reactString = [reactString stringByReplacingOccurrencesOfString:enjCH withString:emjEnStr];
+                }
+            }
+        }
+        
+    }
+    
     [_reactBut setTitle:reactString forState:UIControlStateNormal];
 }
 - (void)setIsReact:(BOOL)isReact

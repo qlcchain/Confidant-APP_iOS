@@ -15,7 +15,7 @@
 #import "FriendModel.h"
 #import "SocketMessageUtil.h"
 #import <WZLBadge/WZLBadgeImport.h>
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "RouterManagerViewController.h"
 #import "SystemUtil.h"
 #import "OCTSubmanagerUser.h"

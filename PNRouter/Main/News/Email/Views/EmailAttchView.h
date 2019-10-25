@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionV;
 @property (nonatomic ,strong) NSMutableArray *attchArray;
 @property (nonatomic, strong) NSString *deKey;
+@property (nonatomic, strong) NSString *messageId;
 @property (nonatomic ,copy) ClickAttchBlock clickAttBlock;
 - (void) setAttchs:(NSArray *) atts deKey:(NSString *) deKey;
 @end

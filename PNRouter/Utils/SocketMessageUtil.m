@@ -7,7 +7,7 @@
 //
 
 #import "SocketMessageUtil.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "NSDate+Category.h"
 #import "NSDateFormatter+Category.h"
 #import "NSString+UrlEncode.h"
@@ -56,7 +56,7 @@
     }
     /// 注册 recovery 接口不需要验证
     if ([[NSString getNotNullValue:headDic[@"Action"]] isEqualToString:Action_Register] || [[NSString getNotNullValue:headDic[@"Action"]] isEqualToString:Action_Recovery]) {
-        
+        NSLog(@"-----------");
     } else {
         // 时间
         NSString *timestamp = headDic[@"timestamp"];
@@ -229,7 +229,6 @@
     //    paramsJson = [paramsJson urlEncodeUsingEncoding:NSUTF8StringEncoding];
     [muDic setObject:params forKey:@"params"];
    // NSString *text = muDic.mj_JSONString;
-    
     NSString *text = [SocketMessageUtil signActionTimerWithDic:muDic];
     
     if (AppD.manager && AppD.currentRouterNumber >=0) { //tox_stop

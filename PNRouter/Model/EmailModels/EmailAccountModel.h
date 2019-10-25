@@ -29,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) NSString *smtpUserName;
 @property (nonatomic , strong) NSString *smtpUserPass;
 
+@property (nonatomic , strong) NSString *userId;
+@property (nonatomic , strong) NSString *userToken;
+
 + (NSArray *) getLocalAllEmailAccounts;
 + (EmailAccountModel *) getConnectEmailAccount;
 + (void) addEmailAccountWith:(EmailAccountModel *) accountModel;
@@ -37,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) updateEmailAccountConnectStatus:(EmailAccountModel *) accountModel;
 + (void) updateEmailAccountUnReadCount:(EmailAccountModel *) accountModel;
 + (void)deleteEmailWithUser:(NSString *) user;
++ (void)deleteEmail;
 + (void) updateFirstEmailConnect;
 @end
 

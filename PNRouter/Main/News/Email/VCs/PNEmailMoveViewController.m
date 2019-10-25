@@ -17,7 +17,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *mainTableV;
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSString *floderPath;
-@property (nonatomic ,assign) NSInteger uid;
+@property (nonatomic ,strong) NSString *uid;
+@property (nonatomic, assign) BOOL isGoogleAPI;
 @end
 
 @implementation PNEmailMoveViewController
@@ -29,33 +30,56 @@
     NSString *floderName = self.dataArray[selRow];
     @weakify_self
     [self.view showHudInView:self.view hint:@""];
-    [EmailOptionUtil copyEmailToFloderWithFloderPath:_floderPath toFloderName:floderName uid:_uid isDel:YES complete:^(BOOL success) {
-        [weakSelf.view hideHud];
-        if (success) {
-            if (weakSelf.moveBlock) {
-                weakSelf.moveBlock();
+    if (self.isGoogleAPI) {
+        
+        [EmailOptionUtil googleMoveMailToTrashWithMessageid:_uid complete:^(BOOL success) {
+            [weakSelf.view hideHud];
+            if (success) {
+                if (weakSelf.moveBlock) {
+                    weakSelf.moveBlock();
+                }
+                [weakSelf leftNavBarItemPressedWithPop:NO];
+            } else {
+                [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"Failure."];
             }
-            [weakSelf leftNavBarItemPressedWithPop:NO];
-        } else {
-            [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"Failure."];
-        }
-    }];
+        }];
+        
+    } else {
+        [EmailOptionUtil copyEmailToFloderWithFloderPath:_floderPath toFloderName:floderName uid:[_uid integerValue] isDel:YES complete:^(BOOL success) {
+            [weakSelf.view hideHud];
+            if (success) {
+                if (weakSelf.moveBlock) {
+                    weakSelf.moveBlock();
+                }
+                [weakSelf leftNavBarItemPressedWithPop:NO];
+            } else {
+                [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"Failure."];
+            }
+        }];
+        
+    }
+    
 }
 
 #pragma mark ----layz-----------
 - (NSArray *)dataArray
 {
     if (!_dataArray) {
-        _dataArray = @[Sent,Spam,Trash];
+        if (_isGoogleAPI) {
+            _dataArray = @[Trash];
+        } else {
+            _dataArray = @[Sent,Spam,Trash];
+        }
     }
     return _dataArray;
 }
 
-- (instancetype) initWithFloderPath:(NSString *) floderPath uid:(NSInteger) uid
+- (instancetype) initWithFloderPath:(NSString *) floderPath uid:(NSString *) uid isGoole:(BOOL)isGoogle
 {
     if (self = [super init]) {
         self.floderPath = floderPath;
         self.uid = uid;
+        self.isGoogleAPI = isGoogle;
     }
     return self;
 }

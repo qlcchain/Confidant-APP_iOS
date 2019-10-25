@@ -13,6 +13,9 @@
 //#define ServerDomain_Test @"http://47.90.50.172"
 //#define ServerDomain_Product @"http://dapp-t.qlink.mobi"
 
+// google api
+#define Google_Get_Message_List @"https://www.googleapis.com/gmail/v1/users/%@/messages"
+
 #define PUSH_DEBUG_URL @"http://47.96.76.184:9000/v1/pareg/"
 #define PUSH_ONLINE_URL @"https://pprouter.online:9001/v1/pareg/"
 

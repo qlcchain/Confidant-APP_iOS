@@ -24,6 +24,11 @@
 #import "PNEmailEditViewController.h"
 #import "PNEmailConfigViewController.h"
 
+#import <GoogleSignIn/GoogleSignIn.h>
+#import "GoogleUserModel.h"
+#import "NSString+Base64.h"
+#import "GoogleServerManage.h"
+
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *menuBackView;
 @property (weak, nonatomic) IBOutlet UITableView *mainTabView;
@@ -100,6 +105,7 @@
     NSArray *emailAccounts = [EmailAccountModel getLocalAllEmailAccounts];
     [self.emails addObjectsFromArray:emailAccounts];
     
+    
     self.view.backgroundColor = MAIN_GRAY_COLOR;
     _menuBackView.backgroundColor = MAIN_GRAY_COLOR;
     _selectRow = 0;
@@ -119,20 +125,23 @@
     // 删除邮箱通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(delEmailConfigSuccessNoti:) name:EMAIL_DEL_CONFIG_SUCCESS_NOTI object:nil];
     
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailConfigNoti:) name:EMAIL_CONFIG_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(googleSigninFaield) name:GOOGLE_EMAIL_SIGN_FAIELD_NOTI object:nil];
+    
     
 }
 
 #pragma mark --tabledelegate------------
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (AppD.isEmailPage) {
+    if (AppD.isEmailPage || 1) {
         return 3;
     }
     return self.messageDataArray.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (AppD.isEmailPage) {
+    if (AppD.isEmailPage || 1) {
         if (section == 0) {
             return self.emails.count;
         }
@@ -155,7 +164,7 @@
 }
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (AppD.isEmailPage) {
+    if (AppD.isEmailPage || 1) {
         if (indexPath.section == 2) {
             return EmailFloderCellHeight;
         }
@@ -171,7 +180,7 @@
 }
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (AppD.isEmailPage) {
+    if (AppD.isEmailPage || 1) {
         if (indexPath.section == 2) {
             EmailFloderCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailFloderCellResue];
             FloderModel *floderM = self.emailFolders[indexPath.row];
@@ -181,7 +190,13 @@
             if (floderM.path.length == 0) {
                 cell.lblCount.text = @"";
                 if ([floderM.name isEqualToString:Starred]) {
-                    NSInteger startCount = [EmailDataBaseUtil getStartCount];
+                    NSInteger startCount = 0;
+                    if (AppD.isGoogleSign) {
+                        startCount = floderM.count;
+                    } else {
+                        startCount = [EmailDataBaseUtil getStartCount];
+                    }
+                    
                     if (startCount > 0) {
                         cell.lblCount.text = [NSString stringWithFormat:@"%ld",(long)startCount];
                     }
@@ -290,6 +305,15 @@
                 if ([arr[1] intValue] == 255) {
                     PNEmailConfigViewController *vc = [[PNEmailConfigViewController alloc] initWithIsEdit:NO];
                     [weakSelf presentModalVC:vc animated:YES];
+                } else if ([arr[1] intValue] == 4) { // gmail
+                    
+                    [weakSelf.view showHudInView:weakSelf.view hint:@""];
+                    [[GIDSignIn sharedInstance] signOut];
+                    AppD.isGoogleSign = NO;
+                    NSArray *currentScopes = @[@"https://mail.google.com/"];
+                    [GIDSignIn sharedInstance].scopes = currentScopes;
+                    [[GIDSignIn sharedInstance] signIn];
+                    
                 } else {
                     PNEmailLoginViewController *loginVC  = [[PNEmailLoginViewController alloc] initWithEmailType:[arr[1] intValue] optionType:LoginEmail];
                     [weakSelf presentModalVC:loginVC animated:YES];
@@ -310,6 +334,7 @@
             model.count = [cell.lblCount.text intValue];
         }
         [self clickFloderHideMenuViewController:model];
+        
     } else if (indexPath.section == 0) {
         if (AppD.isEmailPage) {
             // 切换邮箱
@@ -335,7 +360,6 @@
         FloderModel *model = obj;
         model.count = 0;
     }];
-    [_mainTabView reloadData];
     [self pullFloder];
 }
 - (void) emailFalgsChangeSuccessNoti:(NSNotification *) noti
@@ -355,7 +379,8 @@
         if ([toid isEqualToString:[UserConfig getShareObject].userId]) {
             FloderModel *floderM = self.emailFolders[1];
             floderM.count = numCount;
-            [_mainTabView reloadData];
+           // [_mainTabView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+          //  [_mainTabView reloadData];
         }
     }
 
@@ -379,6 +404,11 @@
         [self pullFloder];
     }
 }
+- (void) googleSigninFaield
+{
+    [self.view hideHud];
+}
+
     
 
 - (void) pullFloder{
@@ -390,9 +420,13 @@
     [self.emails removeAllObjects];
     [self.emails addObjectsFromArray:emailAccounts];
     
+    
     // 获取当前连接email
     EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
-    if (accountModel) {
+    if (!accountModel) {
+        return;
+    }
+    if (!accountModel.userId || accountModel.userId.length == 0) {
         MCOIMAPSession *imapSession = [[MCOIMAPSession alloc] init];
         imapSession.hostname = accountModel.hostname;
         imapSession.port = accountModel.port;
@@ -425,7 +459,6 @@
         smtpSession.timeout = 60.0;
         EmailManage.sharedEmailManage.smtpSession = smtpSession;
         
-       
     }
     
     // 获取email 文件夹配置
@@ -436,99 +469,156 @@
         model.path = [floderDic objectForKey:model.name]?:@"";
     }];
     [self getFloaderEmailCount];
-    
-//    MCOIMAPFetchFoldersOperation *imapFetchFolderOp = [EmailManage.sharedEmailManage.imapSeeion fetchAllFoldersOperation];
-//    @weakify_self
-//    [imapFetchFolderOp start:^(NSError * error, NSArray * folders) {
-//        [folders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            MCOIMAPFolder *info = obj;
-//            NSLog(@"path = %@,name= %@",info.path,[EmailManage.sharedEmailManage.imapSeeion.defaultNamespace componentsFromPath:info.path][0]);
-//        }];
-//    }];
-    
-    
-    /*
-    [self.view showHudInView:self.view hint:@"Loading"];
-    // 获取当前连接email
-    EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
-    // 获取email 文件夹配置
-    NSDictionary *floderDic = [EmailFloderConfig getFloderConfigWithEmailType:accountModel.Type];
-    
-    if (!EmailManage.sharedEmailManage.imapSeeion) {
-        
-        MCOIMAPSession *imapSession = [[MCOIMAPSession alloc] init];
-        imapSession.hostname = accountModel.hostname;
-        imapSession.port = accountModel.port;
-        imapSession.username = accountModel.User;
-        imapSession.password = accountModel.UserPass;
-        imapSession.connectionType = accountModel.connectionType;
-        EmailManage.sharedEmailManage.imapSeeion = imapSession;
-    }
-    MCOIMAPFetchFoldersOperation *imapFetchFolderOp = [EmailManage.sharedEmailManage.imapSeeion fetchAllFoldersOperation];
-    @weakify_self
-    [imapFetchFolderOp start:^(NSError * error, NSArray * folders) {
-        [weakSelf.view hideHud];
-        if (weakSelf.emailFolders.count > 0) {
-            [weakSelf.emailFolders removeAllObjects];
-        }
-        if (error) {
-            [weakSelf.view showHint:[NSString stringWithFormat:@"%@",error]];
-        } else {
-            
-            [self.emailFolders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                FloderModel *model = obj;
-                NSString *flodePath = [floderDic objectForKey:model.name]?:@"";
-                [folders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    MCOIMAPFolder *floder = obj;
-                    if ([flodePath isEqualToString:floder.path]) {
-                        model.
-                    }
-                }];
-                
-            }];
-            
-            
-            [weakSelf.emailFolders addObjectsFromArray:folders];
-        }
-        [weakSelf.mainTabView reloadData];
-    }];
-    */
+    [self hideSideMenu];
     [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_ACCOUNT_CHANGE_NOTI object:nil];
 }
 
 - (void) getFloaderEmailCount
 {
     
-    
-    
     // check 节点邮箱数量
     EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
-    
+
     // 获取email 文件夹配置
    // NSDictionary *floderDic = [EmailFloderConfig getFloderConfigWithEmailType:accountModel.Type];
     
     _editBtn.hidden = accountModel? NO:YES;
+    
+    
     if (accountModel) {
-        @weakify_self
-        __block NSInteger finshCount = 0;
-        [self.emailFolders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            FloderModel *model = obj;
-            if (model.path && model.path.length > 0) {
-                MCOIMAPFolderInfoOperation * folderInfoOperation = [EmailManage.sharedEmailManage.imapSeeion folderInfoOperation:model.path];
-                model.folderInfoOperation = folderInfoOperation;
-                
-                [model.folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
-                    finshCount++;
-                    model.count = info.messageCount;
-                    if (finshCount == 5 || (accountModel.Type == 6) || (accountModel.Type == 255)) {
-                        [weakSelf.mainTabView reloadData];
-                    }
+        
+        
+        if (!accountModel.userId || accountModel.userId.length == 0) {
+            
+            @weakify_self
+            __block NSInteger finshCount = 0;
+            [self.emailFolders enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                FloderModel *model = obj;
+                if (model.path && model.path.length > 0) {
+                    MCOIMAPFolderInfoOperation * folderInfoOperation = [EmailManage.sharedEmailManage.imapSeeion folderInfoOperation:model.path];
+                    model.folderInfoOperation = folderInfoOperation;
+                    
+                    [model.folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
+                        if (!accountModel.userId || accountModel.userId.length == 0) {
+                            finshCount++;
+                            model.count = info.messageCount;
+                            if (finshCount == 5 || (accountModel.Type == 6) || (accountModel.Type == 255)) {
+                                [weakSelf.mainTabView reloadData];
+                            }
+                        }
+                       
+                    }];
+                }
+            }];
+            
+        } else {
+           
+            if (AppD.isGoogleSign) {
+              
+                NSArray *floaderNames = @[@"INBOX",@"SENT",@"STARRED",@"TRASH",@"SPAM",@"DRAFT"];
+                __block NSInteger requestCount = 0;
+                @weakify_self
+                [floaderNames enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    
+                    GTLRGmailQuery_UsersLabelsGet *list = [GTLRGmailQuery_UsersLabelsGet queryWithUserId:accountModel.userId identifier:obj];
+                    [[GoogleServerManage getGoogleServerManageShare].gmailService executeQuery:list completionHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, id  _Nullable object, NSError * _Nullable callbackError) {
+                        requestCount +=1;
+                        if (!callbackError) {
+                            GTLRObject *gtlM = object;
+                            NSString *floderName = gtlM.JSON[@"name"];
+                            // 如果已经切换邮箱处理
+                            if (!accountModel.userId || accountModel.userId.length == 0) {
+                                *stop = YES;
+                            }
+                            FloderModel *floderM = nil;
+                            if ([floderName isEqualToString:@"INBOX"]) {
+                                floderM = [weakSelf getFloderWithName:Inbox];
+                                floderM.count = [gtlM.JSON[@"messagesTotal"] intValue];
+                            } else if ([floderName isEqualToString:@"SENT"]) {
+                                floderM = [weakSelf getFloderWithName:Sent];
+                                floderM.count = [gtlM.JSON[@"messagesTotal"] intValue];
+                            } else if ([floderName isEqualToString:@"STARRED"]) {
+                                floderM = [weakSelf getFloderWithName:Starred];
+                                floderM.count = [gtlM.JSON[@"messagesTotal"] intValue];
+                            } else if ([floderName isEqualToString:@"TRASH"]) {
+                                floderM = [weakSelf getFloderWithName:Trash];
+                                floderM.count = [gtlM.JSON[@"messagesTotal"] intValue];
+                            } else if ([floderName isEqualToString:@"SPAM"]) {
+                                floderM = [weakSelf getFloderWithName:Spam];
+                                floderM.count = [gtlM.JSON[@"messagesTotal"] intValue];
+                            } else if ([floderName isEqualToString:@"DRAFT"]) {
+                                floderM = [weakSelf getFloderWithName:Drafts];
+                                floderM.count = [gtlM.JSON[@"messagesTotal"] intValue];
+                            }
+                        } else {
+                            
+                        }
+                        if (requestCount == floaderNames.count) {
+                             [weakSelf.mainTabView reloadData];
+                        }
+                       
+                    }];
                 }];
+                
             }
-        }];
+            
+        }
         [SendRequestUtil sendEmailCheckNodeCountShowHud:NO];
     } else {
          [_mainTabView reloadData];
     }
 }
+
+- (FloderModel *) getFloderWithName:(NSString *) name
+{
+    FloderModel *resultModel = nil;
+    for (int i = 0; i<self.emailFolders.count; i++) {
+        FloderModel *model = self.emailFolders[i];
+        if ([model.name isEqualToString:name]) {
+            resultModel = model;
+            break;
+        }
+    }
+    return resultModel;
+}
+
+#pragma mark ----------------google上传服务器成功通知回调-----------------
+- (void) emailConfigNoti:(NSNotification *) noti
+{
+    [self.view hideHud];
+    NSDictionary *dic = noti.object;
+    if ([dic[@"Caller"] integerValue] == 1) {
+        
+        NSInteger retCode = [dic[@"RetCode"] integerValue];
+        if (retCode == 0) { // 成功
+            AppD.isGoogleSign = YES;
+            // 保存到本地
+            NSString *emailName = [dic[@"User"] base64DecodedString];
+            GoogleUserModel *userM = [GoogleUserModel getCurrentUserModel:emailName];
+            EmailAccountModel *accountM = [[EmailAccountModel alloc] init];
+            accountM.User = userM.email;
+            accountM.Type = 4;
+            accountM.userToken = userM.idToken;
+            accountM.userId = userM.userId;
+            accountM.userName = userM.fullName;
+            
+            [EmailAccountModel addEmailAccountWith:accountM];
+            [EmailAccountModel updateEmailAccountConnectStatus:accountM];
+            
+            [self emailLoginSuccessNoti:nil];
+            
+            [AppD.window showHint:@"login successed."];
+        } else {
+            [self.view hideHud];
+            if (retCode == 2) {
+                [self.view showHint:@"The mailbox has been configured"];
+            } else {
+                [self.view showHint:@"Configuration quantity exceeds limit."];
+            }
+        }
+        
+    }
+    
+}
+
 @end

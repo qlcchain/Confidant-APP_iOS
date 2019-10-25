@@ -11,7 +11,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^ClickObjectBlock)(id object);
+
 @interface PNSearchViewController : PNBaseViewController
+@property (nonatomic ,copy) ClickObjectBlock clickObjBlock;
 - (instancetype)initWithData:(NSMutableArray *) dataArr isMessage:(BOOL) isM floder:(FloderModel *) fm;
 @end
 

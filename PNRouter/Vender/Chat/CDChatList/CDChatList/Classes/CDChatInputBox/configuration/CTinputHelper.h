@@ -23,6 +23,9 @@
  */
 // 表情字典
 @property(nonatomic, strong) NSDictionary<NSString*, UIImage *> *emojDic;
+
+@property(nonatomic, strong) NSDictionary<NSString*, NSString *> *emojEnDic;
+
 #pragma mark  资源图片
 @property(nonatomic, strong) NSDictionary<NSString*, UIImage *> *imageDic;
 

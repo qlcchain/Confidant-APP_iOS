@@ -12,6 +12,9 @@
 #import "NSString+Base64.h"
 #import <WZLBadge/WZLBadgeImport.h>
 #import "PNDefaultHeaderView.h"
+#import "CTinputHelper.h"
+
+
 
 @interface NewsCell ()
 
@@ -41,6 +44,7 @@
 
 - (void)setModeWithChatListModel:(ChatListModel *)model {
     _chatListM = model;
+    
     if (model.isHD) {
         CGFloat offset = SCREEN_WIDTH - _backView.width;
         _backView.badgeCenterOffset = CGPointMake(-30+offset, 45);
@@ -58,9 +62,43 @@
         UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:userKey Name:[StringUtil getUserNameFirstWithName:model.friendName]];
         _headImgView.image = defaultImg;
     }
-    if (model.isATYou) {
+    
+    NSString *showContent = model.lastMessage?:@"";
+    if (!model.isAT) {
+        if (model.isDraft) {
+            showContent = model.draftMessage?:@"";
+        }
+    }
+    
+    // 替换中文表情显示
+    if (showContent.length > 0) {
+        // 处理表情   将所有[呵呵]换成占位字符  并计算图片位置
+        NSRegularExpression *regEmoji = [NSRegularExpression regularExpressionWithPattern:@"\\[[^\\[\\]]+?\\]"
+                                                                                  options:kNilOptions error:NULL];
+        //
+        NSArray<NSTextCheckingResult *> *emoticonResults = [regEmoji matchesInString:showContent
+                                                                             options:kNilOptions
+                                                                               range:NSMakeRange(0, showContent.length)];
+        if (emoticonResults && emoticonResults.count >0) {
+            
+            NSMutableArray *emjStrs = [NSMutableArray arrayWithCapacity:emoticonResults.count];
+            
+            for (NSTextCheckingResult *checkM in emoticonResults) {
+                NSString *emjStr = [showContent substringWithRange:checkM.range]?:@"";
+                [emjStrs addObject:emjStr];
+            }
+            for (NSString *enjCH in emjStrs) {
+                NSString *emjEnStr = CTinputHelper.share.emojEnDic[enjCH]?:@"";
+                if (emjEnStr.length > 0) {
+                    showContent = [showContent stringByReplacingOccurrencesOfString:enjCH withString:emjEnStr];
+                }
+            }
+        }
         
-        NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[You were mentioned] %@:%@",model.friendName?:@"",model.lastMessage?:@""]];
+    }
+   
+    if (model.isATYou) {
+        NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[You were mentioned] %@:%@",model.friendName?:@"",showContent]];
         NSRange redRange = NSMakeRange([[noteStr string] rangeOfString:@"[You were mentioned]"].location, [[noteStr string] rangeOfString:@"[You were mentioned]"].length);
         //需要设置的位置
         [noteStr addAttribute:NSForegroundColorAttributeName value:RGB(239, 59, 48) range:redRange];
@@ -69,7 +107,7 @@
     } else {
         
         if (model.isDraft) {
-            NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[Drafts] %@",model.draftMessage?:@""]];
+            NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"[Drafts] %@",showContent]];
             NSRange redRange = NSMakeRange([[noteStr string] rangeOfString:@"[Drafts]"].location, [[noteStr string] rangeOfString:@"[Drafts]"].length);
             //需要设置的位置
             [noteStr addAttribute:NSForegroundColorAttributeName value:RGB(239, 59, 48) range:redRange];
@@ -78,12 +116,12 @@
         } else {
             if (model.isGroup) {
                 if (model.friendName && model.friendName.length>0) {
-                    _lblContent.text = [NSString stringWithFormat:@"%@: %@",model.friendName,model.lastMessage?:@""];
+                    _lblContent.text = [NSString stringWithFormat:@"%@: %@",model.friendName,showContent];
                 } else {
-                    _lblContent.text = model.lastMessage?:@"";
+                    _lblContent.text = showContent;
                 }
             } else {
-                _lblContent.text = model.lastMessage?:@"";
+                _lblContent.text = showContent;
             }
             
         }
@@ -105,6 +143,8 @@
         [strAtt setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:UIColorFromRGB(0x2B2B2B)} range:NSMakeRange(0, friendName.length)];
         _lblName.attributedText = strAtt;
     }
+    
+    
 }
 
 @end

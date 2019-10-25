@@ -10,7 +10,7 @@
 #import "PNNavViewController.h"
 #import "QRViewController.h"
 #import "RouterConfig.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "AESCipher.h"
 #import "OCTManagerConfiguration.h"
 #import "OCTManagerFactory.h"

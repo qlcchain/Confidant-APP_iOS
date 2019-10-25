@@ -21,7 +21,9 @@
 #import "GroupVerifyModel.h"
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
-
+#import "ChatViewController.h"
+#import "GroupChatViewController.h"
+#import "GroupInfoModel.h"
 //typedef enum : NSUInteger {
 //    NewRequestsTypeAddContacts,
 //    NewRequestsTypeGroupChats,
@@ -338,9 +340,25 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (tableView == _addContactsTable) {
-        
+        FriendModel *model = self.addContactsSource[indexPath.row];
+        if (model.dealStaus == 1) {
+             model.publicKey = [LibsodiumUtil getFriendEnPublickkeyWithFriendSignPublicKey:model.signPublicKey];
+            ChatViewController *vc = [[ChatViewController alloc] initWihtFriendMode:model];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     } else if (tableView == _groupChatsTable) {
-        
+//        GroupVerifyModel *model = self.groupChatsSource[indexPath.row];
+//        if (model.status == 1) {
+//            GroupInfoModel *groupM = [[GroupInfoModel alloc] init];
+//
+//            groupM.GId = model.GId;
+//            groupM.GName = model.Gname;
+//            groupM.Remark = @"";
+//            groupM.UserKey = model.UserGroupKey;
+//
+//            GroupChatViewController *vc = [[GroupChatViewController alloc] initWihtGroupMode:groupM];
+//            [self.navigationController pushViewController:vc animated:YES];
+//        }
     }
 }
 

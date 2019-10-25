@@ -61,6 +61,22 @@
     return model;
 }
 
+- (NSString *) getFriendUserKeyWithEmailAddress:(NSString *) email
+{
+    __block NSString *userKey = @"";
+    [[ChatListDataUtil getShareObject].friendArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *friendModel = (FriendModel *)obj;
+        if (friendModel.Mails) {
+            NSArray *mails = [friendModel.Mails componentsSeparatedByString:@","]?:@[];
+            if ([mails containsObject:email]) {
+                userKey = friendModel.signPublicKey;
+                *stop = YES;
+            }
+        }
+    }];
+    return userKey;
+}
+
 - (void) addFriendModel:(ChatListModel *) model
 {
     @synchronized (self) {

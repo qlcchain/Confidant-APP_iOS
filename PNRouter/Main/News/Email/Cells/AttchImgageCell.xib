@@ -22,7 +22,7 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vfZ-Sp-bHw">
                         <rect key="frame" x="0.0" y="0.0" width="618" height="635"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="REI-vp-erJ">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_picture" translatesAutoresizingMaskIntoConstraints="NO" id="REI-vp-erJ">
                                 <rect key="frame" x="0.0" y="0.0" width="618" height="635"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kir-2o-453">
@@ -52,12 +52,16 @@
                                     <action selector="clickCloseBtn:" destination="gTV-IL-0wX" eventType="touchUpInside" id="hO9-F9-vMv"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="nBQ-Ma-G9b">
+                                <rect key="frame" x="299" y="307.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="08l-l2-QXA" firstAttribute="top" secondItem="vfZ-Sp-bHw" secondAttribute="top" constant="-5" id="0SI-Nq-R3Z"/>
                             <constraint firstAttribute="trailing" secondItem="REI-vp-erJ" secondAttribute="trailing" id="Djy-R4-Wjf"/>
                             <constraint firstAttribute="trailing" secondItem="kir-2o-453" secondAttribute="trailing" id="Etz-uj-sBx"/>
+                            <constraint firstItem="nBQ-Ma-G9b" firstAttribute="centerX" secondItem="vfZ-Sp-bHw" secondAttribute="centerX" id="H8d-Uu-xTz"/>
                             <constraint firstAttribute="bottom" secondItem="DG1-3h-29F" secondAttribute="bottom" id="OHE-mg-WK3"/>
                             <constraint firstAttribute="trailing" secondItem="DG1-3h-29F" secondAttribute="trailing" constant="5" id="X5f-x8-aoU"/>
                             <constraint firstItem="DG1-3h-29F" firstAttribute="leading" secondItem="vfZ-Sp-bHw" secondAttribute="leading" constant="5" id="cJV-dz-ldl"/>
@@ -66,6 +70,7 @@
                             <constraint firstItem="REI-vp-erJ" firstAttribute="top" secondItem="vfZ-Sp-bHw" secondAttribute="top" id="htB-jN-c9X"/>
                             <constraint firstAttribute="bottom" secondItem="kir-2o-453" secondAttribute="bottom" id="nga-ws-POi"/>
                             <constraint firstItem="REI-vp-erJ" firstAttribute="leading" secondItem="vfZ-Sp-bHw" secondAttribute="leading" id="pJD-jS-jBd"/>
+                            <constraint firstItem="nBQ-Ma-G9b" firstAttribute="centerY" secondItem="vfZ-Sp-bHw" secondAttribute="centerY" id="seM-XK-ywo"/>
                             <constraint firstAttribute="bottom" secondItem="REI-vp-erJ" secondAttribute="bottom" id="w32-Kv-AwZ"/>
                         </constraints>
                     </view>
@@ -85,11 +90,13 @@
                 <outlet property="closeBtn" destination="08l-l2-QXA" id="l8l-RP-8Or"/>
                 <outlet property="headImgV" destination="REI-vp-erJ" id="8eh-4A-90Z"/>
                 <outlet property="lblCount" destination="DG1-3h-29F" id="AKj-J3-fZ7"/>
+                <outlet property="loadActivity" destination="nBQ-Ma-G9b" id="84T-Di-l5a"/>
             </connections>
             <point key="canvasLocation" x="1.4492753623188408" y="130.91517857142856"/>
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="default_picture" width="250" height="250"/>
         <image name="tabbar_delete" width="16" height="16"/>
     </resources>
 </document>

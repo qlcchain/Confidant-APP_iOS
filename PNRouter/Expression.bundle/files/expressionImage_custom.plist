@@ -30,8 +30,6 @@
 	<string>Expression_4</string>
 	<key>[发怒]</key>
 	<string>Expression_12</string>
-	<key>[发抖]</key>
-	<string>Expression_94</string>
 	<key>[可怜]</key>
 	<string>Expression_55</string>
 	<key>[右哼哼]</key>
@@ -88,8 +86,6 @@
 	<string>Expression_68</string>
 	<key>[快哭了]</key>
 	<string>Expression_51</string>
-	<key>[怄火]</key>
-	<string>Expression_95</string>
 	<key>[悠闲]</key>
 	<string>Expression_30</string>
 	<key>[惊恐]</key>
@@ -102,8 +98,6 @@
 	<string>Expression_29</string>
 	<key>[抓狂]</key>
 	<string>Expression_19</string>
-	<key>[投降]</key>
-	<string>Expression_100</string>
 	<key>[抠鼻]</key>
 	<string>Expression_42</string>
 	<key>[抱拳]</key>
@@ -134,8 +128,6 @@
 	<string>Expression_88</string>
 	<key>[爱心]</key>
 	<string>Expression_67</string>
-	<key>[爱情]</key>
-	<string>Expression_91</string>
 	<key>[猪头]</key>
 	<string>Expression_63</string>
 	<key>[玫瑰]</key>
@@ -150,8 +142,6 @@
 	<string>Expression_23</string>
 	<key>[睡]</key>
 	<string>Expression_9</string>
-	<key>[磕头]</key>
-	<string>Expression_97</string>
 	<key>[礼物]</key>
 	<string>Expression_78</string>
 	<key>[篮球]</key>
@@ -174,12 +164,6 @@
 	<string>Expression_13</string>
 	<key>[足球]</key>
 	<string>Expression_73</string>
-	<key>[跳绳]</key>
-	<string>Expression_99</string>
-	<key>[跳跳]</key>
-	<string>Expression_93</string>
-	<key>[转圈]</key>
-	<string>Expression_96</string>
 	<key>[鄙视]</key>
 	<string>Expression_49</string>
 	<key>[酷]</key>
@@ -192,8 +176,6 @@
 	<string>Expression_52</string>
 	<key>[难过]</key>
 	<string>Expression_16</string>
-	<key>[飞吻]</key>
-	<string>Expression_92</string>
 	<key>[饥饿]</key>
 	<string>Expression_25</string>
 	<key>[饭]</key>
@@ -202,15 +184,19 @@
 	<string>Expression_38</string>
 	<key>[鼓掌]</key>
 	<string>Expression_43</string>
-	<key>[激动]</key>
-	<string>Expression_101</string>
-	<key>[乱舞]</key>
-	<string>Expression_102</string>
-	<key>[献吻]</key>
-	<string>Expression_103</string>
-	<key>[左太极]</key>
-	<string>Expression_104</string>
-	<key>[右太极]</key>
-	<string>Expression_105</string>
+	<key>[捂脸]</key>
+	<string>Expression_91</string>
+	<key>[破涕为笑]</key>
+	<string>Expression_92</string>
+	<key>[奸笑]</key>
+	<string>Expression_93</string>
+	<key>[机智]</key>
+	<string>Expression_94</string>
+	<key>[皱眉]</key>
+	<string>Expression_95</string>
+	<key>[耶]</key>
+	<string>Expression_96</string>
+	<key>[嘿哈]</key>
+	<string>Expression_97</string>
 </dict>
 </plist>

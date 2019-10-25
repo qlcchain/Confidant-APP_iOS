@@ -140,7 +140,7 @@
     }
     return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
 }
-+ (NSString *)getDocEmailAttchFilePathWithUid:(int) uid user:(NSString *)user
++ (NSString *)getDocEmailAttchFilePathWithUid:(NSString *) uid user:(NSString *)user
 {
     NSFileManager *manage = [NSFileManager defaultManager];
     BOOL isDir = NO;
@@ -153,7 +153,7 @@
         }
         [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
     }
-    return [NSHomeDirectory() stringByAppendingPathComponent:[filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d",uid]]];
+    return [NSHomeDirectory() stringByAppendingPathComponent:[filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",uid]]];
 }
 
 + (NSString *) getBaseFilePath:(NSString *) friendid

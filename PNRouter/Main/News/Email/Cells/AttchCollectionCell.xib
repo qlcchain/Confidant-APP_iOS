@@ -51,12 +51,17 @@
                                     <action selector="clickCloseBtn:" destination="gTV-IL-0wX" eventType="touchUpInside" id="w5a-eM-Wee"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="lL3-2K-iaV">
+                                <rect key="frame" x="47" y="39" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="lL3-2K-iaV" firstAttribute="centerX" secondItem="KqG-ZS-954" secondAttribute="centerX" id="2ZI-pY-cHY"/>
                             <constraint firstAttribute="trailing" secondItem="LSU-6n-TMx" secondAttribute="trailing" constant="16" id="4k8-6i-7J8"/>
                             <constraint firstItem="LSU-6n-TMx" firstAttribute="top" secondItem="Keb-wJ-fm4" secondAttribute="bottom" constant="4" id="SDR-Pa-Yj9"/>
                             <constraint firstItem="LSU-6n-TMx" firstAttribute="leading" secondItem="KqG-ZS-954" secondAttribute="leading" constant="16" id="UQ3-4e-IvT"/>
+                            <constraint firstItem="lL3-2K-iaV" firstAttribute="centerY" secondItem="KqG-ZS-954" secondAttribute="centerY" id="Vov-Yc-5lj"/>
                             <constraint firstItem="I1W-Hm-edj" firstAttribute="leading" secondItem="KqG-ZS-954" secondAttribute="leading" constant="-5" id="Yvz-B5-o3A"/>
                             <constraint firstItem="LSU-6n-TMx" firstAttribute="centerX" secondItem="KqG-ZS-954" secondAttribute="centerX" id="fLQ-yf-7yP"/>
                             <constraint firstItem="zW6-sw-h1b" firstAttribute="centerX" secondItem="KqG-ZS-954" secondAttribute="centerX" id="ioD-It-jvD"/>
@@ -83,6 +88,7 @@
                 <outlet property="headImgV" destination="Keb-wJ-fm4" id="LgZ-4P-8sh"/>
                 <outlet property="lblCount" destination="zW6-sw-h1b" id="6hc-dn-UnH"/>
                 <outlet property="lblName" destination="LSU-6n-TMx" id="JSk-Yx-ehu"/>
+                <outlet property="loadActivity" destination="lL3-2K-iaV" id="EYB-dG-XEE"/>
             </connections>
             <point key="canvasLocation" x="95.652173913043484" y="59.598214285714285"/>
         </collectionViewCell>

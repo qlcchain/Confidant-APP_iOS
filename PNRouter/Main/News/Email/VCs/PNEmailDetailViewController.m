@@ -37,12 +37,14 @@
 #import "NSString+Base64.h"
 
 #import "SSZipArchive.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "EmailNodeModel.h"
 #import "RequestService.h"
 #import "UserConfig.h"
 #import "SendRequestUtil.h"
 
+#import <GoogleAPIClientForREST/GTLRBase64.h>
+#import "GoogleServerManage.h"
 
 @interface PNEmailDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIWebViewDelegate,SSZipArchiveDelegate>//WKNavigationDelegate
 {
@@ -93,6 +95,7 @@
 {
     if (self = [super init]) {
         self.emailInfo = listInfo;
+        
 //        __block NSString *dsKey = @"";
 //        if (listInfo.htmlContent && listInfo.htmlContent.length > 0 && (!self.emailInfo.clearEnHtmlContent || self.emailInfo.clearEnHtmlContent.length == 0)) {
 //           NSArray *arrs = [self.emailInfo.htmlContent componentsSeparatedByString:@"confidantkey=\n'"];
@@ -132,7 +135,8 @@
         if ([self.emailInfo.floderName isEqualToString:Node_backed_up]) {
             
             EmailAccountModel *accountM =[EmailAccountModel getConnectEmailAccount];
-             NSString *filePath = [SystemUtil getDocEmailAttchFilePathWithUid:self.emailInfo.uid user:accountM.User];
+            NSString *messageId = [NSString stringWithFormat:@"%d",self.emailInfo.uid];
+            NSString *filePath = [SystemUtil getDocEmailAttchFilePathWithUid:messageId user:accountM.User];
             NSData *data = [NSData dataWithContentsOfFile:filePath];
             if (!data || data.length == 0) {
                 [AppD.window showHudInView:AppD.window hint:Loading_Str];
@@ -164,7 +168,12 @@
             
         } else {
             
-            [SendRequestUtil sendEmailCheckNodeWithUid:[NSString stringWithFormat:@"%@_%d",self.emailInfo.floderName,self.emailInfo.uid]  showHud:NO];
+            NSString *messageId = [NSString stringWithFormat:@"%@_%d",self.emailInfo.floderName,self.emailInfo.uid];
+            if (self.emailInfo.isGoogleAPI) {
+                messageId = [NSString stringWithFormat:@"%@_%@",self.emailInfo.floderName,self.emailInfo.messageid];
+            }
+            
+            [SendRequestUtil sendEmailCheckNodeWithUid:messageId  showHud:NO];
             
             NSMutableString * html = [NSMutableString string];
             
@@ -172,6 +181,9 @@
              @"<body>%@%@%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
              @"</iframe></html>", mainJavascript,mainStyle,@"<div id=\"height\">", self.emailInfo.htmlContent,@"</div>"];
             self.htmlContent = html;
+            
+            
+        
             if (self.emailInfo.parserData) {
                 self.messageParser = [MCOMessageParser messageParserWithData:self.emailInfo.parserData];
             }
@@ -291,6 +303,22 @@
 }
 - (void) forwardJumpSendVCWithAttch:(BOOL) isAttch
 {
+    if (isAttch) {
+        if (self.emailInfo.attchArray) {
+            __block BOOL isDown = NO;
+            [self.emailInfo.attchArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                EmailAttchModel *attchM = obj;
+                if (attchM.downStatus != 2) {
+                    isDown = YES;
+                    *stop = YES;
+                }
+            }];
+            if (isDown) {
+                [self.view showHint:@"Attached download, please try again later"];
+                return;
+            }
+        }
+    }
     PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:self.emailInfo sendType:ForwardEmail isShowAttch:isAttch];
     [self presentModalVC:vc animated:YES];
 }
@@ -350,8 +378,11 @@
             @weakify_self
             [self.enumView setEmumBlock:^(NSInteger row) {
                 if (row == 0) { //设为未读
+                    if (weakSelf.emailInfo.Read == 0) {
+                        return;
+                    }
                     [weakSelf.view showHudInView:weakSelf.view hint:@""];
-                    [EmailOptionUtil setEmailReaded:NO uid:weakSelf.emailInfo.uid folderPath:weakSelf.emailInfo.floderPath complete:^(BOOL success) {
+                    [EmailOptionUtil setEmailReaded:NO uid:weakSelf.emailInfo.uid messageId:weakSelf.emailInfo.messageid folderPath:weakSelf.emailInfo.floderPath complete:^(BOOL success) {
                         [weakSelf.view hideHud];
                         if (!success) {
                             [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"Failure."];
@@ -367,36 +398,40 @@
                     
                     BOOL isStar = [EmailOptionUtil checkEmailStar:weakSelf.emailInfo.Read];
                     
-                    [EmailOptionUtil setEmailStaredUid:weakSelf.emailInfo.uid folderPath:weakSelf.emailInfo.floderPath isAdd:isStar? NO:YES  complete:^(BOOL success) {
+                    [EmailOptionUtil setEmailStaredUid:weakSelf.emailInfo.uid messageId:weakSelf.emailInfo.messageid folderPath:weakSelf.emailInfo.floderPath isAdd:isStar? NO:YES  complete:^(BOOL success) {
                         [weakSelf.view hideHud];
                         if (!success) {
                             [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"Failure."];
                         } else {
+                            
+                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Success."];
                             weakSelf.emailInfo.Read = isStar?weakSelf.emailInfo.Read-4:weakSelf.emailInfo.Read+4;
                             [weakSelf.mainTabV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Success."];
+                            
                             if (![weakSelf.emailInfo.floderName isEqualToString:Starred]) {
                                 [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_FLAGS_CHANGE_NOTI object:@(1)];
                             }
                             
-                            if (isStar) { // 取消star
+                            if (!weakSelf.emailInfo.isGoogleAPI) {
                                 
-                                [EmailDataBaseUtil delEmialStarWithEmialInfo:weakSelf.emailInfo];
-                            } else { // star
-                                // 保存数据
-                                if (weakSelf.emailInfo.toUserArray && weakSelf.emailInfo.toUserArray.count > 0) {
-                                    weakSelf.emailInfo.ToJson = [[EmailUserModel mj_keyValuesArrayWithObjectArray:weakSelf.emailInfo.toUserArray] mj_JSONString];
+                                if (isStar) { // 取消star
+                                    [EmailDataBaseUtil delEmialStarWithEmialInfo:weakSelf.emailInfo];
+                                } else { // star
+                                    // 保存数据
+                                    if (weakSelf.emailInfo.toUserArray && weakSelf.emailInfo.toUserArray.count > 0) {
+                                        weakSelf.emailInfo.ToJson = [[EmailUserModel mj_keyValuesArrayWithObjectArray:weakSelf.emailInfo.toUserArray] mj_JSONString];
+                                    }
+                                    if (weakSelf.emailInfo.ccUserArray && weakSelf.emailInfo.ccUserArray.count > 0) {
+                                        weakSelf.emailInfo.ccJsons = [[EmailUserModel mj_keyValuesArrayWithObjectArray:weakSelf.emailInfo.ccUserArray] mj_JSONString];
+                                    }
+                                    if (weakSelf.emailInfo.bccUserArray && weakSelf.emailInfo.bccUserArray.count > 0) {
+                                        weakSelf.emailInfo.bccJsons = [[EmailUserModel mj_keyValuesArrayWithObjectArray:weakSelf.emailInfo.bccUserArray] mj_JSONString];
+                                    }
+                                    [EmailDataBaseUtil addEmialStarWithEmialInfo:weakSelf.emailInfo];
                                 }
-                                if (weakSelf.emailInfo.ccUserArray && weakSelf.emailInfo.ccUserArray.count > 0) {
-                                    weakSelf.emailInfo.ccJsons = [[EmailUserModel mj_keyValuesArrayWithObjectArray:weakSelf.emailInfo.ccUserArray] mj_JSONString];
-                                }
-                                if (weakSelf.emailInfo.bccUserArray && weakSelf.emailInfo.bccUserArray.count > 0) {
-                                    weakSelf.emailInfo.bccJsons = [[EmailUserModel mj_keyValuesArrayWithObjectArray:weakSelf.emailInfo.bccUserArray] mj_JSONString];
-                                }
-                                [EmailDataBaseUtil addEmialStarWithEmialInfo:weakSelf.emailInfo];
+                                
                             }
                             
-                           
                         }
                     }];
                 } else if (row == 2) { // 保存节点
@@ -406,7 +441,11 @@
                    
                 } else if (row == 3) { // 移动to
                     
-                    PNEmailMoveViewController *vc = [[PNEmailMoveViewController alloc] initWithFloderPath:weakSelf.emailInfo.floderPath uid:weakSelf.emailInfo.uid];
+                    NSString *messageId = [NSString stringWithFormat:@"%d",weakSelf.emailInfo.uid];
+                    if (weakSelf.emailInfo.isGoogleAPI) {
+                        messageId = weakSelf.emailInfo.messageid;
+                    }
+                    PNEmailMoveViewController *vc = [[PNEmailMoveViewController alloc] initWithFloderPath:weakSelf.emailInfo.floderPath uid:messageId isGoole:weakSelf.emailInfo.isGoogleAPI];
                     [vc setMoveBlock:^{
                          [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Success."];
                         weakSelf.isMove = YES;
@@ -417,8 +456,17 @@
                     if ([weakSelf.emailInfo.floderName isEqualToString:Node_backed_up]) {
                         
                     } else {
+                        // 是本地加星
+                        if ([weakSelf.emailInfo.floderName isEqualToString:Starred] && !weakSelf.emailInfo.isGoogleAPI) {
+                            
+                            [EmailDataBaseUtil delEmialStarWithEmialInfo:weakSelf.emailInfo];
+                            
+                            [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_FLAGS_CHANGE_NOTI object:@(3)];
+                            [weakSelf leftNavBarItemPressedWithPop:YES];
+                            return;
+                        }
                         [weakSelf.view showHudInView:weakSelf.view hint:@""];
-                        [EmailOptionUtil deleteEmailUid:weakSelf.emailInfo.uid folderPath:weakSelf.emailInfo.floderPath folderName:weakSelf.emailInfo.floderName complete:^(BOOL success) {
+                        [EmailOptionUtil deleteEmailUid:weakSelf.emailInfo.uid messageId:weakSelf.emailInfo.messageid folderPath:weakSelf.emailInfo.floderPath folderName:weakSelf.emailInfo.floderName complete:^(BOOL success) {
                             [weakSelf.view hideHud];
                             if (success) {
                                 [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_FLAGS_CHANGE_NOTI object:@(3)];
@@ -442,13 +490,23 @@
     } else if (sender.tag == 20) { // 删除邮件
         
         if ([self.emailInfo.floderName isEqualToString:Node_backed_up]) {
-            [SendRequestUtil sendEmailDelNodeWithUid:[NSString stringWithFormat:@"%d",self.emailInfo.uid]  showHud:YES];
+            NSString *messageId = self.emailInfo.uid>0 ? [NSString stringWithFormat:@"%d",self.emailInfo.uid] : self.emailInfo.messageid;
+            [SendRequestUtil sendEmailDelNodeWithUid:messageId showHud:YES];
+            return;
+        }
+        // 是本地加星
+        if ([self.emailInfo.floderName isEqualToString:Starred] && !self.emailInfo.isGoogleAPI) {
+            
+            [EmailDataBaseUtil delEmialStarWithEmialInfo:self.emailInfo];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_FLAGS_CHANGE_NOTI object:@(3)];
+            [self leftNavBarItemPressedWithPop:YES];
             return;
         }
         
         [self.view showHudInView:self.view hint:@""];
         @weakify_self
-        [EmailOptionUtil deleteEmailUid:weakSelf.emailInfo.uid folderPath:weakSelf.emailInfo.floderPath folderName:weakSelf.emailInfo.floderName complete:^(BOOL success) {
+        [EmailOptionUtil deleteEmailUid:weakSelf.emailInfo.uid messageId:weakSelf.emailInfo.messageid folderPath:weakSelf.emailInfo.floderPath folderName:weakSelf.emailInfo.floderName complete:^(BOOL success) {
             [weakSelf.view hideHud];
             if (success) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_FLAGS_CHANGE_NOTI object:@(3)];
@@ -520,6 +578,7 @@
         
         _attchView = [[[NSBundle mainBundle] loadNibNamed:@"EmailAttchView" owner:self options:nil] lastObject];
         _attchView.frame = CGRectZero;
+        _attchView.messageId = self.emailInfo.messageid;
         [_attBackView addSubview:_attchView];
         @weakify_self
         [_attchView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -787,7 +846,6 @@
 - (void) _loadImages
 
 {
-    
     NSString * result = [self.myWebView stringByEvaluatingJavaScriptFromString:@"findCIDImageURL()"];
     
     NSLog(@"-----加载网页中的图片-----");
@@ -815,8 +873,41 @@
             NSString * partUniqueID = specifier;
             part = [self _partForUniqueID:partUniqueID];
         }
-        if (part == nil)
+        if (part == nil && !self.emailInfo.isGoogleAPI)
             continue;
+        
+        if (self.emailInfo.isGoogleAPI) {
+            //获取文件路径
+            __block EmailAttchModel *attM = nil;
+            [self.emailInfo.cidArray enumerateObjectsUsingBlock:^(EmailAttchModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([urlString containsString:obj.cid]) {
+                    attM = obj;
+                    *stop = YES;
+                }
+            }];
+            if (attM) {
+                NSString *tmpDirectory =NSTemporaryDirectory();
+                NSString *filePath=[tmpDirectory stringByAppendingPathComponent:attM.attName];
+                NSFileManager *fileManger=[NSFileManager defaultManager];
+                
+                if (![fileManger fileExistsAtPath:filePath]) {//不存在就去请求加载
+                    
+                    [self downCidFileWithAttMode:attM filePath:filePath urlString:urlString];
+                    
+                } else {
+                    attM.attData = [NSData dataWithContentsOfFile:filePath];
+                    NSURL * cacheURL = [NSURL fileURLWithPath:filePath];
+                    NSDictionary * args =@{@"URLKey": urlString,@"LocalPathKey": cacheURL.absoluteString};
+                    NSString * jsonString = [self _jsonEscapedStringFromDictionary:args];
+                    NSString * replaceScript = [NSString stringWithFormat:@"replaceImageSrc(%@)", jsonString];
+                    [self.myWebView stringByEvaluatingJavaScriptFromString:replaceScript];
+                }
+                
+            }
+           
+            
+            
+        } else {
             NSString * partUniqueID = [part uniqueID];
             MCOAttachment * attachment = (MCOAttachment *) [_messageParser partForUniqueID:partUniqueID];
             NSData * data =[attachment data];
@@ -835,13 +926,46 @@
                     NSLog(@"资源：%@已经下载至%@", attachment.filename,filePath);
                 }
                 NSURL * cacheURL = [NSURL fileURLWithPath:filePath];
-            
+                
                 NSDictionary * args =@{@"URLKey": urlString,@"LocalPathKey": cacheURL.absoluteString};
                 NSString * jsonString = [self _jsonEscapedStringFromDictionary:args];
                 NSString * replaceScript = [NSString stringWithFormat:@"replaceImageSrc(%@)", jsonString];
                 [self.myWebView stringByEvaluatingJavaScriptFromString:replaceScript];
             }
+        }
+        
     }
+}
+
+// 下载 cid 文件
+- (void) downCidFileWithAttMode:(EmailAttchModel *) attM filePath:(NSString *)filePath urlString:(NSString *) urlString
+{
+    // 下载cid 文件
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    GTLRGmailQuery_UsersMessagesAttachmentsGet *list = [GTLRGmailQuery_UsersMessagesAttachmentsGet queryWithUserId:accountM.userId messageId:self.emailInfo.messageid identifier:attM.attId];
+    
+    @weakify_self
+    [[GoogleServerManage getGoogleServerManageShare].gmailService executeQuery:list completionHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, id  _Nullable object, NSError * _Nullable callbackError) {
+        if (!callbackError) {
+            GTLRObject *gltM = object;
+            NSString *dataStr = gltM.JSON[@"data"]?:@"";
+            if (dataStr.length > 0) {
+                NSData *contentData = GTLRDecodeWebSafeBase64(dataStr);
+                if (weakSelf.emailInfo.deKey && weakSelf.emailInfo.deKey.length > 0) {
+                    contentData = aesDecryptData(contentData, [weakSelf.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding]);
+                }
+                attM.attData = contentData;
+                // 保存到本地
+                [contentData writeToFile:filePath atomically:YES];
+                
+                NSURL * cacheURL = [NSURL fileURLWithPath:filePath];
+                NSDictionary * args =@{@"URLKey": urlString,@"LocalPathKey": cacheURL.absoluteString};
+                NSString * jsonString = [weakSelf _jsonEscapedStringFromDictionary:args];
+                NSString * replaceScript = [NSString stringWithFormat:@"replaceImageSrc(%@)", jsonString];
+                [weakSelf.myWebView stringByEvaluatingJavaScriptFromString:replaceScript];
+            }
+        }
+    }];
 }
 
 - (NSString *)_jsonEscapedStringFromDictionary:(NSDictionary *)dictionary
@@ -889,6 +1013,21 @@
         return;
     }
     
+    if (self.emailInfo.attchArray) {
+        __block BOOL isDown = NO;
+        [self.emailInfo.attchArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailAttchModel *attchM = obj;
+            if (attchM.downStatus != 2) {
+                isDown = YES;
+                *stop = YES;
+            }
+        }];
+        if (isDown) {
+            [self.view showHint:@"Attached download, please try again later"];
+            return;
+        }
+    }
+    
     [AppD.window showHudInView:AppD.window hint:Uploading_Str];
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -923,19 +1062,23 @@
         @weakify_self
         [self.emailInfo.attchArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             EmailAttchModel *attchM = obj;
-            NSString *attchName = [Base58Util Base58EncodeWithCodeName:attchM.attName?:@""]?:@"";
-            NSString *attchPath = [[SystemUtil getTempEmailAttchFilePath] stringByAppendingPathComponent:attchName];
-            NSData *attData = nil;
-            if (weakSelf.emailInfo.deKey && weakSelf.emailInfo.deKey.length > 0) {
-                attData = aesDecryptData(attchM.attData, [weakSelf.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding]);
-            } else {
-                attData = attchM.attData;
+            if (attchM.attData) {
+                
+                NSString *attchName = [Base58Util Base58EncodeWithCodeName:attchM.attName?:@""]?:@"";
+                NSString *attchPath = [[SystemUtil getTempEmailAttchFilePath] stringByAppendingPathComponent:attchName];
+                NSData *attData = nil;
+                if (weakSelf.emailInfo.deKey && weakSelf.emailInfo.deKey.length > 0) {
+                    attData = aesDecryptData(attchM.attData, [weakSelf.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding]);
+                } else {
+                    attData = attchM.attData;
+                }
+                attData = aesEncryptData(attData, msgKeyData);
+                isfinsh = [attData writeToFile:attchPath atomically:YES];
+                if (isfinsh) {
+                    [files addObject:attchPath];
+                }
             }
-            attData = aesEncryptData(attData, msgKeyData);
-            isfinsh = [attData writeToFile:attchPath atomically:YES];
-            if (isfinsh) {
-                [files addObject:attchPath];
-            }
+           
         }];
         BOOL success = [SSZipArchive createZipFileAtPath:zipPath withFilesAtPaths:files];
         if (success) {
@@ -1025,7 +1168,12 @@
         // 公钥加密 json
         jsonString = aesEncryptString(jsonString, [self.msgKey substringToIndex:16]);
         
-        [SendRequestUtil sendEmailFileWithFileid:results[1] fileSize:results[2] fileMd5:results[3] mailInfo:jsonString srcKey:self.srcKey uid:[NSString stringWithFormat:@"%@_%d",self.emailInfo.floderName,self.emailInfo.uid]  ShowHud:NO];
+        NSString *messageId = [NSString stringWithFormat:@"%@_%d",self.emailInfo.floderName,self.emailInfo.uid];
+        if (self.emailInfo.isGoogleAPI) {
+            messageId = [NSString stringWithFormat:@"%@_%@",self.emailInfo.floderName,self.emailInfo.messageid];
+        }
+        
+        [SendRequestUtil sendEmailFileWithFileid:results[1] fileSize:results[2] fileMd5:results[3] mailInfo:jsonString srcKey:self.srcKey uid:messageId  ShowHud:NO];
         
     } else { // 失败
         [AppD.window hideHud];
@@ -1064,4 +1212,5 @@
     _isBakNode = YES;
     [_nodeBtn setImage:[UIImage imageNamed:@"statusbar_download_node_backups"] forState:UIControlStateNormal];
 }
+
 @end

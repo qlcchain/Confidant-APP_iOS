@@ -24,6 +24,7 @@
 #import "PNEmailSendViewController.h"
 #import "PNEmailDetailViewController.h"
 #import "FloderModel.h"
+#import "GoogleMessageModel.h"
 
 @interface PNSearchViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
     {
@@ -46,7 +47,7 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 - (IBAction)clickCancelAction:(id)sender {
-    [self leftNavBarItemPressedWithPop:YES];
+    [self leftNavBarItemPressedWithPop:NO];
 }
 - (instancetype)initWithData:(NSMutableArray *) dataArr isMessage:(BOOL) isM floder:(FloderModel *)fm
 {
@@ -94,7 +95,7 @@
     [self performSelector:@selector(becomeSearchTF) withObject:self afterDelay:0.7];
     
     // 邮件flags 改变通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailFlagsChangeNoti:) name:EMIAL_FLAGS_CHANGE_NOTI object:nil];
+   // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailFlagsChangeNoti:) name:EMIAL_FLAGS_CHANGE_NOTI object:nil];
 }
 - (void) becomeSearchTF
 {
@@ -126,44 +127,98 @@
         return cell;
     } else {
         EmailListCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailListCellResue];
-        EmailListInfo *listInfo = self.searchData[indexPath.row];
-        listInfo.currentRow = indexPath.row;
-        cell.lblTtile.text = listInfo.fromName?:@"";
-        cell.lblSubTitle.text = listInfo.Subject?:@"";
-        cell.lblTime.text = [listInfo.revDate minuteDescription];
-        UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:@"" Name:[StringUtil getUserNameFirstWithName:cell.lblTtile.text]];
-        cell.headImgView.image = defaultImg;
-        if (listInfo.Read %2 == 0 && ![self.floderM.name isEqualToString:Drafts] && ![self.floderM.name isEqualToString:Sent]) {
-            cell.readView.hidden = NO;
-            cell.lblContent.textColor = MAIN_PURPLE_COLOR;
+        if ([self.searchData[indexPath.row] isKindOfClass:[EmailListInfo class]]) {
+            EmailListInfo *listInfo = self.searchData[indexPath.row];
+            listInfo.currentRow = indexPath.row;
+            cell.lblTtile.text = listInfo.fromName?:@"";
+            cell.lblSubTitle.text = listInfo.Subject?:@"";
+            cell.lblTime.text = [listInfo.revDate minuteDescription];
+            UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:@"" Name:[StringUtil getUserNameFirstWithName:cell.lblTtile.text]];
+            cell.headImgView.image = defaultImg;
+            if (listInfo.Read %2 == 0 && ![self.floderM.name isEqualToString:Drafts] && ![self.floderM.name isEqualToString:Sent]) {
+                cell.readView.hidden = NO;
+                cell.lblContent.textColor = MAIN_PURPLE_COLOR;
+            } else {
+                cell.readView.hidden = YES;
+                cell.lblContent.textColor = RGB(148, 150, 161);
+            }
+            // 获取read 二进制的第三位，1为加星  0 为没有
+            cell.lableImgView.hidden = ![EmailOptionUtil checkEmailStar:listInfo.Read];
+            cell.starW.constant = cell.lableImgView.hidden? 0:24;
+            
+            if (listInfo.deKey && listInfo.deKey.length > 0 && ![self.floderM.name isEqualToString:Node_backed_up]) {
+                cell.lockImgView.hidden = NO;
+            } else {
+                cell.lockImgView.hidden = YES;
+            }
+            
+            cell.lblContent.text = listInfo.content;
+            if (listInfo.attachCount == 0) {
+                cell.attachImgView.hidden = YES;
+                cell.lblAttCount.text = @"";
+            } else {
+                cell.attachImgView.hidden = NO;
+                cell.lblAttCount.text = [NSString stringWithFormat:@"%d",listInfo.attachCount];
+            }
         } else {
-            cell.readView.hidden = YES;
-            cell.lblContent.textColor = RGB(148, 150, 161);
+            GoogleMessageModel *messageM = self.searchData[indexPath.row];
+            
+            cell.lblContent.text = messageM.snippet?:@"";
+            cell.lblTime.text = [[NSDate dateWithTimeIntervalSince1970:messageM.internalDate/1000] minuteDescription];
+            cell.lblSubTitle.text = messageM.Subject?:@"";
+            
+            
+            cell.lblTtile.text = messageM.FromName?:@"";
+            UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:@"" Name:[StringUtil getUserNameFirstWithName:cell.lblTtile.text]];
+            cell.headImgView.image = defaultImg;
+            
+            if (messageM.attachCount == 0) {
+                cell.attachImgView.hidden = YES;
+                cell.lblAttCount.text = @"";
+            } else {
+                cell.attachImgView.hidden = NO;
+                cell.lblAttCount.text = [NSString stringWithFormat:@"%d",messageM.attachCount];
+            }
+            
+            // 星标
+            
+            cell.lableImgView.hidden = !messageM.isStarred;
+            cell.starW.constant = cell.lableImgView.hidden? 0:24;
+            
+            if (messageM.deKey && messageM.deKey.length > 0 && ![self.floderM.name isEqualToString:Node_backed_up]) {
+                cell.lockImgView.hidden = NO;
+            } else {
+                cell.lockImgView.hidden = YES;
+            }
+            
+            if (!messageM.isRead && ![self.floderM.name isEqualToString:Drafts] && ![self.floderM.name isEqualToString:Sent]) {
+                cell.readView.hidden = NO;
+                cell.lblContent.textColor = MAIN_PURPLE_COLOR;
+            } else {
+                cell.readView.hidden = YES;
+                cell.lblContent.textColor = RGB(148, 150, 161);
+            }
+            
         }
-        // 获取read 二进制的第三位，1为加星  0 为没有
-        cell.lableImgView.hidden = ![EmailOptionUtil checkEmailStar:listInfo.Read];
-        cell.starW.constant = cell.lableImgView.hidden? 0:24;
-        
-        if (listInfo.deKey && listInfo.deKey.length > 0) {
-            cell.lockImgView.hidden = NO;
-        } else {
-            cell.lockImgView.hidden = YES;
-        }
-        
-        cell.lblContent.text = listInfo.content;
-        if (listInfo.attachCount == 0) {
-            cell.attachImgView.hidden = YES;
-            cell.lblAttCount.text = @"";
-        } else {
-            cell.attachImgView.hidden = NO;
-            cell.lblAttCount.text = [NSString stringWithFormat:@"%d",listInfo.attachCount];
-        }
+       
         return cell;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     {
+        [self.view endEditing:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        id object = self.searchData[indexPath.row];
+        @weakify_self
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (weakSelf.clickObjBlock) {
+                weakSelf.clickObjBlock(object);
+            }
+        }];
+       
+        return;
+        
         if (self.isMessage) {
             if (!tableView.isEditing) {
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -219,7 +274,7 @@
                     model.Read = 1;
                     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                     // 设为已读
-                    [EmailOptionUtil setEmailReaded:YES uid:model.uid folderPath:model.floderPath complete:^(BOOL success) {
+                    [EmailOptionUtil setEmailReaded:YES uid:model.uid messageId:model.messageid folderPath:model.floderPath complete:^(BOOL success) {
                         
                     }];
                     [[NSNotificationCenter defaultCenter] postNotificationName:SEARCH_MODEL_STATUS_CHANGE_NOTI object:nil];
@@ -247,13 +302,24 @@
                 [weakSelf.searchData addObject:model];
             }
         } else {
-            EmailListInfo *model = obj;
-            NSString *userName = [model.fromName lowercaseString];
-            NSString *userAddress = [model.Subject lowercaseString];
-            NSString *content = [model.content lowercaseString];
+            NSString *userName = @"";
+            NSString *userAddress = @"";
+            NSString *content = @"";
+            if ([obj isKindOfClass:[EmailListInfo class]]) {
+                EmailListInfo *model = obj;
+                userName = [model.fromName lowercaseString];
+                userAddress = [model.Subject lowercaseString];
+                content = [model.content lowercaseString];
+            } else {
+                GoogleMessageModel *model = obj;
+                userName = [model.FromName lowercaseString];
+                userAddress = [model.Subject lowercaseString];
+                content = [model.snippet lowercaseString];
+            }
+            
             
             if ([userName containsString:[tf.text.trim lowercaseString]] || [userAddress containsString:[tf.text.trim lowercaseString]] || [content containsString:[tf.text.trim lowercaseString]]) {
-                [weakSelf.searchData addObject:model];
+                [weakSelf.searchData addObject:obj];
             }
         }
     }];

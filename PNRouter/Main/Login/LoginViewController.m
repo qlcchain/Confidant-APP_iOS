@@ -10,7 +10,7 @@
 #import "RouterModel.h"
 #import "RouterConfig.h"
 #import "UserModel.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "KeyCUtil.h"
 #import "NSString+SHA256.h"
 #import "ReviceRadio.h"
@@ -96,6 +96,7 @@
  @param sender sender
  */
 - (IBAction)loginAction:(id)sender {
+    
     if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterToxid] isEmptyString]) {
         [self.view showHint:@"Please select the circle."];
         return;
@@ -279,6 +280,7 @@
     } else if (isLogin) {
         isLogin = NO;
         sendCount = 0;
+        
         [self sendLoginRequestWithUserid:self.selectRouther.userid usersn:@""];
     }
 }
@@ -476,11 +478,11 @@
     [self addObserve];
     [self appOptionWithLoginType:_loginType];
     
-    if (AppD.showTouch) {
+    if (AppD.showTouch && !AppD.isLogOut) {
          AppD.showTouch = NO;
         [FingerprintVerificationUtil show];
     } else {
-        if (self.selectRouther.isOpen) {
+        if (self.selectRouther.isOpen && !AppD.isLogOut) {
             [self loginAction:nil];
         }
     }

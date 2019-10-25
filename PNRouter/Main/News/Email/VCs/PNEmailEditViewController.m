@@ -13,6 +13,7 @@
 #import "PNEmailLoginViewController.h"
 #import "PNEmailConfigViewController.h"
 #import "SystemUtil.h"
+#import <GoogleSignIn/GoogleSignIn.h>
 
 
 @interface PNEmailEditViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -127,8 +128,15 @@
     NSDictionary *dic = noti.object;
     NSInteger retCode = [dic[@"RetCode"] integerValue];
     if (retCode == 0) { // 成功
+        
         //删除当前本地邮箱
         EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+        
+        if (accountM.userId && accountM.userId.length > 0) {
+            [[GIDSignIn sharedInstance] signOut];
+            AppD.isGoogleSign = NO;
+        }
+        
         [EmailAccountModel deleteEmailWithUser:accountM.User];
         // 删除本地附件---
         [SystemUtil removeDocmentFilePath:[SystemUtil getDocEmailBasePath]];

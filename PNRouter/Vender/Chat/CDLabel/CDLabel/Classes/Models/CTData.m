@@ -108,7 +108,9 @@ NSString *CTDataConfigIdentity(CTDataConfig config){
     if (config.matchEmoji) {
         // 匹配图片(主要是表情) 并返回图片
         imageDataArr = [CDTextParser matchImage:attString configuration:config];
-        
+        if (imageDataArr.count == 1) {
+            NSLog(@"------");
+        }
     }
     
     //
@@ -139,6 +141,12 @@ NSString *CTDataConfigIdentity(CTDataConfig config){
     // 设置绘制范围
     // -- 计算内容范围
     CGSize caSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0,attString.length), nil, size, nil);
+    if (isIOS13) {
+        if (imageDataArr && imageDataArr.count > 0) {
+            caSize.height = caSize.height+4;
+        }
+    }
+    
     // -- 创建显示范围
     CGPathRef path = CGPathCreateWithRect(CGRectMake(0, 0, caSize.width, caSize.height), NULL);
     // 创建显示frame
@@ -162,6 +170,7 @@ NSString *CTDataConfigIdentity(CTDataConfig config){
     data.height = caSize.height;
     data.ctFrame = frame;
     data.imageArray = imageDataArr;
+    
     data.linkArray = linkDataArr;
     data.content = attString;
     

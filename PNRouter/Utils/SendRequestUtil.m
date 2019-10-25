@@ -16,7 +16,7 @@
 #import "AFHTTPClientV2.h"
 #import "UserConfig.h"
 
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "EmailAccountModel.h"
 
 @implementation SendRequestUtil
@@ -484,13 +484,13 @@
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 
-+ (void) sendEmailConfigWithEmailAddress:(NSString *) address type:(NSNumber *) type configJson:(NSString *) configJosn ShowHud:(BOOL) showHud
++ (void) sendEmailConfigWithEmailAddress:(NSString *) address type:(NSNumber *) type caller:(NSNumber *) caller configJson:(NSString *) configJosn ShowHud:(BOOL) showHud
 {
     if (showHud) {
-        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     address = [address lowercaseString];
-    NSDictionary *params = @{@"Action":Action_SaveEmailConf,@"Type":type,@"Version":@(1),@"User":[address base64EncodedString],@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"Config":configJosn?:@""};
+    NSDictionary *params = @{@"Action":Action_SaveEmailConf,@"Type":type,@"Version":@(1),@"User":[address base64EncodedString],@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"Config":configJosn?:@"",@"Caller":caller};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 + (void) sendEmailUserkeyWithUsers:(NSString *) users unum:(NSNumber *) num ShowHud:(BOOL) showHud
@@ -498,7 +498,7 @@
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_GetUmailKey,@"Unum":num,@"Users":users};
+    NSDictionary *params = @{@"Action":Action_GetUmailKey,@"Unum":num,@"Users":users,@"Type":@(1)};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 + (void) sendEmailCheckNodeCountShowHud:(BOOL) showHud
@@ -517,7 +517,7 @@
         [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
-    NSDictionary *params = @{@"Action":Action_PullMailList,@"User":[accountM.User base64EncodedString],@"Type":@(accountM.Type)};
+    NSDictionary *params = @{@"Action":Action_PullMailList,@"User":[accountM.User base64EncodedString],@"Type":@(accountM.Type),@"StartId":starId,@"Num":num};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 + (void) sendEmailDelNodeWithUid:(NSString *) uid showHud:(BOOL) showHud

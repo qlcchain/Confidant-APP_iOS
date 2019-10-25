@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , assign) int attachCount;
 @property (nonatomic , strong) NSDate *revDate;
 @property (nonatomic , strong) NSString *friendId;
+@property (nonatomic , assign) BOOL isGoogleAPI;
 //1.收件箱
 //2.发件箱
 //3.草稿箱
@@ -47,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *floderPath;
 // 附件
 @property (nonatomic ,strong) NSMutableArray *attchArray;
+@property (nonatomic ,strong) NSMutableArray *cidArray;
 // 收件人
 @property (nonatomic ,strong) NSMutableArray *toUserArray;
 // 抄送人

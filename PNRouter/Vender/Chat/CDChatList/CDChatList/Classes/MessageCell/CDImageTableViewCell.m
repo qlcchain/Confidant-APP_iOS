@@ -19,7 +19,7 @@
 #import "AESCipher.h"
 #import "RSAUtil.h"
 #import "NSData+Base64.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "MD5Util.h"
 #import "UserConfig.h"
 #import "ChatImgCacheUtil.h"

@@ -32,6 +32,36 @@ static NSString *emailKey = @"emailKey_arr";
     if (![EmailAccountModel isEixtEmailAccount:accountModel]) {
         NSString *userid = emailKey;//[UserModel getUserModel].userId;
         [KeyCUtil saveRouterTokeychainWithValue:accountModel.mj_keyValues key:userid];
+    } else {
+        if (accountModel.Type == 4) { // google
+            
+            NSMutableArray *resultArr = [NSMutableArray array];
+            NSString *userid = emailKey;
+            NSArray *emailAccounts = [KeyCUtil getRouterWithKey:userid]?:@[];
+            
+            [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                EmailAccountModel *model = [EmailAccountModel getObjectWithKeyValues:obj];
+                if ([model.User isEqualToString:accountModel.User]) {
+                    model.UserPass = accountModel.UserPass;
+                    model.smtpUserPass = accountModel.smtpUserName;
+                    model.port = accountModel.port;
+                    model.smtpPort = accountModel.smtpPort;
+                    model.connectionType = accountModel.connectionType;
+                    model.smtpConnectionType = accountModel.smtpConnectionType;
+                    model.userName = accountModel.userName;
+                    model.smtpUserName = accountModel.smtpUserName;
+                    model.hostname = accountModel.hostname;
+                    model.smtpHostname = accountModel.smtpHostname;
+                    model.userId = accountModel.userId;
+                    model.userToken = accountModel.userToken;
+                }
+                [resultArr addObject:model.mj_keyValues];
+            }];
+            
+            [KeyCUtil saveRouterTokeychainWithArr:resultArr key:userid];
+            
+        }
+        
     }
 }
 + (BOOL) isEixtEmailAccount:(EmailAccountModel *) accountModel
@@ -143,6 +173,19 @@ static NSString *emailKey = @"emailKey_arr";
     [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         EmailAccountModel *model = [EmailAccountModel getObjectWithKeyValues:obj];
         if (![model.User isEqualToString:user]) {
+            [dicArr addObject:model.mj_keyValues];
+        }
+    }];
+    [KeyCUtil saveRouterTokeychainWithArr:dicArr key:emailKey];
+}
+
++ (void)deleteEmail
+{
+    NSArray *emailAccounts = [KeyCUtil getRouterWithKey:emailKey]?:@[];
+    NSMutableArray *dicArr = [NSMutableArray array];
+    [emailAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        EmailAccountModel *model = [EmailAccountModel getObjectWithKeyValues:obj];
+        if (model.UserPass && model.UserPass.length >0) {
             [dicArr addObject:model.mj_keyValues];
         }
     }];

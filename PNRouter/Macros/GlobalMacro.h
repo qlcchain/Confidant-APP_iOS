@@ -128,7 +128,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define AppKeyW ([UIApplication sharedApplication].keyWindow)
 #define isIOS7 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
 #define isIOS11 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 11)
-
+#define isIOS13 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 13)
 #define Nav_Height 64
 
 #define ArchiveTestIPA 0

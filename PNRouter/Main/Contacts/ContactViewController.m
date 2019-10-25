@@ -311,6 +311,9 @@
 //                model.username = model.remarks;
 //            }
             model.publicKey = [LibsodiumUtil getFriendEnPublickkeyWithFriendSignPublicKey:model.signPublicKey];
+            if ([model.username isEqualToString:@"R0hP"]) {
+                NSLog(@"----------------%@",[model.username base64DecodedString]);
+            }
           //  model.remarks = nickName;
         }];
         NSMutableArray *sortArr = [NSMutableArray arrayWithArray:friendArr];

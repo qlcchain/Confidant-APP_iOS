@@ -12,7 +12,7 @@
 #import "SendRequestUtil.h"
 #import "UserConfig.h"
 #import "NSString+File.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "FriendModel.h"
 #import "SystemUtil.h"
 #import "SocketDataUtil.h"

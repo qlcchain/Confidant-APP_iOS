@@ -41,8 +41,7 @@
     // 获取read 二进制的第三位，1为加星  0 为没有
    
     _lableImgView.hidden = ![EmailOptionUtil checkEmailStar:model.Read];
-    
-    
+
    EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
     if (![model.From isEqualToString:accountModel.User]) {
         _lblToName.text = @"To me";

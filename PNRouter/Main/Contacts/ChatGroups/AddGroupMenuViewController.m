@@ -259,8 +259,12 @@
     [super viewDidLoad];
     [self addNotifcation];
     [self showAddNewMember];
+    
     if (!EmailManage.sharedEmailManage.imapSeeion) {
-        _emailHeight.constant = 0;
+        if (!AppD.isGoogleSign) {
+            _emailHeight.constant = 0;
+        }
+        
     }
 }
 

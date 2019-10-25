@@ -14,6 +14,13 @@
 #import "HeadReusableView.h"
 #import "AESCipher.h"
 
+#import <GoogleSignIn/GoogleSignIn.h>
+#import "NSString+Base64.h"
+#import "GoogleServerManage.h"
+#import "EmailAccountModel.h"
+#import <GoogleAPIClientForREST/GTLRBase64.h>
+#import "NSData+UTF8.h"
+
 @interface EmailAttchView ()<UICollectionViewDelegate,UICollectionViewDataSource>
 
 @end
@@ -67,21 +74,73 @@
     
     
     EmailAttchModel*attachment = self.attchArray[indexPath.item];
+    
     NSString *fileHz = [[attachment.attName componentsSeparatedByString:@"."] lastObject];
     if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"]) {
         
         AttchImgageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:AttchImgageCellResue forIndexPath:indexPath];
-        cell.lblCount.text = [SystemUtil transformedValue:attachment.attData.length];
-        if (self.deKey && self.deKey.length > 0) {
-            NSData *imgData = aesDecryptData(attachment.attData, [self.deKey dataUsingEncoding:NSUTF8StringEncoding]);
-            cell.headImgV.image = [UIImage imageWithData:imgData];
+        
+       
+        if (attachment.attSize > 0) {
+            cell.lblCount.text = [SystemUtil transformedValue:attachment.attSize];
         } else {
-            cell.headImgV.image = [UIImage imageWithData:attachment.attData];
+            cell.lblCount.text = [SystemUtil transformedValue:attachment.attData.length];
         }
+        
+        if (attachment.attData) {
+            attachment.downStatus = 2;
+            [cell.loadActivity stopAnimating];
+            cell.loadActivity.hidden = YES;
+            if (self.deKey && self.deKey.length > 0) {
+                NSData *imgData = aesDecryptData(attachment.attData, [self.deKey dataUsingEncoding:NSUTF8StringEncoding]);
+                cell.headImgV.image = [UIImage imageWithData:imgData];
+                
+                
+            } else {
+                cell.headImgV.image = [UIImage imageWithData:attachment.attData];
+            }
+            
+        } else {
+            if (attachment.attSize > 0) {
+                
+                if (attachment.downStatus == 2) { // 下载完成
+                    [cell.loadActivity stopAnimating];
+                    cell.loadActivity.hidden = YES;
+                } else if (attachment.downStatus == 1){ // 下载中
+                    [cell.loadActivity startAnimating];
+                    cell.loadActivity.hidden = NO;
+                } else {
+                    [cell.loadActivity startAnimating];
+                    cell.loadActivity.hidden = NO;
+                    
+                    attachment.downStatus = 1;
+                    
+                    [self getAttDataWithAttM:attachment];
+                }
+            }
+        }
+        
         
         return cell;
     } else {
+        
         AttchCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:AttchCollectionCellResue forIndexPath:indexPath];
+        if (attachment.downStatus == 2) { // 下载完成
+            [cell.loadActivity stopAnimating];
+            cell.loadActivity.hidden = YES;
+        } else if (attachment.downStatus == 1){ // 下载中
+            [cell.loadActivity startAnimating];
+            cell.loadActivity.hidden = NO;
+        } else {
+            [cell.loadActivity startAnimating];
+            cell.loadActivity.hidden = NO;
+            
+            attachment.downStatus = 1;
+           
+            [self getAttDataWithAttM:attachment];
+        }
+        
+        
         cell.lblName.text = attachment.attName;
         NSArray *names = [attachment.attName componentsSeparatedByString:@"."];
         if (names && names.count>1) {
@@ -113,7 +172,13 @@
         } else {
             cell.headImgV.image = [UIImage imageNamed:@"other"];
         }
-        cell.lblCount.text = [SystemUtil transformedValue:attachment.attData.length];
+        
+        if (attachment.attSize > 0) {
+            cell.lblCount.text = [SystemUtil transformedValue:attachment.attSize];
+        } else {
+            cell.lblCount.text = [SystemUtil transformedValue:attachment.attData.length];
+        }
+        
         return cell;
     }
     
@@ -125,11 +190,18 @@
  */
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"点击了第%ld分item",(long)indexPath.item);
-    if (_clickAttBlock) {
-        _clickAttBlock(indexPath.item);
+    EmailAttchModel*attachment = self.attchArray[indexPath.item];
+    if (attachment.attData) {
+        if (_clickAttBlock) {
+            _clickAttBlock(indexPath.item);
+        }
+    } else {
+        if (attachment.downStatus == 2) {
+            attachment.downStatus = 1;
+            [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+            [self getAttDataWithAttM:attachment];
+        }
     }
-    
-    
 }
 /**
  cell的大小
@@ -170,6 +242,48 @@
  */
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     return CGSizeMake(SCREEN_WIDTH-32,HeadReusableViewHeight);
+}
+
+
+// googleapi get 附件
+- (void) getAttDataWithAttM:(EmailAttchModel *) attM
+{
+    
+    
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    
+    //获取文件路径
+    NSString *tmpDirectory =NSTemporaryDirectory();
+    NSString *filePath=[tmpDirectory stringByAppendingPathComponent:attM.attName];
+    NSFileManager *fileManger=[NSFileManager defaultManager];
+    
+    if (![fileManger fileExistsAtPath:filePath]) {//不存在就去请求加载
+        
+        GTLRGmailQuery_UsersMessagesAttachmentsGet *list = [GTLRGmailQuery_UsersMessagesAttachmentsGet queryWithUserId:accountM.userId messageId:self.messageId identifier:attM.attId];
+        @weakify_self
+        [[GoogleServerManage getGoogleServerManageShare].gmailService executeQuery:list completionHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, id  _Nullable object, NSError * _Nullable callbackError) {
+            attM.downStatus = 2;
+            if (!callbackError) {
+                GTLRObject *gltM = object;
+                NSString *dataStr = gltM.JSON[@"data"]?:@"";
+                if (dataStr.length > 0) {
+                    NSData *contentData = GTLRDecodeWebSafeBase64(dataStr);
+                    attM.attData = contentData;
+                    [weakSelf.collectionV reloadData];
+                    // 保存到本地
+                    [attM.attData writeToFile:filePath atomically:YES];
+                }
+            } else {
+                [weakSelf.collectionV reloadData];
+            }
+        }];
+        
+    } else {
+        attM.downStatus = 2;
+        attM.attData = [NSData dataWithContentsOfFile:filePath];
+       [self.collectionV reloadData];
+    }
+
 }
 /*
 // Only override drawRect: if you perform custom drawing.

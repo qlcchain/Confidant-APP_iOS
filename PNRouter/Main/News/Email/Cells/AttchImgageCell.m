@@ -18,6 +18,7 @@
     _backV.layer.cornerRadius = 8.0f;
     _backV.layer.masksToBounds = YES;
     _closeBtn.hidden = YES;
+    _loadActivity.hidden = YES;
 }
 - (IBAction)clickCloseBtn:(id)sender {
     if (_closeBlock) {

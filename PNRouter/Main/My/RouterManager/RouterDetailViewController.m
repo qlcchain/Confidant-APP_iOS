@@ -11,7 +11,7 @@
 #import "RouterCodeViewController.h"
 #import "InvitationQRCodeViewController.h"
 #import "RouterModel.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "SystemUtil.h"
 #import "ChatListDataUtil.h"
 #import "UserManagerViewController.h"

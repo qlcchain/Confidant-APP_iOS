@@ -16,7 +16,7 @@
 #import "FriendModel.h"
 #import "CDMessageModel.h"
 #import "NSDate+Category.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 //#import "MessageListUtil.h"
 #import "PayloadModel.h"
 #import "SystemUtil.h"
@@ -202,9 +202,23 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 chatModel.isAT = NO;
                 chatModel.atNames = @"";
                 chatModel.atIds = @"";
-                
-                [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
             }
+            // 更新最后一条消息
+            CDMessageModel *messageM = (CDMessageModel *)[self.listView.msgArr lastObject];
+            if (messageM.msgType == 1) {
+                chatModel.lastMessage = @"[photo]";
+            } else if (messageM.msgType == 2) {
+                chatModel.lastMessage = @"[voice]";
+            } else if (messageM.msgType == 5){
+                chatModel.lastMessage = @"[file]";
+            } else if (messageM.msgType == 4) {
+                chatModel.lastMessage = @"[video]";
+            } else {
+                chatModel.lastMessage = messageM.msg;
+            }
+            [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
+         
+            
         }
     }
     [SocketCountUtil getShareObject].groupChatId = @"";

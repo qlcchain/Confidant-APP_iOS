@@ -300,7 +300,7 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
                 [AppD.window showHint:@"Configure successed."];
                 
             } else {
-                [SendRequestUtil sendEmailConfigWithEmailAddress:name type:@(weakSelf.emailType) configJson:@"" ShowHud:NO];
+                [SendRequestUtil sendEmailConfigWithEmailAddress:name type:@(weakSelf.emailType) caller:@(0) configJson:@"" ShowHud:NO];
             }
         } else {
             

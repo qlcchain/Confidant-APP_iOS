@@ -25,7 +25,7 @@
 #import <MJRefresh/MJRefresh.h>
 #import <MJRefresh/MJRefreshStateHeader.h>
 #import <MJRefresh/MJRefreshHeader.h>
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "FilePreviewDownloadViewController.h"
 #import "FileDownUtil.h"
 #import "ArrangeAlertView.h"

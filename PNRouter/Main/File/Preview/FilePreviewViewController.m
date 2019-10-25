@@ -14,7 +14,7 @@
 #import "NSString+Base64.h"
 #import "AESCipher.h"
 #import "SystemUtil.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 
 @interface FilePreviewViewController () <QLPreviewControllerDataSource, QLPreviewControllerDelegate>
 

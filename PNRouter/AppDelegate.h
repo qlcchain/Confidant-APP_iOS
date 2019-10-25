@@ -30,7 +30,8 @@
 @property (nonatomic ,assign) BOOL isLoginMac;
 @property (nonatomic ,assign) BOOL isSwitch;
 @property (nonatomic ,assign) BOOL showTouch;
-
+// google signin
+@property (nonatomic ,assign) BOOL isGoogleSign;
 // 外部文件打开的url
 @property (nonatomic ,strong) NSURL *fileURL;
 //@property (nonatomic ,strong) NSData *devToken;

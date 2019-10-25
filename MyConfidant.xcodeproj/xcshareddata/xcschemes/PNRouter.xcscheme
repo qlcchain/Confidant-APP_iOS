@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "73625737213E8B3200D7FD6B"
-               BuildableName = "PNRouter.app"
-               BlueprintName = "PNRouter"
-               ReferencedContainer = "container:PNRouter.xcodeproj">
+               BuildableName = "MyConfidant.app"
+               BlueprintName = "MyConfidant"
+               ReferencedContainer = "container:MyConfidant.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "73625737213E8B3200D7FD6B"
-            BuildableName = "PNRouter.app"
-            BlueprintName = "PNRouter"
-            ReferencedContainer = "container:PNRouter.xcodeproj">
+            BuildableName = "MyConfidant.app"
+            BlueprintName = "MyConfidant"
+            ReferencedContainer = "container:MyConfidant.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "73625737213E8B3200D7FD6B"
-            BuildableName = "PNRouter.app"
-            BlueprintName = "PNRouter"
-            ReferencedContainer = "container:PNRouter.xcodeproj">
+            BuildableName = "MyConfidant.app"
+            BlueprintName = "MyConfidant"
+            ReferencedContainer = "container:MyConfidant.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -87,9 +87,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "73625737213E8B3200D7FD6B"
-            BuildableName = "PNRouter.app"
-            BlueprintName = "PNRouter"
-            ReferencedContainer = "container:PNRouter.xcodeproj">
+            BuildableName = "MyConfidant.app"
+            BlueprintName = "MyConfidant"
+            ReferencedContainer = "container:MyConfidant.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

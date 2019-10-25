@@ -37,7 +37,7 @@
 #import "UserConfig.h"
 //#import <IQKeyboardManager/IQKeyboardManager.h>
 
-
+#import "ChatListDataUtil.h"
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
 #import "AESCipher.h"
@@ -50,6 +50,11 @@
 #import "PNEmailContactView.h"
 
 #import <IQKeyboardManager/IQKeyboardManager.h>
+
+#import <GoogleSignIn/GoogleSignIn.h>
+#import "GoogleServerManage.h"
+#import "GoogleUserModel.h"
+#import <GoogleAPIClientForREST/GTLRBase64.h>
 
 @interface PNEmailSendViewController ()<UITextViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate,YBImageBrowserDelegate,UIWebViewDelegate>
@@ -267,10 +272,32 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 - (void) saveDraft {
     
+    [self.view endEditing:YES];
+   
+    if (self.emailInfo.attchArray) {
+        __block BOOL isDown = NO;
+        [self.emailInfo.attchArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailAttchModel *attchM = obj;
+            if (attchM.downStatus != 2) {
+                isDown = YES;
+                *stop = YES;
+            }
+        }];
+        if (isDown) {
+            [self.view showHint:@"Attached download, please try again later"];
+            return;
+        }
+    }
+    
+    
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    if (accountM.userId && accountM.userId.length > 0) {
+        [self createGoogleDraft];
+        return;
+    }
+    
     MCOMessageBuilder *messageBuilder = [self getSendMessageBuilder];
     
-   
-   
     @weakify_self
     [SIXHTMLParser htmlStringWithAttributedText:_contentTF.attributedText
                                     orignalHtml:@""
@@ -288,6 +315,525 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                [weakSelf leftNavBarItemPressedWithPop:NO];
                            }];
 }
+
+#pragma mark ----------google 创建草稿箱
+- (void) createGoogleDraft
+{
+
+    /*
+    gmailMessageM.internalDate = @([NSDate getMillisecondTimestampFromDate:[NSDate date]]);
+    gmailMessageM.labelIds = @[@"DRAFT"];
+    gmailMessageM.snippet = _contentTF.text.length>50 ? [_contentTF.text substringToIndex:49]:_contentTF.text;
+    
+    // 只有纯文字
+    GTLRGmail_MessagePart *messagePartM = [[GTLRGmail_MessagePart alloc] init];
+    gmailMessageM.payload = messagePartM;
+    messagePartM.mimeType = @"text/plain";
+    
+    GTLRGmail_MessagePartBody *messageBody = [[GTLRGmail_MessagePartBody alloc] init];
+    messagePartM.body = messageBody;
+    if (_contentTF.text.trim.length > 0 && self.attchArray.count == 1) {
+        NSData *contentData = [_contentTF.text dataUsingEncoding:NSUTF8StringEncoding];
+        messageBody.size = @(contentData.length);
+        messageBody.data = GTLREncodeWebSafeBase64(contentData);
+    }
+    
+    
+    // head 包含 From To Subject Cc
+    NSMutableArray *headMuts = [NSMutableArray array];
+    GTLRGmail_MessagePartHeader *subjectHeadrM = [[GTLRGmail_MessagePartHeader alloc] init];
+    subjectHeadrM.name = @"Subject";
+    subjectHeadrM.value = _subTF.text;
+    [headMuts addObject:subjectHeadrM];
+    
+    // 发件人
+   GoogleUserModel *googelUserM = [GoogleUserModel getCurrentUserModel:accountM.User];
+    if (googelUserM) {
+         GTLRGmail_MessagePartHeader *fromtHeadrM = [[GTLRGmail_MessagePartHeader alloc] init];
+        fromtHeadrM.name = @"From";
+        if (googelUserM.fullName && googelUserM.fullName.length > 0) {
+            fromtHeadrM.value = [NSString stringWithFormat:@"%@ <%@>",googelUserM.fullName,googelUserM.email];
+        } else {
+            fromtHeadrM.value = googelUserM.email;
+        }
+        [headMuts addObject:fromtHeadrM];
+    }
+    
+    // 收件人（多人）
+    if (self.toContacts.count > 0) {
+        GTLRGmail_MessagePartHeader *TotHeadrM = [[GTLRGmail_MessagePartHeader alloc] init];
+        TotHeadrM.name = @"To";
+        
+        __block NSString *tos = @"";
+        @weakify_self
+        [self.toContacts enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+           // tos = [tos stringByAppendingString:obj.userName];
+           // tos = [tos stringByAppendingString:@" "];
+            tos = [tos stringByAppendingString:obj.userAddress];
+            if (idx != weakSelf.toContacts.count-1) {
+                tos = [tos stringByAppendingString:@","];
+            }
+        }];
+        TotHeadrM.value = tos;
+        [headMuts addObject:TotHeadrM];
+    }
+    
+    // 抄送人（多人）
+    if (self.ccContacts.count > 0) {
+        GTLRGmail_MessagePartHeader *cctHeadrM = [[GTLRGmail_MessagePartHeader alloc] init];
+        cctHeadrM.name = @"Cc";
+        
+        __block NSString *ccs = @"";
+        @weakify_self
+        [self.ccContacts enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+           // ccs = [ccs stringByAppendingString:obj.userName];
+           // ccs = [ccs stringByAppendingString:@" "];
+            ccs = [ccs stringByAppendingString:obj.userAddress];
+            if (idx != weakSelf.ccContacts.count-1) {
+                ccs = [ccs stringByAppendingString:@","];
+            }
+        }];
+        cctHeadrM.value = ccs;
+        [headMuts addObject:cctHeadrM];
+    }
+    messagePartM.headers = headMuts;
+     
+     */
+    
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    
+    @weakify_self
+     [self.view showHudInView:self.view hint:@""];
+    [SIXHTMLParser htmlStringWithAttributedText:_contentTF.attributedText
+                                    orignalHtml:@""
+                           andCompletionHandler:^(NSString *html) {
+                               NSString *writeHtml = html?:@"";
+                               if (weakSelf.emailInfo.htmlContent && weakSelf.emailInfo.htmlContent.length > 0) {
+                                   writeHtml = [writeHtml stringByAppendingString:weakSelf.emailInfo.htmlContent];
+                               }
+                              
+                               GTLRGmail_Draft *draftM = [[GTLRGmail_Draft alloc] init];
+                               
+                               GTLRGmail_Message *gmailMessageM = [[GTLRGmail_Message alloc] init];
+                               
+                               draftM.message = gmailMessageM;
+                               draftM.message.raw = GTLREncodeWebSafeBase64([weakSelf getFormattedRawMessageWtihEmail:accountM.User body:writeHtml]);
+
+                               GTLRGmailQuery_UsersDraftsCreate *list = [GTLRGmailQuery_UsersDraftsCreate queryWithObject:draftM userId:accountM.userId uploadParameters:nil];
+                              
+                               @weakify_self
+                               [[GoogleServerManage getGoogleServerManageShare].gmailService executeQuery:list completionHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, id  _Nullable object, NSError * _Nullable callbackError) {
+                                   [weakSelf.view hideHud];
+                                   [weakSelf leftNavBarItemPressedWithPop:NO];
+                               }];
+                            
+                               
+                           }];
+    
+    
+   
+    
+//    NSString *messageString =                              @"From: \"From Email USer Name\" <fromEmail>\r\n";
+//    messageString = [messageString stringByAppendingString:@"To: \"To kuangzihui\" <kuangzihui@163.com>\r\n"];
+//    messageString = [messageString stringByAppendingString:@"Subject: 我是中国人\r\n"];
+//    messageString = [messageString stringByAppendingString:@"Content-type: text/html;charset=iso-8859-1\r\n\r\n"];
+//    messageString = [messageString stringByAppendingString:@"你好，中国 , \n can you please call me when have free time. \nMark."];
+//    
+//    NSData *data = [messageString dataUsingEncoding:NSUTF8StringEncoding];
+//    NSString *base64Encoded = GTLREncodeWebSafeBase64(data);
+//    
+//    
+//    GTLRGmail_Message *message = [[GTLRGmail_Message alloc] init];
+//    
+//    message.raw = base64Encoded;
+//    
+//    GTLRGmailQuery_UsersMessagesSend *query = [GTLRGmailQuery_UsersMessagesSend queryWithObject:message userId:accountM.userId uploadParameters:nil];
+//    
+//    [[GoogleServerManage getGoogleServerManageShare].gmailService executeQuery:query completionHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, id  _Nullable object, NSError * _Nullable callbackError) {
+//        NSLog(@"%@",callbackError);
+//    }];
+    
+}
+
+- (NSData *) getGoogleSendDataWithUserKeys:(NSArray *) userKeys withEmail:(NSString *) email msgKey:(NSString *) msgKey body:(NSString *) htmlBody
+{
+    
+    // Date string
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    dateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
+    NSString *strDate = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *finalDate = [NSString stringWithFormat:@"Date: %@\r\n", strDate];
+    
+    // From
+    GoogleUserModel *googelUserM = [GoogleUserModel getCurrentUserModel:email];
+    NSString *from = [NSString stringWithFormat:@"From: <%@>\r\n",email];
+    if (googelUserM.fullName && googelUserM.fullName.length > 0) {
+        NSData *utfData = [googelUserM.fullName dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *gbStr = GTLREncodeBase64(utfData);
+        from = [NSString stringWithFormat:@"From: \"=?UTF-8?B?%@?=\" <%@>\r\n",gbStr,googelUserM.email];
+    }
+    
+    // To string
+    NSString *to = @"";
+    // 收件人（多人）
+    if (self.toContacts.count > 0) {
+        __block NSString *tos = @"";
+        @weakify_self
+        [self.toContacts enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            NSData *utfData = [obj.userName dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *gbStr = GTLREncodeBase64(utfData);
+            tos = [tos stringByAppendingString:[NSString stringWithFormat:@"=?UTF-8?B?%@?= ",gbStr]];
+            tos = [tos stringByAppendingString:[NSString stringWithFormat:@"<%@>",obj.userAddress]];
+            if (idx != weakSelf.toContacts.count-1) {
+                tos = [tos stringByAppendingString:@","];
+            }
+        }];
+        if (tos.length > 0) {
+            to = [NSString stringWithFormat:@"To: %@\r\n",tos];
+        }
+    }
+    
+    // CC string
+    NSString *cc = @"";
+    // 抄送人（多人）
+    if (self.ccContacts.count > 0) {
+        __block NSString *ccs = @"";
+        @weakify_self
+        [self.ccContacts enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            NSData *utfData = [obj.userName dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *gbStr = GTLREncodeBase64(utfData);
+            ccs = [ccs stringByAppendingString:[NSString stringWithFormat:@"=?UTF-8?B?%@?= ",gbStr]];
+            ccs = [ccs stringByAppendingString:[NSString stringWithFormat:@"<%@>",obj.userAddress]];
+            if (idx != weakSelf.ccContacts.count-1) {
+                ccs = [ccs stringByAppendingString:@","];
+            }
+        }];
+        if (ccs.length > 0) {
+            cc = [NSString stringWithFormat:@"Cc: %@\r\n",ccs];
+        }
+    }
+    
+    // BCC string
+    NSString *bcc = @"";
+    // 密送人（多人）
+    if (self.bccContacts.count > 0) {
+        __block NSString *bccs = @"";
+        @weakify_self
+        [self.bccContacts enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            NSData *utfData = [obj.userName dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *gbStr = GTLREncodeBase64(utfData);
+            bccs = [bccs stringByAppendingString:[NSString stringWithFormat:@"=?UTF-8?B?%@?= ",gbStr]];
+            bccs = [bccs stringByAppendingString:[NSString stringWithFormat:@"<%@>",obj.userAddress]];
+            if (idx != weakSelf.bccContacts.count-1) {
+                bccs = [bccs stringByAppendingString:@","];
+            }
+        }];
+        if (bccs.length > 0) {
+            bcc = [NSString stringWithFormat:@"Bcc: %@\r\n",bccs];
+        }
+    }
+    
+    // Subject string
+    NSString *subject = @"";
+    if (_subTF.text.trim.length > 0) {
+        NSData *utfData = [_subTF.text dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *gbStr = GTLREncodeBase64(utfData);
+        subject = [NSString stringWithFormat:@"Subject: =?UTF-8?B?%@?=\r\n\r\n",gbStr];
+    }
+    
+    
+    // Body string
+     NSString *body = [NSString stringWithFormat:@"%@\r\n",htmlBody];
+    
+    
+    // Final string to be returned
+    __block NSString *rawMessage = @"";
+    
+    
+    // Send as "multipart/mixed"
+    // multipart/alternative
+    
+    NSString *contentTypeMain = @"Content-Type: multipart/mixed; boundary=\"project\"\r\n";
+    
+    // Reusable Boundary string
+    NSString *boundary = @"\r\n--project\r\n";
+    
+    // Body string
+    //NSString *contentTypePlain = @"Content-Type: text/plain; charset=\"UTF-8\"\r\n";
+    NSString *contentTypePlain = @"Content-type: text/html;charset=iso-8859-1\r\n\r\n";
+    
+    // Combine strings from "finalDate" to "body"
+    rawMessage = [[[[[[[[[contentTypeMain stringByAppendingString:finalDate] stringByAppendingString:from]stringByAppendingString:to]stringByAppendingString:cc]stringByAppendingString:bcc]stringByAppendingString:subject]stringByAppendingString:boundary]stringByAppendingString:contentTypePlain]stringByAppendingString:body];
+    
+    __block NSString *contentTypeJPG = @"";
+    
+    if (self.attchArray.count >1 || (self.emailInfo.cidArray && self.emailInfo.cidArray.count > 0)) {
+        
+        NSMutableArray *attchs = [NSMutableArray arrayWithArray:self.attchArray];
+        [attchs removeLastObject];
+        
+        [attchs enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            EmailAttchModel *attM = obj;
+            if (attM.attData) {
+                contentTypeJPG = boundary;
+                // Image Content Type string
+                NSString *fileHz = [[attM.attName componentsSeparatedByString:@"."] lastObject];
+                NSString *attType = [NSString stringWithFormat:@"file/%@",fileHz];
+                if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"]) {
+                    attType = [NSString stringWithFormat:@"image/%@",fileHz];
+                }
+                contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Type: %@; name=\"%@\"\r\n",attType,attM.attName]];
+                contentTypeJPG = [contentTypeJPG stringByAppendingString:@"Content-Transfer-Encoding: base64\r\n"];
+                
+                // PNG image data
+                NSData *fileData = attM.attData;
+                if (userKeys && userKeys.count > 0) {
+                     NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+                     fileData = aesEncryptData(attM.attData,msgKeyData);
+                }
+                NSString *imageBase64String = GTLREncodeBase64(fileData);
+                NSString *pngString = [NSString stringWithFormat:@"%@\r\n",imageBase64String];
+                contentTypeJPG = [contentTypeJPG stringByAppendingString:pngString];
+                rawMessage = [rawMessage stringByAppendingString:contentTypeJPG];
+           
+            }
+        }];
+        
+        if (self.emailInfo.cidArray && self.emailInfo.cidArray.count > 0) {
+            
+            [self.emailInfo.cidArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                
+                EmailAttchModel *attM = obj;
+                if (attM.attData) {
+                    // Image Content Type string
+                    contentTypeJPG = boundary;
+                    NSString *fileHz = [[attM.attName componentsSeparatedByString:@"."] lastObject];
+                    NSString *attType = [NSString stringWithFormat:@"file/%@",fileHz];
+                    if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"]) {
+                        attType = [NSString stringWithFormat:@"image/%@",fileHz];
+                    }
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Type: %@; name=\"%@\"\r\n",attType,attM.attName]];
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Disposition: inline; filename=\"%@\"\r\n",attM.attName]];
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Id: <%@>\r\n",attM.cid]];
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:@"Content-Transfer-Encoding: base64\r\n"];
+                    
+                    // PNG image data
+                    NSData *fileData = attM.attData;
+                    if (userKeys && userKeys.count > 0) {
+                        NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+                        fileData = aesEncryptData(attM.attData,msgKeyData);
+                    }
+                    NSString *imageBase64String = GTLREncodeBase64(fileData);
+                    NSString *pngString = [NSString stringWithFormat:@"%@\r\n",imageBase64String];
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:pngString];
+                    rawMessage = [rawMessage stringByAppendingString:contentTypeJPG];
+                }
+            }];
+            
+        }
+        
+        
+        if (contentTypeJPG.length > 0) {
+            // End string
+            rawMessage = [rawMessage stringByAppendingString:@"\r\n--project--"];
+            
+        }
+        
+    }
+    
+    return [rawMessage dataUsingEncoding:NSUTF8StringEncoding];
+
+}
+
+
+- (NSData *)getFormattedRawMessageWtihEmail:(NSString *) email body:(NSString *) htmlBody
+{
+    // Date string
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    dateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
+    NSString *strDate = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *finalDate = [NSString stringWithFormat:@"Date: %@\r\n", strDate];
+    
+    // From string
+    GoogleUserModel *googelUserM = [GoogleUserModel getCurrentUserModel:email];
+    NSString *from = [NSString stringWithFormat:@"From: <%@>\r\n",email];
+    if (googelUserM.fullName && googelUserM.fullName.length > 0) {
+        NSData *utfData = [googelUserM.fullName dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *gbStr = GTLREncodeBase64(utfData);
+        from = [NSString stringWithFormat:@"From: \"=?UTF-8?B?%@?=\" <%@>\r\n",gbStr,googelUserM.email];
+    }
+    
+    // To string
+    NSString *to = @"";
+    // 收件人（多人）
+    if (self.toContacts.count > 0) {
+        __block NSString *tos = @"";
+        @weakify_self
+        [self.toContacts enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            NSData *utfData = [obj.userName dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *gbStr = GTLREncodeBase64(utfData);
+            tos = [tos stringByAppendingString:[NSString stringWithFormat:@"=?UTF-8?B?%@?= ",gbStr]];
+            tos = [tos stringByAppendingString:[NSString stringWithFormat:@"<%@>",obj.userAddress]];
+            if (idx != weakSelf.toContacts.count-1) {
+                tos = [tos stringByAppendingString:@","];
+            }
+        }];
+        if (tos.length > 0) {
+            to = [NSString stringWithFormat:@"To: %@\r\n",tos];
+        }
+    }
+    
+    // CC string
+    NSString *cc = @"";
+    // 抄送人（多人）
+    if (self.ccContacts.count > 0) {
+        __block NSString *ccs = @"";
+        @weakify_self
+        [self.ccContacts enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            NSData *utfData = [obj.userName dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *gbStr = GTLREncodeBase64(utfData);
+            ccs = [ccs stringByAppendingString:[NSString stringWithFormat:@"=?UTF-8?B?%@?= ",gbStr]];
+            ccs = [ccs stringByAppendingString:[NSString stringWithFormat:@"<%@>",obj.userAddress]];
+            if (idx != weakSelf.ccContacts.count-1) {
+                ccs = [ccs stringByAppendingString:@","];
+            }
+        }];
+        if (ccs.length > 0) {
+            cc = [NSString stringWithFormat:@"Cc: %@\r\n",ccs];
+        }
+    }
+    
+    // BCC string
+    NSString *bcc = @"";
+    // 密送人（多人）
+    if (self.bccContacts.count > 0) {
+        __block NSString *bccs = @"";
+        @weakify_self
+        [self.bccContacts enumerateObjectsUsingBlock:^(EmailContactModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            NSData *utfData = [obj.userName dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *gbStr = GTLREncodeBase64(utfData);
+            bccs = [bccs stringByAppendingString:[NSString stringWithFormat:@"=?UTF-8?B?%@?= ",gbStr]];
+            bccs = [bccs stringByAppendingString:[NSString stringWithFormat:@"<%@>",obj.userAddress]];
+            if (idx != weakSelf.bccContacts.count-1) {
+                bccs = [bccs stringByAppendingString:@","];
+            }
+        }];
+        if (bccs.length > 0) {
+            bcc = [NSString stringWithFormat:@"Bcc: %@\r\n",bccs];
+        }
+    }
+    
+    // Subject string
+    NSString *subject = @"";
+    if (_subTF.text.trim.length > 0) {
+        
+        NSData *utfData = [_subTF.text dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *gbStr = GTLREncodeBase64(utfData);
+        subject = [NSString stringWithFormat:@"Subject: =?UTF-8?B?%@?=\r\n\r\n",gbStr];
+    
+    }
+    
+    
+    // Body string
+    NSString *body = @"";
+    if (htmlBody.length > 0) {
+        body = [NSString stringWithFormat:@"%@\r\n",htmlBody];
+    }
+    
+    // Final string to be returned
+   __block NSString *rawMessage = @"";
+    
+    
+    // Send as "multipart/mixed"
+    // multipart/alternative
+    
+    NSString *contentTypeMain = @"Content-Type: multipart/alternative; boundary=\"project\"\r\n";
+
+    
+    // Reusable Boundary string
+    NSString *boundary = @"\r\n--project\r\n";
+    
+    // Body string
+    NSString *contentTypePlain =  @"Content-type: text/html;charset=iso-8859-1\r\n\r\n";
+    
+    // Combine strings from "finalDate" to "body"
+    rawMessage = [[[[[[[[[contentTypeMain stringByAppendingString:finalDate] stringByAppendingString:from]stringByAppendingString:to]stringByAppendingString:cc]stringByAppendingString:bcc]stringByAppendingString:subject]stringByAppendingString:boundary]stringByAppendingString:contentTypePlain]stringByAppendingString:body];
+    
+    __block NSString *contentTypeJPG = @"";
+    if (self.attchArray.count >1 || (self.emailInfo.cidArray && self.emailInfo.cidArray.count > 0)) {
+        
+        NSMutableArray *attchs = [NSMutableArray arrayWithArray:self.attchArray];
+        [attchs removeLastObject];
+        [attchs enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            EmailAttchModel *attM = obj;
+            if (attM.attData) {
+                // Image Content Type string
+                contentTypeJPG = boundary;
+                NSString *fileHz = [[attM.attName componentsSeparatedByString:@"."] lastObject];
+                NSString *attType = [NSString stringWithFormat:@"file/%@",fileHz];
+                if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"]) {
+                    attType = [NSString stringWithFormat:@"image/%@",fileHz];
+                }
+                contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Type: %@; name=\"%@\"\r\n",attType,attM.attName]];
+                contentTypeJPG = [contentTypeJPG stringByAppendingString:@"Content-Transfer-Encoding: base64\r\n"];
+                
+                // PNG image data
+                NSString *imageBase64String = GTLREncodeBase64(attM.attData);
+                NSString *pngString = [NSString stringWithFormat:@"%@\r\n",imageBase64String];
+                contentTypeJPG = [contentTypeJPG stringByAppendingString:pngString];
+                rawMessage = [rawMessage stringByAppendingString:contentTypeJPG];
+            }
+        }];
+        
+        if (self.emailInfo.cidArray && self.emailInfo.cidArray.count > 0) {
+            
+            [self.emailInfo.cidArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                
+                EmailAttchModel *attM = obj;
+                if (attM.attData) {
+                    // Image Content Type string
+                    contentTypeJPG = boundary;
+                    NSString *fileHz = [[attM.attName componentsSeparatedByString:@"."] lastObject];
+                    NSString *attType = [NSString stringWithFormat:@"file/%@",fileHz];
+                    if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"]) {
+                        attType = [NSString stringWithFormat:@"image/%@",fileHz];
+                    }
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Type: %@; name=\"%@\"\r\n",attType,attM.attName]];
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Disposition: inline; filename=\"%@\"\r\n",attM.attName]];
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Id: <%@>\r\n",attM.cid]];
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:@"Content-Transfer-Encoding: base64\r\n"];
+                    
+                    // PNG image data
+                    NSString *imageBase64String = GTLREncodeBase64(attM.attData);
+                    NSString *pngString = [NSString stringWithFormat:@"%@\r\n",imageBase64String];
+                    contentTypeJPG = [contentTypeJPG stringByAppendingString:pngString];
+                    rawMessage = [rawMessage stringByAppendingString:contentTypeJPG];
+                }
+            }];
+            
+        }
+        
+        if (contentTypeJPG.length > 0) {
+            // End string
+            rawMessage = [rawMessage stringByAppendingString:@"\r\n--project--"];
+            
+        }
+       
+    }
+    
+    return [rawMessage dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+
+
 - (void) checkIsEncode
 {
     NSMutableArray *emails = [NSMutableArray array];
@@ -351,7 +897,24 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 }
 - (IBAction)clickSendAction:(id)sender {
+    
     [self.view endEditing:YES];
+    
+    if (self.emailInfo.attchArray) {
+        __block BOOL isDown = NO;
+        [self.emailInfo.attchArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailAttchModel *attchM = obj;
+            if (attchM.downStatus != 2) {
+                isDown = YES;
+                *stop = YES;
+            }
+        }];
+        if (isDown) {
+            [self.view showHint:@"Attached download, please try again later"];
+            return;
+        }
+    }
+    
     EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
     NSMutableArray *emails = [NSMutableArray array];
     if (self.toContacts && self.toContacts.count > 0) {
@@ -418,6 +981,132 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 - (void) sendEmailWithShowLoading:(BOOL) isLoading keys:(NSArray *) userKeys
 {
+    
+    
+    
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    if (accountM.userId && accountM.userId.length > 0) {
+        if (AppD.isGoogleSign) {
+            
+            
+            if (isLoading) {
+                [self.view showHudInView:self.view hint:@"Sending…" userInteractionEnabled:NO hideTime:REQEUST_TIME_60];
+            }
+            
+            
+            NSString *symmetKey = @"";
+            NSString *msgKey = @"";
+            
+            if (userKeys && userKeys.count > 0) {
+                // 生成32位对称密钥
+                msgKey = [SystemUtil get32AESKey];
+                NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+                symmetKey = [symmetData base64EncodedString];
+            }
+
+            // 转换成 html
+            @weakify_self
+            [SIXHTMLParser htmlStringWithAttributedText:_contentTF.attributedText
+                                            orignalHtml:@"" andCompletionHandler:^(NSString *html) {
+                                                
+                                               NSString *writeHtml = html?:@"";
+                                                __block NSString *keys = @"";
+                                                if (userKeys && userKeys.count>0) {
+                                                    [userKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                                        EmailUserKeyModel *userKeyM = obj;
+                                                        keys = [keys stringByAppendingString:userKeyM.User];
+                                                        keys = [keys stringByAppendingString:@"&&"];
+                                                        // 签名转加密
+                                                        NSString *pubKey = [LibsodiumUtil getFriendEnPublickkeyWithFriendSignPublicKey:userKeyM.PubKey];
+                                                        NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:pubKey];
+                                                        keys = [keys stringByAppendingString:dsKey];
+                                                        keys = [keys stringByAppendingString:@"##"];
+                                                    }];
+                                                    
+                                                    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+                                                    // 加上自己加密key ，方便已发送解密
+                                                    keys = [keys stringByAppendingString:[accountM.User base64EncodedString]];
+                                                    keys = [keys stringByAppendingString:@"&&"];
+                                                    NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+                                                    keys = [keys stringByAppendingString:dsKey];
+                                                }
+                                                if (weakSelf.sendType == ReplyEmail) {
+                                                    writeHtml =[writeHtml stringByAppendingString:@"<br/><br/><br/><div>----------------- Original -----------------</div>"];
+                                                } else if (weakSelf.sendType == ForwardEmail) {
+                                                    writeHtml =[writeHtml stringByAppendingString:@"<br/><br/><br/><div>----------------- Fwd -----------------</div>"];
+                                                }
+                                                
+                                                writeHtml = [writeHtml stringByAppendingString:weakSelf.emailInfo.htmlContent?:@""];
+                                                
+                                                if (keys.length > 0) {
+                                                    if ([writeHtml containsString:confidantEmialText]) {
+                                                        writeHtml = [writeHtml stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
+                                                    }
+                                                    writeHtml = aesEncryptString(writeHtml, [msgKey substringToIndex:16]);
+                                                    NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantkey%@\'></span>",keys];
+                                                    
+                                                    NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantuserid%@\'></span>",[UserConfig getShareObject].userId];
+                                                    
+                                                    writeHtml = [writeHtml stringByAppendingString:userKeyStr];
+                                                    writeHtml = [writeHtml stringByAppendingString:friendID];
+                                                    writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+                                                } else {
+                                                    
+                                                    NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantuserid%@\'></span>",[UserConfig getShareObject].userId];
+                                                    writeHtml = [writeHtml stringByAppendingString:friendID];
+                                                    
+                                                    if (![writeHtml containsString:@"Sent from MyConfidant"]) {
+                                                        writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+                                                    }
+                                                }
+                                                
+                                                
+                                                NSData *sendData = [self getGoogleSendDataWithUserKeys:userKeys withEmail:accountM.User msgKey:msgKey body:writeHtml];
+                                                
+                                                
+                                                GTLRGmail_Message *message = [[GTLRGmail_Message alloc] init];
+                                               // message.raw = GTLREncodeWebSafeBase64(sendData);
+                                                
+                                                GTLRUploadParameters *uploadParam = [[GTLRUploadParameters alloc] init];
+                                                uploadParam.MIMEType = @"message/rfc822";
+                                                uploadParam.data = sendData;
+                                                
+                                                GTLRGmailQuery_UsersMessagesSend *query = [GTLRGmailQuery_UsersMessagesSend queryWithObject:message userId:accountM.userId uploadParameters:uploadParam];
+                                                
+                                                [[GoogleServerManage getGoogleServerManageShare].gmailService executeQuery:query completionHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, id  _Nullable object, NSError * _Nullable callbackError) {
+                                                    
+                                                    [weakSelf.view hideHud];
+                                                    if (callbackError == nil) {
+                                                        
+                                                        // 发送推送请求
+                                                        [SendRequestUtil sendEmailSendNotiWithEmails:weakSelf.emailStrings showHud:NO];
+                                                        // 添加对方为好友
+                                                        if (weakSelf.emailInfo.friendId && weakSelf.emailInfo.friendId.length > 0) {
+                                                            
+                                                            // 发送好友请求
+                                                            if (![weakSelf.emailInfo.friendId isEqualToString:[UserConfig getShareObject].userId]) {
+                                                                
+                                                                NSString *msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
+                                                                msg = [msg base64EncodedString];
+                                                                
+                                                                [SendRequestUtil sendAddFriendWithFriendId:weakSelf.emailInfo.friendId msg:msg showHud:NO];
+                                                            }
+                                                        }
+                                                        [weakSelf leftNavBarItemPressedWithPop:NO];
+                                                        [AppD.window showSuccessHudInView:AppD.window hint:@"Successed"];
+                                                    } else {
+                                                        [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"send failure"];
+                                                    }
+                                                    
+                                                }];
+                                                
+                                            }];
+        
+            
+        }
+        
+        return;
+    }
     MCOMessageBuilder *messageBuilder = [self getSendMessageBuilder];
     NSString *symmetKey = @"";
     NSString *msgKey = @"";
@@ -494,16 +1183,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                        writeHtml = [writeHtml stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
                                    }
                                    writeHtml = aesEncryptString(writeHtml, [msgKey substringToIndex:16]);
-                                   NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' confidantkey=\'%@\'></span>",keys];
                                    
-                                   NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' confidantuserid=\'%@\'></span>",[UserConfig getShareObject].userId];
+                                   NSString *userKeyStr = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantkey%@\'></span>",keys];
+                                   
+                                   NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantuserid%@\'></span>",[UserConfig getShareObject].userId];
                                    
                                    writeHtml = [writeHtml stringByAppendingString:userKeyStr];
                                    writeHtml = [writeHtml stringByAppendingString:friendID];
                                    writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
                                } else {
                                    
-                                   NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' confidantuserid=\'%@\'></span>",[UserConfig getShareObject].userId];
+                                  NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantuserid%@\'></span>",[UserConfig getShareObject].userId];
                                    writeHtml = [writeHtml stringByAppendingString:friendID];
                                    
                                    if (![writeHtml containsString:@"Sent from MyConfidant"]) {
@@ -796,8 +1486,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             _lblTitle.text = @"Drafts";
         }
         _subTF.text = self.emailInfo.Subject?:@"";
-        if (self.emailInfo.htmlContent) {
-            [self contentTFLoadData:self.emailInfo.htmlContent];
+        if (self.emailInfo.htmlContent && self.emailInfo.htmlContent.length>0) {
+          //  [self contentTFLoadData:self.emailInfo.htmlContent];
         } else {
             if (self.emailInfo.content) {
                 _contentTF.text = self.emailInfo.content;
@@ -940,7 +1630,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
             
             // 删除原有内容
-           NSArray *kcfArray = [weakSelf.selTextView.text componentsSeparatedByString:kCFormat];
+            NSArray *kcfArray = [weakSelf.selTextView.text componentsSeparatedByString:kCFormat];
             NSMutableArray *kcfMutArray = [NSMutableArray arrayWithArray:kcfArray];
             [kcfMutArray removeLastObject];
             
@@ -1087,11 +1777,25 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 {
     NSDictionary *dic = noti.object;
     NSInteger retCode = [dic[@"RetCode"] integerValue];
-    NSString *Payload = dic[@"Payload"];
-    if (retCode == 0 && Payload) { // 需要加密
+    NSString *Payload = dic[@"Payload"]?:@"";
+    if (retCode == 0) { // 需要加密
+        __block BOOL isEncode = YES;
         NSArray *payloadArr = [EmailUserKeyModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
+        [payloadArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            EmailUserKeyModel *userKeyM = obj;
+            // 如果服务器没有，从好友列表找
+            if (!userKeyM.PubKey || userKeyM.PubKey.length == 0) {
+                NSString *userKey = [[ChatListDataUtil getShareObject] getFriendUserKeyWithEmailAddress:userKeyM.User];
+                if (userKey.length > 0) {
+                    userKeyM.PubKey = userKey;
+                } else {
+                    isEncode = NO;
+                    *stop = YES;
+                }
+            }
+        }];
         
-        if (payloadArr && payloadArr.count > 0) {
+        if (isEncode) {
             _lockImgView.hidden = NO;
         } else {
             _lockImgView.hidden = YES;
@@ -1099,7 +1803,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         if (_isSend) {
             _isSend = NO;
-            [self sendEmailWithShowLoading:NO keys:payloadArr];
+            [self sendEmailWithShowLoading:NO keys:isEncode? payloadArr : nil];
         }
         
     } else {
@@ -1307,6 +2011,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 NSArray *atValues = [self rangeOfSubString:atModel.userName inString:string];
                 
                 for (NSValue *valueRange in atValues) {
+                    
                     NSRange matchMange = [valueRange rangeValue];
                     NSRange newRange = NSMakeRange(matchMange.location, matchMange.length+1);
                     
@@ -1386,6 +2091,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         {
            // textView.selectedRange = NSMakeRange(matchMange.location + matchMange.length, 0);
              textView.selectedRange = NSMakeRange(textView.text.length, 0);
+           
+            UITextPosition *beginning = textView.beginningOfDocument;
+            UITextPosition *start = [textView positionFromPosition:beginning offset:newRange.location];
+            
+            UITextPosition *end = [textView positionFromPosition:start offset:newRange.length];
+            [textView setSelectedTextRange:[textView textRangeFromPosition:start toPosition:end]];
+            
             break;
         }
     }
@@ -1500,7 +2212,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
         }];
         
-        if (!attachment.attData) {
+        if (!attachment.attData && indexPath.item == self.attchArray.count-1) {
+            attachment.downStatus = 2;
+            [cell.loadActivity stopAnimating];
+            cell.loadActivity.hidden = YES;
             cell.closeBtn.hidden = YES;
             cell.lblCount.text = @"";
             cell.backImgView.hidden = YES;
@@ -1508,9 +2223,39 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             cell.backV.backgroundColor = RGB(230, 230, 230);
             cell.headImgV.contentMode = UIViewContentModeCenter;
         } else {
-            cell.lblCount.text = [SystemUtil transformedValue:attachment.attData.length];
             cell.backImgView.hidden = NO;
-            cell.headImgV.image = [UIImage imageWithData:attachment.attData];
+            
+            cell.lblCount.text = [SystemUtil transformedValue:attachment.attData.length];
+            if (attachment.attSize > 0) {
+                cell.lblCount.text = [SystemUtil transformedValue:attachment.attSize];
+            }
+            if (attachment.attData) {
+                attachment.downStatus = 2;
+                [cell.loadActivity stopAnimating];
+                cell.loadActivity.hidden = YES;
+                cell.headImgV.image = [UIImage imageWithData:attachment.attData];
+            } else {
+                // 下载
+                if (attachment.attSize > 0) {
+                    
+                    if (attachment.downStatus == 2) { // 下载完成
+                        [cell.loadActivity stopAnimating];
+                        cell.loadActivity.hidden = YES;
+                    } else if (attachment.downStatus == 1){ // 下载中
+                        [cell.loadActivity startAnimating];
+                        cell.loadActivity.hidden = NO;
+                    } else {
+                        [cell.loadActivity startAnimating];
+                        cell.loadActivity.hidden = NO;
+                        
+                        attachment.downStatus = 1;
+                      
+                        [self getAttDataWithAttM:attachment];
+                    }
+                    
+                }
+            }
+            
             
             cell.backV.backgroundColor = MAIN_WHITE_COLOR;
             cell.headImgV.contentMode = UIViewContentModeScaleAspectFill;
@@ -1518,6 +2263,20 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         return cell;
     } else {
         AttchCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:AttchCollectionCellResue forIndexPath:indexPath];
+        
+        if (attachment.downStatus == 2) { // 下载完成
+            [cell.loadActivity stopAnimating];
+            cell.loadActivity.hidden = YES;
+        } else if (attachment.downStatus == 1){ // 下载中
+            [cell.loadActivity startAnimating];
+            cell.loadActivity.hidden = NO;
+        } else {
+            [cell.loadActivity startAnimating];
+            cell.loadActivity.hidden = NO;
+            
+            attachment.downStatus = 1;
+            [self getAttDataWithAttM:attachment];
+        }
         
         @weakify_self
         [cell setCloseBlock:^(NSInteger tag) {
@@ -1570,6 +2329,46 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
 }
 
+#pragma mark ----googleapi get 附件
+- (void) getAttDataWithAttM:(EmailAttchModel *) attM
+{
+   
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    //获取文件路径
+    NSString *tmpDirectory =NSTemporaryDirectory();
+    NSString *filePath=[tmpDirectory stringByAppendingPathComponent:attM.attName];
+    NSFileManager *fileManger=[NSFileManager defaultManager];
+    
+    if (![fileManger fileExistsAtPath:filePath]) {//不存在就去请求加载
+        
+        GTLRGmailQuery_UsersMessagesAttachmentsGet *list = [GTLRGmailQuery_UsersMessagesAttachmentsGet queryWithUserId:accountM.userId messageId:self.emailInfo.messageid identifier:attM.attId];
+        @weakify_self
+        [[GoogleServerManage getGoogleServerManageShare].gmailService executeQuery:list completionHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, id  _Nullable object, NSError * _Nullable callbackError) {
+            attM.downStatus = 2;
+            if (!callbackError) {
+                GTLRObject *gltM = object;
+                NSString *dataStr = gltM.JSON[@"data"]?:@"";
+                if (dataStr.length > 0) {
+                    NSData *contentData = GTLRDecodeWebSafeBase64(dataStr);
+                    attM.attData = contentData;
+                    [weakSelf.attchCollectinView reloadData];
+                    // 保存到本地
+                    [attM.attData writeToFile:filePath atomically:YES];
+                }
+            } else {
+                [weakSelf.attchCollectinView reloadData];
+            }
+        }];
+        
+    } else {
+        
+        attM.attData = [NSData dataWithContentsOfFile:filePath];
+        attM.downStatus = 2;
+        [self.attchCollectinView reloadData];
+    }
+    
+}
+
 /**
  点击某个cell
  */
@@ -1578,9 +2377,20 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (indexPath.row == self.attchArray.count-1) { // 最后一个为添加附件
         [self.selAttchView showEmailAttchSelView];
     } else {
+        
         EmailAttchModel*attachment = self.attchArray[indexPath.item];
-        PNEmailPreViewController *vc = [[PNEmailPreViewController alloc] initWithFileName:attachment.attName fileData:attachment.attData];
-        [self.navigationController pushViewController:vc animated:YES];
+        if (attachment.attData) {
+            EmailAttchModel*attachment = self.attchArray[indexPath.item];
+            PNEmailPreViewController *vc = [[PNEmailPreViewController alloc] initWithFileName:attachment.attName fileData:attachment.attData];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            if (attachment.downStatus == 2) {
+                attachment.downStatus = 1;
+                [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+                [self getAttDataWithAttM:attachment];
+            }
+        }
+       
     }
 }
 /**
@@ -2115,29 +2925,97 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             NSString * partUniqueID = specifier;
             part = [self _partForUniqueID:partUniqueID];
         }
-        if (part == nil)
+        if (part == nil && !self.emailInfo.isGoogleAPI)
             continue;
-        NSString * partUniqueID = [part uniqueID];
-        MCOAttachment * attachment = (MCOAttachment *) [_messageParser partForUniqueID:partUniqueID];
-        NSData * data =[attachment data];
-        if (data!=nil) {
+        
+        if (self.emailInfo.isGoogleAPI) {
             //获取文件路径
-            NSString *tmpDirectory =NSTemporaryDirectory();
-            NSString *filePath=[tmpDirectory stringByAppendingPathComponent : attachment.filename ];
-            NSFileManager *fileManger=[NSFileManager defaultManager];
-            if (![fileManger fileExistsAtPath:filePath]) {//不存在就去请求加载
-                NSData *attachmentData=[attachment data];
-                [attachmentData writeToFile:filePath atomically:YES];
-                NSLog(@"资源：%@已经下载至%@", attachment.filename,filePath);
+            __block EmailAttchModel *attM = nil;
+            [self.emailInfo.cidArray enumerateObjectsUsingBlock:^(EmailAttchModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([urlString containsString:obj.cid]) {
+                    attM = obj;
+                    *stop = YES;
+                }
+            }];
+            if (attM) {
+                NSString *tmpDirectory =NSTemporaryDirectory();
+                NSString *filePath=[tmpDirectory stringByAppendingPathComponent:attM.attName];
+                NSFileManager *fileManger=[NSFileManager defaultManager];
+                
+                if (![fileManger fileExistsAtPath:filePath]) {//不存在就去请求加载
+                    
+                    [self downCidFileWithAttMode:attM filePath:filePath urlString:urlString];
+                    
+                } else {
+                    NSURL * cacheURL = [NSURL fileURLWithPath:filePath];
+                    NSDictionary * args =@{@"URLKey": urlString,@"LocalPathKey": cacheURL.absoluteString};
+                    NSString * jsonString = [self _jsonEscapedStringFromDictionary:args];
+                    NSString * replaceScript = [NSString stringWithFormat:@"replaceImageSrc(%@)", jsonString];
+                    [self.myWebView stringByEvaluatingJavaScriptFromString:replaceScript];
+                }
+                
             }
-            NSURL * cacheURL = [NSURL fileURLWithPath:filePath];
             
-            NSDictionary * args =@{@"URLKey": urlString,@"LocalPathKey": cacheURL.absoluteString};
-            NSString * jsonString = [self _jsonEscapedStringFromDictionary:args];
-            NSString * replaceScript = [NSString stringWithFormat:@"replaceImageSrc(%@)", jsonString];
-            [self.myWebView stringByEvaluatingJavaScriptFromString:replaceScript];
+            
+            
+        } else {
+            NSString * partUniqueID = [part uniqueID];
+            MCOAttachment * attachment = (MCOAttachment *) [_messageParser partForUniqueID:partUniqueID];
+            NSData * data =[attachment data];
+            if (data!=nil) {
+                //获取文件路径
+                NSString *tmpDirectory =NSTemporaryDirectory();
+                NSString *filePath=[tmpDirectory stringByAppendingPathComponent : attachment.filename ];
+                NSFileManager *fileManger=[NSFileManager defaultManager];
+                
+                if (![fileManger fileExistsAtPath:filePath]) {//不存在就去请求加载
+                    NSData *attachmentData=[attachment data];
+                    if (_emailInfo.deKey && _emailInfo.deKey.length > 0) {
+                        attachmentData = aesDecryptData(attachmentData, [self.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding]);
+                    }
+                    [attachmentData writeToFile:filePath atomically:YES];
+                    NSLog(@"资源：%@已经下载至%@", attachment.filename,filePath);
+                }
+                NSURL * cacheURL = [NSURL fileURLWithPath:filePath];
+                
+                NSDictionary * args =@{@"URLKey": urlString,@"LocalPathKey": cacheURL.absoluteString};
+                NSString * jsonString = [self _jsonEscapedStringFromDictionary:args];
+                NSString * replaceScript = [NSString stringWithFormat:@"replaceImageSrc(%@)", jsonString];
+                [self.myWebView stringByEvaluatingJavaScriptFromString:replaceScript];
+            }
         }
     }
+}
+
+// 下载 cid 文件
+- (void) downCidFileWithAttMode:(EmailAttchModel *) attM filePath:(NSString *)filePath urlString:(NSString *) urlString
+{
+    // 下载cid 文件
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    GTLRGmailQuery_UsersMessagesAttachmentsGet *list = [GTLRGmailQuery_UsersMessagesAttachmentsGet queryWithUserId:accountM.userId messageId:self.emailInfo.messageid identifier:attM.attId];
+    
+    @weakify_self
+    [[GoogleServerManage getGoogleServerManageShare].gmailService executeQuery:list completionHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, id  _Nullable object, NSError * _Nullable callbackError) {
+        if (!callbackError) {
+            GTLRObject *gltM = object;
+            NSString *dataStr = gltM.JSON[@"data"]?:@"";
+            if (dataStr.length > 0) {
+                NSData *contentData = GTLRDecodeWebSafeBase64(dataStr);
+                if (weakSelf.emailInfo.deKey && weakSelf.emailInfo.deKey.length > 0) {
+                    contentData = aesDecryptData(contentData, [weakSelf.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding]);
+                }
+                attM.attData = contentData;
+                // 保存到本地
+                [contentData writeToFile:filePath atomically:YES];
+                
+                NSURL * cacheURL = [NSURL fileURLWithPath:filePath];
+                NSDictionary * args =@{@"URLKey": urlString,@"LocalPathKey": cacheURL.absoluteString};
+                NSString * jsonString = [weakSelf _jsonEscapedStringFromDictionary:args];
+                NSString * replaceScript = [NSString stringWithFormat:@"replaceImageSrc(%@)", jsonString];
+                [weakSelf.myWebView stringByEvaluatingJavaScriptFromString:replaceScript];
+            }
+        }
+    }];
 }
 
 - (NSString *)_jsonEscapedStringFromDictionary:(NSDictionary *)dictionary

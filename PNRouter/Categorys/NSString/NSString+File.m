@@ -7,7 +7,7 @@
 //
 
 #import "NSString+File.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 
 static NSInteger UploadFileNameLength = 160;
 

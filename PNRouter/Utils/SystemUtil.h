@@ -57,6 +57,6 @@
 + (NSArray<NSTextCheckingResult *> *)findAllAtWithString:(NSString *) textString;
     
 + (NSString *)getTempEmailAttchFilePath;
-+ (NSString *)getDocEmailAttchFilePathWithUid:(int) uid user:(NSString *) user;
++ (NSString *)getDocEmailAttchFilePathWithUid:(NSString *) uid user:(NSString *) user;
 + (NSString *)getDocEmailBasePath;
 @end

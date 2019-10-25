@@ -15,7 +15,7 @@
 #import "KeyCUtil.h"
 #import "FriendModel.h"
 #import "SystemUtil.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "GuidePageViewController.h"
 #import "ViewController.h"
 #import "VPNFileInputView.h"
@@ -56,6 +56,8 @@
 
 // google
 #import <GoogleSignIn/GoogleSignIn.h>
+#import "GoogleUserModel.h"
+#import "EmailAccountModel.h"
 #endif
 
 @interface AppDelegate () <BuglyDelegate,JPUSHRegisterDelegate,GIDSignInDelegate> //MiPushSDKDelegate,UNUserNotificationCenterDelegate
@@ -86,6 +88,7 @@
 
    // [KeyCUtil deleteWithKey:ROUTER_ARR];
    //  [KeyCUtil deleteAllKey];
+    
     // 配置google认证
     [GIDSignIn sharedInstance].clientID = CLIENT_ID;
     [GIDSignIn sharedInstance].delegate = self;
@@ -97,7 +100,7 @@
     // 配置IQKeyboardManager
     [self keyboardManagerConfig];
     // 配置DDLog
-   // [self configDDLog];
+    //[self configDDLog];
     // 配置聊天
     [self configChat];
     // 打开时改变文件上传下载状态
@@ -455,6 +458,7 @@
     /// 表情键值对
     NSDictionary<NSString *, id> *temp = [[NSDictionary alloc] initWithContentsOfFile:[emojiBundlePath stringByAppendingPathComponent:@"files/expressionImage_custom.plist"]];
     NSArray<NSString *> *chineses = [[NSArray alloc] initWithContentsOfFile:[emojiBundlePath stringByAppendingPathComponent:@"files/expression_CH.plist"]];
+    CTinputHelper.share.emojEnDic = [[NSDictionary alloc] initWithContentsOfFile:[emojiBundlePath stringByAppendingPathComponent:@"files/expression_EN.plist"]];
     
     /// 表情图片bundle
     NSBundle *bundle = [NSBundle bundleWithPath:emojiBundlePath];
@@ -740,21 +744,43 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
 - (void)signIn:(GIDSignIn *)signIn
 didSignInForUser:(GIDGoogleUser *)user
      withError:(NSError *)error {
+    
     if (error != nil) {
         if (error.code == kGIDSignInErrorCodeHasNoAuthInKeychain) {
             [AppD.window showHint:(@"The user has not signed in before or they have since signed out.")];
         } else {
             [AppD.window showHint:([NSString stringWithFormat:@"%@", error.localizedDescription])];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:GOOGLE_EMAIL_SIGN_FAIELD_NOTI object:nil];
         return;
     }
+    
+    if (![[user.profile.email lowercaseString] containsString:@"@gmail"]) {
+        [AppD.window showHint:@"gmail.com email only."];
+        return;
+    }
+    
     // Perform any operations on signed in user here.
-    NSString *userId = user.userID;                  // For client-side use only!
-    NSString *idToken = user.authentication.idToken; // Safe to send to the server
-    NSString *fullName = user.profile.name;
-    NSString *givenName = user.profile.givenName;
-    NSString *familyName = user.profile.familyName;
-    NSString *email = user.profile.email;
+    GoogleUserModel *userM = [[GoogleUserModel alloc] init];
+    userM.userId = user.userID;                  // For client-side use only!
+    userM.idToken = user.authentication.idToken; // Safe to send to the server
+    userM.fullName = user.profile.name;
+    userM.givenName = user.profile.givenName;
+    userM.familyName = user.profile.familyName;
+    userM.email = user.profile.email;
+    
+    EmailAccountModel *accountModel = [[EmailAccountModel alloc] init];
+    accountModel.User = userM.email;
+    if (![EmailAccountModel isEixtEmailAccount:accountModel]) {
+        // 上传到服务器
+        [GoogleUserModel addGoogleUserWithUser:userM];
+        [SendRequestUtil sendEmailConfigWithEmailAddress:userM.email type:@(4) caller:@(1) configJson:@"" ShowHud:YES];
+        
+    } else {
+        AppD.isGoogleSign = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:GOOGLE_EMAIL_SIGN_SUCCESS_NOTI object:nil];
+    }
+    
     // ...
 }
 

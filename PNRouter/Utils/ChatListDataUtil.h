@@ -34,4 +34,5 @@
 - (void) cancelChatHDWithFriendid:(NSString *) friendid;
 - (NSString *) getFriendSignPublickeyWithFriendid:(NSString *) fid;
 - (FriendModel *) getFriendWithUserid:(NSString *) fid;
+- (NSString *) getFriendUserKeyWithEmailAddress:(NSString *) email;
 @end

@@ -13,7 +13,7 @@ typedef void(^MoveSuccessBlock)(void);
 
 @interface PNEmailMoveViewController : PNBaseViewController
 @property (nonatomic, copy) MoveSuccessBlock moveBlock;
-- (instancetype) initWithFloderPath:(NSString *) floderPath uid:(NSInteger) uid;
+- (instancetype) initWithFloderPath:(NSString *) floderPath uid:(NSString *) uid isGoole:(BOOL) isGoogle;
 @end
 
 NS_ASSUME_NONNULL_END

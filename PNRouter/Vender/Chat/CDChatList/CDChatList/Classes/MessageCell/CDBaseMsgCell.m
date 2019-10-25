@@ -236,6 +236,7 @@
     msgRect.size.height = msgContentHeight;
     self.msgContent_left.frame = msgRect;
     
+    
     // 更新消息气泡的高度和宽度
     CGRect bubbleRec = self.bubbleImage_left.frame;
     bubbleRec.origin.x = data.chatConfig.headMargin * 2 + _headImage_left.cd_right - data.chatConfig.headMargin - data.chatConfig.bubbleShareAngleWidth;

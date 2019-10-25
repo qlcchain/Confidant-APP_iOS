@@ -387,8 +387,8 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2rH-2t-ISB">
                                             <rect key="frame" x="0.0" y="391" width="375" height="30"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sent from" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCB-Gg-BON">
-                                                    <rect key="frame" x="16" y="0.0" width="52.5" height="30"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sent from MyConfidant, the app for encrypted email." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCB-Gg-BON">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="30"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.58039215690000001" green="0.58823529409999997" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -400,23 +400,15 @@
                                                         <constraint firstAttribute="height" constant="0.5" id="nkY-WO-7fg"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confidant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rFT-6Z-gzd">
-                                                    <rect key="frame" x="71.5" y="0.5" width="52.5" height="29.5"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                                    <color key="textColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="rFT-6Z-gzd" firstAttribute="top" secondItem="txW-L7-4gh" secondAttribute="bottom" id="9P1-ZQ-FW6"/>
                                                 <constraint firstAttribute="height" constant="30" id="McU-qq-d2t"/>
                                                 <constraint firstItem="bCB-Gg-BON" firstAttribute="leading" secondItem="2rH-2t-ISB" secondAttribute="leading" constant="16" id="NfU-0W-ejZ"/>
                                                 <constraint firstAttribute="trailing" secondItem="txW-L7-4gh" secondAttribute="trailing" constant="16" id="Pza-Of-oT0"/>
-                                                <constraint firstItem="rFT-6Z-gzd" firstAttribute="leading" secondItem="bCB-Gg-BON" secondAttribute="trailing" constant="3" id="Spg-UF-b18"/>
-                                                <constraint firstAttribute="bottom" secondItem="rFT-6Z-gzd" secondAttribute="bottom" id="Tmo-Vv-SPK"/>
                                                 <constraint firstItem="bCB-Gg-BON" firstAttribute="top" secondItem="2rH-2t-ISB" secondAttribute="top" id="iGJ-Mj-uBj"/>
                                                 <constraint firstItem="txW-L7-4gh" firstAttribute="leading" secondItem="2rH-2t-ISB" secondAttribute="leading" constant="16" id="j1w-50-aOh"/>
+                                                <constraint firstAttribute="trailing" secondItem="bCB-Gg-BON" secondAttribute="trailing" constant="16" id="pOu-zJ-OyC"/>
                                                 <constraint firstAttribute="bottom" secondItem="bCB-Gg-BON" secondAttribute="bottom" id="r0b-7P-OUD"/>
                                                 <constraint firstItem="txW-L7-4gh" firstAttribute="top" secondItem="2rH-2t-ISB" secondAttribute="top" id="tXn-lG-Cyv"/>
                                             </constraints>

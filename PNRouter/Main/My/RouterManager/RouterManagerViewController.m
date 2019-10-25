@@ -11,7 +11,7 @@
 #import "QRViewController.h"
 #import "RouterModel.h"
 #import "RouterDetailViewController.h"
-#import "PNRouter-Swift.h"
+#import "MyConfidant-Swift.h"
 #import "SocketCountUtil.h"
 #import "SystemUtil.h"
 #import "PNDefaultHeaderView.h"
