@@ -61,10 +61,11 @@ def demo_pods
     #google 登陆
     pod'GoogleSignIn'
     pod 'GoogleAPIClientForREST'
+    pod 'LFKit/Component/LFBubbleView'
 end
 
 
-target 'PNRouter' do
+target 'MyConfidant' do
     
     platform :ios, '9.0'
     common_pods

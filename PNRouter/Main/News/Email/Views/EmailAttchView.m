@@ -95,7 +95,6 @@
                 NSData *imgData = aesDecryptData(attachment.attData, [self.deKey dataUsingEncoding:NSUTF8StringEncoding]);
                 cell.headImgV.image = [UIImage imageWithData:imgData];
                 
-                
             } else {
                 cell.headImgV.image = [UIImage imageWithData:attachment.attData];
             }
@@ -125,21 +124,27 @@
     } else {
         
         AttchCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:AttchCollectionCellResue forIndexPath:indexPath];
-        if (attachment.downStatus == 2) { // 下载完成
+        
+        if (attachment.attData) {
+            attachment.downStatus = 2;
             [cell.loadActivity stopAnimating];
             cell.loadActivity.hidden = YES;
-        } else if (attachment.downStatus == 1){ // 下载中
-            [cell.loadActivity startAnimating];
-            cell.loadActivity.hidden = NO;
         } else {
-            [cell.loadActivity startAnimating];
-            cell.loadActivity.hidden = NO;
-            
-            attachment.downStatus = 1;
-           
-            [self getAttDataWithAttM:attachment];
+            if (attachment.downStatus == 2) { // 下载完成
+                [cell.loadActivity stopAnimating];
+                cell.loadActivity.hidden = YES;
+            } else if (attachment.downStatus == 1){ // 下载中
+                [cell.loadActivity startAnimating];
+                cell.loadActivity.hidden = NO;
+            } else {
+                [cell.loadActivity startAnimating];
+                cell.loadActivity.hidden = NO;
+                
+                attachment.downStatus = 1;
+                
+                [self getAttDataWithAttM:attachment];
+            }
         }
-        
         
         cell.lblName.text = attachment.attName;
         NSArray *names = [attachment.attName componentsSeparatedByString:@"."];

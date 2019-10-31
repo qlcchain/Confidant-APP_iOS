@@ -84,6 +84,17 @@
     NSDictionary *params = @{@"Action":@"AddFriendReq",@"NickName":[userM.username base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId?:@"",@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"Msg":msg?:@""};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
+// 自动加好友请求
++ (void) sendAutoAddFriendWithFriendId:(NSString *) friendIds email:(NSString *) email type:(NSInteger) type showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_AddFriendsAuto,@"Type":@(type),@"UserId":userM.userId?:@"",@"Friends":friendIds?:@"",@"EmailId":[[email lowercaseString] base64EncodedString]};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 #pragma mark -tox pull文件
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId
 

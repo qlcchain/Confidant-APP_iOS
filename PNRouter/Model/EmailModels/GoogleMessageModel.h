@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *Bcc;
 @property (nonatomic ,strong) NSString *htmlContent;
 @property (nonatomic ,strong) NSString *friendId;
+@property (nonatomic ,strong) NSString *passHint;
 @property (nonatomic ,strong) NSString *deKey;
 @property (nonatomic , assign) int attachCount;
 @property (nonatomic, strong) NSMutableArray *attArray;

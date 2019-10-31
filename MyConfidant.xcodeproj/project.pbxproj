@@ -443,6 +443,12 @@
 		7353944F2266CF140004CE85 /* CircleMemberDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353944D2266CF140004CE85 /* CircleMemberDetailViewController.xib */; };
 		7356429D222630D800DC0BCB /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7356429C222630D800DC0BCB /* ChatModel.m */; };
 		735642A02226752A00DC0BCB /* SendCacheChatUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7356429F2226752A00DC0BCB /* SendCacheChatUtil.m */; };
+		735D7B2E2367EDE300564A28 /* PNEmailPassDefaultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D7B2D2367EDE300564A28 /* PNEmailPassDefaultView.m */; };
+		735D7B302367EDEE00564A28 /* PNEmailPassDefaultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735D7B2F2367EDEE00564A28 /* PNEmailPassDefaultView.xib */; };
+		735D7B342368112800564A28 /* EmailPassCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D7B322368112800564A28 /* EmailPassCell.m */; };
+		735D7B352368112800564A28 /* EmailPassCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735D7B332368112800564A28 /* EmailPassCell.xib */; };
+		735D7B392368113D00564A28 /* EmailPassFromCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D7B372368113D00564A28 /* EmailPassFromCell.m */; };
+		735D7B3A2368113D00564A28 /* EmailPassFromCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735D7B382368113D00564A28 /* EmailPassFromCell.xib */; };
 		735D9EDE235846BA00E46C31 /* GoogleMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D9EDD235846BA00E46C31 /* GoogleMessageModel.m */; };
 		7360B85221FC3269008FB181 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85121FC3269008FB181 /* FileData.m */; };
 		7360B85521FC632A008FB181 /* FileDownUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85421FC632A008FB181 /* FileDownUtil.m */; };
@@ -556,7 +562,11 @@
 		73899CC62152011000962B14 /* GuidePageView1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73899CBF2152011000962B14 /* GuidePageView1.xib */; };
 		73899CC72152011000962B14 /* GuidePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73899CC02152011000962B14 /* GuidePageViewController.m */; };
 		738C1BDA235D41E400E558DB /* NSData+UTF8.m in Sources */ = {isa = PBXBuildFile; fileRef = 738C1BD9235D41E400E558DB /* NSData+UTF8.m */; };
-		738C1BDE2362ED1E00E558DB /* 太阳.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 738C1BDD2362ED1E00E558DB /* 太阳.jpg */; };
+		738C1BE2236697AF00E558DB /* PNEmailEncodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 738C1BE0236697AF00E558DB /* PNEmailEncodeDetailViewController.m */; };
+		738C1BE3236697AF00E558DB /* PNEmailEncodeDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738C1BE1236697AF00E558DB /* PNEmailEncodeDetailViewController.xib */; };
+		738C1BE62366C14600E558DB /* PNSetEmailPassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738C1BE52366C14600E558DB /* PNSetEmailPassView.m */; };
+		738C1BE82366C15100E558DB /* PNSetEmailPassView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738C1BE72366C15100E558DB /* PNSetEmailPassView.xib */; };
+		738C1BEB2366CBCB00E558DB /* EmailPassModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 738C1BEA2366CBCB00E558DB /* EmailPassModel.m */; };
 		7392791121F72203003AAD58 /* DiskManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392790F21F72203003AAD58 /* DiskManagerViewController.m */; };
 		7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7392791021F72203003AAD58 /* DiskManagerViewController.xib */; };
 		7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392791421FAF356003AAD58 /* UploadFileManager.m */; };
@@ -689,7 +699,7 @@
 		73FD63D6235454B00064F881 /* GTLRGmailQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 73FD63D0235454AF0064F881 /* GTLRGmailQuery.m */; };
 		73FE5B2422DF561E004D0655 /* EmailConfigure.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73FE5B2322DF561E004D0655 /* EmailConfigure.plist */; };
 		73FE5B2722DF56FE004D0655 /* EmailFloderConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73FE5B2622DF56FE004D0655 /* EmailFloderConfig.m */; };
-		815FEEED645E5889A42F8CA0 /* libPods-PNRouter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C33670BA720BB01C8243AF /* libPods-PNRouter.a */; };
+		B886FAB0DE5D26DAD63439FE /* libPods-MyConfidant.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B805F629ABC1DC4174A75D8 /* libPods-MyConfidant.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -727,6 +737,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1B805F629ABC1DC4174A75D8 /* libPods-MyConfidant.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyConfidant.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C33670BA720BB01C8243AF /* libPods-PNRouter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PNRouter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		580CFE0F2224DD8200460B41 /* PNUnlockView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNUnlockView.h; sourceTree = "<group>"; };
 		580CFE102224DD8200460B41 /* PNUnlockView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNUnlockView.m; sourceTree = "<group>"; };
@@ -1536,6 +1547,15 @@
 		7356429C222630D800DC0BCB /* ChatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatModel.m; sourceTree = "<group>"; };
 		7356429E2226752A00DC0BCB /* SendCacheChatUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendCacheChatUtil.h; sourceTree = "<group>"; };
 		7356429F2226752A00DC0BCB /* SendCacheChatUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendCacheChatUtil.m; sourceTree = "<group>"; };
+		735D7B2C2367EDE300564A28 /* PNEmailPassDefaultView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailPassDefaultView.h; sourceTree = "<group>"; };
+		735D7B2D2367EDE300564A28 /* PNEmailPassDefaultView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailPassDefaultView.m; sourceTree = "<group>"; };
+		735D7B2F2367EDEE00564A28 /* PNEmailPassDefaultView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailPassDefaultView.xib; sourceTree = "<group>"; };
+		735D7B312368112800564A28 /* EmailPassCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailPassCell.h; sourceTree = "<group>"; };
+		735D7B322368112800564A28 /* EmailPassCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailPassCell.m; sourceTree = "<group>"; };
+		735D7B332368112800564A28 /* EmailPassCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailPassCell.xib; sourceTree = "<group>"; };
+		735D7B362368113D00564A28 /* EmailPassFromCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailPassFromCell.h; sourceTree = "<group>"; };
+		735D7B372368113D00564A28 /* EmailPassFromCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailPassFromCell.m; sourceTree = "<group>"; };
+		735D7B382368113D00564A28 /* EmailPassFromCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailPassFromCell.xib; sourceTree = "<group>"; };
 		735D9EDC235846BA00E46C31 /* GoogleMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GoogleMessageModel.h; sourceTree = "<group>"; };
 		735D9EDD235846BA00E46C31 /* GoogleMessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GoogleMessageModel.m; sourceTree = "<group>"; };
 		7360B85021FC3269008FB181 /* FileData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
@@ -1776,7 +1796,14 @@
 		73899CC02152011000962B14 /* GuidePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuidePageViewController.m; sourceTree = "<group>"; };
 		738C1BD8235D41E400E558DB /* NSData+UTF8.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+UTF8.h"; sourceTree = "<group>"; };
 		738C1BD9235D41E400E558DB /* NSData+UTF8.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+UTF8.m"; sourceTree = "<group>"; };
-		738C1BDD2362ED1E00E558DB /* 太阳.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "太阳.jpg"; sourceTree = "<group>"; };
+		738C1BDF236697AF00E558DB /* PNEmailEncodeDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailEncodeDetailViewController.h; sourceTree = "<group>"; };
+		738C1BE0236697AF00E558DB /* PNEmailEncodeDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailEncodeDetailViewController.m; sourceTree = "<group>"; };
+		738C1BE1236697AF00E558DB /* PNEmailEncodeDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailEncodeDetailViewController.xib; sourceTree = "<group>"; };
+		738C1BE42366C14600E558DB /* PNSetEmailPassView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNSetEmailPassView.h; sourceTree = "<group>"; };
+		738C1BE52366C14600E558DB /* PNSetEmailPassView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNSetEmailPassView.m; sourceTree = "<group>"; };
+		738C1BE72366C15100E558DB /* PNSetEmailPassView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNSetEmailPassView.xib; sourceTree = "<group>"; };
+		738C1BE92366CBCB00E558DB /* EmailPassModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailPassModel.h; sourceTree = "<group>"; };
+		738C1BEA2366CBCB00E558DB /* EmailPassModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailPassModel.m; sourceTree = "<group>"; };
 		7392790E21F72203003AAD58 /* DiskManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiskManagerViewController.h; sourceTree = "<group>"; };
 		7392790F21F72203003AAD58 /* DiskManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiskManagerViewController.m; sourceTree = "<group>"; };
 		7392791021F72203003AAD58 /* DiskManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskManagerViewController.xib; sourceTree = "<group>"; };
@@ -1993,7 +2020,9 @@
 		73FE5B2522DF56FE004D0655 /* EmailFloderConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailFloderConfig.h; sourceTree = "<group>"; };
 		73FE5B2622DF56FE004D0655 /* EmailFloderConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailFloderConfig.m; sourceTree = "<group>"; };
 		8647286DB46B2002FAE9C2DA /* Pods-PNRouter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PNRouter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PNRouter/Pods-PNRouter.debug.xcconfig"; sourceTree = "<group>"; };
+		B89129695BEAA2E340C52494 /* Pods-MyConfidant.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyConfidant.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyConfidant/Pods-MyConfidant.debug.xcconfig"; sourceTree = "<group>"; };
 		C936D75EB18FB2D69610E30C /* Pods-PNRouter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PNRouter.release.xcconfig"; path = "Pods/Target Support Files/Pods-PNRouter/Pods-PNRouter.release.xcconfig"; sourceTree = "<group>"; };
+		FA1EBDA7492DACDB368F3C5C /* Pods-MyConfidant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyConfidant.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyConfidant/Pods-MyConfidant.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2021,10 +2050,10 @@
 				7378829F21ABF6060033A189 /* Social.framework in Frameworks */,
 				7306054521748BD5005A0E13 /* libopencore-amrwb.a in Frameworks */,
 				7306054621748BD5005A0E13 /* libopencore-amrnb.a in Frameworks */,
-				815FEEED645E5889A42F8CA0 /* libPods-PNRouter.a in Frameworks */,
 				730E3BFB2333760B009AF1EE /* TrezorCrytoEd25519.framework in Frameworks */,
 				730E3C002338660B009AF1EE /* QLCFramework.framework in Frameworks */,
 				73EAC9852320F9E2002C1637 /* LibsodiumSDK.framework in Frameworks */,
+				B886FAB0DE5D26DAD63439FE /* libPods-MyConfidant.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2045,6 +2074,7 @@
 				730330E021C76E2F007C4063 /* UserNotifications.framework */,
 				7378829E21ABF6060033A189 /* Social.framework */,
 				49C33670BA720BB01C8243AF /* libPods-PNRouter.a */,
+				1B805F629ABC1DC4174A75D8 /* libPods-MyConfidant.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2579,7 +2609,6 @@
 		585AEE12213F6EDE0098A070 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				738C1BDD2362ED1E00E558DB /* 太阳.jpg */,
 				73EAC67823150CD4002C1637 /* guidance_notes_1.html */,
 				73EAC67923150CD4002C1637 /* guidance_notes_4.html */,
 				73ED4B3B230FDE2000AF4B51 /* guidance_notes_2.html */,
@@ -3022,6 +3051,12 @@
 				73ED4B25230A803700AF4B51 /* EmailEncrypedCell.h */,
 				73ED4B26230A803700AF4B51 /* EmailEncrypedCell.m */,
 				73ED4B27230A803700AF4B51 /* EmailEncrypedCell.xib */,
+				735D7B312368112800564A28 /* EmailPassCell.h */,
+				735D7B322368112800564A28 /* EmailPassCell.m */,
+				735D7B332368112800564A28 /* EmailPassCell.xib */,
+				735D7B362368113D00564A28 /* EmailPassFromCell.h */,
+				735D7B372368113D00564A28 /* EmailPassFromCell.m */,
+				735D7B382368113D00564A28 /* EmailPassFromCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3065,6 +3100,9 @@
 				73ED4B20230A78F400AF4B51 /* PNEmailEncrypedViewController.h */,
 				73ED4B21230A78F400AF4B51 /* PNEmailEncrypedViewController.m */,
 				73ED4B22230A78F400AF4B51 /* PNEmailEncrypedViewController.xib */,
+				738C1BDF236697AF00E558DB /* PNEmailEncodeDetailViewController.h */,
+				738C1BE0236697AF00E558DB /* PNEmailEncodeDetailViewController.m */,
+				738C1BE1236697AF00E558DB /* PNEmailEncodeDetailViewController.xib */,
 			);
 			path = VCs;
 			sourceTree = "<group>";
@@ -3098,6 +3136,12 @@
 				733B6AB5230548E7003660F8 /* PNEmailContactView.h */,
 				733B6AB6230548E7003660F8 /* PNEmailContactView.m */,
 				733B6AB8230548F1003660F8 /* PNEmailContactView.xib */,
+				738C1BE42366C14600E558DB /* PNSetEmailPassView.h */,
+				738C1BE52366C14600E558DB /* PNSetEmailPassView.m */,
+				738C1BE72366C15100E558DB /* PNSetEmailPassView.xib */,
+				735D7B2C2367EDE300564A28 /* PNEmailPassDefaultView.h */,
+				735D7B2D2367EDE300564A28 /* PNEmailPassDefaultView.m */,
+				735D7B2F2367EDEE00564A28 /* PNEmailPassDefaultView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4328,6 +4372,8 @@
 				7308B1C623541C6F004A8DDC /* GoogleUserModel.m */,
 				735D9EDC235846BA00E46C31 /* GoogleMessageModel.h */,
 				735D9EDD235846BA00E46C31 /* GoogleMessageModel.m */,
+				738C1BE92366CBCB00E558DB /* EmailPassModel.h */,
+				738C1BEA2366CBCB00E558DB /* EmailPassModel.m */,
 			);
 			path = EmailModels;
 			sourceTree = "<group>";
@@ -4437,6 +4483,8 @@
 			children = (
 				8647286DB46B2002FAE9C2DA /* Pods-PNRouter.debug.xcconfig */,
 				C936D75EB18FB2D69610E30C /* Pods-PNRouter.release.xcconfig */,
+				B89129695BEAA2E340C52494 /* Pods-MyConfidant.debug.xcconfig */,
+				FA1EBDA7492DACDB368F3C5C /* Pods-MyConfidant.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -4578,6 +4626,7 @@
 				73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */,
 				730AE07D22E9504900E0BC67 /* SIXEditor.bundle in Resources */,
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
+				735D7B302367EDEE00564A28 /* PNEmailPassDefaultView.xib in Resources */,
 				733B6AB9230548F1003660F8 /* PNEmailContactView.xib in Resources */,
 				73E3C71622D5793700D7C9C6 /* PNEmailLoginViewController.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
@@ -4620,6 +4669,7 @@
 				583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */,
 				7341A87B22FC1603001AF7C2 /* PNSearchViewController.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
+				735D7B352368112800564A28 /* EmailPassCell.xib in Resources */,
 				582BFE38221688C200D8C2C8 /* DiskAlertView.xib in Resources */,
 				582BFE3A221688C200D8C2C8 /* DiskToastView.xib in Resources */,
 				583BF93121F6EDB80078A2A8 /* MyFilesCell.xib in Resources */,
@@ -4629,7 +4679,6 @@
 				7321A3FD2303DC7900D9B97A /* EmailConfigCell.xib in Resources */,
 				73E3C6EE22D3453400D7C9C6 /* TermsViewController.xib in Resources */,
 				7301A897226EB876006225FA /* Terms of Service.html in Resources */,
-				738C1BDE2362ED1E00E558DB /* 太阳.jpg in Resources */,
 				73625748213E8B3400D7FD6B /* LaunchScreen.storyboard in Resources */,
 				730951AA22D2DC58001BA82E /* PNMessageMenuView.xib in Resources */,
 				586D417C224B609F002008C6 /* ChooseCircleCell.xib in Resources */,
@@ -4652,6 +4701,7 @@
 				73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */,
 				587C52CD215CAF14006787FB /* RouterManagementCell.xib in Resources */,
 				583BF91B21F6B5AB0078A2A8 /* DetailInformationViewController.xib in Resources */,
+				738C1BE3236697AF00E558DB /* PNEmailEncodeDetailViewController.xib in Resources */,
 				73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */,
 				5833F9C6221E57F400F7B63D /* ContactHeaderView.xib in Resources */,
 				58F178A4221FF376001CD0AF /* ChooseContactTableCell.xib in Resources */,
@@ -4695,6 +4745,7 @@
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
 				73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */,
 				7341A88122FD571D001AF7C2 /* PNEmailEditViewController.xib in Resources */,
+				738C1BE82366C15100E558DB /* PNSetEmailPassView.xib in Resources */,
 				73E7744722DD63AD001C652E /* PNEmailOptionEnumView.xib in Resources */,
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
 				73EAC67A23150CD4002C1637 /* guidance_notes_1.html in Resources */,
@@ -4711,6 +4762,7 @@
 				581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */,
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
 				73F102D022DF646800E7D257 /* PNEmailTypeSelectView.xib in Resources */,
+				735D7B3A2368113D00564A28 /* EmailPassFromCell.xib in Resources */,
 				7330F3C421476E9300FF4EEC /* UserInfoCell.xib in Resources */,
 				584B43AF21FFEE0600D1F21A /* ReconfigDiskViewController.xib in Resources */,
 				7330F39F214666E400FF4EEC /* PersonCodeViewController.xib in Resources */,
@@ -4750,7 +4802,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PNRouter-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-MyConfidant-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4791,7 +4843,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PNRouter/Pods-PNRouter-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-MyConfidant/Pods-MyConfidant-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
@@ -4808,7 +4860,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PNRouter/Pods-PNRouter-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MyConfidant/Pods-MyConfidant-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4991,6 +5043,7 @@
 				73001A262191328C003D07CC /* RSAModel.m in Sources */,
 				581FDF4021F024170068C120 /* network.m in Sources */,
 				7362577E2142143F00D7FD6B /* NSString+Base64.m in Sources */,
+				735D7B2E2367EDE300564A28 /* PNEmailPassDefaultView.m in Sources */,
 				582BFE302216538D00D8C2C8 /* GetDiskDetailInfoModel.m in Sources */,
 				583BF91F21F6B5D00078A2A8 /* SharedSettingsViewController.m in Sources */,
 				7378842321AD364E0033A189 /* Base58Util.swift in Sources */,
@@ -5036,6 +5089,7 @@
 				7378840321ACF2970033A189 /* OCTFriendRequest.m in Sources */,
 				7330F4FB2149147200FF4EEC /* CTInputCaculator.m in Sources */,
 				7330F3BE214769DF00FF4EEC /* FriendDetailViewController.m in Sources */,
+				738C1BE62366C14600E558DB /* PNSetEmailPassView.m in Sources */,
 				73D00EB2215F160B0013E20D /* SocketDataUtil.m in Sources */,
 				7330F4E52149147200FF4EEC /* CTHelper.m in Sources */,
 				7378840221ACF2970033A189 /* OCTFriend.m in Sources */,
@@ -5044,6 +5098,7 @@
 				7341A86322F81146001AF7C2 /* pwd2key.c in Sources */,
 				5825A24A21FC3ACB00E6194B /* OperationRecordModel.m in Sources */,
 				73FD63D5235454B00064F881 /* GTLRGmailObjects.m in Sources */,
+				738C1BEB2366CBCB00E558DB /* EmailPassModel.m in Sources */,
 				730605622179B3C0005A0E13 /* MediaTableViewCell.m in Sources */,
 				7378840721ACF2970033A189 /* OCTMessageCall.m in Sources */,
 				580CFE4F2227B7FD00460B41 /* UIApplication+MemoryLeak.m in Sources */,
@@ -5094,6 +5149,7 @@
 				7306054A2176CA51005A0E13 /* CDFileTableViewCell.m in Sources */,
 				581FDF5221F024170068C120 /* friend_requests.m in Sources */,
 				7362574B213E8B3400D7FD6B /* main.m in Sources */,
+				738C1BE2236697AF00E558DB /* PNEmailEncodeDetailViewController.m in Sources */,
 				73E7744522DD639C001C652E /* PNEmailOptionEnumView.m in Sources */,
 				73060528216F3572005A0E13 /* RequestService.m in Sources */,
 				581DE4E22238D9D10056D4F8 /* CreateGroupChatViewController.m in Sources */,
@@ -5175,6 +5231,7 @@
 				581FDF3821F024160068C120 /* groupav.m in Sources */,
 				733EE48922E54F410042457C /* PNEmailSendViewController.m in Sources */,
 				736257812142143F00D7FD6B /* NSString+HexStr.m in Sources */,
+				735D7B342368112800564A28 /* EmailPassCell.m in Sources */,
 				582BFE56221D3D2700D8C2C8 /* RouterAliasViewController.m in Sources */,
 				73E7743222D88698001C652E /* EmailContentCell.m in Sources */,
 				73899CC72152011000962B14 /* GuidePageViewController.m in Sources */,
@@ -5274,6 +5331,7 @@
 				7378840B21ACF2970033A189 /* OCTMessageText.m in Sources */,
 				7330F4F72149147200FF4EEC /* CTinputHelper.m in Sources */,
 				7378841621ACF2970033A189 /* OCTFilePathOutput.m in Sources */,
+				735D7B392368113D00564A28 /* EmailPassFromCell.m in Sources */,
 				7330F38C214645B400FF4EEC /* MyHeadView.m in Sources */,
 				583BF92B21F6E4940078A2A8 /* UploadFilesCell.m in Sources */,
 				7330F4FD2149147200FF4EEC /* CTMoreKeyBoard.m in Sources */,
@@ -5522,7 +5580,7 @@
 		};
 		7362574F213E8B3400D7FD6B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8647286DB46B2002FAE9C2DA /* Pods-PNRouter.debug.xcconfig */;
+			baseConfigurationReference = B89129695BEAA2E340C52494 /* Pods-MyConfidant.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -5552,7 +5610,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
-					"$(PROJECT_DIR)/PNRouter/Vender/openssl",
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);
@@ -5570,7 +5627,7 @@
 		};
 		73625750213E8B3400D7FD6B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C936D75EB18FB2D69610E30C /* Pods-PNRouter.release.xcconfig */;
+			baseConfigurationReference = FA1EBDA7492DACDB368F3C5C /* Pods-MyConfidant.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -5600,7 +5657,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
-					"$(PROJECT_DIR)/PNRouter/Vender/openssl",
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);

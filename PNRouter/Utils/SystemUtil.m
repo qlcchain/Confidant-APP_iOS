@@ -389,7 +389,7 @@
 {
     char data[32];
     
-    for (int x=0;x<32;data[x++] = (char)('A' + (arc4random_uniform(1))));
+    for (int x=0;x<32;data[x++] = (char)('A' + (arc4random_uniform(32))));
     
     return [[NSString alloc] initWithBytes:data length:32 encoding:NSUTF8StringEncoding];
     

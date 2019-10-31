@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="110" id="KGk-i7-Jjw" customClass="EmailPassCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="109.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XBq-DZ-pMa">
+                        <rect key="frame" x="73" y="23" width="174" height="26"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="email_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Q8f-gz-Cnt">
+                                <rect key="frame" x="0.0" y="1" width="24" height="24"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Encrypted Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgv-az-Aiy">
+                                <rect key="frame" x="32" y="1.5" width="142" height="23"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="19"/>
+                                <color key="textColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="sgv-az-Aiy" firstAttribute="centerY" secondItem="XBq-DZ-pMa" secondAttribute="centerY" id="J5h-5d-4XJ"/>
+                            <constraint firstItem="Q8f-gz-Cnt" firstAttribute="centerY" secondItem="XBq-DZ-pMa" secondAttribute="centerY" id="LtH-b4-dGi"/>
+                            <constraint firstAttribute="trailing" secondItem="sgv-az-Aiy" secondAttribute="trailing" id="NS1-RX-dqd"/>
+                            <constraint firstItem="Q8f-gz-Cnt" firstAttribute="leading" secondItem="XBq-DZ-pMa" secondAttribute="leading" id="R5F-cb-y7i"/>
+                            <constraint firstAttribute="height" constant="26" id="Y9P-9G-8Ye"/>
+                            <constraint firstItem="sgv-az-Aiy" firstAttribute="leading" secondItem="Q8f-gz-Cnt" secondAttribute="trailing" constant="8" id="z06-n0-XRu"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Encrypted Email client and beyond - your comprehensive privacy protection tool " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jjg-Hu-DYJ">
+                        <rect key="frame" x="49" y="56" width="222" height="28"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                        <color key="textColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Rm-NH-g8l">
+                        <rect key="frame" x="16" y="109" width="288" height="0.5"/>
+                        <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="mrC-YN-aqu"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="jjg-Hu-DYJ" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="0zh-pg-KBB"/>
+                    <constraint firstAttribute="bottom" secondItem="4Rm-NH-g8l" secondAttribute="bottom" id="5ZA-Vu-Ydk"/>
+                    <constraint firstItem="4Rm-NH-g8l" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="BiA-Q5-NtP"/>
+                    <constraint firstItem="XBq-DZ-pMa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="23" id="JeA-jt-DPm"/>
+                    <constraint firstItem="XBq-DZ-pMa" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="SIY-xf-5UE"/>
+                    <constraint firstItem="jjg-Hu-DYJ" firstAttribute="top" secondItem="XBq-DZ-pMa" secondAttribute="bottom" constant="7" id="YVd-Bc-iej"/>
+                    <constraint firstAttribute="trailing" secondItem="4Rm-NH-g8l" secondAttribute="trailing" constant="16" id="wTP-S5-Q03"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <point key="canvasLocation" x="131.8840579710145" y="122.54464285714285"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="email_logo" width="24" height="24"/>
+    </resources>
+</document>
