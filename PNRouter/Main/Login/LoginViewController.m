@@ -471,9 +471,9 @@
     [_showRouterArr addObjectsFromArray:routeArr];
     
     // 默认设置为pow node
-    if (routeArr.count == 0) {
-        [self parsePowTempCode];
-    }
+//    if (routeArr.count == 0) {
+//        [self parsePowTempCode];
+//    }
     
     [self addObserve];
     [self appOptionWithLoginType:_loginType];

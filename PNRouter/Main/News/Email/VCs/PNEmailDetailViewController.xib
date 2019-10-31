@@ -14,8 +14,11 @@
             <connections>
                 <outlet property="attBackView" destination="K49-lK-kID" id="lRx-WR-Wfu"/>
                 <outlet property="attchH" destination="qef-Cd-2VE" id="uyO-Ih-fzm"/>
+                <outlet property="backContraintV" destination="pNM-Nd-vgm" id="U7e-ml-bLr"/>
+                <outlet property="bottomView" destination="xdc-Hq-cfy" id="zqv-Xz-yEy"/>
                 <outlet property="forwardBtn" destination="fdU-Eu-mrG" id="M5M-EF-K7N"/>
                 <outlet property="lblFloderName" destination="wJK-zD-ctt" id="bu5-2K-Y6x"/>
+                <outlet property="mainScrollView" destination="2Ti-d0-Znk" id="jvD-uV-hH5"/>
                 <outlet property="mainTabV" destination="Bcl-LL-J7l" id="0d1-IP-bfk"/>
                 <outlet property="moreW" destination="rIK-l2-AKT" id="jzc-Di-rFE"/>
                 <outlet property="nodeBtn" destination="tPW-Yz-KHa" id="X4h-6x-OWW"/>
@@ -24,6 +27,7 @@
                 <outlet property="replyBtn" destination="kXC-XT-MC3" id="Rv6-Jj-Agj"/>
                 <outlet property="tabH" destination="07P-Os-jRO" id="t7E-Er-cw8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="webBackView" destination="k7G-19-CnK" id="VxZ-pb-9o4"/>
                 <outlet property="webH" destination="FqZ-Cw-5Ya" id="SGJ-Ru-zMR"/>
                 <outlet property="webV" destination="NDs-wq-Goe" id="gng-h3-5yC"/>
             </connections>

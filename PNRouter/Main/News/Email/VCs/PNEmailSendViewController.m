@@ -48,13 +48,14 @@
 #import "EmailDataBaseUtil.h"
 
 #import "PNEmailContactView.h"
-
+#import "PNSetEmailPassView.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 
 #import <GoogleSignIn/GoogleSignIn.h>
 #import "GoogleServerManage.h"
 #import "GoogleUserModel.h"
 #import <GoogleAPIClientForREST/GTLRBase64.h>
+
 
 @interface PNEmailSendViewController ()<UITextViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate,YBImageBrowserDelegate,UIWebViewDelegate>
@@ -63,6 +64,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 @property (nonatomic, strong) PNEmailContactView *contactView;
+@property (nonatomic, strong) PNSetEmailPassView *passView;
+@property (weak, nonatomic) IBOutlet UIButton *encodeBtn;
+@property (weak, nonatomic) IBOutlet UIButton *attchBtn;
+
 
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
@@ -145,13 +150,37 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
     sender.selected = !sender.selected;
 }
+- (PNSetEmailPassView *)passView
+{
+    if (!_passView) {
+        _passView = [PNSetEmailPassView loadPNSetEmailPassView];
+        // 点击设置
+        @weakify_self
+        [_passView setClickSetPassB:^(BOOL isSet) {
+            if (isSet) {
+                [weakSelf.encodeBtn setImage:[UIImage imageNamed:@"email_encode_selected"] forState:UIControlStateNormal];
+            } else {
+                [weakSelf.encodeBtn setImage:[UIImage imageNamed:@"email_encode_unselected"] forState:UIControlStateNormal];
+            }
+        }];
+    }
+    return _passView;
+}
+- (IBAction)clickEncodeBtn:(id)sender {
+    [self.view endEditing:YES];
+    [self.passView showEmailSetPassView:self.view];
+}
+- (IBAction)clickAttchBtn:(id)sender {
+    if (_mainScrollView.contentSize.height > SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT) {
+         [_mainScrollView setContentOffset:CGPointMake(0, _mainScrollView.contentSize.height-(SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT)) animated:YES];
+    }
+    
+}
 - (IBAction)clickSelToUserAction:(id)sender {
     self.selTextView = _toTF;
     _selContactType = 1;
     PNEmailContactViewController *vc = [[PNEmailContactViewController alloc] init];
     [self presentModalVC:vc animated:YES];
-    
-
 }
 - (IBAction)clickSelCCUserAction:(id)sender {
     self.selTextView = _ccTF;
@@ -623,7 +652,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     
                     // PNG image data
                     NSData *fileData = attM.attData;
-                    if (userKeys && userKeys.count > 0) {
+                    if (msgKey && msgKey.length > 0) {
                         NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
                         fileData = aesEncryptData(attM.attData,msgKeyData);
                     }
@@ -981,13 +1010,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 - (void) sendEmailWithShowLoading:(BOOL) isLoading keys:(NSArray *) userKeys
 {
-    
-    
+    if (self.passView.passM.isSet) {
+        if (!(self.sendType == ReplyEmail || self.sendType == ForwardEmail)) {
+            if (self.contentTF.text.trim.length == 0) {
+                if (!isLoading) {
+                    [self.view hideHud];
+                }
+                [self.view showHint:@"The body cannot be empty."];
+                return;
+            }
+        }
+    }
     
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     if (accountM.userId && accountM.userId.length > 0) {
         if (AppD.isGoogleSign) {
-            
             
             if (isLoading) {
                 [self.view showHudInView:self.view hint:@"Sending…" userInteractionEnabled:NO hideTime:REQEUST_TIME_60];
@@ -997,12 +1034,26 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             NSString *symmetKey = @"";
             NSString *msgKey = @"";
             
-            if (userKeys && userKeys.count > 0) {
+            if (self.passView.passM.isSet) {
+                
+                if (self.passView.passM.passStr.length > 16) {
+                   msgKey = [self.passView.passM.passStr substringToIndex:16];
+                } else {
+                    msgKey = self.passView.passM.passStr;
+                    while (msgKey.length < 16) {
+                        msgKey = [msgKey stringByAppendingString:@"0"];
+                    }
+                }
+                NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+                symmetKey = [symmetData base64EncodedString];
+                
+            } else if (userKeys && userKeys.count > 0) {
                 // 生成32位对称密钥
                 msgKey = [SystemUtil get32AESKey];
                 NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
                 symmetKey = [symmetData base64EncodedString];
             }
+            
 
             // 转换成 html
             @weakify_self
@@ -1011,7 +1062,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                 
                                                NSString *writeHtml = html?:@"";
                                                 __block NSString *keys = @"";
-                                                if (userKeys && userKeys.count>0) {
+                                                if (weakSelf.passView.passM.isSet) {
+                                                    
+                                                } else if (userKeys && userKeys.count>0) {
                                                     [userKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                                                         EmailUserKeyModel *userKeyM = obj;
                                                         keys = [keys stringByAppendingString:userKeyM.User];
@@ -1030,6 +1083,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                     NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
                                                     keys = [keys stringByAppendingString:dsKey];
                                                 }
+                                                
+                                                
                                                 if (weakSelf.sendType == ReplyEmail) {
                                                     writeHtml =[writeHtml stringByAppendingString:@"<br/><br/><br/><div>----------------- Original -----------------</div>"];
                                                 } else if (weakSelf.sendType == ForwardEmail) {
@@ -1038,7 +1093,26 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                 
                                                 writeHtml = [writeHtml stringByAppendingString:weakSelf.emailInfo.htmlContent?:@""];
                                                 
-                                                if (keys.length > 0) {
+                                                if (weakSelf.passView.passM.isSet) {
+                                                    
+                                                    if ([writeHtml containsString:confidantEmialText]) {
+                                                        writeHtml = [writeHtml stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
+                                                    }
+                                                    writeHtml = aesEncryptString(writeHtml, [msgKey substringToIndex:16]);
+                                                    NSString *hintStr = [NSString getNotNullValue:weakSelf.passView.passM.hintStr];
+                                                    if (hintStr.length == 0) {
+                                                        hintStr = @"0";
+                                                    }
+                                                    NSString *passStr = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantpass%@\'></span>",hintStr];
+                                                    
+                                                    NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantuserid%@\'></span>",[UserConfig getShareObject].userId];
+                                                    
+                                                    writeHtml = [writeHtml stringByAppendingString:passStr];
+                                                    writeHtml = [writeHtml stringByAppendingString:friendID];
+                                                    writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+                                                    
+                                                } else if (keys.length > 0) {
+                                                    
                                                     if ([writeHtml containsString:confidantEmialText]) {
                                                         writeHtml = [writeHtml stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
                                                     }
@@ -1050,12 +1124,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                     writeHtml = [writeHtml stringByAppendingString:userKeyStr];
                                                     writeHtml = [writeHtml stringByAppendingString:friendID];
                                                     writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+                                                    
                                                 } else {
                                                     
                                                     NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantuserid%@\'></span>",[UserConfig getShareObject].userId];
                                                     writeHtml = [writeHtml stringByAppendingString:friendID];
                                                     
-                                                    if (![writeHtml containsString:@"Sent from MyConfidant"]) {
+                                                    if (![writeHtml containsString:@"Sent from MyConfidant, the app for encrypted email."]) {
                                                         writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
                                                     }
                                                 }
@@ -1086,10 +1161,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                             // 发送好友请求
                                                             if (![weakSelf.emailInfo.friendId isEqualToString:[UserConfig getShareObject].userId]) {
                                                                 
-                                                                NSString *msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
-                                                                msg = [msg base64EncodedString];
+//                                                                NSString *msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
+//                                                                msg = [msg base64EncodedString];
                                                                 
-                                                                [SendRequestUtil sendAddFriendWithFriendId:weakSelf.emailInfo.friendId msg:msg showHud:NO];
+                                                                [SendRequestUtil sendAutoAddFriendWithFriendId:weakSelf.emailInfo.friendId email:accountM.User type:1 showHud:NO];
                                                             }
                                                         }
                                                         [weakSelf leftNavBarItemPressedWithPop:NO];
@@ -1110,17 +1185,30 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     MCOMessageBuilder *messageBuilder = [self getSendMessageBuilder];
     NSString *symmetKey = @"";
     NSString *msgKey = @"";
-    if (userKeys && userKeys.count > 0) {
+    if (self.passView.passM.isSet) {
+        
+        if (self.passView.passM.passStr.length > 16) {
+            msgKey = [self.passView.passM.passStr substringToIndex:16];
+        } else {
+            msgKey = self.passView.passM.passStr;
+            while (msgKey.length < 16) {
+                msgKey = [msgKey stringByAppendingString:@"0"];
+            }
+        }
+        NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+        symmetKey = [symmetData base64EncodedString];
+        
+    } else if (userKeys && userKeys.count > 0) {
         // 生成32位对称密钥
         msgKey = [SystemUtil get32AESKey];
         NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
         symmetKey = [symmetData base64EncodedString];
-        // 好友公钥加密对称密钥
-      //  NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
-        // 自己公钥加密对称密钥
-       // NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+    }
+    
+    if (msgKey.length > 0) {
         
         NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+        
         if (messageBuilder.textBody && messageBuilder.textBody.length > 0) {
             messageBuilder.textBody = aesEncryptString(messageBuilder.textBody, [msgKey substringToIndex:16]);
         }
@@ -1140,8 +1228,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 NSLog(@"---length = %ld",attachment.data.length);
             }];
         }
- 
     }
+    
+    
+    
     @weakify_self
     if (isLoading) {
          [self.view showHudInView:self.view hint:@"Sending…" userInteractionEnabled:NO hideTime:REQEUST_TIME_60];
@@ -1151,7 +1241,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                            andCompletionHandler:^(NSString *html) {
                                NSString *writeHtml = html?:@"";
                                __block NSString *keys = @"";
-                               if (userKeys && userKeys.count>0) {
+                               if (weakSelf.passView.passM.isSet) {
+                                   
+                                   
+                               } else if (userKeys && userKeys.count>0) {
                                    [userKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                                        EmailUserKeyModel *userKeyM = obj;
                                        keys = [keys stringByAppendingString:userKeyM.User];
@@ -1178,7 +1271,25 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                
                                writeHtml = [writeHtml stringByAppendingString:weakSelf.emailInfo.htmlContent?:@""];
                                
-                               if (keys.length > 0) {
+                               if (weakSelf.passView.passM.isSet) {
+                                   
+                                   if ([writeHtml containsString:confidantEmialText]) {
+                                       writeHtml = [writeHtml stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
+                                   }
+                                   writeHtml = aesEncryptString(writeHtml, [msgKey substringToIndex:16]);
+                                   NSString *hintStr = [NSString getNotNullValue:weakSelf.passView.passM.hintStr];
+                                   if (hintStr.length == 0) {
+                                       hintStr = @"0";
+                                   }
+                                   NSString *passStr = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantpass%@\'></span>",hintStr];
+                                   
+                                   NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantuserid%@\'></span>",[UserConfig getShareObject].userId];
+                                   
+                                   writeHtml = [writeHtml stringByAppendingString:passStr];
+                                   writeHtml = [writeHtml stringByAppendingString:friendID];
+                                   writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+                                   
+                               } else if (keys.length > 0) {
                                    if ([writeHtml containsString:confidantEmialText]) {
                                        writeHtml = [writeHtml stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
                                    }
@@ -1224,10 +1335,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                            // 发送好友请求
                                            if (![weakSelf.emailInfo.friendId isEqualToString:[UserConfig getShareObject].userId]) {
 
-                                              NSString *msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
-                                               msg = [msg base64EncodedString];
+//                                              NSString *msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
+//                                               msg = [msg base64EncodedString];
 
-                                               [SendRequestUtil sendAddFriendWithFriendId:weakSelf.emailInfo.friendId msg:msg showHud:NO];
+                                              [SendRequestUtil sendAutoAddFriendWithFriendId:weakSelf.emailInfo.friendId email:accountM.User type:1 showHud:NO];
                                            }
                                        }
                                        [weakSelf leftNavBarItemPressedWithPop:NO];
@@ -2162,9 +2273,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     CGFloat collectionH = rows*itemH+((rows-1)*4);
     if (self.attchArray.count-1 == 0) {
         _attCountBtn.hidden = YES;
+        [_attchBtn setImage:[UIImage imageNamed:@"email_attach_unselected"] forState:UIControlStateNormal];
     } else {
         _attCountBtn.hidden = NO;
         [_attCountBtn setTitle:[NSString stringWithFormat:@" %lu",self.attchArray.count-1] forState:UIControlStateNormal];
+        [_attchBtn setImage:[UIImage imageNamed:@"email_attach_selected"] forState:UIControlStateNormal];
     }
     _AttCollectionContraintH.constant = collectionH;
 }
@@ -2264,19 +2377,28 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     } else {
         AttchCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:AttchCollectionCellResue forIndexPath:indexPath];
         
-        if (attachment.downStatus == 2) { // 下载完成
+        
+        if (attachment.attData) {
+            attachment.downStatus = 2;
             [cell.loadActivity stopAnimating];
             cell.loadActivity.hidden = YES;
-        } else if (attachment.downStatus == 1){ // 下载中
-            [cell.loadActivity startAnimating];
-            cell.loadActivity.hidden = NO;
         } else {
-            [cell.loadActivity startAnimating];
-            cell.loadActivity.hidden = NO;
-            
-            attachment.downStatus = 1;
-            [self getAttDataWithAttM:attachment];
+            if (attachment.downStatus == 2) { // 下载完成
+                [cell.loadActivity stopAnimating];
+                cell.loadActivity.hidden = YES;
+            } else if (attachment.downStatus == 1){ // 下载中
+                [cell.loadActivity startAnimating];
+                cell.loadActivity.hidden = NO;
+            } else {
+                [cell.loadActivity startAnimating];
+                cell.loadActivity.hidden = NO;
+                
+                attachment.downStatus = 1;
+                [self getAttDataWithAttM:attachment];
+            }
         }
+        
+        
         
         @weakify_self
         [cell setCloseBlock:^(NSInteger tag) {

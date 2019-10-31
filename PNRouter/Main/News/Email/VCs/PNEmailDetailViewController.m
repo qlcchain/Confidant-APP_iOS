@@ -42,6 +42,9 @@
 #import "RequestService.h"
 #import "UserConfig.h"
 #import "SendRequestUtil.h"
+#import "EmailPassCell.h"
+#import "EmailPassFromCell.h"
+#import "PNEmailPassDefaultView.h"
 
 #import <GoogleAPIClientForREST/GTLRBase64.h>
 #import "GoogleServerManage.h"
@@ -60,6 +63,7 @@
 @property (nonatomic, strong) NSMutableArray *userArray;
 //@property (nonatomic ,strong) WKWebView *myWebView;
 
+@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 @property (nonatomic ,strong) UIWebView *myWebView;
 
 @property (nonatomic ,strong) EmailListInfo *emailInfo;
@@ -67,6 +71,7 @@
 @property (nonatomic ,strong) UIScrollView *wbScrollView;
 
 @property (nonatomic, strong) PNEmailOptionEnumView *enumView;
+@property (nonatomic, strong) PNEmailPassDefaultView *passDefaultView;
 
 @property (weak, nonatomic) IBOutlet UIButton *forwardBtn;
 @property (weak, nonatomic) IBOutlet UIButton *replyBtn;
@@ -86,7 +91,11 @@
     
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeW;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *moreW;
-    
+@property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UIView *webBackView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *backContraintV;
+@property (nonatomic, strong) NSString *passWordKey;
+
 @end
 
 @implementation PNEmailDetailViewController
@@ -275,7 +284,61 @@
     return _userArray;
 }
 
-
+- (PNEmailPassDefaultView *)passDefaultView
+{
+    if (!_passDefaultView) {
+        _passDefaultView = [PNEmailPassDefaultView loadPNEmailPassDefaultView];
+        @weakify_self
+        [_passDefaultView setClickDecryptPassB:^(NSString *pass) {
+            weakSelf.mainTabV.scrollEnabled = YES;
+            weakSelf.mainScrollView.scrollEnabled = YES;
+            weakSelf.moreW.constant = 38;
+            weakSelf.nodeW.constant = 38;
+            if ([pass isEqualToString:[NSString getNotNullValue:weakSelf.emailInfo.deKey]]) {
+                weakSelf.passWordKey = pass;
+                [weakSelf.passDefaultView hideEmailPassDefaultView];
+                weakSelf.attBackView.hidden = NO;
+                weakSelf.bottomView.hidden = NO;
+                weakSelf.webBackView.hidden = NO;
+                return ;
+            }
+            NSString *htmlContent = aesDecryptString(weakSelf.emailInfo.htmlContent, pass)?:@"";
+            if (htmlContent.length > 0) {
+                
+                htmlContent = [htmlContent stringByAppendingString:confidantHtmlStr];
+                
+                weakSelf.passWordKey = pass;
+                weakSelf.emailInfo.deKey = pass;
+                
+                [weakSelf.passDefaultView hideEmailPassDefaultView];
+                weakSelf.attBackView.hidden = NO;
+                weakSelf.bottomView.hidden = NO;
+                weakSelf.webBackView.hidden = NO;
+               
+                // 重新加载
+                NSMutableString * html = [NSMutableString string];
+                
+                [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
+                 @"<body>%@%@%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
+                 @"</iframe></html>", mainJavascript,mainStyle,@"<div id=\"height\">", htmlContent,@"</div>"];
+                
+                weakSelf.htmlContent = html;
+                weakSelf.emailInfo.htmlContent = htmlContent;
+                
+                [weakSelf.myWebView loadHTMLString:weakSelf.htmlContent baseURL:nil];
+                
+                [weakSelf.attchView setAttchs:weakSelf.emailInfo.attchArray deKey:pass];
+                
+                weakSelf.tabH.constant -= (EmailPassCellHeight+EmailPassFromCellHeight);
+                [weakSelf.mainTabV reloadData];
+                
+            } else {
+                [AppD.window showHint:@"You entered the wrong password."];
+            }
+        }];
+    }
+    return _passDefaultView;
+}
 #pragma makr -----IBOUT Click ----------
 
 - (IBAction)clickForwardAction:(id)sender {
@@ -525,7 +588,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = MAIN_GRAY_COLOR;
+    if (self.emailInfo.passHint.length == 0) {
+         self.view.backgroundColor = MAIN_GRAY_COLOR;
+    } else {
+        self.moreW.constant = 38;
+        self.nodeW.constant = 38;
+    }
+    _passWordKey = @"";
     _forwardBtn.layer.cornerRadius = 8.0f;
     _forwardBtn.layer.masksToBounds = YES;
     
@@ -546,6 +615,8 @@
     [_mainTabV registerNib:[UINib nibWithNibName:EmailTopDetailCellResue bundle:nil] forCellReuseIdentifier:EmailTopDetailCellResue];
     [_mainTabV registerNib:[UINib nibWithNibName:EmailUserCellResue bundle:nil] forCellReuseIdentifier:EmailUserCellResue];
     [_mainTabV registerNib:[UINib nibWithNibName:EmailTimeCellResue bundle:nil] forCellReuseIdentifier:EmailTimeCellResue];
+    [_mainTabV registerNib:[UINib nibWithNibName:EmailPassCellResu bundle:nil] forCellReuseIdentifier:EmailPassCellResu];
+    [_mainTabV registerNib:[UINib nibWithNibName:EmailPassFromCellResu bundle:nil] forCellReuseIdentifier:EmailPassFromCellResu];
     
     
 //    [_progressView setTrackTintColor:[UIColor colorWithRed:240.0/255
@@ -609,7 +680,14 @@
     }
     
     _webH.constant = SCREEN_HEIGHT - NAVIGATION_BAR_HEIGHT - 128 - 82 - HOME_INDICATOR_HEIGHT - _attchH.constant;
-    [self.myWebView loadHTMLString:self.htmlContent baseURL:nil];
+    if (self.emailInfo.passHint.length > 0) {
+        _attBackView.hidden = YES;
+        _bottomView.hidden = YES;
+        _webBackView.hidden = YES;
+    } else {
+        [self.myWebView loadHTMLString:self.htmlContent baseURL:nil];
+    }
+    
 }
 
 #pragma mark --------------添加通知------
@@ -624,6 +702,10 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSString *hintStr = [NSString getNotNullValue:self.emailInfo.passHint];
+    if (hintStr.length > 0 && _passWordKey.length == 0) {
+        return 2;
+    }
     return 1;
 }
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -636,7 +718,7 @@
             return self.userArray.count+2;
         }
     } else if (section == 1) {
-        return 1;
+        return 2;
     } else if (section == 2) {
         if (self.emailInfo.attachCount > 0) {
             return 1;
@@ -654,6 +736,12 @@
         } else {
             return EmailTimeCellHeight;
         }
+    } else if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            return EmailPassCellHeight;
+        } else {
+            return EmailPassFromCellHeight;
+        }
     }
     return 0;
 }
@@ -662,14 +750,26 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             EmailTopDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailTopDetailCellResue];
+            NSString *hintStr = [NSString getNotNullValue:self.emailInfo.passHint];
             if (_isHidden) {
                 [cell.hiddenBtn setTitle:@"Details" forState:UIControlStateNormal];
                 cell.lineView.hidden = NO;
-                _tabH.constant = 128;
+                
+                if (hintStr.length > 0 && _passWordKey.length == 0) {
+                    _tabH.constant = 128+EmailPassCellHeight+EmailPassFromCellHeight;
+                } else {
+                    _tabH.constant = 128;
+                }
+                
             } else {
                 cell.lineView.hidden = YES;
                 [cell.hiddenBtn setTitle:@"Hide" forState:UIControlStateNormal];
-                _tabH.constant = 128+(_userArray.count*37)+33;
+                if (hintStr.length > 0 && _passWordKey.length == 0) {
+                    _tabH.constant = 128+(_userArray.count*37)+33+EmailPassCellHeight+EmailPassFromCellHeight;
+                } else {
+                    _tabH.constant = 128+(_userArray.count*37)+33;
+                }
+                
             }
             [cell setEmialInfoModel:self.emailInfo];
             @weakify_self
@@ -679,7 +779,7 @@
             }];
             return cell;
         } else if (indexPath.row <= self.userArray.count) {
-             EmailUserCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailUserCellResue];
+            EmailUserCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailUserCellResue];
             EmailUserModel *model = [self.userArray objectAtIndex:indexPath.row-1];
             [cell setUserModel:model];
             return cell;
@@ -689,23 +789,25 @@
             return cell;
         }
     } else if (indexPath.section == 1) {
-        EmailContentCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailContentCellResue];
-        if (!cell.webView.delegate) {
-            self.myWebView = cell.webView;
-            self.wbScrollView = self.myWebView.scrollView;
- //           self.wbScrollView.scrollEnabled = NO;
-//            self.myWebView.delegate = self;
- //           self.myWebView.scalesPageToFit = YES;
-            [self.myWebView setAutoresizingMask:(UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth)];
-            [self.myWebView setDelegate:self];
-            [cell setWebViewHtmlContent:self.htmlContent];
-            // 添加进度观察者
-//            [self.myWebView addObserver:self
-//                           forKeyPath:NSStringFromSelector(@selector(estimatedProgress))
-//                              options:0
-//                              context:nil];
+        if (indexPath.row == 0) {
+            EmailPassCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailPassCellResu];
+            return cell;
+        } else {
+            EmailPassFromCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailPassFromCellResu];
+            cell.lblFrom.text = self.emailInfo.From;
+            @weakify_self // 显示输入密码
+            [cell setClickEncodeB:^{
+                weakSelf.mainTabV.scrollEnabled = NO;
+                weakSelf.mainScrollView.scrollEnabled = NO;
+                weakSelf.passDefaultView.frame = CGRectMake(0,SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-(weakSelf.tabH.constant-320+NAVIGATION_BAR_HEIGHT));
+                if (![weakSelf.emailInfo.passHint isEqualToString:@"0"]) {
+                    weakSelf.passDefaultView.lblPassHint.text = [NSString stringWithFormat:@"Passwork Hint: %@",weakSelf.emailInfo.passHint];
+                }
+                [weakSelf.passDefaultView showEmailPassDefaultView:weakSelf.view frameY:weakSelf.tabH.constant-320+NAVIGATION_BAR_HEIGHT];
+                
+            }];
+            return cell;
         }
-        return cell;
     } 
     return nil;
 }

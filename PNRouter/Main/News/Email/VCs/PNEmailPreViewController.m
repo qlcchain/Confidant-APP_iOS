@@ -47,7 +47,7 @@
     [self.view showHudInView:self.view hint:@""];
     @weakify_self
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        if (!weakSelf.fileData || weakSelf.fileData.length == 0 ) {
+        if (!weakSelf.fileData ) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.view hideHud];
                 [self.view showHint:@"Decryption failure."];

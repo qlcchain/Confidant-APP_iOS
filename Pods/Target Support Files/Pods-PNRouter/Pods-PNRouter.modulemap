@@ -1,6 +1,0 @@
-module Pods_PNRouter {
-  umbrella header "Pods-PNRouter-umbrella.h"
-
-  export *
-  module * { export * }
-}

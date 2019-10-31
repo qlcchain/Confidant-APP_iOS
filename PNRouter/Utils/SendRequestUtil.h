@@ -81,6 +81,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendEmailDelConfigWithShowHud:(BOOL) showHud;
 + (void) sendEmailCheckNodeWithUid:(NSString *) uid showHud:(BOOL) showHud;
 + (void) sendEmailSendNotiWithEmails:(NSString *) emails showHud:(BOOL) showHud;
+// 自动加好友请求
++ (void) sendAutoAddFriendWithFriendId:(NSString *) friendIds email:(NSString *) email type:(NSInteger) type showHud:(BOOL)showHud;
 @end
 
 NS_ASSUME_NONNULL_END

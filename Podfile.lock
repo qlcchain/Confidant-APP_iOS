@@ -59,6 +59,7 @@ PODS:
   - JSONRPCKit (3.0.0):
     - Result (~> 3.2.0)
   - KeychainAccess (3.1.2)
+  - LFKit/Component/LFBubbleView (1.1.9)
   - libopus-patched-config (1.1):
     - libopus-patched-config/float (= 1.1)
   - libopus-patched-config/float (1.1)
@@ -115,6 +116,7 @@ DEPENDENCIES:
   - JPush
   - JSONRPCKit
   - KeychainAccess
+  - LFKit/Component/LFBubbleView
   - libopus-patched-config
   - libsodium
   - mailcore2-ios
@@ -154,6 +156,7 @@ SPEC REPOS:
     - JPush
     - JSONRPCKit
     - KeychainAccess
+    - LFKit
     - libopus-patched-config
     - libsodium
     - mailcore2-ios
@@ -200,6 +203,7 @@ SPEC CHECKSUMS:
   JPush: d0cead70ba223a6a3b52749899ebda830dfbc49a
   JSONRPCKit: 50e0dc5e7f873e87f81562feb8836b7d1974da6d
   KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
+  LFKit: e75a45afbb036f0fb7df27e9f54e4d95a6fe4c89
   libopus-patched-config: 12321105eb4b96e869b7957f3122345fd67928c3
   libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
   mailcore2-ios: 3ff0be2fa553d4da9c11d39c11d51863c768f24f
@@ -219,6 +223,6 @@ SPEC CHECKSUMS:
   YBImageBrowser: b378a73a92ec4dcdebf2b7c18903cb62479b9cfa
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
 
-PODFILE CHECKSUM: d7641ceec3d15d8e7509e4b6335422349f90a545
+PODFILE CHECKSUM: b8994e9d5f0582691346dd48a4a46ac81bfae81b
 
 COCOAPODS: 1.5.3

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="210" id="KGk-i7-Jjw" customClass="EmailPassFromCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="210"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="209.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have received a secure message from" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilJ-x1-poo">
+                        <rect key="frame" x="16" y="23" width="288" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="fLk-UR-Ek0"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                        <color key="textColor" red="0.16078431372549018" green="0.16862745098039217" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9TZ-Ft-Rph">
+                        <rect key="frame" x="16" y="51" width="288" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="YcH-yq-k3q"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I’m using Confidant to send and receive secure emails.Click the link below to decrypt and view my message. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBP-IZ-1aM">
+                        <rect key="frame" x="16" y="92" width="288" height="34"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="34" id="gDL-XY-J1N"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                        <color key="textColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LQg-O4-OZQ">
+                        <rect key="frame" x="45" y="150" width="230" height="40"/>
+                        <color key="backgroundColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="230" id="31h-S6-jGS"/>
+                            <constraint firstAttribute="height" constant="40" id="alC-dP-54f"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                        <state key="normal" title="View Encrypted Message"/>
+                        <connections>
+                            <action selector="clickEncodeBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Zi3-Tf-w8L"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FnU-oj-Xpo">
+                        <rect key="frame" x="16" y="209" width="288" height="0.5"/>
+                        <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="pEg-vR-704"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="9TZ-Ft-Rph" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="0Xp-3o-K8d"/>
+                    <constraint firstItem="LQg-O4-OZQ" firstAttribute="top" secondItem="QBP-IZ-1aM" secondAttribute="bottom" constant="24" id="5VW-df-MN7"/>
+                    <constraint firstItem="QBP-IZ-1aM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="7kM-0o-rMW"/>
+                    <constraint firstItem="ilJ-x1-poo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="C1c-X7-kAS"/>
+                    <constraint firstItem="9TZ-Ft-Rph" firstAttribute="top" secondItem="ilJ-x1-poo" secondAttribute="bottom" constant="8" id="DPa-DY-CJj"/>
+                    <constraint firstItem="QBP-IZ-1aM" firstAttribute="top" secondItem="9TZ-Ft-Rph" secondAttribute="bottom" constant="16" id="H4M-R4-6x0"/>
+                    <constraint firstAttribute="trailing" secondItem="ilJ-x1-poo" secondAttribute="trailing" constant="16" id="VNU-Eb-Gdf"/>
+                    <constraint firstItem="LQg-O4-OZQ" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="YBB-Hw-WWv"/>
+                    <constraint firstItem="ilJ-x1-poo" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="23" id="aGi-KH-8SB"/>
+                    <constraint firstItem="FnU-oj-Xpo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="bPB-2I-byH"/>
+                    <constraint firstAttribute="bottom" secondItem="FnU-oj-Xpo" secondAttribute="bottom" id="dLr-9F-yuZ"/>
+                    <constraint firstAttribute="trailing" secondItem="FnU-oj-Xpo" secondAttribute="trailing" constant="16" id="e76-Vx-flG"/>
+                    <constraint firstAttribute="trailing" secondItem="9TZ-Ft-Rph" secondAttribute="trailing" constant="16" id="k7L-Kj-FJH"/>
+                    <constraint firstAttribute="trailing" secondItem="QBP-IZ-1aM" secondAttribute="trailing" constant="16" id="tOA-0B-MQa"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="encodeBtn" destination="LQg-O4-OZQ" id="GKs-3o-FMr"/>
+                <outlet property="lblFrom" destination="9TZ-Ft-Rph" id="6Sf-CR-yQr"/>
+            </connections>
+            <point key="canvasLocation" x="121.73913043478262" y="133.92857142857142"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -913,7 +913,7 @@
     } else {
         FriendModel *model1 = [finfAlls firstObject];
          model1.requestTime = [NSDate date];
-        if (model1.dealStaus == 2) {
+        if (model1.dealStaus == 3) {
             model1.dealStaus = 0;
             // 弹出对方请求加您为好友的通知
             NotifactionView *notiView = [NotifactionView loadNotifactionView];

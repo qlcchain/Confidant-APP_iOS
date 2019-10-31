@@ -81,6 +81,7 @@ static NSString *Action_GroupConfig = @"GroupConfig";
 static NSString *Action_GroupSysPush = @"GroupSysPush";
 static NSString *Action_GroupDelMsg = @"GroupDelMsg";
 static NSString *Action_DelUser = @"DelUser";
+static NSString *Action_AddFriendsAuto = @"AddFriendsAuto";
 
 #pragma mark -------------Email-----------------
 static NSString *Action_BakupEmail = @"BakupEmail";
