@@ -156,7 +156,7 @@
         self.passM.passStr = textField.text.trim;
     } else if (textField == _depassTF) {
         self.passM.depassStr = textField.text.trim;
-    }if (textField == _passTF) {
+    }if (textField == _hitTF) {
         self.passM.hintStr = textField.text.trim;
     }
 }
@@ -165,7 +165,7 @@
     if (textField == _passTF) {
        return  [_depassTF becomeFirstResponder];
     } else if (textField == _depassTF) {
-         return  [_hitTF becomeFirstResponder];
+        return  [_hitTF becomeFirstResponder];
     } else {
         [self endEditing:YES];
         return YES;
