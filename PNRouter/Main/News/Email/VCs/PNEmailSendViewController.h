@@ -12,7 +12,8 @@ typedef enum : NSUInteger {
     ReplyEmail,
     ForwardEmail,
     NewEmail,
-    DraftEmail
+    DraftEmail,
+    FriendEmail
 } EmailSendType;
 
 @class EmailListInfo;

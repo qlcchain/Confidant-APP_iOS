@@ -96,6 +96,10 @@
                 if (weakSelf.selectArray.count > 0) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:weakSelf.selectArray];
                 }
+            } else if (weakSelf.addType == ChatsGroupMemberTypeInGroupDetail) {
+                if (weakSelf.selectArray.count > 0) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:weakSelf.selectArray];
+                }
             }
         }];
     }

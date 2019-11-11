@@ -91,6 +91,8 @@
                      [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_FOWARD_NOTI object:weakSelf.selectArray];
                 } else if (weakSelf.docOPenTag == 4) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:CHOOSE_FRIEND_FILE_FOWARD_NOTI object:weakSelf.selectArray];
+                }  else if (weakSelf.docOPenTag == 5) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:weakSelf.selectArray];
                 }
                 
             }

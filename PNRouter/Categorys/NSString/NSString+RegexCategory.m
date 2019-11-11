@@ -16,7 +16,29 @@
     return [pre evaluateWithObject:self];
 }
 
-#pragma mark -
+#pragma mark - html文字
+- (NSString *) getHtmlText
+{
+    if (self.length == 0) {
+        return @"";
+    }
+    NSString *text = self;
+    NSRegularExpression *regularExpretion=[NSRegularExpression regularExpressionWithPattern:@"<[^>]*>|\n|&nbsq |\r|&mdash|&ldquo|&rdquo|&nbsp;"
+                                           
+                                                                                    options:0
+                                           
+                                                                                      error:nil];
+    
+    //正则去掉html标签
+    NSString *string =[regularExpretion stringByReplacingMatchesInString:text options:NSMatchingReportProgress range:NSMakeRange(0, text.length) withTemplate:@""];
+    
+    string = [string stringByReplacingOccurrencesOfString:@"/*" withString:@""]; //去掉空格
+    string = [string stringByReplacingOccurrencesOfString:@"*/" withString:@""]; //去掉空格
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]; //去除字符串中所有得空格及控制字符
+    
+    return string;
+
+}
 
 //手机号分服务商
 - (BOOL)isMobileNumberClassification{

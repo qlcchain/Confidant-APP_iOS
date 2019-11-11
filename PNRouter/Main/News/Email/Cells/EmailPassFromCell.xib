@@ -37,7 +37,7 @@
                         <color key="textColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I’m using Confidant to send and receive secure emails.Click the link below to decrypt and view my message. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBP-IZ-1aM">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I’m using Confidant to send and receive secure emails. Click the link below to decrypt and view my message. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBP-IZ-1aM">
                         <rect key="frame" x="16" y="92" width="288" height="34"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="34" id="gDL-XY-J1N"/>

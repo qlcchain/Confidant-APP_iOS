@@ -8,13 +8,17 @@
 
 #import "PNBaseViewController.h"
 
-
+typedef enum : NSUInteger {
+    ChatCreateGroup,
+    GroupsCreateGroup,
+    AddCreateGroup,
+} GroupPage;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CreateGroupChatViewController : PNBaseViewController
 
-- (instancetype) initWithContacts:(NSArray *) contacts;
+- (instancetype) initWithContacts:(NSArray *) contacts groupPage:(GroupPage) newPage;
 
 @end
 

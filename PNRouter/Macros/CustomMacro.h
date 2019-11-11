@@ -95,6 +95,351 @@ static NSString *Trash = @"Trash";
 #define Screen_Lock_Local @"Screen_Lock_Local"
 
 
+static NSString *encoderShowContent = @"<div id='box'>\
+<style type='text/css'>\
+* {\
+padding: 0;\
+border: 0;\
+outline: 0;\
+margin: 0;\
+}\
+a {\
+    text-decoration: none;\
+    background-color: transparent\
+}\
+a:hover,\
+a:active {\
+    outline-width: 0;\
+    text-decoration: none\
+}\
+#box {\
+width: 100vw;\
+box-sizing: border-box;\
+}\
+#box section {\
+padding: 16px;\
+}\
+#box header .Star {\
+float: right;\
+}\
+.userHead {\
+display: flex;\
+width: 100%;\
+    box-sizing: border-box;\
+    border-bottom: 1px solid #e6e6e6;\
+}\
+.userHeadA {\
+width: 44px;\
+height: 44px;\
+padding: 18px 0;\
+}\
+.userHeadB {\
+width: 240px;\
+height: 44px;\
+padding: 18px 0;\
+outline: 0px solid #ccc;\
+}\
+.userHeadC {\
+flex: 1;\
+    text-align: right;\
+height: 44px;\
+padding: 18px 0;\
+outline: 0px solid #ccc;\
+}\
+.userHeadAimg {\
+width: 44px;\
+height: 44px;\
+    border-radius: 22px;\
+}\
+.userHeadBdate {\
+color: #ccc;\
+    margin-left: 8px;\
+}\
+.rowDiv {\
+padding: 20px 0;\
+    text-align: center;\
+    border-bottom: 1px solid #e6e6e6;\
+}\
+button {\
+background: rgba(102, 70, 247, 1);\
+    border-radius: 7px;\
+color: #fff;\
+}\
+.rowDiv3Btn {\
+padding: 12px 34px;\
+background: rgba(102, 70, 247, 1);\
+    border-radius: 7px;\
+color: #fff;\
+}\
+.rowDiv h3 {\
+    font-size: 18px;\
+    line-height: 18px;\
+}\
+.h3logo {\
+position: relative;\
+top: 5px;\
+width: 24px;\
+margin-right: 5px;\
+}\
+#box p {\
+line-height: 20px;\
+font-size: 12px;\
+}\
+#box h3 {\
+line-height: 40px;\
+}\
+</style>\
+<section>\
+<div class='rowDiv'>\
+<h3><img class='h3logo' src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_logo_n.png'>Encrypted Email</h3>\
+<p>Encrypted email client and beyond - your comprehensive privacy&nbsp;protection tool</p>\
+</div>\
+<div class='rowDiv' style='border: 0;'>\
+<p style='font-size: 14px;'>You have received a secure message from</p>\
+<h3 style='color:#6646F7'>%@</h3>\
+<p>I’m using Confidant to send and receive secure emails.&nbsp;Click the&nbsp;link below to decrypt and view my\
+&nbsp;message. </p>\
+</div>\
+<div class='rowDiv' style='padding-bottom: 50px;'>\
+<a href='https://www.myconfidant.io' id='Encrypted' class='rowDiv3Btn' style='color:#fff'>View Encrypted Message</a>\
+</div>\
+</section>\
+</div>\
+<div myconfidantbegin=''><br /><br /><br /><span>&nbsp;&nbsp;Sent from MyConfidant, the app for encrypted email.</span></div>";
+
+// 好友邀请模板
+static NSString *friendMBHtml = @"<div id='box'>\
+<style type='text/css'>\
+* {\
+padding: 0;\
+border: 0;\
+outline: 0;\
+margin: 0;\
+}\
+a {\
+    text-decoration: none;\
+    background-color: transparent\
+}\
+a:hover,\
+a:active {\
+    outline-width: 0;\
+    text-decoration: none\
+}\
+#box {\
+width: 100vw;\
+box-sizing: border-box;\
+}\
+#box section {\
+padding: 16px;\
+}\
+#box header .Star {\
+float: right;\
+}\
+.userHead {\
+display: flex;\
+width: 100%;\
+    box-sizing: border-box;\
+    border-bottom: 1px solid #e6e6e6;\
+}\
+.userHeadA {\
+width: 44px;\
+height: 44px;\
+padding: 16px 0;\
+}\
+.userHeadB {\
+width: 240px;\
+height: 44px;\
+padding: 16px 0;\
+outline: 0px solid #ccc;\
+}\
+.userHeadC {\
+flex: 1;\
+    text-align: right;\
+height: 44px;\
+padding: 18px 0;\
+outline: 0px solid #ccc;\
+}\
+.userHeadAimg {\
+width: 44px;\
+height: 44px;\
+    border-radius: 22px;\
+}\
+.userHeadBdate {\
+color: #ccc;\
+    margin-left: 8px;\
+}\
+.rowDiv {\
+padding: 20px 0;\
+}\
+button {\
+background: rgba(102, 70, 247, 1);\
+    border-radius: 7px;\
+color: #fff;\
+}\
+.rowDiv3Btn {\
+padding: 12px 34px;\
+background: rgba(102, 70, 247, 1);\
+    border-radius: 7px;\
+color: #fff;\
+}\
+.rowDiv h3 {\
+    font-size: 16px;\
+    line-height: 16px;\
+}\
+#box p {\
+line-height: 20px;\
+font-size: 12px;\
+}\
+#box h3 {\
+line-height: 40px;\
+}\
+.qrcodeDIV {\
+width: 84px;\
+margin: 0 30px;\
+}\
+.qrcodeDIV img {\
+width: 84px;\
+}\
+.btn {\
+width: 84px;\
+height: 22px;\
+display: block;\
+}\
+.btn img {\
+width: 100%;\
+height: 100%;\
+}\
+.h3logo {\
+position: relative;\
+top: 5px;\
+width: 24px;\
+    margin-right: 5px;\
+}\
+.includePng {\
+    float: right;\
+width: 110px;\
+position: relative;\
+top: -24px;\
+}\
+.rowDivBtn {\
+display: flex;\
+width: 100%;\
+    justify-content: space-between;\
+}\
+.rowDivBtn div {\
+width: 158px;\
+height: 42px;\
+outline: 1px solid #ccc;\
+}\
+.rowDivBtn .rowDivBtnAddlong {\
+width: 179px;\
+}\
+.rowDivBtn img {\
+width: 100%;\
+}\
+.jusCenter {\
+display: flex;\
+    justify-content: center;\
+    align-items: center;\
+}\
+.rowDivFooter {\
+background: #292B33;\
+color: #fff;\
+    text-align: center;\
+}\
+#box .rowDivFooter p {\
+line-height: 30px;\
+text-indent: 0;\
+margin-block-start: 0;\
+margin-block-end: 0;\
+}\
+.rowDivFooter i {\
+outline: 0px solid red;\
+    font-style: normal;\
+overflow: hidden;\
+height: 9px;\
+width: 15px;\
+display: inline-block;\
+    line-height: 15px;\
+position: relative;\
+top: -6px;\
+color: #6646F7;\
+}\
+.rowDivFooter i:last-child {\
+top: 0px;\
+height: 7px;\
+    line-height: 0px;\
+top: 2px;\
+}\
+.rowDivSave {\
+    text-align: center;\
+    border-bottom: 1px solid #E6E6E6;\
+padding: 0 0 30px 0;\
+}\
+</style>\
+<section>\
+<div class='rowDiv'>\
+<h3>Dear %@, Greetings from %@!</h3>\
+<p>This invitation was sent to you from your friend using Confidant, which is the platform for secure\
+encrypted Email and message communication. </p>\
+<p>You are invited to join him/her to stay in touch in a private and secure manner.</p>\
+<p style='font-size: 14px;'>To instantly access Confidant full services</p>\
+</div>\
+<div class='rowDiv' style='padding: 8px 0;'>\
+<p style='color: #757380;'>1. Download the app via </p>\
+</div>\
+<div class='rowDiv jusCenter' style='text-align: center;padding: 0'>\
+<div class='qrcodeDIV'>\
+<img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_app_qr.png'>\
+<a class='btn' href=''><img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_ios.png'></a>\
+</div>\
+<div class='qrcodeDIV'>\
+<img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_google_qr.png'>\
+<a class='btn' href=''><img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_google.png'></a>\
+</div>\
+</div>\
+<div class='rowDiv'>\
+<h3 style='color: #757380;'><img class='h3logo' src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_logo_n.png'>Confidant</h3>\
+<p>\
+<img class='includePng' src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/include.png'>\
+Confidant is the one-stop decentralized privacy management and protection platform, with a focus on\
+securing digital social relationships. Its key features include.\
+</p>\
+</div>\
+<div class='rowDiv rowDivBtn'>\
+<div><img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/owner_centred.png'></div>\
+<div class='rowDivBtnAddlong'><img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/encrypted_Email.png'></div>\
+</div>\
+<div class='rowDiv rowDivBtn'>\
+<div><img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/owner_centred.png'></div>\
+<div class='rowDivBtnAddlong'><img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/on_premise.png'></div>\
+</div>\
+<div class='rowDiv'>\
+<p style='color: #757380;'>Once done, we highly encourage you to send back a thank you message to your\
+friend.</p>\
+<p style='color: #757380;'>Stay safe and secured!</p>\
+</div>\
+<div class='rowDiv rowDivFooter'>\
+<p style='font-size: 14px;'>\
+<img class='h3logo' src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_logo_b.png'>\
+Confidant Team\
+</p>\
+<p><i>[</i> With Confidant, stay in touch with the ones who matter! <i>]</i> </p>\
+</div>\
+</section>\
+</div>";
+
+/*
+ <div class='rowDiv' style='padding: 8px 0;'>\
+ <p style='color: #757380;'> 2. Scan the QR code below to start chatting</p>\
+ </div>\
+ <div class='rowDiv jusCenter rowDivSave'>\
+ <div class='qrcodeDIV'>\
+ <img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_google_play.png'>\
+ <a class='btn' href=''><img src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_save.png'></a>\
+ </div>\
+ </div>\
+ */
 
 static NSString * mainJavascript = @"\
 var imageElements = function() {\

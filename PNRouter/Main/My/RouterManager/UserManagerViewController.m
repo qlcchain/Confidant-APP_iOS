@@ -235,22 +235,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];;
+    RouterUserModel *model = isSearch? self.searchDataArray[indexPath.section][indexPath.row] :  self.dataArray[indexPath.section][indexPath.row];
 
     
     CircleMemberDetailViewController *vc = [[CircleMemberDetailViewController alloc] init];
     vc.routerUserModel = model;
     [self.navigationController pushViewController:vc animated:YES];
     
-    
-    
-//    if (indexPath.section == 0) {
-//        AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:self.rid];
-//        [self presentModalVC:vc animated:YES];
-//
-//    } else {
-//
-//    }
 }
 
 #pragma mark - noti
