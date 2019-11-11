@@ -37,6 +37,19 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *addNewMemberHeight; // 56
 @property (nonatomic ,strong) NSString *codeResultValue;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *emailHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *emailContraintV;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *friendsHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *friendsContraintV;
+
+
+@property (weak, nonatomic) IBOutlet UIView *chatBackView;
+@property (weak, nonatomic) IBOutlet UIView *scanBackView;
+@property (weak, nonatomic) IBOutlet UIView *cardBackView;
+@property (weak, nonatomic) IBOutlet UIView *friendBackView;
+@property (weak, nonatomic) IBOutlet UIView *membersBackView;
+@property (weak, nonatomic) IBOutlet UIView *emailBackView;
+
+
 
 @end
 
@@ -64,7 +77,7 @@
         AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr originArr:@[] type:AddGroupMemberTypeBeforeCreate];
         [self presentModalVC:vc animated:YES];
         
-    } else if (sender.tag == 20) { // scan to add contacts
+    } else if (sender.tag == 30) { // scan to add contacts
         
         @weakify_self
         QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
@@ -140,20 +153,27 @@
         }];
         [self presentModalVC:vc animated:YES];
         
-    } else if (sender.tag == 30) { // share a contact card
+    } else if (sender.tag == 40) { // share a contact card
         
         PersonCodeViewController *vc = [[PersonCodeViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
         
-    } else if (sender.tag == 40) { // add a new member
+    } else if (sender.tag == 60) { // add a new member
         
         NSString *rid = [RouterConfig getRouterConfig].currentRouterToxid;
         AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:rid];
         [self presentModalVC:vc animated:YES];
        // [self jumpToCircleCode];
-    } else if (sender.tag == 50) { // new email
+    } else if (sender.tag == 20) { // new email
+        
         PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:nil sendType:NewEmail];
         [self presentModalVC:vc animated:YES];
+        
+    }  else if (sender.tag == 50) { // new email friends
+        
+        PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:nil sendType:FriendEmail];
+        [self presentModalVC:vc animated:YES];
+        
     }
 }
 
@@ -257,12 +277,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _chatBackView.layer.cornerRadius = 8.0f;
+    _emailBackView.layer.cornerRadius = 8.0f;
+    _friendBackView.layer.cornerRadius = 8.0f;
+    _cardBackView.layer.cornerRadius = 8.0f;
+    _membersBackView.layer.cornerRadius = 8.0f;
+    _scanBackView.layer.cornerRadius = 8.0f;
+    
     [self addNotifcation];
     [self showAddNewMember];
-    
+    _friendsHeight.constant = 0;
+    _friendsContraintV.constant = 0;
     if (!EmailManage.sharedEmailManage.imapSeeion) {
         if (!AppD.isGoogleSign) {
             _emailHeight.constant = 0;
+            _emailContraintV.constant = 0;
+           
         }
         
     }
@@ -285,7 +316,7 @@
 - (void) addNotifcation
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseContactNoti:) name:CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:ADD_CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
 }
 
 #pragma mark - Transition
@@ -301,7 +332,7 @@
 {
     NSArray *mutContacts = noti.object;
     if (mutContacts && mutContacts.count > 0) {
-        CreateGroupChatViewController *vc = [[CreateGroupChatViewController alloc] initWithContacts:mutContacts];
+        CreateGroupChatViewController *vc = [[CreateGroupChatViewController alloc] initWithContacts:mutContacts groupPage:AddCreateGroup];
         [self presentModalVC:vc animated:YES];
     }
 }

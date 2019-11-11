@@ -687,6 +687,8 @@
 		73F6B98022A002760053AAB4 /* EmojModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6B97F22A002760053AAB4 /* EmojModel.m */; };
 		73F6B98322A00E8A0053AAB4 /* EmoticonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6B98222A00E8A0053AAB4 /* EmoticonCell.m */; };
 		73F6B98622A0BA650053AAB4 /* ExpressionCillectionLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6B98522A0BA650053AAB4 /* ExpressionCillectionLayout.m */; };
+		73F7C863236FF5FF00EFD30F /* MLMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F7C861236FF5FF00EFD30F /* MLMenuView.m */; };
+		73F7C864236FF5FF00EFD30F /* MLMenuItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F7C862236FF5FF00EFD30F /* MLMenuItemsView.m */; };
 		73F8806821DF874A0047C3DA /* DebugLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806521DF87490047C3DA /* DebugLogViewController.m */; };
 		73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F8806721DF874A0047C3DA /* DebugLogViewController.xib */; };
 		73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F8806A21DF87AE0047C3DA /* DDLogUtil.m */; };
@@ -1997,6 +1999,10 @@
 		73F6B98222A00E8A0053AAB4 /* EmoticonCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmoticonCell.m; sourceTree = "<group>"; };
 		73F6B98422A0BA650053AAB4 /* ExpressionCillectionLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpressionCillectionLayout.h; sourceTree = "<group>"; };
 		73F6B98522A0BA650053AAB4 /* ExpressionCillectionLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpressionCillectionLayout.m; sourceTree = "<group>"; };
+		73F7C85F236FF5FE00EFD30F /* MLMenuItemsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLMenuItemsView.h; sourceTree = "<group>"; };
+		73F7C860236FF5FF00EFD30F /* MLMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLMenuView.h; sourceTree = "<group>"; };
+		73F7C861236FF5FF00EFD30F /* MLMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLMenuView.m; sourceTree = "<group>"; };
+		73F7C862236FF5FF00EFD30F /* MLMenuItemsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLMenuItemsView.m; sourceTree = "<group>"; };
 		73F8806521DF87490047C3DA /* DebugLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogViewController.m; sourceTree = "<group>"; };
 		73F8806621DF874A0047C3DA /* DebugLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogViewController.h; sourceTree = "<group>"; };
 		73F8806721DF874A0047C3DA /* DebugLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DebugLogViewController.xib; sourceTree = "<group>"; };
@@ -2708,6 +2714,7 @@
 		585AEE482140D2280098A070 /* Vender */ = {
 			isa = PBXGroup;
 			children = (
+				73F7C7CC236FF5C600EFD30F /* MLMenu */,
 				73E7740B22D70CA8001C652E /* TFHppleClass */,
 				58A23A6B223BC43F0098AED5 /* CSLogger */,
 				580CFE142227B7FD00460B41 /* PTBPerformanceCenter */,
@@ -4455,6 +4462,17 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		73F7C7CC236FF5C600EFD30F /* MLMenu */ = {
+			isa = PBXGroup;
+			children = (
+				73F7C85F236FF5FE00EFD30F /* MLMenuItemsView.h */,
+				73F7C862236FF5FF00EFD30F /* MLMenuItemsView.m */,
+				73F7C860236FF5FF00EFD30F /* MLMenuView.h */,
+				73F7C861236FF5FF00EFD30F /* MLMenuView.m */,
+			);
+			path = MLMenu;
+			sourceTree = "<group>";
+		};
 		73F9A117219973790011FAA5 /* SocketRadio */ = {
 			isa = PBXGroup;
 			children = (
@@ -5178,6 +5196,7 @@
 				584A449E21464D4800608122 /* FingerprintVerificationUtil.m in Sources */,
 				7330F39E214666E400FF4EEC /* PersonCodeViewController.m in Sources */,
 				7330F3B321475A3E00FF4EEC /* ContactsCell.m in Sources */,
+				73F7C863236FF5FF00EFD30F /* MLMenuView.m in Sources */,
 				581FDF3F21F024170068C120 /* group.m in Sources */,
 				58E3A5762242411A00F9D9E7 /* UpdateGroupMemberAvatarUtil.m in Sources */,
 				581FDF6C21F19FEA0068C120 /* AccountManagementViewController.m in Sources */,
@@ -5204,6 +5223,7 @@
 				5875E4C4216C8B7000B1A9A6 /* YWFilePreviewController.m in Sources */,
 				581FDF4221F024170068C120 /* list.m in Sources */,
 				7330F37A2146118800FF4EEC /* UIImage+Color.m in Sources */,
+				73F7C864236FF5FF00EFD30F /* MLMenuItemsView.m in Sources */,
 				73D00EAF215F13700013E20D /* SocketFileUtil.swift in Sources */,
 				7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */,
 				7378840121ACF2970033A189 /* OCTNode.m in Sources */,

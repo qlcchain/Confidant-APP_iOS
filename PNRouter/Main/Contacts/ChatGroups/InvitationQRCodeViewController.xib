@@ -230,7 +230,7 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="NSH-Lc-Hrl" secondAttribute="bottom" id="tJQ-E7-2uJ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="374" y="-202"/>
+            <point key="canvasLocation" x="201" y="-325"/>
         </view>
     </objects>
     <resources>

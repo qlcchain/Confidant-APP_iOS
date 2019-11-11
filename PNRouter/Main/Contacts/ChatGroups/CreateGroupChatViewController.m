@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *createBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblPerosnCount;
 
+@property (nonatomic, assign) GroupPage newPage;
 @property (nonatomic ,strong) GroupMemberView *memberView;
 @end
 
@@ -40,9 +41,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (instancetype)initWithContacts:(NSArray *)contacts
+- (instancetype)initWithContacts:(NSArray *)contacts groupPage:(GroupPage)newPage
 {
     if (self = [super init]) {
+        self.newPage = newPage;
         [self.persons addObjectsFromArray:contacts];
     }
     return self;
@@ -154,8 +156,16 @@
 {
     NSDictionary *resDic = noti.object;
     GroupInfoModel *model = [GroupInfoModel mj_objectWithKeyValues:resDic];
+    @weakify_self
     [self dismissViewControllerAnimated:YES completion:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:CREATE_GROUP_SUCCESS_JUMP_NOTI object:model];
+        if (weakSelf.newPage == ChatCreateGroup) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_CREATE_GROUP_SUCCESS_JUMP_NOTI object:model];
+        } else if (weakSelf.newPage == AddCreateGroup) {
+             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_CREATE_GROUP_SUCCESS_JUMP_NOTI object:model];
+        } else if (weakSelf.newPage == GroupsCreateGroup) {
+             [[NSNotificationCenter defaultCenter] postNotificationName:GROUPS_CREATE_GROUP_SUCCESS_JUMP_NOTI object:model];
+        }
+        
     }];
 }
 

@@ -530,30 +530,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
            
             sheetView.actions = [NSArray arrayWithArray:self.actionArr];
             browser.sheetView = sheetView;
-            
-//            NSMutableArray *imgDataArr = [NSMutableArray array];
-//            __block NSInteger currentIndex = 0;
-//            [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//                CDMessageModel *messageModel = obj;
-//                // 本地图片（推荐使用 YBImage）
-//                YBImageBrowseCellData *data1 = [YBImageBrowseCellData new];
-//                if (messageModel.mediaImage) {
-//                    UIImage *resultImg = messageModel.mediaImage;
-//                    data1.imageBlock = ^__kindof UIImage * _Nullable{
-//                        return resultImg;
-//                    };
-//                } else {
-//                     NSString *requestUrl = [NSString stringWithFormat:@"%@%@",[RequestService getPrefixUrl],messageModel.filePath];
-//                    data1.url = [NSURL URLWithString:requestUrl];
-//                }
-//
-//                [imgDataArr addObject:data1];
-//                if ([listInfo.msgModel.messageId isEqualToString:messageModel.messageId]) {
-//                    currentIndex = idx;
-//                   // data1.sourceObject = imgV;
-//                }
-//            }];
-            
+
             
             NSString *fileDocs = [SystemUtil getBaseFilePath:self.friendModel.userId];
             NSFileManager *fm = [NSFileManager defaultManager];

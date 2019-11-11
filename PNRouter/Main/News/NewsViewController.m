@@ -70,6 +70,17 @@
 #import <GoogleAPIClientForREST/GTLRBase64.h>
 #import "NSData+UTF8.h"
 
+#import "MLMenuView.h"
+#import "AddNewMemberViewController.h"
+#import "NSString+RegexCategory.h"
+#import "CircleOutUtil.h"
+#import "CodeMsgViewController.h"
+#import "UserPrivateKeyUtil.h"
+#import "CreateGroupChatViewController.h"
+#import "NSString+RegexCategory.h"
+
+#import <libsodium/crypto_box.h>
+
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate,GIDSignInUIDelegate> {
     BOOL isSearch;
     int startId;
@@ -108,6 +119,10 @@
 @property (nonatomic, strong) NSMutableArray *googleTempMessages;
 @property (nonatomic, strong) NSArray *googleTempLists;
 @property (nonatomic ,assign) int messageCount;
+
+@property (nonatomic, assign) BOOL isSend;
+@property (nonatomic, assign) BOOL isFriendSend;
+@property (nonatomic, strong) NSString *codeResultValue;
 @end
 
 @implementation NewsViewController
@@ -161,6 +176,11 @@
     // google sign 成功
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstPullEmailList) name:GOOGLE_EMAIL_SIGN_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(googleSigninFaield) name:GOOGLE_EMAIL_SIGN_FAIELD_NOTI object:nil];
+    
+    
+    // menu 通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseContactNoti:) name:CHAT_CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:CHAT_CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
 }
 // 搜索
 - (IBAction)clickSearchAction:(id)sender {
@@ -259,6 +279,18 @@
 // 第一次拉取收件箱邮件
 - (void) firstPullEmailList
 {
+    if (self.isSend || self.isFriendSend) {
+        if (self.isSend) {
+            self.isSend = NO;
+            [self jumpNewEmail];
+        } else {
+            self.isFriendSend = NO;
+            [self jumpFriendNewEmail];
+        }
+        
+        return;
+    }
+    
     self.emailTabView.mj_header.hidden = NO;
     if (self.emailDataArray.count > 0) {
         [self.emailDataArray removeAllObjects];
@@ -409,6 +441,8 @@
     if (AppD.fileURL) {
         [self performSelector:@selector(jumpOtherFileVC) withObject:self afterDelay:1.0];
     }
+
+    
 }
 // 拉取新邮件
 - (void) sendPullNewEmailList
@@ -716,34 +750,40 @@
                     MCOMessageParser *messageParser = [MCOMessageParser messageParserWithData:data];
                     listInfo.attachCount = (int)messageParser.attachments.count;
                     
-                    NSString *content = [messageParser plainTextBodyRenderingAndStripWhitespace:YES]?:@"";
-                    
-                    content = [content stringByReplacingOccurrencesOfString:confidantEmialStr withString:@""];
-                    content = [content stringByReplacingOccurrencesOfString:confidantEmialText withString:@""];
-                    content = [NSString trimWhitespace:content];
-                    
-                    // 去除带有附件名字段
-                    if (listInfo.attachCount > 0) {
-                        NSArray *contentArr = [content componentsSeparatedByString:@" "];
-                        if ([contentArr[0] containsString:@"-"] ) {
-                            content = [contentArr lastObject];
-                        } else {
-                            content = contentArr[0];
-                        }
-                    }
+//                    NSString *content = [messageParser plainTextBodyRenderingAndStripWhitespace:YES]?:@"";
+//
+//                    content = [content stringByReplacingOccurrencesOfString:confidantEmialStr withString:@""];
+//                    content = [content stringByReplacingOccurrencesOfString:confidantEmialText withString:@""];
+//                    content = [NSString trimWhitespace:content];
+//
+//                    // 去除带有附件名字段
+//                    if (listInfo.attachCount > 0) {
+//                        NSArray *contentArr = [content componentsSeparatedByString:@" "];
+//                        if ([contentArr[0] containsString:@"-"] ) {
+//                            content = [contentArr lastObject];
+//                        } else {
+//                            content = contentArr[0];
+//                        }
+//                    }
                     
             
                     NSString *htmlContents = [messageParser htmlBodyRendering];
+                    // 检查是否包含 confidantcontent
+                    NSString *confidantContent = [weakSelf checkConfidantContentWithHtmlContent:htmlContents];
+                    
+                    if (confidantContent.length > 0) {
+                       htmlContents = [confidantContent base64DecodedString];
+                    }
+                    
                     // 检查是否需要解密
                     NSString *dsKey = [weakSelf deEmailHtmlContentWithContent:htmlContents];
+                   
                     
                     // 检查是否带有好友id
                     listInfo.friendId = [weakSelf checkFriendWithHtmlContent:htmlContents];
                     
                     // 检查是否带有密码
                     listInfo.passHint = [weakSelf checkPassWithHtmlContent:htmlContents];
-                    
-                    
                     
                     // 解密正文
                     if (listInfo.passHint.length > 0) {
@@ -753,17 +793,13 @@
                         
                     } else if (dsKey.length > 0) {
                         
+                       
                         NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:dsKey];
-                        if (datakey && datakey.length >= 16) {
+                        if (datakey && datakey.length > 0) {
                             datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-                            
+                     
                             htmlContents = [weakSelf getHtmlBodyWithHtmlContent:htmlContents emailType:2 isAttch:listInfo.attachCount deKey:datakey];
 
-                
-                            NSString *deContent = aesDecryptString([content componentsSeparatedByString:@" "][0], datakey);
-                            if (deContent && deContent.length > 0) {
-                                content = [self filterHTML:deContent];
-                            }
                             
                             listInfo.deKey = datakey;
                         }
@@ -798,7 +834,10 @@
                          }
                          */
                     }
-                    listInfo.content = content;//[content componentsSeparatedByString:@" "][0];
+                  
+                    NSString *content = [weakSelf filterHTML:htmlContents]?:@"";//content;//[content componentsSeparatedByString:@" "][0];
+                    content = [content stringByReplacingOccurrencesOfString:confidantEmialText withString:@""];
+                    listInfo.content = content;
                     listInfo.htmlContent = htmlContents;
                     listInfo.parserData = data;
                     
@@ -900,7 +939,6 @@
             } else {
                 spanStr = spanArray[0];
             }
-            
             NSString *deStr = aesDecryptString(spanStr, dsKey)?:@"";
             spanStr = [deStr stringByAppendingString:confidantHtmlStr];
         
@@ -926,6 +964,32 @@
         
     }
     return spanStr;
+}
+
+#pragma mark---------------解密newconfidantcontent
+- (NSString *) checkConfidantContentWithHtmlContent:(NSString *) htmlContents
+{
+    if (htmlContents && htmlContents.length > 0) {
+        
+        NSArray *passArr = [htmlContents componentsSeparatedByString:@"newconfidantcontent\n"];
+        if (passArr && passArr.count == 1) {
+            passArr = [htmlContents componentsSeparatedByString:@"newconfidantcontent"];
+        }
+        if (passArr && passArr.count == 2) {
+            
+            NSString *useridLastStr = [passArr lastObject];
+            useridLastStr = [useridLastStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            useridLastStr = [useridLastStr stringByReplacingOccurrencesOfString:@"'" withString:@""];
+            
+            
+            NSString *friendid = [useridLastStr componentsSeparatedByString:@"></span>"][0];
+            friendid = [friendid stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            friendid = [friendid stringByReplacingOccurrencesOfString:@"'" withString:@""];
+            
+            return friendid?:@"";
+        }
+    }
+    return @"";
 }
 
 #pragma mark --------------解密内容
@@ -1296,8 +1360,43 @@
 }
 
 - (void)jumpToAddGroupMenu {
-    AddGroupMenuViewController *vc = [[AddGroupMenuViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+  //  AddGroupMenuViewController *vc = [[AddGroupMenuViewController alloc] init];
+  //  [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    NSArray *titles = @[@"New Chat",@"New Email",@"Add Contacts"];
+    NSArray *images = @[@"tabbar_circle_selected",@"tabbar_email_selected",@"add_contacts"];
+    
+    NSString *currentRouterSn = [RouterConfig getRouterConfig].currentRouterSn;
+    NSString *userType = [currentRouterSn substringWithRange:NSMakeRange(0, 2)];
+    
+    if ([userType isEqualToString:@"01"]) { // 01:admin
+        titles = @[@"New Chat",@"New Email",@"Add Contacts",@"Add Members"];
+        images = @[@"tabbar_circle_selected",@"tabbar_email_selected",@"add_contacts",@"add Members"];
+    }
+    
+    MLMenuView *menuView = [[MLMenuView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 180 - 10, 0, 180, 50 * images.count) WithTitles:titles WithImageNames:images WithMenuViewOffsetTop:NAVIGATION_BAR_HEIGHT WithTriangleOffsetLeft:160 triangleColor:RGBP(255, 255, 255, 0.8)];
+    menuView.titleColor = MAIN_PURPLE_COLOR;
+    menuView.font = [UIFont systemFontOfSize:16];
+    menuView.separatorAlpha = 0;
+    @weakify_self
+    menuView.didSelectBlock = ^(NSInteger index) {
+        
+        if (index == 0) { // 创建群组
+            [weakSelf jumpCreateGroup];
+        } else if (index == 1) { // new email
+            [weakSelf jumpNewEmail];
+        } else if (index == 2) { // add contacts
+            [weakSelf jumpScanCoder];
+        } else if (index == 3) { // Invite Friends
+            //[weakSelf jumpFriendNewEmail];
+            [weakSelf jumpToAddGroupMenu];
+        }  else if (index == 4) { // add members
+            [weakSelf jumpToAddGroupMenu];
+        }
+       
+    };
+    [menuView showMenuEnterAnimation:MLEnterAnimationStyleRight];
 }
 
 #pragma mark - 消息发生改变通知
@@ -2155,15 +2254,18 @@
     if (!html || html.length == 0) {
         return @"";
     }
-    NSDictionary *dic = @{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType};
-    NSData *data = [html dataUsingEncoding:NSUnicodeStringEncoding];
-    NSAttributedString *attriStr = [[NSAttributedString alloc] initWithData:data options:dic documentAttributes:nil error:nil];
-    NSString *str = attriStr.string;
-    str = [NSString trimWhitespaceAndNewline:str];
-   // str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-    return str;
+    
+//    NSDictionary *dic = @{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType};
+//    NSData *data = [html dataUsingEncoding:NSUnicodeStringEncoding];
+//    NSAttributedString *attriStr = [[NSAttributedString alloc] initWithData:data options:dic documentAttributes:nil error:nil];
+//    NSString *str = attriStr.string;
+//    str = [NSString trimWhitespace:str];
+//    str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+//    return str;
+    return [html getHtmlText];
     
 }
+
 
 #pragma mark - UIScrollViewDelegate-------------
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -2451,6 +2553,13 @@
                     
                     NSString *htmlContents = [contentData convertedToUtf8String]?:@"";
                     
+                    // 检查是否包含 confidantcontent
+                    NSString *confidantContent = [self checkConfidantContentWithHtmlContent:htmlContents];
+                    
+                    if (confidantContent.length > 0) {
+                        htmlContents = [confidantContent base64DecodedString];
+                    }
+                    
                     // 检查是否需要解密
                     NSString *dsKey = [self deEmailHtmlContentWithContent:htmlContents]?:@"";
                     // 检查是否带有好友id
@@ -2464,7 +2573,7 @@
 
                         NSString *content = [self filterHTML:htmlContents];
                         content = [NSString trimWhitespace:content];
-                        messageM.snippet = [self filterHTML:htmlContents].length > 50? [[self filterHTML:htmlContents] substringToIndex:49]:[self filterHTML:htmlContents];
+                        messageM.snippet = content.length > 50? [content substringToIndex:49]:content;
                         
                     } else if (dsKey.length > 0) {
                         
@@ -2475,10 +2584,10 @@
                             htmlContents = [weakSelf getHtmlBodyWithHtmlContent:htmlContents emailType:2 isAttch:NO deKey:datakey];
                             
                             messageM.deKey = datakey;
-                            NSString *content = [self filterHTML:htmlContents];
-                            content = [htmlContents stringByReplacingOccurrencesOfString:confidantEmialStr withString:@""];
+                            NSString *content = [self filterHTML:htmlContents]?:@"";
+                            content = [content stringByReplacingOccurrencesOfString:confidantEmialText withString:@""];
                             content = [NSString trimWhitespace:content];
-                            messageM.snippet = [self filterHTML:htmlContents].length > 50? [[self filterHTML:htmlContents] substringToIndex:49]:[self filterHTML:htmlContents];
+                            messageM.snippet = content.length > 50? [content substringToIndex:49]:content;
                             
                         }
                        
@@ -2735,7 +2844,253 @@
 // sign 失败，取消菊花
 - (void) googleSigninFaield
 {
+    self.isSend = NO;
+    self.isFriendSend = NO;
     [self.view hideHud];
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma mark -----------menuJump---------
+- (void) jumpCreateGroup
+{
+    NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
+    // 过滤非当前路由的好友
+    NSString *currentToxid = [RouterConfig getRouterConfig].currentRouterToxid;
+    NSMutableArray *inputArr = [NSMutableArray array];
+    [tempArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FriendModel *model = obj;
+        if ([model.RouteId isEqualToString:currentToxid]) {
+            [inputArr addObject:model];
+        }
+    }];
+    AddGroupMemberViewController *vc = [[AddGroupMemberViewController alloc] initWithMemberArr:inputArr originArr:@[] type:ChatsGroupMemberTypeInGroupDetail];
+    [self presentModalVC:vc animated:YES];
+    
+}
+- (void) jumpNewEmail
+{
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    if (!accountM) {
+        [self.view showHint:@"You do not currently have a mailbox bound."];
+        return;
+    }
+    if (!AppD.isGoogleSign && accountM.userId.length > 0) {
+        self.isSend = YES;
+        [self.view showHudInView:self.view hint:@""];
+        NSArray *currentScopes = @[@"https://mail.google.com/"];
+        [GIDSignIn sharedInstance].scopes = currentScopes;
+        [[GIDSignIn sharedInstance] signIn];
+    } else {
+        PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:nil sendType:NewEmail];
+        [self presentModalVC:vc animated:YES];
+    }
+}
+
+- (void) jumpFriendNewEmail
+{
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    if (!accountM) {
+        [self.view showHint:@"You do not currently have a mailbox bound."];
+        return;
+    }
+    if (!AppD.isGoogleSign && accountM.userId.length > 0) {
+        self.isFriendSend = YES;
+        [self.view showHudInView:self.view hint:@""];
+        NSArray *currentScopes = @[@"https://mail.google.com/"];
+        [GIDSignIn sharedInstance].scopes = currentScopes;
+        [[GIDSignIn sharedInstance] signIn];
+    } else {
+        PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:nil sendType:FriendEmail];
+        [self presentModalVC:vc animated:YES];
+    }
+}
+- (void) jumpAddMembers
+{
+    NSString *rid = [RouterConfig getRouterConfig].currentRouterToxid;
+    AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:rid];
+    [self presentModalVC:vc animated:YES];
+}
+- (void) jumpScanCoder
+{
+    @weakify_self
+    QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
+        if (codeValue != nil && codeValue.length > 0) {
+            weakSelf.codeResultValue = codeValue;
+            NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
+            NSString *codeType = codeValues[0];
+            
+            if ([codeValue isUrlAddress]) { // 是网址
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:codeValue] options:@{} completionHandler:nil];
+            } else {
+                if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_1"]) { // 是节目点通信码
+                    // router 码
+                    NSString *result = aesDecryptString(codeValues[1],AES_KEY);
+                    result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                    if (result && result.length == 114) {
+                        
+                        NSString *toxid = [result substringWithRange:NSMakeRange(6, 76)];
+                        NSString *sn = [result substringWithRange:NSMakeRange(result.length-32, 32)];
+                        NSLog(@"%@",[RouterConfig getRouterConfig].currentRouterSn);
+                        
+                        if ([[RouterConfig getRouterConfig].currentRouterToxid isEqualToString:toxid]) {
+                            // 是当前帐户
+                            [AppD.window showHint:@"Already in the same circle."];
+                        } else {
+                            [weakSelf showAlertVCWithValues:@[toxid,sn] isMac:NO];
+                        }
+                    }
+                } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_2"]) { // 是MAC码
+                    // mac 码
+                    NSString *result = aesDecryptString(codeValues[1],AES_KEY);
+                    result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                    AppD.isScaner = YES;
+                    [weakSelf showAlertVCWithValues:@[result] isMac:YES];
+                    
+                } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_0"]) { // 是好友码
+                    codeValue = codeValues[1];
+                    if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
+                        [AppD.window showHint:@"You cannot add yourself as a friend."];
+                    } else if (codeValue.length != 76) {
+                        [AppD.window showHint:@"QR code format is wrong."];
+                        [weakSelf jumpCodeValueVC];
+                    } else {
+                        NSString *nickName = @"";
+                        if (codeValues.count>2) {
+                            nickName = codeValues[2];
+                        }
+                        [weakSelf addFriendRequest:codeValue nickName:nickName signpk:codeValues[3]];
+                    }
+                } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_3"]) { //帐户码
+                    [weakSelf showAlertImportAccount:codeValues];
+                    
+                } else if (codeValue.length == 12) { // 是MAC码
+                    NSString *macAdress = @"";
+                    for (int i = 0; i<12; i+=2) {
+                        NSString *macIndex = [codeValue substringWithRange:NSMakeRange(i, 2)];
+                        macAdress = [macAdress stringByAppendingString:macIndex];
+                        if (i < 10) {
+                            macAdress = [macAdress stringByAppendingString:@":"];
+                        }
+                    }
+                    if ([macAdress isMacAddress]) {
+                        [weakSelf showAlertVCWithValues:@[macAdress] isMac:YES];
+                    } else {
+                        [weakSelf jumpCodeValueVC];
+                    }
+                }  else { // 是乱码
+                    //[weakSelf.view showHint:@"format error!"];
+                    [weakSelf jumpCodeValueVC];
+                }
+            }
+        }
+    }];
+    
+    [self presentModalVC:vc animated:YES];
+}
+
+#pragma mark - Transition
+- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk{
+    
+    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+- (void) showAlertImportAccount:(NSArray *) values
+{
+    
+    NSString *signpk = values[1];
+    
+    if ([signpk isEqualToString:[EntryModel getShareObject].signPrivateKey])
+    {
+        // 是当前帐户
+        [AppD.window showHint:@"The same user."];
+        return;
+    }
+    
+    UIAlertController *vc = [UIAlertController alertControllerWithTitle:@"" message:@"This operation will overwrite the current account. Do you want to continue?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    // @weakify_self
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        if (![signpk isEqualToString:[EntryModel getShareObject].signPrivateKey]) {
+            // 清除所有数据
+            [SystemUtil clearAppAllData];
+            // 更改私钥
+            [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:values[1]];
+            
+            NSString *name = [values[3] base64DecodedString];
+            [UserModel createUserLocalWithName:name];
+            // 删除所有路由
+            [RouterModel delegateAllRouter];
+            [AppD setRootLoginWithType:ImportType];
+        }
+    }];
+    
+    [vc addAction:cancelAction];
+    [vc addAction:confirm];
+    
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void) jumpCodeValueVC
+{
+    CodeMsgViewController *vc = [[CodeMsgViewController alloc] initWithCodeValue:self.codeResultValue];
+    [self presentModalVC:vc animated:YES];
+}
+- (void) showAlertVCWithValues:(NSArray *) values isMac:(BOOL) isMac
+{
+    
+    AppD.isScaner = YES;
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"Do you want to switch the circle?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (isMac) {
+            [RouterConfig getRouterConfig].currentRouterMAC = values[0];
+            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0]];
+        } else {
+            [RouterConfig getRouterConfig].currentRouterToxid = values[0];
+            [RouterConfig getRouterConfig].currentRouterSn = values[1];
+            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0]];
+        }
+    }];
+    [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
+    [alertC addAction:alert1];
+    
+    UIAlertAction *alertCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertC addAction:alertCancel];
+    
+    [self presentViewController:alertC animated:YES completion:nil];
+    
+}
+#pragma mark - 通知回调
+- (void) chooseContactNoti:(NSNotification *) noti
+{
+    NSArray *mutContacts = noti.object;
+    if (mutContacts && mutContacts.count > 0) {
+        CreateGroupChatViewController *vc = [[CreateGroupChatViewController alloc] initWithContacts:mutContacts groupPage:ChatCreateGroup];
+        [self presentModalVC:vc animated:YES];
+    }
+}
+#pragma  mark ---jump vc
+- (void) jumpGroupChatNoti:(NSNotification *) noti
+{
+    GroupInfoModel *model = noti.object;
+    GroupChatViewController *vc = [[GroupChatViewController alloc] initWihtGroupMode:model];
+    [self.navigationController pushViewController:vc animated:YES];
+    [self moveAllNavgationViewController];
+}
 @end

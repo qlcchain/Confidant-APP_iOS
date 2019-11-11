@@ -106,7 +106,7 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullGroupSucess:) name:PULL_GROUP_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseContactNoti:) name:CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:GROUPS_CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
 }
 #pragma mark - 拉取群组
 - (void) pullGroupList
@@ -188,7 +188,7 @@
 {
     NSArray *mutContacts = noti.object;
     if (mutContacts && mutContacts.count > 0) {
-        CreateGroupChatViewController *vc = [[CreateGroupChatViewController alloc] initWithContacts:mutContacts];
+        CreateGroupChatViewController *vc = [[CreateGroupChatViewController alloc] initWithContacts:mutContacts groupPage:GroupsCreateGroup];
         [self presentModalVC:vc animated:YES];
     }
 }

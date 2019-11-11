@@ -16,6 +16,7 @@ typedef enum : NSUInteger {
     AddGroupMemberTypeBeforeCreate, // 添加成员来创建群组
     AddGroupMemberTypeInCreate, // 在创建群组里面来添加成员
     AddGroupMemberTypeInGroupDetail, // 在群详情页添加成员
+    ChatsGroupMemberTypeInGroupDetail, // 在chats添加成员
 } AddGroupMemberType;
 
 @interface AddGroupMemberViewController : PNBaseViewController

@@ -97,6 +97,9 @@
  */
 - (BOOL)isEmailAddress;
 
+
+- (NSString *) getHtmlText;
+
 /**
  *  简单的身份证有效性
  *
