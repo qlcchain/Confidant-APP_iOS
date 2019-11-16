@@ -59,10 +59,11 @@
     [supView addSubview:self];
     CGRect rect = self.frame;
     rect.origin.y = frameY;
-    @weakify_self
-    [UIView animateWithDuration:0.3 animations:^{
-        weakSelf.frame = rect;
-    }];
+    self.frame = rect;
+//    @weakify_self
+//    [UIView animateWithDuration:0.3 animations:^{
+//        weakSelf.frame = rect;
+//    }];
 }
 - (IBAction)clickDoubtBtn:(UIButton *)sender {
     if (sender.isSelected == NO) {

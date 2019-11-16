@@ -443,6 +443,8 @@
 		7353944F2266CF140004CE85 /* CircleMemberDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7353944D2266CF140004CE85 /* CircleMemberDetailViewController.xib */; };
 		7356429D222630D800DC0BCB /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7356429C222630D800DC0BCB /* ChatModel.m */; };
 		735642A02226752A00DC0BCB /* SendCacheChatUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7356429F2226752A00DC0BCB /* SendCacheChatUtil.m */; };
+		735D3FCC237EA5A10099E6C6 /* CircleUserCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735D3FCB237EA5A10099E6C6 /* CircleUserCodeView.xib */; };
+		735D3FCF237EA6890099E6C6 /* CircleUserCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D3FCE237EA6890099E6C6 /* CircleUserCodeView.m */; };
 		735D7B2E2367EDE300564A28 /* PNEmailPassDefaultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D7B2D2367EDE300564A28 /* PNEmailPassDefaultView.m */; };
 		735D7B302367EDEE00564A28 /* PNEmailPassDefaultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735D7B2F2367EDEE00564A28 /* PNEmailPassDefaultView.xib */; };
 		735D7B342368112800564A28 /* EmailPassCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D7B322368112800564A28 /* EmailPassCell.m */; };
@@ -1549,6 +1551,9 @@
 		7356429C222630D800DC0BCB /* ChatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatModel.m; sourceTree = "<group>"; };
 		7356429E2226752A00DC0BCB /* SendCacheChatUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendCacheChatUtil.h; sourceTree = "<group>"; };
 		7356429F2226752A00DC0BCB /* SendCacheChatUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendCacheChatUtil.m; sourceTree = "<group>"; };
+		735D3FCB237EA5A10099E6C6 /* CircleUserCodeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CircleUserCodeView.xib; sourceTree = "<group>"; };
+		735D3FCD237EA6890099E6C6 /* CircleUserCodeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleUserCodeView.h; sourceTree = "<group>"; };
+		735D3FCE237EA6890099E6C6 /* CircleUserCodeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleUserCodeView.m; sourceTree = "<group>"; };
 		735D7B2C2367EDE300564A28 /* PNEmailPassDefaultView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailPassDefaultView.h; sourceTree = "<group>"; };
 		735D7B2D2367EDE300564A28 /* PNEmailPassDefaultView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailPassDefaultView.m; sourceTree = "<group>"; };
 		735D7B2F2367EDEE00564A28 /* PNEmailPassDefaultView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailPassDefaultView.xib; sourceTree = "<group>"; };
@@ -3149,6 +3154,9 @@
 				735D7B2C2367EDE300564A28 /* PNEmailPassDefaultView.h */,
 				735D7B2D2367EDE300564A28 /* PNEmailPassDefaultView.m */,
 				735D7B2F2367EDEE00564A28 /* PNEmailPassDefaultView.xib */,
+				735D3FCB237EA5A10099E6C6 /* CircleUserCodeView.xib */,
+				735D3FCD237EA6890099E6C6 /* CircleUserCodeView.h */,
+				735D3FCE237EA6890099E6C6 /* CircleUserCodeView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4706,6 +4714,7 @@
 				7330F3B421475A3E00FF4EEC /* ContactsCell.xib in Resources */,
 				73E773FC22D58F2C001C652E /* EmailFloderCell.xib in Resources */,
 				584A448421460B0800608122 /* NewsViewController.xib in Resources */,
+				735D3FCC237EA5A10099E6C6 /* CircleUserCodeView.xib in Resources */,
 				734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */,
 				7330F3AF21475A0600FF4EEC /* GroupCell.xib in Resources */,
 				73C4B560223783500018146C /* GroupChatListViewController.xib in Resources */,
@@ -5174,6 +5183,7 @@
 				7330F4802148AADA00FF4EEC /* KeyChainUtil.swift in Sources */,
 				736257AE2142149300D7FD6B /* UIView+Visuals.m in Sources */,
 				5833F9C7221E57F400F7B63D /* ContactHeaderView.m in Sources */,
+				735D3FCF237EA6890099E6C6 /* CircleUserCodeView.m in Sources */,
 				583BF90621F6B4140078A2A8 /* UploadFilesViewController.m in Sources */,
 				7330F4E92149147200FF4EEC /* CTClickInfo.m in Sources */,
 				73001A2321912890003D07CC /* RSAUtil.m in Sources */,

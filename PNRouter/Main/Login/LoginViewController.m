@@ -49,7 +49,7 @@
 @property (nonatomic , strong) NSMutableArray *showRouterArr;
 @property (nonatomic ,strong) ConnectView *connectView;
 @property (nonatomic , strong) RouterModel *selectRouther;
-
+@property (nonatomic, strong) NSArray *inviteArr;
 @end
 
 @implementation LoginViewController
@@ -150,6 +150,27 @@
 - (IBAction)routherSelect:(id)sender {
     [self showRouter];
 }
+/**
+ 邀请码
+ 
+ @param values 导入帐号的值
+ */
+- (void)scanSuccessfulWithIsInvite:(NSArray *)values
+{
+    self.inviteArr = values;
+    RouterModel *routherM = [RouterModel checkRoutherWithSn:[RouterConfig getRouterConfig].currentRouterSn];
+    if (routherM) {
+        AppD.isScaner = NO;
+        self.selectRouther = routherM;
+        [RouterConfig getRouterConfig].currentRouterIp = @"";
+        [RouterConfig getRouterConfig].currentRouterToxid = routherM.toxid;
+        [RouterConfig getRouterConfig].currentRouterSn = routherM.userSn;
+        
+        _lblRoutherName.text = self.selectRouther.name;
+    }
+    [self loadHudView];
+    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RouterConfig getRouterConfig].currentRouterToxid];
+}
 
 /**
  导入帐号
@@ -224,8 +245,6 @@
             [RouterConfig getRouterConfig].currentRouterToxid = routherM.toxid;
             [RouterConfig getRouterConfig].currentRouterSn = routherM.userSn;
             
-            //[self loadHudView];
-            //[[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:[RoutherConfig getRouterConfig].currentRouterToxid];
             _lblRoutherName.text = self.selectRouther.name;
         }
         [self loadHudView];
@@ -600,9 +619,13 @@
  */
 - (void)updateUserHead {
 //    if (_loginType == ImportType) {
-        NSString *Fid = [UserModel getUserModel].userId?:@"";
-        NSString *Md5 = @"0";
-        [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
+    // 如果是邀请码 加好友
+    if (self.inviteArr) {
+        [SendRequestUtil sendAutoAddFriendWithFriendId:self.inviteArr[1] email:@"" type:1 showHud:NO];
+    }
+    NSString *Fid = [UserModel getUserModel].userId?:@"";
+    NSString *Md5 = @"0";
+    [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:Fid md5:Md5 showHud:NO];
 //    }
 }
 

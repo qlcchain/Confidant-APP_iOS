@@ -1364,15 +1364,15 @@
   //  [self.navigationController pushViewController:vc animated:YES];
     
     
-    NSArray *titles = @[@"New Chat",@"New Email",@"Add Contacts"];
-    NSArray *images = @[@"tabbar_circle_selected",@"tabbar_email_selected",@"add_contacts"];
+    NSArray *titles = @[@"New Chat",@"New Email",@"Add Contacts",@"Invite Friends"];
+    NSArray *images = @[@"tabbar_circle_selected",@"tabbar_email_selected",@"add_contacts",@"invite friends"];
     
     NSString *currentRouterSn = [RouterConfig getRouterConfig].currentRouterSn;
     NSString *userType = [currentRouterSn substringWithRange:NSMakeRange(0, 2)];
     
     if ([userType isEqualToString:@"01"]) { // 01:admin
-        titles = @[@"New Chat",@"New Email",@"Add Contacts",@"Add Members"];
-        images = @[@"tabbar_circle_selected",@"tabbar_email_selected",@"add_contacts",@"add Members"];
+        titles = @[@"New Chat",@"New Email",@"Add Contacts",@"Invite Friends",@"Add Members"];
+        images = @[@"tabbar_circle_selected",@"tabbar_email_selected",@"add_contacts",@"invite friends",@"add Members"];
     }
     
     MLMenuView *menuView = [[MLMenuView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 180 - 10, 0, 180, 50 * images.count) WithTitles:titles WithImageNames:images WithMenuViewOffsetTop:NAVIGATION_BAR_HEIGHT WithTriangleOffsetLeft:160 triangleColor:RGBP(255, 255, 255, 0.8)];
@@ -1389,8 +1389,7 @@
         } else if (index == 2) { // add contacts
             [weakSelf jumpScanCoder];
         } else if (index == 3) { // Invite Friends
-            //[weakSelf jumpFriendNewEmail];
-            [weakSelf jumpToAddGroupMenu];
+            [weakSelf jumpFriendNewEmail];
         }  else if (index == 4) { // add members
             [weakSelf jumpToAddGroupMenu];
         }
@@ -2001,6 +2000,7 @@
                         userM.userType = UserTo;
                     }
                     userM.userName = toA.displayName?:[[toA.mailbox componentsSeparatedByString:@"@"] firstObject];
+                    userM.userName = [userM.userName stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                     userM.userAddress = toA.mailbox;
                     userM.userAddress = [userM.userAddress stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                     [listInfo.toUserArray addObject:userM];
@@ -2020,6 +2020,7 @@
                         userM.userType = UserCc;
                     }
                     userM.userName = toA.displayName?:[[toA.mailbox componentsSeparatedByString:@"@"] firstObject];
+                    userM.userName = [userM.userName stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                     userM.userAddress = toA.mailbox;
                     userM.userAddress = [userM.userAddress stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                     [listInfo.ccUserArray addObject:userM];
@@ -2040,6 +2041,7 @@
                         userM.userType = UserBcc;
                     }
                     userM.userName = toA.displayName?:[[toA.mailbox componentsSeparatedByString:@"@"] firstObject];
+                    userM.userName = [userM.userName stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                     userM.userAddress = toA.mailbox;
                     userM.userAddress = [userM.userAddress stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                     [listInfo.bccUserArray addObject:userM];
@@ -2975,6 +2977,27 @@
                 } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_3"]) { //帐户码
                     [weakSelf showAlertImportAccount:codeValues];
                     
+                } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_4"]) { //邀请码
+                    
+                    NSString *result = aesDecryptString([codeValues lastObject],AES_KEY);
+                    result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                    if (result && result.length == 114) {
+                        
+                        NSString *toxid = [result substringWithRange:NSMakeRange(6, 76)];
+                        NSString *sn = [result substringWithRange:NSMakeRange(result.length-32, 32)];
+                        NSLog(@"%@",[RouterConfig getRouterConfig].currentRouterSn);
+                        
+                        if ([[RouterConfig getRouterConfig].currentRouterToxid isEqualToString:toxid]) {
+                            
+                            // 是当前帐户
+                            [SendRequestUtil sendAutoAddFriendWithFriendId:codeValues[1] email:@"" type:1 showHud:NO];
+                             [AppD.window showHint:@"Already in the same circle."];
+                            
+                        } else {
+                            [weakSelf showAlertVCWithValues:@[toxid,sn,codeValues[1]] isMac:NO];
+                        }
+                    }
+                    
                 } else if (codeValue.length == 12) { // 是MAC码
                     NSString *macAdress = @"";
                     for (int i = 0; i<12; i+=2) {
@@ -3007,6 +3030,7 @@
     [self.navigationController pushViewController:vc animated:YES];
     
 }
+
 - (void) showAlertImportAccount:(NSArray *) values
 {
     
@@ -3054,16 +3078,20 @@
 - (void) showAlertVCWithValues:(NSArray *) values isMac:(BOOL) isMac
 {
     
+    NSString *friendId = @"";
+    if (values.count > 2 && !isMac) {
+        friendId = values[2];
+    }
     AppD.isScaner = YES;
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"Do you want to switch the circle?" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (isMac) {
             [RouterConfig getRouterConfig].currentRouterMAC = values[0];
-            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0]];
+            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0] friendid:friendId];
         } else {
             [RouterConfig getRouterConfig].currentRouterToxid = values[0];
             [RouterConfig getRouterConfig].currentRouterSn = values[1];
-            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0]];
+            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0] friendid:friendId];
         }
     }];
     [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];

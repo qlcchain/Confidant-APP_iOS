@@ -56,6 +56,7 @@
 #import "GoogleUserModel.h"
 #import <GoogleAPIClientForREST/GTLRBase64.h>
 
+#import "CircleUserCodeView.h"
 
 @interface PNEmailSendViewController ()<UITextViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPickerDelegate,YBImageBrowserDelegate,UIWebViewDelegate>
@@ -118,6 +119,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property (nonatomic, strong) NSMutableString *htmlContent;
 @property (nonatomic, strong) MCOMessageParser *messageParser;
     @property (nonatomic, assign) BOOL isSend;
+
+@property (nonatomic, strong) UIImage *circleCodeImg;
+@property (nonatomic, strong) CircleUserCodeView *circleView;
 @end
 
 @implementation PNEmailSendViewController
@@ -202,7 +206,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 - (IBAction)clickBackAction:(id)sender {
      [self.view endEditing:YES];
-    if (!self.emailInfo || ![self.emailInfo.floderName isEqualToString:Drafts]) {
+    if ((!self.emailInfo || ![self.emailInfo.floderName isEqualToString:Drafts]) && _sendType != FriendEmail) {
         if (self.toContacts.count > 0 || self.subTF.text.trim.length > 0 || self.contentTF.text.length > 0 || self.attchArray.count > 1) {
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
             @weakify_self
@@ -297,6 +301,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [messageBuilder addRelatedAttachment:attachment];
             //添加html正文里的附加资源（图片）
         }
+    }
+    
+    if (_sendType == FriendEmail) {
+        self.circleCodeImg = [_circleView getCircleImage];
+        NSData *imgData = UIImagePNGRepresentation(self.circleCodeImg);
+        MCOAttachment *attachment = [MCOAttachment attachmentWithData:imgData filename:@"circleCode.jpg"];
+        messageBuilder.attachments = @[attachment];
     }
     
     return messageBuilder;
@@ -664,6 +675,34 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     rawMessage = [rawMessage stringByAppendingString:contentTypeJPG];
                 }
             }];
+            
+        }
+        
+        if (_sendType == FriendEmail) {
+            
+            self.circleCodeImg = [_circleView getCircleImage];
+            NSData *imgData = UIImagePNGRepresentation(self.circleCodeImg);
+            NSString *attName = @"circleCode.jpg";
+           
+            if (imgData) {
+                
+                contentTypeJPG = boundary;
+                // Image Content Type string
+                NSString *fileHz =@"jpg";
+                NSString *attType = [NSString stringWithFormat:@"file/%@",fileHz];
+                if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"]) {
+                    attType = [NSString stringWithFormat:@"image/%@",fileHz];
+                }
+                contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Type: %@; name=\"%@\"\r\n",attType,attName]];
+                contentTypeJPG = [contentTypeJPG stringByAppendingString:@"Content-Transfer-Encoding: base64\r\n"];
+                
+                // PNG image data
+                NSString *imageBase64String = GTLREncodeBase64(imgData);
+                NSString *pngString = [NSString stringWithFormat:@"%@\r\n",imageBase64String];
+                contentTypeJPG = [contentTypeJPG stringByAppendingString:pngString];
+                rawMessage = [rawMessage stringByAppendingString:contentTypeJPG];
+                
+            }
             
         }
         
@@ -1092,7 +1131,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                 } else if (weakSelf.sendType == ForwardEmail) {
                                                     writeHtml =[writeHtml stringByAppendingString:@"<br/><br/><br/><div>----------------- Fwd -----------------</div>"];
                                                 } else if (weakSelf.sendType == FriendEmail) {
-                                                    writeHtml = friendMBHtml;
+                                                    writeHtml = [friendMBHtml stringByReplacingOccurrencesOfString:@"xxx" withString:accountM.User];
                                                 }
                                                 
                                                 if (weakSelf.emailInfo) {
@@ -1150,7 +1189,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                     
                                                     writeHtml = [writeHtml base64EncodedString];
                                                     NSString *sapnContent = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantcontent%@\'></span>",writeHtml];
-                                                    writeHtml = [NSString stringWithFormat:encoderShowContent,accountM.User];
+                                                    writeHtml = [encoderShowContent stringByReplacingOccurrencesOfString:@"xxx" withString:accountM.User];
                                                     writeHtml = [writeHtml stringByAppendingString:sapnContent];
                                                     
                                                 }
@@ -1173,7 +1212,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                     if (callbackError == nil) {
                                                         
                                                         // 发送推送请求
-                                                        [SendRequestUtil sendEmailSendNotiWithEmails:weakSelf.emailStrings showHud:NO];
+                                                        if (weakSelf.emailStrings && weakSelf.emailStrings.length > 0) {
+                                                             [SendRequestUtil sendEmailSendNotiWithEmails:weakSelf.emailStrings showHud:NO];
+                                                        }
+                                                       
                                                         // 添加对方为好友
                                                         if (weakSelf.emailInfo && weakSelf.emailInfo.friendId && weakSelf.emailInfo.friendId.length > 0) {
                                                             
@@ -1287,7 +1329,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                } else if (weakSelf.sendType == ForwardEmail) {
                                    writeHtml =[writeHtml stringByAppendingString:@"<br/><br/><br/><div>----------------- Fwd -----------------</div>"];
                                }  else if (weakSelf.sendType == FriendEmail) {
-                                   writeHtml = friendMBHtml;
+                                   writeHtml = [friendMBHtml stringByReplacingOccurrencesOfString:@"xxx" withString:accountM.User];
                                }
                                
                                if (weakSelf.emailInfo) {
@@ -1348,7 +1390,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                    
                                    writeHtml = [writeHtml base64EncodedString];
                                    NSString *sapnContent = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantcontent%@\'></span>",writeHtml];
-                                   writeHtml = [NSString stringWithFormat:encoderShowContent,accountM.User];
+                                   writeHtml = [encoderShowContent stringByReplacingOccurrencesOfString:@"xxx" withString:accountM.User];
                                    writeHtml = [writeHtml stringByAppendingString:sapnContent];
                                }
                                
@@ -1368,7 +1410,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                        [EmailOptionUtil copySent:rfc822Data complete:^(BOOL success) {
                                        }];
                                        // 发送推送请求
-                                       [SendRequestUtil sendEmailSendNotiWithEmails:weakSelf.emailStrings showHud:NO];
+                                       if (weakSelf.emailStrings && weakSelf.emailStrings.length > 0) {
+                                           [SendRequestUtil sendEmailSendNotiWithEmails:weakSelf.emailStrings showHud:NO];
+                                       }
                                        // 添加对方为好友
                                        if (weakSelf.emailInfo && weakSelf.emailInfo.friendId && weakSelf.emailInfo.friendId.length > 0) {
 
@@ -1495,12 +1539,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         _contentContraintH.constant = 0;
         _AttCollectionContraintH.constant = 0;
         _passContraintH.constant = 0;
-        
         _webH.constant = 50;
+        _subTF.text = [NSString stringWithFormat:@"You got an email from your friend %@",accountM.User];
+        [self textDidChange:_subTF];
         NSMutableString * html = [NSMutableString string];
         [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
          @"<body>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
-         @"</iframe></html>", mainJavascript, mainStyle,friendMBHtml];
+         @"</iframe></html>", mainJavascript, mainStyle,[friendMBHtml stringByReplacingOccurrencesOfString:@"xxx" withString:accountM.User]];
         self.htmlContent = html;
         self.myWebView.scrollView.bounces = NO;
     
@@ -1508,6 +1553,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         [self.myWebView setDelegate:self];
         
         [self.myWebView loadHTMLString:self.htmlContent baseURL:nil];
+        
+        // 生成二维码
+        self.circleView = [CircleUserCodeView loadCircleUserCodeView];
     }
     
     if (_sendType == ReplyEmail) {
@@ -2842,6 +2890,19 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
         if (photos.count > 0 && assets.count>0) {
             PHAsset *asset = assets[0];
+            
+            
+            /**
+             * 该方法是异步执行的，不会阻塞当前线程，而且执行完后会来到
+             * completionHandler 的 block 中。
+             */
+//            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+//                [PHAssetChangeRequest deleteAssets:assets];
+//            } completionHandler:^(BOOL success, NSError * _Nullable error) {
+//                NSLog(@"----success----");
+//            }];
+
+            
             if (asset.mediaType == 1) { // 图片
                 [photos enumerateObjectsUsingBlock:^(UIImage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     UIImage *img = obj;

@@ -38,9 +38,13 @@
 - (void) setAttchs:(NSArray *) atts deKey:(nonnull NSString *)deKey
 {
     self.deKey = deKey;
-    [self.attchArray removeAllObjects];
-    [self.attchArray addObjectsFromArray:atts];
-    [_collectionV reloadData];
+    if (self.attchArray.count == 0) {
+        [self.attchArray addObjectsFromArray:atts];
+    } else {
+        [self.attchArray removeAllObjects];
+        [self.attchArray addObjectsFromArray:atts];
+    }
+    [self.collectionV reloadData];
 }
 - (void)awakeFromNib
 {

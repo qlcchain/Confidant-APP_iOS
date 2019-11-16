@@ -41,6 +41,7 @@
     BOOL isSwitchCircle;
     int socketDisCount;
     NSString *currentURL;
+    NSString *friendID;
     int requstTime;
 }
 @property (nonatomic ,strong) ConnectView *connectView;
@@ -79,7 +80,7 @@
     
 }
 
-- (void) circleOutProcessingWithRid:(NSString *)rid
+- (void) circleOutProcessingWithRid:(NSString *)rid friendid:(nonnull NSString *)friendId
                      //circleOutBlock:(nonnull CircleOutBlock)circleOutBlock
 {
     
@@ -88,7 +89,7 @@
 //    }
     
     [AppD.window showHudInView:AppD.window hint:Switch_Cricle];
-    
+    friendID = friendId;
     isSwitchCircle = YES;
     // 发送退出请求
     [SendRequestUtil sendLogOut];
@@ -281,21 +282,18 @@
 - (void) switchCircleSuccess
 {
     
+    if (friendID && friendID.length > 0) {
+        [SendRequestUtil sendAutoAddFriendWithFriendId:friendID email:@"" type:1 showHud:NO];
+    }
+    
     if (![SystemUtil isSocketConnect]) {
         if (AppD.currentRouterNumber < 0) {
             return;
         }
     }
     [AppD.window showSuccessHudInView:AppD.window hint:@"Switched"];
+    
     isSwitchCircle = NO;
-    // 发送获取好友列表和群组列表通知
-    //[[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_GROUP_LIST_NOTI object:nil];
-    //[[NSNotificationCenter defaultCenter] postNotificationName:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
-    // 取消红点
-    //AppD.showNewFriendAddRequestRedDot = NO;
-    //AppD.showNewGroupAddRequestRedDot = NO;
-    //[[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CONTACT_HD_NOTI object:nil];
-    //[self updateUserHead];
     AppD.isLogOut = NO;
     AppD.inLogin = YES;
     AppD.isSwitch = NO;

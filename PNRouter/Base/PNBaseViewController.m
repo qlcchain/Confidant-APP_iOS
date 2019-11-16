@@ -204,6 +204,10 @@
     
 }
 
+- (void) scanSuccessfulWithIsInvite:(NSArray *) values
+{
+}
+
 - (void)showEmptyViewToView:(UIView *)view img:(UIImage *)img title:(NSString *)title {
     if (!_emptyView) {
         _emptyView = [[UIView alloc] init];
@@ -324,6 +328,28 @@
             } else if ([[NSString getNotNullValue:type] isEqualToString:@"type_3"]) {
                     // 帐户码
                 [weakSelf scanSuccessfulWithIsAccount:codeValues];
+            }  else if ([[NSString getNotNullValue:type] isEqualToString:@"type_4"]) {
+                // 邀请码
+                NSString *circleCode = [codeValues lastObject];
+                circleCode = aesDecryptString(circleCode,AES_KEY);
+                
+                if (circleCode && circleCode.length == 114) {
+                    
+                    NSString *toxid = [circleCode substringWithRange:NSMakeRange(6, 76)];
+                    NSString *sn = [circleCode substringWithRange:NSMakeRange(circleCode.length-32, 32)];
+                    NSLog(@"%@",[RouterConfig getRouterConfig].currentRouterSn);
+                    
+                    AppD.isScaner = YES;
+                    [RouterConfig getRouterConfig].currentRouterToxid = toxid;
+                    [RouterConfig getRouterConfig].currentRouterSn = sn;
+                    [RouterConfig getRouterConfig].currentRouterIp = @"";
+                    [weakSelf scanSuccessfulWithIsInvite:codeValues];
+                    
+                    
+                } else {
+                     [weakSelf.view showHint:@"format error!"];
+                }
+               
             } else {
                 [weakSelf.view showHint:@"format error!"];
             }

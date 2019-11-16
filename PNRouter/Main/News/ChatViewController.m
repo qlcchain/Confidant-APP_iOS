@@ -513,6 +513,27 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                         
                                         [weakSelf showAlertImportAccount:codeValues];
                                         
+                                    }  else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_4"]) { //邀请码
+                                        
+                                        NSString *result = aesDecryptString([codeValues lastObject],AES_KEY);
+                                        result = [result stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                                        if (result && result.length == 114) {
+                                            
+                                            NSString *toxid = [result substringWithRange:NSMakeRange(6, 76)];
+                                            NSString *sn = [result substringWithRange:NSMakeRange(result.length-32, 32)];
+                                            NSLog(@"%@",[RouterConfig getRouterConfig].currentRouterSn);
+                                            
+                                            if ([[RouterConfig getRouterConfig].currentRouterToxid isEqualToString:toxid]) {
+                                                
+                                                // 是当前帐户
+                                                [SendRequestUtil sendAutoAddFriendWithFriendId:codeValues[1] email:@"" type:1 showHud:NO];
+                                                [AppD.window showHint:@"Already in the same circle."];
+                                                
+                                            } else {
+                                                [weakSelf showAlertVCWithValues:@[toxid,sn,codeValues[1]] isMac:NO];
+                                            }
+                                        }
+                                        
                                     } else {
                                         [weakSelf jumpCodeValueVCWithCodeValue:codeVlaue];
                                     }
@@ -2624,15 +2645,19 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self removeFromParentViewController];
     
     AppD.isScaner = YES;
+    NSString *friendId = @"";
+    if (values.count>2 && !isMac) {
+        friendId = values[2];
+    }
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"Do you want to switch the circle?" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (isMac) {
             [RouterConfig getRouterConfig].currentRouterMAC = values[0];
-            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0]];
+            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0] friendid:friendId];
         } else {
             [RouterConfig getRouterConfig].currentRouterToxid = values[0];
             [RouterConfig getRouterConfig].currentRouterSn = values[1];
-            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0]];
+            [[CircleOutUtil getCircleOutUtilShare] circleOutProcessingWithRid:values[0] friendid:friendId];
         }
     }];
     [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];

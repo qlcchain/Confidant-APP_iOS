@@ -99,11 +99,15 @@
 @end
 
 @implementation PNEmailDetailViewController
+
 // 初始化方法
 - (id)initWithEmailListModer:(EmailListInfo *)listInfo
 {
     if (self = [super init]) {
         self.emailInfo = listInfo;
+        
+       self.emailInfo.htmlContent = [self.emailInfo.htmlContent stringByReplacingOccurrencesOfString:@"/*<![CDATA[*/" withString:@""];
+        self.emailInfo.htmlContent = [self.emailInfo.htmlContent stringByReplacingOccurrencesOfString:@"/*]]>*/" withString:@""];
         
 //        __block NSString *dsKey = @"";
 //        if (listInfo.htmlContent && listInfo.htmlContent.length > 0 && (!self.emailInfo.clearEnHtmlContent || self.emailInfo.clearEnHtmlContent.length == 0)) {
@@ -186,9 +190,14 @@
             
             NSMutableString * html = [NSMutableString string];
             
+//            [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
+//             @"<body>%@%@%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
+//             @"</iframe></html>", mainJavascript,mainStyle,@"<div id=\"height\">", self.emailInfo.htmlContent,@"</div>"];
+            
             [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
-             @"<body>%@%@%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
-             @"</iframe></html>", mainJavascript,mainStyle,@"<div id=\"height\">", self.emailInfo.htmlContent,@"</div>"];
+             @"<body>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
+             @"</iframe></html>", mainJavascript, mainStyle,self.emailInfo.htmlContent];
+            
             self.htmlContent = html;
             
             
@@ -290,20 +299,30 @@
         _passDefaultView = [PNEmailPassDefaultView loadPNEmailPassDefaultView];
         @weakify_self
         [_passDefaultView setClickDecryptPassB:^(NSString *pass) {
+            
             weakSelf.mainTabV.scrollEnabled = YES;
             weakSelf.mainScrollView.scrollEnabled = YES;
-            weakSelf.moreW.constant = 38;
-            weakSelf.nodeW.constant = 38;
+            
             if ([pass isEqualToString:[NSString getNotNullValue:weakSelf.emailInfo.deKey]]) {
+                
+                weakSelf.moreW.constant = 38;
+                weakSelf.nodeW.constant = 38;
                 weakSelf.passWordKey = pass;
                 [weakSelf.passDefaultView hideEmailPassDefaultView];
                 weakSelf.attBackView.hidden = NO;
                 weakSelf.bottomView.hidden = NO;
                 weakSelf.webBackView.hidden = NO;
+                
+                [weakSelf.myWebView loadHTMLString:weakSelf.htmlContent baseURL:nil];
+                
                 return ;
+                
             }
             NSString *htmlContent = aesDecryptString(weakSelf.emailInfo.htmlContent, pass)?:@"";
             if (htmlContent.length > 0) {
+                
+                weakSelf.moreW.constant = 38;
+                weakSelf.nodeW.constant = 38;
                 
                 htmlContent = [htmlContent stringByAppendingString:confidantHtmlStr];
                 
@@ -311,6 +330,7 @@
                 weakSelf.emailInfo.deKey = pass;
                 
                 [weakSelf.passDefaultView hideEmailPassDefaultView];
+                
                 weakSelf.attBackView.hidden = NO;
                 weakSelf.bottomView.hidden = NO;
                 weakSelf.webBackView.hidden = NO;
@@ -324,13 +344,13 @@
                 
                 weakSelf.htmlContent = html;
                 weakSelf.emailInfo.htmlContent = htmlContent;
-                
+                [weakSelf reloadAttch];
                 [weakSelf.myWebView loadHTMLString:weakSelf.htmlContent baseURL:nil];
                 
-                [weakSelf.attchView setAttchs:weakSelf.emailInfo.attchArray deKey:pass];
+               
                 
-                weakSelf.tabH.constant -= (EmailPassCellHeight+EmailPassFromCellHeight);
-                [weakSelf.mainTabV reloadData];
+              //  weakSelf.tabH.constant -= (EmailPassCellHeight+EmailPassFromCellHeight);
+             //   [weakSelf.mainTabV reloadData];
                 
             } else {
                 [AppD.window showHint:@"You entered the wrong password."];
@@ -338,6 +358,11 @@
         }];
     }
     return _passDefaultView;
+}
+
+- (void) reloadAttch
+{
+    [self.attchView setAttchs:self.emailInfo.attchArray deKey:self.emailInfo.deKey];
 }
 #pragma makr -----IBOUT Click ----------
 
@@ -587,12 +612,13 @@
 
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     if (self.emailInfo.passHint.length == 0) {
          self.view.backgroundColor = MAIN_GRAY_COLOR;
     } else {
-        self.moreW.constant = 38;
-        self.nodeW.constant = 38;
+        self.moreW.constant = 0;
+        self.nodeW.constant = 0;
     }
     _passWordKey = @"";
     _forwardBtn.layer.cornerRadius = 8.0f;
@@ -651,17 +677,21 @@
         _attchView.frame = CGRectZero;
         _attchView.messageId = self.emailInfo.messageid;
         [_attBackView addSubview:_attchView];
+        
         @weakify_self
         [_attchView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.left.right.mas_equalTo(weakSelf.attBackView).offset(0);
         }];
-        [_attchView setAttchs:self.emailInfo.attchArray deKey:self.emailInfo.deKey];
-      
+        if (self.emailInfo.passHint.length == 0) {
+             [_attchView setAttchs:self.emailInfo.attchArray deKey:self.emailInfo.deKey];
+        }
+       
         [_attchView setClickAttBlock:^(NSInteger selItem) {
             EmailAttchModel *model = weakSelf.emailInfo.attchArray[selItem];
             if (weakSelf.emailInfo.deKey && weakSelf.emailInfo.deKey.length > 0) {
                 PNEmailPreViewController *vc = [[PNEmailPreViewController alloc] initWithFileName:model.attName fileData:aesDecryptData(model.attData, [weakSelf.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding])];
                  [weakSelf.navigationController pushViewController:vc animated:YES];
+                
             } else {
                 PNEmailPreViewController *vc = [[PNEmailPreViewController alloc] initWithFileName:model.attName fileData:model.attData];
                  [weakSelf.navigationController pushViewController:vc animated:YES];
@@ -688,6 +718,17 @@
         [self.myWebView loadHTMLString:self.htmlContent baseURL:nil];
     }
     
+  
+   // self.passDefaultView.frame = CGRectMake(0,SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-(self.tabH.constant-320+NAVIGATION_BAR_HEIGHT));
+    
+    if (self.emailInfo.passHint && self.emailInfo.passHint.length > 0) {
+        self.mainTabV.scrollEnabled = NO;
+        self.mainScrollView.scrollEnabled = NO;
+        self.passDefaultView.lblPassHint.text = [NSString stringWithFormat:@"Passwork Hint: %@",self.emailInfo.passHint];
+         [self.passDefaultView showEmailPassDefaultView:self.view frameY:128+NAVIGATION_BAR_HEIGHT];
+    }
+   
+    
 }
 
 #pragma mark --------------添加通知------
@@ -702,10 +743,10 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSString *hintStr = [NSString getNotNullValue:self.emailInfo.passHint];
-    if (hintStr.length > 0 && _passWordKey.length == 0) {
-        return 2;
-    }
+//    NSString *hintStr = [NSString getNotNullValue:self.emailInfo.passHint];
+//    if (hintStr.length > 0 && _passWordKey.length == 0) {
+//        return 2;
+//    }
     return 1;
 }
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -750,25 +791,17 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             EmailTopDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailTopDetailCellResue];
-            NSString *hintStr = [NSString getNotNullValue:self.emailInfo.passHint];
+          //  NSString *hintStr = [NSString getNotNullValue:self.emailInfo.passHint];
             if (_isHidden) {
                 [cell.hiddenBtn setTitle:@"Details" forState:UIControlStateNormal];
                 cell.lineView.hidden = NO;
                 
-                if (hintStr.length > 0 && _passWordKey.length == 0) {
-                    _tabH.constant = 128+EmailPassCellHeight+EmailPassFromCellHeight;
-                } else {
-                    _tabH.constant = 128;
-                }
+                _tabH.constant = 128;
                 
             } else {
                 cell.lineView.hidden = YES;
                 [cell.hiddenBtn setTitle:@"Hide" forState:UIControlStateNormal];
-                if (hintStr.length > 0 && _passWordKey.length == 0) {
-                    _tabH.constant = 128+(_userArray.count*37)+33+EmailPassCellHeight+EmailPassFromCellHeight;
-                } else {
-                    _tabH.constant = 128+(_userArray.count*37)+33;
-                }
+                _tabH.constant = 128+(_userArray.count*37)+33;
                 
             }
             [cell setEmialInfoModel:self.emailInfo];
@@ -795,17 +828,10 @@
         } else {
             EmailPassFromCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailPassFromCellResu];
             cell.lblFrom.text = self.emailInfo.From;
-            @weakify_self // 显示输入密码
-            [cell setClickEncodeB:^{
-                weakSelf.mainTabV.scrollEnabled = NO;
-                weakSelf.mainScrollView.scrollEnabled = NO;
-                weakSelf.passDefaultView.frame = CGRectMake(0,SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-(weakSelf.tabH.constant-320+NAVIGATION_BAR_HEIGHT));
-                if (![weakSelf.emailInfo.passHint isEqualToString:@"0"]) {
-                    weakSelf.passDefaultView.lblPassHint.text = [NSString stringWithFormat:@"Passwork Hint: %@",weakSelf.emailInfo.passHint];
-                }
-                [weakSelf.passDefaultView showEmailPassDefaultView:weakSelf.view frameY:weakSelf.tabH.constant-320+NAVIGATION_BAR_HEIGHT];
-                
-            }];
+            // 显示输入密码
+//            [cell setClickEncodeB:^{
+//
+//            }];
             return cell;
         }
     } 

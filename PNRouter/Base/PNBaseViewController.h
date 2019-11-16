@@ -37,6 +37,7 @@
 - (void) scanSuccessfulWithIsMacd:(BOOL) isMac;
 - (void) parsePowTempCodeBlock;
 - (void) scanSuccessfulWithIsAccount:(NSArray *) values;
+- (void) scanSuccessfulWithIsInvite:(NSArray *) values;
 
 - (void)showEmptyViewToView:(UIView *)view img:(UIImage *)img title:(NSString *)title;
 - (void)hideEmptyView;

@@ -87,12 +87,20 @@
 // 自动加好友请求
 + (void) sendAutoAddFriendWithFriendId:(NSString *) friendIds email:(NSString *) email type:(NSInteger) type showHud:(BOOL)showHud
 {
+    UserModel *userM = [UserModel getUserModel];
+    
+    if ([userM.userId isEqualToString:friendIds]) {
+        return;
+    }
+    
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
+    if (email && email.length > 0) {
+        email = [[email lowercaseString] base64EncodedString];
+    }
     
-    UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_AddFriendsAuto,@"Type":@(type),@"UserId":userM.userId?:@"",@"Friends":friendIds?:@"",@"EmailId":[[email lowercaseString] base64EncodedString]};
+    NSDictionary *params = @{@"Action":Action_AddFriendsAuto,@"Type":@(type),@"UserId":userM.userId?:@"",@"Friends":friendIds?:@"",@"EmailId":email};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
 #pragma mark -tox pull文件

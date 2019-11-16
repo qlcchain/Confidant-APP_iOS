@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , copy) CircleOutBlock circleOutBlock;
 
 + (instancetype) getCircleOutUtilShare;
-- (void) circleOutProcessingWithRid:(NSString *) rid;
+- (void) circleOutProcessingWithRid:(NSString *) rid friendid:(NSString *) friendId;
                      //circleOutBlock:(CircleOutBlock) circleOutBlock;
 @end
 
