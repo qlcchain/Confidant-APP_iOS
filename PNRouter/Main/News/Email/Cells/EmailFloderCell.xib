@@ -38,13 +38,23 @@
                         <color key="textColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E37-iv-T02">
+                        <rect key="frame" x="48" y="55" width="272" height="0.5"/>
+                        <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="Yb8-Ok-j0d"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="E37-iv-T02" firstAttribute="leading" secondItem="bp7-DY-8p8" secondAttribute="leading" id="0YE-qd-za3"/>
                     <constraint firstItem="8no-tD-eM4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="5Uk-B7-kr5"/>
                     <constraint firstItem="W10-gk-iCa" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="QK2-Zz-Rfh"/>
                     <constraint firstItem="8no-tD-eM4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Tts-iH-H3x"/>
                     <constraint firstItem="bp7-DY-8p8" firstAttribute="leading" secondItem="8no-tD-eM4" secondAttribute="trailing" constant="16" id="byf-m4-tqU"/>
+                    <constraint firstAttribute="trailing" secondItem="E37-iv-T02" secondAttribute="trailing" id="eW5-iI-6HF"/>
                     <constraint firstItem="bp7-DY-8p8" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gfY-8D-9Fr"/>
+                    <constraint firstAttribute="bottom" secondItem="E37-iv-T02" secondAttribute="bottom" id="lKA-Pu-C7D"/>
                     <constraint firstAttribute="trailing" secondItem="W10-gk-iCa" secondAttribute="trailing" constant="96" id="tkW-7D-L9y"/>
                 </constraints>
             </tableViewCellContentView>
@@ -54,7 +64,7 @@
                 <outlet property="lblContent" destination="bp7-DY-8p8" id="oMQ-3r-jLU"/>
                 <outlet property="lblCount" destination="W10-gk-iCa" id="qbE-B2-nJ2"/>
             </connections>
-            <point key="canvasLocation" x="-75.362318840579718" y="69.642857142857139"/>
+            <point key="canvasLocation" x="-139.13043478260872" y="54.910714285714285"/>
         </tableViewCell>
     </objects>
     <resources>

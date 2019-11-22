@@ -9,7 +9,8 @@
 #import "PNTabbarViewController.h"
 #import "MyViewController.h"
 #import "PNNavViewController.h"
-#import "FileViewController.h"
+//#import "FileViewController.h"
+#import "PNFileViewController.h"
 #import "ContactViewController.h"
 #import "NewsViewController.h"
 #import "SystemUtil.h"
@@ -34,6 +35,7 @@
 #import "FileDownUtil.h"
 #import "SendCacheChatUtil.h"
 #import "ChatModel.h"
+#import "PNFloderModel.h"
 
 @interface PNTabbarViewController ()<UITabBarControllerDelegate>
 @property (nonatomic ,strong) SocketAlertView *alertView;
@@ -81,7 +83,7 @@
     self.delegate = self;
     
     [self addChildViewController:[[NewsViewController alloc] initWithManager:self.manager] text:@"Chats" imageName:@"btn_news"];
-    [self addChildViewController:[[FileViewController alloc] initWithManager:self.manager] text:@"Files" imageName:@"btn_file"];
+    [self addChildViewController:[[PNFileViewController alloc] initWithManager:self.manager] text:@"Files" imageName:@"btn_file"];
     [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"Contacts" imageName:@"btn_contacts"];
     [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"Me" imageName:@"btn_my"];
     
@@ -110,6 +112,31 @@
     
     [self sendFriendAndGroupList];
     
+    // 为加密文件夹添加默认文件夹
+    /*
+    UserModel *userM = [UserModel getUserModel];
+    [PNFloderModel bg_findAsync:EN_FLODER_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(userM.userId)] complete:^(NSArray * _Nullable array) {
+        if (!array || array.count == 0) {
+            PNFloderModel *mode1 = [[PNFloderModel alloc] init];
+            mode1.floderName = @"";
+            mode1.userId = userM.userId;
+            mode1.floderType = 1;
+            
+            [mode1 bg_saveAsync:^(BOOL isSuccess) {
+                
+            }];
+            
+            PNFloderModel *mode2 = [[PNFloderModel alloc] init];
+            mode2.floderName = @"";
+            mode2.userId = userM.userId;
+            mode2.floderType = 2;
+            
+            [mode2 bg_saveAsync:^(BOOL isSuccess) {
+                
+            }];
+        }
+    }];
+    */
 }
 
 /**

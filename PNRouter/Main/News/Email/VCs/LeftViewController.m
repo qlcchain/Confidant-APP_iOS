@@ -296,7 +296,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 1) {
-        if (AppD.isEmailPage) { // 是邮箱
+        if (AppD.isEmailPage || 1) { // 是邮箱
             PNEmailTypeSelectView *vc = [[PNEmailTypeSelectView alloc] init];
             [self presentModalVC:vc animated:YES];
             @weakify_self
@@ -336,7 +336,7 @@
         [self clickFloderHideMenuViewController:model];
         
     } else if (indexPath.section == 0) {
-        if (AppD.isEmailPage) {
+        if (AppD.isEmailPage || 1) {
             // 切换邮箱
              EmailAccountModel *accountModel = self.emails[indexPath.row];
             if (!accountModel.isConnect) {

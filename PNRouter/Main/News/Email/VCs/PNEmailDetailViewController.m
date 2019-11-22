@@ -719,16 +719,18 @@
     }
     
   
-   // self.passDefaultView.frame = CGRectMake(0,SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-(self.tabH.constant-320+NAVIGATION_BAR_HEIGHT));
     
     if (self.emailInfo.passHint && self.emailInfo.passHint.length > 0) {
+        
         self.mainTabV.scrollEnabled = NO;
         self.mainScrollView.scrollEnabled = NO;
-        self.passDefaultView.lblPassHint.text = [NSString stringWithFormat:@"Passwork Hint: %@",self.emailInfo.passHint];
-         [self.passDefaultView showEmailPassDefaultView:self.view frameY:128+NAVIGATION_BAR_HEIGHT];
+        if (![self.emailInfo.passHint isEqualToString:@"0"]) {
+             self.passDefaultView.lblPassHint.text = [NSString stringWithFormat:@"Passwork Hint: %@",self.emailInfo.passHint];
+        }
+        [self.passDefaultView showEmailPassDefaultView:self.view frameY:128+NAVIGATION_BAR_HEIGHT];
+        
     }
    
-    
 }
 
 #pragma mark --------------添加通知------

@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 static NSString *EmailNameCellResue = @"EmailNameCell";
-#define EmailNameCellHeight 88
+#define EmailNameCellHeight 56
 
 @interface EmailNameCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *lblFirstName;

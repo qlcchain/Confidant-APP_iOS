@@ -34,6 +34,8 @@
 #define EMAIL_CONTACT_TABNAME  @"EMAIL_CONTACT_TABNAME"
 // email 星标邮件
 #define EMAIL_STAR_TABNAME  @"EMAIL_STAR_TABNAME"
+// 加密文件夹表
+#define EN_FLODER_TABNAME @"EN_FLODER_TABNAME"
 
 
 // 请求超时时间

@@ -13,5 +13,6 @@
 + (void)show;
 - (void)backShowWithComplete:(void(^_Nullable)(BOOL success, NSError * _Nullable error))complete;
 - (void)hide;
++ (void)checkFloderShow;
 
 @end

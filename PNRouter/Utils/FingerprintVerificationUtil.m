@@ -235,6 +235,33 @@
     });
 }
 
++ (void)checkFloderShow {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        DDLogDebug(@"开始解锁");
+        LAContext *myContext = [[LAContext alloc] init];
+        myContext.localizedFallbackTitle = @"Enter Password";
+        NSError *error = nil;
+        if([myContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error])
+        {
+            [myContext evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"Use the fingerprint to continue." reply:^(BOOL success, NSError * _Nullable error) {
+                if (error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        DDLogDebug(@"解锁验证失败");
+                        [FingerprintVerificationUtil handleError:error isExit:YES];
+                    });
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        DDLogDebug(@"解锁验证成功");
+                    });
+                }
+            }];
+        } else {
+            [FingerprintVerificationUtil showNotSupport:@"Touch ID and Face ID are not supported on the current device"];
+        }
+    });
+}
+
 + (void)handleError:(NSError *)error isExit:(BOOL) isExit{
     //失败操作
     LAError errorCode = error.code;

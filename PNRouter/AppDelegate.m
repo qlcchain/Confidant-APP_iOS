@@ -309,6 +309,8 @@
     PNTabbarViewController  *tabbarC = [[PNTabbarViewController alloc] initWithManager:manager];
     LeftViewController *leftMenuViewController = [[LeftViewController alloc] init];
     _sideMenuViewController = [[YJSideMenu alloc] initWithContentViewController:tabbarC leftMenuViewController:leftMenuViewController];
+    _sideMenuViewController.panGestureEnabled = NO;
+    _sideMenuViewController.panFromEdge = NO;
     [AppD addTransitionAnimation];
     AppD.window.rootViewController = _sideMenuViewController;
     AppD.inLogin = YES;

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^ClickDecryptPassBlock)(NSString *pass);
+typedef void(^ClickDecryptPassBlock)(NSString * _Nullable pass);
 
 NS_ASSUME_NONNULL_BEGIN
 

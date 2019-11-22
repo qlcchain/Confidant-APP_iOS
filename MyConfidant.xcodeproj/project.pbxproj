@@ -256,6 +256,7 @@
 		7303310C21C7A2FD007C4063 /* RunInBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 7303310A21C7A2FD007C4063 /* RunInBackground.m */; };
 		7303310F21D22422007C4063 /* UserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7303310E21D22422007C4063 /* UserConfig.m */; };
 		730465FF2232433800EB6073 /* UserHeadUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 730465FE2232433800EB6073 /* UserHeadUtil.m */; };
+		73056A2B23866BE600486744 /* PNFloderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73056A2A23866BE600486744 /* PNFloderModel.m */; };
 		73060528216F3572005A0E13 /* RequestService.m in Sources */ = {isa = PBXBuildFile; fileRef = 73060525216F3572005A0E13 /* RequestService.m */; };
 		73060529216F3572005A0E13 /* AFHTTPClientV2.m in Sources */ = {isa = PBXBuildFile; fileRef = 73060526216F3572005A0E13 /* AFHTTPClientV2.m */; };
 		7306054421748BD5005A0E13 /* VoiceConvert.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7306053A21748BD5005A0E13 /* VoiceConvert.mm */; };
@@ -452,6 +453,8 @@
 		735D7B392368113D00564A28 /* EmailPassFromCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D7B372368113D00564A28 /* EmailPassFromCell.m */; };
 		735D7B3A2368113D00564A28 /* EmailPassFromCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735D7B382368113D00564A28 /* EmailPassFromCell.xib */; };
 		735D9EDE235846BA00E46C31 /* GoogleMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D9EDD235846BA00E46C31 /* GoogleMessageModel.m */; };
+		735ECF9D238676EA00524616 /* PNFloderContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 735ECF9B238676EA00524616 /* PNFloderContentViewController.m */; };
+		735ECF9E238676EA00524616 /* PNFloderContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735ECF9C238676EA00524616 /* PNFloderContentViewController.xib */; };
 		7360B85221FC3269008FB181 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85121FC3269008FB181 /* FileData.m */; };
 		7360B85521FC632A008FB181 /* FileDownUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7360B85421FC632A008FB181 /* FileDownUtil.m */; };
 		7362573D213E8B3200D7FD6B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362573C213E8B3200D7FD6B /* AppDelegate.m */; };
@@ -556,6 +559,19 @@
 		7386910E214CD792003CF6A3 /* SocketCountUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386910D214CD792003CF6A3 /* SocketCountUtil.m */; };
 		73869111214CEAA3003CF6A3 /* ChatListDataUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73869110214CEAA3003CF6A3 /* ChatListDataUtil.m */; };
 		73869114214CEC63003CF6A3 /* ChatListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73869113214CEC63003CF6A3 /* ChatListModel.m */; };
+		7386CCCE2385188900004E0C /* PNFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386CCCC2385188900004E0C /* PNFileViewController.m */; };
+		7386CCCF2385188900004E0C /* PNFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386CCCD2385188900004E0C /* PNFileViewController.xib */; };
+		7386CCD3238518CA00004E0C /* PNPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386CCD1238518CA00004E0C /* PNPhotoViewController.m */; };
+		7386CCD4238518CA00004E0C /* PNPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386CCD2238518CA00004E0C /* PNPhotoViewController.xib */; };
+		7386CCD8238518E000004E0C /* PNMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386CCD6238518E000004E0C /* PNMessageViewController.m */; };
+		7386CCD9238518E000004E0C /* PNMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386CCD7238518E000004E0C /* PNMessageViewController.xib */; };
+		7386CCDD2385190000004E0C /* PNFileDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386CCDB2385190000004E0C /* PNFileDetailViewController.m */; };
+		7386CCDE2385190000004E0C /* PNFileDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386CCDC2385190000004E0C /* PNFileDetailViewController.xib */; };
+		7386CCE2238529AF00004E0C /* EnMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386CCE0238529AF00004E0C /* EnMainCell.m */; };
+		7386CCE3238529AF00004E0C /* EnMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386CCE1238529AF00004E0C /* EnMainCell.xib */; };
+		7386CCE623863F9000004E0C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386CCE423863F8F00004E0C /* UIImage+ImageEffects.m */; };
+		7386CCEA238664AA00004E0C /* EnPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386CCE8238664AA00004E0C /* EnPhotoCell.m */; };
+		7386CCEB238664AA00004E0C /* EnPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386CCE9238664AA00004E0C /* EnPhotoCell.xib */; };
 		73899CC12152011000962B14 /* GuidePageView2.m in Sources */ = {isa = PBXBuildFile; fileRef = 73899CB62152011000962B14 /* GuidePageView2.m */; };
 		73899CC22152011000962B14 /* GuidePageView1.m in Sources */ = {isa = PBXBuildFile; fileRef = 73899CB82152011000962B14 /* GuidePageView1.m */; };
 		73899CC32152011000962B14 /* GuidePageView3.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73899CBB2152011000962B14 /* GuidePageView3.xib */; };
@@ -577,12 +593,18 @@
 		7393918B22E068280033C203 /* EmailAttchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7393918A22E068280033C203 /* EmailAttchModel.m */; };
 		7393918E22E15B200033C203 /* EmailOptionUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7393918D22E15B200033C203 /* EmailOptionUtil.m */; };
 		7396A41123571AD800B62605 /* GoogleServerManage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7396A41023571AD800B62605 /* GoogleServerManage.m */; };
+		7396B2CF238771A100A2D276 /* KeyBordHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7396B2CE238771A100A2D276 /* KeyBordHeadView.m */; };
+		7396B2D1238771AF00A2D276 /* KeyBordHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7396B2D0238771AF00A2D276 /* KeyBordHeadView.xib */; };
 		73976A49225C990B0001E276 /* OtherFileOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73976A47225C990B0001E276 /* OtherFileOpenViewController.m */; };
 		73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73976A48225C990B0001E276 /* OtherFileOpenViewController.xib */; };
 		73A0E53322DDB5890004CED7 /* HeadReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A0E53122DDB5890004CED7 /* HeadReusableView.m */; };
 		73A0E53422DDB5890004CED7 /* HeadReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A0E53222DDB5890004CED7 /* HeadReusableView.xib */; };
+		73A133BD238673070051C13A /* AddFloderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A133BB238673070051C13A /* AddFloderCell.m */; };
+		73A133BE238673070051C13A /* AddFloderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A133BC238673070051C13A /* AddFloderCell.xib */; };
 		73A4867021B94B220062C34F /* ConnectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A4866F21B94B220062C34F /* ConnectView.m */; };
 		73A4867221B94B3A0062C34F /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A4867121B94B3A0062C34F /* ConnectView.xib */; };
+		73A75E2E23867E1500BA8FB3 /* UploadFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A75E2C23867E1500BA8FB3 /* UploadFileCell.m */; };
+		73A75E2F23867E1500BA8FB3 /* UploadFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A75E2D23867E1500BA8FB3 /* UploadFileCell.xib */; };
 		73AC8F50223F9E64000E60D5 /* GroupListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC8F4E223F9E64000E60D5 /* GroupListCell.m */; };
 		73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */; };
 		73B18D0822E5B017000D52A9 /* PNEmailContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B18D0622E5B017000D52A9 /* PNEmailContactViewController.m */; };
@@ -1211,6 +1233,8 @@
 		7303310E21D22422007C4063 /* UserConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserConfig.m; sourceTree = "<group>"; };
 		730465FD2232433800EB6073 /* UserHeadUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserHeadUtil.h; sourceTree = "<group>"; };
 		730465FE2232433800EB6073 /* UserHeadUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserHeadUtil.m; sourceTree = "<group>"; };
+		73056A2923866BE600486744 /* PNFloderModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFloderModel.h; sourceTree = "<group>"; };
+		73056A2A23866BE600486744 /* PNFloderModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFloderModel.m; sourceTree = "<group>"; };
 		73060524216F3572005A0E13 /* AFHTTPClientV2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClientV2.h; sourceTree = "<group>"; };
 		73060525216F3572005A0E13 /* RequestService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestService.m; sourceTree = "<group>"; };
 		73060526216F3572005A0E13 /* AFHTTPClientV2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClientV2.m; sourceTree = "<group>"; };
@@ -1565,6 +1589,9 @@
 		735D7B382368113D00564A28 /* EmailPassFromCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailPassFromCell.xib; sourceTree = "<group>"; };
 		735D9EDC235846BA00E46C31 /* GoogleMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GoogleMessageModel.h; sourceTree = "<group>"; };
 		735D9EDD235846BA00E46C31 /* GoogleMessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GoogleMessageModel.m; sourceTree = "<group>"; };
+		735ECF9A238676EA00524616 /* PNFloderContentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFloderContentViewController.h; sourceTree = "<group>"; };
+		735ECF9B238676EA00524616 /* PNFloderContentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFloderContentViewController.m; sourceTree = "<group>"; };
+		735ECF9C238676EA00524616 /* PNFloderContentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFloderContentViewController.xib; sourceTree = "<group>"; };
 		7360B85021FC3269008FB181 /* FileData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
 		7360B85121FC3269008FB181 /* FileData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileData.m; sourceTree = "<group>"; };
 		7360B85321FC632A008FB181 /* FileDownUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileDownUtil.h; sourceTree = "<group>"; };
@@ -1790,6 +1817,26 @@
 		73869110214CEAA3003CF6A3 /* ChatListDataUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatListDataUtil.m; sourceTree = "<group>"; };
 		73869112214CEC63003CF6A3 /* ChatListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatListModel.h; sourceTree = "<group>"; };
 		73869113214CEC63003CF6A3 /* ChatListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatListModel.m; sourceTree = "<group>"; };
+		7386CCCB2385188900004E0C /* PNFileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFileViewController.h; sourceTree = "<group>"; };
+		7386CCCC2385188900004E0C /* PNFileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFileViewController.m; sourceTree = "<group>"; };
+		7386CCCD2385188900004E0C /* PNFileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFileViewController.xib; sourceTree = "<group>"; };
+		7386CCD0238518CA00004E0C /* PNPhotoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNPhotoViewController.h; sourceTree = "<group>"; };
+		7386CCD1238518CA00004E0C /* PNPhotoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNPhotoViewController.m; sourceTree = "<group>"; };
+		7386CCD2238518CA00004E0C /* PNPhotoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNPhotoViewController.xib; sourceTree = "<group>"; };
+		7386CCD5238518E000004E0C /* PNMessageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNMessageViewController.h; sourceTree = "<group>"; };
+		7386CCD6238518E000004E0C /* PNMessageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNMessageViewController.m; sourceTree = "<group>"; };
+		7386CCD7238518E000004E0C /* PNMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNMessageViewController.xib; sourceTree = "<group>"; };
+		7386CCDA2385190000004E0C /* PNFileDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFileDetailViewController.h; sourceTree = "<group>"; };
+		7386CCDB2385190000004E0C /* PNFileDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFileDetailViewController.m; sourceTree = "<group>"; };
+		7386CCDC2385190000004E0C /* PNFileDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFileDetailViewController.xib; sourceTree = "<group>"; };
+		7386CCDF238529AF00004E0C /* EnMainCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnMainCell.h; sourceTree = "<group>"; };
+		7386CCE0238529AF00004E0C /* EnMainCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnMainCell.m; sourceTree = "<group>"; };
+		7386CCE1238529AF00004E0C /* EnMainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EnMainCell.xib; sourceTree = "<group>"; };
+		7386CCE423863F8F00004E0C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		7386CCE523863F9000004E0C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		7386CCE7238664AA00004E0C /* EnPhotoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnPhotoCell.h; sourceTree = "<group>"; };
+		7386CCE8238664AA00004E0C /* EnPhotoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnPhotoCell.m; sourceTree = "<group>"; };
+		7386CCE9238664AA00004E0C /* EnPhotoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EnPhotoCell.xib; sourceTree = "<group>"; };
 		73899CB62152011000962B14 /* GuidePageView2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuidePageView2.m; sourceTree = "<group>"; };
 		73899CB72152011000962B14 /* GuidePageView3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuidePageView3.h; sourceTree = "<group>"; };
 		73899CB82152011000962B14 /* GuidePageView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuidePageView1.m; sourceTree = "<group>"; };
@@ -1825,15 +1872,24 @@
 		7393918D22E15B200033C203 /* EmailOptionUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailOptionUtil.m; sourceTree = "<group>"; };
 		7396A40F23571AD800B62605 /* GoogleServerManage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GoogleServerManage.h; sourceTree = "<group>"; };
 		7396A41023571AD800B62605 /* GoogleServerManage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GoogleServerManage.m; sourceTree = "<group>"; };
+		7396B2CD238771A100A2D276 /* KeyBordHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyBordHeadView.h; sourceTree = "<group>"; };
+		7396B2CE238771A100A2D276 /* KeyBordHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyBordHeadView.m; sourceTree = "<group>"; };
+		7396B2D0238771AF00A2D276 /* KeyBordHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyBordHeadView.xib; sourceTree = "<group>"; };
 		73976A46225C990B0001E276 /* OtherFileOpenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherFileOpenViewController.h; sourceTree = "<group>"; };
 		73976A47225C990B0001E276 /* OtherFileOpenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherFileOpenViewController.m; sourceTree = "<group>"; };
 		73976A48225C990B0001E276 /* OtherFileOpenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherFileOpenViewController.xib; sourceTree = "<group>"; };
 		73A0E53022DDB5890004CED7 /* HeadReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeadReusableView.h; sourceTree = "<group>"; };
 		73A0E53122DDB5890004CED7 /* HeadReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeadReusableView.m; sourceTree = "<group>"; };
 		73A0E53222DDB5890004CED7 /* HeadReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeadReusableView.xib; sourceTree = "<group>"; };
+		73A133BA238673070051C13A /* AddFloderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddFloderCell.h; sourceTree = "<group>"; };
+		73A133BB238673070051C13A /* AddFloderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddFloderCell.m; sourceTree = "<group>"; };
+		73A133BC238673070051C13A /* AddFloderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddFloderCell.xib; sourceTree = "<group>"; };
 		73A4866E21B94B220062C34F /* ConnectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectView.h; sourceTree = "<group>"; };
 		73A4866F21B94B220062C34F /* ConnectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectView.m; sourceTree = "<group>"; };
 		73A4867121B94B3A0062C34F /* ConnectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectView.xib; sourceTree = "<group>"; };
+		73A75E2B23867E1500BA8FB3 /* UploadFileCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadFileCell.h; sourceTree = "<group>"; };
+		73A75E2C23867E1500BA8FB3 /* UploadFileCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFileCell.m; sourceTree = "<group>"; };
+		73A75E2D23867E1500BA8FB3 /* UploadFileCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadFileCell.xib; sourceTree = "<group>"; };
 		73AC8F4D223F9E64000E60D5 /* GroupListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupListCell.h; sourceTree = "<group>"; };
 		73AC8F4E223F9E64000E60D5 /* GroupListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupListCell.m; sourceTree = "<group>"; };
 		73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupListCell.xib; sourceTree = "<group>"; };
@@ -2438,6 +2494,7 @@
 		584A4473214609EC00608122 /* File */ = {
 			isa = PBXGroup;
 			children = (
+				7386CCC62383C07000004E0C /* NewEnFile */,
 				5825A23F21FAC03600E6194B /* ChooseShareContactViewController.h */,
 				5825A23E21FAC03600E6194B /* ChooseShareContactViewController.m */,
 				5825A23D21FAC03600E6194B /* ChooseShareContactViewController.xib */,
@@ -3213,6 +3270,8 @@
 		7330F3522146118800FF4EEC /* UIImage */ = {
 			isa = PBXGroup;
 			children = (
+				7386CCE523863F9000004E0C /* UIImage+ImageEffects.h */,
+				7386CCE423863F8F00004E0C /* UIImage+ImageEffects.m */,
 				7330F35E2146118800FF4EEC /* UIImage+Alpha.h */,
 				7330F36D2146118800FF4EEC /* UIImage+Alpha.m */,
 				7330F3552146118800FF4EEC /* UIImage+BetterFace.h */,
@@ -4259,6 +4318,77 @@
 			path = Submanagers;
 			sourceTree = "<group>";
 		};
+		7386CCC62383C07000004E0C /* NewEnFile */ = {
+			isa = PBXGroup;
+			children = (
+				7386CCC72383C07000004E0C /* Models */,
+				7386CCC82383C07100004E0C /* ViewControllers */,
+				7386CCC92383C07100004E0C /* Views */,
+				7386CCCA2383C07100004E0C /* TabCells */,
+			);
+			path = NewEnFile;
+			sourceTree = "<group>";
+		};
+		7386CCC72383C07000004E0C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				73056A2923866BE600486744 /* PNFloderModel.h */,
+				73056A2A23866BE600486744 /* PNFloderModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7386CCC82383C07100004E0C /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7386CCCB2385188900004E0C /* PNFileViewController.h */,
+				7386CCCC2385188900004E0C /* PNFileViewController.m */,
+				7386CCCD2385188900004E0C /* PNFileViewController.xib */,
+				7386CCD0238518CA00004E0C /* PNPhotoViewController.h */,
+				7386CCD1238518CA00004E0C /* PNPhotoViewController.m */,
+				7386CCD2238518CA00004E0C /* PNPhotoViewController.xib */,
+				7386CCD5238518E000004E0C /* PNMessageViewController.h */,
+				7386CCD6238518E000004E0C /* PNMessageViewController.m */,
+				7386CCD7238518E000004E0C /* PNMessageViewController.xib */,
+				7386CCDA2385190000004E0C /* PNFileDetailViewController.h */,
+				7386CCDB2385190000004E0C /* PNFileDetailViewController.m */,
+				7386CCDC2385190000004E0C /* PNFileDetailViewController.xib */,
+				735ECF9A238676EA00524616 /* PNFloderContentViewController.h */,
+				735ECF9B238676EA00524616 /* PNFloderContentViewController.m */,
+				735ECF9C238676EA00524616 /* PNFloderContentViewController.xib */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		7386CCC92383C07100004E0C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7396B2CD238771A100A2D276 /* KeyBordHeadView.h */,
+				7396B2CE238771A100A2D276 /* KeyBordHeadView.m */,
+				7396B2D0238771AF00A2D276 /* KeyBordHeadView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7386CCCA2383C07100004E0C /* TabCells */ = {
+			isa = PBXGroup;
+			children = (
+				7386CCDF238529AF00004E0C /* EnMainCell.h */,
+				7386CCE0238529AF00004E0C /* EnMainCell.m */,
+				7386CCE1238529AF00004E0C /* EnMainCell.xib */,
+				7386CCE7238664AA00004E0C /* EnPhotoCell.h */,
+				7386CCE8238664AA00004E0C /* EnPhotoCell.m */,
+				7386CCE9238664AA00004E0C /* EnPhotoCell.xib */,
+				73A133BA238673070051C13A /* AddFloderCell.h */,
+				73A133BB238673070051C13A /* AddFloderCell.m */,
+				73A133BC238673070051C13A /* AddFloderCell.xib */,
+				73A75E2B23867E1500BA8FB3 /* UploadFileCell.h */,
+				73A75E2C23867E1500BA8FB3 /* UploadFileCell.m */,
+				73A75E2D23867E1500BA8FB3 /* UploadFileCell.xib */,
+			);
+			path = TabCells;
+			sourceTree = "<group>";
+		};
 		73899CB52152011000962B14 /* GuidePage */ = {
 			isa = PBXGroup;
 			children = (
@@ -4631,6 +4761,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				587C52B8215C7027006787FB /* RouterManagerViewController.xib in Resources */,
+				7396B2D1238771AF00A2D276 /* KeyBordHeadView.xib in Resources */,
 				583BF90721F6B4140078A2A8 /* UploadFilesViewController.xib in Resources */,
 				73ED4B29230A803700AF4B51 /* EmailEncrypedCell.xib in Resources */,
 				586837FF224092B600B8ACB8 /* ChooseRemindMemberViewController.xib in Resources */,
@@ -4654,7 +4785,9 @@
 				73D00E9F215A1E510013E20D /* ChooseMutAlertView.xib in Resources */,
 				735D7B302367EDEE00564A28 /* PNEmailPassDefaultView.xib in Resources */,
 				733B6AB9230548F1003660F8 /* PNEmailContactView.xib in Resources */,
+				73A133BE238673070051C13A /* AddFloderCell.xib in Resources */,
 				73E3C71622D5793700D7C9C6 /* PNEmailLoginViewController.xib in Resources */,
+				73A75E2F23867E1500BA8FB3 /* UploadFileCell.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
 				7301A896226EB876006225FA /* Privacy Policy.html in Resources */,
 				73194E96225598C30047F50C /* SendFileListViewController.xib in Resources */,
@@ -4681,7 +4814,9 @@
 				581FDF6321F172E00068C120 /* ModifyActivateCodeViewController.xib in Resources */,
 				7322F4E822DD84A300932F28 /* EmailOptionCell.xib in Resources */,
 				7330F39421464DCD00FF4EEC /* MyCell.xib in Resources */,
+				7386CCDE2385190000004E0C /* PNFileDetailViewController.xib in Resources */,
 				7353944F2266CF140004CE85 /* CircleMemberDetailViewController.xib in Resources */,
+				735ECF9E238676EA00524616 /* PNFloderContentViewController.xib in Resources */,
 				73EAC67B23150CD4002C1637 /* guidance_notes_4.html in Resources */,
 				582BFE57221D3D2700D8C2C8 /* RouterAliasViewController.xib in Resources */,
 				73D00E952159DAE80013E20D /* ChooseDownView.xib in Resources */,
@@ -4721,6 +4856,7 @@
 				583B2B4122389F6600E6238D /* NewRequestsGroupChatsCell2.xib in Resources */,
 				73E7742922D87B27001C652E /* EmailUserCell.xib in Resources */,
 				734ED8CA226038B1002F1960 /* CircleLoginCodeViewController.xib in Resources */,
+				7386CCE3238529AF00004E0C /* EnMainCell.xib in Resources */,
 				73E7742E22D87BFC001C652E /* EmailTimeCell.xib in Resources */,
 				73ED4B24230A78F400AF4B51 /* PNEmailEncrypedViewController.xib in Resources */,
 				58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */,
@@ -4759,6 +4895,7 @@
 				7330F3A4214671C000FF4EEC /* ShareView.xib in Resources */,
 				7330F3D42147A98D00FF4EEC /* messageHistory.json in Resources */,
 				58BA8DA6221E73FF00E6DE95 /* ContactTableCell.xib in Resources */,
+				7386CCD4238518CA00004E0C /* PNPhotoViewController.xib in Resources */,
 				73B18D0922E5B017000D52A9 /* PNEmailContactViewController.xib in Resources */,
 				584B439A21FEF79300D1F21A /* DiskDetailCell.xib in Resources */,
 				584A447A21460AD800608122 /* MyViewController.xib in Resources */,
@@ -4772,6 +4909,7 @@
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
 				73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */,
 				7341A88122FD571D001AF7C2 /* PNEmailEditViewController.xib in Resources */,
+				7386CCCF2385188900004E0C /* PNFileViewController.xib in Resources */,
 				738C1BE82366C15100E558DB /* PNSetEmailPassView.xib in Resources */,
 				73E7744722DD63AD001C652E /* PNEmailOptionEnumView.xib in Resources */,
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
@@ -4783,6 +4921,7 @@
 				585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */,
 				586838032240959500B8ACB8 /* GroupMembersViewController.xib in Resources */,
 				583BF94A21F70FBC0078A2A8 /* TaskCompletedCell.xib in Resources */,
+				7386CCEB238664AA00004E0C /* EnPhotoCell.xib in Resources */,
 				581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */,
 				73B6432422E5C6C2003A4EA5 /* EmailContactCell.xib in Resources */,
 				730AE08522EADA6100E0BC67 /* EmailErrorAlertView.xib in Resources */,
@@ -4797,6 +4936,7 @@
 				7303310B21C7A2FD007C4063 /* mysong.mp3 in Resources */,
 				7386910B214CC7D3003CF6A3 /* EditTextViewController.xib in Resources */,
 				583BF93621F6F4B00078A2A8 /* FileMoreAlertView.xib in Resources */,
+				7386CCD9238518E000004E0C /* PNMessageViewController.xib in Resources */,
 				583BF92521F6C3050078A2A8 /* UploadFilesHeaderView.xib in Resources */,
 				73ED4B3F230FDE2100AF4B51 /* guidance_notes_3.html in Resources */,
 				58BD2E5521465E0A0091A77D /* Assets.xcassets in Resources */,
@@ -4968,6 +5108,7 @@
 				7362575C214213AA00D7FD6B /* NSDateFormatter+Category.m in Sources */,
 				581FDF5621F024170068C120 /* DHT.m in Sources */,
 				73194E91225360520047F50C /* ChatImgCacheUtil.m in Sources */,
+				7386CCDD2385190000004E0C /* PNFileDetailViewController.m in Sources */,
 				73C4B55F223783500018146C /* GroupChatListViewController.m in Sources */,
 				585AEE532140D2280098A070 /* HMScanner.m in Sources */,
 				583BF94F21F809000078A2A8 /* FilePreviewViewController.m in Sources */,
@@ -5066,6 +5207,7 @@
 				73B18D0822E5B017000D52A9 /* PNEmailContactViewController.m in Sources */,
 				7341A86722F81146001AF7C2 /* sha1.c in Sources */,
 				73E7741B22D8239A001C652E /* PNEmailDetailViewController.m in Sources */,
+				7386CCEA238664AA00004E0C /* EnPhotoCell.m in Sources */,
 				581FDF3D21F024160068C120 /* toxav_old.m in Sources */,
 				73001A262191328C003D07CC /* RSAModel.m in Sources */,
 				581FDF4021F024170068C120 /* network.m in Sources */,
@@ -5088,6 +5230,7 @@
 				7330F3502146102A00FF4EEC /* PNNavViewController.m in Sources */,
 				736257A92142149300D7FD6B /* UIView+Animation.m in Sources */,
 				7330F37C2146118800FF4EEC /* UIImage+FX.m in Sources */,
+				7386CCE623863F9000004E0C /* UIImage+ImageEffects.m in Sources */,
 				73E7742422D87372001C652E /* EmailUserModel.m in Sources */,
 				73899CC12152011000962B14 /* GuidePageView2.m in Sources */,
 				7330F37D2146118800FF4EEC /* UIImage+Alpha.m in Sources */,
@@ -5173,6 +5316,7 @@
 				73741800221E9B8F008EE243 /* SettingViewController.m in Sources */,
 				737883EF21ACF2970033A189 /* OCTToxConstants.m in Sources */,
 				5886FB9621F5C22B0052EDD0 /* UploadAlertView.m in Sources */,
+				7386CCCE2385188900004E0C /* PNFileViewController.m in Sources */,
 				7306054A2176CA51005A0E13 /* CDFileTableViewCell.m in Sources */,
 				581FDF5221F024170068C120 /* friend_requests.m in Sources */,
 				7362574B213E8B3400D7FD6B /* main.m in Sources */,
@@ -5255,6 +5399,7 @@
 				58A23A87223FA9F70098AED5 /* RemoveGroupMemberViewController.m in Sources */,
 				736257A52142149300D7FD6B /* UIView+Nib.m in Sources */,
 				581FDF4D21F024170068C120 /* crypto_core_mem.m in Sources */,
+				7386CCD3238518CA00004E0C /* PNPhotoViewController.m in Sources */,
 				736257822142143F00D7FD6B /* NSString+EmptyUtil.m in Sources */,
 				737883F721ACF2970033A189 /* OCTManagerConfiguration.m in Sources */,
 				581FDF4421F024170068C120 /* crypto_core.m in Sources */,
@@ -5269,6 +5414,7 @@
 				58F178A5221FF376001CD0AF /* ChooseContactTableCell.m in Sources */,
 				73AC8F50223F9E64000E60D5 /* GroupListCell.m in Sources */,
 				7378841521ACF2970033A189 /* NSError+OCTFile.m in Sources */,
+				73A133BD238673070051C13A /* AddFloderCell.m in Sources */,
 				7330F3772146118800FF4EEC /* UIImage+Rotate.m in Sources */,
 				58BD2E722148E3170091A77D /* ToastUtil.m in Sources */,
 				7330F3AE21475A0600FF4EEC /* GroupCell.m in Sources */,
@@ -5287,6 +5433,7 @@
 				584B43A921FF0B9800D1F21A /* ConfigDiskCell.m in Sources */,
 				582BFE3B221688C200D8C2C8 /* DiskAlertView.m in Sources */,
 				583BF93521F6F4B00078A2A8 /* FileMoreAlertView.m in Sources */,
+				735ECF9D238676EA00524616 /* PNFloderContentViewController.m in Sources */,
 				582BFE5A221E479A00D8C2C8 /* ContactShowModel.m in Sources */,
 				7330F4E62149147200FF4EEC /* CDTextParser.m in Sources */,
 				737883F321ACF2970033A189 /* OCTToxAV.m in Sources */,
@@ -5294,6 +5441,7 @@
 				736257AD2142149300D7FD6B /* UIView+Gradient.m in Sources */,
 				73E3C6E922D2F47000D7C9C6 /* LeftViewController.m in Sources */,
 				730AE0A022F13E6100E0BC67 /* EmailStarModel.m in Sources */,
+				7386CCD8238518E000004E0C /* PNMessageViewController.m in Sources */,
 				7341A84922F8111D001AF7C2 /* SSZipArchive.m in Sources */,
 				585AEE522140D2280098A070 /* HMScannerMaskView.m in Sources */,
 				580CFE112224DD8200460B41 /* PNUnlockView.m in Sources */,
@@ -5304,6 +5452,7 @@
 				73625754213E8CA500D7FD6B /* SocketUtil.swift in Sources */,
 				7341A88022FD571D001AF7C2 /* PNEmailEditViewController.m in Sources */,
 				7396A41123571AD800B62605 /* GoogleServerManage.m in Sources */,
+				73056A2B23866BE600486744 /* PNFloderModel.m in Sources */,
 				737883F821ACF2970033A189 /* OCTPixelBufferPool.m in Sources */,
 				732DCEE6223796B800B2A2CA /* AddNewMemberViewController.m in Sources */,
 				583B2B4022389F6600E6238D /* NewRequestsGroupChatsCell2.m in Sources */,
@@ -5317,6 +5466,7 @@
 				5825A24121FAC03700E6194B /* ChooseShareContactViewController.m in Sources */,
 				583B2B2D2231099F00E6238D /* PNDefaultHeaderView.m in Sources */,
 				737883FD21ACF2970033A189 /* OCTManagerConstants.m in Sources */,
+				7386CCE2238529AF00004E0C /* EnMainCell.m in Sources */,
 				737883F921ACF2970033A189 /* OCTVideoView.m in Sources */,
 				730465FF2232433800EB6073 /* UserHeadUtil.m in Sources */,
 				7321A3F72303B25F00D9B97A /* PNEmailConfigViewController.m in Sources */,
@@ -5366,6 +5516,7 @@
 				583BF92B21F6E4940078A2A8 /* UploadFilesCell.m in Sources */,
 				7330F4FD2149147200FF4EEC /* CTMoreKeyBoard.m in Sources */,
 				7330F3822146120C00FF4EEC /* PNTabbarViewController.m in Sources */,
+				73A75E2E23867E1500BA8FB3 /* UploadFileCell.m in Sources */,
 				737883F121ACF2970033A189 /* OCTToxOptions.m in Sources */,
 				586838042240959500B8ACB8 /* GroupMembersViewController.m in Sources */,
 				73E7742D22D87BFC001C652E /* EmailTimeCell.m in Sources */,
@@ -5399,6 +5550,7 @@
 				733B6AB7230548E7003660F8 /* PNEmailContactView.m in Sources */,
 				73ED4B28230A803700AF4B51 /* EmailEncrypedCell.m in Sources */,
 				73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */,
+				7396B2CF238771A100A2D276 /* KeyBordHeadView.m in Sources */,
 				73E7740A22D6DDF7001C652E /* EmailListInfo.m in Sources */,
 				734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */,
 			);
