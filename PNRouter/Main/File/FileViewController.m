@@ -428,7 +428,6 @@ typedef enum : NSUInteger {
             fileKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:datakey enPK:model.publicKey];
         }
         
-        
         [SendRequestUtil sendFileForwardMsgid:[NSString stringWithFormat:@"%@",weakSelf.selectModel.MsgId] toid:model.userId?:@"" fileName:weakSelf.selectModel.FileName filePath:weakSelf.selectModel.FilePath filekey:fileKey?:@"" fileInfo:weakSelf.selectModel.FileInfo];
     }];
 }

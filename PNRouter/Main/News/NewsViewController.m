@@ -2654,7 +2654,7 @@
                         weakSelf.emailTabView.mj_footer.hidden = YES;
                     }
                     
-                    // 根据uid 排序
+                    // 根据internalDate 排序
                     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"internalDate" ascending:NO];
                     [weakSelf.googleTempMessages sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
                     

@@ -606,6 +606,8 @@
         [SocketMessageUtil handleBakMailsCheck:receiveDic];
     } else if ([action isEqualToString:Action_SysMsgPush]) { // 系统消息push
         [SocketMessageUtil handleSysMsgPush:receiveDic];
+    } else if ([action isEqualToString:Action_FilePathsPull]) { // 拉取文件夹列表
+        [SocketMessageUtil handleFilePathsPull:receiveDic];
     }
 }
 
@@ -2227,7 +2229,21 @@
     }
 }
 
-
+#pragma mark --------------加密相册
+// 拉取文件夹列表
++ (void) handleFilePathsPull:(NSDictionary *)receiveDic
+{
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:Pull_Floder_List_Noti object:receiveDic];
+    } else {
+        if (retCode == 1) {
+            [AppD.window showHint:@"Failed to pull folder list."];
+        }
+    }
+    
+}
 
 
 #pragma mark - Base
@@ -2288,6 +2304,7 @@
 }
 
 
+
 #pragma -mark 同意或拒绝好友请求
 + (void) sendAgreedOrRefusedWithFriendMode:(FriendModel *) model withType:(NSString *)type
 {
@@ -2338,5 +2355,6 @@
     NSDictionary *params = @{@"Action":Action_Register,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":sn,@"IdentifyCode":code,@"Sign":@"",@"UserKey":[EntryModel getShareObject].publicKey,@"NickName":[nickName base64EncodedString]};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
+
 
 @end

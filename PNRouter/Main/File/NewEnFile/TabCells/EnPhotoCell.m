@@ -7,12 +7,28 @@
 //
 
 #import "EnPhotoCell.h"
+#import "PNFloderModel.h"
 
 @implementation EnPhotoCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+}
+
+- (void) setFloderM:(PNFloderModel *) floderM
+{
+    self.floderModel = floderM;
+    _lblName.text = floderM.PathName;
+    _lblNumber.text = [NSString stringWithFormat:@"%ld",floderM.FilesNum];
+    
+    NSString *sql = [NSString stringWithFormat:@"select count(%@) from %@ group by %@",bg_sqlKey(@"fId"),EN_FILE_TABNAME,bg_sqlKey(@"PathId")];
+    NSDictionary *results = bg_executeSql(sql, EN_FILE_TABNAME,nil);
+    if (results) {
+       _lblNumber.text = [NSString stringWithFormat:@"%d",[results[@"count(BG_fId)"] intValue]];
+    } else {
+        _lblNumber.text = 0;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

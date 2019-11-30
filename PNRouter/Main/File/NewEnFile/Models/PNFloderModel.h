@@ -11,11 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PNFloderModel : BBaseModel
+@interface PNFloderModel : BBaseModel<BGProtocol>
 
-@property (strong, nonatomic) NSString *floderName;
-@property (strong, nonatomic) NSString *userId;
-@property (assign, nonatomic) NSInteger floderType;
+@property (assign, nonatomic) NSInteger fId;
+@property (strong, nonatomic) NSString *PathName;
+@property (assign, nonatomic) NSInteger FilesNum;
+@property (assign, nonatomic) NSInteger LastModify;
 
 @end
 

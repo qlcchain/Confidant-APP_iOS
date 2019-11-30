@@ -577,5 +577,41 @@
     [SocketMessageUtil sendVersion6WithParams:params];
     
 }
+
+
+
+#pragma mark--------------加密相册
+// 拉取言文件夹
++ (void) sendPullFloderListWithFloderType:(NSInteger) floderType  showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_FilePathsPull,@"UserId":userM.userId,@"Type":@(floderType)};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
+
+// 拉取文件夹文件
++ (void) sendPullFloderFileListWithFloderType:(NSInteger) floderType floderId:(NSInteger) fid floderName:(NSString *) fName sortType:(NSInteger) sortType startId:(NSInteger) startId num:(NSInteger) num  showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_FilesListPull,@"UserId":userM.userId,@"Depens":@(floderType),@"PathId":@(fid),@"PathName":fName,@"Sort":@(sortType),@"StartId":@(startId),@"Num":@(num)};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
+
+// 操作文件或文件夹
++ (void) sendUpdateloderWithFloderType:(NSInteger) floderType updateType:(NSInteger) updateType updateId:(NSInteger) updateId react:(NSInteger) react Sname:(NSString *) sName Dname:(NSString *) dName showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_FileAction,@"UserId":userM.userId,@"Depens":@(floderType),@"Type":@(updateType),@"React":@(react),@"Id":@(updateId),@"Sname":sName,@"Dname":dName};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
 @end
 

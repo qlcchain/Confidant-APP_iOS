@@ -7,11 +7,12 @@
 //
 
 #import "PNBaseViewController.h"
+@class PNFloderModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PNFloderContentViewController : PNBaseViewController
-
+- (instancetype) initWithFloderM:(PNFloderModel *) floderM;
 @end
 
 NS_ASSUME_NONNULL_END

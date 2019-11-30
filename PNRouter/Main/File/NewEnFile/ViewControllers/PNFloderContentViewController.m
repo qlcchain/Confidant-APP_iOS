@@ -11,15 +11,50 @@
 #import "UploadFileCell.h"
 #import <YBImageBrowser/YBImageBrowser.h>
 #import "TZImagePickerController.h"
+#import "PNFileOptionView.h"
+#import "SystemUtil.h"
+#import "NSData+Base64.h"
+#import "AESCipher.h"
+#import "NSDate+Category.h"
+#import "PNFileModel.h"
+#import "PNFloderModel.h"
 
 @interface PNFloderContentViewController ()<UITableViewDelegate,UITableViewDataSource,YBImageBrowserDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *mainTabView;
-
+@property (nonatomic, strong) PNFileOptionView *optionView;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, strong) PNFloderModel *floderM;
+@property (nonatomic, assign) NSInteger selFileCount;
+@property (nonatomic, assign) NSInteger finshFileCount;
 @end
 
 @implementation PNFloderContentViewController
+
+#pragma mark-------------layz
+- (PNFileOptionView *)optionView
+{
+    if (!_optionView) {
+        _optionView = [PNFileOptionView loadPNFileOptionView];
+        [_optionView setClickMenuBlock:^(NSInteger tag) {
+            if (tag == 10) { // 上传到节点
+                
+            } else { // 删除
+                
+            }
+        }];
+    }
+    return _optionView;
+}
+- (NSMutableArray *)dataArray
+{
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
+
 - (IBAction)clickBackAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
 }
@@ -29,7 +64,13 @@ UIImagePickerControllerDelegate>
 - (IBAction)clickSelAction:(id)sender {
     
 }
-
+- (instancetype)initWithFloderM:(PNFloderModel *)floderM
+{
+    if (self = [super init]) {
+        self.floderM = floderM;
+    }
+    return self;
+}
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -42,16 +83,42 @@ UIImagePickerControllerDelegate>
     _mainTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [_mainTabView registerNib:[UINib nibWithNibName:UploadFileCellResue bundle:nil] forCellReuseIdentifier:UploadFileCellResue];
+    
+    // 查询文件夹文件
+    [self checkFloderFileList];
+}
+
+- (void) checkFloderFileList
+{
+    NSArray *colums = @[bg_sqlKey(@"fId"),bg_sqlKey(@"Depens"),bg_sqlKey(@"Type"),bg_sqlKey(@"Fname"),bg_sqlKey(@"Size"),bg_sqlKey(@"LastModify"),bg_sqlKey(@"Finfo"),bg_sqlKey(@"FKey"),bg_sqlKey(@"PathId"),bg_sqlKey(@"progressV"),bg_sqlKey(@"uploadStatus")];
+    
+        NSString *columString = [colums componentsJoinedByString:@","];
+          //NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ order by %@ desc limit 100",columString,EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(_floderM.fId)),bg_sqlKey(@"updateTime")];
+        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@",columString,EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(_floderM.fId))];
+    
+    @weakify_self
+    [weakSelf.view showHudInView:weakSelf.view hint:@""];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSArray *results = bg_executeSql(sql, EN_FILE_TABNAME,[PNFileModel class]);
+        dispatch_async(dispatch_get_main_queue(), ^{
+             [weakSelf.view hideHud];
+            if (results) {
+                [weakSelf.dataArray addObjectsFromArray:results];
+                [weakSelf.mainTabView reloadData];
+            }
+        });
+       
+    });
 }
 
 #pragma mark -----------------tableview deleate ---------------------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return self.dataArray.count;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -75,6 +142,26 @@ UIImagePickerControllerDelegate>
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UploadFileCell *myCell = [tableView dequeueReusableCellWithIdentifier:UploadFileCellResue];
+    
+//    if (indexPath.section == 1) {
+//         myCell.progress.progress = 0;
+//        [myCell.optionBtn setImage:[UIImage imageNamed:@"statusbar_hedo"] forState:UIControlStateNormal];
+//    } else {
+//        [myCell.optionBtn setImage:[UIImage imageNamed:@"noun_play_b"] forState:UIControlStateNormal];
+//    }
+    if (indexPath.section == 0) {
+         myCell.progress.progress = 0;
+        [myCell.optionBtn setImage:[UIImage imageNamed:@"statusbar_hedo"] forState:UIControlStateNormal];
+    }
+    [myCell setFileM:self.dataArray[indexPath.row]];
+    @weakify_self
+    [myCell setOptionBlock:^{
+        if (indexPath.section == 0) { // 本地文件
+             [weakSelf.optionView showOptionEnumView];
+        } else { // 上传中文件
+            
+        }
+    }];
     return myCell;
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -115,12 +202,10 @@ UIImagePickerControllerDelegate>
     imagePickerVc.allowPickingImage = YES;
     imagePickerVc.allowPickingOriginalPhoto = YES;
     imagePickerVc.allowPickingGif = NO;
-    imagePickerVc.allowPickingMultipleVideo = YES; // 是否可以多选视频
-    
+    imagePickerVc.allowPickingMultipleVideo = YES; //是否可以多选视频
     
     // 4. 照片排列按修改时间升序
     imagePickerVc.sortAscendingByModificationDate = YES;
-    
     imagePickerVc.maxImagesCount = 9;
     imagePickerVc.alwaysEnableDoneBtn = YES;
     
@@ -139,12 +224,28 @@ UIImagePickerControllerDelegate>
     @weakify_self
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
         if (assets && assets.count > 0) {
+            weakSelf.selFileCount = assets.count;
+            weakSelf.finshFileCount = 0;
+            [weakSelf.view showHudInView:weakSelf.view hint:Uploading_Str];
             [assets enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                 PHAsset *asset = obj;
+                PHAsset *asset = obj;
+                NSString *fName = [asset valueForKey:@"filename"];
+                NSLog(@"filename = %@",fName);
                 if (asset.mediaType == 1) { // 图片
-                   UIImage *img = photos[idx];
+                    UIImage *img = photos[idx];
+                    NSData *imgData = UIImageJPEGRepresentation(img,1.0);
+                    if (imgData.length/(1024*1024) > 100) {
+                        [AppD.window showHint:@"Image cannot be larger than 100MB"];
+                        weakSelf.selFileCount--;
+                        if (idx == assets.count-1) {
+                            [weakSelf.view hideHud];
+                        }
+                    } else {
+                        [weakSelf sendImgageWithImage:img imgData:imgData imgName:fName];
+                    }
+                    
                 } else if (asset.mediaType == 2) { // 视频
-                    [weakSelf getPHAssetVedioWithOverImg:photos[idx] phAsset:asset];
+                    [weakSelf getPHAssetVedioWithOverImg:photos[idx] phAsset:asset fName:fName isLast:idx == assets.count-1];
                 }
             }];
         }
@@ -175,6 +276,51 @@ UIImagePickerControllerDelegate>
     }];
 }
 
+/**
+ 得到选中的图片并发送
+
+ @param img 图片
+ @param imgData 图片data
+ */
+- (void) sendImgageWithImage:(UIImage *) img imgData:(NSData *) imgData imgName:(NSString *) imgName
+{
+   
+    // 生成32位对称密钥
+    NSString *msgKey = [SystemUtil get32AESKey];
+    NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *symmetKey = [symmetData base64EncodedString];
+    // 自己公钥加密对称密钥
+    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+    
+    NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+    imgData = aesEncryptData(imgData,msgKeyData);
+    
+    PNFileModel *fileM = [[PNFileModel alloc] init];
+    fileM.PathId = _floderM.fId;
+    fileM.fId = [NSDate getTimestampFromDate:[NSDate date]];
+    fileM.Fname = imgName;
+    fileM.Size = imgData.length;
+    fileM.FKey = srcKey;
+    fileM.fileData = imgData;
+    fileM.Depens = 1;
+    fileM.Type = 1;
+    fileM.Finfo = [NSString stringWithFormat:@"%f*%f",img.size.width,img.size.height];
+    fileM.bg_tableName = EN_FILE_TABNAME;
+    
+    @weakify_self
+    [fileM bg_saveAsync:^(BOOL isSuccess) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.finshFileCount ++;
+            if (weakSelf.finshFileCount == weakSelf.selFileCount) {
+                [weakSelf.view hideHud];
+            }
+            if (isSuccess) {
+                [weakSelf.dataArray addObject:fileM];
+                [weakSelf.mainTabView reloadData];
+            }
+        });
+    }];
+}
 
 /**
  得到选择的视频
@@ -182,7 +328,7 @@ UIImagePickerControllerDelegate>
  @param coverImage 视频封面图
  @param phAsset phasset
  */
-- (void) getPHAssetVedioWithOverImg:(UIImage *) coverImage phAsset:(PHAsset *)phAsset
+- (void) getPHAssetVedioWithOverImg:(UIImage *) coverImage phAsset:(PHAsset *)phAsset fName:(NSString *) fName isLast:(BOOL) isLast
 {
     PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
     options.version = PHVideoRequestOptionsVersionOriginal;
@@ -195,11 +341,15 @@ UIImagePickerControllerDelegate>
             CGFloat sizeMB = [size floatValue]/(1024.0*1024.0);
             if (sizeMB <= 100) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf extractedVideWithAsset:urlAsset evImage:coverImage];
+                    [weakSelf extractedVideWithAsset:urlAsset evImage:coverImage fName:fName];
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [AppD.window showHint:@"Video cannot be larger than 100MB"];
+                    weakSelf.selFileCount--;
+                    if (isLast) {
+                        [weakSelf.view hideHud];
+                    }
                 });
             }
         }}];
@@ -210,10 +360,46 @@ UIImagePickerControllerDelegate>
  @param asset asset
  @param evImage 封面图
  */
-- (void)extractedVideWithAsset:(AVURLAsset *)asset evImage:(UIImage *) evImage
+- (void)extractedVideWithAsset:(AVURLAsset *)asset evImage:(UIImage *) evImage fName:(NSString *) fName
 {
     NSData *attData = [NSData dataWithContentsOfURL:asset.URL];
-    NSString *attName = [asset.URL lastPathComponent];
+   // NSString *attName = [asset.URL lastPathComponent];
+    
+    // 生成32位对称密钥
+    NSString *msgKey = [SystemUtil get32AESKey];
+    NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *symmetKey = [symmetData base64EncodedString];
+    // 自己公钥加密对称密钥
+    NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
+    
+    NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
+    attData = aesEncryptData(attData,msgKeyData);
+    
+    PNFileModel *fileM = [[PNFileModel alloc] init];
+    fileM.PathId = _floderM.fId;
+    fileM.fId = [NSDate getTimestampFromDate:[NSDate date]];
+    fileM.Fname = fName;
+    fileM.Size = attData.length;
+    fileM.Type = 4;
+    fileM.FKey = srcKey;
+    fileM.fileData = attData;
+    fileM.Depens = 1;
+    fileM.Finfo = [NSString stringWithFormat:@"%f*%f",evImage.size.width,evImage.size.height];
+    fileM.bg_tableName = EN_FILE_TABNAME;
+    
+    @weakify_self
+    [fileM bg_saveAsync:^(BOOL isSuccess) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.finshFileCount ++;
+            if (weakSelf.finshFileCount == weakSelf.selFileCount) {
+                [weakSelf.view hideHud];
+            }
+            if (isSuccess) {
+                [weakSelf.dataArray addObject:fileM];
+                [weakSelf.mainTabView reloadData];
+            }
+        });
+    }];
    
 }
 @end

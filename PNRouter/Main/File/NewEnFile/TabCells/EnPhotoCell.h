@@ -7,16 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <SWTableViewCell/SWTableViewCell.h>
+@class PNFloderModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
 static NSString *EnPhotoCellResue = @"EnPhotoCell";
 #define EnPhotoCellHeight 67.0f
 
-@interface EnPhotoCell : UITableViewCell
+@interface EnPhotoCell : SWTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblNumber;
+@property (nonatomic, strong) PNFloderModel *floderModel;
+
+- (void) setFloderM:(PNFloderModel *) floderM;
 
 @end
 

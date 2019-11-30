@@ -385,6 +385,7 @@
             routerM.Id = friendM.userId;
             routerM.RouteId = friendM.RouteId;
             routerM.RouteName = friendM.RouteName;
+            routerM.Mails = friendM.Mails;
             [showM.routerArr addObject:routerM];
             
             [contactShowArr addObject:showM];

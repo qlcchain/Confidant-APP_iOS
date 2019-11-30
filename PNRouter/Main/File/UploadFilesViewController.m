@@ -187,7 +187,7 @@
                 url = newUrl;
             }
         }
-        
+     
         NSString *UserId = [UserConfig getShareObject].userId;
         NSString *correntFileName = [NSString getUploadFileNameOfCorrectLength:url.path.lastPathComponent];
         
@@ -325,6 +325,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
             
             
             if ([SystemUtil isSocketConnect]) { // socket
+                
                 SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
                 dataUtil.srcKey = srcKey;
                 dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)fileId];
@@ -336,7 +337,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
                 }
                 [dataUtil sendFileId:@"" fileName:fileNameInfo fileData:fileData fileid:fileId fileType:fileType messageid:@"" srcKey:srcKey dstKey:@"" isGroup:NO];
                 [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+                
             } else { // tox
+                
                BOOL isSuccess = [fileData writeToFile:fileUrl.path atomically:YES];
                 if (isSuccess) {
                     if (weakSelf.fileInfo && weakSelf.fileInfo.length > 0) {
@@ -356,6 +359,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     }
     
 }
+
 - (void) jumpTaskListVC
 {
     [AppD.window hideHud];

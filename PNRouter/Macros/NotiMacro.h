@@ -237,6 +237,9 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 // 更新消息列表数据通知
 #define MessageList_Update_Noti @"MessageList_Update_Noti"
 
+#pragma mark --------------加密相册
+#define Pull_Floder_List_Noti @"Pull_Floder_List_Noti"
+
 
 
 

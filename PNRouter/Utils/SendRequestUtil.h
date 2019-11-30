@@ -83,6 +83,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendEmailSendNotiWithEmails:(NSString *) emails showHud:(BOOL) showHud;
 // 自动加好友请求
 + (void) sendAutoAddFriendWithFriendId:(NSString *) friendIds email:(NSString *) email type:(NSInteger) type showHud:(BOOL)showHud;
+
+// 加密相册---------
+// 拉取文件夹
++ (void) sendPullFloderListWithFloderType:(NSInteger) floderType showHud:(BOOL)showHud;
+// 拉取文件夹文件
++ (void) sendPullFloderFileListWithFloderType:(NSInteger) floderType floderId:(NSInteger) fid floderName:(NSString *) fName sortType:(NSInteger) sortType startId:(NSInteger) startId num:(NSInteger) num  showHud:(BOOL)showHud;
+// 操作文件或文件夹
++ (void) sendUpdateloderWithFloderType:(NSInteger) floderType updateType:(NSInteger) updateType updateId:(NSInteger) updateId react:(NSInteger) react Sname:(NSString *) sName Dname:(NSString *) dName showHud:(BOOL)showHud;
 @end
 
 NS_ASSUME_NONNULL_END

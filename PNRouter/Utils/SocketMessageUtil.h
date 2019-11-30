@@ -94,6 +94,12 @@ static NSString *Action_DelEmailConf = @"DelEmailConf";
 static NSString *Action_BakMailsCheck = @"BakMailsCheck";
 static NSString *Action_MailSendNotice = @"MailSendNotice";
 
+// 加密相册
+static NSString *Action_FilePathsPull = @"FilePathsPull";
+static NSString *Action_FilesListPull = @"FilesListPull";
+static NSString *Action_BakFile = @"BakFile";
+static NSString *Action_FileAction = @"FileAction";
+
 
 @class FriendModel;
 

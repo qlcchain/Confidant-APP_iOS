@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class PNFileModel;
 NS_ASSUME_NONNULL_BEGIN
 
 static NSString *UploadFileCellResue = @"UploadFileCell";
 #define UploadFileCellHeight 76.0f
+
+typedef void(^ClickOptionBlock)(void);
 
 @interface UploadFileCell : UITableViewCell
 
@@ -20,7 +22,10 @@ static NSString *UploadFileCellResue = @"UploadFileCell";
 @property (weak, nonatomic) IBOutlet UILabel *lblDesc;
 @property (weak, nonatomic) IBOutlet UIProgressView *progress;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
+@property (nonatomic, copy) ClickOptionBlock optionBlock;
+@property (nonatomic, strong) PNFileModel *fileModel;
 
+- (void) setFileM:(PNFileModel *) fileModel;
 @end
 
 NS_ASSUME_NONNULL_END

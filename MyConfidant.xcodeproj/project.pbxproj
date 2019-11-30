@@ -437,6 +437,9 @@
 		7341A88122FD571D001AF7C2 /* PNEmailEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7341A87F22FD571D001AF7C2 /* PNEmailEditViewController.xib */; };
 		734B793921A7EAAF0068AA2C /* UserManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734B793721A7EAAF0068AA2C /* UserManagerViewController.m */; };
 		734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */; };
+		734BE0EA238CCF5B00BAF758 /* PNFileOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 734BE0E9238CCF5B00BAF758 /* PNFileOptionView.m */; };
+		734BE0EC238CCF6200BAF758 /* PNFileOptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734BE0EB238CCF6200BAF758 /* PNFileOptionView.xib */; };
+		734BE0EF238F997100BAF758 /* PNFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 734BE0EE238F997100BAF758 /* PNFileModel.m */; };
 		734ED8C9226038B1002F1960 /* CircleLoginCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734ED8C7226038B1002F1960 /* CircleLoginCodeViewController.m */; };
 		734ED8CA226038B1002F1960 /* CircleLoginCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734ED8C8226038B1002F1960 /* CircleLoginCodeViewController.xib */; };
 		735320E022F7CCA9007B4A70 /* EmailNodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 735320DF22F7CCA9007B4A70 /* EmailNodeModel.m */; };
@@ -1563,6 +1566,11 @@
 		734B793621A7EAAF0068AA2C /* UserManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManagerViewController.h; sourceTree = "<group>"; };
 		734B793721A7EAAF0068AA2C /* UserManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManagerViewController.m; sourceTree = "<group>"; };
 		734B793821A7EAAF0068AA2C /* UserManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserManagerViewController.xib; sourceTree = "<group>"; };
+		734BE0E8238CCF5B00BAF758 /* PNFileOptionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFileOptionView.h; sourceTree = "<group>"; };
+		734BE0E9238CCF5B00BAF758 /* PNFileOptionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFileOptionView.m; sourceTree = "<group>"; };
+		734BE0EB238CCF6200BAF758 /* PNFileOptionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFileOptionView.xib; sourceTree = "<group>"; };
+		734BE0ED238F997100BAF758 /* PNFileModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFileModel.h; sourceTree = "<group>"; };
+		734BE0EE238F997100BAF758 /* PNFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFileModel.m; sourceTree = "<group>"; };
 		734ED8C6226038B1002F1960 /* CircleLoginCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleLoginCodeViewController.h; sourceTree = "<group>"; };
 		734ED8C7226038B1002F1960 /* CircleLoginCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleLoginCodeViewController.m; sourceTree = "<group>"; };
 		734ED8C8226038B1002F1960 /* CircleLoginCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CircleLoginCodeViewController.xib; sourceTree = "<group>"; };
@@ -4334,6 +4342,8 @@
 			children = (
 				73056A2923866BE600486744 /* PNFloderModel.h */,
 				73056A2A23866BE600486744 /* PNFloderModel.m */,
+				734BE0ED238F997100BAF758 /* PNFileModel.h */,
+				734BE0EE238F997100BAF758 /* PNFileModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4366,6 +4376,9 @@
 				7396B2CD238771A100A2D276 /* KeyBordHeadView.h */,
 				7396B2CE238771A100A2D276 /* KeyBordHeadView.m */,
 				7396B2D0238771AF00A2D276 /* KeyBordHeadView.xib */,
+				734BE0E8238CCF5B00BAF758 /* PNFileOptionView.h */,
+				734BE0E9238CCF5B00BAF758 /* PNFileOptionView.m */,
+				734BE0EB238CCF6200BAF758 /* PNFileOptionView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4906,6 +4919,7 @@
 				73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */,
 				584B439F21FEFF1A00D1F21A /* ConfigDiskViewController.xib in Resources */,
 				73741801221E9B8F008EE243 /* SettingViewController.xib in Resources */,
+				734BE0EC238CCF6200BAF758 /* PNFileOptionView.xib in Resources */,
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
 				73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */,
 				7341A88122FD571D001AF7C2 /* PNEmailEditViewController.xib in Resources */,
@@ -5182,6 +5196,7 @@
 				73E7742022D8302F001C652E /* EmailTopDetailCell.m in Sources */,
 				737882A921ACF05E0033A189 /* WebSocket.swift in Sources */,
 				587C52B7215C7027006787FB /* RouterManagerViewController.m in Sources */,
+				734BE0EA238CCF5B00BAF758 /* PNFileOptionView.m in Sources */,
 				7330F508214A71BC00FF4EEC /* AddFriendViewController.m in Sources */,
 				73E7744122DC87F3001C652E /* AttchImgageCell.m in Sources */,
 				73F55A082238D398003155D2 /* InvitationQRCodeViewController.m in Sources */,
@@ -5427,6 +5442,7 @@
 				580CFE422227B7FD00460B41 /* PTBFPSMonitor.m in Sources */,
 				58C62704214BA7170051AFD0 /* MessageListUtil.m in Sources */,
 				584B439421FEEF8C00D1F21A /* DiskDetailViewController.m in Sources */,
+				734BE0EF238F997100BAF758 /* PNFileModel.m in Sources */,
 				587C52CC215CAF14006787FB /* RouterManagementCell.m in Sources */,
 				580CFE432227B7FD00460B41 /* PTBPerformanceCenter.m in Sources */,
 				7330F3762146118800FF4EEC /* UIImage+Vector.m in Sources */,
