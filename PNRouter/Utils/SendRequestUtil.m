@@ -84,6 +84,16 @@
     NSDictionary *params = @{@"Action":@"AddFriendReq",@"NickName":[userM.username base64EncodedString]?:@"",@"UserId":userM.userId?:@"",@"FriendId":friendId?:@"",@"UserKey":[EntryModel getShareObject].signPublicKey?:@"",@"Msg":msg?:@""};
     [SocketMessageUtil sendVersion4WithParams:params];
 }
++ (void) sendNewAddFriendWithFpk:(NSString *) fpk msg:(NSString *) msg toxid:(NSString *) toxid showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":@"AddFriendReq",@"NickName":[userM.username base64EncodedString]?:@"",@"UserId":[EntryModel getShareObject].signPublicKey?:@"",@"FriendId":fpk?:@"",@"UserKey":@"",@"Msg":msg?:@"",@"FriendDevId":toxid};
+    [SocketMessageUtil sendVersion4WithParams:params];
+}
 // 自动加好友请求
 + (void) sendAutoAddFriendWithFriendId:(NSString *) friendIds email:(NSString *) email type:(NSInteger) type showHud:(BOOL)showHud
 {

@@ -17,6 +17,8 @@
 #import "SystemUtil.h"
 #import "FriendRequestViewController.h"
 #import "UserHeaderModel.h"
+#import "AESCipher.h"
+#import "RouterModel.h"
 //#import "NSString+Base64.h"
 
 @interface AddFriendViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
@@ -73,9 +75,34 @@
                     if (codeValues.count>2) {
                         nickName = codeValues[2];
                     }
-                    [weakSelf addFriendRequest:codeValue nickName:nickName signpk:codeValues[3]];
+                    [weakSelf addFriendRequest:codeValue nickName:nickName signpk:codeValues[3] type:codeValue toxid:@""];
                 }
-            } else {
+            } else if ([[NSString getNotNullValue:codeValue] isEqualToString:@"type_5"]) { // 是好友码
+                                                   
+                NSString *aesCode = aesDecryptString(codeValues[1], AES_KEY)?:@"";
+                if (aesCode.length > 0) {
+                    NSArray *codeArr = [aesCode componentsSeparatedByString:@","];
+                    if (codeArr && codeArr.count == 4) {
+                        
+                       NSString *signPK = [EntryModel getShareObject].signPublicKey;
+                       // NSString *toxid = [RouterModel getConnectRouter].toxid;
+                        //  && [codeArr[2] isEqualToString:toxid]
+                        if ([codeArr[1] isEqualToString:signPK]) {
+                            
+                            [AppD.window showHint:@"You cannot add yourself as a friend."];
+                            
+                        } else {
+                            
+                             [weakSelf addFriendRequest:@"" nickName:codeArr[3] signpk:codeArr[1] type:codeValue toxid:codeArr[2]];
+                        }
+                    } else {
+                        [AppD.window showHint:@"QR code format is wrong."];
+                    }
+                } else {
+                    [AppD.window showHint:@"QR code format is wrong."];
+                }
+                                                         
+            }  else {
                 [weakSelf.view showHint:@"format error!"];
             }
         }
@@ -83,8 +110,8 @@
     [self presentModalVC:vc animated:YES];
 }
 #pragma mark -Operation-
-- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk{
-    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
+- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk type:(NSString *) type toxid:(NSString *) toxid{
+    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk toxId:toxid codeType:type];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

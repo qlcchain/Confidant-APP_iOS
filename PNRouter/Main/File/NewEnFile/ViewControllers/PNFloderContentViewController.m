@@ -18,6 +18,7 @@
 #import "NSDate+Category.h"
 #import "PNFileModel.h"
 #import "PNFloderModel.h"
+#import "FilePreviewViewController.h"
 
 @interface PNFloderContentViewController ()<UITableViewDelegate,UITableViewDataSource,YBImageBrowserDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate>
@@ -167,6 +168,26 @@ UIImagePickerControllerDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    PNFileModel *fileM = self.dataArray[indexPath.row];
+    if (!fileM.fileData) {
+        
+        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@",bg_sqlKey(@"fileData"),EN_FILE_TABNAME,bg_sqlKey(@"fId"),bg_sqlValue(@(fileM.fId))];
+        NSArray *results = bg_executeSql(sql, EN_FILE_TABNAME,[PNFileModel class]);
+        
+        if (results && results.count > 0) {
+            PNFileModel *fileModel = results[0];
+            fileM.fileData = fileModel.fileData;
+            
+            FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
+            vc.fileName = fileM.Fname;
+            vc.userKey = fileM.FKey;
+            vc.fileType = LocalPhotoFile;
+            vc.localFileData = fileM.fileData;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
+    
 }
 
 #pragma mark ---选择相册
@@ -302,6 +323,7 @@ UIImagePickerControllerDelegate>
     fileM.Size = imgData.length;
     fileM.FKey = srcKey;
     fileM.fileData = imgData;
+    fileM.LastModify = [NSDate getTimestampFromDate:[NSDate date]];
     fileM.Depens = 1;
     fileM.Type = 1;
     fileM.Finfo = [NSString stringWithFormat:@"%f*%f",img.size.width,img.size.height];

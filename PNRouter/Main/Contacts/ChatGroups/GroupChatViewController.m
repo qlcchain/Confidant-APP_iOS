@@ -476,11 +476,36 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                 if (codeValues.count>2) {
                                                     nickName = codeValues[2];
                                                 }
-                                                [weakSelf addFriendRequest:userID nickName:nickName signpk:codeValues[3]];
+                                                [weakSelf addFriendRequest:userID nickName:nickName signpk:codeValues[3] type:codeType toxid:@""];
                                             }
                                         } else {
                                             [weakSelf jumpCodeValueVCWithCodeValue:codeVlaue];
                                         }
+                                    } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_5"]) { // 是好友码
+                                        
+                                        NSString *aesCode = aesDecryptString(codeValues[1], AES_KEY)?:@"";
+                                        if (aesCode.length > 0) {
+                                            NSArray *codeArr = [aesCode componentsSeparatedByString:@","];
+                                            if (codeArr && codeArr.count == 4) {
+                                                
+                                               NSString *signPK = [EntryModel getShareObject].signPublicKey;
+                                               // NSString *toxid = [RouterModel getConnectRouter].toxid;
+                                                // && [codeArr[2] isEqualToString:toxid]
+                                                if ([codeArr[1] isEqualToString:signPK] ) {
+                                                    
+                                                    [AppD.window showHint:@"You cannot add yourself as a friend."];
+                                                    
+                                                } else {
+                                                    
+                                                     [weakSelf addFriendRequest:@"" nickName:codeArr[3] signpk:codeArr[1] type:codeType toxid:codeArr[2]];
+                                                }
+                                            } else {
+                                                [weakSelf jumpCodeValueVCWithCodeValue:codeVlaue];
+                                            }
+                                        } else {
+                                            [weakSelf jumpCodeValueVCWithCodeValue:codeVlaue];
+                                        }
+                                              
                                     } else if (codeVlaue.length == 12) {
                                         NSString *macAdress = @"";
                                         for (int i = 0; i<12; i+=2) {
@@ -2520,10 +2545,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 
 #pragma mark - Transition
-- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk
+- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk type:(NSString *) type toxid:(NSString *) toid
 {
-    
-    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
+    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk toxId:toid codeType:type];
     [self.navigationController pushViewController:vc animated:YES];
     
 }

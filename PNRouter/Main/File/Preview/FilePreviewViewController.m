@@ -35,37 +35,45 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self.view showHudInView:self.view hint:@""];
+    @weakify_self
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSData *fileData = [NSData dataWithContentsOfFile:self.filePath];
-        if (!fileData || fileData.length == 0 ) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.view hideHud];
-                [self.view showHint:@"Decryption failure."];
-            });
-        } else {
-            NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.userKey];
-            if (datakey && datakey.length>0) {
-                datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-                if (datakey && ![datakey isEmptyString]) {
-                    
-                    fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-                    if (fileData) {
-                        NSString *deFilePath = [SystemUtil getTempDeFilePath:self.fileName];
-                        BOOL isWriteFinsh = [fileData writeToFile:deFilePath atomically:YES];
-                        if (isWriteFinsh) {
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [self.view hideHud];
-                                [self previewFilePath:deFilePath];
-                            });
-                        }
-                        
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.view hideHud];
-                            [self.view showHint:@"Decryption failure."];
-                        });
-                    }
+        if (weakSelf.fileType == DefaultFile) {
+            
+            NSData *fileData = [NSData dataWithContentsOfFile:weakSelf.filePath];
+            if (!fileData || fileData.length == 0 ) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.view hideHud];
+                    [weakSelf.view showHint:@"Decryption failure."];
+                });
+            } else {
+                [weakSelf deFileWithFileData:fileData];
+            }
+            
+        } else if (weakSelf.fileType == LocalPhotoFile) {
+            [weakSelf deFileWithFileData:weakSelf.localFileData];
+        }
+        
+    });
+}
+
+- (void) deFileWithFileData:(NSData *) fileData
+{
+    NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.userKey];
+    if (datakey && datakey.length>0) {
+        datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
+        if (datakey && ![datakey isEmptyString]) {
+            
+           NSString *deFileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+            if (deFileData) {
+                NSString *deFilePath = [SystemUtil getTempDeFilePath:self.fileName];
+                BOOL isWriteFinsh = [deFileData writeToFile:deFilePath atomically:YES];
+                if (isWriteFinsh) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.view hideHud];
+                        [self previewFilePath:deFilePath];
+                    });
                 }
+                
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.view hideHud];
@@ -73,7 +81,12 @@
                 });
             }
         }
-    });
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.view hideHud];
+            [self.view showHint:@"Decryption failure."];
+        });
+    }
 }
 
 #pragma mark - Operation

@@ -160,13 +160,6 @@
     [SocketMessageUtil sendFriendListRequest];
 }
 
-#pragma mark -Operation-
-- (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk{
-    
-   FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:nickName userId:friendId signpk:signpk];
-    [self.navigationController pushViewController:vc animated:YES];
-   
-}
 
 - (void)refreshAddContactHD {
     if (AppD.showNewFriendAddRequestRedDot || AppD.showNewGroupAddRequestRedDot) {

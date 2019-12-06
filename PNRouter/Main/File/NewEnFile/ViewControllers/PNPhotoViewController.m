@@ -16,9 +16,18 @@
 #import "NSString+Trim.h"
 #import "NSDate+Category.h"
 
-@interface PNPhotoViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,SWTableViewCellDelegate>
+@interface PNPhotoViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,SWTableViewCellDelegate,UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *mainTabView;
+@property (weak, nonatomic) IBOutlet UITableView *localTabView;
+@property (weak, nonatomic) IBOutlet UITableView *nodeTabView;
+@property (weak, nonatomic) IBOutlet UIButton *nodeBtn;
+@property (weak, nonatomic) IBOutlet UIButton *localBtn;
+@property (weak, nonatomic) IBOutlet UIView *lineBackView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineContraintLeft;
+@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentContraintW;
+
+
 @property (nonatomic, strong) KeyBordHeadView *keyHeadView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @end
@@ -27,6 +36,20 @@
 
 - (IBAction)clickBackAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
+}
+- (IBAction)clickMenuBtn:(UIButton *)sender {
+    
+    sender.selected = YES;
+    if (sender.tag == 0) {
+        _nodeBtn.selected = NO;
+        _lineContraintLeft.constant = 0;
+    } else {
+        _localBtn.selected = NO;
+        _lineContraintLeft.constant = sender.tag*SCREEN_WIDTH/2;
+    }
+    
+    [_mainScrollerView setContentOffset:CGPointMake(sender.tag*SCREEN_WIDTH, 0) animated:YES];
+    
 }
 #pragma mark ---layz
 - (KeyBordHeadView *)keyHeadView
@@ -49,12 +72,23 @@
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_GRAY_COLOR;
     
-    _mainTabView.delegate = self;
-    _mainTabView.dataSource = self;
-    _mainTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    _localBtn.selected = YES;
+    _contentContraintW.constant = SCREEN_WIDTH*2;
+    _mainScrollerView.delegate = self;
     
-    [_mainTabView registerNib:[UINib nibWithNibName:EnPhotoCellResue bundle:nil] forCellReuseIdentifier:EnPhotoCellResue];
-    [_mainTabView registerNib:[UINib nibWithNibName:AddFloderCellResue bundle:nil] forCellReuseIdentifier:AddFloderCellResue];
+    _localTabView.delegate = self;
+    _localTabView.dataSource = self;
+    _localTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [_localTabView registerNib:[UINib nibWithNibName:EnPhotoCellResue bundle:nil] forCellReuseIdentifier:EnPhotoCellResue];
+    [_localTabView registerNib:[UINib nibWithNibName:AddFloderCellResue bundle:nil] forCellReuseIdentifier:AddFloderCellResue];
+    
+    _nodeTabView.delegate = self;
+    _nodeTabView.dataSource = self;
+    _nodeTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [_nodeTabView registerNib:[UINib nibWithNibName:EnPhotoCellResue bundle:nil] forCellReuseIdentifier:EnPhotoCellResue];
+    [_nodeTabView registerNib:[UINib nibWithNibName:AddFloderCellResue bundle:nil] forCellReuseIdentifier:AddFloderCellResue];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
@@ -92,12 +126,43 @@
             [weakSelf.view hideHud];
             if (array && array.count > 0) {
                 [weakSelf.dataArray addObjectsFromArray:array];
-                [weakSelf.mainTabView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                [weakSelf.localTabView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             }
         });
         
     }];
 }
+
+#pragma mark - UIScrollViewDelegate-------------
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == _mainScrollerView) {
+       // if (_scrollIsManual == NO) {
+            CGPoint offset = scrollView.contentOffset;
+            _lineContraintLeft.constant = offset.x/2;
+      // }
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == _mainScrollerView) {
+        CGPoint offset = scrollView.contentOffset;
+        if (offset.x >= SCREEN_WIDTH) {
+           // UIButton *btn = [_menuBackView viewWithTag:20];
+            [self clickMenuBtn:_nodeBtn];
+        } else {
+          //  UIButton *btn = [_menuBackView viewWithTag:10];
+            [self clickMenuBtn:_localBtn];
+        }
+      //  _scrollIsManual = NO;
+    }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    if (scrollView == _mainScrollerView) {
+       // _scrollIsManual = NO;
+    }
+}
+
 
 #pragma mark -----------------tableview deleate ---------------------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -204,7 +269,7 @@
                     [weakSelf.view hideHud];
                     if (isSuccess) {
                         [weakSelf.dataArray removeObjectAtIndex:cell.tag];
-                        [weakSelf.mainTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cell.tag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                        [weakSelf.localTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cell.tag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     } else {
                         [weakSelf.view showHint:@"Delete failed."];
                     }
@@ -219,7 +284,7 @@
             PNFloderModel *floderM = self.dataArray[cell.tag];
             [PNFloderModel bg_update:EN_FLODER_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"PathName"),bg_sqlValue(@"")]];
             floderM.PathName = @"";
-            [self.mainTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cell.tag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            [self.localTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cell.tag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             break;
         }
         default:
@@ -266,7 +331,7 @@
             [weakSelf.view hideHud];
             if (isSuccess) {
                  [weakSelf.dataArray addObject:floderM];
-                   [weakSelf.mainTabView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                   [weakSelf.localTabView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             } else {
                 [weakSelf.view showHint:@"Create a failure."];
             }
@@ -282,7 +347,7 @@
     NSArray *floderArr = [PNFloderModel mj_objectArrayWithKeyValuesArray:jsonStr.mj_JSONObject]?:nil;
     if (floderArr) {
         [self.dataArray addObjectsFromArray:floderArr];
-        [_mainTabView reloadData];
+        [_localTabView reloadData];
     }
 }
 

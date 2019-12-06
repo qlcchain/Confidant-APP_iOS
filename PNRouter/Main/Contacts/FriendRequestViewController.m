@@ -19,6 +19,8 @@
 @property (nonatomic , strong) NSString *userName;
 @property (nonatomic , strong) NSString *userId;
 @property (nonatomic , strong) NSString *singPK;
+@property (nonatomic, strong) NSString *fToxId;
+@property (nonatomic, strong) NSString *codeType;
 @end
 
 @implementation FriendRequestViewController
@@ -39,15 +41,22 @@
         msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
         msg = [msg base64EncodedString];
     }
-    [SendRequestUtil sendAddFriendWithFriendId:self.userId msg:msg showHud:YES];
+    if ([self.codeType isEqualToString:@"type_0"]) {
+        [SendRequestUtil sendAddFriendWithFriendId:self.userId msg:msg showHud:YES];
+    } else {
+        [SendRequestUtil sendNewAddFriendWithFpk:self.singPK msg:msg toxid:self.fToxId showHud:YES];
+    }
+    
 }
 
-- (instancetype) initWithNickname:(NSString *) nickName userId:(NSString *) userId signpk:(NSString *) signpk
+- (instancetype) initWithNickname:(NSString *) nickName userId:(NSString *) userId signpk:(NSString *) signpk toxId:(NSString *) toxId codeType:(NSString *) type
 {
     if (self = [super init]) {
         self.userName = nickName;
         self.userId = userId;
         self.singPK = signpk;
+        self.fToxId = toxId;
+        self.codeType = type;
     }
     return self;
 }

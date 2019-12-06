@@ -237,7 +237,7 @@
 }
 - (void) jumpToAddFriend
 {
-    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:[_friendModel.username base64EncodedString] userId:_friendModel.userId signpk:_friendModel.signPublicKey];
+    FriendRequestViewController *vc = [[FriendRequestViewController alloc] initWithNickname:[_friendModel.username base64EncodedString] userId:_friendModel.userId signpk:_friendModel.signPublicKey toxId:@"" codeType:@"type_0"];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

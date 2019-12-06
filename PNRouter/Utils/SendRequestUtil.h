@@ -59,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)sendGroupUserPullWithGId:(NSString *)GId TargetNum:(NSNumber *)TargetNum StartId:(NSString *)StartId showHud:(BOOL)showHud;
 + (void) sendAddGroupWithGId:(NSString *) gid friendId:(NSString *) friendids friendKey:(NSString *) friendkeys showHud:(BOOL)showHud;
++ (void) sendNewAddFriendWithFpk:(NSString *) fpk msg:(NSString *) msg toxid:(NSString *) toxid showHud:(BOOL)showHud;
 + (void) sendGroupMessageWithGid:(NSString *) gid point:(NSString *) point msg:(NSString *) msg msgid:(NSString *) msgid repId:(NSNumber *) repId;
 + (void) sendPullGroupMessageListWithGId:(NSString *) gid MsgType:(NSString *) msgType msgStartId:(NSString *) msgStartId msgNum:(NSString *) msgNum  srcMsgId:(NSString *) srcMsgId;
 + (void) sendGroupFilePretreatmentWithGID:(NSString *) gid fileName:(NSString *) fileName fileSize:(NSNumber *) fileSize fileType:(NSNumber *) fileType fileMD5:(NSString *) fileMd5 fileInfo:(NSString *) fileInfo fileId:(NSString *) fileId;

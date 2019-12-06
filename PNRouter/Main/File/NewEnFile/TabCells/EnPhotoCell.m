@@ -22,10 +22,11 @@
     _lblName.text = floderM.PathName;
     _lblNumber.text = [NSString stringWithFormat:@"%ld",floderM.FilesNum];
     
-    NSString *sql = [NSString stringWithFormat:@"select count(%@) from %@ group by %@",bg_sqlKey(@"fId"),EN_FILE_TABNAME,bg_sqlKey(@"PathId")];
-    NSDictionary *results = bg_executeSql(sql, EN_FILE_TABNAME,nil);
-    if (results) {
-       _lblNumber.text = [NSString stringWithFormat:@"%d",[results[@"count(BG_fId)"] intValue]];
+    NSString *sql = [NSString stringWithFormat:@"select count(%@) from %@ where %@=%@",bg_sqlKey(@"fId"),EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(floderM.fId))];
+    NSArray *results = bg_executeSql(sql, EN_FILE_TABNAME,nil);
+    if (results && results.count > 0) {
+        NSDictionary *countDic = results[0];
+       _lblNumber.text = [NSString stringWithFormat:@"%d",[countDic[@"count(BG_fId)"] intValue]];
     } else {
         _lblNumber.text = 0;
     }

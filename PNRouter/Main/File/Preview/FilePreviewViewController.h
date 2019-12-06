@@ -8,6 +8,12 @@
 
 #import "PNBaseViewController.h"
 
+typedef enum : NSUInteger {
+    DefaultFile,
+    LocalPhotoFile,
+    NodePhotoFile,
+} FileType;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class FileListModel;
@@ -17,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *filePath;
 @property (nonatomic, strong) NSString *fileName;
 @property (nonatomic, strong) NSString *userKey;
+@property (nonatomic, strong) NSData *localFileData;
+@property (nonatomic, assign) FileType fileType;
 @property (nonatomic, strong) FileListModel *fileListM;
 
 @end

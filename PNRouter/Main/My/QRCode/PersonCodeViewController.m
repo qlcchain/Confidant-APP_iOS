@@ -18,6 +18,8 @@
 #import "UIImage+RoundedCorner.h"
 #import "UIImage+Resize.h"
 #import "UIView+Screenshot.h"
+#import "RouterModel.h"
+#import "AESCipher.h"
 
 @interface PersonCodeViewController ()
 
@@ -133,10 +135,19 @@
     _nameBtn.layer.cornerRadius = _nameBtn.width/2.0;
     _nameBtn.layer.masksToBounds = YES;
     [_nameBtn setImage:defaultImg forState:UIControlStateNormal];
-//    [_nameBtn setTitle:[StringUtil getUserNameFirstWithName:self.userName] forState:UIControlStateNormal];
-    NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@,%@",self.userId,[self.userName base64EncodedString],self.signPublicKey?:@""];
+    
+    //[_nameBtn setTitle:[StringUtil getUserNameFirstWithName:self.userName] forState:UIControlStateNormal];
+   // NSString *coderValue = [NSString stringWithFormat:@"type_0,%@,%@,%@",self.userId,[self.userName base64EncodedString],self.signPublicKey?:@""];
+   
+    
+    RouterModel *routerM = [RouterModel getConnectRouter];
+    NSString *coderValue = [NSString stringWithFormat:@"%@,%@,%@,%@",[routerM.userSn substringToIndex:6],userKey,routerM.toxid,[self.userName base64EncodedString]];
+    coderValue = aesEncryptString(coderValue, AES_KEY);
+    coderValue = [NSString stringWithFormat:@"type_5,%@",coderValue];
+    
     
     defaultImg = [defaultImg thumbnailImage:100 transparentBorder:0 cornerRadius:10 interpolationQuality:kCGInterpolationDefault];
+    
     UIImageView *backImgView  = [[UIImageView alloc] initWithImage:defaultImg];
     backImgView.frame = CGRectMake(6, 6, 100, 100);
     UIView *imgBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 112, 112)];
