@@ -13,9 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 static NSString *UploadFileCellResue = @"UploadFileCell";
 #define UploadFileCellHeight 76.0f
 
-typedef void(^ClickOptionBlock)(void);
+typedef void(^ClickOptionBlock)(PNFileModel *fileM,NSInteger cellTag);
 
 @interface UploadFileCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *nodeImgView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *typeImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
@@ -25,7 +26,7 @@ typedef void(^ClickOptionBlock)(void);
 @property (nonatomic, copy) ClickOptionBlock optionBlock;
 @property (nonatomic, strong) PNFileModel *fileModel;
 
-- (void) setFileM:(PNFileModel *) fileModel;
+- (void) setFileM:(PNFileModel *) fileModel isLocal:(BOOL) isLocal;
 @end
 
 NS_ASSUME_NONNULL_END

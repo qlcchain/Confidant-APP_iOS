@@ -42,5 +42,5 @@
 - (void) selectForwardItem:(UIMenuController *) item;
 - (void)selectDownloadItem:(UIMenuController *)item;
 - (void) selectReactItem:(UIMenuController *) item;
-
+- (void) selectShareItem:(UIMenuController *) item;
 @end

@@ -614,13 +614,24 @@
 }
 
 // 操作文件或文件夹
-+ (void) sendUpdateloderWithFloderType:(NSInteger) floderType updateType:(NSInteger) updateType updateId:(NSInteger) updateId react:(NSInteger) react Sname:(NSString *) sName Dname:(NSString *) dName showHud:(BOOL)showHud
++ (void) sendUpdateloderWithFloderType:(NSInteger) floderType updateType:(NSInteger) updateType react:(NSInteger) react name:(NSString *) name oldName:(NSString *) dName fid:(NSInteger) fid pathid:(NSInteger) pathid showHud:(BOOL)showHud
 {
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_FileAction,@"UserId":userM.userId,@"Depens":@(floderType),@"Type":@(updateType),@"React":@(react),@"Id":@(updateId),@"Sname":sName,@"Dname":dName};
+    NSDictionary *params = @{@"Action":Action_FileAction,@"UserId":userM.userId,@"Depens":@(floderType),@"Type":@(updateType),@"React":@(react),@"Name":name,@"OldName":dName,@"FileId":@(fid),@"PathId":@(pathid)};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
+
+// 上传文件
++ (void) sendUploadFileWithFloderType:(NSInteger) floderType fileType:(NSInteger) fileType fileId:(NSInteger) fileId fileSize:(NSInteger) fileSize fileMD5:(NSString *) fileMd5 fileName:(NSString *) fileName fkey:(NSString *) fkey finfo:(NSString *) finfo floderId:(NSInteger) floderId floderName:(NSString *) floderName showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_BakFile,@"UserId":userM.userId,@"Depens":@(floderType),@"Type":@(fileType),@"UserId":userM.userId,@"FileId":@(fileId),@"Size":@(fileSize),@"Md5":fileMd5,@"FName":fileName,@"FKey":fkey,@"FInfo":finfo,@"PathId":@(floderId),@"PathName":floderName};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 @end

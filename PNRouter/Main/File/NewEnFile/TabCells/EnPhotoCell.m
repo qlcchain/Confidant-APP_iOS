@@ -8,6 +8,7 @@
 
 #import "EnPhotoCell.h"
 #import "PNFloderModel.h"
+#import "MyConfidant-Swift.h"
 
 @implementation EnPhotoCell
 
@@ -16,20 +17,24 @@
     // Initialization code
 }
 
-- (void) setFloderM:(PNFloderModel *) floderM
+- (void) setFloderM:(PNFloderModel *) floderM isLocal:(BOOL)isLocal
 {
     self.floderModel = floderM;
-    _lblName.text = floderM.PathName;
+    NSString *deName = [Base58Util Base58DecodeWithCodeName:floderM.PathName];
+    _lblName.text = deName.length >0 ?deName:floderM.PathName;
     _lblNumber.text = [NSString stringWithFormat:@"%ld",floderM.FilesNum];
     
-    NSString *sql = [NSString stringWithFormat:@"select count(%@) from %@ where %@=%@",bg_sqlKey(@"fId"),EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(floderM.fId))];
-    NSArray *results = bg_executeSql(sql, EN_FILE_TABNAME,nil);
-    if (results && results.count > 0) {
-        NSDictionary *countDic = results[0];
-       _lblNumber.text = [NSString stringWithFormat:@"%d",[countDic[@"count(BG_fId)"] intValue]];
-    } else {
-        _lblNumber.text = 0;
+    if (isLocal && floderM.FilesNum == 0) {
+        NSString *sql = [NSString stringWithFormat:@"select count(%@) from %@ where %@=%@",bg_sqlKey(@"fId"),EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(floderM.fId))];
+        NSArray *results = bg_executeSql(sql, EN_FILE_TABNAME,nil);
+        if (results && results.count > 0) {
+            NSDictionary *countDic = results[0];
+           _lblNumber.text = [NSString stringWithFormat:@"%d",[countDic[@"count(BG_fId)"] intValue]];
+        } else {
+            _lblNumber.text = 0;
+        }
     }
+   
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

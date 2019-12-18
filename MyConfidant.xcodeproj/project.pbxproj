@@ -495,7 +495,10 @@
 		736257B22142149300D7FD6B /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 736257A32142149300D7FD6B /* UIView+Toast.m */; };
 		736257C12142247F00D7FD6B /* SystemUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 736257C02142247F00D7FD6B /* SystemUtil.m */; };
 		736257C5214225FD00D7FD6B /* getgateway.c in Sources */ = {isa = PBXBuildFile; fileRef = 736257C2214225FD00D7FD6B /* getgateway.c */; };
+		7364318523A788AF007FCF8D /* PNFileUploadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7364318423A788AF007FCF8D /* PNFileUploadModel.m */; };
 		73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */; };
+		7369429323A8B3F8003FECBC /* PNSelectFloderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7369429123A8B3F7003FECBC /* PNSelectFloderViewController.m */; };
+		7369429423A8B3F8003FECBC /* PNSelectFloderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7369429223A8B3F7003FECBC /* PNSelectFloderViewController.xib */; };
 		73741800221E9B8F008EE243 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737417FE221E9B8F008EE243 /* SettingViewController.m */; };
 		73741801221E9B8F008EE243 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737417FF221E9B8F008EE243 /* SettingViewController.xib */; };
 		73780F07221EA9A400D2DDCF /* AccountCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73780F05221EA9A400D2DDCF /* AccountCodeViewController.m */; };
@@ -1676,8 +1679,13 @@
 		736257C2214225FD00D7FD6B /* getgateway.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getgateway.c; sourceTree = "<group>"; };
 		736257C3214225FD00D7FD6B /* getgateway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getgateway.h; sourceTree = "<group>"; };
 		736257C4214225FD00D7FD6B /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = route.h; sourceTree = "<group>"; };
+		7364318323A788AF007FCF8D /* PNFileUploadModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFileUploadModel.h; sourceTree = "<group>"; };
+		7364318423A788AF007FCF8D /* PNFileUploadModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFileUploadModel.m; sourceTree = "<group>"; };
 		73682AE821C3D2D700E3E1A0 /* ToxPullFileTimerUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToxPullFileTimerUtil.h; sourceTree = "<group>"; };
 		73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToxPullFileTimerUtil.m; sourceTree = "<group>"; };
+		7369429023A8B3F7003FECBC /* PNSelectFloderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNSelectFloderViewController.h; sourceTree = "<group>"; };
+		7369429123A8B3F7003FECBC /* PNSelectFloderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNSelectFloderViewController.m; sourceTree = "<group>"; };
+		7369429223A8B3F7003FECBC /* PNSelectFloderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNSelectFloderViewController.xib; sourceTree = "<group>"; };
 		737417FD221E9B8F008EE243 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		737417FE221E9B8F008EE243 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		737417FF221E9B8F008EE243 /* SettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
@@ -4344,6 +4352,8 @@
 				73056A2A23866BE600486744 /* PNFloderModel.m */,
 				734BE0ED238F997100BAF758 /* PNFileModel.h */,
 				734BE0EE238F997100BAF758 /* PNFileModel.m */,
+				7364318323A788AF007FCF8D /* PNFileUploadModel.h */,
+				7364318423A788AF007FCF8D /* PNFileUploadModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4366,6 +4376,9 @@
 				735ECF9A238676EA00524616 /* PNFloderContentViewController.h */,
 				735ECF9B238676EA00524616 /* PNFloderContentViewController.m */,
 				735ECF9C238676EA00524616 /* PNFloderContentViewController.xib */,
+				7369429023A8B3F7003FECBC /* PNSelectFloderViewController.h */,
+				7369429123A8B3F7003FECBC /* PNSelectFloderViewController.m */,
+				7369429223A8B3F7003FECBC /* PNSelectFloderViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -4841,6 +4854,7 @@
 				581DE4E82238ED250056D4F8 /* GroupDetailsViewController.xib in Resources */,
 				73E3C71122D49F4F00D7C9C6 /* CircleNamewCell.xib in Resources */,
 				583BF94521F70FAC0078A2A8 /* TaskOngoingCell.xib in Resources */,
+				7369429423A8B3F8003FECBC /* PNSelectFloderViewController.xib in Resources */,
 				7341A87B22FC1603001AF7C2 /* PNSearchViewController.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
 				735D7B352368112800564A28 /* EmailPassCell.xib in Resources */,
@@ -5067,6 +5081,7 @@
 				73194E9F2255EE580047F50C /* FileListCell.m in Sources */,
 				735320E022F7CCA9007B4A70 /* EmailNodeModel.m in Sources */,
 				737882A821ACF05E0033A189 /* SSLSecurity.swift in Sources */,
+				7364318523A788AF007FCF8D /* PNFileUploadModel.m in Sources */,
 				583BF94421F70FAC0078A2A8 /* TaskOngoingCell.m in Sources */,
 				7393918B22E068280033C203 /* EmailAttchModel.m in Sources */,
 				73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */,
@@ -5268,6 +5283,7 @@
 				733EE47F22E1B2DB0042457C /* PNEmailMoveViewController.m in Sources */,
 				735D9EDE235846BA00E46C31 /* GoogleMessageModel.m in Sources */,
 				582BFE47221D264200D8C2C8 /* CreateAccountViewController.m in Sources */,
+				7369429323A8B3F8003FECBC /* PNSelectFloderViewController.m in Sources */,
 				7341A86822F81146001AF7C2 /* fileenc.c in Sources */,
 				7356429D222630D800DC0BCB /* ChatModel.m in Sources */,
 				73E7742822D87B27001C652E /* EmailUserCell.m in Sources */,

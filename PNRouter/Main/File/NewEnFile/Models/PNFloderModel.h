@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *PathName;
 @property (assign, nonatomic) NSInteger FilesNum;
 @property (assign, nonatomic) NSInteger LastModify;
+@property (assign, nonatomic) BOOL isLocal;
 
 @end
 

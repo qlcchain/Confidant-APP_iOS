@@ -589,6 +589,11 @@
         [itmes addObject:item];
     }
     
+    if (self.msgModal.msgType == CDMessageTypeImage) {
+        UIMenuItem *item = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(selectShareItem:)];
+        [itmes addObject:item];
+    }
+    
     if (self.msgModal.msgType == CDMessageTypeFile || self.msgModal.isLeft) {
         UIMenuItem *item = [[UIMenuItem alloc] initWithTitle:@"React" action:@selector(selectReactItem:)];
         [itmes addObject:item];
@@ -627,6 +632,12 @@
         [self.tableView.msgDelegate clickChatMenuItem:@"Withdraw" withMsgMode:self.msgModal];
     }
     
+}
+- (void) selectShareItem:(UIMenuController *) item
+{
+    if (self.tableView.msgDelegate) {
+        [self.tableView.msgDelegate clickChatMenuItem:@"Share" withMsgMode:self.msgModal];
+    }
 }
 - (void) selectForwardItem:(UIMenuController *) item
 {

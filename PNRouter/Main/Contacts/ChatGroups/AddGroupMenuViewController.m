@@ -131,7 +131,7 @@
                         NSString *aesCode = aesDecryptString(codeValues[1], AES_KEY)?:@"";
                         if (aesCode.length > 0) {
                             NSArray *codeArr = [aesCode componentsSeparatedByString:@","];
-                            if (codeArr && codeArr.count == 4) {
+                            if (codeArr && codeArr.count == 5) {
                                 
                                NSString *signPK = [EntryModel getShareObject].signPublicKey;
                                // NSString *toxid = [RouterModel getConnectRouter].toxid;

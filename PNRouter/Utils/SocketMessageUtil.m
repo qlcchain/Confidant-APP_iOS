@@ -608,6 +608,12 @@
         [SocketMessageUtil handleSysMsgPush:receiveDic];
     } else if ([action isEqualToString:Action_FilePathsPull]) { // 拉取文件夹列表
         [SocketMessageUtil handleFilePathsPull:receiveDic];
+    } else if ([action isEqualToString:Action_FileAction]) { // 创建修改文件或文件夹
+        [SocketMessageUtil handleFileAction:receiveDic];
+    } else if ([action isEqualToString:Action_BakFile]) { // 上传相册图片
+        [SocketMessageUtil handleBakFileAction:receiveDic];
+    } else if ([action isEqualToString:Action_FilesListPull]) { // 拉取文件夹文件
+         [SocketMessageUtil handleFilesListPull:receiveDic];
     }
 }
 
@@ -2236,13 +2242,61 @@
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:Pull_Floder_List_Noti object:receiveDic];
+        [[NSNotificationCenter defaultCenter] postNotificationName:Pull_Floder_List_Noti object:receiveDic[@"params"]];
     } else {
         if (retCode == 1) {
             [AppD.window showHint:@"Failed to pull folder list."];
         }
     }
     
+}
+// 创建修改文件或文件夹
++ (void) handleFileAction:(NSDictionary *)receiveDic
+{
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:Create_Floder_Success_Noti object:receiveDic[@"params"]];
+    } else {
+        if (retCode == 5) {
+            [AppD.window showHint:@"Operation failed, target folder is not empty, cannot be deleted."];
+        } else if (retCode == 4) {
+            [AppD.window showHint:@"Operation failed, target file or directory exceeded."];
+        } else {
+            [AppD.window showHint:@"Request failed."];
+        }
+    }
+}
+
+// 上传相册文件
++ (void) handleBakFileAction:(NSDictionary *) receiveDic
+{
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:Photo_File_Upload_Success_Noti object:receiveDic[@"params"]];
+    } else {
+        if (retCode == 3) {
+            [AppD.window showHint:@"Request failed, filename repetition."];
+        } else if (retCode == 4) {
+            [AppD.window showHint:@"Request failed, the space is insufficient."];
+        } else {
+            [AppD.window showHint:@"Request failed."];
+        }
+    }
+}
+
+// 拉取文件夹言文件
+
++ (void) handleFilesListPull:(NSDictionary *) receiveDic
+{
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:Pull_Floder_File_List_Noti object:receiveDic[@"params"]];
+    } else {
+        [AppD.window showHint:@"Request failed."];
+    }
 }
 
 

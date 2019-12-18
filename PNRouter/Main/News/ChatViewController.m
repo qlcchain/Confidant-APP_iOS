@@ -418,6 +418,20 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         _msginputView.isReact = YES;
         self.repMessageModel = (CDMessageModel *)msgModel;
         [_msginputView setReactString:self.selectMessageModel.msg];
+    } else if ([itemTitle isEqualToString:@"Share"]) { // 分享到微信 qq
+        
+        NSString *friendid = msgModel.ToId;
+        if (msgModel.isLeft && !msgModel.isGroup) {
+            friendid = msgModel.FromId;
+        }
+        NSString *filePath = [[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:msgModel.fileName];
+        UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+        if (img) {
+            UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:@[img] applicationActivities:nil];
+            [self.navigationController presentViewController:activityController animated:YES completion:nil];
+        } else {
+            [self.view showHint:@"Please download the picture first."];
+        }
     }
 }
 //cell 的点击事件
@@ -476,7 +490,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                         NSString *aesCode = aesDecryptString(codeValues[1], AES_KEY)?:@"";
                                         if (aesCode.length > 0) {
                                             NSArray *codeArr = [aesCode componentsSeparatedByString:@","];
-                                            if (codeArr && codeArr.count == 4) {
+                                            if (codeArr && codeArr.count == 5) {
                                                 
                                                NSString *signPK = [EntryModel getShareObject].signPublicKey;
                                                // NSString *toxid = [RouterModel getConnectRouter].toxid;

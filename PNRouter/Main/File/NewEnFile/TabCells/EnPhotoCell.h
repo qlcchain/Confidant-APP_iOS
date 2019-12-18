@@ -20,8 +20,9 @@ static NSString *EnPhotoCellResue = @"EnPhotoCell";
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblNumber;
 @property (nonatomic, strong) PNFloderModel *floderModel;
+@property (weak, nonatomic) IBOutlet UIImageView *rightImgV;
 
-- (void) setFloderM:(PNFloderModel *) floderM;
+- (void) setFloderM:(PNFloderModel *) floderM isLocal:(BOOL) isLocal;
 
 @end
 

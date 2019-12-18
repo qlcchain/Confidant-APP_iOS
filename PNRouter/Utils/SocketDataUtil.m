@@ -24,6 +24,7 @@
 #import "ChatListDataUtil.h"
 #import "ChatModel.h"
 #import "FileConfig.h"
+#import "PNFileUploadModel.h"
 
 #define NTOHL(x)    (x) = ntohl((__uint32_t)x) //转换成本地字节流
 #define NTOHS(x)    (x) = ntohs((__uint16_t)x) //转换成本地字节流
@@ -327,6 +328,7 @@ struct ResultFile {
         fileName = [fileName substringWithRange:NSMakeRange(0, fileName.length-info.length-1)];
         fileName = [Base58Util Base58EncodeWithCodeName:fileName];
         fileName = [NSString stringWithFormat:@"%@,%@",fileName,info];
+        self.fileInfo = info?:@"";
     } else {
         fileName = [Base58Util Base58EncodeWithCodeName:fileName];
     }
@@ -363,7 +365,7 @@ struct ResultFile {
     HTONL(millFileid);
     HTONS(crc);
     
-    if ([toid isEmptyString] && fileType !=6) // 上传文件
+    if ([toid isEmptyString] && fileType !=6 && !_isPhoto) // 上传文件
     {
         [FileData bg_findAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(srcKey),bg_sqlKey(@"fileId"),bg_sqlValue(@(fileid))] complete:^(NSArray * _Nullable array) {
             if (array && array.count > 0) {
@@ -423,6 +425,13 @@ struct ResultFile {
    
     if (isGroup) {
         sendFile.porperty[0] = '\1';
+    } else if (_isPhoto) {
+        if (_floderId == 1) {
+            sendFile.porperty[0] = '\3';
+        } else {
+            sendFile.porperty[0] = '\4';
+        }
+        
     } else {
          sendFile.porperty[0] = '\0';
     }
@@ -467,10 +476,12 @@ struct ResultFile {
                 [[SocketManageUtil getShareObject] clearDisConnectSocket];
                 
                 if ([weakSelf.toid isEmptyString]) {
-                    if (weakSelf.fileType == 6) {
+                    if (weakSelf.fileType == 6) { // 头像
                         
                          [[NSNotificationCenter defaultCenter] postNotificationName:UPLOAD_HEAD_DATA_NOTI object:@[@(weakSelf.retCode),weakSelf.fileName,@"",@(weakSelf.fileType),weakSelf.srcKey,weakSelf.fileid]];
-                    } else {
+                    } else if (weakSelf.isPhoto) { // 加密相册
+                        
+                    } else { // 上传文件
                         [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),weakSelf.fileName,@"",@(weakSelf.fileType),weakSelf.srcKey,weakSelf.fileid]];
                     }
                     
@@ -525,6 +536,19 @@ struct ResultFile {
                     [[NSNotificationCenter defaultCenter] postNotificationName:UPLOAD_HEAD_DATA_NOTI object:@[@(self.retCode),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
                 } else if (self.fileType == 7) { // email 上传完成
                     [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_UPLOAD_NODE_NOTI object:@[@(0),self.fileid,@(self.fileData.length),[MD5Util md5WithData:self.fileData]]];
+                } else if (self.isPhoto) {
+                    PNFileUploadModel *fileM = [[PNFileUploadModel alloc] init];
+                    fileM.retCode = 0;
+                    fileM.fileId = [self.fileid integerValue];
+                    fileM.fileType = self.fileType;
+                    fileM.fileName = self.fileName;
+                    fileM.fileSize = self.fileData.length;
+                    fileM.fileMd5 = [MD5Util md5WithData:self.fileData];
+                    fileM.Finfo = self.fileInfo;
+                    fileM.FKey = self.srcKey;
+                    fileM.floderName = self.floderName;
+                    fileM.floderId = self.floderId;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:Photo_Upload_FileData_Noti object:fileM];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(0),self.fileName,@"",@(self.fileType),self.srcKey,self.fileid]];
                 }

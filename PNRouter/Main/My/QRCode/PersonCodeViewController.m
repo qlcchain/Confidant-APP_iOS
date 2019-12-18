@@ -141,7 +141,7 @@
    
     
     RouterModel *routerM = [RouterModel getConnectRouter];
-    NSString *coderValue = [NSString stringWithFormat:@"%@,%@,%@,%@",[routerM.userSn substringToIndex:6],userKey,routerM.toxid,[self.userName base64EncodedString]];
+    NSString *coderValue = [NSString stringWithFormat:@"%@,%@,%@,%@,%@",[routerM.userSn substringToIndex:6],userKey,routerM.toxid,[self.userName base64EncodedString],self.userId];
     coderValue = aesEncryptString(coderValue, AES_KEY);
     coderValue = [NSString stringWithFormat:@"type_5,%@",coderValue];
     
@@ -196,7 +196,6 @@
 #pragma mark -系统分享
 - (void) shareAction
 {
-    ;
     NSArray *images = @[[_codeBackView getImageFromView]];
     UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:images applicationActivities:nil];
     [self.navigationController presentViewController:activityController animated:YES completion:nil];

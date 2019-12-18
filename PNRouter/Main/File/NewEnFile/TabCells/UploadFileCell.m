@@ -9,17 +9,17 @@
 #import "UploadFileCell.h"
 #import "PNFileModel.h"
 #import "SystemUtil.h"
+#import "MyConfidant-Swift.h"
 
 @implementation UploadFileCell
 - (IBAction)clickOptionAction:(id)sender {
     if (_optionBlock) {
-        _optionBlock();
+        _optionBlock(self.fileModel,self.tag);
     }
 }
-- (void) setFileM:(PNFileModel *) fileModel
+- (void) setFileM:(PNFileModel *) fileModel isLocal:(BOOL)isLocal
 {
     self.fileModel = fileModel;
-    _lblName.text = fileModel.Fname;
     _lblDesc.text = [SystemUtil transformedValue:fileModel.Size];
     if (fileModel.Type == 1) {
         _typeImgView.image = [UIImage imageNamed:@"jpg"];
@@ -35,7 +35,25 @@
         }
         
     }
-    
+    _nodeImgView.hidden = YES;
+    if (isLocal) {
+        _lblName.text = fileModel.Fname;
+        if (fileModel.uploadStatus == 0) {
+            _progress.progress = 0;
+            [_optionBtn setImage:[UIImage imageNamed:@"statusbar_hedo"] forState:UIControlStateNormal];
+        } else if (fileModel.uploadStatus == 1) {
+            _progress.progress = 0;
+            [_optionBtn setImage:[UIImage imageNamed:@"noun_pause_a"] forState:UIControlStateNormal];
+        } else {
+            _nodeImgView.hidden = NO;
+            _progress.progress = 0;
+            [_optionBtn setImage:[UIImage imageNamed:@"statusbar_hedo"] forState:UIControlStateNormal];
+        }
+    } else {
+        _lblName.text = [Base58Util Base58DecodeWithCodeName:fileModel.Fname];
+        [_optionBtn setImage:[UIImage imageNamed:@"statusbar_hedo"] forState:UIControlStateNormal];
+        _progress.progress = 0;
+    }
     
 }
 

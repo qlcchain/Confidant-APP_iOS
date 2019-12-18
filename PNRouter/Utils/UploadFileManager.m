@@ -16,6 +16,7 @@
 #import "OperationRecordModel.h"
 #import "NSDate+Category.h"
 //#import "NSDateFormatter+Category.h"
+#import "PNFileUploadModel.h"
 
 @implementation UploadFileManager
 + (instancetype) getShareObject
@@ -36,6 +37,8 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadFileFinshNoti:) name:FILE_UPLOAD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxConnectStatusNoti:) name:TOX_CONNECT_STATUS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoUploadFileDataNoti:) name:Photo_Upload_FileData_Noti object:nil];
+    
 }
 
 #pragma mark -文件上传成功通知
@@ -119,5 +122,19 @@
             }];
         }
     }];
+}
+
+
+
+
+
+
+#pragma mark --------------加密相册
+- (void) photoUploadFileDataNoti:(NSNotification *) noti
+{
+    PNFileUploadModel *fileM = noti.object;
+    if (fileM.retCode == 0) { // 文件上传成功后，告知节点
+        [SendRequestUtil sendUploadFileWithFloderType:1 fileType:fileM.fileType fileId:fileM.fileId fileSize:fileM.fileSize fileMD5:fileM.fileMd5 fileName:fileM.fileName fkey:fileM.FKey finfo:fileM.Finfo floderId:fileM.floderId floderName:fileM.floderName showHud:NO];
+    }
 }
 @end

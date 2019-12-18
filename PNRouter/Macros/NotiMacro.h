@@ -239,9 +239,11 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 
 #pragma mark --------------加密相册
 #define Pull_Floder_List_Noti @"Pull_Floder_List_Noti"
-
-
-
+#define Create_Floder_Success_Noti @"Create_Floder_Success_Noti"
+#define Photo_File_Upload_Success_Noti @"Photo_File_Upload_Success_Noti"
+#define Pull_Floder_File_List_Noti @"Pull_Floder_File_List_Noti"
+#define Photo_Upload_FileData_Noti @"Photo_Upload_FileData_Noti"
+#define Photo_Select_Floder_Noti @"Photo_Select_Floder_Noti"
 
 // 删除文件成功通知
 #define Delete_File_Noti @"Delete_File_Noti"
