@@ -25,6 +25,7 @@
 #import "ChatModel.h"
 #import "FileConfig.h"
 #import "PNFileUploadModel.h"
+#import "PNFileModel.h"
 
 #define NTOHL(x)    (x) = ntohl((__uint32_t)x) //转换成本地字节流
 #define NTOHS(x)    (x) = ntohs((__uint16_t)x) //转换成本地字节流
@@ -392,6 +393,9 @@ struct ResultFile {
                 [fileModel bg_saveAsync:nil];
             }
         }];
+    } else if (_isPhoto) { // 相册图片上传 改变其状态
+        
+        [PNFileModel bg_update:EN_FILE_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@ where %@=%@",bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(1)),bg_sqlKey(@"progressV"),bg_sqlValue(@(0)),bg_sqlKey(@"fId"),bg_sqlValue(@(fileid))]];
     }
     
     NSData *sendData = nil;
@@ -480,7 +484,12 @@ struct ResultFile {
                         
                          [[NSNotificationCenter defaultCenter] postNotificationName:UPLOAD_HEAD_DATA_NOTI object:@[@(weakSelf.retCode),weakSelf.fileName,@"",@(weakSelf.fileType),weakSelf.srcKey,weakSelf.fileid]];
                     } else if (weakSelf.isPhoto) { // 加密相册
-                        
+                        PNFileUploadModel *fileM = [[PNFileUploadModel alloc] init];
+                        fileM.retCode = weakSelf.retCode;
+                        fileM.fileId = [weakSelf.fileid integerValue];
+                        fileM.floderName = weakSelf.floderName;
+                        fileM.floderId = weakSelf.floderId;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:Photo_Upload_FileData_Noti object:fileM];
                     } else { // 上传文件
                         [[NSNotificationCenter defaultCenter] postNotificationName:FILE_UPLOAD_NOTI object:@[@(weakSelf.retCode),weakSelf.fileName,@"",@(weakSelf.fileType),weakSelf.srcKey,weakSelf.fileid]];
                     }
@@ -596,7 +605,7 @@ struct ResultFile {
             return;
         }
         
-        if ([self.toid isEmptyString]) {
+        if ([self.toid isEmptyString] && !_isPhoto) {
             CGFloat progess = (sendFileSizeMax*resultFile.segseq*1.0)/self.fileData.length;
           
             FileData *fileDataModel = [[FileData alloc] init];
@@ -605,6 +614,17 @@ struct ResultFile {
             fileDataModel.status = 2;
             fileDataModel.fileId = [self.fileid integerValue];
             [[NSNotificationCenter defaultCenter] postNotificationName:File_Progess_Noti object:fileDataModel];
+            
+        } else if (_isPhoto) {
+            PNFileUploadModel *fileM = [[PNFileUploadModel alloc] init];
+            fileM.fileId = [self.fileid integerValue];
+            fileM.floderId = self.floderId;
+            fileM.progress = (sendFileSizeMax*resultFile.segseq*1.0)/self.fileData.length;
+            [[NSNotificationCenter defaultCenter] postNotificationName:Photo_FileData_Upload_Progress_Noti object:fileM];
+            // 更新本地进度
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                [PNFileModel bg_update:EN_FILE_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@",bg_sqlKey(@"progressV"),bg_sqlValue(@(0)),bg_sqlKey(@"fId"),bg_sqlValue(@(fileM.fileId))]];
+            });
             
         }
         

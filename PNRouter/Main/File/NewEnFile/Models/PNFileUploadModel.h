@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *FKey; // 文件密钥
 @property (assign, nonatomic) NSInteger floderId; // 文件夹id
 @property (nonatomic, strong) NSString *floderName; // 文件data
+@property (nonatomic, assign) CGFloat progress;
 @end
 
 NS_ASSUME_NONNULL_END

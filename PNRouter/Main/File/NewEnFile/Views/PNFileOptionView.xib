@@ -139,6 +139,9 @@
             <connections>
                 <outlet property="backContraintV" destination="cRX-D3-Yxk" id="Kff-yK-nz9"/>
                 <outlet property="backV" destination="4Gj-mI-Kwh" id="SZR-Yl-iD3"/>
+                <outlet property="lblNode" destination="7RJ-8g-BxM" id="eUp-09-k6x"/>
+                <outlet property="nodeBtn" destination="ieO-Ma-sCs" id="ntZ-SO-9He"/>
+                <outlet property="nodeImgView" destination="92f-rv-A8C" id="XGc-rg-c2v"/>
             </connections>
             <point key="canvasLocation" x="-182" y="-683"/>
         </view>

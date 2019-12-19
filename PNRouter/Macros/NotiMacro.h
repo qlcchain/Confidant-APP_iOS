@@ -244,6 +244,8 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 #define Pull_Floder_File_List_Noti @"Pull_Floder_File_List_Noti"
 #define Photo_Upload_FileData_Noti @"Photo_Upload_FileData_Noti"
 #define Photo_Select_Floder_Noti @"Photo_Select_Floder_Noti"
+#define Photo_FileData_Upload_Progress_Noti @"Photo_FileData_Upload_Progress_Noti"
+
 
 // 删除文件成功通知
 #define Delete_File_Noti @"Delete_File_Noti"

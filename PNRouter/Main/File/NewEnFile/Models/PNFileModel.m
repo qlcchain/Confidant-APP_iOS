@@ -9,5 +9,9 @@
 #import "PNFileModel.h"
 
 @implementation PNFileModel
-
++ (NSDictionary *)replacedKeyFromPropertyName {
+    return @{
+        @"fId":@"Id"
+    };
+}
 @end

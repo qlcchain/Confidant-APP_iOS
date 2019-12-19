@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^ClickOptionMenuBlock)(NSInteger tag);
 
 @interface PNFileOptionView : UIView
+@property (weak, nonatomic) IBOutlet UIImageView *nodeImgView;
+@property (weak, nonatomic) IBOutlet UILabel *lblNode;
+@property (weak, nonatomic) IBOutlet UIButton *nodeBtn;
 
 @property (weak, nonatomic) IBOutlet UIView *backV;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backContraintV;

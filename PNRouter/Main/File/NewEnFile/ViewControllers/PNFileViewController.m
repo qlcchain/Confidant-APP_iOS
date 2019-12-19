@@ -10,6 +10,8 @@
 #import "EnMainCell.h"
 #import "PNPhotoViewController.h"
 #import "PNMessageViewController.h"
+#import "UploadFileManager.h"
+#import "FingerprintVerificationUtil.h"
 
 @interface PNFileViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *mainTabView;
@@ -22,6 +24,12 @@
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_GRAY_COLOR;
     
+    // 开启手势
+    [FingerprintVerificationUtil checkFloderShow];
+    
+    // 开启上传文件监听单例
+    [UploadFileManager getShareObject];
+    
     _mainTabView.delegate = self;
     _mainTabView.dataSource = self;
     _mainTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -33,7 +41,7 @@
 #pragma mark -----------------tableview deleate ---------------------
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 1;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

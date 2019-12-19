@@ -38,11 +38,11 @@
     _nodeImgView.hidden = YES;
     if (isLocal) {
         _lblName.text = fileModel.Fname;
-        if (fileModel.uploadStatus == 0) {
+        if (fileModel.uploadStatus <= 0) {
             _progress.progress = 0;
             [_optionBtn setImage:[UIImage imageNamed:@"statusbar_hedo"] forState:UIControlStateNormal];
         } else if (fileModel.uploadStatus == 1) {
-            _progress.progress = 0;
+            _progress.progress = fileModel.progressV;
             [_optionBtn setImage:[UIImage imageNamed:@"noun_pause_a"] forState:UIControlStateNormal];
         } else {
             _nodeImgView.hidden = NO;

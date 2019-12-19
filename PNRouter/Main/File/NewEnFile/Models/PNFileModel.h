@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSData *fileData; // 文件data
 
 @property (nonatomic, assign) CGFloat progressV; // 进度
-@property (nonatomic, assign) NSInteger uploadStatus; // 0:正常 1:上传中 2:上传完成
+@property (nonatomic, assign) NSInteger uploadStatus; // 0:正常 1:上传中 2:上传完成 -1:上传失败
 
 @end
 

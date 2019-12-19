@@ -2274,7 +2274,7 @@
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:Photo_File_Upload_Success_Noti object:receiveDic[@"params"]];
+        
     } else {
         if (retCode == 3) {
             [AppD.window showHint:@"Request failed, filename repetition."];
@@ -2284,6 +2284,7 @@
             [AppD.window showHint:@"Request failed."];
         }
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:Photo_File_Upload_Success_Noti object:receiveDic[@"params"]];
 }
 
 // 拉取文件夹言文件

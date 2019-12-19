@@ -7,7 +7,6 @@
 //
 
 #import "PNFloderContentViewController.h"
-#import "FingerprintVerificationUtil.h"
 #import "UploadFileCell.h"
 #import <YBImageBrowser/YBImageBrowser.h>
 #import "TZImagePickerController.h"
@@ -23,6 +22,7 @@
 #import "SocketCountUtil.h"
 #import "SocketManageUtil.h"
 #import "PNSelectFloderViewController.h"
+#import "PNFileUploadModel.h"
 
 
 @interface PNFloderContentViewController ()<UITableViewDelegate,UITableViewDataSource,YBImageBrowserDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate,
@@ -35,7 +35,7 @@ UIImagePickerControllerDelegate>
 @property (nonatomic, assign) NSInteger selFileCount;
 @property (nonatomic, assign) NSInteger finshFileCount;
 @property (nonatomic, strong) PNFileModel *selFileM;
-@property (nonatomic, assign) NSInteger selRow;
+@property (nonatomic, assign) NSInteger autoNum;
 @end
 
 @implementation PNFloderContentViewController
@@ -63,8 +63,9 @@ UIImagePickerControllerDelegate>
                             [weakSelf.view hideHud];
                             if (isSuccess) {
                                 weakSelf.floderM.FilesNum--;
-                                [weakSelf.dataArray removeObjectAtIndex:weakSelf.selRow];
-                                [weakSelf.mainTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.selRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                                [weakSelf.dataArray removeObject:weakSelf.selFileM];
+                                //[weakSelf.mainTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.selRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                                [weakSelf.mainTabView reloadData];
                             } else {
                                 [weakSelf.view showHint:@"Delete failed."];
                             }
@@ -73,7 +74,7 @@ UIImagePickerControllerDelegate>
                     }];
                 } else { // 删除节点文件
                     
-                    [SendRequestUtil sendUpdateloderWithFloderType:1 updateType:1 react:2 name:weakSelf.selFileM.Fname oldName:@"" fid:0 pathid:weakSelf.selFileM.fId showHud:YES];
+                    [SendRequestUtil sendUpdateloderWithFloderType:1 updateType:1 react:2 name:weakSelf.selFileM.Fname oldName:@"" fid:weakSelf.selFileM.fId pathid:weakSelf.floderM.fId showHud:YES];
                 }
             }
         }];
@@ -109,17 +110,18 @@ UIImagePickerControllerDelegate>
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_GRAY_COLOR;
     
-   // [FingerprintVerificationUtil checkFloderShow];
-    
     _mainTabView.delegate = self;
     _mainTabView.dataSource = self;
     _mainTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [_mainTabView registerNib:[UINib nibWithNibName:UploadFileCellResue bundle:nil] forCellReuseIdentifier:UploadFileCellResue];
     
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoUploadFileDataNoti:) name:Photo_Upload_FileData_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadSuccessNoti:) name:Photo_File_Upload_Success_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filePullSuccessNoti:) name:Pull_Floder_File_List_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(delFileSuccessNoti:) name:Create_Floder_Success_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadProgressNoti:) name:Photo_FileData_Upload_Progress_Noti object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectFloderSuccessNoti:) name:Photo_Select_Floder_Noti object:nil];
     
     
@@ -197,33 +199,48 @@ UIImagePickerControllerDelegate>
     [myCell setFileM:self.dataArray[indexPath.row] isLocal:self.floderM.isLocal];
     @weakify_self
     [myCell setOptionBlock:^(PNFileModel * _Nonnull fileM, NSInteger cellTag) {
-        weakSelf.selRow = cellTag;
         weakSelf.selFileM = fileM;
+        if (weakSelf.selFileM.uploadStatus <= 0 && weakSelf.floderM.isLocal) {
+            weakSelf.optionView.nodeBtn.enabled = YES;
+            weakSelf.optionView.lblNode.textColor = MAIN_PURPLE_COLOR;
+            [weakSelf.optionView.nodeImgView setImage:[UIImage imageNamed:@"statusbar_download_node"]];
+        } else {
+            weakSelf.optionView.nodeBtn.enabled = NO;
+            weakSelf.optionView.lblNode.textColor = [UIColor lightGrayColor];
+            [weakSelf.optionView.nodeImgView setImage:[UIImage imageNamed:@"statusbar_download_node_backups"]];
+        }
         [weakSelf.optionView showOptionEnumView];
     }];
     return myCell;
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     PNFileModel *fileM = self.dataArray[indexPath.row];
-    if (!fileM.fileData) {
-        
-        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@",bg_sqlKey(@"fileData"),EN_FILE_TABNAME,bg_sqlKey(@"fId"),bg_sqlValue(@(fileM.fId))];
-        NSArray *results = bg_executeSql(sql, EN_FILE_TABNAME,[PNFileModel class]);
-        
-        if (results && results.count > 0) {
-            PNFileModel *fileModel = results[0];
-            fileM.fileData = fileModel.fileData;
-        }
-    }
     
     FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
+    if (self.floderM.isLocal) {
+        if (!fileM.fileData) {
+            
+            NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@",bg_sqlKey(@"fileData"),EN_FILE_TABNAME,bg_sqlKey(@"fId"),bg_sqlValue(@(fileM.fId))];
+            NSArray *results = bg_executeSql(sql, EN_FILE_TABNAME,[PNFileModel class]);
+            
+            if (results && results.count > 0) {
+                PNFileModel *fileModel = results[0];
+                fileM.fileData = fileModel.fileData;
+            }
+        }
+        vc.fileType = LocalPhotoFile;
+        vc.localFileData = fileM.fileData;
+    } else {
+        vc.fileType = NodePhotoFile;
+        vc.filePath = fileM.Paths;
+    }
+    
     vc.fileName = fileM.Fname;
     vc.userKey = fileM.FKey;
-    vc.fileType = LocalPhotoFile;
-    vc.localFileData = fileM.fileData;
+    
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -247,6 +264,10 @@ UIImagePickerControllerDelegate>
     int fileType = (int)self.selFileM.Type;
     
     if ([SystemUtil isSocketConnect]) { // socket
+        // 更新状态
+        self.selFileM.uploadStatus = 1;
+        //[_mainTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.selRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        [_mainTabView reloadData];
                    
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
         dataUtil.srcKey = self.selFileM.FKey;
@@ -267,21 +288,53 @@ UIImagePickerControllerDelegate>
 }
 
 #pragma mark----------------通知
+- (void) photoUploadFileDataNoti:(NSNotification *) noti
+{
+    PNFileUploadModel *uplodFileM = noti.object;
+    if (self.floderM.isLocal) { // 本地
+        if (uplodFileM.retCode != 0) {
+            for (int i = 0; i<self.dataArray.count; i++) {
+                PNFileModel *fileM = self.dataArray[i];
+                if (fileM.fId == uplodFileM.fileId) {
+                    fileM.uploadStatus = -1;
+                    fileM.progressV = 0;
+                    [_mainTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                    break;
+                }
+            }
+        }
+           
+    } else {
+        if (uplodFileM.floderId == self.floderM.fId) { // 节点
+            
+        }
+    }
+}
 - (void) fileUploadSuccessNoti:(NSNotification *) noti
 {
     NSDictionary *resultDic = noti.object;
-    NSInteger fileID = [resultDic[@"FileId"] integerValue];
+    NSInteger retCode = [resultDic[@"RetCode"] integerValue];
+    NSInteger srcFileID = [resultDic[@"SrcId"] integerValue];
+    
     if (self.floderM.isLocal) {
         for (int i = 0; i<self.dataArray.count; i++) {
             PNFileModel *fileM = self.dataArray[i];
-            if (fileM.fId == fileID) {
-                fileM.uploadStatus = 2;
-                [_mainTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            if (fileM.fId == srcFileID) {
+                if (retCode == 0) {
+                    fileM.uploadStatus = 2;
+                } else {
+                    fileM.uploadStatus = -1;
+                }
+                fileM.progressV = 0;
+                [_mainTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                 break;
             }
         }
     } else {
+        
         NSInteger floderId = [resultDic[@"PathId"] integerValue];
+        NSInteger fileID = [resultDic[@"FileId"] integerValue];
+        
         if (floderId == self.floderM.fId) {
                 
                 NSString *PathName = resultDic[@"PathName"];
@@ -315,13 +368,27 @@ UIImagePickerControllerDelegate>
 - (void) delFileSuccessNoti:(NSNotification *) noti
 {
     self.floderM.FilesNum--;
-    [self.dataArray removeObjectAtIndex:self.selRow];
-    [self.mainTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.selRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.dataArray removeObject:self.selFileM];
+   // [self.mainTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.selRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [_mainTabView reloadData];
 }
 - (void) selectFloderSuccessNoti:(NSNotification *) noti
 {
     PNFloderModel *selFloderM = noti.object;
     [self uploadNodeWithFloderId:selFloderM.fId floderName:selFloderM.PathName];
+}
+
+- (void) uploadProgressNoti:(NSNotification *) noti
+{
+    PNFileUploadModel *uploadFileM = noti.object;
+    for (int i = 0; i<self.dataArray.count; i++) {
+        PNFileModel *fileM = self.dataArray[i];
+        if (fileM.fId == uploadFileM.fileId) {
+            fileM.progressV = uploadFileM.progress;
+            [_mainTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            break;
+        }
+    }
 }
 
 #pragma mark ---选择相册
@@ -454,7 +521,8 @@ UIImagePickerControllerDelegate>
     
     PNFileModel *fileM = [[PNFileModel alloc] init];
     fileM.PathId = _floderM.fId;
-    fileM.fId = [NSDate getTimestampFromDate:[NSDate date]];
+    _autoNum += 1;
+    fileM.fId = [NSDate getTimestampFromDate:[NSDate date]]+_autoNum+(arc4random()%100);
     fileM.Fname = imgName;
     fileM.Size = imgData.length;
     fileM.FKey = srcKey;

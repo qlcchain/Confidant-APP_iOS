@@ -10,8 +10,10 @@
 #import "EnPhotoCell.h"
 #import "PNFloderModel.h"
 #import "MyConfidant-Swift.h"
+#import "KeyBordHeadView.h"
+#import "NSString+Trim.h"
 
-@interface PNSelectFloderViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface PNSelectFloderViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *createBtn;
 @property (weak, nonatomic) IBOutlet UIButton *selectBtn;
 @property (weak, nonatomic) IBOutlet UIView *bottomBackView;
@@ -19,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblFlderName;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, assign) NSInteger selRow;
+@property (nonatomic, strong) KeyBordHeadView *keyHeadView;
 
 @end
 
@@ -31,7 +34,8 @@
     [self leftNavBarItemPressedWithPop:NO];
 }
 - (IBAction)createFloderAction:(id)sender {
-    
+    [AppD.window addSubview:self.keyHeadView];
+    [self.keyHeadView.floderTF becomeFirstResponder];
 }
 - (IBAction)selectFloderAction:(id)sender {
     if (self.dataArray.count > 0) {
@@ -42,13 +46,22 @@
         [self.view showHint:@"Please select album."];
     }
 }
-
+#pragma mark ---layz
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
         _dataArray = [NSMutableArray array];
     }
     return _dataArray;
+}
+
+- (KeyBordHeadView *)keyHeadView
+{
+    if (!_keyHeadView) {
+        _keyHeadView = [KeyBordHeadView getKeyBordHeadView];
+        _keyHeadView.floderTF.delegate = self;
+    }
+    return _keyHeadView;
 }
 
 - (void)viewDidLoad {
@@ -74,6 +87,9 @@
     [_mainTabView registerNib:[UINib nibWithNibName:EnPhotoCellResue bundle:nil] forCellReuseIdentifier:EnPhotoCellResue];
     
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFloderListNoti:) name:Pull_Floder_List_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createFloderSuccessNoti:) name:Create_Floder_Success_Noti object:nil];
     
     [SendRequestUtil sendPullFloderListWithFloderType:1 showHud:YES];
 }
@@ -120,4 +136,60 @@
     }
 }
 
+
+
+- (void) createFloderWithName:(NSString *) name
+{
+    NSString *fname = [Base58Util Base58EncodeWithCodeName:name];
+    [SendRequestUtil sendUpdateloderWithFloderType:1 updateType:2 react:3 name:fname oldName:@"" fid:0 pathid:0 showHud:YES];
+}
+
+#pragma mark---------------请求通知
+- (void) createFloderSuccessNoti:(NSNotification *) noti
+{
+    NSDictionary *responDic = noti.object?:@{};
+    PNFloderModel *floderM = [[PNFloderModel alloc] init];
+    floderM.PathName = responDic[@"Name"];
+    floderM.fId = [responDic[@"PathId"] integerValue];
+    [self.dataArray addObject:floderM];
+    [self.mainTabView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+#pragma mark ---点击键盘done
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    NSString *floderName = [NSString trimWhitespace:textField.text];
+    if (floderName.length == 0) {
+        [AppD.window showMiddleHint:@"The name cannot be empty."];
+        return NO;
+    }
+    textField.text = @"";
+    [self createFloderWithName:floderName];
+    return [self.keyHeadView.floderTF resignFirstResponder];
+}
+
+#pragma mark ----KeyboardWillShowNotification
+- (void) KeyboardWillShowNotification:(NSNotification *) notification
+{
+    self.view.userInteractionEnabled = NO;
+    NSDictionary *userInfo = [notification userInfo];
+    CGFloat duration = [[userInfo objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"] doubleValue];
+    CGRect rect = [[userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"]CGRectValue];
+    
+    [UIView animateWithDuration:duration animations:^{
+        self.keyHeadView.frame = CGRectMake(0, rect.origin.y-163, SCREEN_WIDTH, 163);
+    }];
+}
+- (void) KeyboardWillHideNotification:(NSNotification *) notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    CGFloat duration = [[userInfo objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"] doubleValue];
+    
+    [UIView animateWithDuration:duration animations:^{
+        self.keyHeadView.frame = CGRectMake(0,SCREEN_HEIGHT, SCREEN_WIDTH, 163);
+    } completion:^(BOOL finished) {
+        self.view.userInteractionEnabled = YES;
+        [self.keyHeadView removeFromSuperview];
+    }];
+}
 @end

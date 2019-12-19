@@ -15,6 +15,8 @@
 #import "AESCipher.h"
 #import "SystemUtil.h"
 #import "MyConfidant-Swift.h"
+#import "FileDownUtil.h"
+#import "RequestService.h"
 
 @interface FilePreviewViewController () <QLPreviewControllerDataSource, QLPreviewControllerDelegate>
 
@@ -51,21 +53,65 @@
             
         } else if (weakSelf.fileType == LocalPhotoFile) {
             [weakSelf deFileWithFileData:weakSelf.localFileData];
+        } else if (weakSelf.fileType == NodePhotoFile) {
+            [weakSelf downFileData];
         }
         
     });
 }
+#pragma mark ----下载节点文件
+- (void) downFileData
+{
+    self.fileName = [Base58Util Base58DecodeWithCodeName:self.fileName]?:@"";
+    NSString *downloadFilePath = [SystemUtil getTempDeFilePath:self.fileName];
+    //[SystemUtil removeDocmentFilePath:downloadFilePath];
+    if ([SystemUtil filePathisExist:downloadFilePath]) {
+        @weakify_self
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.view hideHud];
+            [weakSelf previewFilePath:downloadFilePath];
+        });
+    } else {
+        
+        if ([SystemUtil isSocketConnect]) {
+            
+            @weakify_self
+            [RequestService downFileWithBaseURLStr:self.filePath filePath:downloadFilePath progressBlock:^(CGFloat progress) {
+                
+            } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
+            
+                NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+                [SystemUtil removeDocmentFilePath:filePath];
+                [weakSelf deFileWithFileData:fileData];
+                
+            } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
+                [SystemUtil removeDocmentFilePath:downloadFilePath];
+                [weakSelf.view hideHud];
+                [weakSelf.view showHint:@"File download failed."];
+            }];
+        }
+    }
+    
+}
 
 - (void) deFileWithFileData:(NSData *) fileData
 {
+    
+    NSString *deFilePath = [SystemUtil getTempDeFilePath:self.fileName];
+    if ([SystemUtil filePathisExist:deFilePath]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.view hideHud];
+            [self previewFilePath:deFilePath];
+        });
+        return;
+    }
     NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.userKey];
     if (datakey && datakey.length>0) {
         datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
         if (datakey && ![datakey isEmptyString]) {
             
-           NSString *deFileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
+           NSData *deFileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
             if (deFileData) {
-                NSString *deFilePath = [SystemUtil getTempDeFilePath:self.fileName];
                 BOOL isWriteFinsh = [deFileData writeToFile:deFilePath atomically:YES];
                 if (isWriteFinsh) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -91,9 +137,6 @@
 
 #pragma mark - Operation
 - (void)previewFilePath:(NSString *) filePath {
-    
-    
-    
     
     _sourceArr = [NSMutableArray array];
     [_sourceArr addObject:filePath];
