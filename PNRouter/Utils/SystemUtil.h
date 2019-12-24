@@ -59,4 +59,6 @@
 + (NSString *)getTempEmailAttchFilePath;
 + (NSString *)getDocEmailAttchFilePathWithUid:(NSString *) uid user:(NSString *) user;
 + (NSString *)getDocEmailBasePath;
+// 加密相册解密后文件的临时目录
++ (NSString *)getPhotoTempDeFloderId:(NSString *)floderId fid:(NSString *) fid;
 @end

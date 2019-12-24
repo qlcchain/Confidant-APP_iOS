@@ -23,10 +23,16 @@
 #import "SocketManageUtil.h"
 #import "PNSelectFloderViewController.h"
 #import "PNFileUploadModel.h"
-
+#import "MyConfidant-Swift.h"
+#import "KeyBordHeadView.h"
+#import <IQKeyboardManager/IQKeyboardManager.h>
+#import "NSString+Trim.h"
+#import "UIImage+Resize.h"
 
 @interface PNFloderContentViewController ()<UITableViewDelegate,UITableViewDataSource,YBImageBrowserDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate,
-UIImagePickerControllerDelegate>
+UIImagePickerControllerDelegate,UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
+@property (weak, nonatomic) IBOutlet UIButton *addFileBtn;
 
 @property (weak, nonatomic) IBOutlet UITableView *mainTabView;
 @property (nonatomic, strong) PNFileOptionView *optionView;
@@ -36,11 +42,23 @@ UIImagePickerControllerDelegate>
 @property (nonatomic, assign) NSInteger finshFileCount;
 @property (nonatomic, strong) PNFileModel *selFileM;
 @property (nonatomic, assign) NSInteger autoNum;
+@property (nonatomic, strong) UIButton *addBtn;
+@property (nonatomic, strong) KeyBordHeadView *keyHeadView;
 @end
 
 @implementation PNFloderContentViewController
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+// 取消keyboard
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+}
+// 恢复keyboard
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
 }
 #pragma mark-------------layz
 - (PNFileOptionView *)optionView
@@ -53,6 +71,17 @@ UIImagePickerControllerDelegate>
                 PNSelectFloderViewController *vc = [[PNSelectFloderViewController alloc] init];
                 [weakSelf presentModalVC:vc animated:YES];
                 //[weakSelf uploadNode];
+            } else if (tag == 30) { // 重命名
+                
+                if (weakSelf.floderM.isLocal) {
+                    weakSelf.keyHeadView.floderTF.text = [weakSelf.selFileM.Fname componentsSeparatedByString:@"."][0];
+                } else {
+                    weakSelf.keyHeadView.floderTF.text = [[Base58Util Base58DecodeWithCodeName:weakSelf.selFileM.Fname] componentsSeparatedByString:@"."][0];
+                }
+                [AppD.window addSubview:weakSelf.keyHeadView];
+                weakSelf.keyHeadView.lblTitle.text = @"ReName";
+                [weakSelf.keyHeadView.floderTF becomeFirstResponder];
+                
             } else { // 删除
                 if (weakSelf.floderM.isLocal) {
                     [weakSelf.view showHudInView:weakSelf.view hint:@""];
@@ -62,7 +91,6 @@ UIImagePickerControllerDelegate>
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [weakSelf.view hideHud];
                             if (isSuccess) {
-                                weakSelf.floderM.FilesNum--;
                                 [weakSelf.dataArray removeObject:weakSelf.selFileM];
                                 //[weakSelf.mainTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.selRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                                 [weakSelf.mainTabView reloadData];
@@ -81,6 +109,14 @@ UIImagePickerControllerDelegate>
     }
     return _optionView;
 }
+- (KeyBordHeadView *)keyHeadView
+{
+    if (!_keyHeadView) {
+        _keyHeadView = [KeyBordHeadView getKeyBordHeadView];
+        _keyHeadView.floderTF.delegate = self;
+    }
+    return _keyHeadView;
+}
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
@@ -90,6 +126,8 @@ UIImagePickerControllerDelegate>
 }
 
 - (IBAction)clickBackAction:(id)sender {
+    self.floderM.FilesNum = self.dataArray.count;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFileNum" object:nil];
     [self leftNavBarItemPressedWithPop:YES];
 }
 - (IBAction)clickAddAction:(id)sender {
@@ -109,6 +147,10 @@ UIImagePickerControllerDelegate>
     
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_GRAY_COLOR;
+    _lblNavTitle.text = [Base58Util Base58DecodeWithCodeName:self.floderM.PathName];
+    if (!self.floderM.isLocal) {
+        self.addFileBtn.hidden = YES;
+    }
     
     _mainTabView.delegate = self;
     _mainTabView.dataSource = self;
@@ -116,6 +158,9 @@ UIImagePickerControllerDelegate>
     
     [_mainTabView registerNib:[UINib nibWithNibName:UploadFileCellResue bundle:nil] forCellReuseIdentifier:UploadFileCellResue];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoUploadFileDataNoti:) name:Photo_Upload_FileData_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadSuccessNoti:) name:Photo_File_Upload_Success_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filePullSuccessNoti:) name:Pull_Floder_File_List_Noti object:nil];
@@ -125,6 +170,7 @@ UIImagePickerControllerDelegate>
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectFloderSuccessNoti:) name:Photo_Select_Floder_Noti object:nil];
     
     
+    [self createButton];
     // 查询文件夹文件
     [self checkFloderFileList];
 }
@@ -132,7 +178,7 @@ UIImagePickerControllerDelegate>
 - (void) checkFloderFileList
 {
     if (self.floderM.isLocal) {
-        NSArray *colums = @[bg_sqlKey(@"fId"),bg_sqlKey(@"Depens"),bg_sqlKey(@"Type"),bg_sqlKey(@"Fname"),bg_sqlKey(@"Size"),bg_sqlKey(@"LastModify"),bg_sqlKey(@"Finfo"),bg_sqlKey(@"FKey"),bg_sqlKey(@"PathId"),bg_sqlKey(@"progressV"),bg_sqlKey(@"uploadStatus")];
+        NSArray *colums = @[bg_sqlKey(@"fId"),bg_sqlKey(@"Depens"),bg_sqlKey(@"Type"),bg_sqlKey(@"Fname"),bg_sqlKey(@"Size"),bg_sqlKey(@"LastModify"),bg_sqlKey(@"Finfo"),bg_sqlKey(@"FKey"),bg_sqlKey(@"PathId"),bg_sqlKey(@"progressV"),bg_sqlKey(@"uploadStatus"),bg_sqlKey(@"smallData")];
         
             NSString *columString = [colums componentsJoinedByString:@","];
               //NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ order by %@ desc limit 100",columString,EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(_floderM.fId)),bg_sqlKey(@"updateTime")];
@@ -174,9 +220,9 @@ UIImagePickerControllerDelegate>
     lblName.font = [UIFont systemFontOfSize:12];
     [headView addSubview:lblName];
     if (section == 0) {
-        lblName.text = @"UPLOADING";
+        lblName.text = @"Screen Capture";
     } else {
-         lblName.text = @"UPLOADING";
+         lblName.text = @"Screen Capture";
     }
     return headView;
 }
@@ -196,11 +242,11 @@ UIImagePickerControllerDelegate>
 //        [myCell.optionBtn setImage:[UIImage imageNamed:@"noun_play_b"] forState:UIControlStateNormal];
 //    }
     
-    [myCell setFileM:self.dataArray[indexPath.row] isLocal:self.floderM.isLocal];
+    [myCell setFileM:self.dataArray[indexPath.row] isLocal:self.floderM.isLocal floderId:self.floderM.fId];
     @weakify_self
     [myCell setOptionBlock:^(PNFileModel * _Nonnull fileM, NSInteger cellTag) {
         weakSelf.selFileM = fileM;
-        if (weakSelf.selFileM.uploadStatus <= 0 && weakSelf.floderM.isLocal) {
+        if (weakSelf.selFileM.uploadStatus !=1 && weakSelf.floderM.isLocal) {
             weakSelf.optionView.nodeBtn.enabled = YES;
             weakSelf.optionView.lblNode.textColor = MAIN_PURPLE_COLOR;
             [weakSelf.optionView.nodeImgView setImage:[UIImage imageNamed:@"statusbar_download_node"]];
@@ -237,9 +283,10 @@ UIImagePickerControllerDelegate>
         vc.fileType = NodePhotoFile;
         vc.filePath = fileM.Paths;
     }
-    
     vc.fileName = fileM.Fname;
     vc.userKey = fileM.FKey;
+    vc.fileId = [NSString stringWithFormat:@"%ld",fileM.fId];
+    vc.floderId = [NSString stringWithFormat:@"%ld",_floderM.fId];
     
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -367,9 +414,18 @@ UIImagePickerControllerDelegate>
 }
 - (void) delFileSuccessNoti:(NSNotification *) noti
 {
-    self.floderM.FilesNum--;
-    [self.dataArray removeObject:self.selFileM];
-   // [self.mainTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.selRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    NSDictionary *responDic = noti.object?:@{};
+    NSInteger fileId = [responDic[@"FileId"] integerValue];
+    if (fileId <= 0) {
+        return;
+    }
+    NSInteger react = [responDic[@"React"] integerValue];
+    if (react == 1){ // 重命名
+        self.selFileM.Fname = responDic[@"Name"];
+    } else if (react == 2) {
+        [self.dataArray removeObject:self.selFileM];
+    }
+    
     [_mainTabView reloadData];
 }
 - (void) selectFloderSuccessNoti:(NSNotification *) noti
@@ -390,6 +446,9 @@ UIImagePickerControllerDelegate>
         }
     }
 }
+
+
+
 
 #pragma mark ---选择相册
 /**
@@ -527,12 +586,15 @@ UIImagePickerControllerDelegate>
     fileM.Size = imgData.length;
     fileM.FKey = srcKey;
     fileM.fileData = imgData;
+    fileM.smallData = [img compressWithMaxLength:10*1024];
     fileM.LastModify = [NSDate getTimestampFromDate:[NSDate date]];
     fileM.Depens = 1;
     fileM.Type = 1;
     fileM.Finfo = [NSString stringWithFormat:@"%f*%f",img.size.width,img.size.height];
     fileM.bg_tableName = EN_FILE_TABNAME;
-    
+    if (!self.floderM.isLocal) {
+        fileM.uploadStatus = 1;
+    }
     @weakify_self
     [fileM bg_saveAsync:^(BOOL isSuccess) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -541,8 +603,12 @@ UIImagePickerControllerDelegate>
                 [weakSelf.view hideHud];
             }
             if (isSuccess) {
-                [weakSelf.dataArray addObject:fileM];
-                [weakSelf.mainTabView reloadData];
+                if (weakSelf.floderM.isLocal) {
+                    [weakSelf.dataArray addObject:fileM];
+                    [weakSelf.mainTabView reloadData];
+                } else {
+                    [weakSelf.view showHint:@"已添加至任务列表."];
+                }
             }
         });
     }];
@@ -613,10 +679,13 @@ UIImagePickerControllerDelegate>
     fileM.Type = 4;
     fileM.FKey = srcKey;
     fileM.fileData = attData;
+    fileM.smallData = [evImage compressWithMaxLength:10*1024];
     fileM.Depens = 1;
     fileM.Finfo = [NSString stringWithFormat:@"%f*%f",evImage.size.width,evImage.size.height];
     fileM.bg_tableName = EN_FILE_TABNAME;
-    
+    if (!self.floderM.isLocal) {
+        fileM.uploadStatus = 1;
+    }
     @weakify_self
     [fileM bg_saveAsync:^(BOOL isSuccess) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -625,11 +694,183 @@ UIImagePickerControllerDelegate>
                 [weakSelf.view hideHud];
             }
             if (isSuccess) {
-                [weakSelf.dataArray addObject:fileM];
-                [weakSelf.mainTabView reloadData];
+                if (weakSelf.floderM.isLocal) {
+                    [weakSelf.dataArray addObject:fileM];
+                    [weakSelf.mainTabView reloadData];
+                } else {
+                    [weakSelf.view showHint:@"已添加至任务列表."];
+                }
             }
         });
     }];
    
 }
+
+
+
+
+#pragma mark----------修改文件名---------------
+- (void) updateFileWithName:(NSString *) fileName
+{
+    if (self.floderM.isLocal) {
+        NSArray *names = [self.selFileM.Fname componentsSeparatedByString:@"."];
+        NSString *fileTypeName = fileName;
+        if (names.count >=2) {
+            fileTypeName = names[1];
+            fileTypeName = [fileName stringByAppendingFormat:@".%@", fileTypeName];
+        }
+        
+        self.selFileM.Fname = fileTypeName;
+        [PNFileModel bg_update:EN_FILE_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@",bg_sqlKey(@"Fname"),bg_sqlValue(self.selFileM.Fname),bg_sqlKey(@"fId"),bg_sqlValue(@(self.selFileM.fId))]];
+        [_mainTabView reloadData];
+    } else {
+        NSString *oldName = [Base58Util Base58DecodeWithCodeName:self.selFileM.Fname];
+        NSArray *names = [oldName componentsSeparatedByString:@"."];
+        NSString *fileTypeName = fileName;
+        if (names.count >=2) {
+            fileTypeName = names[1];
+            fileTypeName = [fileName stringByAppendingFormat:@".%@", fileTypeName];
+        }
+        [SendRequestUtil sendUpdateloderWithFloderType:1 updateType:1 react:1 name:[Base58Util Base58EncodeWithCodeName:fileTypeName] oldName:self.selFileM.Fname fid:self.selFileM.fId pathid:self.floderM.fId showHud:YES];
+    }
+}
+
+#pragma mark ---点击键盘done
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    NSString *floderName = [NSString trimWhitespace:textField.text];
+    if (floderName.length == 0) {
+        [AppD.window showMiddleHint:@"The name cannot be empty."];
+        return NO;
+    }
+    textField.text = @"";
+    [self updateFileWithName:floderName];
+    return [self.keyHeadView.floderTF resignFirstResponder];
+}
+#pragma mark ----KeyboardWillShowNotification
+- (void) KeyboardWillShowNotification:(NSNotification *) notification
+{
+    if (_keyHeadView) {
+        self.view.userInteractionEnabled = NO;
+        NSDictionary *userInfo = [notification userInfo];
+        CGFloat duration = [[userInfo objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"] doubleValue];
+        CGRect rect = [[userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"]CGRectValue];
+        
+        [UIView animateWithDuration:duration animations:^{
+            self.keyHeadView.frame = CGRectMake(0, rect.origin.y-163, SCREEN_WIDTH, 163);
+        }];
+    }
+    
+}
+- (void) KeyboardWillHideNotification:(NSNotification *) notification
+{
+    if (_keyHeadView) {
+        NSDictionary *userInfo = [notification userInfo];
+        CGFloat duration = [[userInfo objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"] doubleValue];
+        
+        [UIView animateWithDuration:duration animations:^{
+            self.keyHeadView.frame = CGRectMake(0,SCREEN_HEIGHT, SCREEN_WIDTH, 163);
+        } completion:^(BOOL finished) {
+            self.view.userInteractionEnabled = YES;
+            [self.keyHeadView removeFromSuperview];
+        }];
+    }
+}
+
+
+
+
+
+
+#pragma mark - 创建悬浮的按钮
+
+- (void)createButton{
+
+    _addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_addBtn setImage:[UIImage imageNamed:@"upload_hover"] forState:UIControlStateNormal];
+    _addBtn.frame = CGRectMake(SCREEN_WIDTH - 93, SCREEN_HEIGHT - 96, 93, 96);
+    [_addBtn addTarget:self action:@selector(clickAddAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:_addBtn];
+
+    //放一个拖动手势，用来改变控件的位置
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(changePostion:)];
+    [_addBtn addGestureRecognizer:pan];
+
+}
+
+//手势事件 －－ 改变位置
+
+-(void)changePostion:(UIPanGestureRecognizer *)pan{
+
+    CGPoint point = [pan translationInView:_addBtn];
+
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+
+    CGFloat height = [UIScreen mainScreen].bounds.size.height;
+
+    CGRect originalFrame = _addBtn.frame;
+
+    if (originalFrame.origin.x >= 0 && originalFrame.origin.x+originalFrame.size.width <= width) {
+        originalFrame.origin.x += point.x;
+    }
+    
+    if (originalFrame.origin.y >= 0 && originalFrame.origin.y+originalFrame.size.height <= height) {
+        originalFrame.origin.y += point.y;
+    }
+
+    _addBtn.frame = originalFrame;
+
+    [pan setTranslation:CGPointZero inView:_addBtn];
+
+    if (pan.state == UIGestureRecognizerStateBegan) {
+
+        _addBtn.enabled = NO;
+
+    }else if (pan.state == UIGestureRecognizerStateChanged){
+
+    } else {
+
+        CGRect frame = _addBtn.frame;
+
+        //是否越界
+
+        BOOL isOver = NO;
+
+        if (frame.origin.x < 0) {
+
+            frame.origin.x = 0;
+
+            isOver = YES;
+
+        } else if (frame.origin.x+frame.size.width > width) {
+
+            frame.origin.x = width - frame.size.width;
+
+            isOver = YES;
+
+        }if (frame.origin.y < 0) {
+
+            frame.origin.y = 0;
+
+            isOver = YES;
+
+        } else if (frame.origin.y+frame.size.height > height) {
+
+            frame.origin.y = height - frame.size.height;
+
+            isOver = YES;
+
+        }if (isOver) {
+            @weakify_self
+            [UIView animateWithDuration:0.3 animations:^{
+                weakSelf.addBtn.frame = frame;
+            }];
+
+        }
+        _addBtn.enabled = YES;
+    }
+
+}
+
 @end

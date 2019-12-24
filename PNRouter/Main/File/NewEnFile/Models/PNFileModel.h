@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *FKey; // 文件密钥
 @property (assign, nonatomic) NSInteger PathId; // 文件夹id
 @property (nonatomic, strong) NSData *fileData; // 文件data
+@property (nonatomic, strong) NSData *smallData; // 文件data
 
 @property (nonatomic, assign) CGFloat progressV; // 进度
 @property (nonatomic, assign) NSInteger uploadStatus; // 0:正常 1:上传中 2:上传完成 -1:上传失败

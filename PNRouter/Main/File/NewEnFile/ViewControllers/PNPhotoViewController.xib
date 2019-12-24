@@ -45,13 +45,26 @@
                                 <action selector="clickBackAction:" destination="-1" eventType="touchUpInside" id="jur-8P-Oel"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONs-Y8-MyL">
+                            <rect key="frame" x="703" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="jVZ-IM-KBn"/>
+                            </constraints>
+                            <state key="normal" title="Button" image="statusbar_remind"/>
+                            <connections>
+                                <action selector="clickTaskAction:" destination="-1" eventType="touchUpInside" id="xKA-tZ-2Nq"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="aKI-a0-WiB" secondAttribute="bottom" id="BiQ-67-FFW"/>
+                        <constraint firstAttribute="bottom" secondItem="ONs-Y8-MyL" secondAttribute="bottom" id="EEr-Xx-NPd"/>
+                        <constraint firstAttribute="trailing" secondItem="ONs-Y8-MyL" secondAttribute="trailing" constant="3" id="RkB-0s-efQ"/>
                         <constraint firstAttribute="height" constant="44" id="ZU8-LS-p4z"/>
                         <constraint firstItem="xON-xp-0MR" firstAttribute="centerY" secondItem="UUy-j4-4AM" secondAttribute="centerY" id="aBb-eW-D1c"/>
                         <constraint firstItem="aKI-a0-WiB" firstAttribute="leading" secondItem="UUy-j4-4AM" secondAttribute="leading" constant="5" id="fHU-8h-O5v"/>
+                        <constraint firstItem="ONs-Y8-MyL" firstAttribute="top" secondItem="UUy-j4-4AM" secondAttribute="top" id="han-Cn-udq"/>
                         <constraint firstItem="aKI-a0-WiB" firstAttribute="top" secondItem="UUy-j4-4AM" secondAttribute="top" id="sP3-HH-Qbh"/>
                         <constraint firstItem="xON-xp-0MR" firstAttribute="centerX" secondItem="UUy-j4-4AM" secondAttribute="centerX" id="t0t-OH-TXH"/>
                     </constraints>
@@ -183,7 +196,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="484.80000000000001" y="109.74512743628186"/>
+            <point key="canvasLocation" x="-224" y="119"/>
         </view>
     </objects>
     <resources>
@@ -192,5 +205,6 @@
         <image name="statusbar_download_node_backups" width="24" height="24"/>
         <image name="statusbar_local" width="24" height="24"/>
         <image name="statusbar_local_backups" width="24" height="24"/>
+        <image name="statusbar_remind" width="24" height="24"/>
     </resources>
 </document>

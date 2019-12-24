@@ -16,6 +16,7 @@
 #import "NSString+Trim.h"
 #import "NSDate+Category.h"
 #import "MyConfidant-Swift.h"
+#import "PNUploadListViewController.h"
 
 @interface PNPhotoViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,SWTableViewCellDelegate,UIScrollViewDelegate>
 
@@ -37,6 +38,10 @@
 @end
 
 @implementation PNPhotoViewController
+- (IBAction)clickTaskAction:(id)sender {
+    PNUploadListViewController *vc = [[PNUploadListViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 - (IBAction)clickBackAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
@@ -77,7 +82,6 @@
     }
     return _nodeDataArray;
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_GRAY_COLOR;
@@ -104,9 +108,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFloderListNoti:) name:Pull_Floder_List_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createFloderSuccessNoti:) name:Create_Floder_Success_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFileNumNoti:) name:@"updateFileNum" object:nil];
     
     [self getDataSource];
 }
+
 
 // 取消keyboard
 - (void)viewDidAppear:(BOOL)animated {
@@ -254,6 +260,7 @@
     } else {
         self.react = 3;
         [AppD.window addSubview:self.keyHeadView];
+        self.keyHeadView.lblTitle.text = @"Create Floder";
         [self.keyHeadView.floderTF becomeFirstResponder];
     }
     
@@ -339,9 +346,15 @@
         {
             self.react = 1;
             [AppD.window addSubview:self.keyHeadView];
-            PNFloderModel *floderM = self.nodeDataArray[cell.tag];
+            PNFloderModel *floderM = nil;
+            if (_localBtn.selected) {
+                floderM = self.dataArray[cell.tag];
+            } else {
+                floderM = self.nodeDataArray[cell.tag];
+            }
             NSString *deName = [Base58Util Base58DecodeWithCodeName:floderM.PathName];
             self.keyHeadView.floderTF.text = deName.length >0 ?deName:floderM.PathName;
+            self.keyHeadView.lblTitle.text = @"ReName";
             [self.keyHeadView.floderTF becomeFirstResponder];
             
             break;
@@ -414,7 +427,7 @@
         if (_localBtn.selected) {
             PNFloderModel *floderM = self.dataArray[self.cellTag];
             floderM.PathName = fname;
-            [PNFloderModel bg_update:EN_FLODER_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"PathName"),bg_sqlValue(fname)]];
+            [PNFloderModel bg_update:EN_FLODER_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@",bg_sqlKey(@"PathName"),bg_sqlValue(fname),bg_sqlKey(@"fId"),bg_sqlValue(@(floderM.fId))]];
             [self.localTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.cellTag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         } else {
             
@@ -479,6 +492,16 @@
     }
     return floderM;
 }
+- (void) updateFileNumNoti:(NSNotification *) noti
+{
+    if (_localBtn.selected) {
+        [_localTabView reloadData];
+    } else {
+        [_nodeTabView reloadData];
+    }
+}
+
+
 
 #pragma mark ---点击键盘done
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -496,25 +519,31 @@
 #pragma mark ----KeyboardWillShowNotification
 - (void) KeyboardWillShowNotification:(NSNotification *) notification
 {
-    self.view.userInteractionEnabled = NO;
-    NSDictionary *userInfo = [notification userInfo];
-    CGFloat duration = [[userInfo objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"] doubleValue];
-    CGRect rect = [[userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"]CGRectValue];
+    if (_keyHeadView) {
+        self.view.userInteractionEnabled = NO;
+        NSDictionary *userInfo = [notification userInfo];
+        CGFloat duration = [[userInfo objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"] doubleValue];
+        CGRect rect = [[userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"]CGRectValue];
+        
+        [UIView animateWithDuration:duration animations:^{
+            self.keyHeadView.frame = CGRectMake(0, rect.origin.y-163, SCREEN_WIDTH, 163);
+        }];
+    }
     
-    [UIView animateWithDuration:duration animations:^{
-        self.keyHeadView.frame = CGRectMake(0, rect.origin.y-163, SCREEN_WIDTH, 163);
-    }];
 }
 - (void) KeyboardWillHideNotification:(NSNotification *) notification
 {
-    NSDictionary *userInfo = [notification userInfo];
-    CGFloat duration = [[userInfo objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"] doubleValue];
+    if (_keyHeadView) {
+        NSDictionary *userInfo = [notification userInfo];
+        CGFloat duration = [[userInfo objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"] doubleValue];
+        
+        [UIView animateWithDuration:duration animations:^{
+            self.keyHeadView.frame = CGRectMake(0,SCREEN_HEIGHT, SCREEN_WIDTH, 163);
+        } completion:^(BOOL finished) {
+            self.view.userInteractionEnabled = YES;
+            [self.keyHeadView removeFromSuperview];
+        }];
+    }
     
-    [UIView animateWithDuration:duration animations:^{
-        self.keyHeadView.frame = CGRectMake(0,SCREEN_HEIGHT, SCREEN_WIDTH, 163);
-    } completion:^(BOOL finished) {
-        self.view.userInteractionEnabled = YES;
-        [self.keyHeadView removeFromSuperview];
-    }];
 }
 @end

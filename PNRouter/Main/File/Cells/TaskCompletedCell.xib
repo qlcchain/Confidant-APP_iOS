@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,47 +14,47 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nAR-Ak-THG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                         <subviews>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_txt_small_gray" translatesAutoresizingMaskIntoConstraints="NO" id="ddR-GQ-uct">
-                                <rect key="frame" x="54" y="20" width="24" height="24"/>
+                                <rect key="frame" x="54" y="15" width="28" height="34"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="NhV-py-oQH"/>
-                                    <constraint firstAttribute="height" constant="24" id="kRe-Rq-DpV"/>
+                                    <constraint firstAttribute="width" constant="28" id="NhV-py-oQH"/>
+                                    <constraint firstAttribute="height" constant="34" id="kRe-Rq-DpV"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Google project ofx…information.zip" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B84-2o-3KZ">
-                                <rect key="frame" x="94" y="14" width="168" height="19.5"/>
+                                <rect key="frame" x="98" y="14" width="164" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icon_download_small_gray" translatesAutoresizingMaskIntoConstraints="NO" id="7GH-BB-YXC">
-                                <rect key="frame" x="94" y="37.5" width="12" height="12"/>
+                                <rect key="frame" x="98" y="37.5" width="12" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="yHO-Ul-luA"/>
                                     <constraint firstAttribute="width" constant="12" id="yT3-Ph-u9N"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download to: Local" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qp-61-gzY">
-                                <rect key="frame" x="114" y="37" width="100" height="13.5"/>
+                                <rect key="frame" x="118" y="37" width="100" height="13.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kZr-zx-HFN">
-                                <rect key="frame" x="16" y="63" width="304" height="0.5"/>
+                                <rect key="frame" x="16" y="63.5" width="304" height="0.5"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.5" id="6SH-71-FDu"/>
                                 </constraints>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ZK-R9-lPD">
-                                <rect key="frame" x="0.0" y="0.0" width="54" height="63.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="54" height="64"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_unselectmsg" translatesAutoresizingMaskIntoConstraints="NO" id="h6H-O7-IqK">
                                         <rect key="frame" x="16" y="21" width="22" height="22"/>
@@ -66,7 +64,7 @@
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DqM-7Y-f2J">
-                                        <rect key="frame" x="0.0" y="0.0" width="54" height="63.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="54" height="64"/>
                                         <connections>
                                             <action selector="selectAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="xra-Fx-UVQ"/>
                                         </connections>
@@ -83,6 +81,9 @@
                                     <constraint firstItem="h6H-O7-IqK" firstAttribute="leading" secondItem="1ZK-R9-lPD" secondAttribute="leading" constant="16" id="ukd-TA-cKk"/>
                                 </constraints>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="saved_nodes" translatesAutoresizingMaskIntoConstraints="NO" id="1KF-4l-hua">
+                                <rect key="frame" x="70" y="38" width="18" height="14"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -91,6 +92,7 @@
                             <constraint firstItem="7GH-BB-YXC" firstAttribute="leading" secondItem="B84-2o-3KZ" secondAttribute="leading" id="9do-Md-hCn"/>
                             <constraint firstItem="kZr-zx-HFN" firstAttribute="leading" secondItem="nAR-Ak-THG" secondAttribute="leading" constant="16" id="BFh-LT-Xob"/>
                             <constraint firstAttribute="trailing" secondItem="kZr-zx-HFN" secondAttribute="trailing" id="FRd-lh-vwj"/>
+                            <constraint firstItem="1KF-4l-hua" firstAttribute="leading" secondItem="ddR-GQ-uct" secondAttribute="leading" constant="16" id="I1O-uH-A8k"/>
                             <constraint firstAttribute="trailing" secondItem="B84-2o-3KZ" secondAttribute="trailing" constant="58" id="MUo-rj-V6v"/>
                             <constraint firstItem="6qp-61-gzY" firstAttribute="centerY" secondItem="7GH-BB-YXC" secondAttribute="centerY" id="TLq-Jf-O1l"/>
                             <constraint firstItem="ddR-GQ-uct" firstAttribute="centerY" secondItem="nAR-Ak-THG" secondAttribute="centerY" id="arg-1U-b2r"/>
@@ -99,6 +101,7 @@
                             <constraint firstItem="B84-2o-3KZ" firstAttribute="top" secondItem="nAR-Ak-THG" secondAttribute="top" constant="14" id="d3G-CV-hCm"/>
                             <constraint firstItem="7GH-BB-YXC" firstAttribute="top" secondItem="B84-2o-3KZ" secondAttribute="bottom" constant="4" id="dJn-46-14k"/>
                             <constraint firstItem="6qp-61-gzY" firstAttribute="leading" secondItem="7GH-BB-YXC" secondAttribute="trailing" constant="8" id="fFk-lj-IbC"/>
+                            <constraint firstItem="1KF-4l-hua" firstAttribute="bottom" secondItem="ddR-GQ-uct" secondAttribute="bottom" constant="3" id="tKN-WH-H6P"/>
                             <constraint firstAttribute="bottom" secondItem="1ZK-R9-lPD" secondAttribute="bottom" id="uuF-XU-gVI"/>
                             <constraint firstItem="1ZK-R9-lPD" firstAttribute="leading" secondItem="nAR-Ak-THG" secondAttribute="leading" id="xBw-Qp-CZc"/>
                         </constraints>
@@ -120,12 +123,13 @@
                 <outlet property="leftContraintW" destination="Brz-Wd-n7c" id="RYy-g0-JHj"/>
                 <outlet property="selectImgView" destination="h6H-O7-IqK" id="RNY-do-MoO"/>
             </connections>
-            <point key="canvasLocation" x="245" y="5"/>
+            <point key="canvasLocation" x="76.799999999999997" y="-1.7991004497751126"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon_download_small_gray" width="12" height="12"/>
         <image name="icon_txt_small_gray" width="24" height="24"/>
         <image name="icon_unselectmsg" width="22" height="22"/>
+        <image name="saved_nodes" width="18" height="14"/>
     </resources>
 </document>

@@ -26,7 +26,7 @@ typedef void(^ClickOptionBlock)(PNFileModel *fileM,NSInteger cellTag);
 @property (nonatomic, copy) ClickOptionBlock optionBlock;
 @property (nonatomic, strong) PNFileModel *fileModel;
 
-- (void) setFileM:(PNFileModel *) fileModel isLocal:(BOOL) isLocal;
+- (void) setFileM:(PNFileModel *) fileModel isLocal:(BOOL) isLocal floderId:(NSInteger) floderId;
 @end
 
 NS_ASSUME_NONNULL_END

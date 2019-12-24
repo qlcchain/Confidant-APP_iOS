@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class FileData;
+@class PNFileModel;
 typedef void(^ClickSelectBlcok)(NSArray *values);
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,10 +24,12 @@ static NSString *TaskOngoingCellReuse = @"TaskOngoingCell";
 @property (weak, nonatomic) IBOutlet UIImageView *iconImgView;
 @property (weak, nonatomic) IBOutlet UIProgressView *progess;
 @property (nonatomic , strong) FileData *fileModel;
+@property (nonatomic , strong) PNFileModel *fileM;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
 @property (nonatomic ,copy) ClickSelectBlcok selectBlock;
 
 - (void) setFileModel:(FileData *) model isSelect:(BOOL) isSelect;
+- (void) setPhotoFileModel:(PNFileModel *) model isSelect:(BOOL) isSelect;
 - (void) updateSelectShow:(BOOL) isShow;
 
 @end

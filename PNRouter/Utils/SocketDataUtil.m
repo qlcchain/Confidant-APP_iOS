@@ -430,12 +430,7 @@ struct ResultFile {
     if (isGroup) {
         sendFile.porperty[0] = '\1';
     } else if (_isPhoto) {
-        if (_floderId == 1) {
-            sendFile.porperty[0] = '\3';
-        } else {
-            sendFile.porperty[0] = '\4';
-        }
-        
+        sendFile.porperty[0] = '\3';
     } else {
          sendFile.porperty[0] = '\0';
     }

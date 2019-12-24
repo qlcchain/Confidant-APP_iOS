@@ -18,6 +18,7 @@
 #import "MD5Util.h"
 #import "NSDateFormatter+Category.h"
 #import "ChatListDataUtil.h"
+#import "PNFileModel.h"
 
 @interface TaskOngoingCell ()
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftContraintW;
@@ -199,6 +200,42 @@
         _leftContraintW.constant = 16;
     }
 }
+
+- (void) setPhotoFileModel:(PNFileModel *) model isSelect:(BOOL) isSelect
+{
+    self.fileM = model;
+    if (isSelect) {
+        _selectImgView.image = [UIImage imageNamed:@"icon_selectmsg"];
+    } else {
+        _selectImgView.image = [UIImage imageNamed:@"icon_unselectmsg"];
+    }
+   
+    _lblTitle.text = model.Fname;
+    _lblSize.text = [SystemUtil transformedValue:model.Size];
+    _iconImgView.image = [UIImage imageNamed:@"icon_upload_small_gray"];
+   
+    NSString *fileTypeImgName = @"";
+    switch (model.Type) {
+        case 1:
+            fileTypeImgName = @"jpg";
+            break;
+        case 4:
+            fileTypeImgName = @"mp4";
+            break;
+        default:
+            fileTypeImgName = @"other";
+            break;
+    }
+    _fileImgView.image = [UIImage imageNamed:fileTypeImgName];
+    _progess.progress = model.progressV;
+}
+
+
+
+
+
+
+
 
 - (void) setFileModel:(FileData *) model isSelect:(BOOL)isSelect
 {

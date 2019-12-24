@@ -24,4 +24,6 @@
 - (NSData *)compressPNGImage:(UIImage *)image toMaxFileSize:(NSInteger)maxFileSize;
 
 - (UIImage *)resizeImage:(UIImage *)image;
+
+-(NSData *)compressWithMaxLength:(NSUInteger)maxLength;
 @end

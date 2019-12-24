@@ -28,6 +28,7 @@
 #import "FileData.h"
 #import "OperationRecordModel.h"
 #import "KeyCUtil.h"
+#import "PNFileModel.h"
 
 @implementation SystemUtil
 + (void) playSystemSound
@@ -286,6 +287,19 @@
     BOOL isDir = NO;
     NSString *filePath = [NSString stringWithFormat:@"Defiles/%@",fileName];
     NSString *filePathDir = @"Defiles";
+    BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePathDir] isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePathDir] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:filePath];
+}
+
+// 加密相册解密后文件的临时目录
++ (NSString *)getPhotoTempDeFloderId:(NSString *)floderId fid:(NSString *) fid {
+    NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@",floderId,fid];
+    NSString *filePathDir = floderId;
     BOOL isexit = [manage fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePathDir] isDirectory:&isDir];
     if (!isexit || !isDir) {
         [manage createDirectoryAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filePathDir] withIntermediateDirectories:YES attributes:nil error:nil];
@@ -557,14 +571,23 @@
 // app 打开时
 + (void) appFirstOpen
 {
-   UserModel *model = [UserModel getUserModel];
-    NSArray *uploadTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue(model.userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+//   UserModel *model = [UserModel getUserModel];
+//    NSArray *uploadTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue(model.userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
+//    [uploadTasks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            FileData *model = obj;
+//            model.progess = 0.0f;
+//            model.status = 3;
+//            [model bg_saveOrUpdateAsync:nil];
+//    }];
+    
+    NSArray *uploadTasks = [PNFileModel bg_find:EN_FILE_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(1))]];
     [uploadTasks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            FileData *model = obj;
-            model.progess = 0.0f;
-            model.status = 3;
+            PNFileModel *model = obj;
+            model.progressV = 0.0f;
+            model.uploadStatus = 0;
             [model bg_saveOrUpdateAsync:nil];
     }];
+    
 }
 // 清除app所有数据
 + (void) clearAppAllData

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class FileData;
+@class PNFileModel;
 
 typedef void(^ClickSelectBlcok)(NSArray *values);
 
@@ -28,6 +29,7 @@ static NSString *TaskCompletedCellReuse = @"TaskCompletedCell";
 @property (nonatomic ,assign) NSInteger fileId;
 
 - (void) setFileModel:(FileData *) model isSelect:(BOOL) isSelect;
+- (void) setPhotoFileModel:(PNFileModel *) model isSelect:(BOOL) isSelect;
 - (void) updateSelectShow:(BOOL) isShow;
 @end
 

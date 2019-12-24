@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface KeyBordHeadView : UIView
 @property (weak, nonatomic) IBOutlet UITextField *floderTF;
 @property (weak, nonatomic) IBOutlet UIView *tfbackView;
+@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 
 + (instancetype) getKeyBordHeadView;
 

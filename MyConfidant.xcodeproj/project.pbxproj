@@ -613,6 +613,8 @@
 		73A75E2F23867E1500BA8FB3 /* UploadFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A75E2D23867E1500BA8FB3 /* UploadFileCell.xib */; };
 		73AC8F50223F9E64000E60D5 /* GroupListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC8F4E223F9E64000E60D5 /* GroupListCell.m */; };
 		73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */; };
+		73B0895D23B1F25F0008D368 /* PNUploadListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0895B23B1F25F0008D368 /* PNUploadListViewController.m */; };
+		73B0895E23B1F25F0008D368 /* PNUploadListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B0895C23B1F25F0008D368 /* PNUploadListViewController.xib */; };
 		73B18D0822E5B017000D52A9 /* PNEmailContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B18D0622E5B017000D52A9 /* PNEmailContactViewController.m */; };
 		73B18D0922E5B017000D52A9 /* PNEmailContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B18D0722E5B017000D52A9 /* PNEmailContactViewController.xib */; };
 		73B6432322E5C6C2003A4EA5 /* EmailContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B6432122E5C6C2003A4EA5 /* EmailContactCell.m */; };
@@ -1909,6 +1911,9 @@
 		73AC8F4D223F9E64000E60D5 /* GroupListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupListCell.h; sourceTree = "<group>"; };
 		73AC8F4E223F9E64000E60D5 /* GroupListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupListCell.m; sourceTree = "<group>"; };
 		73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupListCell.xib; sourceTree = "<group>"; };
+		73B0895A23B1F25F0008D368 /* PNUploadListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNUploadListViewController.h; sourceTree = "<group>"; };
+		73B0895B23B1F25F0008D368 /* PNUploadListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNUploadListViewController.m; sourceTree = "<group>"; };
+		73B0895C23B1F25F0008D368 /* PNUploadListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNUploadListViewController.xib; sourceTree = "<group>"; };
 		73B18D0522E5B017000D52A9 /* PNEmailContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailContactViewController.h; sourceTree = "<group>"; };
 		73B18D0622E5B017000D52A9 /* PNEmailContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailContactViewController.m; sourceTree = "<group>"; };
 		73B18D0722E5B017000D52A9 /* PNEmailContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailContactViewController.xib; sourceTree = "<group>"; };
@@ -4379,6 +4384,9 @@
 				7369429023A8B3F7003FECBC /* PNSelectFloderViewController.h */,
 				7369429123A8B3F7003FECBC /* PNSelectFloderViewController.m */,
 				7369429223A8B3F7003FECBC /* PNSelectFloderViewController.xib */,
+				73B0895A23B1F25F0008D368 /* PNUploadListViewController.h */,
+				73B0895B23B1F25F0008D368 /* PNUploadListViewController.m */,
+				73B0895C23B1F25F0008D368 /* PNUploadListViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -4886,6 +4894,7 @@
 				7386CCE3238529AF00004E0C /* EnMainCell.xib in Resources */,
 				73E7742E22D87BFC001C652E /* EmailTimeCell.xib in Resources */,
 				73ED4B24230A78F400AF4B51 /* PNEmailEncrypedViewController.xib in Resources */,
+				73B0895E23B1F25F0008D368 /* PNUploadListViewController.xib in Resources */,
 				58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */,
 				737883EE21ACF2970033A189 /* nodes.json in Resources */,
 				73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */,
@@ -5466,6 +5475,7 @@
 				582BFE3B221688C200D8C2C8 /* DiskAlertView.m in Sources */,
 				583BF93521F6F4B00078A2A8 /* FileMoreAlertView.m in Sources */,
 				735ECF9D238676EA00524616 /* PNFloderContentViewController.m in Sources */,
+				73B0895D23B1F25F0008D368 /* PNUploadListViewController.m in Sources */,
 				582BFE5A221E479A00D8C2C8 /* ContactShowModel.m in Sources */,
 				7330F4E62149147200FF4EEC /* CDTextParser.m in Sources */,
 				737883F321ACF2970033A189 /* OCTToxAV.m in Sources */,
@@ -5639,7 +5649,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 120;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -5665,7 +5675,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 120;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
@@ -5803,7 +5813,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 120;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5851,7 +5861,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 120;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

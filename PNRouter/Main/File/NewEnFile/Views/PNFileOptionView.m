@@ -33,6 +33,12 @@
 - (IBAction)ClickBackBtn:(id)sender {
     [self hideOptionEnumView];
 }
+- (IBAction)clickReNameBtn:(id)sender {
+    if (_clickMenuBlock) {
+        _clickMenuBlock(30);
+    }
+    [self hideOptionEnumView];
+}
 - (IBAction)clickDeleteBtn:(id)sender {
     if (_clickMenuBlock) {
         _clickMenuBlock(20);

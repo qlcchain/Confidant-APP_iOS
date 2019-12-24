@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FilePreviewViewController : PNBaseViewController
 
 @property (nonatomic, strong) NSString *filePath;
+@property (nonatomic, strong) NSString *fileId;
+@property (nonatomic, strong) NSString *floderId;
 @property (nonatomic, strong) NSString *fileName;
 @property (nonatomic, strong) NSString *userKey;
 @property (nonatomic, strong) NSData *localFileData;

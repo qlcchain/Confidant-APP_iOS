@@ -64,6 +64,11 @@
 {
     self.fileName = [Base58Util Base58DecodeWithCodeName:self.fileName]?:@"";
     NSString *downloadFilePath = [SystemUtil getTempDeFilePath:self.fileName];
+    if (self.floderId && self.floderId.length > 0) {
+       NSString *lastTypeStr = [[self.fileName componentsSeparatedByString:@"."] lastObject];
+        downloadFilePath = [SystemUtil getPhotoTempDeFloderId:self.floderId fid:[NSString stringWithFormat:@"%@.%@",self.fileId,lastTypeStr]];
+    }
+   
     //[SystemUtil removeDocmentFilePath:downloadFilePath];
     if ([SystemUtil filePathisExist:downloadFilePath]) {
         @weakify_self
@@ -98,6 +103,10 @@
 {
     
     NSString *deFilePath = [SystemUtil getTempDeFilePath:self.fileName];
+    if (self.floderId && self.floderId.length > 0) {
+       NSString *lastTypeStr = [[self.fileName componentsSeparatedByString:@"."] lastObject];
+        deFilePath = [SystemUtil getPhotoTempDeFloderId:self.floderId fid:[NSString stringWithFormat:@"%@.%@",self.fileId,lastTypeStr]];
+    }
     if ([SystemUtil filePathisExist:deFilePath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.view hideHud];

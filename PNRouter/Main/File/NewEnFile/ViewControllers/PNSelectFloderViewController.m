@@ -11,9 +11,11 @@
 #import "PNFloderModel.h"
 #import "MyConfidant-Swift.h"
 #import "KeyBordHeadView.h"
+#import <IQKeyboardManager/IQKeyboardManager.h>
 #import "NSString+Trim.h"
 
 @interface PNSelectFloderViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UIButton *createBtn;
 @property (weak, nonatomic) IBOutlet UIButton *selectBtn;
 @property (weak, nonatomic) IBOutlet UIView *bottomBackView;
@@ -29,6 +31,11 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+// 取消keyboard
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
 }
 - (IBAction)clickBackAction:(id)sender {
     [self leftNavBarItemPressedWithPop:NO];
