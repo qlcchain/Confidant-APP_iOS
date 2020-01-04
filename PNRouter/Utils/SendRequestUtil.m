@@ -625,13 +625,13 @@
 }
 
 // 上传文件
-+ (void) sendUploadFileWithFloderType:(NSInteger) floderType fileType:(NSInteger) fileType fileId:(NSInteger) fileId fileSize:(NSInteger) fileSize fileMD5:(NSString *) fileMd5 fileName:(NSString *) fileName fkey:(NSString *) fkey finfo:(NSString *) finfo floderId:(NSInteger) floderId floderName:(NSString *) floderName showHud:(BOOL)showHud
++ (void) sendUploadFileWithFloderType:(NSInteger) floderType fileType:(NSInteger) fileType fileId:(NSInteger) fileId fileSize:(NSInteger) fileSize fileMD5:(NSString *) fileMd5 fileName:(NSString *) fileName fkey:(NSString *) fkey finfo:(NSString *) finfo floderId:(NSInteger) floderId showHud:(BOOL)showHud
 {
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
     UserModel *userM = [UserModel getUserModel];
-    NSDictionary *params = @{@"Action":Action_BakFile,@"UserId":userM.userId,@"Depens":@(floderType),@"Type":@(fileType),@"UserId":userM.userId,@"FileId":@(fileId),@"Size":@(fileSize),@"Md5":fileMd5,@"FName":fileName,@"FKey":fkey,@"FInfo":finfo,@"PathId":@(floderId),@"PathName":floderName};
+    NSDictionary *params = @{@"Action":Action_BakFile,@"UserId":userM.userId,@"Depens":@(floderType),@"Type":@(fileType),@"UserId":userM.userId,@"FileId":@(fileId),@"Size":@(fileSize),@"Md5":fileMd5,@"FName":fileName,@"FKey":fkey,@"FInfo":finfo,@"PathId":@(floderId)};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
 @end

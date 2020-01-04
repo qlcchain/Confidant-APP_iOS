@@ -584,7 +584,7 @@
     [uploadTasks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             PNFileModel *model = obj;
             model.progressV = 0.0f;
-            model.uploadStatus = 0;
+            model.uploadStatus = -1;
             [model bg_saveOrUpdateAsync:nil];
     }];
     

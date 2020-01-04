@@ -72,6 +72,12 @@ typedef enum : NSUInteger {
 
 @implementation RouterManagerViewController
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [super viewDidAppear:animated];
+}
+
 - (IBAction)quickSwitchAction:(id)sender {
     [self jumpToChooseCircle];
 }
@@ -83,6 +89,8 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rebootSuccessNoti:) name:Reboot_Success_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableQlcNodeSuccessNoti:) name:ENABLE_QLC_NODE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chekcQlcNodeSuccessNoti:) name:CHECK_QLC_NODE_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchCircleSuccessNoti:) name:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
+    
     
 }
 
@@ -115,7 +123,11 @@ typedef enum : NSUInteger {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [self updateUI];
+    
+}
+
+- (void) updateUI {
     
     _currentCircleIcon.layer.cornerRadius = 32.0f;
     
@@ -523,7 +535,11 @@ typedef enum : NSUInteger {
     qlcNodeStatus = [resultDic[@"Status"] integerValue];
     [_routerTable reloadData];
 }
-
+- (void) switchCircleSuccessNoti:(NSNotification *) noti
+{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [self updateUI];
+}
 #pragma mark - Lazy
 //- (void)setConnectStatus:(RouterConnectStatus)connectStatus {
 //    _connectStatus = connectStatus;

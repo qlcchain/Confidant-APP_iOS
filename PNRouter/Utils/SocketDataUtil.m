@@ -395,7 +395,7 @@ struct ResultFile {
         }];
     } else if (_isPhoto) { // 相册图片上传 改变其状态
         
-        [PNFileModel bg_update:EN_FILE_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@ where %@=%@",bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(1)),bg_sqlKey(@"progressV"),bg_sqlValue(@(0)),bg_sqlKey(@"fId"),bg_sqlValue(@(fileid))]];
+        [PNFileModel bg_update:EN_FILE_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@,%@=%@,%@=%@ where %@=%@",bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(1)),bg_sqlKey(@"progressV"),bg_sqlValue(@(0)),bg_sqlKey(@"toFloderId"),bg_sqlValue(@(_floderId)),bg_sqlKey(@"LastModify"),bg_sqlValue(@([NSDate getTimestampFromDate:[NSDate date]])),bg_sqlKey(@"fId"),bg_sqlValue(@(fileid))]];
     }
     
     NSData *sendData = nil;
@@ -482,7 +482,6 @@ struct ResultFile {
                         PNFileUploadModel *fileM = [[PNFileUploadModel alloc] init];
                         fileM.retCode = weakSelf.retCode;
                         fileM.fileId = [weakSelf.fileid integerValue];
-                        fileM.floderName = weakSelf.floderName;
                         fileM.floderId = weakSelf.floderId;
                         [[NSNotificationCenter defaultCenter] postNotificationName:Photo_Upload_FileData_Noti object:fileM];
                     } else { // 上传文件
@@ -550,7 +549,6 @@ struct ResultFile {
                     fileM.fileMd5 = [MD5Util md5WithData:self.fileData];
                     fileM.Finfo = self.fileInfo;
                     fileM.FKey = self.srcKey;
-                    fileM.floderName = self.floderName;
                     fileM.floderId = self.floderId;
                     [[NSNotificationCenter defaultCenter] postNotificationName:Photo_Upload_FileData_Noti object:fileM];
                 } else {

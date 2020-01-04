@@ -137,7 +137,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    
     AppD.sideMenuViewController.panGestureEnabled = YES;
     [super viewWillAppear:animated];
 }
@@ -1379,7 +1379,7 @@
         } else if (index == 3) { // Invite Friends
             [weakSelf jumpFriendNewEmail];
         }  else if (index == 4) { // add members
-            [weakSelf jumpToAddGroupMenu];
+            [weakSelf jumpAddMembers];
         }
        
     };

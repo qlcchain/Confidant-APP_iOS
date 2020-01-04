@@ -25,11 +25,7 @@
     [self presentModalVC:vc animated:YES];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    [super viewWillAppear:animated];
-}
+
 
 - (IBAction)importAccountAction:(id)sender {
     [self jumpImportAccountVC];

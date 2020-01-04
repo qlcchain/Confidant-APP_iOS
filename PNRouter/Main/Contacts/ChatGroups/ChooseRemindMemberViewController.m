@@ -219,10 +219,6 @@
 }
 
 #pragma mark - Life Cycle
-- (void)viewWillAppear:(BOOL)animated {
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    [super viewWillAppear:animated];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

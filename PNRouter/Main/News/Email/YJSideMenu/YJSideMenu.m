@@ -335,7 +335,13 @@
 #pragma mark - Status Bar Appearance Management
 
 - (UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)) {
+        return UIStatusBarStyleDarkContent;
+    } else {
+        // Fallback on earlier versions
+        return UIStatusBarStyleDefault;
+    }
+   
 }
 - (BOOL)prefersStatusBarHidden{
     return NO;

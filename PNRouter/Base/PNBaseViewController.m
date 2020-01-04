@@ -40,8 +40,13 @@
     
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
-//    self.navigationController.navigationBarHidden = NO;
+    if (@available(iOS 13.0, *)) {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+       // AppD.window.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
+    } else {
+        // Fallback on earlier versions
+         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
 }
 
 - (instancetype)initWithManager:(id<OCTManager>)manager

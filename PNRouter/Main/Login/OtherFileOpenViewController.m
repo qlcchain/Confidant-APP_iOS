@@ -41,11 +41,6 @@
 
 @implementation OtherFileOpenViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    [super viewWillAppear:animated];
-}
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

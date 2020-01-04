@@ -83,7 +83,7 @@
         if (msg && ![msg isEmptyString]) {
             msg = [msg base64EncodedString];
         } else {
-            msg = [NSString stringWithFormat:@"我是:%@",[UserConfig getShareObject].userName];
+            msg = [NSString stringWithFormat:@"I'm %@",[UserConfig getShareObject].userName];
             msg = [msg base64EncodedString];
         }
         
@@ -109,7 +109,7 @@
         }
        
     } else if (retCode == 1) { // 添加失败
-        [AppD.window showHint:@"Send Failure"];
+        [AppD.window showHint:@"Send Fail."];
     } else if (retCode == 2) { // 已经是好友关系
         [AppD.window showHint:@"Already a good friend"];
     }

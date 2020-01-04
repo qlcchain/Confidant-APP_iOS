@@ -46,12 +46,12 @@
 @implementation ContactViewController
 
 - (void)viewDidAppear:(BOOL)animated {
+     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
      [self sendGetFriendNoti];
     [super viewWillAppear:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [super viewWillAppear:animated];
     
     [self refreshAddContactHD];

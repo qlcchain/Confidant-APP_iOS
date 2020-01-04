@@ -136,9 +136,9 @@
 {
     PNFileUploadModel *fileM = noti.object;
     if (fileM.retCode == 0) { // 文件上传成功后，告知节点
-        [SendRequestUtil sendUploadFileWithFloderType:1 fileType:fileM.fileType fileId:fileM.fileId fileSize:fileM.fileSize fileMD5:fileM.fileMd5 fileName:fileM.fileName fkey:fileM.FKey finfo:fileM.Finfo floderId:fileM.floderId floderName:fileM.floderName showHud:NO];
+        [SendRequestUtil sendUploadFileWithFloderType:1 fileType:fileM.fileType fileId:fileM.fileId fileSize:fileM.fileSize fileMD5:fileM.fileMd5 fileName:fileM.fileName fkey:fileM.FKey finfo:fileM.Finfo floderId:fileM.floderId showHud:NO];
     } else {
-        [self updateLocalFileModelStatusWithFid:fileM.fileId status:-1];
+        [self updateLocalFileModelStatusWithFid:fileM.fileId status:-1 deHiden:0];
     }
 }
 - (void) fileUploadSuccessNoti:(NSNotification *) noti
@@ -147,14 +147,18 @@
     NSInteger retCode = [resultDic[@"RetCode"] integerValue];
     NSInteger fileID = [resultDic[@"SrcId"] integerValue];
     if (retCode == 0) {
-        [self updateLocalFileModelStatusWithFid:fileID status:2];
+        [self updateLocalFileModelStatusWithFid:fileID status:2 deHiden:0];
     } else {
-        [self updateLocalFileModelStatusWithFid:fileID status:-1];
+        NSInteger hidden  = 0;
+        if (retCode == 2) {
+            hidden = 1;
+        }
+        [self updateLocalFileModelStatusWithFid:fileID status:-1 deHiden:hidden];
     }
 }
 
-- (void) updateLocalFileModelStatusWithFid:(NSInteger) fid status:(NSInteger) status
+- (void) updateLocalFileModelStatusWithFid:(NSInteger) fid status:(NSInteger) status deHiden:(NSInteger) deHidden
 {
-    [PNFileModel bg_update:EN_FILE_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@ where %@=%@",bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(status)),bg_sqlKey(@"progressV"),bg_sqlValue(@(0)),bg_sqlKey(@"fId"),bg_sqlValue(@(fid))]];
+    [PNFileModel bg_update:EN_FILE_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@,%@=%@ where %@=%@",bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(status)),bg_sqlKey(@"progressV"),bg_sqlValue(@(0)),bg_sqlKey(@"delHidden"),bg_sqlValue(@(deHidden)),bg_sqlKey(@"fId"),bg_sqlValue(@(fid))]];
 }
 @end

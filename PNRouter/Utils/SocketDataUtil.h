@@ -19,7 +19,6 @@
 @property (nonatomic ,assign) BOOL isGroup;
 @property (nonatomic ,assign) BOOL isPhoto;
 @property (nonatomic ,assign) NSInteger floderId;
-@property (nonatomic ,strong) NSString *floderName;
 - (void) disSocketConnect;
 
 

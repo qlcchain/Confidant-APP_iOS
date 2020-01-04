@@ -29,7 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) CGFloat progressV; // 进度
 @property (nonatomic, assign) NSInteger uploadStatus; // 0:正常 1:上传中 2:上传完成 -1:上传失败
-
+@property (nonatomic, assign) NSInteger toFloderId;
+@property (nonatomic, assign) NSInteger delHidden; // 假删除是否隐藏 1:删除
 @end
 
 NS_ASSUME_NONNULL_END

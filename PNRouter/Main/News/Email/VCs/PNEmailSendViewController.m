@@ -1228,7 +1228,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                         [weakSelf leftNavBarItemPressedWithPop:NO];
                                                         [AppD.window showSuccessHudInView:AppD.window hint:@"Successed"];
                                                     } else {
-                                                        [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"send failure"];
+                                                        [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"The email send fail."];
                                                     }
                                                     
                                                 }];
@@ -1428,7 +1428,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                        [weakSelf leftNavBarItemPressedWithPop:NO];
                                        [AppD.window showSuccessHudInView:AppD.window hint:@"Successed"];
                                    } else {
-                                       [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"send failure"];
+                                       [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"The email send fail."];
                                    }
                                }];
                            }];

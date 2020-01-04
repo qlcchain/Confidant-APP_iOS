@@ -10,6 +10,9 @@
 #import "PNFileModel.h"
 #import "TaskOngoingCell.h"
 #import "TaskCompletedCell.h"
+#import "PNFileUploadModel.h"
+#import "SystemUtil.h"
+#import "NSDate+Category.h"
 
 @interface PNUploadListViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -22,7 +25,10 @@
 @end
 
 @implementation PNUploadListViewController
-
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (IBAction)clickBackAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
 }
@@ -54,6 +60,10 @@
     [_mainTabView registerNib:[UINib nibWithNibName:TaskOngoingCellReuse bundle:nil] forCellReuseIdentifier:TaskOngoingCellReuse];
     [_mainTabView registerNib:[UINib nibWithNibName:TaskCompletedCellReuse bundle:nil] forCellReuseIdentifier:TaskCompletedCellReuse];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoUploadFileDataNoti:) name:Photo_Upload_FileData_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadSuccessNoti:) name:Photo_File_Upload_Success_Noti object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadProgressNoti:) name:Photo_FileData_Upload_Progress_Noti object:nil];
+    
     [self getLoaclUploadData];
 }
 - (void) getLoaclUploadData
@@ -62,18 +72,18 @@
     @weakify_self
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
-        NSArray *colums = @[bg_sqlKey(@"fId"),bg_sqlKey(@"Depens"),bg_sqlKey(@"Type"),bg_sqlKey(@"Fname"),bg_sqlKey(@"Size"),bg_sqlKey(@"LastModify"),bg_sqlKey(@"Finfo"),bg_sqlKey(@"FKey"),bg_sqlKey(@"PathId"),bg_sqlKey(@"progressV"),bg_sqlKey(@"uploadStatus")];
+        NSArray *colums = @[bg_sqlKey(@"fId"),bg_sqlKey(@"Depens"),bg_sqlKey(@"Type"),bg_sqlKey(@"Fname"),bg_sqlKey(@"Size"),bg_sqlKey(@"LastModify"),bg_sqlKey(@"Finfo"),bg_sqlKey(@"FKey"),bg_sqlKey(@"PathId"),bg_sqlKey(@"progressV"),bg_sqlKey(@"uploadStatus"),bg_sqlKey(@"toFloderId"),bg_sqlKey(@"delHidden")];
         
         NSString *columString = [colums componentsJoinedByString:@","];
               //NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ order by %@ desc limit 100",columString,EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(_floderM.fId)),bg_sqlKey(@"updateTime")];
-        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@",columString,EN_FILE_TABNAME,bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(1))];
+        NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ or %@=%@ and %@=%@ order by %@ desc",columString,EN_FILE_TABNAME,bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(1)),bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(-1)),bg_sqlKey(@"delHidden"),bg_sqlValue(@(0)),bg_sqlKey(@"LastModify")];
         
         NSArray *results = bg_executeSql(sql, EN_FILE_TABNAME,[PNFileModel class]);
         if (results && results.count > 0) {
             [weakSelf.ongoingArray addObjectsFromArray:results];
         }
         
-        NSString *sql2  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@",columString,EN_FILE_TABNAME,bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(2))];
+        NSString *sql2  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ and %@=%@ order by %@ desc limit 50",columString,EN_FILE_TABNAME,bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(2)),bg_sqlKey(@"delHidden"),bg_sqlValue(@(0)),bg_sqlKey(@"LastModify")];
         
         NSArray *results2 = bg_executeSql(sql2, EN_FILE_TABNAME,[PNFileModel class]);
         if (results2 && results2.count > 0) {
@@ -180,14 +190,62 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark----------------通知
+- (void) photoUploadFileDataNoti:(NSNotification *) noti
+{
+    PNFileUploadModel *uplodFileM = noti.object;
+    if (uplodFileM.retCode != 0) {
+        for (int i = 0; i<self.ongoingArray.count; i++) {
+            PNFileModel *fileM = self.ongoingArray[i];
+            if (fileM.fId == uplodFileM.fileId) {
+                fileM.uploadStatus = -1;
+                fileM.progressV = 0;
+                [_mainTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                break;
+            }
+        }
+    }
 }
-*/
-
+- (void) fileUploadSuccessNoti:(NSNotification *) noti
+{
+    NSDictionary *resultDic = noti.object;
+    NSInteger retCode = [resultDic[@"RetCode"] integerValue];
+    NSInteger srcFileID = [resultDic[@"SrcId"] integerValue];
+    
+    for (int i = 0; i<self.ongoingArray.count; i++) {
+        PNFileModel *fileM = self.ongoingArray[i];
+        if (fileM.fId == srcFileID) {
+             fileM.progressV = 0;
+            if (retCode == 0) {
+                fileM.uploadStatus = 2;
+                [self.ongoingArray removeObject:fileM];
+                [self.completedArray addObject:fileM];
+                [_mainTabView reloadData];
+            } else {
+                fileM.uploadStatus = -1;
+                 [_mainTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            }
+            break;
+        }
+    }
+}
+- (void) uploadProgressNoti:(NSNotification *) noti
+{
+    PNFileUploadModel *uploadFileM = noti.object;
+    for (int i = 0; i<self.ongoingArray.count; i++) {
+        PNFileModel *fileM = self.ongoingArray[i];
+        if (fileM.fId == uploadFileM.fileId) {
+            fileM.progressV = uploadFileM.progress;
+            TaskOngoingCell *cell = [_mainTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+            cell.progess.progress = fileM.progressV;
+            
+            NSInteger downSize = fileM.Size*fileM.progressV;
+            NSInteger secons = [NSDate getTimestampFromDate:[NSDate date]] - fileM.LastModify;
+            cell.lblProgess.text = [[SystemUtil transformedZSValue:downSize/secons] stringByAppendingString:@"/s"];
+            
+            break;
+        }
+    }
+}
 @end

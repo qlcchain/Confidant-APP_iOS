@@ -91,7 +91,7 @@
                                     <rect key="frame" x="16" y="90" width="343" height="50"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wL6-jV-9sl">
-                                            <rect key="frame" x="0.0" y="0.0" width="181.5" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="163.5" height="50"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <state key="normal" title="Create Folder">
                                                 <color key="titleColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -101,7 +101,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tsL-af-QBO">
-                                            <rect key="frame" x="197.5" y="0.0" width="145.5" height="50"/>
+                                            <rect key="frame" x="179.5" y="0.0" width="163.5" height="50"/>
                                             <color key="backgroundColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <state key="normal" title="Select"/>
                                             <connections>
@@ -118,7 +118,7 @@
                                         <constraint firstAttribute="trailing" secondItem="tsL-af-QBO" secondAttribute="trailing" id="S2m-hp-ggp"/>
                                         <constraint firstItem="wL6-jV-9sl" firstAttribute="leading" secondItem="VYv-5o-NoK" secondAttribute="leading" id="bCg-Yh-H72"/>
                                         <constraint firstAttribute="bottom" secondItem="tsL-af-QBO" secondAttribute="bottom" id="scA-6n-gOp"/>
-                                        <constraint firstItem="tsL-af-QBO" firstAttribute="width" secondItem="wL6-jV-9sl" secondAttribute="width" multiplier="0.8:1" id="thw-Yu-s0N"/>
+                                        <constraint firstItem="tsL-af-QBO" firstAttribute="width" secondItem="wL6-jV-9sl" secondAttribute="width" multiplier="1:1" id="thw-Yu-s0N"/>
                                         <constraint firstItem="tsL-af-QBO" firstAttribute="leading" secondItem="wL6-jV-9sl" secondAttribute="trailing" constant="16" id="vGC-Yj-Tgq"/>
                                     </constraints>
                                 </view>
@@ -164,7 +164,7 @@
                 <constraint firstItem="0HO-1c-tdI" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ujj-h1-HLL"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-92" y="12.143928035982009"/>
+            <point key="canvasLocation" x="-18" y="-90"/>
         </view>
     </objects>
     <resources>

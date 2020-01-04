@@ -93,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
 // 操作文件或文件夹
 + (void) sendUpdateloderWithFloderType:(NSInteger) floderType updateType:(NSInteger) updateType react:(NSInteger) react name:(NSString *) name oldName:(NSString *) dName fid:(NSInteger) fid pathid:(NSInteger) pathid showHud:(BOOL)showHud;
 // 上传文件
-+ (void) sendUploadFileWithFloderType:(NSInteger) floderType fileType:(NSInteger) fileType fileId:(NSInteger) fileId fileSize:(NSInteger) fileSize fileMD5:(NSString *) fileMd5 fileName:(NSString *) fileName fkey:(NSString *) fkey finfo:(NSString *) finfo floderId:(NSInteger) floderId floderName:(NSString *) floderName showHud:(BOOL)showHud;
++ (void) sendUploadFileWithFloderType:(NSInteger) floderType fileType:(NSInteger) fileType fileId:(NSInteger) fileId fileSize:(NSInteger) fileSize fileMD5:(NSString *) fileMd5 fileName:(NSString *) fileName fkey:(NSString *) fkey finfo:(NSString *) finfo floderId:(NSInteger) floderId showHud:(BOOL)showHud;
 @end
 
 NS_ASSUME_NONNULL_END

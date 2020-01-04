@@ -58,9 +58,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
 }
 
 - (void)viewDidLoad {

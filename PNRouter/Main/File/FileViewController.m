@@ -62,17 +62,13 @@ typedef enum : NSUInteger {
 
 @implementation FileViewController
 
-- (void)viewWillAppear:(BOOL)animated {
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    [super viewWillAppear:animated];
-}
 
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFileListCompleteNoti:) name:PullFileList_Complete_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteFileCompleteNoti:) name:Delete_File_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileRenameSuccessNoti:) name:FileRename_Success_Noti object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileForwardNoti:) name:CHOOSE_FRIEND_FILE_FOWARD_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileForwardNoti:) name:CHOOSE_FRIEND_FILE_FOWARD_NOTI object:nil];
     
 }
 
@@ -111,6 +107,7 @@ typedef enum : NSUInteger {
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     // 刷新
     if (isFristLoad) {
         isFristLoad = NO;

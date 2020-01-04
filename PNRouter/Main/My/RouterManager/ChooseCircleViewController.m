@@ -54,10 +54,6 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-- (void)viewWillAppear:(BOOL)animated {
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    [super viewWillAppear:animated];
-}
 
 #pragma mark - viewDidLoad
 - (void)viewDidLoad {
@@ -397,8 +393,7 @@
     @weakify_self
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5/*延迟执行时间*/ * NSEC_PER_SEC));
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        
-         [weakSelf leftNavBarItemPressedWithPop:NO];
+        [weakSelf leftNavBarItemPressedWithPop:NO];
     });
     
    

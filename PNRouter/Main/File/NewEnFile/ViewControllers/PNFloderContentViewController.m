@@ -44,6 +44,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
 @property (nonatomic, assign) NSInteger autoNum;
 @property (nonatomic, strong) UIButton *addBtn;
 @property (nonatomic, strong) KeyBordHeadView *keyHeadView;
+@property (nonatomic, strong) NSIndexPath *checkIndexPath;
 @end
 
 @implementation PNFloderContentViewController
@@ -54,6 +55,11 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+    if (self.checkIndexPath) {
+        if (self.dataArray.count >self.checkIndexPath.row) {
+            [_mainTabView reloadRowsAtIndexPaths:@[self.checkIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
 }
 // 恢复keyboard
 - (void)viewWillDisappear:(BOOL)animated {
@@ -182,7 +188,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
         
             NSString *columString = [colums componentsJoinedByString:@","];
               //NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ order by %@ desc limit 100",columString,EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(_floderM.fId)),bg_sqlKey(@"updateTime")];
-            NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@",columString,EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(_floderM.fId))];
+            NSString *sql  = [NSString stringWithFormat:@"select %@ from %@ where %@=%@ order by %@ desc",columString,EN_FILE_TABNAME,bg_sqlKey(@"PathId"),bg_sqlValue(@(_floderM.fId)),bg_sqlKey(@"LastModify")];
         
         @weakify_self
         [weakSelf.view showHudInView:weakSelf.view hint:@""];
@@ -261,7 +267,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    self.checkIndexPath = indexPath;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     PNFileModel *fileM = self.dataArray[indexPath.row];
     
@@ -292,7 +298,9 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
     
 }
 
-- (void) uploadNodeWithFloderId:(NSInteger) floderId floderName:(NSString *) floderName
+/// 本地文件夹列表文件上传到节点
+/// @param floderId 节点文件夹 id
+- (void) uploadNodeWithFloderId:(NSInteger) floderId
 {
     NSString *fileName = self.selFileM.Fname;
     
@@ -321,7 +329,6 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
         dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)self.selFileM.fId];
         dataUtil.isPhoto = YES;
         dataUtil.floderId = floderId;
-        dataUtil.floderName = floderName;
         NSString *fileNameInfo = @"";
         if (self.selFileM.Finfo.length > 0) {
             fileNameInfo = [NSString stringWithFormat:@"%@,%@",fileName,self.selFileM.Finfo];
@@ -329,6 +336,33 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
             fileNameInfo = fileName;
         }
         [dataUtil sendFileId:@"" fileName:fileNameInfo fileData:fileData fileid:self.selFileM.fId fileType:fileType messageid:@"" srcKey:self.selFileM.FKey dstKey:@"" isGroup:NO];
+        [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+                   
+    }
+}
+
+/// 上传文件到节点文件夹
+/// @param fileModel 文件模型
+- (void) uploadPhotoToNodeFloderWithFileM:(PNFileModel *) fileModel
+{
+    NSString *fileName = fileModel.Fname;
+    NSData *fileData = fileModel.fileData;
+    int fileType = (int)fileModel.Type;
+    
+    if ([SystemUtil isSocketConnect]) { // socket
+
+        SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
+        dataUtil.srcKey = fileModel.FKey;
+        dataUtil.fileid = [NSString stringWithFormat:@"%ld",(long)fileModel.fId];
+        dataUtil.isPhoto = YES;
+        dataUtil.floderId = fileModel.PathId;
+        NSString *fileNameInfo = @"";
+        if (fileModel.Finfo.length > 0) {
+            fileNameInfo = [NSString stringWithFormat:@"%@,%@",fileName,fileModel.Finfo];
+        } else {
+            fileNameInfo = fileName;
+        }
+        [dataUtil sendFileId:@"" fileName:fileNameInfo fileData:fileData fileid:fileModel.fId fileType:fileType messageid:@"" srcKey:fileModel.FKey dstKey:@"" isGroup:NO];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
                    
     }
@@ -380,14 +414,16 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
     } else {
         
         NSInteger floderId = [resultDic[@"PathId"] integerValue];
-        NSInteger fileID = [resultDic[@"FileId"] integerValue];
+        //NSInteger fileID = [resultDic[@"FileId"] integerValue];
         
         if (floderId == self.floderM.fId) {
+            
+            [SendRequestUtil sendPullFloderFileListWithFloderType:1 floderId:self.floderM.fId floderName:self.floderM.PathName sortType:1 startId:0 num:500 showHud:NO];
                 
-                NSString *PathName = resultDic[@"PathName"];
-                NSString *FilePath = resultDic[@"FilePath"];
-                NSString *Fname = resultDic[@"Fname"];
-                NSInteger fileID = [resultDic[@"FileId"] integerValue];
+//                NSString *PathName = resultDic[@"PathName"];
+//                NSString *FilePath = resultDic[@"FilePath"];
+//                NSString *Fname = resultDic[@"Fname"];
+//                NSInteger fileID = [resultDic[@"FileId"] integerValue];
                 
                 
                 
@@ -431,7 +467,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
 - (void) selectFloderSuccessNoti:(NSNotification *) noti
 {
     PNFloderModel *selFloderM = noti.object;
-    [self uploadNodeWithFloderId:selFloderM.fId floderName:selFloderM.PathName];
+    [self uploadNodeWithFloderId:selFloderM.fId];
 }
 
 - (void) uploadProgressNoti:(NSNotification *) noti
@@ -537,11 +573,11 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
             * 该方法是异步执行的，不会阻塞当前线程，而且执行完后会来到
             * completionHandler 的 block 中。
         */
-        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-            [PHAssetChangeRequest deleteAssets:assets];
-        } completionHandler:^(BOOL success, NSError * _Nullable error) {
-            NSLog(@"----success----");
-        }];
+//        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+//            [PHAssetChangeRequest deleteAssets:assets];
+//        } completionHandler:^(BOOL success, NSError * _Nullable error) {
+//            NSLog(@"----success----");
+//        }];
        
     }];
    
@@ -580,11 +616,13 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
     
     PNFileModel *fileM = [[PNFileModel alloc] init];
     fileM.PathId = _floderM.fId;
+    fileM.toFloderId = _floderM.fId;
     _autoNum += 1;
     fileM.fId = [NSDate getTimestampFromDate:[NSDate date]]+_autoNum+(arc4random()%100);
     fileM.Fname = imgName;
     fileM.Size = imgData.length;
     fileM.FKey = srcKey;
+    fileM.delHidden = 0;
     fileM.fileData = imgData;
     fileM.smallData = [img compressWithMaxLength:10*1024];
     fileM.LastModify = [NSDate getTimestampFromDate:[NSDate date]];
@@ -598,17 +636,25 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
     @weakify_self
     [fileM bg_saveAsync:^(BOOL isSuccess) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.finshFileCount ++;
-            if (weakSelf.finshFileCount == weakSelf.selFileCount) {
-                [weakSelf.view hideHud];
-            }
+            
             if (isSuccess) {
+                
+                weakSelf.finshFileCount ++;
+                if (weakSelf.finshFileCount == weakSelf.selFileCount) {
+                    [weakSelf.view hideHud];
+                    if (!weakSelf.floderM.isLocal) {
+                         [weakSelf.view showHint:@"Added to the task list."];
+                    }
+                }
+                
                 if (weakSelf.floderM.isLocal) {
                     [weakSelf.dataArray addObject:fileM];
                     [weakSelf.mainTabView reloadData];
                 } else {
-                    [weakSelf.view showHint:@"已添加至任务列表."];
+                    [weakSelf uploadPhotoToNodeFloderWithFileM:fileM];
                 }
+            } else {
+                weakSelf.selFileCount--;
             }
         });
     }];
@@ -673,9 +719,11 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
     
     PNFileModel *fileM = [[PNFileModel alloc] init];
     fileM.PathId = _floderM.fId;
+    fileM.toFloderId = _floderM.fId;
     fileM.fId = [NSDate getTimestampFromDate:[NSDate date]];
     fileM.Fname = fName;
     fileM.Size = attData.length;
+    fileM.delHidden = 0;
     fileM.Type = 4;
     fileM.FKey = srcKey;
     fileM.fileData = attData;
@@ -689,17 +737,23 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
     @weakify_self
     [fileM bg_saveAsync:^(BOOL isSuccess) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.finshFileCount ++;
-            if (weakSelf.finshFileCount == weakSelf.selFileCount) {
-                [weakSelf.view hideHud];
-            }
+            
             if (isSuccess) {
+                weakSelf.finshFileCount ++;
+                if (weakSelf.finshFileCount == weakSelf.selFileCount) {
+                    [weakSelf.view hideHud];
+                    if (!weakSelf.floderM.isLocal) {
+                         [weakSelf.view showHint:@"Added to the task list."];
+                    }
+                }
                 if (weakSelf.floderM.isLocal) {
                     [weakSelf.dataArray addObject:fileM];
                     [weakSelf.mainTabView reloadData];
                 } else {
-                    [weakSelf.view showHint:@"已添加至任务列表."];
+                     [weakSelf uploadPhotoToNodeFloderWithFileM:fileM];
                 }
+            } else {
+                weakSelf.selFileCount--;
             }
         });
     }];

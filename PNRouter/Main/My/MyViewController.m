@@ -51,13 +51,12 @@ static NSString *Settings_Str = @"Settings";
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     self.myHeadView.lblName.text = [UserModel getUserModel].username;
     NSString *userKey = [EntryModel getShareObject].signPublicKey;
     [self.myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] userKey:userKey];

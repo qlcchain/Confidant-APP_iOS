@@ -100,7 +100,7 @@
     // 配置IQKeyboardManager
     [self keyboardManagerConfig];
     // 配置DDLog
-    [self configDDLog];
+   // [self configDDLog];
     // 配置聊天
     [self configChat];
     // 打开时改变文件上传下载状态
@@ -113,6 +113,14 @@
     NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
     EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickeyWithModelJson:modelJson];
     [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:model.signPrivateKey];
+
+    if (@available(iOS 13.0, *)) {
+        self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+        
+    } else {
+        // Fallback on earlier versions
+    }
+    
     [self.window makeKeyAndVisible];
     return YES;
 }

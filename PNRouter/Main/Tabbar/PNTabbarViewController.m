@@ -36,6 +36,7 @@
 #import "SendCacheChatUtil.h"
 #import "ChatModel.h"
 #import "PNFloderModel.h"
+#import "UIImage+Color.h"
 
 @interface PNTabbarViewController ()<UITabBarControllerDelegate>
 @property (nonatomic ,strong) SocketAlertView *alertView;
@@ -69,7 +70,9 @@
     // 越早设置越好，一般放到AppDelegate中
     // 或者：设置图片渲染模式、设置tabBar文字
     //[[UITabBar appearance] setTintColor:[UIColor clearColor]];
-    [[UITabBar appearance] setBarTintColor:[UIColor whiteColor]];
+    [[UITabBar appearance] setBarTintColor:MAIN_GRAY_COLOR];
+    [[UITabBar appearance] setBackgroundColor:MAIN_GRAY_COLOR];
+    [[UITabBar appearance] setBackgroundImage:[UIImage imageWithColor:MAIN_GRAY_COLOR]];
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:UIColorFromRGB(0xf5f5f5) size:CGSizeMake(SCREEN_WIDTH,0.5)]];
 //    [[UITabBar appearance] setShadowImage:[UIImage new]];
     [UITabBar appearance].translucent = NO;
@@ -82,10 +85,14 @@
     //    [self.tabBar addQGradient];
     self.delegate = self;
     
-    [self addChildViewController:[[NewsViewController alloc] initWithManager:self.manager] text:@"Chats" imageName:@"btn_news"];
-    [self addChildViewController:[[PNFileViewController alloc] initWithManager:self.manager] text:@"Files" imageName:@"btn_file"];
-    [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"Contacts" imageName:@"btn_contacts"];
-    [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"Me" imageName:@"btn_my"];
+    UIView *lineView =[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 1)];
+    lineView.backgroundColor = RGBP(235, 235, 235, 0.9);
+    [self.tabBar addSubview:lineView];
+    
+    [self addChildViewController:[[NewsViewController alloc] initWithManager:self.manager] text:@"" imageName:@"navibar_chats"];
+    [self addChildViewController:[[PNFileViewController alloc] initWithManager:self.manager] text:@"" imageName:@"navibar_encryption"];
+    [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"" imageName:@"navibar_contacts"];
+    [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"" imageName:@"navibar_me"];
     
     
      // socket 断开连接通知
@@ -159,20 +166,21 @@
  */
 - (void) addChildViewController:(UIViewController *) childController text:(NSString *) text imageName:(NSString *) imageName {
     // 设置item图片不渲染
-    childController.tabBarItem.image = [[UIImage imageNamed:[imageName stringByAppendingString:@"_normal"]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    childController.tabBarItem.selectedImage = [[UIImage imageNamed:[imageName stringByAppendingString:@"_highlight"]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    childController.tabBarItem.image = [[UIImage imageNamed:[imageName stringByAppendingString:@"_unselecteds"]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    childController.tabBarItem.selectedImage = [[UIImage imageNamed:[imageName stringByAppendingString:@"_selected"]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     // 设置标题的属性
-    [childController.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:TABBARTEXT_DEFAULT_COLOR} forState:UIControlStateNormal];
-    [childController.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:TABBARTEXT_SELECT_COLOR} forState:UIControlStateSelected];
+  //  [childController.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:TABBARTEXT_DEFAULT_COLOR} forState:UIControlStateNormal];
+ //   [childController.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:TABBARTEXT_SELECT_COLOR} forState:UIControlStateSelected];
     
+    childController.tabBarItem.imageInsets=UIEdgeInsetsMake(6, 0,-6, 0);
     PNNavViewController *nav = [[PNNavViewController alloc] initWithRootViewController:childController];
+   
     
     // 设置item的标题
-    childController.tabBarItem.title = text;
-    childController.navigationItem.title = text;
-    childController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -3);
-    
+   // childController.tabBarItem.title = text;
+   // childController.navigationItem.title = text;
+  //  childController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -3);
     [self addChildViewController:nav];
 }
 
