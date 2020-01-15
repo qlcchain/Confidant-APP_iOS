@@ -209,6 +209,7 @@
             }}];
         });
     }];
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.currentVC presentViewController:imagePickerVc animated:YES completion:nil];
     
 }

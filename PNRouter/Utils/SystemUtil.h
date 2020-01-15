@@ -61,4 +61,8 @@
 + (NSString *)getDocEmailBasePath;
 // 加密相册解密后文件的临时目录
 + (NSString *)getPhotoTempDeFloderId:(NSString *)floderId fid:(NSString *) fid;
+// 获取本地通讯录
++ (NSArray *) checkLocalContacts;
+// 获取手机通讯录数量
++ (NSInteger) getLoacContactCount;
 @end

@@ -634,5 +634,16 @@
     NSDictionary *params = @{@"Action":Action_BakFile,@"UserId":userM.userId,@"Depens":@(floderType),@"Type":@(fileType),@"UserId":userM.userId,@"FileId":@(fileId),@"Size":@(fileSize),@"Md5":fileMd5,@"FName":fileName,@"FKey":fkey,@"FInfo":finfo,@"PathId":@(floderId)};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
+
+// 拉取通讯录
++ (void) sendPullBookInfoWithFileId:(NSInteger) fileId  showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_BakAddrBookInfo,@"User":userM.userId,@"FileId":@(fileId)};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
 @end
 

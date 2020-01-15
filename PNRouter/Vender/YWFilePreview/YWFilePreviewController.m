@@ -38,6 +38,7 @@
             break;
         case YWJumpPresent:
         case YWJumpPresentAnimat:
+            self.modalPresentationStyle = UIModalPresentationFullScreen;
             [vc presentViewController:self animated:(jump == YWJumpPresentAnimat) completion:nil];
             break;
     }

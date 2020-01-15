@@ -41,6 +41,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoUploadFileDataNoti:) name:Photo_Upload_FileData_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileUploadSuccessNoti:) name:Photo_File_Upload_Success_Noti object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsUploadFileDataNoti:) name:Upload_Contacts_Data_Success_Noti object:nil];
+
+    
 }
 
 #pragma mark -文件上传成功通知
@@ -144,6 +147,9 @@
 - (void) fileUploadSuccessNoti:(NSNotification *) noti
 {
     NSDictionary *resultDic = noti.object;
+    if ([resultDic[@"Depens"] integerValue] == 4) { // 通讯录
+        return;
+    }
     NSInteger retCode = [resultDic[@"RetCode"] integerValue];
     NSInteger fileID = [resultDic[@"SrcId"] integerValue];
     if (retCode == 0) {
@@ -161,4 +167,14 @@
 {
     [PNFileModel bg_update:EN_FILE_TABNAME where:[NSString stringWithFormat:@"set %@=%@,%@=%@,%@=%@ where %@=%@",bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(status)),bg_sqlKey(@"progressV"),bg_sqlValue(@(0)),bg_sqlKey(@"delHidden"),bg_sqlValue(@(deHidden)),bg_sqlKey(@"fId"),bg_sqlValue(@(fid))]];
 }
+
+#pragma mark------------加密通讯录
+- (void) contactsUploadFileDataNoti:(NSNotification *) noti
+{
+    PNFileUploadModel *fileM = noti.object;
+    if (fileM.retCode == 0) { // 文件上传成功后，告知节点
+        [SendRequestUtil sendUploadFileWithFloderType:4 fileType:6 fileId:fileM.fileId fileSize:fileM.fileSize fileMD5:fileM.fileMd5 fileName:fileM.fileName fkey:fileM.FKey finfo:fileM.Finfo floderId:0xF0 showHud:NO];
+    }
+}
+
 @end

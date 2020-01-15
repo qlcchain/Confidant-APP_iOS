@@ -63,14 +63,8 @@
     
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = MAIN_WHITE_COLOR;
-//    UIView *tabBackView = [[UIView alloc] initWithFrame:CGRectMake(0,NAVIGATION_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT)];
-//    tabBackView.backgroundColor = RGB(242, 242, 242);
-//    [self.view addSubview:tabBackView];
-    
-//    self.view.backgroundColor = MAIN_PURPLE_COLOR;
     self.navigationController.navigationBarHidden = !showRightNavBarItem;
     // 设置右边按钮
     if (showRightNavBarItem) {
@@ -135,6 +129,7 @@
 - (void)presentModalVC:(UIViewController *)VC animated:(BOOL)animated
 {
     PNNavViewController *navController = [[PNNavViewController alloc] initWithRootViewController:VC] ;
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     if([self respondsToSelector:@selector(presentViewController:animated:completion:)]){
         [self presentViewController:navController animated:animated completion:nil];
     }

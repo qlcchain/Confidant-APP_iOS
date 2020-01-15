@@ -614,6 +614,8 @@
         [SocketMessageUtil handleBakFileAction:receiveDic];
     } else if ([action isEqualToString:Action_FilesListPull]) { // 拉取文件夹文件
          [SocketMessageUtil handleFilesListPull:receiveDic];
+    } else if ([action isEqualToString:Action_BakAddrBookInfo]) { // 拉取文件夹文件
+            [SocketMessageUtil handleBakAddrBookInfo:receiveDic];
     }
 }
 
@@ -775,7 +777,7 @@
     if (retCode == 0) {
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
-        chatModel.myID = [UserConfig getShareObject].userId;
+        chatModel.myID = [UserConfig getShareObject].usersn;
         chatModel.friendID = toId;
         chatModel.chatTime = [NSDate date];
         chatModel.isHD = NO;
@@ -820,7 +822,7 @@
     
     // 添加到chatlist
     ChatListModel *chatModel = [[ChatListModel alloc] init];
-    chatModel.myID = fileModel.ToId;
+    chatModel.myID = [UserModel getUserModel].userSn;
     chatModel.friendID = fileModel.FromId;
     chatModel.chatTime = [NSDate date];
     chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
@@ -1057,7 +1059,7 @@
     if (retCode == 0) { // 0：消息发送成功
         // 添加到chatlist
         ChatListModel *chatListModel = [[ChatListModel alloc] init];
-        chatListModel.myID = FromId;
+        chatListModel.myID = [UserModel getUserModel].userSn;
         chatListModel.friendID = ToId;
         chatListModel.chatTime = [NSDate date];
         chatListModel.isHD = NO;
@@ -1132,7 +1134,7 @@
    
     // 添加到chatlist
     ChatListModel *chatModel = [[ChatListModel alloc] init];
-    chatModel.myID = model.ToId;
+    chatModel.myID = [UserConfig getShareObject].usersn;
     chatModel.friendID = model.FromId;
     chatModel.chatTime = [NSDate date];
     chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];
@@ -1538,7 +1540,7 @@
     if (retCode == 0) {
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
-        chatModel.myID = [UserConfig getShareObject].userId;
+        chatModel.myID = [UserConfig getShareObject].usersn;
         chatModel.chatTime = [NSDate date];
         chatModel.isHD = NO;
         NSInteger msgType = fileType;
@@ -1812,7 +1814,7 @@
     if (retCode == 0) {
         // 添加到chatlist
         ChatListModel *chatListModel = [[ChatListModel alloc] init];
-        chatListModel.myID = ToId;
+        chatListModel.myID = [UserConfig getShareObject].userId;
         chatListModel.AssocId = AssocId? [AssocId integerValue]:0;
         chatListModel.isGroup = YES;
         chatListModel.friendID = [UserConfig getShareObject].userId;
@@ -1880,7 +1882,7 @@
         
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
-        chatModel.myID = [UserConfig getShareObject].userId;
+        chatModel.myID = [UserConfig getShareObject].usersn;
         chatModel.chatTime = [NSDate date];
         chatModel.isHD = NO;
         NSInteger msgType = fileType;
@@ -1950,7 +1952,7 @@
     
     // 添加到chatlist
     ChatListModel *chatListModel = [[ChatListModel alloc] init];
-    chatListModel.myID = [UserConfig getShareObject].userId;
+    chatListModel.myID = [UserConfig getShareObject].usersn;
     chatListModel.friendID = messageModel.From;
     chatListModel.AssocId = messageModel.AssocId;
     chatListModel.isGroup = YES;
@@ -2300,6 +2302,17 @@
     }
 }
 
+// 拉取节点通讯录
++ (void) handleBakAddrBookInfo:(NSDictionary *) receiveDic
+{
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:Pull_BookInfo_Success_Noti object:receiveDic[@"params"]];
+    } else {
+        [AppD.window showHint:@"Request failed."];
+    }
+}
 
 #pragma mark - Base
 + (NSDictionary *)getBaseParams {

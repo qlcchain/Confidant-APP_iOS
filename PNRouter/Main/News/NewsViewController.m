@@ -160,7 +160,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecketFaieldNoti:) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupQuitSuccessNoti:) name:GroupQuit_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageListUpdateNoti:) name:MessageList_Update_Noti object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageChangeNoti:) name:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cricleChangeChangeNoti:) name:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherFileOpenNoti:) name:OTHER_FILE_OPEN_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailAccountChangeNoti:) name:EMIAL_ACCOUNT_CHANGE_NOTI object:nil];
     // 邮件flags 改变通知
@@ -399,6 +399,7 @@
     [UserConfig getShareObject].userId = [UserModel getUserModel].userId;
     [UserConfig getShareObject].userName = [UserModel getUserModel].username;
     [UserConfig getShareObject].passWord = [UserModel getUserModel].pass;
+    [UserConfig getShareObject].usersn = [UserModel getUserModel].userSn;
     
     _tableV.delegate = self;
     _tableV.dataSource = self;
@@ -434,7 +435,7 @@
     }
     
     NSLog(@"userid = %@",[UserModel getUserModel].userId);
-    [self chatMessageChangeNoti:nil];
+    [self cricleChangeChangeNoti:nil];
     [self addNoti];
     
     
@@ -498,7 +499,7 @@
         [self.dataArray removeAllObjects];
     }
     
-    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].userId)]];
+    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userSn)]];
     NSMutableArray *tempArr = [NSMutableArray array];
     if (finfAlls && finfAlls.count > 0) {
         [tempArr addObjectsFromArray:finfAlls];
@@ -1389,6 +1390,10 @@
 #pragma mark - 消息发生改变通知
 - (void) chatMessageChangeNoti:(NSNotification *) noti
 {
+     [self updateData];
+}
+- (void) cricleChangeChangeNoti:(NSNotification *) noti
+{
     [self updateData];
     // 更新节点名字
     if (!AppD.isEmailPage) {
@@ -1405,7 +1410,7 @@
 {
     FriendModel *friendM = [ChatListDataUtil getShareObject].friendArray[0];
     ChatListModel *chatM = [[ChatListModel alloc] init];
-    chatM.myID = [UserConfig getShareObject].userId;
+    chatM.myID = [UserConfig getShareObject].usersn;
     chatM.friendID = friendM.userId;
     chatM.lastMessage = @"";
     chatM.chatTime = [NSDate date];
@@ -2296,6 +2301,7 @@
 
 - (void)signIn:(GIDSignIn *)signIn presentViewController:(UIViewController *)viewController
 {
+    viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentModalVC:viewController animated:YES];
     
 }

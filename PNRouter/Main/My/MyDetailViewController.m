@@ -221,22 +221,9 @@
             UIImage *resultImage = photos[0];
             NSData *imgData = [resultImage compressJPGImage:resultImage toMaxFileSize:User_Header_Size];
             [[UserHeadUtil getUserHeadUtilShare] uploadHeader:imgData showToast:YES];
-            
-//            NSData *imgData = UIImageJPEGRepresentation(img,1.0);
-//            if (imgData.length/(1024*1024) > 100) {
-//                [AppD.window showHint:@"Image cannot be larger than 100MB"];
-//                return;
-//            }
-//            NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-//            NSString *outputPath = [NSString stringWithFormat:@"%@.jpg",mills];
-//            outputPath =  [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:outputPath];
-//            NSURL *url = [NSURL fileURLWithPath:outputPath];
-//            BOOL success = [imgData writeToURL:url atomically:YES];
-//            if (success) {
-//                [weakSelf jumpToUploadFiles:@[url] isDoc:NO];
-//            }
         }
     }];
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 }
 

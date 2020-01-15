@@ -246,6 +246,12 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 #define Photo_Select_Floder_Noti @"Photo_Select_Floder_Noti"
 #define Photo_FileData_Upload_Progress_Noti @"Photo_FileData_Upload_Progress_Noti"
 
+#pragma mark------------加密通讯录
+#define Upload_Contacts_Data_Error_Noti @"Upload_Contacts_Data_Error_Noti"
+#define Upload_Contacts_Data_Success_Noti @"Upload_Contacts_Data_Success_Noti"
+#define Pull_BookInfo_Success_Noti @"Pull_BookInfo_Success_Noti"
+#define Update_Loacl_Contact_Count_Noti @"Update_Loacl_Contact_Count_Noti"
+
 
 // 删除文件成功通知
 #define Delete_File_Noti @"Delete_File_Noti"

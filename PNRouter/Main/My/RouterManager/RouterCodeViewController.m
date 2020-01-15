@@ -127,6 +127,7 @@
     NSArray *images = @[[_codeBackView getImageFromView]];
     UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:images applicationActivities:nil];
     [self.navigationController presentViewController:activityController animated:YES completion:nil];
+  
 }
 
 - (void)didReceiveMemoryWarning {

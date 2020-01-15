@@ -2712,6 +2712,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             pickerController.delegate = self;
             //使用模态呈现相册
             //[self showDetailViewController:pickerController sender:nil];
+            pickerController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self.navigationController presentViewController:pickerController animated:YES completion:nil];
         });
     }
@@ -2925,6 +2926,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *phAsset) {
         [weakSelf getPHAssetVedioWithOverImg:coverImage phAsset:phAsset];
     }];
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 }
 

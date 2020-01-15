@@ -537,7 +537,6 @@ typedef enum : NSUInteger {
 }
 - (void) switchCircleSuccessNoti:(NSNotification *) noti
 {
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self updateUI];
 }
 #pragma mark - Lazy

@@ -580,7 +580,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
 //        }];
        
     }];
-   
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 }
 

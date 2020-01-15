@@ -156,6 +156,7 @@
     pickerController.delegate = self;
     pickerController.allowsEditing = YES;
     //使用模态呈现相册
+    pickerController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:pickerController animated:YES completion:^{
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     }];

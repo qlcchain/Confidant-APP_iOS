@@ -29,6 +29,7 @@
 #import "OperationRecordModel.h"
 #import "KeyCUtil.h"
 #import "PNFileModel.h"
+#import <Contacts/Contacts.h>
 
 @implementation SystemUtil
 + (void) playSystemSound
@@ -622,4 +623,35 @@
     NSArray *matches = [regex matchesInString:textString options:NSMatchingReportProgress range:NSMakeRange(0, [textString length])];
     return matches;
 }
+
++ (NSArray *) checkLocalContacts
+{
+    NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    NSString *plistPath = [paths objectAtIndex:0];
+    NSString *filePath =[plistPath stringByAppendingPathComponent:@"contacts.vcf"];
+   
+    if ([SystemUtil filePathisExist:filePath]) {
+        
+        //读取出来的文件信息
+        NSString *contactString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+        NSData *contactData = [contactString dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *error;
+        NSArray *contactArray = [CNContactVCardSerialization contactsWithData:contactData error:&error];
+        return contactArray?:@[];
+    }
+   return @[];
+}
+
++ (NSInteger) getLoacContactCount
+{
+    CNContactStore*store = [[CNContactStore alloc]init];
+    NSError*fetchError;
+    CNContactFetchRequest*request = [[CNContactFetchRequest alloc]initWithKeysToFetch:@[[CNContactVCardSerialization descriptorForRequiredKeys],[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName]]];
+    __block NSInteger contactCount = 0;
+    [store enumerateContactsWithFetchRequest:request error:&fetchError usingBlock:^(CNContact*contact,BOOL*stop) {
+        contactCount++;
+    }];
+    return contactCount;
+}
+
 @end

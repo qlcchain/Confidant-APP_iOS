@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="140" id="KGk-i7-Jjw" customClass="EnContactCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact" translatesAutoresizingMaskIntoConstraints="NO" id="XG8-X1-SDP">
+                        <rect key="frame" x="21" y="17" width="24" height="24"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hD-OT-DTk">
+                        <rect key="frame" x="68" y="62" width="12.5" height="26"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="22"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Local" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hlP-iX-s8O">
+                        <rect key="frame" x="57.5" y="96" width="34" height="16.5"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                        <color key="textColor" red="0.58039215690000001" green="0.58823529409999997" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabbar_arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="ttR-qy-zU1">
+                        <rect key="frame" x="288" y="21" width="16" height="16"/>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PTx-rE-yNy">
+                        <rect key="frame" x="0.0" y="130" width="320" height="10"/>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="10" id="lrj-dT-M7B"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Encrypted Contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZ9-9n-dhD">
+                        <rect key="frame" x="55" y="19.5" width="143" height="19"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                        <color key="textColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QlG-D5-hFW">
+                        <rect key="frame" x="239.5" y="62" width="12.5" height="26"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="22"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Node" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oPn-9I-ipS">
+                        <rect key="frame" x="229" y="96" width="34" height="16.5"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                        <color key="textColor" red="0.58039215690000001" green="0.58823529409999997" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="XG8-X1-SDP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="21" id="8Sk-HU-7Dr"/>
+                    <constraint firstItem="PTx-rE-yNy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="9GG-Nw-ouF"/>
+                    <constraint firstAttribute="bottom" secondItem="PTx-rE-yNy" secondAttribute="bottom" id="Civ-7T-Es0"/>
+                    <constraint firstAttribute="trailing" secondItem="QlG-D5-hFW" secondAttribute="trailing" constant="68" id="EDo-CW-fcE"/>
+                    <constraint firstItem="oPn-9I-ipS" firstAttribute="centerX" secondItem="QlG-D5-hFW" secondAttribute="centerX" id="JRw-gh-9Tf"/>
+                    <constraint firstItem="4hD-OT-DTk" firstAttribute="top" secondItem="XG8-X1-SDP" secondAttribute="bottom" constant="21" id="KRq-Yo-daA"/>
+                    <constraint firstAttribute="trailing" secondItem="ttR-qy-zU1" secondAttribute="trailing" constant="16" id="LZ5-ZZ-GWf"/>
+                    <constraint firstItem="ttR-qy-zU1" firstAttribute="centerY" secondItem="PZ9-9n-dhD" secondAttribute="centerY" id="NsL-Cd-PP3"/>
+                    <constraint firstItem="PZ9-9n-dhD" firstAttribute="leading" secondItem="XG8-X1-SDP" secondAttribute="trailing" constant="10" id="T1E-Gm-IaS"/>
+                    <constraint firstItem="4hD-OT-DTk" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="68" id="XHc-jv-6uU"/>
+                    <constraint firstItem="hlP-iX-s8O" firstAttribute="top" secondItem="4hD-OT-DTk" secondAttribute="bottom" constant="8" id="b1M-My-5YD"/>
+                    <constraint firstAttribute="trailing" secondItem="PTx-rE-yNy" secondAttribute="trailing" id="fGt-S7-zqP"/>
+                    <constraint firstItem="oPn-9I-ipS" firstAttribute="top" secondItem="QlG-D5-hFW" secondAttribute="bottom" constant="8" id="j3M-tJ-iPf"/>
+                    <constraint firstItem="hlP-iX-s8O" firstAttribute="centerX" secondItem="4hD-OT-DTk" secondAttribute="centerX" id="oFe-TO-lFL"/>
+                    <constraint firstItem="PZ9-9n-dhD" firstAttribute="centerY" secondItem="XG8-X1-SDP" secondAttribute="centerY" id="ohk-cH-RUN"/>
+                    <constraint firstItem="XG8-X1-SDP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="uJq-L7-p4i"/>
+                    <constraint firstItem="QlG-D5-hFW" firstAttribute="top" secondItem="4hD-OT-DTk" secondAttribute="top" id="v6x-Ob-DKM"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="lblLocalCount" destination="4hD-OT-DTk" id="wxb-eG-0ju"/>
+                <outlet property="lblNodeCount" destination="QlG-D5-hFW" id="3OH-ix-adX"/>
+            </connections>
+            <point key="canvasLocation" x="41" y="48"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="contact" width="24" height="24"/>
+        <image name="tabbar_arrow_right" width="16" height="16"/>
+    </resources>
+</document>

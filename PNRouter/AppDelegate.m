@@ -100,7 +100,7 @@
     // 配置IQKeyboardManager
     [self keyboardManagerConfig];
     // 配置DDLog
-   // [self configDDLog];
+    [self configDDLog];
     // 配置聊天
     [self configChat];
     // 打开时改变文件上传下载状态
@@ -116,7 +116,6 @@
 
     if (@available(iOS 13.0, *)) {
         self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
-        
     } else {
         // Fallback on earlier versions
     }
@@ -736,7 +735,7 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
 - (NSInteger) getUnReadMessageCount
 {
     NSInteger messageCount = 0;
-    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].userId)]];
+    NSArray *finfAlls = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"myID"),bg_sqlValue([UserConfig getShareObject].usersn)]];
     if (finfAlls && finfAlls.count > 0) {
         for (int i = 0; i<finfAlls.count; i++) {
             ChatListModel *model = finfAlls[i];

@@ -248,6 +248,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Confidant app will access the user's camera to take photos, detect the user's face and read QR codes.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Confidant need to access to your contacts for Node backup.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>APP need your permission to access the Touch ID/Face ID to unlock the app.</string>
 	<key>NSMicrophoneUsageDescription</key>

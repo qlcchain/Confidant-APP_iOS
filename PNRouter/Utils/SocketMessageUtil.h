@@ -100,6 +100,9 @@ static NSString *Action_FilesListPull = @"FilesListPull";
 static NSString *Action_BakFile = @"BakFile";
 static NSString *Action_FileAction = @"FileAction";
 
+// 加密通讯录
+static NSString *Action_BakAddrBookInfo = @"BakAddrBookInfo";
+
 
 @class FriendModel;
 

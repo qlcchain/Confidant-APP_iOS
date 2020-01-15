@@ -30,4 +30,6 @@
 - (void) sendFileId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSInteger) fileid fileType:(uint32_t) fileType messageid:(NSString *) messageid srcKey:(NSString *) srcKey dstKey:(NSString *) dstKey isGroup:(BOOL) isGroup;
 
 - (void) sendEmailToId:(NSString *) toid fileName:(NSString *) fileName fileData:(NSData *) imgData fileid:(NSString *) fileid fileType:(uint32_t) fileType srcKey:(NSString *) srcKey;
+
+- (void) sendContactsToId:(NSString *) toid fileName:(NSString *) fileName fileInfo:(NSString *) fInfo fileData:(NSData *) imgData fileid:(NSString *) fileid fileType:(uint32_t) fileType srcKey:(NSString *)srcKey;
 @end

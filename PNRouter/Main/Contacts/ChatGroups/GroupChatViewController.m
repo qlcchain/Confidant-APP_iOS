@@ -162,7 +162,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (![[NSString getNotNullValue:textString] isEmptyString]) {
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
-        chatModel.myID = [UserModel getUserModel].userId;
+        chatModel.myID = [UserModel getUserModel].userSn;
         chatModel.groupName = _lblNavTitle.text;
         chatModel.groupUserkey = self.groupModel.UserKey;
         chatModel.isGroup = YES;
@@ -192,7 +192,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
         [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
     } else {
-        NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(self.groupModel.GId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId)]];
+        NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(self.groupModel.GId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userSn)]];
         if (friends && friends.count > 0) {
             ChatListModel *chatModel = friends[0];
             if (chatModel.isDraft) {
@@ -245,7 +245,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.listView startRefresh];
     [SocketCountUtil getShareObject].groupChatId = self.groupModel.GId;
     
-    NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(self.groupModel.GId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId)]];
+    NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"groupID"),bg_sqlValue(self.groupModel.GId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userSn)]];
     if (friends && friends.count > 0) {
         ChatListModel *chatModel = friends[0];
         if (chatModel.isATYou) {
@@ -865,6 +865,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             pickerController.delegate = self;
             //使用模态呈现相册
             //[self showDetailViewController:pickerController sender:nil];
+            pickerController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self.navigationController presentViewController:pickerController animated:YES completion:nil];
         });
     }
@@ -1382,7 +1383,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         [weakSelf getPHAssetVedioWithOverImg:coverImage phAsset:phAsset];
     }];
-             
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 }
 
@@ -2568,6 +2569,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 {
     
     CodeMsgViewController *vc = [[CodeMsgViewController alloc] initWithCodeValue:codeValue];
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
     [browser presentViewController:vc animated:YES completion:nil];
     
 }

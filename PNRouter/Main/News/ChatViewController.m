@@ -201,7 +201,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     if (![[NSString getNotNullValue:textString] isEmptyString]) {
         // 添加到chatlist
         ChatListModel *chatModel = [[ChatListModel alloc] init];
-        chatModel.myID = [UserModel getUserModel].userId;
+        chatModel.myID = [UserModel getUserModel].userSn;
         chatModel.friendID = self.friendModel.userId;
         chatModel.isHD = NO;
         // 解密消息
@@ -209,7 +209,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         chatModel.draftMessage = textString;
         [[ChatListDataUtil getShareObject] addFriendModel:chatModel];
     } else {
-        NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(self.friendModel.userId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"isGroup"),bg_sqlValue(@(0))]];
+        NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(self.friendModel.userId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userSn),bg_sqlKey(@"isGroup"),bg_sqlValue(@(0))]];
         if (friends && friends.count > 0) {
             ChatListModel *chatModel = friends[0];
             if (chatModel.isDraft) {
@@ -264,7 +264,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     // 当前消息置为已读
     [[ChatListDataUtil getShareObject] cancelChatHDWithFriendid:self.friendModel.userId];
     
-    NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(self.friendModel.userId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userId),bg_sqlKey(@"isGroup"),bg_sqlValue(@(0))]];
+    NSArray *friends = [ChatListModel bg_find:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@ and %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(self.friendModel.userId),bg_sqlKey(@"myID"),bg_sqlValue([UserModel getUserModel].userSn),bg_sqlKey(@"isGroup"),bg_sqlValue(@(0))]];
     if (friends && friends.count > 0) {
         ChatListModel *chatModel = friends[0];
         if (chatModel.isDraft) {
@@ -827,6 +827,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             pickerController.delegate = self;
             //使用模态呈现相册
             //[self showDetailViewController:pickerController sender:nil];
+            pickerController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self.navigationController presentViewController:pickerController animated:YES completion:nil];
         });
     }
@@ -2013,7 +2014,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     return ;
                 }
                 ChatListModel *chatModel = [[ChatListModel alloc] init];
-                chatModel.myID = [UserModel getUserModel].userId;
+                chatModel.myID = [UserModel getUserModel].userSn;
                 chatModel.friendID = self.friendModel.userId;
                 
                 if (self.listView.msgArr.count > 0) {
@@ -2211,6 +2212,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, PHAsset *phAsset) {
         [weakSelf getPHAssetVedioWithOverImg:coverImage phAsset:phAsset];
     }];
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 }
 
@@ -2604,6 +2606,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void) jumpCodeValueVCWithCodeValue:(NSString *) codeValue
 {
     CodeMsgViewController *vc = [[CodeMsgViewController alloc] initWithCodeValue:codeValue];
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
     [browser presentViewController:vc animated:YES completion:nil];
     
 }

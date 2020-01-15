@@ -271,6 +271,10 @@
 		7308AB08224B5BBF0003E689 /* UsedSpaceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7308AB06224B5BBF0003E689 /* UsedSpaceTableViewCell.m */; };
 		7308AB09224B5BBF0003E689 /* UsedSpaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7308AB07224B5BBF0003E689 /* UsedSpaceTableViewCell.xib */; };
 		7308B1C723541C6F004A8DDC /* GoogleUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7308B1C623541C6F004A8DDC /* GoogleUserModel.m */; };
+		7309002023C470540051E2DB /* PNContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7309001E23C470540051E2DB /* PNContactViewController.m */; };
+		7309002123C470540051E2DB /* PNContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7309001F23C470540051E2DB /* PNContactViewController.xib */; };
+		7309002523C5AC7D0051E2DB /* EnContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7309002323C5AC7D0051E2DB /* EnContactCell.m */; };
+		7309002623C5AC7D0051E2DB /* EnContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7309002423C5AC7D0051E2DB /* EnContactCell.xib */; };
 		730951AA22D2DC58001BA82E /* PNMessageMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730951A922D2DC58001BA82E /* PNMessageMenuView.xib */; };
 		730951AC22D2DC6E001BA82E /* PNEmailMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730951AB22D2DC6E001BA82E /* PNEmailMenuView.xib */; };
 		730951AF22D2DC8D001BA82E /* PNMessageMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 730951AE22D2DC8D001BA82E /* PNMessageMenuView.m */; };
@@ -1271,6 +1275,12 @@
 		7308AB07224B5BBF0003E689 /* UsedSpaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UsedSpaceTableViewCell.xib; sourceTree = "<group>"; };
 		7308B1C523541C6F004A8DDC /* GoogleUserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GoogleUserModel.h; sourceTree = "<group>"; };
 		7308B1C623541C6F004A8DDC /* GoogleUserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GoogleUserModel.m; sourceTree = "<group>"; };
+		7309001D23C470540051E2DB /* PNContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNContactViewController.h; sourceTree = "<group>"; };
+		7309001E23C470540051E2DB /* PNContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNContactViewController.m; sourceTree = "<group>"; };
+		7309001F23C470540051E2DB /* PNContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNContactViewController.xib; sourceTree = "<group>"; };
+		7309002223C5AC7D0051E2DB /* EnContactCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnContactCell.h; sourceTree = "<group>"; };
+		7309002323C5AC7D0051E2DB /* EnContactCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnContactCell.m; sourceTree = "<group>"; };
+		7309002423C5AC7D0051E2DB /* EnContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EnContactCell.xib; sourceTree = "<group>"; };
 		730951A922D2DC58001BA82E /* PNMessageMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNMessageMenuView.xib; sourceTree = "<group>"; };
 		730951AB22D2DC6E001BA82E /* PNEmailMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailMenuView.xib; sourceTree = "<group>"; };
 		730951AD22D2DC8D001BA82E /* PNMessageMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNMessageMenuView.h; sourceTree = "<group>"; };
@@ -3075,6 +3085,40 @@
 			path = FileInput;
 			sourceTree = "<group>";
 		};
+		7309001923C46F660051E2DB /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				7309001C23C46F970051E2DB /* Models */,
+				7309001B23C46F860051E2DB /* VS */,
+				7309001A23C46F7F0051E2DB /* Views */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		7309001A23C46F7F0051E2DB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7309001B23C46F860051E2DB /* VS */ = {
+			isa = PBXGroup;
+			children = (
+				7309001D23C470540051E2DB /* PNContactViewController.h */,
+				7309001E23C470540051E2DB /* PNContactViewController.m */,
+				7309001F23C470540051E2DB /* PNContactViewController.xib */,
+			);
+			path = VS;
+			sourceTree = "<group>";
+		};
+		7309001C23C46F970051E2DB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		730951A522D2DBF1001BA82E /* Email */ = {
 			isa = PBXGroup;
 			children = (
@@ -4366,6 +4410,7 @@
 		7386CCC82383C07100004E0C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				7309001923C46F660051E2DB /* Contacts */,
 				7386CCCB2385188900004E0C /* PNFileViewController.h */,
 				7386CCCC2385188900004E0C /* PNFileViewController.m */,
 				7386CCCD2385188900004E0C /* PNFileViewController.xib */,
@@ -4419,6 +4464,9 @@
 				73A75E2B23867E1500BA8FB3 /* UploadFileCell.h */,
 				73A75E2C23867E1500BA8FB3 /* UploadFileCell.m */,
 				73A75E2D23867E1500BA8FB3 /* UploadFileCell.xib */,
+				7309002223C5AC7D0051E2DB /* EnContactCell.h */,
+				7309002323C5AC7D0051E2DB /* EnContactCell.m */,
+				7309002423C5AC7D0051E2DB /* EnContactCell.xib */,
 			);
 			path = TabCells;
 			sourceTree = "<group>";
@@ -4871,6 +4919,7 @@
 				583BF93121F6EDB80078A2A8 /* MyFilesCell.xib in Resources */,
 				583BF93A21F6FE4F0078A2A8 /* ArrangeAlertView.xib in Resources */,
 				7330F51E214B460A00FF4EEC /* NotifactionView.strings in Resources */,
+				7309002123C470540051E2DB /* PNContactViewController.xib in Resources */,
 				58A23A88223FA9F70098AED5 /* RemoveGroupMemberViewController.xib in Resources */,
 				7321A3FD2303DC7900D9B97A /* EmailConfigCell.xib in Resources */,
 				73E3C6EE22D3453400D7C9C6 /* TermsViewController.xib in Resources */,
@@ -4880,6 +4929,7 @@
 				586D417C224B609F002008C6 /* ChooseCircleCell.xib in Resources */,
 				7330F38E214645BA00FF4EEC /* MyHeadView.xib in Resources */,
 				583BF90221F6B3EE0078A2A8 /* TaskListViewController.xib in Resources */,
+				7309002623C5AC7D0051E2DB /* EnContactCell.xib in Resources */,
 				730AE09A22EED72500E0BC67 /* EmailAttchView.xib in Resources */,
 				7330F3B421475A3E00FF4EEC /* ContactsCell.xib in Resources */,
 				73E773FC22D58F2C001C652E /* EmailFloderCell.xib in Resources */,
@@ -5269,6 +5319,7 @@
 				7330F3502146102A00FF4EEC /* PNNavViewController.m in Sources */,
 				736257A92142149300D7FD6B /* UIView+Animation.m in Sources */,
 				7330F37C2146118800FF4EEC /* UIImage+FX.m in Sources */,
+				7309002023C470540051E2DB /* PNContactViewController.m in Sources */,
 				7386CCE623863F9000004E0C /* UIImage+ImageEffects.m in Sources */,
 				73E7742422D87372001C652E /* EmailUserModel.m in Sources */,
 				73899CC12152011000962B14 /* GuidePageView2.m in Sources */,
@@ -5426,6 +5477,7 @@
 				7330F524214BF4B500FF4EEC /* SocketAlertView.m in Sources */,
 				73E7743C22DC6171001C652E /* AttchCollectionCell.m in Sources */,
 				7378842121AD36040033A189 /* Base58.swift in Sources */,
+				7309002523C5AC7D0051E2DB /* EnContactCell.m in Sources */,
 				580CFE452227B7FD00460B41 /* PTBPerformanceViewController.m in Sources */,
 				583BF93F21F708B30078A2A8 /* DetailInformationCell.m in Sources */,
 				588F8CED220178FC000D7966 /* UploadFileHelper.m in Sources */,
