@@ -31,10 +31,12 @@
 @property (nonatomic, strong) NSString *nodeContactCount;
 @property (nonatomic, strong) NSString *nodeContactPath;
 @property (nonatomic, strong) NSString *nodeContactKey;
-@property (nonatomic, assign) NSInteger localContactCount;
 @property (nonatomic, strong) NSData *nodeContactData;
 
+@property (nonatomic, assign) NSInteger localContactCount;
+
 @end
+
 
 @implementation PNContactViewController
 - (void)dealloc
@@ -68,13 +70,14 @@
     }
     
 }
-- (instancetype)initWithNodePath:(NSString *)contactPath nodeKey:(NSString *)contactKey nodeCount:(NSString *)contactCount isPermission:(BOOL)isPerssion
+- (instancetype)initWithNodePath:(NSString *)contactPath nodeKey:(NSString *)contactKey nodeCount:(NSString *)contactCount isPermission:(BOOL)isPerssion loaclContactCount:(NSInteger)localContactCount
 {
     if (self = [super init]) {
         self.isPermissionContacts = isPerssion;
         self.nodeContactKey = contactKey?:@"";
         self.nodeContactPath = contactPath?:@"";
         self.nodeContactCount = contactCount?:@"0";
+        self.localContactCount = localContactCount;
     }
     return self;
 }
@@ -86,13 +89,12 @@
     _localBtn.layer.borderColor = MAIN_PURPLE_COLOR.CGColor;
     _localBtn.layer.borderWidth = 1.0f;
     
-    
-    _localContactCount = [SystemUtil getLoacContactCount];
     _lblLocalCount.text = [NSString stringWithFormat:@"%ld",_localContactCount];
     _lblNodeCount.text = self.nodeContactCount;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadContactsSuccessNoti:) name:Photo_File_Upload_Success_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsUploadFileDataNoti:) name:Upload_Contacts_Data_Success_Noti object:nil];
+
     
 }
 
@@ -110,7 +112,7 @@
 {
     @weakify_self
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Sync (update the Node contacts)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Sync (merge the Node contacts)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [weakSelf uploadContactsToNodeWithTag:1];
     }];
     UIAlertAction *alert2 = [UIAlertAction actionWithTitle:@"Sync (replace the Node contacts)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -148,6 +150,8 @@
     [self presentViewController:alertC animated:YES completion:nil];
 }
 
+/// 恢复通讯录弹框提示
+/// @param tag 1:合并 2:替换
 - (void) jumpAlertConfirmWithTag:(NSInteger) tag
 {
     NSString *alertTitle = @"Recover to local";
@@ -235,6 +239,8 @@
     
 }
 
+/// 同步本地通讯录到节点
+/// @param contacts 本地通讯录
 - (void) uploadContactsToNodeWithContacts:(NSMutableArray *) contacts
 {
     NSError *error;
@@ -258,7 +264,7 @@
     [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
 }
 
-//请求通讯录权限
+/// check 通讯录权限
 #pragma mark 请求通讯录权限
 - (void)requestContactAuthorAfterSystemVersion9{
     
@@ -294,7 +300,8 @@
         }
     }
 }
-//提示没有通讯录权限
+
+/// check 通讯录权限 提示
 - (void)showAlertViewAboutNotAuthorAccessContact{
     
     UIAlertController *alertController = [UIAlertController
@@ -307,7 +314,9 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-#pragma mark---------导入通讯录
+
+/// 恢复通讯录
+/// @param tag 1:更新 2:替换
 - (void) importContactsVCFWithTag:(NSInteger) tag
 {
     [self.view showHudInView:self.view hint:@"Recover..."];
@@ -315,6 +324,21 @@
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSString *fileName = [[UserModel getUserModel].userSn stringByAppendingString:@".vcf"];
         NSString *downloadFilePath = [SystemUtil getTempDeFilePath:fileName];
+        
+       __block  NSMutableArray *localArray = [NSMutableArray array];
+        
+        if (tag == 1) {
+            if (weakSelf.localContactCount > 0) {
+                CNContactStore*store = [[CNContactStore alloc]init];
+                NSError*fetchError;
+                CNContactFetchRequest*request = [[CNContactFetchRequest alloc]initWithKeysToFetch:@[[CNContactVCardSerialization descriptorForRequiredKeys],[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName]]];
+                [store enumerateContactsWithFetchRequest:request error:&fetchError usingBlock:^(CNContact*contact,BOOL*stop) {
+                    [localArray addObject:contact];
+                }];
+            }
+        }
+        
+        
            
         if (![SystemUtil filePathisExist:downloadFilePath]) {
             
@@ -323,7 +347,7 @@
             } success:^(NSURLSessionDownloadTask *dataTask, NSString *filePath) {
             
                 NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-                [weakSelf deFileWithFileData:fileData withUploadNode:NO withDelContactTag:tag withLocalContacts:nil];
+                [weakSelf deFileWithFileData:fileData withUploadNode:NO withDelContactTag:tag withLocalContacts:localArray];
                 
             } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -335,28 +359,83 @@
             }];
             
         } else {
-           // NSString *contactString = [NSString stringWithContentsOfFile:downloadFilePath encoding:NSUTF8StringEncoding error:nil];
+ 
             NSData *contactData = [NSData dataWithContentsOfFile:downloadFilePath];
-            [weakSelf deFileWithFileData:contactData withUploadNode:NO withDelContactTag:tag withLocalContacts:nil];
+            [weakSelf deFileWithFileData:contactData withUploadNode:NO withDelContactTag:tag withLocalContacts:localArray];
+            /*
+            NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+               NSString *plistPath = [paths objectAtIndex:0];
+               NSString *filePath =[plistPath stringByAppendingPathComponent:@"contacts.vcf"];
+            NSString *contactString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+            NSData *contactData = [contactString dataUsingEncoding:NSUTF8StringEncoding];
+            
+            // 删除原有通讯录
+            [weakSelf delOriginContacts];
+            
+            // 恢复到本地通讯录
+            NSArray *contactArray = [CNContactVCardSerialization contactsWithData:contactData error:nil];
+            if (contactArray && contactArray.count > 0) {
+                CNContactStore*store = [[CNContactStore alloc]init];
+                NSInteger finshCount = 0;
+                if (tag == 1) {
+                    finshCount = weakSelf.localContactCount;
+                }
+                for (CNContact *conact in  contactArray) {
+                    //    实例化一个CNSaveRequest
+                    CNSaveRequest * saveRequest = [[CNSaveRequest alloc]init];
+                    [saveRequest addContact:[conact mutableCopy] toContainerWithIdentifier:nil];
+                    [store executeSaveRequest:saveRequest error:nil];
+                    finshCount++;
+                    @weakify_self
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        weakSelf.lblLocalCount.text = [NSString stringWithFormat:@"%ld",finshCount];
+                    });
+                }
+                @weakify_self
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.view hideHud];
+                    [weakSelf.view showHint:@"Recover success."];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:Update_Loacl_Contact_Count_Noti object:nil];
+                });
+            }
+             */
         }
     });
 }
 
+/// 删除原通讯录
 - (void) delOriginContacts
 {
-    CNContactStore*store = [[CNContactStore alloc]init];
-    NSError*fetchError;
-    CNContactFetchRequest*request = [[CNContactFetchRequest alloc]initWithKeysToFetch:@[[CNContactVCardSerialization descriptorForRequiredKeys],[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName]]];
-
-    [store enumerateContactsWithFetchRequest:request error:&fetchError usingBlock:^(CNContact*contact,BOOL*stop) {
-       
-        CNSaveRequest * saveRequest = [[CNSaveRequest alloc]init];
-        [saveRequest deleteContact:[contact mutableCopy]];
-        [store executeSaveRequest:saveRequest error:nil];
-     
-    }];
+    if (_localContactCount > 0) {
+        CNContactStore*store = [[CNContactStore alloc]init];
+        NSError*fetchError;
+        CNContactFetchRequest*request = [[CNContactFetchRequest alloc]initWithKeysToFetch:@[[CNContactVCardSerialization descriptorForRequiredKeys],[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName]]];
+        __block NSInteger finshCount = _localContactCount;
+        @weakify_self
+        [store enumerateContactsWithFetchRequest:request error:&fetchError usingBlock:^(CNContact*contact,BOOL*stop) {
+           
+            CNSaveRequest * saveRequest = [[CNSaveRequest alloc]init];
+            [saveRequest deleteContact:[contact mutableCopy]];
+            NSError *error;
+            [store executeSaveRequest:saveRequest error:&error];
+           
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!error) {
+                    finshCount--;
+                }
+                weakSelf.lblLocalCount.text = [NSString stringWithFormat:@"%ld",finshCount];
+            });
+            
+        }];
+    }
+    
 }
 
+/// 解密文件  备份 或 恢复·
+/// @param fileData 文件
+/// @param isUpload 是不是上传
+/// @param tag 替换或更新
+/// @param localContacts 本地通讯录数组
 - (void) deFileWithFileData:(NSData *) fileData withUploadNode:(BOOL) isUpload withDelContactTag:(NSInteger) tag withLocalContacts:(NSMutableArray *) localContacts
 {
    
@@ -410,23 +489,61 @@
                            // 删除原有通讯录
                            [self delOriginContacts];
                        }
+                       
                        // 恢复到本地通讯录
-                       NSArray *contactArray = [CNContactVCardSerialization contactsWithData:deFileData error:nil];
-                       if (contactArray && contactArray.count > 0) {
+                       NSArray *nodeContactArray = [CNContactVCardSerialization contactsWithData:deFileData error:nil]?:@[];
+                       NSMutableArray *updateContactArray = [NSMutableArray array];
+                       if (tag == 1) { // 更新本地
+                           for (CNContact *conact in  nodeContactArray) {
+                               BOOL isExit = NO;
+                               for (CNContact *localConact in  localContacts) {
+                                   if ([conact.givenName?:@"" isEqualToString:localConact.givenName?:@""] && [conact.familyName?:@"" isEqualToString:localConact.familyName?:@""]) {
+                                       
+                                       NSArray *phoneNumbers1 = conact.phoneNumbers?:@[];
+                                       NSArray *phoneNumbers2 = localConact.phoneNumbers?:@[];
+                                       if (phoneNumbers1.count == 0 && phoneNumbers2.count == 0) {
+                                           isExit = YES;
+                                           break;
+                                       } else if (phoneNumbers1.count >0 && phoneNumbers2.count >0){
+                                           CNLabeledValue *v1 = [phoneNumbers1 objectAtIndex:0];
+                                           CNLabeledValue *v2 = [phoneNumbers2 objectAtIndex:0];
+                                           CNPhoneNumber *phoneNumber1 = v1.value;
+                                           CNPhoneNumber *phoneNumber2 = v2.value;
+                                           if ([phoneNumber1.stringValue?:@"" isEqualToString:phoneNumber2.stringValue?:@""]) {
+                                               isExit = YES;
+                                               break;
+                                           }
+                                       }
+                                   }
+                               }
+                               if (!isExit) {
+                                   [updateContactArray addObject:conact];
+                               }
+                           }
+                       } else {
+                           [updateContactArray addObjectsFromArray:nodeContactArray];
+                       }
+                       
+                       
+                       if (updateContactArray && updateContactArray.count > 0) {
                            CNContactStore*store = [[CNContactStore alloc]init];
-                           NSInteger finshCount = 0;
+                          __block NSInteger finshCount = 0;
                            if (tag == 1) {
                                finshCount = _localContactCount;
                            }
-                           for (CNContact *conact in  contactArray) {
+                           NSError *error;
+                           for (CNContact *conact in  updateContactArray) {
                                //    实例化一个CNSaveRequest
                                CNSaveRequest * saveRequest = [[CNSaveRequest alloc]init];
                                [saveRequest addContact:[conact mutableCopy] toContainerWithIdentifier:nil];
-                               [store executeSaveRequest:saveRequest error:nil];
-                               finshCount++;
+                               [store executeSaveRequest:saveRequest error:&error];
+                              
                                @weakify_self
                                dispatch_async(dispatch_get_main_queue(), ^{
-                                   weakSelf.lblLocalCount.text = [NSString stringWithFormat:@"%ld",finshCount];
+                                   if (!error) {
+                                        finshCount++;
+                                        weakSelf.lblLocalCount.text = [NSString stringWithFormat:@"%ld",finshCount];
+                                   }
                                });
                            }
                            @weakify_self
@@ -436,10 +553,15 @@
                                [[NSNotificationCenter defaultCenter] postNotificationName:Update_Loacl_Contact_Count_Noti object:nil];
                            });
                        } else {
+                          
                             @weakify_self
                            dispatch_async(dispatch_get_main_queue(), ^{
                                [weakSelf.view hideHud];
-                               [weakSelf.view showHint:@"Recover failure."];
+                               if (tag == 1) {
+                                   [weakSelf.view showHint:@"Recover success."];
+                               } else {
+                                   [weakSelf.view showHint:@"Recover failure."];
+                               }
                            });
                        }
                    }
@@ -467,6 +589,7 @@
     NSDictionary *resutDic = noti.object;
     if ([resutDic[@"Depens"] integerValue] == 4) { // 通讯录
         if ([resutDic[@"RetCode"] integerValue] == 0) {
+            
             self.nodeContactPath = resutDic[@"FilePath"];
             self.nodeContactKey = resutDic[@"FKey"];
             self.nodeContactCount = resutDic[@"FInfo"];
@@ -479,7 +602,7 @@
             }
             [self.nodeContactData writeToFile:downloadFilePath atomically:YES];
             // 更新首页ui通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:Update_Loacl_Contact_Count_Noti object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:Update_Loacl_Contact_Count_Noti object:@[self.nodeContactPath,self.nodeContactKey,self.nodeContactCount]];
            
             __block NSInteger uploadCount = 0;
             __block NSInteger count = [self.nodeContactCount integerValue];

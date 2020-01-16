@@ -321,7 +321,6 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
     if ([SystemUtil isSocketConnect]) { // socket
         // 更新状态
         self.selFileM.uploadStatus = 1;
-        //[_mainTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.selRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         [_mainTabView reloadData];
                    
         SocketDataUtil *dataUtil = [[SocketDataUtil alloc] init];
@@ -648,7 +647,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
                 }
                 
                 if (weakSelf.floderM.isLocal) {
-                    [weakSelf.dataArray addObject:fileM];
+                    [weakSelf.dataArray insertObject:fileM atIndex:0];
                     [weakSelf.mainTabView reloadData];
                 } else {
                     [weakSelf uploadPhotoToNodeFloderWithFileM:fileM];
@@ -747,7 +746,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
                     }
                 }
                 if (weakSelf.floderM.isLocal) {
-                    [weakSelf.dataArray addObject:fileM];
+                    [weakSelf.dataArray insertObject:fileM atIndex:0];
                     [weakSelf.mainTabView reloadData];
                 } else {
                      [weakSelf uploadPhotoToNodeFloderWithFileM:fileM];

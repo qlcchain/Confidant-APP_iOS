@@ -131,7 +131,10 @@
                     }
                     model.publicKey = friendModel.publicKey;
                     model.signPublicKey = friendModel.signPublicKey;
-                    model.routerName = [friendModel.RouteName base64DecodedString]?[friendModel.RouteName base64DecodedString]:friendModel.RouteName;
+                    if (!model.routerName || model.routerName.length == 0) {
+                        model.routerName = [friendModel.RouteName base64DecodedString]?[friendModel.RouteName base64DecodedString]:friendModel.RouteName;
+                    }
+                    
                     *stop = YES;
                 }
             }];

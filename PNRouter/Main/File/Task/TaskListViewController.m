@@ -310,6 +310,7 @@
         TaskOngoingCell *cell = [tableView dequeueReusableCellWithIdentifier:TaskOngoingCellReuse];
         [cell setFileModel:model isSelect:[self containsSrckey:model.srcKey fileid:model.fileId]];
         [cell updateSelectShow:isSelect];
+
         @weakify_self
         [cell setSelectBlock:^(NSArray *values) {
             [weakSelf selectFileDataWithSrckey:values];
@@ -374,6 +375,7 @@
     
     return view;
 }
+
 
 - (void) cancelUploadOrDownFile:(FileData *) fileData
 {
@@ -578,7 +580,7 @@
                         if ([weakSelf.sourceArr[0] count] > idx) {
                             [UIView performWithoutAnimation:^{
                                 
-                                                    [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                                [weakSelf.mainTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                             }];
                         }
                     }
@@ -625,5 +627,11 @@
         }
     }];
 }
+
+
+
+
+
+
 
 @end

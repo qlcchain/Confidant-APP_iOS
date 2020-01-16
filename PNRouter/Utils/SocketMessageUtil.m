@@ -1056,12 +1056,17 @@
     NSString *PriKey = receiveDic[@"params"][@"PriKey"];
     NSString *Nonce = receiveDic[@"params"][@"Nonce"];
     NSString *sendMsgID = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
+    NSString *NodeName = receiveDic[@"params"][@"NodeName"]?:@"";
+    if (NodeName.length > 0) {
+        NodeName = [NodeName base64DecodedString];
+    }
     if (retCode == 0) { // 0：消息发送成功
         // 添加到chatlist
         ChatListModel *chatListModel = [[ChatListModel alloc] init];
         chatListModel.myID = [UserModel getUserModel].userSn;
         chatListModel.friendID = ToId;
         chatListModel.chatTime = [NSDate date];
+        chatListModel.routerName = NodeName;
         chatListModel.isHD = NO;
         // 解密消息
         NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:PriKey];
@@ -1093,6 +1098,11 @@
     NSString *signKey = receiveDic[@"params"][@"Sign"];
     NSString *nonceKey = receiveDic[@"params"][@"Nonce"];
     NSString *symmetkey = receiveDic[@"params"][@"PriKey"];
+    NSString *NodeName = receiveDic[@"params"][@"NodeName"]?:@"";
+    if (NodeName.length > 0) {
+        NodeName = [NodeName base64DecodedString];
+    }
+    
     NSInteger AssocId = receiveDic[@"params"][@"AssocId"]? [receiveDic[@"params"][@"AssocId"] integerValue]:0;
     
     
@@ -1135,6 +1145,7 @@
     // 添加到chatlist
     ChatListModel *chatModel = [[ChatListModel alloc] init];
     chatModel.myID = [UserConfig getShareObject].usersn;
+    chatModel.routerName = NodeName;
     chatModel.friendID = model.FromId;
     chatModel.chatTime = [NSDate date];
     chatModel.isHD = ![chatModel.friendID isEqualToString:[SocketCountUtil getShareObject].chatToId];

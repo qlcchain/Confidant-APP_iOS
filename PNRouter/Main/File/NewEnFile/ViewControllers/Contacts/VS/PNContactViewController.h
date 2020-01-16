@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PNContactViewController : PNBaseViewController
 
-- (instancetype) initWithNodePath:(NSString *) contactPath nodeKey:(NSString *) contactKey nodeCount:(NSString *) contactCount isPermission:(BOOL) isPerssion;
+- (instancetype) initWithNodePath:(NSString *) contactPath nodeKey:(NSString *) contactKey nodeCount:(NSString *) contactCount isPermission:(BOOL) isPerssion loaclContactCount:(NSInteger) localContactCount;
 
 @end
 

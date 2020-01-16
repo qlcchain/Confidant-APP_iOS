@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSString *nodeContactCount;
 @property (nonatomic, strong) NSString *nodeContactPath;
 @property (nonatomic, strong) NSString *nodeContactKey;
+@property (nonatomic, assign) NSInteger localContactCount;
 @end
 
 @implementation PNFileViewController
@@ -57,10 +58,19 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullBookInfoNoti:) name:Pull_BookInfo_Success_Noti object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLocalContactsNoti:) name:Update_Loacl_Contact_Count_Noti object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendCheckNodeContactCountRequest) name:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLocalCount) name:UIApplicationDidBecomeActiveNotification object:nil];
     
+    [self sendCheckNodeContactCountRequest];
+}
+- (void) sendCheckNodeContactCountRequest
+{
     [SendRequestUtil sendPullBookInfoWithFileId:0 showHud:NO];
 }
-
+- (void) updateLocalCount
+{
+    [_mainTabView reloadData];
+}
 - (void) getContactsPermissions
 {
     CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
@@ -95,6 +105,7 @@
     {
         //有通讯录权限-- 进行下一步操作
         self.isPermissionContacts = YES;
+        [self.mainTabView reloadData];
     }
 }
 #pragma mark -----------------tableview deleate ---------------------
@@ -114,11 +125,11 @@
         return myCell;
     } else {
         EnContactCell *myCell = [tableView dequeueReusableCellWithIdentifier:EnContactCellResue];
-        NSInteger contactCount = 0;
+        self.localContactCount = 0;
         if (_isPermissionContacts) {
-            contactCount = [SystemUtil getLoacContactCount];
+            self.localContactCount = [SystemUtil getLoacContactCount];
         }
-        myCell.lblLocalCount.text = [NSString stringWithFormat:@"%ld",contactCount];
+        myCell.lblLocalCount.text = [NSString stringWithFormat:@"%ld",self.localContactCount];
         myCell.lblNodeCount.text = self.nodeContactCount;
         return myCell;
     }
@@ -131,7 +142,7 @@
         PNPhotoViewController *vc = [[PNPhotoViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (indexPath.row == 1) { // 通讯录
-        PNContactViewController *vc = [[PNContactViewController alloc] initWithNodePath:self.nodeContactPath nodeKey:self.nodeContactKey nodeCount:self.nodeContactCount isPermission:self.isPermissionContacts];
+        PNContactViewController *vc = [[PNContactViewController alloc] initWithNodePath:self.nodeContactPath nodeKey:self.nodeContactKey nodeCount:self.nodeContactCount isPermission:self.isPermissionContacts loaclContactCount:self.localContactCount];
         [self.navigationController pushViewController:vc animated:YES];
     }
    
@@ -150,6 +161,12 @@
 }
 - (void) updateLocalContactsNoti:(NSNotification *) noti
 {
-    [self.mainTabView reloadData];
+    NSArray *resultArr = noti.object;
+    if (resultArr && resultArr.count == 3) {
+        self.nodeContactPath = resultArr[0];
+        self.nodeContactKey = resultArr[1];
+        self.nodeContactCount = resultArr[2];
+    }
+   // [self.mainTabView reloadData];
 }
 @end

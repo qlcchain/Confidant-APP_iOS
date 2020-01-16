@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <SWTableViewCell/SWTableViewCell.h>
 @class FileData;
 @class PNFileModel;
 typedef void(^ClickSelectBlcok)(NSArray *values);
@@ -16,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 static NSString *TaskOngoingCellReuse = @"TaskOngoingCell";
 #define TaskOngoingCellHeight 64
 
-@interface TaskOngoingCell : UITableViewCell
+@interface TaskOngoingCell : SWTableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *fileImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblProgess;

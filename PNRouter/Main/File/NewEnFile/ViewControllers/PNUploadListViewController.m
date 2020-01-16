@@ -14,7 +14,7 @@
 #import "SystemUtil.h"
 #import "NSDate+Category.h"
 
-@interface PNUploadListViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface PNUploadListViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate>
 {
     BOOL isSelect;
 }
@@ -165,9 +165,17 @@
         model = self.completedArray[indexPath.row];
     }
     if (indexPath.section == 0) {
+        
         TaskOngoingCell *cell = [tableView dequeueReusableCellWithIdentifier:TaskOngoingCellReuse];
         [cell setPhotoFileModel:model isSelect:isSelect];
         [cell updateSelectShow:isSelect];
+        if (model.uploadStatus <= 0) {
+            [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
+            cell.delegate = self;
+            cell.tag = indexPath.row;
+        } else {
+            [cell setRightUtilityButtons:@[] WithButtonWidth:0.f];
+        }
         @weakify_self
         [cell setSelectBlock:^(NSArray *values) {
             
@@ -188,6 +196,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+/**
+ 设置cell右边button icon
+ 
+ @return 所有button
+ */
+- (NSArray *)rightButtons
+{
+    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:
+     MAIN_PURPLE_COLOR
+                                                 icon:[UIImage imageNamed:@"icon_delete"]];
+    
+    return rightUtilityButtons;
 }
 
 
@@ -247,5 +270,80 @@
             break;
         }
     }
+}
+
+
+
+
+
+#pragma mark - SWTableViewDelegate
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
+{
+    switch (state) {
+        case 0:
+            NSLog(@"utility buttons closed");
+            break;
+        case 1:
+            NSLog(@"left utility buttons open");
+            break;
+        case 2:
+            NSLog(@"right utility buttons open");
+            break;
+        default:
+            break;
+    }
+}
+
+
+/**
+ 选择cell菜单回调
+ 
+ @param cell cell
+ @param index index
+ */
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+{
+    [cell hideUtilityButtonsAnimated:YES];
+    switch (index) {
+        case 0:
+        {
+            @weakify_self
+            [_mainTabView performBatchUpdates:^{
+                PNFileModel *model = weakSelf.ongoingArray[cell.tag];
+                [PNFileModel bg_update:EN_FILE_TABNAME where:[NSString stringWithFormat:@"set %@=%@ where %@=%@",bg_sqlKey(@"delHidden"),bg_sqlValue(@(1)),bg_sqlKey(@"fId"),bg_sqlValue(@(model.fId))]];
+                [weakSelf.ongoingArray removeObject:model];
+                [weakSelf.mainTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cell.tag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            }completion:^(BOOL finished){
+                [weakSelf.mainTabView reloadData];
+            }];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
+{
+    // allow just one cell's utility button to be open at once
+    return YES;
+}
+
+- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state
+{
+    switch (state) {
+        case 1:
+            // set to NO to disable all left utility buttons appearing
+            return YES;
+            break;
+        case 2:
+            // set to NO to disable all right utility buttons appearing
+            return YES;
+            break;
+        default:
+            break;
+    }
+    
+    return YES;
 }
 @end
