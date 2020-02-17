@@ -65,4 +65,7 @@
 + (NSArray *) checkLocalContacts;
 // 获取手机通讯录数量
 + (NSInteger) getLoacContactCount;
++ (NSString*)dataToHexString:(NSData*)data;
++ (NSData *)HexStrToData:(NSString *)str;
++ (NSString *) genterEnUtilNonce;
 @end

@@ -419,8 +419,6 @@
                           channel:@"App Store"
                  apsForProduction:isDis
             advertisingIdentifier:nil];
-    
-   
 }
 
 #pragma mark - BuglyDelegate
@@ -604,13 +602,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
     //[MiPushSDK bindDeviceToken:deviceToken];
    // AppD.devToken = deviceToken;
     
-    
     /// Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
     // 获取regid
     AppD.regId = [JPUSHService registrationID];
-     
-     
 }
 
 - (void)application:(UIApplication *)app
@@ -709,11 +704,6 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     completionHandler(UIBackgroundFetchResultNewData);
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-
-    // Required, For systems with less than or equal to iOS 6
-    [JPUSHService handleRemoteNotification:userInfo];
-}
 
 #pragma mark - Lazy
 - (PNUnlockView *)unlockView {

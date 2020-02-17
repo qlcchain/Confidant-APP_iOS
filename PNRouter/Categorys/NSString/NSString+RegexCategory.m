@@ -19,6 +19,8 @@
 #pragma mark - html文字
 - (NSString *) getHtmlText
 {
+
+
     if (self.length == 0) {
         return @"";
     }
@@ -35,7 +37,6 @@
     string = [string stringByReplacingOccurrencesOfString:@"/*" withString:@""]; //去掉空格
     string = [string stringByReplacingOccurrencesOfString:@"*/" withString:@""]; //去掉空格
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]; //去除字符串中所有得空格及控制字符
-    
     return string;
 
 }

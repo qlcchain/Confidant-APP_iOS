@@ -241,7 +241,6 @@
 		73001A262191328C003D07CC /* RSAModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A252191328C003D07CC /* RSAModel.m */; };
 		7301A896226EB876006225FA /* Privacy Policy.html in Resources */ = {isa = PBXBuildFile; fileRef = 7301A894226EB875006225FA /* Privacy Policy.html */; };
 		7301A897226EB876006225FA /* Terms of Service.html in Resources */ = {isa = PBXBuildFile; fileRef = 7301A895226EB876006225FA /* Terms of Service.html */; };
-		730330DF21C76DEC007C4063 /* libMiPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330DD21C76DEB007C4063 /* libMiPushSDK.a */; };
 		730330E121C76E2F007C4063 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E021C76E2F007C4063 /* UserNotifications.framework */; };
 		730330E321C76E3A007C4063 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E221C76E3A007C4063 /* libresolv.tbd */; };
 		730330E521C76E47007C4063 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E421C76E47007C4063 /* libxml2.tbd */; };
@@ -295,7 +294,6 @@
 		730AE0A322F2B4D800E0BC67 /* EmailUserKeyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 730AE0A222F2B4D800E0BC67 /* EmailUserKeyModel.m */; };
 		730E3BFB2333760B009AF1EE /* TrezorCrytoEd25519.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730E3BF92333760B009AF1EE /* TrezorCrytoEd25519.framework */; };
 		730E3BFE2338639F009AF1EE /* PNSysPushModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 730E3BFD2338639F009AF1EE /* PNSysPushModel.m */; };
-		730E3C002338660B009AF1EE /* QLCFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730E3BFF2338660B009AF1EE /* QLCFramework.framework */; };
 		73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6B219BB59B00510B48 /* RouterConfig.m */; };
 		73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A6E219BF4E900510B48 /* NSString+SHA256.m */; };
 		73121A74219C26E900510B48 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73121A72219C26E900510B48 /* LoginViewController.m */; };
@@ -500,7 +498,9 @@
 		736257C12142247F00D7FD6B /* SystemUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 736257C02142247F00D7FD6B /* SystemUtil.m */; };
 		736257C5214225FD00D7FD6B /* getgateway.c in Sources */ = {isa = PBXBuildFile; fileRef = 736257C2214225FD00D7FD6B /* getgateway.c */; };
 		7364318523A788AF007FCF8D /* PNFileUploadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7364318423A788AF007FCF8D /* PNFileUploadModel.m */; };
+		73676CB523EBEC1700E491E7 /* QLCFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73676CB423EBEC1700E491E7 /* QLCFramework.framework */; };
 		73682AEA21C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */; };
+		7368CF1923F6753B00FB0FF0 /* ENMessageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7368CF1823F6753B00FB0FF0 /* ENMessageUtil.m */; };
 		7369429323A8B3F8003FECBC /* PNSelectFloderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7369429123A8B3F7003FECBC /* PNSelectFloderViewController.m */; };
 		7369429423A8B3F8003FECBC /* PNSelectFloderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7369429223A8B3F7003FECBC /* PNSelectFloderViewController.xib */; };
 		73741800221E9B8F008EE243 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737417FE221E9B8F008EE243 /* SettingViewController.m */; };
@@ -1223,8 +1223,6 @@
 		73001A252191328C003D07CC /* RSAModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAModel.m; sourceTree = "<group>"; };
 		7301A894226EB875006225FA /* Privacy Policy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Privacy Policy.html"; sourceTree = "<group>"; };
 		7301A895226EB876006225FA /* Terms of Service.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Terms of Service.html"; sourceTree = "<group>"; };
-		730330DD21C76DEB007C4063 /* libMiPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMiPushSDK.a; sourceTree = "<group>"; };
-		730330DE21C76DEC007C4063 /* MiPushSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiPushSDK.h; sourceTree = "<group>"; };
 		730330E021C76E2F007C4063 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		730330E221C76E3A007C4063 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		730330E421C76E47007C4063 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
@@ -1316,7 +1314,6 @@
 		730E3BF92333760B009AF1EE /* TrezorCrytoEd25519.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TrezorCrytoEd25519.framework; sourceTree = "<group>"; };
 		730E3BFC2338639F009AF1EE /* PNSysPushModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNSysPushModel.h; sourceTree = "<group>"; };
 		730E3BFD2338639F009AF1EE /* PNSysPushModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNSysPushModel.m; sourceTree = "<group>"; };
-		730E3BFF2338660B009AF1EE /* QLCFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QLCFramework.framework; sourceTree = "<group>"; };
 		73121A6A219BB59B00510B48 /* RouterConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterConfig.h; sourceTree = "<group>"; };
 		73121A6B219BB59B00510B48 /* RouterConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterConfig.m; sourceTree = "<group>"; };
 		73121A6D219BF4E900510B48 /* NSString+SHA256.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SHA256.h"; sourceTree = "<group>"; };
@@ -1693,8 +1690,11 @@
 		736257C4214225FD00D7FD6B /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = route.h; sourceTree = "<group>"; };
 		7364318323A788AF007FCF8D /* PNFileUploadModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFileUploadModel.h; sourceTree = "<group>"; };
 		7364318423A788AF007FCF8D /* PNFileUploadModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFileUploadModel.m; sourceTree = "<group>"; };
+		73676CB423EBEC1700E491E7 /* QLCFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QLCFramework.framework; sourceTree = "<group>"; };
 		73682AE821C3D2D700E3E1A0 /* ToxPullFileTimerUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToxPullFileTimerUtil.h; sourceTree = "<group>"; };
 		73682AE921C3D2D800E3E1A0 /* ToxPullFileTimerUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToxPullFileTimerUtil.m; sourceTree = "<group>"; };
+		7368CF1723F6753B00FB0FF0 /* ENMessageUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ENMessageUtil.h; sourceTree = "<group>"; };
+		7368CF1823F6753B00FB0FF0 /* ENMessageUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ENMessageUtil.m; sourceTree = "<group>"; };
 		7369429023A8B3F7003FECBC /* PNSelectFloderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNSelectFloderViewController.h; sourceTree = "<group>"; };
 		7369429123A8B3F7003FECBC /* PNSelectFloderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNSelectFloderViewController.m; sourceTree = "<group>"; };
 		7369429223A8B3F7003FECBC /* PNSelectFloderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNSelectFloderViewController.xib; sourceTree = "<group>"; };
@@ -2144,13 +2144,12 @@
 				730330E721C76E56007C4063 /* libz.tbd in Frameworks */,
 				730330E321C76E3A007C4063 /* libresolv.tbd in Frameworks */,
 				730330E121C76E2F007C4063 /* UserNotifications.framework in Frameworks */,
-				730330DF21C76DEC007C4063 /* libMiPushSDK.a in Frameworks */,
 				7378829F21ABF6060033A189 /* Social.framework in Frameworks */,
 				7306054521748BD5005A0E13 /* libopencore-amrwb.a in Frameworks */,
 				7306054621748BD5005A0E13 /* libopencore-amrnb.a in Frameworks */,
 				730E3BFB2333760B009AF1EE /* TrezorCrytoEd25519.framework in Frameworks */,
-				730E3C002338660B009AF1EE /* QLCFramework.framework in Frameworks */,
 				73EAC9852320F9E2002C1637 /* LibsodiumSDK.framework in Frameworks */,
+				73676CB523EBEC1700E491E7 /* QLCFramework.framework in Frameworks */,
 				B886FAB0DE5D26DAD63439FE /* libPods-MyConfidant.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2813,7 +2812,6 @@
 				580CFE142227B7FD00460B41 /* PTBPerformanceCenter */,
 				581FDEE821F024160068C120 /* toxcore */,
 				7303310221C78E83007C4063 /* BackMode */,
-				730330DC21C76DA9007C4063 /* MIPUSH */,
 				7378836421ACF2960033A189 /* ToxManagers */,
 				737882A021ACF05E0033A189 /* Starscream */,
 				73F9A117219973790011FAA5 /* SocketRadio */,
@@ -2975,15 +2973,6 @@
 				73001A1B21904896003D07CC /* DDRSAWrapper+openssl.m */,
 			);
 			path = Openssl;
-			sourceTree = "<group>";
-		};
-		730330DC21C76DA9007C4063 /* MIPUSH */ = {
-			isa = PBXGroup;
-			children = (
-				730330DD21C76DEB007C4063 /* libMiPushSDK.a */,
-				730330DE21C76DEC007C4063 /* MiPushSDK.h */,
-			);
-			path = MIPUSH;
 			sourceTree = "<group>";
 		};
 		730330F621C7781E007C4063 /* PushServiceExtension */ = {
@@ -3316,7 +3305,7 @@
 		730E3BE323333108009AF1EE /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				730E3BFF2338660B009AF1EE /* QLCFramework.framework */,
+				73676CB423EBEC1700E491E7 /* QLCFramework.framework */,
 				730E3BF92333760B009AF1EE /* TrezorCrytoEd25519.framework */,
 			);
 			path = Framework;
@@ -3975,6 +3964,8 @@
 				73EAC9822320F5B5002C1637 /* UserPrivateKeyUtil.m */,
 				7396A40F23571AD800B62605 /* GoogleServerManage.h */,
 				7396A41023571AD800B62605 /* GoogleServerManage.m */,
+				7368CF1723F6753B00FB0FF0 /* ENMessageUtil.h */,
+				7368CF1823F6753B00FB0FF0 /* ENMessageUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -5492,6 +5483,7 @@
 				736257A52142149300D7FD6B /* UIView+Nib.m in Sources */,
 				581FDF4D21F024170068C120 /* crypto_core_mem.m in Sources */,
 				7386CCD3238518CA00004E0C /* PNPhotoViewController.m in Sources */,
+				7368CF1923F6753B00FB0FF0 /* ENMessageUtil.m in Sources */,
 				736257822142143F00D7FD6B /* NSString+EmptyUtil.m in Sources */,
 				737883F721ACF2970033A189 /* OCTManagerConfiguration.m in Sources */,
 				581FDF4421F024170068C120 /* crypto_core.m in Sources */,
@@ -5712,7 +5704,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.4.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
@@ -5726,8 +5718,8 @@
 		7303310021C7781E007C4063 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -5738,11 +5730,11 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.4.2;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = RouterPushDevProfile;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -5894,7 +5886,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.4.2;
 				MiSDKRun = debug;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5943,7 +5935,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.4.2;
 				MiSDKRun = online;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -21,8 +21,8 @@ public class QLCUtil: NSObject {
     }
     
     // sign
-    @objc public static func sign(message: String, secretKey: String, publicKey: String) -> String {
-        let messageB : Bytes = message.hex2Bytes
+    @objc public static func sign(messageHex: String, secretKey: String, publicKey: String) -> String {
+        let messageB : Bytes = messageHex.hex2Bytes
         let secretKeyB : Bytes = secretKey.hex2Bytes
         let publicKeyB : Bytes = publicKey.hex2Bytes
         var signature = Bytes(count: signatureLength)
@@ -48,7 +48,13 @@ public class QLCUtil: NSObject {
     
     // seed
     @objc public static func isValidSeed(seed:String) -> Bool {
-        return seed.count == 64
+        var contain : Bool = true
+        for char in seed.charactersArray {
+            if !RandomString.characters.contains(char) {
+                contain = false
+            }
+        }
+        return seed.count == 64 && contain
     }
     
     // privatekey
@@ -207,7 +213,7 @@ public class QLCUtil: NSObject {
         let block:QLCStateBlock = QLCStateBlock.deserialize(from: dic) ?? QLCStateBlock()
         // set signature
         let blockHash = BlockMng.getHash(block: block)
-        let signature = QLCUtil.sign(message: blockHash.toHexString(), secretKey: privateKey, publicKey: publicKey)
+        let signature = QLCUtil.sign(messageHex: blockHash.toHexString(), secretKey: privateKey, publicKey: publicKey)
         let signCheck : Bool = QLCUtil.signOpen(message: blockHash.toHexString(), publicKey: publicKey, signature: signature)
         if !signCheck {
             print(QLCConstants.EXCEPTION_MSG_1005)
@@ -241,23 +247,23 @@ public class QLCUtil: NSObject {
     }
     
     // Send
-    @objc public static func sendAsset(from:String, tokenName:String, to:String, amount:UInt, sender: String?, receiver:String?, message:String?, privateKey:String,isMainNetwork:Bool, successHandler: @escaping QlcClientSuccessHandler, failureHandler: @escaping QlcClientFailureHandler) {
+    @objc public static func sendAsset(from:String, tokenName:String, to:String, amount:UInt, sender: String?, receiver:String?, message:String?, data:String?, privateKey:String,baseUrl:String, workInLocal:Bool, successHandler: @escaping QlcClientSuccessHandler, failureHandler: @escaping QlcClientFailureHandler) {
         let privateKeyB = privateKey.hex2Bytes
         let amountB = BigUInt(amount)
-        try? TransactionMng.sendBlock(from: from, tokenName: tokenName, to: to, amount: amountB, sender: sender ?? "", receiver: receiver ?? "", message: message ?? "", privateKeyB: privateKeyB,isMainNetwork:isMainNetwork, successHandler: { (response) in
+        try? TransactionMng.sendBlock(from: from, tokenName: tokenName, to: to, amount: amountB, sender: sender ?? "", receiver: receiver ?? "", message: message ?? "", data:data ?? "", privateKeyB: privateKeyB,baseUrl:baseUrl, workInLocal: workInLocal, successHandler: { (response) in
             if response != nil {
                 let dic = response as! Dictionary<String, Any>
-                try? LedgerMng.process(dic: dic,isMainNetwork:isMainNetwork, successHandler: { (response) in
+                try? LedgerMng.process(dic: dic,baseUrl:baseUrl, successHandler: { (response) in
                     if response != nil {
                         successHandler(response)
                     } else {
-                        failureHandler(nil, nil)
+                        failureHandler(nil, "qlc process api return nil")
                     }
                 }) { (error, message) in
                     failureHandler(error, message)
                 }
             } else {
-                failureHandler(nil, nil)
+                failureHandler(nil, "sendBlock func return nil")
             }
         }) { (error, message) in
             failureHandler(error, message)
@@ -265,10 +271,10 @@ public class QLCUtil: NSObject {
     }
     
     // Receive
-    @objc public static func receive_accountsPending(address:String,isMainNetwork:Bool, successHandler: @escaping QlcClientSuccessHandler, failureHandler: @escaping QlcClientFailureHandler) {
+    @objc public static func receive_accountsPending(address:String,baseUrl:String, successHandler: @escaping QlcClientSuccessHandler, failureHandler: @escaping QlcClientFailureHandler) {
         // pending info
         var pending: QLCPending?
-        try? LedgerMng.accountsPending(address: address,isMainNetwork:isMainNetwork, successHandler: { (response) in
+        try? LedgerMng.accountsPending(address: address,baseUrl:baseUrl, successHandler: { (response) in
             if response != nil {
                 pending = (response as! QLCPending)
                 let itemList = pending?.infoList
@@ -287,16 +293,16 @@ public class QLCUtil: NSObject {
     }
     
     // Receive
-    @objc public static func receive_blocksInfo(blockHash:String, receiveAddress:String ,privateKey:String,isMainNetwork:Bool, successHandler: @escaping QlcClientSuccessHandler, failureHandler: @escaping QlcClientFailureHandler) {
+    @objc public static func receive_blocksInfo(blockHash:String, receiveAddress:String ,privateKey:String,baseUrl:String, successHandler: @escaping QlcClientSuccessHandler, failureHandler: @escaping QlcClientFailureHandler) {
         let blockHashB = blockHash.hex2Bytes
-        try? LedgerMng.blocksInfo(blockHash: blockHashB,isMainNetwork:isMainNetwork, successHandler: { (response) in
+        try? LedgerMng.blocksInfo(blockHash: blockHashB,baseUrl:baseUrl, successHandler: { (response) in
             if response != nil {
                 let tempBlock:QLCStateBlock = response as! QLCStateBlock
                 let privateKeyB = privateKey.hex2Bytes
-                try? TransactionMng.receiveBlock(sendBlock: tempBlock, receiveAddress: receiveAddress, privateKeyB: privateKeyB,isMainNetwork:isMainNetwork, successHandler: { (response) in
+                try? TransactionMng.receiveBlock(sendBlock: tempBlock, receiveAddress: receiveAddress, privateKeyB: privateKeyB,baseUrl:baseUrl, successHandler: { (response) in
                     if response != nil {
                         let dic = response as! Dictionary<String, Any>
-                        try? LedgerMng.process(dic: dic,isMainNetwork:isMainNetwork, successHandler: { (response) in
+                        try? LedgerMng.process(dic: dic,baseUrl:baseUrl, successHandler: { (response) in
                             if response != nil {
                                 successHandler(response)
                             } else {
@@ -405,7 +411,54 @@ public class QLCUtil: NSObject {
     @objc public static func getRandomStringOfLength(length: Int) -> String {
         return RandomString.getRandomStringOfLength(length: length)
     }
-
+    
+    @objc public static func getSignBlock(blockDic: NSDictionary, privateKey: String, publicKey : String) -> NSDictionary {
+        let block : QLCStateBlock = QLCStateBlock.deserialize(from: blockDic)!
+        
+        // set signature
+        let blockHash = BlockMng.getHash(block: block)
+        let signature = QLCUtil.sign(messageHex: blockHash.toHexString(), secretKey: privateKey, publicKey: publicKey)
+        let signCheck : Bool = QLCUtil.signOpen(message: blockHash.toHexString(), publicKey: publicKey, signature: signature)
+        if !signCheck {
+            print(QLCConstants.EXCEPTION_MSG_1005)
+        }
+        block.signature = signature
+        
+        return block.toJSON()! as NSDictionary
+    }
+    
+    /// 根据本地时区转换
+    static func getUTCDateFromatAnDate(_ anyDate: Date?) -> Date {
+        //设置源日期时区
+        let sourceTimeZone = NSTimeZone.local as NSTimeZone
+        //或GMT
+        //设置转换后的目标日期时区
+        let destinationTimeZone = NSTimeZone(abbreviation: "UTC")
+        //得到源日期与世界标准时间的偏移量
+        var sourceGMTOffset: Int? = nil
+        if let aDate = anyDate {
+            sourceGMTOffset = sourceTimeZone.secondsFromGMT(for: aDate)
+        }
+        //目标日期与本地时区的偏移量
+        var destinationGMTOffset: Int? = nil
+        if let aDate = anyDate {
+            destinationGMTOffset = destinationTimeZone!.secondsFromGMT(for: aDate)
+        }
+        //得到时间偏移量的差值
+        let interval = TimeInterval((destinationGMTOffset ?? 0) - (sourceGMTOffset ?? 0))
+        //转为现在时间
+        var destinationDateNow: Date? = nil
+        if let aDate = anyDate {
+            destinationDateNow = Date(timeInterval: interval, since: aDate)
+        }
+        return destinationDateNow!
+    }
+    
+    
+    @objc public static func test() {
+        
+    }
+    
 }
 
 

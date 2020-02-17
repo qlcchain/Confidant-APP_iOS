@@ -176,6 +176,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [self.passView showEmailSetPassView:self.view];
 }
 - (IBAction)clickAttchBtn:(id)sender {
+    [self.view endEditing:YES];
     if (_mainScrollView.contentSize.height > SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT) {
          [_mainScrollView setContentOffset:CGPointMake(0, _mainScrollView.contentSize.height-(SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT)) animated:YES];
     }
@@ -193,8 +194,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     _selContactType = 2;
     PNEmailContactViewController *vc = [[PNEmailContactViewController alloc] init];
     [self presentModalVC:vc animated:YES];
-    
-    
 }
 - (IBAction)clickSelBCCUserAction:(id)sender {
     self.selTextView = _bccTF;

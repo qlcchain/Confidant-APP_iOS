@@ -653,5 +653,57 @@
     }];
     return contactCount;
 }
+// data 转 16进制 字符串
++ (NSString*)dataToHexString:(NSData*)data {
+    if (data == nil) {
+        return @"";
+    }
+    Byte *dateByte = (Byte *)[data bytes];
+    NSString *hexStr=@"";
+    for(int i=0;i<[data length];i++) {
+        NSString *newHexStr = [NSString stringWithFormat:@"%x",dateByte[i]&0xff]; ///16进制数
+        if([newHexStr length]==1)
+            hexStr = [NSString stringWithFormat:@"%@0%@",hexStr,newHexStr];
+        else
+            hexStr = [NSString stringWithFormat:@"%@%@",hexStr,newHexStr];
+    }
+    return hexStr;
+}
+// 16进制 字符串 转 data
++ (NSData *)HexStrToData:(NSString *)str {
+    if (!str || [str length] == 0) {
+        return nil;
+    }
+    
+    NSMutableData *hexData = [[NSMutableData alloc] initWithCapacity:8];
+    NSRange range;
+    if ([str length] % 2 == 0) {
+        range = NSMakeRange(0, 2);
+    } else {
+        range = NSMakeRange(0, 1);
+    }
+    for (NSInteger i = range.location; i < [str length]; i += 2) {
+        unsigned int anInt;
+        NSString *hexCharStr = [str substringWithRange:range];
+        NSScanner *scanner = [[NSScanner alloc] initWithString:hexCharStr];
+        
+        [scanner scanHexInt:&anInt];
+        NSData *entity = [[NSData alloc] initWithBytes:&anInt length:1];
+        [hexData appendData:entity];
+        
+        range.location += range.length;
+        range.length = 2;
+    }
+ 
+    return hexData;
+}
++ (NSString *) genterEnUtilNonce
+{
+    NSString *nonce = @"AAAAAAAAAAAAAAAAAAAAAAAA";
+    unsigned char css[nonce.length];
+    memcpy(css, [nonce cStringUsingEncoding:NSUTF8StringEncoding], nonce.length);
+    NSData *nonceData = [NSData dataWithBytesNoCopy:css length:24 freeWhenDone:NO];
+    return [nonceData base64EncodedString];
+}
 
 @end
