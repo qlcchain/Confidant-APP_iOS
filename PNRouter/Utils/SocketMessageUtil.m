@@ -1118,28 +1118,36 @@
     model.AssocId = AssocId;
     model.TimeStatmp = [receiveDic[@"timestamp"] integerValue];
     model.messageId = MsgId;
-    model.signKey = signKey;
+    model.signKey = signKey?:@"";
     model.nonceKey = nonceKey;
     model.symmetKey = symmetkey;
     
-   NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:FromId];
-    if ([signPublickey isEmptyString]) {
-        return;
-    }
-    // 解签名
-    NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:signPublickey verifyMsg:signKey];
-    if ([tempPublickey isEmptyString]) {
-        NSString *retcode = @"0"; // 0：消息接收成功   1：目标不可达   2：其他错误
-        NSDictionary *params = @{@"Action":@"PushMsg",@"Retcode":retcode,@"Msg":@"",@"ToId":model.ToId};
-        NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
-        [SocketMessageUtil sendRecevieMessageWithParams3:params tempmsgid:tempmsgid];
-        return;
-    }
-    // 生成对称密钥
-    NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
-    NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:Msg nonce:nonceKey];
-    if (![deMsg isEmptyString]) {
-        model.msg = deMsg;
+    // 判断是否是 新用户注册欢迎消息
+    if ([signKey hasPrefix:@"======"]) {
+        
+        NSString *deMsg = [Msg base64DecodedString];
+        if (![deMsg isEmptyString]) {
+            model.msg = deMsg;
+        }
+        
+    } else {
+        
+        NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:FromId];
+        if ([signPublickey isEmptyString]) {
+            return;
+        }
+        // 解签名
+        NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:signPublickey verifyMsg:signKey];
+        if ([tempPublickey isEmptyString]) {
+            return;
+        }
+        // 生成对称密钥
+        NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
+        NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:Msg nonce:nonceKey];
+        if (![deMsg isEmptyString]) {
+            model.msg = deMsg;
+        }
+        
     }
    
     // 添加到chatlist

@@ -93,6 +93,9 @@
     [GIDSignIn sharedInstance].clientID = CLIENT_ID;
     [GIDSignIn sharedInstance].delegate = self;
     
+    // 配置埋眯
+    [FIRApp configure];
+    
     // 配置Bugly
     [self configBugly];
     // 配置推送
@@ -100,7 +103,7 @@
     // 配置IQKeyboardManager
     [self keyboardManagerConfig];
     // 配置DDLog
-    //[self configDDLog];
+   // [self configDDLog];
     // 配置聊天
     [self configChat];
     // 打开时改变文件上传下载状态
@@ -419,8 +422,6 @@
                           channel:@"App Store"
                  apsForProduction:isDis
             advertisingIdentifier:nil];
-    
-   
 }
 
 #pragma mark - BuglyDelegate
@@ -604,13 +605,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
     //[MiPushSDK bindDeviceToken:deviceToken];
    // AppD.devToken = deviceToken;
     
-    
     /// Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
     // 获取regid
     AppD.regId = [JPUSHService registrationID];
-     
-     
 }
 
 - (void)application:(UIApplication *)app
@@ -709,11 +707,6 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     completionHandler(UIBackgroundFetchResultNewData);
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-
-    // Required, For systems with less than or equal to iOS 6
-    [JPUSHService handleRemoteNotification:userInfo];
-}
 
 #pragma mark - Lazy
 - (PNUnlockView *)unlockView {

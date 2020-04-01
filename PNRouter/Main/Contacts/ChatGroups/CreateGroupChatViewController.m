@@ -149,6 +149,13 @@
     }];
     
     [SendRequestUtil sendCreateGroupWithName:[_nameTF.text.trim base64EncodedString] userKey:srcKey verifyMode:[NSString stringWithFormat:@"%d",isInvacation] friendId:friendids friendKey:friendKeys showHud:YES];
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_ADD_GROUP,
+                 kFIRParameterItemName:FIR_CHAT_ADD_GROUP,
+                 kFIRParameterContentType:FIR_CHAT_ADD_GROUP
+                 }];
 }
 
 #pragma mark - 通知回调

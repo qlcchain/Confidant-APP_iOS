@@ -20,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 @property (weak, nonatomic) IBOutlet UIView *searBackView;
 @property (weak, nonatomic) IBOutlet UITextField *searchTF;
-@property (nonatomic) BOOL isSearch;
+@property (nonatomic, assign) BOOL isSearch;
 @property (nonatomic, strong) NSMutableArray *searchDataArray;
     
 @property (nonatomic, strong) NSMutableArray *emailContacts;
@@ -92,7 +92,6 @@
     NSArray *finfAlls = [EmailContactModel bg_find:EMAIL_CONTACT_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"user"),bg_sqlValue(accountM.User),bg_sqlKey(@"userName"),bg_sqlValue(@"")]];
     if (finfAlls) {
         [self.emailContacts addObjectsFromArray:finfAlls];
-        
         // 按时间降序
         finfAlls =[finfAlls sortedArrayUsingComparator:^NSComparisonResult(id obj1,id obj2) {
             EmailContactModel *object1 = (EmailContactModel *)obj1;
@@ -137,6 +136,9 @@
 {
     if (_isSearch) {
         return self.searchDataArray.count;
+    }
+    if (self.dataDic.count == 0) {
+        return 0;
     }
     NSArray *keys = [[self.dataDic allKeys]  sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     return [self.dataDic[keys[section]] count];

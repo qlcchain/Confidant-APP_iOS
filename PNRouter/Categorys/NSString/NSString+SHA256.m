@@ -12,6 +12,7 @@
 @implementation NSString (SHA256)
 - (NSString *)SHA256
 {
+    /*
     const char *s = [self cStringUsingEncoding:NSASCIIStringEncoding];
     NSData *keyData = [NSData dataWithBytes:s length:strlen(s)];
     
@@ -22,7 +23,20 @@
     hash = [hash stringByReplacingOccurrencesOfString:@" " withString:@""];
     hash = [hash stringByReplacingOccurrencesOfString:@"<" withString:@""];
     hash = [hash stringByReplacingOccurrencesOfString:@">" withString:@""];
-    return hash;
+    return hash;*/
+    
+    const char* str = [self UTF8String];
+    unsigned char result[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(str, (CC_LONG)strlen(str), result);
+        
+    NSMutableString *ret = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH*2];
+    for(int i = 0; i<CC_SHA256_DIGEST_LENGTH; i++)
+    {
+        [ret appendFormat:@"%02x",result[i]];
+    }
+    ret = (NSMutableString *)[ret uppercaseString];
+    return ret;
+
 }
 
 @end

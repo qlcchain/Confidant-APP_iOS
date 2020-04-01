@@ -4,17 +4,21 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Headers/QLCDPKIManager.h</key>
+		<data>
+		IgA9IT90tX/WxQ9h+eMvZRLNKWM=
+		</data>
 		<key>Headers/QLCFramework-Swift.h</key>
 		<data>
-		xK1alZ2Qm0NINgSRdCamyoO2764=
+		uwLeN2xtVJ2MIsGU4lKnI6Q6isE=
 		</data>
 		<key>Headers/QLCFramework.h</key>
 		<data>
-		clkEosjFaIiRkfg4AX6VuVr9VGM=
+		/DrDSA/dNsrFeBCJU1NaO4FTUAE=
 		</data>
 		<key>Headers/QLCLedgerRpc.swift</key>
 		<data>
-		7GAILsiXPAzsoNYIusKZMQnP8Cw=
+		YGh2XKM+V2SPFD1UT6R1niyphw8=
 		</data>
 		<key>Headers/QLCMnemonicBit.h</key>
 		<data>
@@ -22,31 +26,47 @@
 		</data>
 		<key>Headers/QLCUtil.swift</key>
 		<data>
-		NrpzSHONoJTD5AQljIeGNkZcF3s=
+		3MlAP82sjfEe8XFh9RPxDCghKIY=
 		</data>
 		<key>Headers/QLCWalletManage.h</key>
 		<data>
-		MhCtNO5SsGamNTyvepP48lXyR7I=
+		w83sioxRwsbbFtYC7KZVohjUZUU=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		dmXMWdFQ/JtvIQKRi965/rqalqs=
+		rsQGukIyXZ/UVcFFqp/DI8xHe6w=
+		</data>
+		<key>Modules/QLCFramework.swiftmodule/i386-apple-ios-simulator.swiftdoc</key>
+		<data>
+		aDkzP+zOymdtSqvxxjTj3txkBp0=
+		</data>
+		<key>Modules/QLCFramework.swiftmodule/i386-apple-ios-simulator.swiftmodule</key>
+		<data>
+		Nh0e8zWmY3EkHcYlmEMywxB0+f4=
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/i386.swiftdoc</key>
 		<data>
-		SaV26KBNaEBg3PfD3otJCJxvobs=
+		aDkzP+zOymdtSqvxxjTj3txkBp0=
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/i386.swiftmodule</key>
 		<data>
-		DPpqWAzk2pRLhWLGGxvZrqbLyBw=
+		Nh0e8zWmY3EkHcYlmEMywxB0+f4=
+		</data>
+		<key>Modules/QLCFramework.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
+		<data>
+		Zuj/3uDJE4HnDKFh7Tp2I4AGbEY=
+		</data>
+		<key>Modules/QLCFramework.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
+		<data>
+		aGkVRFjgB2vM6TftXWPtPItlnoc=
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		YG4qUjQ146Fq2jlEpjPP7mrYbc4=
+		Zuj/3uDJE4HnDKFh7Tp2I4AGbEY=
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		oDqz3vlwSlQwGI6wrWLX5lPZGDI=
+		aGkVRFjgB2vM6TftXWPtPItlnoc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -54,42 +74,53 @@
 		</data>
 		<key>Note.txt</key>
 		<data>
-		lGjuAQ7z30KB9wjB6v1kGy66E5Y=
+		BFUaCry6DNcHm4cjHE3QrNoLpR8=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Headers/QLCDPKIManager.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			IgA9IT90tX/WxQ9h+eMvZRLNKWM=
+			</data>
+			<key>hash2</key>
+			<data>
+			KHoZzHjzLRNqc2zr8bXpHQARc0Sx8xAfvbdC8nNbDK0=
+			</data>
+		</dict>
 		<key>Headers/QLCFramework-Swift.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			xK1alZ2Qm0NINgSRdCamyoO2764=
+			uwLeN2xtVJ2MIsGU4lKnI6Q6isE=
 			</data>
 			<key>hash2</key>
 			<data>
-			Xn56zOCS6Niypkvl2EuJiYfC0C+OENLhAqd86D4q1uo=
+			nAu3s/vmEORqa9WobXySltes2+5QeT+FIV2IoJBq5po=
 			</data>
 		</dict>
 		<key>Headers/QLCFramework.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			clkEosjFaIiRkfg4AX6VuVr9VGM=
+			/DrDSA/dNsrFeBCJU1NaO4FTUAE=
 			</data>
 			<key>hash2</key>
 			<data>
-			MA/IKuA6n7Xf2sVyzFVao9dgrDwhcjU0R88/CnIEvVM=
+			SJgLmUWylnkpw/oeyqqY6blN5+MOTtYlKjXmvRPz9Us=
 			</data>
 		</dict>
 		<key>Headers/QLCLedgerRpc.swift</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			7GAILsiXPAzsoNYIusKZMQnP8Cw=
+			YGh2XKM+V2SPFD1UT6R1niyphw8=
 			</data>
 			<key>hash2</key>
 			<data>
-			lfASoYRbzkRr55sMsaAFGVzVXUi/WSmwOVXgpTcgVrE=
+			6xgfTEUitfchA7PkmyQRNP1KXQAbXyzhrmZKax1w3QI=
 			</data>
 		</dict>
 		<key>Headers/QLCMnemonicBit.h</key>
@@ -107,66 +138,110 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			NrpzSHONoJTD5AQljIeGNkZcF3s=
+			3MlAP82sjfEe8XFh9RPxDCghKIY=
 			</data>
 			<key>hash2</key>
 			<data>
-			frsCUQSTyy810hWa2VmsaHajbW8o4tpU1f+oKNR+a1M=
+			1nIuW226Pxse3tN28O9k9ijf8av1czGeU6saFBp2jBY=
 			</data>
 		</dict>
 		<key>Headers/QLCWalletManage.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			MhCtNO5SsGamNTyvepP48lXyR7I=
+			w83sioxRwsbbFtYC7KZVohjUZUU=
 			</data>
 			<key>hash2</key>
 			<data>
-			J3LNKgCYz0JkI25Okf966JSKg0bwHVtOLM89caMNSZo=
+			1WktIRtGln7q820f66IkztONDkflOAk5GW7K/afnViU=
+			</data>
+		</dict>
+		<key>Modules/QLCFramework.swiftmodule/i386-apple-ios-simulator.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			aDkzP+zOymdtSqvxxjTj3txkBp0=
+			</data>
+			<key>hash2</key>
+			<data>
+			OdBlVYC3uZi1p4SORXRXfTcVihRsnlyz+3sWanTwUO0=
+			</data>
+		</dict>
+		<key>Modules/QLCFramework.swiftmodule/i386-apple-ios-simulator.swiftmodule</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Nh0e8zWmY3EkHcYlmEMywxB0+f4=
+			</data>
+			<key>hash2</key>
+			<data>
+			w3EDjSgwwmZEtPlztQ6o/entH9R1eaAUiseL/os+jcE=
 			</data>
 		</dict>
 		<key>Modules/QLCFramework.swiftmodule/i386.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			SaV26KBNaEBg3PfD3otJCJxvobs=
+			aDkzP+zOymdtSqvxxjTj3txkBp0=
 			</data>
 			<key>hash2</key>
 			<data>
-			X9AqOpr4l/I77JYjENxen5mGYQnCCFn3F5Yj5Tz3mMs=
+			OdBlVYC3uZi1p4SORXRXfTcVihRsnlyz+3sWanTwUO0=
 			</data>
 		</dict>
 		<key>Modules/QLCFramework.swiftmodule/i386.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			DPpqWAzk2pRLhWLGGxvZrqbLyBw=
+			Nh0e8zWmY3EkHcYlmEMywxB0+f4=
 			</data>
 			<key>hash2</key>
 			<data>
-			NOdLA2TquRR8nz3lXbCX2aeBKJUmPHDhegfa/e1mCVk=
+			w3EDjSgwwmZEtPlztQ6o/entH9R1eaAUiseL/os+jcE=
+			</data>
+		</dict>
+		<key>Modules/QLCFramework.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Zuj/3uDJE4HnDKFh7Tp2I4AGbEY=
+			</data>
+			<key>hash2</key>
+			<data>
+			1umGCX3uhsz7fBVLxy7Vs/R2ZAqt8Ou5WxpYyeLIDKM=
+			</data>
+		</dict>
+		<key>Modules/QLCFramework.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			aGkVRFjgB2vM6TftXWPtPItlnoc=
+			</data>
+			<key>hash2</key>
+			<data>
+			AAu02hhrso+s7u6FDa40UWt/eP385O5necTGxfwGDF8=
 			</data>
 		</dict>
 		<key>Modules/QLCFramework.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			YG4qUjQ146Fq2jlEpjPP7mrYbc4=
+			Zuj/3uDJE4HnDKFh7Tp2I4AGbEY=
 			</data>
 			<key>hash2</key>
 			<data>
-			/Dk9yig3+7DTRQ0vwPxTq6vKz7VCuMu0RNhb9H2ZfSA=
+			1umGCX3uhsz7fBVLxy7Vs/R2ZAqt8Ou5WxpYyeLIDKM=
 			</data>
 		</dict>
 		<key>Modules/QLCFramework.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			oDqz3vlwSlQwGI6wrWLX5lPZGDI=
+			aGkVRFjgB2vM6TftXWPtPItlnoc=
 			</data>
 			<key>hash2</key>
 			<data>
-			87SiwIlagRv5kFHYshjbUWetIghuoCXZYvDLiEg6zNA=
+			AAu02hhrso+s7u6FDa40UWt/eP385O5necTGxfwGDF8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -184,11 +259,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			lGjuAQ7z30KB9wjB6v1kGy66E5Y=
+			BFUaCry6DNcHm4cjHE3QrNoLpR8=
 			</data>
 			<key>hash2</key>
 			<data>
-			KVkNQrtlqGPwqzXEDgP/YblNwJajlarfxcjixAK4Y30=
+			kmOW1vO9X05m0syM0AhrX3/LyrB8pnPVlQslBDhZyXA=
 			</data>
 		</dict>
 	</dict>

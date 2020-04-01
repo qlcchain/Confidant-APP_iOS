@@ -41,6 +41,31 @@
 #define EN_FILE_TABNAME @"EN_FILE_TABNAME"
 
 
+// 埋点事件名
+#define FIR_LOGIN  @"login"
+#define FIR_EMAIL_CONFIG @"emailConfig"
+#define FIR_EMAIL_SEND   @"emailSend"
+#define FIR_CHAT_SEND_TEXT    @"chatSendText"
+#define FIR_CHAT_DEL  @"chatDelete"
+#define FIR_CHAT_SEND_SUCCESS  @"chatSendSuccess"
+#define FIR_CHAT_SEND_FILE_SUCCESS @"chatSendFileSuccess"
+#define FIR_CHAT_SEND_FILE    @"chatSendFile"
+#define FIR_CHAT_ADD_FRIEND   @"chatAddFriend"
+#define FIR_CHAT_ADD_GROUP   @"chatAddGroup"
+#define FIR_CHAT_SEND_GROUP_TEXT    @"chatSendGroupText"
+#define FIR_CHAT_SEND_GROUP_FILE    @"chatSendGroupFile"
+#define FIR_CHAT_GROUP_SEND_SUCCESS  @"chatGroupSendSuccess"
+#define FIR_CHAT_GROUP_SEND_FILE_SUCCESS @"chatGroupSendFileSuccess"
+#define FIR_FLODER_CREATE    @"floderCreate"
+#define FIR_FLODER_UPLOAD_FILE    @"floderUploadFile"
+#define FIR_CONTACTS_SYNC    @"contactsSync"
+#define FIR_CONTACTS_RECOVER    @"contactsRecover"
+
+#define FIR_CONTACT_DEL  @"contactDelete"
+#define FIR_CONTACT_DEL_SUCCESS  @"contactDeleteSuccess"
+
+
+
 // 请求超时时间
 #define REQEUST_TIME  20
 #define REQEUST_TIME_60  60
@@ -68,6 +93,7 @@
 #define LOGIN_KEY @"login_keys"
 #define TOX_DATA_PASS @"123456"
 #define FILE_NONCE @"OmcKJrqehqQwNvdHkRBddXYyAvbGW2A1"
+#define EN_NONCE @"QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB"
 #define File_Download_GroupId @"File_Download_GroupId" // 文件下载groupid
 #define File_Download_Task_List @"File_Download_Task_List" // 文件下载目录
 
@@ -224,10 +250,134 @@ align-items: center;\
 </div>\
 </div>\
 </section>\
+</div>";
+///< myconfidantbegin=''><br /><br /><br /><span>&nbsp;&nbsp;Sent from MyConfidant, the app for encrypted email.</span></div>";
+
+// 非加密邮件客户端显示
+static NSString *noEncoderShowContent = @"<div id='box'>\
+<style type='text/css'>\
+* {\
+padding: 0;\
+border: 0;\
+outline: 0;\
+margin: 0;\
+}\
+a {\
+    text-decoration: none;\
+    background-color: transparent\
+}\
+a:hover,\
+a:active {\
+    outline-width: 0;\
+    text-decoration: none\
+}\
+#box {\
+width: 100vw;\
+box-sizing: border-box;\
+}\
+#box section {\
+padding: 16px;\
+}\
+#box header .Star {\
+float: right;\
+}\
+.userHead {\
+display: flex;\
+width: 100%;\
+    box-sizing: border-box;\
+    border-bottom: 1px solid #e6e6e6;\
+}\
+.userHeadA {\
+width: 44px;\
+height: 44px;\
+padding: 18px 0;\
+}\
+.userHeadB {\
+width: 240px;\
+height: 44px;\
+padding: 18px 0;\
+outline: 0px solid #ccc;\
+}\
+.userHeadC {\
+flex: 1;\
+    text-align: right;\
+height: 44px;\
+padding: 18px 0;\
+outline: 0px solid #ccc;\
+}\
+.userHeadAimg {\
+width: 44px;\
+height: 44px;\
+    border-radius: 22px;\
+}\
+.userHeadBdate {\
+color: #ccc;\
+    margin-left: 8px;\
+}\
+.rowDiv {\
+padding: 20px 0;\
+    text-align: center;\
+    border-bottom: 1px solid #e6e6e6;\
+}\
+button {\
+background: rgba(102, 70, 247, 1);\
+    border-radius: 7px;\
+color: #fff;\
+}\
+.rowDiv3Btn {\
+padding: 12px 34px;\
+background: rgba(102, 70, 247, 1);\
+    border-radius: 7px;\
+color: #fff;\
+}\
+.rowDiv h3 {\
+    font-size: 18px;\
+    line-height: 18px;\
+}\
+.h3logo {\
+position: relative;\
+top: 5px;\
+width: 24px;\
+margin-right: 5px;\
+}\
+#box p {\
+line-height: 20px;\
+font-size: 12px;\
+}\
+#box h3 {\
+line-height: 40px;\
+}\
+.qrcodeDIV2 {\
+width:50%;\
+float:left;\
+outline:1px solid red;\
+}\
+.jusCenter {\
+display: flex;\
+justify-content: center;\
+align-items: center;\
+}\
+</style>\
+<section>\
+<div class='rowDiv'>\
+<h3><img class='h3logo' src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/confidant_logo_n.png'>Encrypted Email</h3>\
+<p>Encrypted email client and beyond - your comprehensive privacy&nbsp;protection tool</p>\
 </div>\
-<div myconfidantbegin=''><br /><br /><br /><span>&nbsp;&nbsp;Sent from MyConfidant, the app for encrypted email.</span></div>";
-
-
+<div class='rowDiv' style='border: 0;'>\
+<p style='font-size: 14px;'>You have received a secure message from</p>\
+<h3 style='color:#6646F7'>xxx</h3>\
+<p>I’m using Confidant to send and receive secure emails.&nbsp;Click the link below to install the Confident APP.</p>\
+</div>\
+<div class='rowDiv jusCenter' style='text-align: center;padding: 0;'>\
+<div style='padding:15px;'>\
+<a href='https://apps.apple.com/us/app/my-confidant/id1456735273?l=zh&ls=1'><img width='140' src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/apps_tore.png'></a>\
+</div>\
+<div style='padding:15px;'>\
+<a href='https://play.google.com/store/apps/details?id=com.stratagile.pnrouter'><img width='140' src='https://confidant.oss-cn-hongkong.aliyuncs.com/images/google_play.png'></a>\
+</div>\
+</div>\
+</section>\
+</div>";
 
 // 好友邀请模板
 static NSString *friendMBHtml = @"<div id='box'>\

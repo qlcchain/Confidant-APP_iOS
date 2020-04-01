@@ -2,8 +2,8 @@
 //  NotificationService.m
 //  PushServiceExtension
 //
-//  Created by 旷自辉 on 2018/12/17.
-//  Copyright © 2018 旷自辉. All rights reserved.
+//  Created by 旷自辉 on 2020/3/29.
+//  Copyright © 2020 旷自辉. All rights reserved.
 //
 
 #import "NotificationService.h"
@@ -18,58 +18,13 @@
 @implementation NotificationService
 
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
-//    self.contentHandler = contentHandler;
-//    self.bestAttemptContent = [request.content mutableCopy];
-//
-//    // Modify the notification content here...
-//    self.bestAttemptContent.title = [NSString stringWithFormat:@"%@ [modified]", self.bestAttemptContent.title];
-//
-//    self.contentHandler(self.bestAttemptContent);
-    
     self.contentHandler = contentHandler;
     self.bestAttemptContent = [request.content mutableCopy];
     
-    // 下面是小米推送的url优先级高，可自行修改
-    NSString *imageUrlString = [request.content.userInfo objectForKey:@"mutable_content_pic_url"]; // 小米推送image的url字段
-    if (![imageUrlString isKindOfClass:[NSString class]]) {
-        imageUrlString = [request.content.userInfo objectForKey:@"your_image_url_field"]; // 自己的url
-        if (![imageUrlString isKindOfClass:[NSString class]]) {
-            return;
-        }
-    }
+    // Modify the notification content here...
+    self.bestAttemptContent.title = [NSString stringWithFormat:@"%@ [modified]", self.bestAttemptContent.title];
     
-    NSURL *url = [NSURL URLWithString:imageUrlString];
-    if (!url)
-        return;
-    
-    [[[NSURLSession sharedSession] downloadTaskWithURL:url completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (!error) {
-            NSString *tempDict = NSTemporaryDirectory();
-            
-            NSString *filenameSuffix = response.suggestedFilename ? response.suggestedFilename : [response.URL.absoluteString lastPathComponent];
-            NSString *attachmentID = [[[NSUUID UUID] UUIDString] stringByAppendingString:filenameSuffix];
-            NSString *tempFilePath = [tempDict stringByAppendingPathComponent:attachmentID];
-            
-            if ([[NSFileManager defaultManager] moveItemAtPath:location.path toPath:tempFilePath error:&error]) {
-                UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:attachmentID URL:[NSURL fileURLWithPath:tempFilePath] options:nil error:&error];
-                
-                if (!attachment) {
-                    NSLog(@"Create attachment error: %@", error);
-                } else {
-                    _bestAttemptContent.attachments = [_bestAttemptContent.attachments arrayByAddingObject:attachment];
-                }
-            } else {
-                NSLog(@"Move file error: %@", error);
-            }
-        } else {
-            NSLog(@"Download file error: %@", error);
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.contentHandler(self.bestAttemptContent);
-        });
-    }] resume];
-    
+    self.contentHandler(self.bestAttemptContent);
 }
 
 - (void)serviceExtensionTimeWillExpire {

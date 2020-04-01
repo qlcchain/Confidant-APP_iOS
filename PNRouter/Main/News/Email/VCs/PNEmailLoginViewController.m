@@ -316,7 +316,14 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
    
         }
     }];
-
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_EMAIL_CONFIG,
+                 kFIRParameterItemName:FIR_EMAIL_CONFIG,
+                 kFIRParameterContentType:FIR_EMAIL_CONFIG
+                 }];
+    
 }
 #pragma mark -------textfeild delegate-----
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

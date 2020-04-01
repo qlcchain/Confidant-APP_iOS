@@ -19,10 +19,24 @@
 #pragma mark - html文字
 - (NSString *) getHtmlText
 {
+
+
     if (self.length == 0) {
         return @"";
     }
+    
+
+    
     NSString *text = self;
+    
+    if([text containsString:@"/head>"])
+    {
+        
+        NSRange range = [text rangeOfString:@"/head>"];
+        NSInteger begin = range.location + 6;
+        text = [text substringWithRange:NSMakeRange(begin, text.length-begin)];
+    }
+    
     NSRegularExpression *regularExpretion=[NSRegularExpression regularExpressionWithPattern:@"<[^>]*>|\n|&nbsq |\r|&mdash|&ldquo|&rdquo|&nbsp;"
                                            
                                                                                     options:0
@@ -35,7 +49,6 @@
     string = [string stringByReplacingOccurrencesOfString:@"/*" withString:@""]; //去掉空格
     string = [string stringByReplacingOccurrencesOfString:@"*/" withString:@""]; //去掉空格
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]; //去除字符串中所有得空格及控制字符
-    
     return string;
 
 }

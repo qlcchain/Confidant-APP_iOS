@@ -363,6 +363,13 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
         }
         [dataUtil sendFileId:@"" fileName:fileNameInfo fileData:fileData fileid:fileModel.fId fileType:fileType messageid:@"" srcKey:fileModel.FKey dstKey:@"" isGroup:NO];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+        
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:FIR_FLODER_UPLOAD_FILE,
+                     kFIRParameterItemName:FIR_FLODER_UPLOAD_FILE,
+                     kFIRParameterContentType:FIR_FLODER_UPLOAD_FILE
+                     }];
                    
     }
 }
@@ -566,18 +573,17 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
                     [weakSelf getPHAssetVedioWithOverImg:photos[idx] phAsset:asset fName:fName isLast:idx == assets.count-1];
                 }
             }];
+            
+            /**
+                * 该方法是异步执行的，不会阻塞当前线程，而且执行完后会来到
+                * completionHandler 的 block 中。
+            */
+            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                [PHAssetChangeRequest deleteAssets:assets];
+            } completionHandler:^(BOOL success, NSError * _Nullable error) {
+                NSLog(@"----success----");
+            }];
         }
-        
-        /**
-            * 该方法是异步执行的，不会阻塞当前线程，而且执行完后会来到
-            * completionHandler 的 block 中。
-        */
-//        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-//            [PHAssetChangeRequest deleteAssets:assets];
-//        } completionHandler:^(BOOL success, NSError * _Nullable error) {
-//            NSLog(@"----success----");
-//        }];
-       
     }];
     imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:imagePickerVc animated:YES completion:nil];

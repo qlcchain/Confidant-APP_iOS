@@ -18,6 +18,7 @@ def common_pods
     pod 'CocoaLumberjack/Swift'
     pod 'Realm', '3.1.0'
     pod 'TPCircularBuffer', '~> 0.0.1'
+    pod 'Firebase/Analytics'
 end
 
 def demo_pods

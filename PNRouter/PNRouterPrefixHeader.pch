@@ -57,6 +57,7 @@
         #import "StringUtil.h"
         #import "ToastUtil.h"
         #import "SkyRadiusView.h"
+        #import <Firebase.h>
 
         // mode
 

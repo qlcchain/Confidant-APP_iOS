@@ -26,6 +26,8 @@
 #import "CSLogMacro.h"
 #import "NSData+Base64.h"
 #import "UserPrivateKeyUtil.h"
+#import "PNEntryViewController.h"
+
 
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate> {
@@ -129,6 +131,13 @@
         [RouterConfig getRouterConfig].currentRouterMAC = @"";
         [self sendGB];
     }
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_LOGIN,
+                 kFIRParameterItemName:FIR_LOGIN,
+                 kFIRParameterContentType:FIR_LOGIN
+                 }];
 }
 
 /**
@@ -505,6 +514,16 @@
             [self loginAction:nil];
         }
     }
+    
+    /*
+    // 双击的 Recognizer
+
+    UITapGestureRecognizer *doubleRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(DoubleTap:)];
+
+    doubleRecognizer.numberOfTapsRequired = 2;// 双击
+    //关键语句，给self.view添加一个手势监测；
+    [self.view addGestureRecognizer:doubleRecognizer];
+*/
 }
 
 
@@ -805,6 +824,11 @@
 //   
 //    [self presentViewController:alertC animated:YES completion:nil];
     
+}
+
+- (void) DoubleTap:(UIGestureRecognizer *) ges {
+    PNEntryViewController *vc = [[PNEntryViewController alloc] init];
+    [self presentModalVC:vc animated:YES];
 }
 
 @end

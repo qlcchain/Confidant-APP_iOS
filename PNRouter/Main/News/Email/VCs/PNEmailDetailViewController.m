@@ -1044,7 +1044,7 @@
             if (data!=nil) {
                 //获取文件路径
                 NSString *tmpDirectory =NSTemporaryDirectory();
-                NSString *filePath=[tmpDirectory stringByAppendingPathComponent : attachment.filename ];
+                NSString *filePath=[tmpDirectory stringByAppendingPathComponent :[NSString stringWithFormat:@"%@%@",attachment.filename,partUniqueID]];
                 NSFileManager *fileManger=[NSFileManager defaultManager];
                 
                 if (![fileManger fileExistsAtPath:filePath]) {//不存在就去请求加载

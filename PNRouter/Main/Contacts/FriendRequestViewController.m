@@ -47,6 +47,13 @@
         [SendRequestUtil sendNewAddFriendWithFpk:self.singPK msg:msg toxid:self.fToxId showHud:YES];
     }
     
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_ADD_FRIEND,
+                 kFIRParameterItemName:FIR_CHAT_ADD_FRIEND,
+                 kFIRParameterContentType:FIR_CHAT_ADD_FRIEND
+                 }];
+    
 }
 
 - (instancetype) initWithNickname:(NSString *) nickName userId:(NSString *) userId signpk:(NSString *) signpk toxId:(NSString *) toxId codeType:(NSString *) type
