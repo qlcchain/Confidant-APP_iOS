@@ -1038,6 +1038,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     string = [NSString trimWhitespaceAndNewline:string];
     if (string && ![string isEmptyString]) {
         
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:FIR_CHAT_SEND_GROUP_TEXT,
+                     kFIRParameterItemName:FIR_CHAT_SEND_GROUP_TEXT,
+                     kFIRParameterContentType:FIR_CHAT_SEND_GROUP_TEXT
+                     }];
+        
         CDMessageModel *model = [[CDMessageModel alloc] init];
         model.FromId = [UserConfig getShareObject].userId;
         model.ToId = self.groupModel.GId;
@@ -1621,6 +1628,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }];
         }
     }
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_GROUP_SEND_SUCCESS,
+                 kFIRParameterItemName:FIR_CHAT_GROUP_SEND_SUCCESS,
+                 kFIRParameterContentType:FIR_CHAT_GROUP_SEND_SUCCESS
+                 }];
 }
 - (void) pullMessageListSuccessNoti:(NSNotification *) noti
 {
@@ -2071,6 +2084,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.messageStatu = 1;
         model.messageId = msgID;
         [weakSelf.listView updateMessage:model];
+        
+        
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:FIR_CHAT_GROUP_SEND_FILE_SUCCESS,
+                     kFIRParameterItemName:FIR_CHAT_GROUP_SEND_FILE_SUCCESS,
+                     kFIRParameterContentType:FIR_CHAT_GROUP_SEND_FILE_SUCCESS
+                     }];
     }
 }
 
@@ -2511,6 +2532,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }
     }
+    
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_SEND_GROUP_FILE,
+                 kFIRParameterItemName:FIR_CHAT_SEND_GROUP_FILE,
+                 kFIRParameterContentType:FIR_CHAT_SEND_GROUP_FILE
+                 }];
 }
 
 

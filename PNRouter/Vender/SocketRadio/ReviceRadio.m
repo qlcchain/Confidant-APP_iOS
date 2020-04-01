@@ -161,7 +161,7 @@
 {
    int optval = 1;//这个值一定要设置，否则可能导致sendto()失败
     sendCount++;
-    if (sendCount == 4) {
+    if (sendCount == 2) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self sendFailedNoti];
         });

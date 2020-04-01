@@ -438,6 +438,8 @@
 /// @param localContacts 本地通讯录数组
 - (void) deFileWithFileData:(NSData *) fileData withUploadNode:(BOOL) isUpload withDelContactTag:(NSInteger) tag withLocalContacts:(NSMutableArray *) localContacts
 {
+    
+    
    
     NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.nodeContactKey];
        if (datakey && datakey.length>0) {
@@ -484,11 +486,25 @@
                            [self uploadContactsToNodeWithContacts:localContacts];
                        });
                        
+                       [FIRAnalytics logEventWithName:kFIREventSelectContent
+                       parameters:@{
+                                    kFIRParameterItemID:FIR_CONTACTS_SYNC,
+                                    kFIRParameterItemName:FIR_CONTACTS_SYNC,
+                                    kFIRParameterContentType:FIR_CONTACTS_SYNC
+                                    }];
+                       
                    } else {
                        if (tag == 2) {
                            // 删除原有通讯录
                            [self delOriginContacts];
                        }
+                       
+                       [FIRAnalytics logEventWithName:kFIREventSelectContent
+                       parameters:@{
+                                    kFIRParameterItemID:FIR_CONTACTS_RECOVER,
+                                    kFIRParameterItemName:FIR_CONTACTS_RECOVER,
+                                    kFIRParameterContentType:FIR_CONTACTS_RECOVER
+                                    }];
                        
                        // 恢复到本地通讯录
                        NSArray *nodeContactArray = [CNContactVCardSerialization contactsWithData:deFileData error:nil]?:@[];

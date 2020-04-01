@@ -24,7 +24,19 @@
     if (self.length == 0) {
         return @"";
     }
+    
+
+    
     NSString *text = self;
+    
+    if([text containsString:@"/head>"])
+    {
+        
+        NSRange range = [text rangeOfString:@"/head>"];
+        NSInteger begin = range.location + 6;
+        text = [text substringWithRange:NSMakeRange(begin, text.length-begin)];
+    }
+    
     NSRegularExpression *regularExpretion=[NSRegularExpression regularExpressionWithPattern:@"<[^>]*>|\n|&nbsq |\r|&mdash|&ldquo|&rdquo|&nbsp;"
                                            
                                                                                     options:0

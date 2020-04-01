@@ -363,6 +363,13 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
         }
         [dataUtil sendFileId:@"" fileName:fileNameInfo fileData:fileData fileid:fileModel.fId fileType:fileType messageid:@"" srcKey:fileModel.FKey dstKey:@"" isGroup:NO];
         [[SocketManageUtil getShareObject].socketArray addObject:dataUtil];
+        
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:FIR_FLODER_UPLOAD_FILE,
+                     kFIRParameterItemName:FIR_FLODER_UPLOAD_FILE,
+                     kFIRParameterContentType:FIR_FLODER_UPLOAD_FILE
+                     }];
                    
     }
 }

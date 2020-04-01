@@ -433,6 +433,13 @@
             
             PNFloderModel *floderM = self.nodeDataArray[self.cellTag];
             [SendRequestUtil sendUpdateloderWithFloderType:1 updateType:2 react:1 name:fname oldName:floderM.PathName fid:0 pathid:floderM.fId showHud:YES];
+            
+            [FIRAnalytics logEventWithName:kFIREventSelectContent
+            parameters:@{
+                         kFIRParameterItemID:FIR_FLODER_CREATE,
+                         kFIRParameterItemName:FIR_FLODER_CREATE,
+                         kFIRParameterContentType:FIR_FLODER_CREATE
+                         }];
         }
     }
 }

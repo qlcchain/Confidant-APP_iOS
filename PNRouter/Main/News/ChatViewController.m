@@ -1060,6 +1060,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
         }
     }
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_SEND_FILE,
+                 kFIRParameterItemName:FIR_CHAT_SEND_FILE,
+                 kFIRParameterContentType:FIR_CHAT_SEND_FILE
+                 }];
 }
 
 #pragma makr ------点击发送按钮回调--------
@@ -1068,6 +1075,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     string = [NSString trimWhitespaceAndNewline:string];
     
     if (string && ![string isEmptyString]) {
+        
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:FIR_CHAT_SEND_TEXT,
+                     kFIRParameterItemName:FIR_CHAT_SEND_TEXT,
+                     kFIRParameterContentType:FIR_CHAT_SEND_TEXT
+                     }];
+        
         UserModel *userM = [UserModel getUserModel];
         // 生成签名
         NSString *signString = [LibsodiumUtil getOwenrSignPrivateKeySignOwenrTempPublickKey];
@@ -1558,6 +1573,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [weakSelf.listView addMessagesToBottom:@[messageModel]];
         }
     }
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_SEND_FILE_SUCCESS,
+                 kFIRParameterItemName:FIR_CHAT_SEND_FILE_SUCCESS,
+                 kFIRParameterContentType:FIR_CHAT_SEND_FILE_SUCCESS
+                 }];
 }
 #pragma mark -----收到文件消息通知------
 - (void) receiveFileMessage:(NSNotification *) noti
@@ -1652,6 +1674,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }];
     }
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_SEND_SUCCESS,
+                 kFIRParameterItemName:FIR_CHAT_SEND_SUCCESS,
+                 kFIRParameterContentType:FIR_CHAT_SEND_SUCCESS
+                 }];
 }
 #pragma mark ------收到文本消息通知--------
 - (void)addMessage:(NSNotification *)noti {
@@ -1740,17 +1769,31 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                             payloadM.Msg = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:payloadM.Msg nonce:payloadM.Nonce];
                              payloadM.UserName = [UserModel getUserModel].username;
                         } else {
-                            // 解签名
-                            NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:self.friendModel.signPublicKey verifyMsg:payloadM.Sign];
-                            if (![tempPublickey isEmptyString]) {
-                                // 生成对称密钥
-                                NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
-                                NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:payloadM.Msg nonce:payloadM.Nonce];
+                            
+                            // 判断是否是 新用户注册欢迎消息
+                            if ([payloadM.Sign hasPrefix:@"======"]) {
+                                
+                                NSString *deMsg = [payloadM.Msg base64DecodedString]?:@"";
                                 if (![deMsg isEmptyString]) {
-                                    payloadM.UserName =weakSelf.lblNavTitle.text;
                                     payloadM.Msg = deMsg;
                                 }
+                                
+                            } else {
+                                
+                                // 解签名
+                                NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:self.friendModel.signPublicKey verifyMsg:payloadM.Sign];
+                                if (![tempPublickey isEmptyString]) {
+                                    // 生成对称密钥
+                                    NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
+                                    NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:payloadM.Msg nonce:payloadM.Nonce];
+                                    if (![deMsg isEmptyString]) {
+                                        payloadM.UserName =weakSelf.lblNavTitle.text;
+                                        payloadM.Msg = deMsg;
+                                    }
+                                }
+                                
                             }
+                            
                         }
                         
                         messageM.repModel = payloadM;
@@ -1842,17 +1885,30 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:payloadModel.PriKey];
                 model.msg = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:payloadModel.Msg nonce:payloadModel.Nonce];
             } else {
-                // 解签名
-                NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:self.friendModel.signPublicKey verifyMsg:payloadModel.Sign];
-                if (![tempPublickey isEmptyString]) {
-                    // 生成对称密钥
-                    NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
-                    NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:payloadModel.Msg nonce:payloadModel.Nonce];
+                
+                // 判断是否是 新用户注册欢迎消息
+                if ([payloadModel.Sign hasPrefix:@"======"]) {
+                    
+                    NSString *deMsg = [payloadModel.Msg base64DecodedString]?:@"";
                     if (![deMsg isEmptyString]) {
                         model.msg = deMsg;
                     }
+                    
+                } else {
+                    
+                    // 解签名
+                    NSString *tempPublickey = [LibsodiumUtil verifySignWithSignPublickey:self.friendModel.signPublicKey verifyMsg:payloadModel.Sign];
+                    if (![tempPublickey isEmptyString]) {
+                        // 生成对称密钥
+                        NSString *deSymmetKey = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:tempPublickey];
+                        NSString *deMsg = [LibsodiumUtil decryMsgPairWithSymmetry:deSymmetKey enMsg:payloadModel.Msg nonce:payloadModel.Nonce];
+                        if (![deMsg isEmptyString]) {
+                            model.msg = deMsg;
+                        }
+                    }
+                    
                 }
-                
+   
             }
         }
         
@@ -1960,6 +2016,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [SystemUtil removeDocmentFileName:self.selectMessageModel.fileName friendid:self.friendModel.userId];
         }
     }
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_DEL,
+                 kFIRParameterItemName:FIR_CHAT_DEL,
+                 kFIRParameterContentType:FIR_CHAT_DEL
+                 }];
 }
 #pragma mark ---收到删除消息通知----
 - (void)receiveDeleteMessage:(NSNotification *)noti {

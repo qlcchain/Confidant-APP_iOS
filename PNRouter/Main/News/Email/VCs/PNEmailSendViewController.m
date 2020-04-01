@@ -1062,6 +1062,13 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
     
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_EMAIL_SEND,
+                 kFIRParameterItemName:FIR_EMAIL_SEND,
+                 kFIRParameterContentType:FIR_EMAIL_SEND
+                 }];
+    
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     if (accountM.userId && accountM.userId.length > 0) {
         if (AppD.isGoogleSign) {
@@ -1178,8 +1185,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                     NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantuserid%@\'></span>",[UserConfig getShareObject].userId];
                                                     writeHtml = [writeHtml stringByAppendingString:friendID];
                                                     
-                                                    if (![writeHtml containsString:@"Sent from MyConfidant, the app for encrypted email."]) {
-                                                        writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+//                                                    if (![writeHtml containsString:@"Sent from MyConfidant, the app for encrypted email."]) {
+//                                                        writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+//                                                    }
+                                                    if ([writeHtml containsString:@"Sent from MyConfidant"]) {
+                                                        writeHtml = [writeHtml stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
                                                     }
                                                 }
                                                 
@@ -1190,6 +1200,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                     NSString *sapnContent = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantcontent%@\'></span>",writeHtml];
                                                     writeHtml = [encoderShowContent stringByReplacingOccurrencesOfString:@"xxx" withString:accountM.User];
                                                     writeHtml = [writeHtml stringByAppendingString:sapnContent];
+                                                    
+                                                } else {
+                                                    
+                                                    NSString *noencodeContent = [noEncoderShowContent stringByReplacingOccurrencesOfString:@"xxx" withString:accountM.User];
+                                                    writeHtml = [writeHtml stringByAppendingString:noencodeContent];
                                                     
                                                 }
                                                 
@@ -1375,22 +1390,29 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                   NSString *friendID = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantuserid%@\'></span>",[UserConfig getShareObject].userId];
                                    writeHtml = [writeHtml stringByAppendingString:friendID];
                                    
-                                   if (![writeHtml containsString:@"Sent from MyConfidant"]) {
-                                       writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+//                                   if (![writeHtml containsString:@"Sent from MyConfidant"]) {
+//                                       writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+//                                   }
+                                   if ([writeHtml containsString:@"Sent from MyConfidant"]) {
+                                       writeHtml = [writeHtml stringByReplacingOccurrencesOfString:confidantHtmlStr withString:@""];
                                    }
                                }
                                
                                // 是加密
-                               if (weakSelf.passView.passM.isSet || keys.length > 0) {
+                               if (!(weakSelf.passView.passM.isSet || keys.length > 0)) {
                                    
                                    if (![writeHtml containsString:@"Sent from MyConfidant"]) {
-                                       writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
+                                      // writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
                                    }
                                    
                                    writeHtml = [writeHtml base64EncodedString];
                                    NSString *sapnContent = [NSString stringWithFormat:@"<span style=\'display:none\' id=\'newconfidantcontent%@\'></span>",writeHtml];
                                    writeHtml = [encoderShowContent stringByReplacingOccurrencesOfString:@"xxx" withString:accountM.User];
                                    writeHtml = [writeHtml stringByAppendingString:sapnContent];
+                               } else {
+                                   
+                                   NSString *noencodeContent = [noEncoderShowContent stringByReplacingOccurrencesOfString:@"xxx" withString:accountM.User];
+                                   writeHtml = [writeHtml stringByAppendingString:noencodeContent];
                                }
                                
                                [messageBuilder setHTMLBody:writeHtml];
@@ -2128,7 +2150,8 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
     
     if (textView == _ccTF || textView == _toTF || textView == _bccTF) {
-        NSString *textStr = textView.text.trim;
+        NSString *textStr = [textView.text.trim stringByReplacingOccurrencesOfString:@" " withString:@""];
+        textView.text = textStr;
         if (textStr && textStr.length > 0) {
             if (self.contactArray.count > 0) {
                 textStr = [[textStr componentsSeparatedByString:kCFormat] lastObject];

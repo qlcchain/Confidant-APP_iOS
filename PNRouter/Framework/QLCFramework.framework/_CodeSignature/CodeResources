@@ -6,11 +6,11 @@
 	<dict>
 		<key>Headers/QLCDPKIManager.h</key>
 		<data>
-		fH2HGwCknrlEoUK1skigxZORIr4=
+		IgA9IT90tX/WxQ9h+eMvZRLNKWM=
 		</data>
 		<key>Headers/QLCFramework-Swift.h</key>
 		<data>
-		4LgILgZCBS+hPccR7D8ybK8Pw5U=
+		uwLeN2xtVJ2MIsGU4lKnI6Q6isE=
 		</data>
 		<key>Headers/QLCFramework.h</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>Headers/QLCWalletManage.h</key>
 		<data>
-		F5P3jjAA4xlfBDvQUZKy+d9OhC4=
+		w83sioxRwsbbFtYC7KZVohjUZUU=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/i386-apple-ios-simulator.swiftmodule</key>
 		<data>
-		ahHOxurRSUvQnqGNqcocTIm96Bg=
+		Nh0e8zWmY3EkHcYlmEMywxB0+f4=
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/i386.swiftdoc</key>
 		<data>
@@ -50,7 +50,7 @@
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/i386.swiftmodule</key>
 		<data>
-		ahHOxurRSUvQnqGNqcocTIm96Bg=
+		Nh0e8zWmY3EkHcYlmEMywxB0+f4=
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -58,7 +58,7 @@
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		IaSjmFvhkOHOUPxXhTxHG28a/XQ=
+		aGkVRFjgB2vM6TftXWPtPItlnoc=
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>Modules/QLCFramework.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		IaSjmFvhkOHOUPxXhTxHG28a/XQ=
+		aGkVRFjgB2vM6TftXWPtPItlnoc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -83,22 +83,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			fH2HGwCknrlEoUK1skigxZORIr4=
+			IgA9IT90tX/WxQ9h+eMvZRLNKWM=
 			</data>
 			<key>hash2</key>
 			<data>
-			svMjzBK2BNy6PFV5pm58IFFQUTeffDL2i8MCf6abmx0=
+			KHoZzHjzLRNqc2zr8bXpHQARc0Sx8xAfvbdC8nNbDK0=
 			</data>
 		</dict>
 		<key>Headers/QLCFramework-Swift.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			4LgILgZCBS+hPccR7D8ybK8Pw5U=
+			uwLeN2xtVJ2MIsGU4lKnI6Q6isE=
 			</data>
 			<key>hash2</key>
 			<data>
-			rjyAMFBR/m3vJx+KI7qVO0JgNnDAKFXjoVxDaARvciQ=
+			nAu3s/vmEORqa9WobXySltes2+5QeT+FIV2IoJBq5po=
 			</data>
 		</dict>
 		<key>Headers/QLCFramework.h</key>
@@ -149,11 +149,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			F5P3jjAA4xlfBDvQUZKy+d9OhC4=
+			w83sioxRwsbbFtYC7KZVohjUZUU=
 			</data>
 			<key>hash2</key>
 			<data>
-			KNnM7aVi5UwHdIPK+TgyCGJKCOlgXAM9Q8VhdPk8TEI=
+			1WktIRtGln7q820f66IkztONDkflOAk5GW7K/afnViU=
 			</data>
 		</dict>
 		<key>Modules/QLCFramework.swiftmodule/i386-apple-ios-simulator.swiftdoc</key>
@@ -171,11 +171,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ahHOxurRSUvQnqGNqcocTIm96Bg=
+			Nh0e8zWmY3EkHcYlmEMywxB0+f4=
 			</data>
 			<key>hash2</key>
 			<data>
-			Vk+lNtJfGwuRE84rj8GyQi8z8xqcTbEUZie6Cpe+/h8=
+			w3EDjSgwwmZEtPlztQ6o/entH9R1eaAUiseL/os+jcE=
 			</data>
 		</dict>
 		<key>Modules/QLCFramework.swiftmodule/i386.swiftdoc</key>
@@ -193,11 +193,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ahHOxurRSUvQnqGNqcocTIm96Bg=
+			Nh0e8zWmY3EkHcYlmEMywxB0+f4=
 			</data>
 			<key>hash2</key>
 			<data>
-			Vk+lNtJfGwuRE84rj8GyQi8z8xqcTbEUZie6Cpe+/h8=
+			w3EDjSgwwmZEtPlztQ6o/entH9R1eaAUiseL/os+jcE=
 			</data>
 		</dict>
 		<key>Modules/QLCFramework.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -215,11 +215,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			IaSjmFvhkOHOUPxXhTxHG28a/XQ=
+			aGkVRFjgB2vM6TftXWPtPItlnoc=
 			</data>
 			<key>hash2</key>
 			<data>
-			DgXvToKNucvTtb7dI00qzhK8/4hJLfM97249+VEZDNs=
+			AAu02hhrso+s7u6FDa40UWt/eP385O5necTGxfwGDF8=
 			</data>
 		</dict>
 		<key>Modules/QLCFramework.swiftmodule/x86_64.swiftdoc</key>
@@ -237,11 +237,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			IaSjmFvhkOHOUPxXhTxHG28a/XQ=
+			aGkVRFjgB2vM6TftXWPtPItlnoc=
 			</data>
 			<key>hash2</key>
 			<data>
-			DgXvToKNucvTtb7dI00qzhK8/4hJLfM97249+VEZDNs=
+			AAu02hhrso+s7u6FDa40UWt/eP385O5necTGxfwGDF8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

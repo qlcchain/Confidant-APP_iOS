@@ -14,7 +14,13 @@
 + (NSString *) enMessageStr:(NSString *) messageStr enType:(NSString *) enType qlcAccount:(NSString *) qlcAccount tokenNum:(NSString *) tokenNum tokenType:(NSString *) tokenType enNonce:(NSString *) enNonce
 {
     NSString *enMessage = @"UUxDSUQ=";
-    enMessage = [enMessage stringByAppendingString:[EntryModel getShareObject].publicKey];
+    
+    if ([enType isEqualToString:@"04"]) { // 邮件验证
+        enMessage = [enMessage stringByAppendingString:[EntryModel getShareObject].signPublicKey];
+    } else {
+        enMessage = [enMessage stringByAppendingString:[EntryModel getShareObject].tempPublicKey];
+    }
+    
     enMessage = [enMessage stringByAppendingString:enType];
     if ([enType isEqualToString:@"02"]) {
         enMessage = [enMessage stringByAppendingString:qlcAccount];

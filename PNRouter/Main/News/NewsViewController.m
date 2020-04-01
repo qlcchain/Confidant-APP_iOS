@@ -79,12 +79,7 @@
 #import "CreateGroupChatViewController.h"
 #import "NSString+RegexCategory.h"
 
-//#import <libsodium/crypto_box.h>
-//
-//#import <QLCFramework/QLCDPKIManager.h>
-//#import <QLCFramework/QLCWalletManage.h>
-//#import <QLCFramework/QLCFramework-Swift.h>
-//#import "ENMessageUtil.h"
+
 
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate,GIDSignInUIDelegate> {
     BOOL isSearch;
@@ -1882,8 +1877,6 @@
     }
     
     MCOIndexSet *numbers = [MCOIndexSet indexSetWithRange:MCORangeMake(locationf, lengthf)];
-    
-    
     MCOIMAPFetchMessagesOperation *imapMessagesFetchOp = nil;
     if (_isRefresh && _maxUid >0) {
          imapMessagesFetchOp = [EmailManage.sharedEmailManage.imapSeeion fetchMessagesOperationWithFolder:self.floderModel.path requestKind:requestKind uids:numbers];
@@ -3145,39 +3138,23 @@
     [self.navigationController pushViewController:vc animated:YES];
     [self moveAllNavgationViewController];
 }
-/*
+
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     
-    NSString *signPrivateKey = [EntryModel getShareObject].signPrivateKey;
+//    NSString *signPrivateKey = [EntryModel getShareObject].signPrivateKey;
+//    
+//    NSData *skData = [signPrivateKey base64DecodedData];
+//    NSString *signHexKey = [[SystemUtil dataToHexString:skData] substringToIndex:64];
+//    NSLog(@"signPrivateKeyLength = %ld",signHexKey.length);
+//    NSString *qlcPrivateKey = [QLCUtil seedToPrivateKeyWithSeed:signHexKey index:0];
+//    NSString *qlcPublicKey = [QLCUtil privateKeyToPublicKeyWithPrivateKey:qlcPrivateKey];
+//    
+//    NSString *qlcAccount = [QLCUtil publicKeyToAddressWithPublicKey:qlcPublicKey];
     
-    NSData *skData = [signPrivateKey base64DecodedData];
-    NSString *signHexKey = [[SystemUtil dataToHexString:skData] substringToIndex:64];
-    NSLog(@"signPrivateKeyLength = %ld",signHexKey.length);
-    NSString *qlcPrivateKey = [QLCUtil seedToPrivateKeyWithSeed:signHexKey index:0];
-    NSString *qlcPublicKey = [QLCUtil privateKeyToPublicKeyWithPrivateKey:qlcPrivateKey];
-    
-    NSString *qlcAccount = [QLCUtil publicKeyToAddressWithPublicKey:qlcPublicKey];
-    
-
     // 接收
    // [[QLCWalletManage shareInstance] receive_accountsPending:qlcAccount baseUrl:QLC_TEST_URL privateKey:qlcPrivateKey];
     NSLog(@"-----------------------");
-    
-    
-    
-     //8675cb571688f7b1d4178f9a295087864653e20b4e236967c6006341a83259fd
-      // 发送
-    /*
-    @weakify_self
-    [[QLCWalletManage shareInstance] sendAssetWithTokenName:@"QGAS" from:qlcAccount to:@"qlc_36rqcyxr1ebxgsjo9bge6n75ieempzds8s1zdi6bf1g6huost18izwujibp1" amount:100000000 privateKey:qlcPrivateKey sender:nil receiver:nil message:nil data:nil baseUrl:QLC_TEST_URL workInLocal:NO successHandler:^(NSString * _Nullable responseObj) {
-        [weakSelf.view hideHud];
-        NSLog(@"发送成功!");
-    } failureHandler:^(NSError * _Nullable error, NSString * _Nullable message) {
-        [weakSelf.view hideHud];
-        NSLog(@"message=%@",message);
-    }];
-     */
     /*
     @weakify_self
     [QLCDPKIManager getPubKeyByTypeAndID:QLC_TEST_URL type:@"email" ID:@"kuangzihui@163.com" successHandler:^(NSArray * _Nullable responseObj) {
@@ -3197,8 +3174,42 @@
     } failureHandler:^(NSError * _Nullable error, NSString * _Nullable message) {
         NSLog(@"message = %@",message);
     }];
-    
     */
+    /*
+    
+     //8675cb571688f7b1d4178f9a295087864653e20b4e236967c6006341a83259fd
+      // 发送
+    /*
+    @weakify_self
+    [[QLCWalletManage shareInstance] sendAssetWithTokenName:@"QGAS" from:qlcAccount to:@"qlc_36rqcyxr1ebxgsjo9bge6n75ieempzds8s1zdi6bf1g6huost18izwujibp1" amount:100000000 privateKey:qlcPrivateKey sender:nil receiver:nil message:nil data:nil baseUrl:QLC_TEST_URL workInLocal:NO successHandler:^(NSString * _Nullable responseObj) {
+        [weakSelf.view hideHud];
+        NSLog(@"发送成功!");
+    } failureHandler:^(NSError * _Nullable error, NSString * _Nullable message) {
+        [weakSelf.view hideHud];
+        NSLog(@"message=%@",message);
+    }];
+     */
+    
+//    @weakify_self
+//    [QLCDPKIManager getPubKeyByTypeAndID:QLC_TEST_URL type:@"email" ID:@"kuangzihui@163.com" successHandler:^(NSArray * _Nullable responseObj) {
+//        if (responseObj && responseObj.count > 0) {
+//            NSDictionary *regDic = responseObj[0];
+//            NSString *account = regDic[@"account"];
+//            NSString *pubKey = regDic[@"pubKey"];
+//            
+//           NSString *enMessage = [weakSelf enMessageStr:@"我是123" pk:pubKey];
+//            
+//           NSString *deMessage = [ENMessageUtil deMessageStr:enMessage];
+//            
+//        } else {
+//            NSLog(@"message = %@",@"没有找到id");
+//        }
+//       
+//    } failureHandler:^(NSError * _Nullable error, NSString * _Nullable message) {
+//        NSLog(@"message = %@",message);
+//    }];
+    
+    
     /*
     // 获取所有验证者
     [QLCDPKIManager getAllVerifiers:QLC_TEST_URL successHandler:^(NSArray * _Nullable responseObj) {
@@ -3241,17 +3252,17 @@
     } failureHandler:^(NSError * _Nullable error, NSString * _Nullable message) {
         NSLog(@"message = verifiers%@",message);
     }];
-       
+       */
 }
 
 
-- (NSString *) enMessageStr:(NSString *) messageStr pk:(NSString *) pk
-{
-    NSString *enPk = [[SystemUtil HexStrToData:pk] base64EncodedString];
-    NSLog(@"pk = %@",[EntryModel getShareObject].publicKey);
-    NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:enPk];
-    NSString *enMessage = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:messageStr nonce:EN_NONCE];
-    return [ENMessageUtil enMessageStr:enMessage enType:@"00" qlcAccount:@"" tokenNum:@"" tokenType:@"" enNonce:EN_NONCE];
-}
-*/
+//- (NSString *) enMessageStr:(NSString *) messageStr pk:(NSString *) pk
+//{
+//    NSString *enPk = [[SystemUtil HexStrToData:pk] base64EncodedString];
+//    NSLog(@"pk = %@",[EntryModel getShareObject].publicKey);
+//    NSString *symmetryString = [LibsodiumUtil getSymmetryWithPrivate:[EntryModel getShareObject].privateKey publicKey:enPk];
+//    NSString *enMessage = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:messageStr nonce:EN_NONCE];
+//    return [ENMessageUtil enMessageStr:enMessage enType:@"00" qlcAccount:@"" tokenNum:@"" tokenType:@"" enNonce:EN_NONCE];
+//}
+
 @end

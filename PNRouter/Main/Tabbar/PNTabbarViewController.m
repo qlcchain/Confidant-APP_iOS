@@ -404,7 +404,7 @@
         [[ChatListDataUtil getShareObject].friendArray addObjectsFromArray:friendArr];
         if (AppD.isRegister && friendArr.count == 1) {
             // 新注册用户默认 chat页面添加owenr
-            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_OWNER_CHAT_NOTI object:nil];
+           // [[NSNotificationCenter defaultCenter] postNotificationName:ADD_OWNER_CHAT_NOTI object:nil];
         }
         
     }

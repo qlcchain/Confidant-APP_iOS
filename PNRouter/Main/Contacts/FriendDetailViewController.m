@@ -217,6 +217,13 @@
     NSDictionary *params = @{@"Action":@"DelFriendCmd",@"UserId":userM.userId?:@"",@"FriendId":_friendModel.userId?:@""};
     [self.view showHudInView:self.view hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     [SocketMessageUtil sendVersion1WithParams:params];
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CONTACT_DEL,
+                 kFIRParameterItemName:FIR_CONTACT_DEL,
+                 kFIRParameterContentType:FIR_CONTACT_DEL
+                 }];
 }
 
 #pragma mark - Transition
@@ -243,6 +250,7 @@
 
 #pragma mark - NOTI
 - (void)deleteFriendSuccess:(NSNotification *)noti {
+    
     [self.view hideHud];
     // 删除本地聊天列表
     [[ChatListDataUtil getShareObject] removeChatModelWithFriendID:_friendModel.userId];
@@ -281,6 +289,13 @@
     if (!haveFriend) { // 没有此好友--调用删除
         [UserHeaderModel bg_delete:UserHeader_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"UserKey"),bg_sqlValue(_friendModel.signPublicKey)]];
     }
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CONTACT_DEL_SUCCESS,
+                 kFIRParameterItemName:FIR_CONTACT_DEL_SUCCESS,
+                 kFIRParameterContentType:FIR_CONTACT_DEL_SUCCESS
+                 }];
     
     // 删除本地聊天记录
     //[ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(_friendModel.userId?:@"")]];
