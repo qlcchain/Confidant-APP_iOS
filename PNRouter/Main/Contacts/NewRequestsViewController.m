@@ -48,6 +48,7 @@
 @property (nonatomic ,assign)  NSInteger currentAddContactsTag;
 @property (nonatomic) BOOL scrollIsManual; // 用户滑动
 @property (nonatomic, strong) GroupVerifyModel *currentOperateGroupM; // 审核人同意入群model_id
+@property (nonatomic, assign) int logId;
 
 @end
 
@@ -366,6 +367,9 @@
     self.currentAddContactsRow = row;
     FriendModel *models = self.addContactsSource[row];
     [SocketMessageUtil sendAgreedOrRefusedWithFriendMode:models withType:[NSString stringWithFormat:@"%d",0]];
+    
+    // 上传日已志
+    _logId = [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDDEAL logid:0 type:0 result:0 info:@"send_add_friend_deal"];
 }
 
 - (void)groupAcceptAction:(GroupVerifyModel *)model {
@@ -379,7 +383,9 @@
     NSString *statu = (NSString *)noti.object;
     FriendModel *friendModel = (FriendModel *)self.addContactsSource[self.currentAddContactsRow];
     if ([statu isEqualToString:@"0"]) { // 服务器处理失败
-        [AppD.window showHint:@"处理失败"];
+        [AppD.window showHint:@"To deal with fail."];
+        // 上传日志
+        [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDDEAL logid:_logId type:0xFF result:1 info:@"send_add_friend_deal_failed"];
     } else {
         friendModel.dealStaus = 1;
         [_addContactsTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentAddContactsRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -389,6 +395,8 @@
             
         }
         [friendModel bg_saveOrUpdateAsync:nil];
+        
+        [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDDEAL logid:_logId type:100 result:0 info:@"send_add_friend_deal_success"];
     }
 }
 

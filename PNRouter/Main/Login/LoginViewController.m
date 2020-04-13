@@ -27,16 +27,19 @@
 #import "NSData+Base64.h"
 #import "UserPrivateKeyUtil.h"
 #import "PNEntryViewController.h"
+#import <AFNetworking/AFNetworking.h>
+#import "AFHTTPClientV2.h"
+#import "NSDate+Category.h"
 
 
-
-@interface LoginViewController ()<OCTSubmanagerUserDelegate> {
+@interface LoginViewController ()<OCTSubmanagerUserDelegate,UIDocumentInteractionControllerDelegate> {
     BOOL isLogin;
     BOOL isFind;
     BOOL isConnectSocket;
     BOOL resultLogin;
     NSInteger sendCount;
     BOOL isClickLogin;
+    int logId;
 }
 @property (weak, nonatomic) IBOutlet UIButton *arrowImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblDesc;
@@ -52,6 +55,8 @@
 @property (nonatomic ,strong) ConnectView *connectView;
 @property (nonatomic , strong) RouterModel *selectRouther;
 @property (nonatomic, strong) NSArray *inviteArr;
+
+@property (nonatomic, strong) UIDocumentInteractionController *documentIntertactionController;
 @end
 
 @implementation LoginViewController
@@ -93,11 +98,21 @@
     }
 }
 
+- (void)presentOptionsMenu{
+    [_documentIntertactionController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES];
+}
 /**
  登陆
  @param sender sender
  */
 - (IBAction)loginAction:(id)sender {
+    
+//    NSURL *pathUrl = [[NSBundle mainBundle] URLForResource:@"GoogleService-Info" withExtension:@".plist"];
+//       _documentIntertactionController = [UIDocumentInteractionController interactionControllerWithURL:pathUrl];
+//          // _documentIntertactionController.delegate = self;
+//           [self presentOptionsMenu];
+//
+//    return;
     
     if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterToxid] isEmptyString]) {
         [self.view showHint:@"Please select the circle."];
@@ -138,6 +153,8 @@
                  kFIRParameterItemName:FIR_LOGIN,
                  kFIRParameterContentType:FIR_LOGIN
                  }];
+    
+    logId = [SendRequestUtil sendLogRequestWtihAction:LOGIN logid:0 type:0 result:0 info:@"start_login"];
 }
 
 /**
@@ -372,7 +389,7 @@
         if (!result) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideConnectServerLoad];
-                [AppD.window showHint:@"Failed to connect to the server"];
+                [AppD.window showHint:@"Unable to connect to server"];
             });
         }
         
@@ -671,7 +688,6 @@
         NSLog(@"thread = %@",[NSThread currentThread]);
         NSLog(@"加router好友成功");
         [self hideConnectServerLoad];
-        // [AppD.window showHint:@"Server connection successful."];
         [self findOrLogin];
     }
     
@@ -746,11 +762,14 @@
         return;
     }
   
-    NSInteger retCode = [noti.object integerValue];
+    int retCode = [noti.object intValue];
     if (retCode == 0) {
+       // 上传日志
+        [SendRequestUtil sendLogRequestWtihAction:LOGIN logid:logId type:100 result:retCode info:@"login_success"];
+        
         [self updateUserHead];
         [AppD setRootTabbarWithManager:nil];
-      //  [AppD.window showHint:@"Login Success"];
+        
     } else {
         isClickLogin = NO;
         if (retCode == 2) { // routeid不对
@@ -766,6 +785,11 @@
         } else { // 其它错误
             [AppD.window showHint:@"Login failed Other error."];
         }
+        
+        
+        // 上传日志
+        [SendRequestUtil sendLogRequestWtihAction:LOGIN logid:logId type:0xFF result:retCode info:@"login_failed"];
+        
     }
 }
 
@@ -799,11 +823,39 @@
         [UserConfig getShareObject].dataFilePay = dataFilePay;
         [UserConfig getShareObject].dataFileVersion = dataFileVersion;
         
-        [self updateUserHead];
+        // 上传日志
+        long millTime = [NSDate getMillisecondTimestampFromDate:[NSDate date]];
+        NSDictionary *params = @{@"app":@(1),@"action":@(1),@"id":@(logId),@"level":@(1),@"version":APP_Version,@"timestamp":@(millTime),@"type":@(100),@"result":@(0),@"user":[UserModel getUserModel].userId,@"node":self.selectRouther.toxid,@"info":@"register_success"};
         
+        [AFHTTPClientV2 requestWithBaseURLStr:LOG_TEST_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+            
+            int ret = [responseObject[@"ret"] intValue];
+            NSLog(@"----successBlock-----%d",ret);
+           
+        } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+        
+            NSLog(@"-----failedBlock----");
+        }];
+        
+        [self updateUserHead];
         [AppD setRootTabbarWithManager:nil];
     } else {
+        
         isClickLogin = NO;
+        
+        // 上传日志
+        long millTime = [NSDate getMillisecondTimestampFromDate:[NSDate date]];
+        NSDictionary *params = @{@"app":@(1),@"action":@(1),@"id":@(logId),@"level":@(1),@"version":APP_Version,@"timestamp":@(millTime),@"type":@(0xFF),@"result":@(retCode),@"user":[UserModel getUserModel].userId,@"node":self.selectRouther.toxid,@"info":@"register_failed"};
+        
+        [AFHTTPClientV2 requestWithBaseURLStr:LOG_TEST_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+            
+            int ret = [responseObject[@"ret"] intValue];
+            NSLog(@"----successBlock-----%d",ret);
+           
+        } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+        
+            NSLog(@"-----failedBlock----");
+        }];
     }
 
 }

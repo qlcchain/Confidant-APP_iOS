@@ -418,7 +418,7 @@
 {
     char data[32];
     
-    for (int x=0;x<32;data[x++] = (char)('A' + (arc4random_uniform(1))));
+    for (int x=0;x<32;data[x++] = (char)('A' + (arc4random_uniform(32))));
     
     return [[NSString alloc] initWithBytes:data length:32 encoding:NSUTF8StringEncoding];
     
@@ -706,4 +706,21 @@
     return [nonceData base64EncodedString];
 }
 
+#pragma mark-------根据文件名得到文件类型
++ (NSInteger) getAttNameType:(NSString *) attName
+{
+    NSString *fileHz = [[attName componentsSeparatedByString:@"."] lastObject]?:@"";
+    fileHz = [fileHz lowercaseString];
+    if ([fileHz isEqualToString:@"webp"] || [fileHz isEqualToString:@"bmp"] || [fileHz isEqualToString:@"jpg"] || [fileHz isEqualToString:@"png"] || [fileHz isEqualToString:@"tif"] || [fileHz isEqualToString:@"jpeg"]) {
+        return 1;
+    } else {
+        fileHz = [fileHz uppercaseString];
+        NSArray *mvs = @[@"AVI",@"WMV",@"RM",@"RMVB",@"MPEG1",@"MPEG2",@"MPEG4",@"MP4",@"3GP",@"ASF",@"SWF",@"VOB",@"DAT",@"MOV",@"M4V",@"FLV",@"F4V",@"MKV",@"MTS",@"TS",@"MP3"];
+        if ([mvs containsObject:fileHz]) {
+            return 5;
+        } else {
+            return 6;
+        }
+    }
+}
 @end

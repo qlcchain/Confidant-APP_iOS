@@ -96,7 +96,7 @@
             // 写入沙盒 并且存入keychain
             [VPNFileUtil saveVPNDataToLibrayPath:data withFileName:vpnFileName];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [AppD.window showHint:@"save file success"];
+                [AppD.window showHint:@"save success"];
             });
         }
     });

@@ -34,6 +34,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableV;
 @property (nonatomic ,strong) MyHeadView *myHeadView;
+@property (nonatomic, assign) int logId;
 @end
 
 @implementation FriendDetailViewController
@@ -224,6 +225,9 @@
                  kFIRParameterItemName:FIR_CONTACT_DEL,
                  kFIRParameterContentType:FIR_CONTACT_DEL
                  }];
+    
+    // 上传日志
+    _logId = [SendRequestUtil sendLogRequestWtihAction:DELFRIENDCMD logid:0 type:0 result:0 info:@"send_del_friend"];
 }
 
 #pragma mark - Transition
@@ -250,8 +254,19 @@
 
 #pragma mark - NOTI
 - (void)deleteFriendSuccess:(NSNotification *)noti {
-    
+   
     [self.view hideHud];
+    int retcode = [noti.object intValue];
+    if (retcode == 1) {
+        [AppD.window showHint:@"Friend deletion failed."];
+        // 上传日习
+        [SendRequestUtil sendLogRequestWtihAction:DELFRIENDCMD logid:_logId type:0xFF result:retcode info:@"del_friend_failed"];
+        return;
+    }
+    
+    // 上传日习
+    [SendRequestUtil sendLogRequestWtihAction:DELFRIENDCMD logid:_logId type:100 result:retcode info:@"del_friend_success"];
+    
     // 删除本地聊天列表
     [[ChatListDataUtil getShareObject] removeChatModelWithFriendID:_friendModel.userId];
     // 删除好友请求表

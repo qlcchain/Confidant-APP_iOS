@@ -30,7 +30,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *mainTab;
 @property (nonatomic ,strong) NSMutableArray *dataArray;
 @property (nonatomic ,strong) NSMutableArray *searchDataArray;
-
+@property (nonatomic, assign) int logId;
 @end
 
 @implementation GroupChatListViewController
@@ -105,6 +105,8 @@
 - (void) addNoti
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullGroupSucess:) name:PULL_GROUP_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullGroupFailed:) name:PULL_GROUP_FAILED_NOTI object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseContactNoti:) name:CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpGroupChatNoti:) name:GROUPS_CREATE_GROUP_SUCCESS_JUMP_NOTI object:nil];
 }
@@ -112,6 +114,8 @@
 - (void) pullGroupList
 {
     [SendRequestUtil sendPullGroupListWithShowHud:NO];
+    // 上传日志
+    _logId = [SendRequestUtil sendLogRequestWtihAction:GROUPLISTPULL logid:0 type:0 result:0 info:@"send_pull_grouplist"];
 }
 
 #pragma mark - tableviewDataSourceDelegate
@@ -183,6 +187,15 @@
         [[ChatListDataUtil getShareObject].groupArray removeAllObjects];
     }
     [[ChatListDataUtil getShareObject].groupArray addObjectsFromArray:groups];
+    
+    // 上传日志
+    [SendRequestUtil sendLogRequestWtihAction:GROUPLISTPULL logid:_logId type:100 result:0 info:@"pull_grouplist_success"];
+}
+- (void) pullGroupFailed:(NSNotification *) noti
+{
+     [_mainTab.mj_header endRefreshing];
+    // 上传日志
+    [SendRequestUtil sendLogRequestWtihAction:GROUPLISTPULL logid:_logId type:0xFF result:[noti.object intValue] info:@"pull_grouplist_failed"];
 }
 - (void) chooseContactNoti:(NSNotification *) noti
 {

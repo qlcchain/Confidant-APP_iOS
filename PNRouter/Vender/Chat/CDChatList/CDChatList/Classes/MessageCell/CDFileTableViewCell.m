@@ -131,7 +131,7 @@
     NSString *fileType = [[data.fileName componentsSeparatedByString:@"."] lastObject];
     UIImage *img = [UIImage imageNamed:[fileType stringByAppendingString:@""]];
     if (!img) {
-        img = [UIImage imageNamed:@"Other"];
+        img = [UIImage imageNamed:@"other"];
     }
     self.file_leftImgView.image = img;
     CGRect fileRect = self.file_leftImgView.frame;
@@ -163,7 +163,7 @@
     NSString *fileType = [[data.fileName componentsSeparatedByString:@"."] lastObject];
     UIImage *img = [UIImage imageNamed:[fileType stringByAppendingString:@""]];
     if (!img) {
-        img = [UIImage imageNamed:@"Other"];
+        img = [UIImage imageNamed:@"other"];
     }
     self.file_rightImgView.image = img;
     CGRect fileRect = self.file_rightImgView.frame;

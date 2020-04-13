@@ -35,6 +35,7 @@
 #import "NSString+Base64.h"
 #import "NSData+Base64.h"
 #import "YWFilePreviewView.h"
+#import "FilePreviewViewController.h"
 #import "TZImagePickerController.h"
 #import "NSString+UrlEncode.h"
 #import "AESCipher.h"
@@ -98,6 +99,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 @property (nonatomic ,strong) NSMutableArray *actionArr;
 @property (nonatomic, strong) UIWebView * callWebview;
+@property (nonatomic, assign) int logId;
 
 @end
 
@@ -317,6 +319,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
     NSDictionary *params = @{@"Action":Action_PullMsg,@"FriendId":_friendModel.userId?:@"",@"UserId":userM.userId?:@"",@"MsgType":MsgType,@"MsgStartId":MsgStartId,@"MsgNum":MsgNum,@"SrcMsgId":@"0"};
     [SocketMessageUtil sendVersion5WithParams:params];
+    
+    // 上传日志
+    _logId = [SendRequestUtil sendLogRequestWtihAction:PULLMSG logid:0 type:0 result:0 info:@"send_pull_msg"];
 }
 
 /**
@@ -351,7 +356,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 - (void)clickFileCellWithMsgMode:(CDChatMessage)msgModel withFilePath:(NSString *)filePath
 {
-    [YWFilePreviewView previewFileWithPaths:filePath fileName:msgModel.fileName fileType:msgModel.msgType];
+   // [YWFilePreviewView previewFileWithPaths:filePath fileName:msgModel.fileName fileType:msgModel.msgType];
+    FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
+    vc.fileType = ChatFile;
+    vc.fileName = msgModel.fileName;
+    vc.filePath = filePath;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)clickHeadWithMessage:(CDChatMessage)clickMessage
 {
@@ -1076,13 +1086,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     
     if (string && ![string isEmptyString]) {
         
-        [FIRAnalytics logEventWithName:kFIREventSelectContent
-        parameters:@{
-                     kFIRParameterItemID:FIR_CHAT_SEND_TEXT,
-                     kFIRParameterItemName:FIR_CHAT_SEND_TEXT,
-                     kFIRParameterContentType:FIR_CHAT_SEND_TEXT
-                     }];
-        
         UserModel *userM = [UserModel getUserModel];
         // 生成签名
         NSString *signString = [LibsodiumUtil getOwenrSignPrivateKeySignOwenrTempPublickKey];
@@ -1150,6 +1153,17 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
         
         self.repMessageModel = nil;
+        
+        
+        // 埋点
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:FIR_CHAT_SEND_TEXT,
+                     kFIRParameterItemName:FIR_CHAT_SEND_TEXT,
+                     kFIRParameterContentType:FIR_CHAT_SEND_TEXT
+                     }];
+        // 上传日志
+        _logId = [SendRequestUtil sendLogRequestWtihAction:SENDMSG logid:0 type:0 result:0 info:@"send_msg"];
     }
     
 }
@@ -1660,6 +1674,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     model.msgState = CDMessageStateNormal;
                     model.messageStatu = 1;
                     [weakSelf.listView updateMessage:model];
+                    
+                    // 日志
+                    [SendRequestUtil sendLogRequestWtihAction:SENDMSG logid:weakSelf.logId type:100 result:0 info:@"send_msg_success"];
+                    
                 } else {
                     model.msgState = CDMessageStateSendFaild;
                     if ([array[0] integerValue] == 2) {
@@ -1668,19 +1686,23 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                         messageModel.msg = @"You are not his (her) friend, please send him (her) friend request.";
                         [weakSelf.listView addMessagesToBottom:@[messageModel]];
                     }
+                    
+                    // 日志
+                    [SendRequestUtil sendLogRequestWtihAction:SENDMSG logid:weakSelf.logId type:0xFF result:[array[0] intValue] info:@"send_msg_failed"];
                 }
                 index = idx;
                 *stop = YES;
             }
         }];
     }
-    
+    // 埋点
     [FIRAnalytics logEventWithName:kFIREventSelectContent
     parameters:@{
                  kFIRParameterItemID:FIR_CHAT_SEND_SUCCESS,
                  kFIRParameterItemName:FIR_CHAT_SEND_SUCCESS,
                  kFIRParameterContentType:FIR_CHAT_SEND_SUCCESS
                  }];
+    
 }
 #pragma mark ------收到文本消息通知--------
 - (void)addMessage:(NSNotification *)noti {
@@ -1743,6 +1765,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)addMessageBefore:(NSNotification *)noti {
     
     [self.listView stopRefresh];
+    if (![noti.object isKindOfClass:[NSArray class]]) { // 拉取失败
+        // 上传日志
+        [SendRequestUtil sendLogRequestWtihAction:PULLMSG logid:_logId type:0xFF result:[noti.object intValue] info:@"pull_msg_failed"];
+        return;
+    }
+    // 上传日志
+    [SendRequestUtil sendLogRequestWtihAction:PULLMSG logid:_logId type:100 result:0 info:@"pull_msg_success"];
+    
     NSArray *resultArr = noti.object;
     if (!resultArr) {
         return;

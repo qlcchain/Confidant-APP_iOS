@@ -103,7 +103,7 @@
     // 配置IQKeyboardManager
     [self keyboardManagerConfig];
     // 配置DDLog
-   // [self configDDLog];
+    //[self configDDLog];
     // 配置聊天
     [self configChat];
     // 打开时改变文件上传下载状态
@@ -751,7 +751,7 @@ didSignInForUser:(GIDGoogleUser *)user
     
     if (error != nil) {
         if (error.code == kGIDSignInErrorCodeHasNoAuthInKeychain) {
-            [AppD.window showHint:(@"The user has not signed in before or they have since signed out.")];
+            [AppD.window showHint:@"The user has not signed in before or they have since signed out."];
         } else {
             [AppD.window showHint:([NSString stringWithFormat:@"%@", error.localizedDescription])];
         }

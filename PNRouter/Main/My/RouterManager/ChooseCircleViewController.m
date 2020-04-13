@@ -396,8 +396,6 @@
         [weakSelf leftNavBarItemPressedWithPop:NO];
     });
     
-   
-    //[AppD.window showHint:@"Successful circle switching."];
 }
 // 检测find请求10秒内是否有返回
 - (void) checkFindRequstOutTime

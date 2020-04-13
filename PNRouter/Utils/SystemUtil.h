@@ -68,4 +68,5 @@
 + (NSString*)dataToHexString:(NSData*)data;
 + (NSData *)HexStrToData:(NSString *)str;
 + (NSString *) genterEnUtilNonce;
++ (NSInteger) getAttNameType:(NSString *) attName;
 @end

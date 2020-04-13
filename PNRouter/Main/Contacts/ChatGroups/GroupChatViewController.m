@@ -108,7 +108,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 @property (nonatomic ,strong) NSMutableArray *atModels;
 
 @property (nonatomic, strong) UIWebView * callWebview;
-
+@property (nonatomic, assign) int logId;
 @end
 
 @implementation GroupChatViewController
@@ -294,6 +294,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSString *MsgStartId = [NSString stringWithFormat:@"%@",@(_msgStartId)]; // 从这个消息号往前（不包含该消息），为0表示默认从最新的消息回溯
     NSString *MsgNum = @"10"; // 期望拉取的消息条数
     [SendRequestUtil sendPullGroupMessageListWithGId:self.groupModel.GId MsgType:MsgType msgStartId:MsgStartId msgNum:MsgNum srcMsgId:@"0"];
+    
+    // 上传日志
+    _logId = [SendRequestUtil sendLogRequestWtihAction:GROUPMSGPULL logid:0 type:0 result:0 info:@"send_pull_group_msg"];
 }
 - (void) pullGroupFriend
 
@@ -1038,13 +1041,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     string = [NSString trimWhitespaceAndNewline:string];
     if (string && ![string isEmptyString]) {
         
-        [FIRAnalytics logEventWithName:kFIREventSelectContent
-        parameters:@{
-                     kFIRParameterItemID:FIR_CHAT_SEND_GROUP_TEXT,
-                     kFIRParameterItemName:FIR_CHAT_SEND_GROUP_TEXT,
-                     kFIRParameterContentType:FIR_CHAT_SEND_GROUP_TEXT
-                     }];
-        
         CDMessageModel *model = [[CDMessageModel alloc] init];
         model.FromId = [UserConfig getShareObject].userId;
         model.ToId = self.groupModel.GId;
@@ -1115,6 +1111,16 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
         
         self.repMessageModel = nil;
+        
+        // 埋点
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:FIR_CHAT_SEND_GROUP_TEXT,
+                     kFIRParameterItemName:FIR_CHAT_SEND_GROUP_TEXT,
+                     kFIRParameterContentType:FIR_CHAT_SEND_GROUP_TEXT
+                     }];
+        // 日志
+        _logId = [SendRequestUtil sendLogRequestWtihAction:GROUPSENDMSG logid:0 type:0 result:0 info:@"send_group_msg"];
     }
 }
 #pragma mark -得到一条文字消息 并添加到listview
@@ -1621,6 +1627,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                         model.msgState = CDMessageStateNormal;
                         model.messageStatu = 1;
                         [weakSelf.listView updateMessage:model];
+                        
+                        // 上传日志
+                        [SendRequestUtil sendLogRequestWtihAction:GROUPSENDMSG logid:weakSelf.logId type:100 result:0 info:@"pull_group_msg_success"];
+                    } else {
+                        // 日志
+                        [SendRequestUtil sendLogRequestWtihAction:GROUPSENDMSG logid:weakSelf.logId type:0xFF result:[resultArr[0] intValue] info:@"pull_group_msg_failed"];
                     }
                 
                     *stop = YES;
@@ -1638,6 +1650,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void) pullMessageListSuccessNoti:(NSNotification *) noti
 {
     [self.listView stopRefresh];
+    
+    if (![noti.object isKindOfClass:[NSArray class]]) { // 拉取失败
+        // 上传日志
+        [SendRequestUtil sendLogRequestWtihAction:PULLMSG logid:_logId type:0xFF result:[noti.object intValue] info:@"pull_group_msg_failed"];
+        return;
+    }
+    // 上传日志
+    [SendRequestUtil sendLogRequestWtihAction:PULLMSG logid:_logId type:100 result:0 info:@"pull_group_msg_success"];
     
     NSArray *resultArr = noti.object;
     if (!resultArr) {
