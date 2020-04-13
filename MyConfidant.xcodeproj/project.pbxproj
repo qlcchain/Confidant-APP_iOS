@@ -400,8 +400,6 @@
 		7330F5012149147200FF4EEC /* CDMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F4D62149147200FF4EEC /* CDMessageModel.m */; };
 		7330F5022149147200FF4EEC /* CDChatListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F4D92149147200FF4EEC /* CDChatListView.m */; };
 		7330F5032149147200FF4EEC /* UITool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F4DF2149147200FF4EEC /* UITool.m */; };
-		7330F508214A71BC00FF4EEC /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F506214A71BC00FF4EEC /* AddFriendViewController.m */; };
-		7330F509214A71BC00FF4EEC /* AddFriendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F507214A71BC00FF4EEC /* AddFriendViewController.xib */; };
 		7330F50D214A74FA00FF4EEC /* AddFriendCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F50B214A74FA00FF4EEC /* AddFriendCellTableViewCell.m */; };
 		7330F50E214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7330F50C214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib */; };
 		7330F512214A790400FF4EEC /* FriendModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7330F511214A790400FF4EEC /* FriendModel.m */; };
@@ -603,8 +601,6 @@
 		7392791121F72203003AAD58 /* DiskManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392790F21F72203003AAD58 /* DiskManagerViewController.m */; };
 		7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7392791021F72203003AAD58 /* DiskManagerViewController.xib */; };
 		7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392791421FAF356003AAD58 /* UploadFileManager.m */; };
-		7393918722E062810033C203 /* PNEmailPreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7393918522E062810033C203 /* PNEmailPreViewController.m */; };
-		7393918822E062810033C203 /* PNEmailPreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7393918622E062810033C203 /* PNEmailPreViewController.xib */; };
 		7393918B22E068280033C203 /* EmailAttchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7393918A22E068280033C203 /* EmailAttchModel.m */; };
 		7393918E22E15B200033C203 /* EmailOptionUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7393918D22E15B200033C203 /* EmailOptionUtil.m */; };
 		7396A41123571AD800B62605 /* GoogleServerManage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7396A41023571AD800B62605 /* GoogleServerManage.m */; };
@@ -1515,9 +1511,6 @@
 		7330F4DC2149147200FF4EEC /* CDChatList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDChatList.h; sourceTree = "<group>"; };
 		7330F4DE2149147200FF4EEC /* UITool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITool.h; sourceTree = "<group>"; };
 		7330F4DF2149147200FF4EEC /* UITool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITool.m; sourceTree = "<group>"; };
-		7330F505214A71BC00FF4EEC /* AddFriendViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
-		7330F506214A71BC00FF4EEC /* AddFriendViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
-		7330F507214A71BC00FF4EEC /* AddFriendViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddFriendViewController.xib; sourceTree = "<group>"; };
 		7330F50A214A74FA00FF4EEC /* AddFriendCellTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddFriendCellTableViewCell.h; sourceTree = "<group>"; };
 		7330F50B214A74FA00FF4EEC /* AddFriendCellTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddFriendCellTableViewCell.m; sourceTree = "<group>"; };
 		7330F50C214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddFriendCellTableViewCell.xib; sourceTree = "<group>"; };
@@ -1907,9 +1900,6 @@
 		7392791021F72203003AAD58 /* DiskManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskManagerViewController.xib; sourceTree = "<group>"; };
 		7392791321FAF356003AAD58 /* UploadFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadFileManager.h; sourceTree = "<group>"; };
 		7392791421FAF356003AAD58 /* UploadFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadFileManager.m; sourceTree = "<group>"; };
-		7393918422E062810033C203 /* PNEmailPreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailPreViewController.h; sourceTree = "<group>"; };
-		7393918522E062810033C203 /* PNEmailPreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailPreViewController.m; sourceTree = "<group>"; };
-		7393918622E062810033C203 /* PNEmailPreViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailPreViewController.xib; sourceTree = "<group>"; };
 		7393918922E068280033C203 /* EmailAttchModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailAttchModel.h; sourceTree = "<group>"; };
 		7393918A22E068280033C203 /* EmailAttchModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailAttchModel.m; sourceTree = "<group>"; };
 		7393918C22E15B200033C203 /* EmailOptionUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailOptionUtil.h; sourceTree = "<group>"; };
@@ -2595,9 +2585,6 @@
 				7330F3BB214769DF00FF4EEC /* FriendDetailViewController.h */,
 				7330F3BC214769DF00FF4EEC /* FriendDetailViewController.m */,
 				7330F3BD214769DF00FF4EEC /* FriendDetailViewController.xib */,
-				7330F505214A71BC00FF4EEC /* AddFriendViewController.h */,
-				7330F506214A71BC00FF4EEC /* AddFriendViewController.m */,
-				7330F507214A71BC00FF4EEC /* AddFriendViewController.xib */,
 				73FD079621D74979001B89CB /* FriendRequestViewController.h */,
 				73FD079721D74979001B89CB /* FriendRequestViewController.m */,
 				73FD079821D74979001B89CB /* FriendRequestViewController.xib */,
@@ -3234,9 +3221,6 @@
 				73F102CC22DF646800E7D257 /* PNEmailTypeSelectView.h */,
 				73F102CD22DF646800E7D257 /* PNEmailTypeSelectView.m */,
 				73F102CE22DF646800E7D257 /* PNEmailTypeSelectView.xib */,
-				7393918422E062810033C203 /* PNEmailPreViewController.h */,
-				7393918522E062810033C203 /* PNEmailPreViewController.m */,
-				7393918622E062810033C203 /* PNEmailPreViewController.xib */,
 				733EE47C22E1B2DB0042457C /* PNEmailMoveViewController.h */,
 				733EE47D22E1B2DB0042457C /* PNEmailMoveViewController.m */,
 				733EE47E22E1B2DB0042457C /* PNEmailMoveViewController.xib */,
@@ -4886,7 +4870,6 @@
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
 				73F55A11223F78C4003155D2 /* GroupChatViewController.xib in Resources */,
-				7393918822E062810033C203 /* PNEmailPreViewController.xib in Resources */,
 				5886FB9821F5C2390052EDD0 /* UploadAlertView.xib in Resources */,
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
 				7308AB09224B5BBF0003E689 /* UsedSpaceTableViewCell.xib in Resources */,
@@ -4914,7 +4897,6 @@
 				58BD2E6F2147B6CF0091A77D /* FileCell.xib in Resources */,
 				584B439521FEEF8C00D1F21A /* DiskDetailViewController.xib in Resources */,
 				732DCEE7223796B800B2A2CA /* AddNewMemberViewController.xib in Resources */,
-				7330F509214A71BC00FF4EEC /* AddFriendViewController.xib in Resources */,
 				584B43AA21FF0B9800D1F21A /* ConfigDiskCell.xib in Resources */,
 				7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */,
 				73B6432922E83CF6003A4EA5 /* PNEmailAttchSelView.xib in Resources */,
@@ -5295,7 +5277,6 @@
 				737882A921ACF05E0033A189 /* WebSocket.swift in Sources */,
 				587C52B7215C7027006787FB /* RouterManagerViewController.m in Sources */,
 				734BE0EA238CCF5B00BAF758 /* PNFileOptionView.m in Sources */,
-				7330F508214A71BC00FF4EEC /* AddFriendViewController.m in Sources */,
 				73E7744122DC87F3001C652E /* AttchImgageCell.m in Sources */,
 				73F55A082238D398003155D2 /* InvitationQRCodeViewController.m in Sources */,
 				581FDF3E21F024160068C120 /* audio.m in Sources */,
@@ -5452,7 +5433,6 @@
 				7330F4F82149147200FF4EEC /* CTInputBoxDrawer.m in Sources */,
 				73625762214213B300D7FD6B /* UILabel+Copy.m in Sources */,
 				583BF94921F70FBC0078A2A8 /* TaskCompletedCell.m in Sources */,
-				7393918722E062810033C203 /* PNEmailPreViewController.m in Sources */,
 				73E48CF822E5A7CA00AB0732 /* EmailContactModel.m in Sources */,
 				73F55A10223F78C4003155D2 /* GroupChatViewController.m in Sources */,
 				73E7740022D5C2F1001C652E /* EmailManage.m in Sources */,
@@ -5858,7 +5838,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5885,7 +5865,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.5.1;
+				MARKETING_VERSION = 0.5.2;
 				MiSDKRun = debug;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5907,7 +5887,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5934,7 +5914,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.5.1;
+				MARKETING_VERSION = 0.5.2;
 				MiSDKRun = online;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5951,7 +5931,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
@@ -5961,7 +5941,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.5.1;
+				MARKETING_VERSION = 0.5.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
@@ -5977,7 +5957,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
@@ -5987,7 +5967,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.5.1;
+				MARKETING_VERSION = 0.5.2;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";

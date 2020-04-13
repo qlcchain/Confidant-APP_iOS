@@ -9,6 +9,7 @@
 #import "YWFilePreviewView.h"
 #import <QuickLook/QuickLook.h>
 #import "CDChatListProtocols.h"
+#import "SystemUtil.h"
 
 #define YWKeyWindow [UIApplication sharedApplication].keyWindow
 #define YWS_W YWKeyWindow.bounds.size.width
@@ -16,7 +17,7 @@
 #define YW_NAV_Hight 67
 
 @interface YWFilePreviewView ()
-<QLPreviewControllerDataSource, QLPreviewControllerDelegate>
+<QLPreviewControllerDataSource, QLPreviewControllerDelegate,UIDocumentInteractionControllerDelegate>
 
 @property (nonatomic, assign) BOOL hindNav;
 @property (nonatomic, strong) QLPreviewController *previewController;
@@ -27,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *navContraintH;
 @property (weak, nonatomic) IBOutlet UIView *backView;
 @property (weak, nonatomic) IBOutlet UIButton *downloadBtn;
+@property (nonatomic, strong) UIDocumentInteractionController *documentIntertactionController;
 
 @end
 
@@ -127,15 +129,52 @@
 
 - (IBAction)downloadAction:(id)sender {
 //    NSInteger fileType = [_fileTypeArr[_previewController.currentPreviewItemIndex] integerValue];
+    
 //    NSString *filePath = _filePathArr[_previewController.currentPreviewItemIndex];
-//    if (fileType == CDMessageTypeImage) {
-//        UIImage *img = [UIImage imageWithContentsOfFile:filePath];
-//        [self saveImage:img];
-//    } else if (fileType == CDMessageTypeMedia) {
-//        [self saveVideo:filePath];
-//    }
+//    UIDocumentInteractionController *documentController =
+//    [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:filePath]];
+//    documentController.delegate = self;
+//    [documentController presentOpenInMenuFromRect:CGRectZero inView:self animated:YES];
+    
+    
+    NSURL *pathUrl = [[NSBundle mainBundle] URLForResource:@"GoogleService-Info" withExtension:@".plist"];
+    _documentIntertactionController = [UIDocumentInteractionController interactionControllerWithURL:pathUrl];
+       // _documentIntertactionController.delegate = self;
+        [self presentOptionsMenu];
+    
+    //    if (fileType == CDMessageTypeImage) {
+    //        UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+    //        [self saveImage:img];
+    //    } else if (fileType == CDMessageTypeMedia) {
+    //        [self saveVideo:filePath];
+    //    }
+    
 }
 
+
+- (void)presentOptionsMenu{
+    [_documentIntertactionController presentOptionsMenuFromRect:self.bounds inView:self animated:YES];
+}
+    
+
 #pragma mark - getters and setters
+-(void)documentInteractionController:(UIDocumentInteractionController *)controller willBeginSendingToApplication:(NSString *)application
+{
+
+}
+
+
+
+-(void)documentInteractionController:(UIDocumentInteractionController *)controller didEndSendingToApplication:(NSString *)application
+
+
+{
+
+}
+
+-(void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller
+{
+
+}
 
 @end

@@ -268,7 +268,6 @@
     if (retCode == 0) {
         [self updateUserHead];
         [AppD setRootTabbarWithManager:nil];
-        //  [AppD.window showHint:@"Login Success"];
     } else {
         
         [AppD setRootLoginWithType:MacType];
@@ -283,7 +282,7 @@
             [AppD.window showHint:@"Login failed."];
         } else if (retCode == 5) { //验证码错误
             [AppD.window showHint:@"Verification code error."];
-        } else if (retCode == 7) { //验证码错误
+        } else if (retCode == 7) { //无效帐户
             [AppD.window showHint:@"This account is no longer valid."];
         } else { // 其它错误
             [AppD.window showHint:@"Login failed."];
@@ -324,8 +323,6 @@
     } else {
          [AppD setRootLoginWithType:MacType];
     }
-   
-    //  [AppD.window showHint:@"Registered successfully"];
 }
 
 // 注册推送

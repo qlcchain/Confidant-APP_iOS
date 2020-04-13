@@ -21,6 +21,7 @@
 @property (nonatomic , strong) NSString *singPK;
 @property (nonatomic, strong) NSString *fToxId;
 @property (nonatomic, strong) NSString *codeType;
+@property (nonatomic, assign) int logId;
 @end
 
 @implementation FriendRequestViewController
@@ -33,6 +34,7 @@
     [self leftNavBarItemPressedWithPop:YES];
 }
 - (IBAction)sendApplicationAction:(id)sender {
+    
     [self.view endEditing:YES];
     NSString *msg = _msgTF.text.trim?:@"";
     if (msg && msg.length>0) {
@@ -46,6 +48,8 @@
     } else {
         [SendRequestUtil sendNewAddFriendWithFpk:self.singPK msg:msg toxid:self.fToxId showHud:YES];
     }
+    
+   _logId = [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDREQ logid:0 type:0 result:0 info:@"send_add_friend_request"];
     
     [FIRAnalytics logEventWithName:kFIREventSelectContent
     parameters:@{
@@ -81,7 +85,7 @@
 {
     [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:self.userId md5:@"0" showHud:NO];
     
-    NSInteger retCode = [noti.object integerValue];
+    int retCode = [noti.object intValue];
     if (retCode == 0) { // 发送成功
         [AppD.window showHint:@"Send Success"];
         NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(self.userId),bg_sqlKey(@"owerId"),bg_sqlValue([UserConfig getShareObject].userId)]];
@@ -114,11 +118,17 @@
             model.dealStaus = 3;
             [model bg_saveOrUpdate];
         }
-       
+        // 日志打点
+        [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDREQ logid:_logId type:100 result:retCode info:@"send_add_friend_request_success"];
+        
     } else if (retCode == 1) { // 添加失败
         [AppD.window showHint:@"Send Fail."];
+        // 日志打点
+        [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDREQ logid:_logId type:0xFF result:retCode info:@"send_add_friend_request_failed"];
     } else if (retCode == 2) { // 已经是好友关系
         [AppD.window showHint:@"Already a good friend"];
+        // 日志打点
+        [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDREQ logid:_logId type:0xFF result:retCode info:@"send_add_friend_request_failed"];
     }
     [self performSelector:@selector(backAction:) withObject:self afterDelay:1.5f];
 }

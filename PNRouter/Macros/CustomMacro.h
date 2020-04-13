@@ -97,7 +97,20 @@
 #define File_Download_GroupId @"File_Download_GroupId" // 文件下载groupid
 #define File_Download_Task_List @"File_Download_Task_List" // 文件下载目录
 
-#pragma mark - socket Action
+#pragma mark -日志打点 Action
+static int LOGIN = 0x01;
+static int ADDFRIENDREQ  = 3;
+static int ADDFRIENDDEAL = 5;
+static int DELFRIENDCMD  = 7;
+static int SENDMSG = 9;
+static int PULLMSG = 18;
+static int PULLFRIEND = 19;
+static int REGISTER = 27;
+static int GROUPLISTPULL = 56;
+static int GROUPUSERPULL = 57;
+static int GROUPMSGPULL = 58;
+static int GROUPSENDMSG = 59;
+
 
 #pragma mark - socket connect status
 static NSInteger socketConnectStatusNone = 0;

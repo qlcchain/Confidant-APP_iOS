@@ -16,7 +16,6 @@
 #import "EmailUserModel.h"
 #import "NSDate+Category.h"
 #import "PNEmailOptionEnumView.h"
-#import "PNEmailPreViewController.h"
 #import "EmailAttchModel.h"
 //#import <WebKit/WebKit.h>
 #import "EmailOptionUtil.h"
@@ -48,6 +47,7 @@
 
 #import <GoogleAPIClientForREST/GTLRBase64.h>
 #import "GoogleServerManage.h"
+#import "FilePreviewViewController.h"
 
 @interface PNEmailDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIWebViewDelegate,SSZipArchiveDelegate>//WKNavigationDelegate
 {
@@ -402,7 +402,7 @@
                 }
             }];
             if (isDown) {
-                [self.view showHint:@"Attached download, please try again later"];
+                [self.view showHint:@"Attached is the download, please try again later"];
                 return;
             }
         }
@@ -689,12 +689,19 @@
         [_attchView setClickAttBlock:^(NSInteger selItem) {
             EmailAttchModel *model = weakSelf.emailInfo.attchArray[selItem];
             if (weakSelf.emailInfo.deKey && weakSelf.emailInfo.deKey.length > 0) {
-                PNEmailPreViewController *vc = [[PNEmailPreViewController alloc] initWithFileName:model.attName fileData:aesDecryptData(model.attData, [weakSelf.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding])];
-                 [weakSelf.navigationController pushViewController:vc animated:YES];
+                
+                FilePreviewViewController*vc = [[FilePreviewViewController alloc] init];
+                vc.fileType = EmailFile;
+                vc.localFileData = aesDecryptData(model.attData, [weakSelf.emailInfo.deKey dataUsingEncoding:NSUTF8StringEncoding]);
+                vc.fileName = model.attName;
+                [weakSelf.navigationController pushViewController:vc animated:YES];
                 
             } else {
-                PNEmailPreViewController *vc = [[PNEmailPreViewController alloc] initWithFileName:model.attName fileData:model.attData];
-                 [weakSelf.navigationController pushViewController:vc animated:YES];
+                FilePreviewViewController*vc = [[FilePreviewViewController alloc] init];
+                vc.fileType = EmailFile;
+                vc.localFileData = model.attData;
+                vc.fileName = model.attName;
+                [weakSelf.navigationController pushViewController:vc animated:YES];
             }
             
            
@@ -867,7 +874,7 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     NSLog(@"----didFailLoadWithError---------");
-  //  [self.view showHint:@"Mail load failed"];
+
 }
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     NSLog(@"----webViewDidFinishLoad---------");
@@ -1153,7 +1160,7 @@
             }
         }];
         if (isDown) {
-            [self.view showHint:@"Attached download, please try again later"];
+            [self.view showHint:@"Attached is the download, please try again later"];
             return;
         }
     }

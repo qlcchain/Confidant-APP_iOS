@@ -296,11 +296,12 @@
         [self.emailDataArray removeAllObjects];
         [self.emailTabView reloadData];
     }
-    _page = 1;
-    _maxUid = 0;
-    _nextPageToken = @"";
+    
     
     EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
+    _page = 1;
+    _maxUid = [[HWUserdefault getObjectWithKey:accountModel.User] intValue];
+    _nextPageToken = @"";
     
     if(accountModel.userId && accountModel.userId.length > 0)  { // google api
         
@@ -367,7 +368,7 @@
     [GIDSignIn sharedInstance].uiDelegate = self;
     
     _page = 1;
-    _pageCount = 10;
+    _pageCount = 20;
     
     AppD.sideMenuViewController.delegate = self;
     AppD.isEmailPage = NO;
@@ -1689,10 +1690,15 @@
     if ([self.floderModel.name isEqualToString:floderModel.name]) {
         return;
     }
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    
     _lblTitle.text = floderModel.name;
     self.floderModel = floderModel;
     _page = 1;
     _maxUid = 0;
+    if ([self.floderModel.name isEqualToString:Inbox]) {
+        _maxUid = [[HWUserdefault getObjectWithKey:accountM.User] intValue];
+    }
     self.nextPageToken = @"";
     
     [_emailTabView.mj_footer endRefreshing];
@@ -1706,7 +1712,7 @@
     
     
     
-    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    
     // googleapi
     if (accountM.userId && accountM.userId.length > 0) {
         
@@ -1822,13 +1828,21 @@
                 if (error) {
                     weakSelf.floderModel.count = (int) weakSelf.currentEmailCount;
                     weakSelf.isRefresh = NO;
+                    [weakSelf.view hideHud];
                     [weakSelf.emailTabView.mj_header endRefreshing];
                     [weakSelf.view showHint:@"Failed to pull mail."];
                 } else {
                     if (weakSelf.emailDataArray.count == 0) {
                         weakSelf.isRequestFloderCount = YES;
                         weakSelf.floderModel.count = info.messageCount;
-                        [weakSelf pullEmailList];
+                        if (info.messageCount > 0) {
+                            [weakSelf pullEmailList];
+                        } else {
+                            [weakSelf.view hideHud];
+                            weakSelf.isRefresh = NO;
+                            [weakSelf.emailTabView.mj_header endRefreshing];
+                        }
+                        
                     }
                 }
             }];
@@ -1861,23 +1875,126 @@
     MCOIMAPMessagesRequestKind requestKind = (MCOIMAPMessagesRequestKind)
     (MCOIMAPMessagesRequestKindHeaders |MCOIMAPMessagesRequestKindExtraHeaders |MCOIMAPMessagesRequestKindStructure |MCOIMAPMessagesRequestKindInternalDate |MCOIMAPMessagesRequestKindHeaderSubject |MCOIMAPMessagesRequestKindFlags);
     
+   __block MCOIMAPFetchMessagesOperation *imapMessagesFetchOp = nil;
+    
     uint64_t locationf = 1;
-    uint64_t lengthf = 10;
+    uint64_t lengthf = 20;
+    
+    // 第一次拉取
+    if (_page == 1 && _maxUid >0 && [_floderModel.name isEqualToString:Inbox]) {
+        
+        MCOIndexSet *firstNumbers = [MCOIndexSet indexSetWithRange:MCORangeMake(_floderModel.count, 1)];
+        imapMessagesFetchOp = [EmailManage.sharedEmailManage.imapSeeion fetchMessagesByNumberOperationWithFolder:self.floderModel.path
+        requestKind:requestKind
+                                         numbers:firstNumbers];
+        // 异步获取邮件
+        @weakify_self
+        [imapMessagesFetchOp start:^(NSError *error, NSArray *messages, MCOIndexSet *vanishedMessages) {
+            if (error) {
+                [weakSelf emailPullFailShowWithError:error];
+            } else {
+                if (messages.count == 0) {
+                    if (weakSelf.isRefresh) {
+                        weakSelf.isRefresh = NO;
+                        [weakSelf.emailTabView.mj_header endRefreshing];
+                    } else {
+                        [weakSelf.view hideHud];
+                        [weakSelf.emailTabView.mj_footer endRefreshing];
+                    }
+                    [weakSelf.view showHint:@"No mail available."];
+                } else {
+                    
+                    MCOIMAPMessage *message = messages[0];
+                    int subEmailCount = abs(message.uid - weakSelf.maxUid);
+                    // 如果有 10封以上新邮件处理
+                    MCOIndexSet *firstNumbers = [MCOIndexSet indexSetWithRange:MCORangeMake(weakSelf.maxUid+1,subEmailCount)];
+                    imapMessagesFetchOp = [EmailManage.sharedEmailManage.imapSeeion fetchMessagesByNumberOperationWithFolder:self.floderModel.path
+                    requestKind:requestKind
+                                                     numbers:firstNumbers];
+                     // 拉取所有新邮件
+                     [imapMessagesFetchOp start:^(NSError *error, NSArray *messages1, MCOIndexSet *vanishedMessages) {
+                         
+                         if (error) {
+                             [weakSelf emailPullFailShowWithError:error];
+                         }  else {
+                             
+                             if (messages1.count >= 20) {
+                                 // 倒序
+                                 if (!weakSelf.isRefresh) {
+                                      weakSelf.page ++;
+                                 }
+                                 // 根据uid 排序
+                                 NSMutableArray *messageArray = [NSMutableArray arrayWithArray:messages1];
+                                 NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"uid" ascending:NO];
+                                 [messageArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+                                 // 转换mode
+                                 [weakSelf tranEmailListInfoWithArr:messageArray];
+                                 
+                             } else {
+                                 
+                                 int startIndex = 1;
+                                 int len = 0;
+                                 if (weakSelf.floderModel.count > weakSelf.pageCount) {
+                                     startIndex = (weakSelf.floderModel.count - weakSelf.pageCount)+1;
+                                     len = weakSelf.pageCount-1;
+                                 } else {
+                                     len = weakSelf.floderModel.count-1;
+                                 }
+                                 MCOIndexSet *fNumbers = [MCOIndexSet indexSetWithRange:MCORangeMake(startIndex,len)];
+                                 imapMessagesFetchOp = [EmailManage.sharedEmailManage.imapSeeion fetchMessagesByNumberOperationWithFolder:self.floderModel.path
+                                 requestKind:requestKind
+                                                                  numbers:fNumbers];
+                                 
+                                 // 拉取所有新邮件
+                                 [imapMessagesFetchOp start:^(NSError *error, NSArray *messages2, MCOIndexSet *vanishedMessages) {
+                                     if (error) {
+                                         [weakSelf emailPullFailShowWithError:error];
+                                     }  else {
+                                         // 倒序
+                                         if (!weakSelf.isRefresh) {
+                                              weakSelf.page ++;
+                                         }
+                                         // 根据uid 排序
+                                         NSMutableArray *messageArray = [NSMutableArray arrayWithArray:messages2];
+                                         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"uid" ascending:NO];
+                                         [messageArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+                                         // 转换mode
+                                         [weakSelf tranEmailListInfoWithArr:messageArray];
+                                     }
+                                 }];
+                                 
+                             }
+                         }
+                         
+                     }];
+                    
+                } //messcout == 0
+            }
+        }];
+        
+        return;
+    }
+    
+    
+    
     if (_isRefresh && _maxUid >0) {
-        lengthf = 9;
+        lengthf = _pageCount-1;
+        if ([_floderModel.name isEqualToString:Inbox]) {
+            lengthf = 100;
+        }
         locationf = _maxUid+1;
     } else {
         CGFloat syCount = self.floderModel.count - self.emailDataArray.count;
-        if (syCount > 10) {
+        if (syCount > _pageCount) {
             locationf = (syCount - _pageCount)+1;
-            lengthf = 9;
+            lengthf = _pageCount-1;
         } else {
             lengthf = syCount-1;
         }
     }
     
     MCOIndexSet *numbers = [MCOIndexSet indexSetWithRange:MCORangeMake(locationf, lengthf)];
-    MCOIMAPFetchMessagesOperation *imapMessagesFetchOp = nil;
+    
     if (_isRefresh && _maxUid >0) {
          imapMessagesFetchOp = [EmailManage.sharedEmailManage.imapSeeion fetchMessagesOperationWithFolder:self.floderModel.path requestKind:requestKind uids:numbers];
     } else {
@@ -1898,30 +2015,9 @@
             [weakSelf.emailTabView.mj_footer endRefreshing];
             return ;
         }
+        
         if (error) {
-            if (weakSelf.isRefresh) { // 是上拉刷新
-                weakSelf.floderModel.count = (int) weakSelf.currentEmailCount;
-                weakSelf.isRefresh = NO;
-                [weakSelf.emailTabView.mj_header endRefreshing];
-            } else {
-                if (weakSelf.page == 1) {
-                    [weakSelf.view hideHud];
-                } else {
-                    weakSelf.emailTabView.mj_footer.hidden = NO;
-                }
-                [weakSelf.emailTabView.mj_footer endRefreshing];
-            }
-            
-            if (error.code == 1) {
-                [weakSelf.view showHint:@"Unable to connect to email server."];
-            } else {
-                EmailAccountModel *accoutM = [EmailAccountModel getConnectEmailAccount];
-                NSString *errorStr = [NSString stringWithFormat:@"%@ Unsuccessful verification. Please check the password, or the IMAP service is not available.",accoutM.User];
-                EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
-                alertView.lblContent.text = errorStr;
-                [alertView showEmailAttchSelView];
-            }
-            
+            [weakSelf emailPullFailShowWithError:error];
         } else {
             
             if (messages.count == 0) {
@@ -1963,6 +2059,32 @@
 //            }
         }
     }];
+}
+// 邮件拉取失败提示
+- (void) emailPullFailShowWithError:(NSError *) error
+{
+    if (self.isRefresh) { // 是上拉刷新
+        self.floderModel.count = (int) self.currentEmailCount;
+        self.isRefresh = NO;
+        [self.emailTabView.mj_header endRefreshing];
+    } else {
+        if (self.page == 1) {
+            [self.view hideHud];
+        } else {
+            self.emailTabView.mj_footer.hidden = NO;
+        }
+        [self.emailTabView.mj_footer endRefreshing];
+    }
+    
+    if (error.code == 1) {
+        [self.view showHint:@"Unable to connect to email server."];
+    } else {
+        EmailAccountModel *accoutM = [EmailAccountModel getConnectEmailAccount];
+        NSString *errorStr = [NSString stringWithFormat:@"%@ Unsuccessful verification. Please check the password, or the IMAP service is not available.",accoutM.User];
+        EmailErrorAlertView *alertView = [EmailErrorAlertView loadEmailErrorAlertView];
+        alertView.lblContent.text = errorStr;
+        [alertView showEmailAttchSelView];
+    }
 }
 // 转换成 emaillistinfo
 - (void) tranEmailListInfoWithArr:(NSArray *) messageArray
@@ -2046,6 +2168,9 @@
         if (listInfo.uid >weakSelf.maxUid) { // 取到最大uid
             weakSelf.maxUid = listInfo.uid;
             NSLog(@"---maxUid = %d",weakSelf.maxUid);
+            if ([weakSelf.floderModel.name isEqualToString:Inbox]) {
+                [HWUserdefault updateObject:@(weakSelf.maxUid) withKey:accountModel.User];
+            }
         }
         listInfo.Read = message.flags;
         listInfo.messageid = headrMessage.messageID;
@@ -2084,7 +2209,7 @@
     } else {
         [weakSelf.view hideHud];
         [weakSelf.emailTabView.mj_footer endRefreshing];
-        if (messageArray.count == 10) {
+        if (messageArray.count == weakSelf.pageCount) {
             weakSelf.emailTabView.mj_footer.hidden = NO;
         } else {
             weakSelf.emailTabView.mj_footer.hidden = YES;
@@ -2319,11 +2444,11 @@
 {
     EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
     NSString *nextToken = self.nextPageToken?:@"";
-    NSInteger num = 10;
+    NSInteger num = 15;
     if (_isRefresh) {
         nextToken = @"";
         if (self.emailDataArray.count > 0) {
-            num = 10;
+            num = 15;
         }
     }
     NSString *labelId = @"INBOX";
@@ -2510,12 +2635,14 @@
             // 取出内容
             __block NSString *htmlContent = @"";
             NSString *mimeType = messageM.payload[@"mimeType"]?:@"";
-            if (mimeType.length >0 && [mimeType isEqualToString:@"text/plain"]) {
+            if (mimeType.length >0 && ([mimeType isEqualToString:@"text/plain"] || [mimeType isEqualToString:@"text/html"])) {
                 // 纯文字没换行 没样式情况
                 NSDictionary *bodyDic = messageM.payload[@"body"]?:@{};
                 htmlContent = bodyDic[@"data"]?:@"";
                 
-            } else {
+            }
+            
+            if (htmlContent.length == 0) {
                 // 取 text/html
                 [attArray enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     NSString *mutType = obj[@"mimeType"]?:@"";
@@ -2540,6 +2667,9 @@
                 }];
             }
             
+            if (htmlContent.length == 0) {
+                NSLog(@"----------");
+            }
             if (htmlContent.length > 0) {
                 
                 NSData *contentData = GTLRDecodeWebSafeBase64(htmlContent);
@@ -2591,6 +2721,7 @@
                     
                     messageM.htmlContent = htmlContents;
                 }
+            }
                 
                 
                 NSArray *headArray = messageM.payload[@"headers"]?:@[];
@@ -2632,7 +2763,10 @@
                 if (![self.floderModel.name isEqualToString:Spam]) {
                     [EmailDataBaseUtil insertDataWithUser:accountModel.User userName:messageM.FromName userAddress:messageM.From date:[NSDate dateWithTimeIntervalSince1970:messageM.internalDate/1000]];
                 }
-            }
+            
+            
+            
+            
             if (weakSelf.messageCount == weakSelf.googleTempLists.count) { // 请求完成
                 
                 [weakSelf.view hideHud];

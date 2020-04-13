@@ -15,6 +15,7 @@
 #import "HeartBeatUtil.h"
 #import "AFHTTPClientV2.h"
 #import "UserConfig.h"
+#import "NSDate+Category.h"
 
 #import "MyConfidant-Swift.h"
 #import "EmailAccountModel.h"
@@ -644,6 +645,33 @@
     UserModel *userM = [UserModel getUserModel];
     NSDictionary *params = @{@"Action":Action_BakAddrBookInfo,@"User":userM.userId,@"FileId":@(fileId)};
     [SocketMessageUtil sendVersion6WithParams:params];
+}
+
+
+
+
+
+
+#pragma mark ----------日志打点
++ (int) sendLogRequestWtihAction:(int) action logid:(int)lid type:(int)type result:(int)result info:(nonnull NSString *)info
+{
+    
+    int logId = lid;
+    if (lid == 0) {
+       logId = (int)[NSDate getTimestampFromDate:[NSDate date]];
+    }
+    long millTime = [NSDate getMillisecondTimestampFromDate:[NSDate date]];
+    NSDictionary *params = @{@"app":@(1),@"action":@(action),@"id":@(logId),@"level":@(1),@"version":APP_Version,@"timestamp":@(millTime),@"type":@(type),@"result":@(result),@"user":[UserModel getUserModel].userId,@"node":[RouterConfig getRouterConfig].currentRouterToxid,@"info":info};
+    
+    [AFHTTPClientV2 requestWithBaseURLStr:LOG_TEST_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+        int ret = [responseObject[@"ret"] intValue];
+        NSLog(@"----successBlock-----%d",ret);
+       
+    } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+    
+        NSLog(@"-----failedBlock----");
+    }];
+    return logId;
 }
 @end
 

@@ -20,6 +20,14 @@
 #define PUSH_ONLINE_URL @"https://pprouter.online:9001/v1/pareg/"
 static NSString *QLC_TEST_URL = @"http://47.103.54.171:29735";
 
+#if DEBUG
+static NSString *LOG_TEST_URL = @"https://47.244.138.61:9001/v1/pprmap/ulogstr";
+#else
+static NSString *LOG_TEST_URL = @"https://pprouter.online:9001/v1/pprmap/ulogstr";
+#endif
+
+
+
 #define APIVERSION @"6"
 //#define APIVERSION2 @"2"
 //#define APIVERSION3 @"3"

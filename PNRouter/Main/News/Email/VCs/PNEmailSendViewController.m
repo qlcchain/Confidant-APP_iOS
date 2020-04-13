@@ -43,8 +43,8 @@
 #import "AESCipher.h"
 #import "EmailUserKeyModel.h"
 #import "MCOCIDURLProtocol.h"
-#import "PNEmailPreViewController.h"
-
+//#import "PNEmailPreViewController.h"
+#import "FilePreviewViewController.h"
 #import "EmailDataBaseUtil.h"
 
 #import "PNEmailContactView.h"
@@ -325,7 +325,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }];
         if (isDown) {
-            [self.view showHint:@"Attached download, please try again later"];
+            [self.view showHint:@"Attached is the download, please try again later"];
             return;
         }
     }
@@ -979,7 +979,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }];
         if (isDown) {
-            [self.view showHint:@"Attached download, please try again later"];
+            [self.view showHint:@"Attached is the download, please try again later"];
             return;
         }
     }
@@ -1399,7 +1399,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                }
                                
                                // 是加密
-                               if (!(weakSelf.passView.passM.isSet || keys.length > 0)) {
+                               if (weakSelf.passView.passM.isSet || keys.length > 0) {
                                    
                                    if (![writeHtml containsString:@"Sent from MyConfidant"]) {
                                       // writeHtml = [writeHtml stringByAppendingString:confidantHtmlStr];
@@ -2636,7 +2636,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         EmailAttchModel*attachment = self.attchArray[indexPath.item];
         if (attachment.attData) {
             EmailAttchModel*attachment = self.attchArray[indexPath.item];
-            PNEmailPreViewController *vc = [[PNEmailPreViewController alloc] initWithFileName:attachment.attName fileData:attachment.attData];
+            FilePreviewViewController*vc = [[FilePreviewViewController alloc] init];
+            vc.fileType = EmailFile;
+            vc.localFileData = attachment.attData;
+            vc.fileName = attachment.attName;
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             if (attachment.downStatus == 2) {
@@ -3027,41 +3030,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     attchM.attName = [asset.URL lastPathComponent];
     [self addAttchReloadCollectionWithAttch:attchM];
     
-    /*
-    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
-    outputPath =  [[SystemUtil getBaseFilePath:self.friendModel.userId] stringByAppendingPathComponent:outputPath];
-    NSURL *url = [NSURL fileURLWithPath:outputPath];
-    
-    BOOL result = [[NSFileManager defaultManager] copyItemAtURL:asset.URL toURL:url error:nil];
-    
-    if (result) {
-        NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
-        //UIImage *img = [SystemUtil thumbnailImageForVideo:url];
-        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-     
-            // 生成32位对称密钥
-            NSString *msgKey = [SystemUtil get32AESKey];
-            NSData *symmetData =[msgKey dataUsingEncoding:NSUTF8StringEncoding];
-            NSString *symmetKey = [symmetData base64EncodedString];
-            // 好友公钥加密对称密钥
-            NSString *dsKey = [LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:model.publicKey];
-            // 自己公钥加密对称密钥
-            NSString *srcKey =[LibsodiumUtil asymmetricEncryptionWithSymmetry:symmetKey enPK:[EntryModel getShareObject].publicKey];
-            
-            NSData *msgKeyData =[[msgKey substringToIndex:16] dataUsingEncoding:NSUTF8StringEncoding];
-            mediaData = aesEncryptData(mediaData,msgKeyData);
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self sendFileWithToid:self.friendModel.userId fileName:model.fileName fileData:mediaData fileId:msgid fileType:4 messageId:model.messageId srcKey:srcKey dsKey:dsKey publicKey:self.friendModel.publicKey msgKey:msgKey fileInfo:[NSString stringWithFormat:@"%f*%f",model.fileWidth,model.fileHeight]];
-            });
-        });
-    } else {
-        //  [AppD.window hideHud];
-        [self.view showHint:@"The current video format is not supported"];
-    }
-     */
-    
 }
 
 #pragma mark ------ UIDocumentPickerDelegate-------
@@ -3113,7 +3081,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     NSLog(@"----didFailLoadWithError---------");
-    //  [self.view showHint:@"Mail load failed"];
 }
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     NSLog(@"----webViewDidFinishLoad---------");

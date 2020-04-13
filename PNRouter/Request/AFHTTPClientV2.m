@@ -263,7 +263,7 @@
 //            }];
 //            [dataTask resume];
 //        } else {
-            dataTask = [[self getHTTPManager] POST:URLString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+            dataTask = [[self getRouterIpHTTPManager] POST:URLString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 id result = [self printHTTPLogWithMethod:URLString Response:responseObject Error:nil];
                 if (successReqBlock) {

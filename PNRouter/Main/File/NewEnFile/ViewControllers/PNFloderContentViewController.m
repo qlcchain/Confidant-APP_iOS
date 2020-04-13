@@ -289,6 +289,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
         vc.fileType = NodePhotoFile;
         vc.filePath = fileM.Paths;
     }
+    
     vc.fileName = fileM.Fname;
     vc.userKey = fileM.FKey;
     vc.fileId = [NSString stringWithFormat:@"%ld",fileM.fId];
@@ -557,16 +558,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
                 if (asset.mediaType == 1) { // 图片
                     UIImage *img = photos[idx];
                     NSData *imgData = UIImageJPEGRepresentation(img,1.0);
-                    /*
-                    if (imgData.length/(1024*1024) > 100) {
-                        [AppD.window showHint:@"Image cannot be larger than 100MB"];
-                        weakSelf.selFileCount--;
-                        if (idx == assets.count-1) {
-                            [weakSelf.view hideHud];
-                        }
-                    } else {
-                        [weakSelf sendImgageWithImage:img imgData:imgData imgName:fName];
-                    }*/
+                   
                     [weakSelf sendImgageWithImage:img imgData:imgData imgName:fName];
                     
                 } else if (asset.mediaType == 2) { // 视频

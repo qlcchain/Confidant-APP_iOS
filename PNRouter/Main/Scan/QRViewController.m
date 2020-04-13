@@ -138,7 +138,7 @@
 - (void) clickAlbumButton {
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        [AppD.window showHint:@"unable_photo"];
+        [AppD.window showHint:@"Device unsupported"];
         return;
     }
 
@@ -161,27 +161,6 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     }];
     
-//    @weakify_self
-//
-//    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-//        if (status == PHAuthorizationStatusAuthorized) {
-//            //调用系统相册的类
-//            UIImagePickerController *pickerController = [[UIImagePickerController alloc]init];
-//            //    更改titieview的字体颜色
-//            NSMutableDictionary *attrs = [NSMutableDictionary dictionary];
-//            attrs[NSForegroundColorAttributeName] = [UIColor whiteColor];
-//            [pickerController.navigationBar setTitleTextAttributes:attrs];
-//            pickerController.navigationBar.translucent = NO;
-//            pickerController.navigationBar.barTintColor = MAIN_PURPLE_COLOR;
-//            //设置相册呈现的样式
-//            pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary; //UIImagePickerControllerSourceTypeSavedPhotosAlbum;//图片分组列表样式
-//            pickerController.delegate = weakSelf;
-//            //使用模态呈现相册
-//            [weakSelf.navigationController presentViewController:pickerController animated:YES completion:nil];
-//        }else{
-//            [AppD.window showHint:@"Denied or Restricted"];
-//        }
-//    }];
     
 }
 
@@ -211,7 +190,7 @@
                         [weakSelf performSelector:@selector(getBackAndBlock:) withObject:values.firstObject afterDelay:1];
                     }
                 } else {
-                    [AppD.window showHint:@"no_code"];
+                    [AppD.window showHint:@"Sweep code failure"];
                 }
             } else {
                 // 完成回调
@@ -219,7 +198,7 @@
                     [weakSelf.scanner startScan];
                     [weakSelf leftNavBarItemPressedWithPop:NO];
                 } else {
-                    [AppD.window showHint:@"no_code"];
+                    [AppD.window showHint:@"Sweep code failure"];
                 }
             }
             

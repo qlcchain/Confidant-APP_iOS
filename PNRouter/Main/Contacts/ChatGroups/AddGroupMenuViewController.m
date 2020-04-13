@@ -231,14 +231,6 @@
     {
         // 是当前帐户
         [AppD.window showHint:@"The same user."];
-        return;
-//        RouterModel *selectRouther = [RouterModel checkRoutherWithSn:usersn];
-//        if (selectRouther) {
-//            if ([[RouterConfig getRouterConfig].currentRouterToxid isEqualToString:selectRouther.toxid]) { // 是当前帐户
-//                [AppD.window showHint:@"The same user."];
-//                return;
-//            }
-//        }
     }
     
     

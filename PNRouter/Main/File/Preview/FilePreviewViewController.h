@@ -12,6 +12,8 @@ typedef enum : NSUInteger {
     DefaultFile,
     LocalPhotoFile,
     NodePhotoFile,
+    ChatFile,
+    EmailFile
 } FileType;
 
 NS_ASSUME_NONNULL_BEGIN

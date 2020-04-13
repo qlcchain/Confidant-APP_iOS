@@ -32,6 +32,7 @@
 @property (nonatomic ,strong) NSMutableArray *searchDataArray;
 
 @property (nonatomic) BOOL isSearch;
+@property (nonatomic, assign) int logId;
 
 @end
 
@@ -40,6 +41,8 @@
 #pragma mark - Observe
 - (void)addObserve {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupUserPullSuccessNoti:) name:GroupUserPull_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupUserPullFailedNoti:) name:GroupUserPull_FAILED_NOTI object:nil];
+    
 }
 
 #pragma mark - Life Cycle
@@ -84,6 +87,8 @@
 #pragma mark - Request
 - (void)sendGroupUserPull {
     [SendRequestUtil sendGroupUserPullWithGId:_groupInfoM.GId?:@"" TargetNum:@(0) StartId:@"0" showHud:YES];
+    // 上传日习
+    _logId = [SendRequestUtil sendLogRequestWtihAction:GROUPUSERPULL logid:0 type:0 result:0 info:@"send_pull_group_user"];
 }
 
 #pragma mark - Action
@@ -279,6 +284,15 @@
         }];
     }
     [_tableV reloadData];
+    
+    // 上传日志
+    [SendRequestUtil sendLogRequestWtihAction:GROUPUSERPULL logid:_logId type:100 result:0 info:@"pull_group_user_success"];
+}
+
+- (void) groupUserPullFailedNoti:(NSNotification *) noti
+{
+    // 上传日志
+    [SendRequestUtil sendLogRequestWtihAction:GROUPUSERPULL logid:_logId type:0xFF result:[noti.object intValue] info:@"pull_group_user_failed"];
 }
 
 #pragma mark - Lazy

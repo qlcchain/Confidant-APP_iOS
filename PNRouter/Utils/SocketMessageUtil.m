@@ -1023,11 +1023,8 @@
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     NSString *msg = receiveDic[@"params"][@"Msg"];
     
-    if (retCode == 0) { // 0：删除成功
-        [[NSNotificationCenter defaultCenter] postNotificationName:SOCKET_DELETE_FRIEND_SUCCESS_NOTI object:nil];
-    } else if (retCode == 1) { // 1：其他错误
-        
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SOCKET_DELETE_FRIEND_SUCCESS_NOTI object:@(retCode)];
+    
 }
 
 + (void)handleDelFriendPush:(NSDictionary *)receiveDic {
@@ -1189,9 +1186,9 @@
     if (retCode == 0) { // 0：消息删除成功
         [[NSNotificationCenter defaultCenter] postNotificationName:DELET_MESSAGE_SUCCESS_NOTI object:MsgId];
     } else if (retCode == 1) { // 1：目标不可达
-        [AppD.window showHint:@"Message deletion failed"];
+        [AppD.window showHint:@"deletion failed"];
     } else if (retCode == 2) { // 2：其他错误
-        [AppD.window showHint:@"Message deletion failed"];
+        [AppD.window showHint:@"deletion failed"];
     }
 }
 
@@ -1260,10 +1257,8 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_BEFORE_NOTI object:@[payloadArr,@(MsgNum),@(srcMsgId)]];
         }
        
-    } else if (retCode == 1) { // 1：用户没权限
-        
-    } else if (retCode == 2) { // 2：其他错误
-        
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:ADD_MESSAGE_BEFORE_NOTI object:@(retCode)];
     }
 }
 
@@ -1273,6 +1268,7 @@
     if (retCode == 0) { // 0：拉取成功
         [[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_LIST_NOTI object:msg];
     } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_LIST_FAILED_NOTI object:@(retCode)];
         [AppD.window showHint:@"Friend pull failed"];
     }
 }
@@ -1380,12 +1376,8 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:ResetUserIdcode_SUCCESS_NOTI object:receiveDic];
     } else if (retCode == 1) {
         [AppD.window showHint:@"The target device id is incorrect"];
-    } else if (retCode == 2) {
-        [AppD.window showHint:@"Input parameter error"];
-    } else if (retCode == 3) {
-        [AppD.window showHint:@"Original code error"];
-    } else {
-        [AppD.window showHint:@"Other error"];
+    }  else {
+        [AppD.window showHint:@"request failed"];
     }
 }
 
@@ -1429,11 +1421,6 @@
     } else {
         [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Deliver"];
         
-//        if (retCode == 1) {
-//            [AppD.window showHint:@"File does not exist."];
-//        } else {
-//            [AppD.window showHint:@"Have no legal power."];
-//        }
     }
 }
 
@@ -1535,13 +1522,6 @@
         [AppD.window showSuccessHudInView:AppD.window hint:@"Updated"];
     } else {
          [AppD.window showFaieldHudInView:AppD.window hint:@"Faield to Update"];
-//        if (retCode == 1) {
-//            [AppD.window showHint:@"User id error"];
-//        } else if (retCode == 2) {
-//            [AppD.window showHint:@"The renamed file already exists"];
-//        } else if (retCode == 3) {
-//            [AppD.window showHint:@"Other errors"];
-//        }
     }
 }
 + (void) handleFileForward:(NSDictionary *)receiveDic {
@@ -1660,7 +1640,7 @@
         if (retCode == 1) {
             [AppD.window showHint:@"No administrator rights"];
         } else if (retCode == 2) {
-            [AppD.window showHint:@"Wrong target user id"];
+            [AppD.window showHint:@"Wrong target user"];
         } else if (retCode == 3) {
             [AppD.window showHint:@"Other errors"];
         }
@@ -1777,6 +1757,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_SUCCESS_NOTI object:payloadArr];
     } else {
        
+        [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_FAILED_NOTI object:@(retCode)];
         [AppD.window showHint:@"Other errors"];
         
     }
@@ -1795,7 +1776,8 @@
     } else {
         if (retCode == 1) {
             [AppD.window showHint:@"Other errors"];
-        }        
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupUserPull_FAILED_NOTI object:@(retCode)];
     }
 }
 #pragma mark - 加入群聊
@@ -1833,10 +1815,10 @@
     if (retCode == 0) {
         // 添加到chatlist
         ChatListModel *chatListModel = [[ChatListModel alloc] init];
-        chatListModel.myID = [UserConfig getShareObject].userId;
+        chatListModel.myID = [UserConfig getShareObject].usersn;
         chatListModel.AssocId = AssocId? [AssocId integerValue]:0;
         chatListModel.isGroup = YES;
-        chatListModel.friendID = [UserConfig getShareObject].userId;
+        chatListModel.friendID = [UserConfig getShareObject].usersn;
         chatListModel.groupID = gId;
         chatListModel.groupName = [GName base64DecodedString]?:GName;
         chatListModel.friendName = @"";
@@ -1883,7 +1865,7 @@
         }
         
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_MESSAGE_SUCCESS_NOTI object:@(retCode)];
     }
 }
 #pragma mark ----发送群聊文件预处理
@@ -2023,7 +2005,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Name_SUCCESS_NOTI object:GId];
         } else {
             if (retCode == 1) {
-                [AppD.window showHint:@"Revise Group Name Failed."];
+                [AppD.window showHint:@"Configuration Failed."];
             }
         }
     } else if ([Type integerValue] == 2) { // 设置是否需要群管理审核入群，只有管理员有权限
@@ -2040,7 +2022,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:Remove_Group_Member_SUCCESS_NOTI object:nil];
         } else {
             if (retCode == 1) {
-                [AppD.window showHint:@"Remove Group Member Failed."];
+                [AppD.window showHint:@"Remove Failed."];
             }
         }
     } else if ([Type integerValue] == [NSString numberWithHexString:@"F1"]) { // 修改群别名
@@ -2048,7 +2030,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Alias_SUCCESS_NOTI object:GId];
         } else {
             if (retCode == 1) {
-                [AppD.window showHint:@"Revise Group Alias Failed."];
+                [AppD.window showHint:@"update Failed."];
             }
         }
     } else if ([Type integerValue] == [[NSString stringFromHexString:@"F2"] integerValue]) { // 修改群友别名

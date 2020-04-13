@@ -40,6 +40,7 @@
 @property (nonatomic ,strong) NSArray *groupArray;
 @property (nonatomic) NSInteger deleteIndex;
 @property (nonatomic) BOOL isSearch;
+@property (nonatomic, assign) int logId;
 
 @end
 
@@ -62,6 +63,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(friendListChangeNoti:) name:FRIEND_LIST_CHANGE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendGetFriendNoti) name:FRIEND_DELETE_MY_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFriendListNoti:) name:GET_FRIEND_LIST_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFriendListFailedNoti:) name:GET_FRIEND_LIST_FAILED_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactHDShow:) name:TABBAR_CONTACT_HD_NOTI object:nil];
 }
 
@@ -158,6 +160,8 @@
 - (void) sendGetFriendNoti
 {
     [SocketMessageUtil sendFriendListRequest];
+    // 上传日志
+    _logId = [SendRequestUtil sendLogRequestWtihAction:PULLFRIEND logid:0 type:0 result:0 info:@"send_pull_friendlist"];
 }
 
 
@@ -289,7 +293,10 @@
     [self sendGetFriendNoti];
 }
 
-
+- (void) getFriendListFailedNoti:(NSNotification *) noti {
+    // 上传日志
+    [SendRequestUtil sendLogRequestWtihAction:PULLFRIEND logid:_logId type:0xFF result:[noti.object intValue] info:@"pull_friend_failed"];
+}
 - (void) getFriendListNoti:(NSNotification *) noti {
     
     NSString *jsonModel =(NSString *)noti.object;
@@ -333,6 +340,9 @@
     
     [_tableV reloadData];
     [self refreshAddContactHD];
+    
+    // 上传日志
+    [SendRequestUtil sendLogRequestWtihAction:PULLFRIEND logid:_logId type:100 result:0 info:@"pull_friend_success"];
 
 }
 
