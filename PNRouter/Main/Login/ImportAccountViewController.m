@@ -43,7 +43,7 @@
                 [UserModel createUserLocalWithName:name];
                 [AppD setRootLoginWithType:ImportType];
             } else {
-                [weakSelf.view showHint:@"format error."];
+                [weakSelf.view showHint:@"Format error."];
             }
         }
     }];

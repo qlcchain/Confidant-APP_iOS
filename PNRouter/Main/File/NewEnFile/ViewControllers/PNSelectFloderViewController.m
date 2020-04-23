@@ -50,7 +50,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:Photo_Select_Floder_Noti object:floderM];
         [self clickBackAction:nil];
     } else {
-        [self.view showHint:@"Please select album."];
+        [self.view showHint:@"Please select an album"];
     }
 }
 #pragma mark ---layz

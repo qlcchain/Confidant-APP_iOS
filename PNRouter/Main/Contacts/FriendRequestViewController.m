@@ -87,7 +87,7 @@
     
     int retCode = [noti.object intValue];
     if (retCode == 0) { // 发送成功
-        [AppD.window showHint:@"Send Success"];
+        [AppD.window showHint:Send_Success_Str];
         NSArray *finfAlls = [FriendModel bg_find:FRIEND_REQUEST_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue(self.userId),bg_sqlKey(@"owerId"),bg_sqlValue([UserConfig getShareObject].userId)]];
         
         NSString *msg = _msgTF.text?:@"";
@@ -122,11 +122,11 @@
         [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDREQ logid:_logId type:100 result:retCode info:@"send_add_friend_request_success"];
         
     } else if (retCode == 1) { // 添加失败
-        [AppD.window showHint:@"Send Fail."];
+        [AppD.window showHint:Send_Faield];
         // 日志打点
         [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDREQ logid:_logId type:0xFF result:retCode info:@"send_add_friend_request_failed"];
     } else if (retCode == 2) { // 已经是好友关系
-        [AppD.window showHint:@"Already a good friend"];
+        [AppD.window showHint:@"Already a circle contact"];
         // 日志打点
         [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDREQ logid:_logId type:0xFF result:retCode info:@"send_add_friend_request_failed"];
     }

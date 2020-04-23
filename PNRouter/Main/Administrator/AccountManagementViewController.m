@@ -217,7 +217,7 @@
         return;
     }
     [AppD.window hideHud];
-    [AppD.window showHint:@"The connection fails"];
+    [AppD.window showHint:Connect_Failed];
 }
 
 - (void) recivceUserFind:(NSNotification *) noti
@@ -273,19 +273,19 @@
         [AppD setRootLoginWithType:MacType];
         
         if (retCode == 2) { // routeid不对
-            [AppD.window showHint:@"Routeid wrong."];
+            [AppD.window showHint:@"Wrong Routeid!"];
         } else if (retCode == 1) { //需要验证
             [AppD.window showHint:@"Need to verify"];
         } else if (retCode == 3) { //uid错误
             [AppD.window showHint:@"uid wrong."];
         } else if (retCode == 4) { //登陆密码错误
-            [AppD.window showHint:@"Login failed."];
+            [AppD.window showHint:@"Wrong log-in password!"];
         } else if (retCode == 5) { //验证码错误
-            [AppD.window showHint:@"Verification code error."];
+            [AppD.window showHint:@"Verification code error"];
         } else if (retCode == 7) { //无效帐户
             [AppD.window showHint:@"This account is no longer valid."];
         } else { // 其它错误
-            [AppD.window showHint:@"Login failed."];
+            [AppD.window showHint:@"Failed to log in"];
             
         }
     }

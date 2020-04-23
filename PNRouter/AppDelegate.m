@@ -93,35 +93,48 @@
     [GIDSignIn sharedInstance].clientID = CLIENT_ID;
     [GIDSignIn sharedInstance].delegate = self;
     
-    // 配置埋眯
+    // 配置埋点
     [FIRApp configure];
-    
     // 配置Bugly
     [self configBugly];
     // 配置推送
     [self configMiPush:launchOptions];
-    // 配置IQKeyboardManager
-    [self keyboardManagerConfig];
     // 配置DDLog
-    //[self configDDLog];
-    // 配置聊天
-    [self configChat];
-    // 打开时改变文件上传下载状态
-    [SystemUtil appFirstOpen];
+    [self configDDLog];
+    
+    // 异步执行耗时操作
+    @weakify_self
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        // 得到签名，加密 公私钥对
+        NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
+        EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickeyWithModelJson:modelJson];
+        [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:model.signPrivateKey];
+        
+        // 配置IQKeyboardManager
+        [weakSelf keyboardManagerConfig];
+        // 配置聊天
+        [weakSelf configChat];
+        // 打开时改变文件上传下载状态
+        [SystemUtil appFirstOpen];
+        // 清除发送失败已经不存在图片
+        [[SendCacheChatUtil getSendCacheChatUtilShare] deleteCacheFileNollData];
+    });
+    
+    // 检查显示UI
     [self checkGuidenPage];
-    // 清除发送失败已经不存在图片
-    [[SendCacheChatUtil getSendCacheChatUtilShare] deleteCacheFileNollData];
-  //  [RSAModel getRSAModel];
-    // 得到签名，加密 公私钥对
-    NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
-    EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickeyWithModelJson:modelJson];
-    [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:model.signPrivateKey];
-
+    
     if (@available(iOS 13.0, *)) {
         self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
     } else {
         // Fallback on earlier versions
     }
+    
+    //设置UIBarButtonItem和UINavigationBar的默认文字颜色
+    [[UIBarButtonItem appearance] setTintColor:MAIN_PURPLE_COLOR];
+    NSMutableDictionary *attrs = [NSMutableDictionary dictionary];
+    attrs[NSForegroundColorAttributeName] = MAIN_PURPLE_COLOR;
+    [[UINavigationBar appearance] setTitleTextAttributes:attrs];
     
     [self.window makeKeyAndVisible];
     return YES;
@@ -238,9 +251,11 @@
 - (void)setRootLoginWithType:(LoginType) type {
     [AppD addTransitionAnimation];
     AppD.isLoginMac = NO;
-    
+
     LoginViewController *vc = [[LoginViewController alloc] initWithLoginType:type];
     AppD.window.rootViewController = [[PNNavViewController alloc] initWithRootViewController:vc];
+    
+
 }
 
 - (void)addTransitionAnimation {
@@ -249,7 +264,13 @@
     //动画时间
     animation.duration = 0.4f;
     //过滤效果
-    animation.type = kCATransitionReveal;
+    if (self.isAutoLogin) {
+        self.isAutoLogin = NO;
+        animation.type = kCATransitionFade;
+    } else {
+        animation.type = kCATransitionReveal;
+    }
+    
     //枚举值:
     // kCATransitionPush 推入效果
     //  kCATransitionMoveIn 移入效果
@@ -269,7 +290,6 @@
 
 #pragma mark - 是否需要显示引导页
 - (void)checkGuidenPage {
-    _showTouch = YES;
     NSString *version = [HWUserdefault getObjectWithKey:VERSION_KEY];
     if (!version || ![version isEqualToString:APP_Version]) {
         [HWUserdefault updateObject:APP_Version withKey:VERSION_KEY];
@@ -278,21 +298,18 @@
     } else {
         [self judgeLogin];
     }
-    
-//    NSString *version = [KeyCUtil getKeyValueWithKey:LOGIN_KEY];
-//    if (![[NSString getNotNullValue:version] isEqualToString:@"1"]) {
-//        GuidePageViewController *pageVC = [[GuidePageViewController alloc] init];
-//        self.window.rootViewController = pageVC;
-//    } else {
-//        _showTouch = YES;
-//        LoginViewController  *vc = [[LoginViewController alloc] init];
-//        AppD.window.rootViewController = vc;
-//    }
 }
 
 - (void)judgeLogin {
     if ([UserModel existLocalNick]) { // 本地有私钥和昵称
-        [self setRootLoginWithType:RouterType];
+       BOOL isDidLogin = [[NSUserDefaults standardUserDefaults] boolForKey:Login_Statu_Key];
+        if (isDidLogin) {
+            ViewController *vc = [[ViewController alloc] init];
+            AppD.window.rootViewController = vc;
+        } else {
+            [self setRootLoginWithType:RouterType];
+        }
+       
     } else { // 本地无私钥和昵称
         [self setRootCreateAccount];
     }
@@ -352,21 +369,6 @@
 
 #pragma mark - 配置DDLog
 - (void)configDDLog {
-    
-//    char *xcode_colors = getenv("XcodeColors");
-//    if (xcode_colors && (strcmp(xcode_colors, "YES") == 0))
-//    {
-//        // XcodeColors is installed and enabled!
-//    }
-//
-//    //开启DDLog 颜色
-//    // Enable XcodeColors
-//    setenv("XcodeColors", "YES", 0);
-//
-//    [[DDTTYLogger sharedInstance] setColorsEnabled:YES];
-//    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor blueColor] backgroundColor:[UIColor redColor] forFlag:DDLogFlagVerbose];
-//    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor redColor] backgroundColor:[UIColor whiteColor] forFlag:DDLogFlagDebug];
-    
     //分开logger不同的flag
     [DDLog addLogger:[CSLoggerAssembler createCSFileLogger:CS_Test_1000]];
     //配置DDLog
@@ -377,15 +379,6 @@
     fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
     fileLogger.logFileManager.maximumNumberOfLogFiles = 7; // 7
     [DDLog addLogger:fileLogger];
-    
-    //针对单个文件配置DDLog打印级别，尚未测试
-    //    [DDLog setLevel:DDLogLevelAll forClass:nil];
-    
-    //    DDLogVerbose(@"Verbose");
-    //    DDLogDebug(@"Debug");
-    //    DDLogInfo(@"Info");
-    //    DDLogWarn(@"Warn");
-    //    DDLogError(@"Error");
 }
 
 #pragma mark - 配置Bugly
@@ -398,10 +391,6 @@
 }
 - (void) configMiPush:(NSDictionary *) launchOptions
 {
-    // 同时启用APNs跟应用内长连接
-   // [MiPushSDK registerMiPush:self type:0 connect:YES];
-    
-    
     //Required
     //notice: 3.0.0 及以后版本注册可以这样写，也可以继续用之前的注册方式
     JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
@@ -481,8 +470,7 @@
     }
     /// 设置聊天界面的表情资源
     CTHelper.share.emojDic = dic;
-    
-    
+        
     /// 设置除表情的图片资源
     NSString *resouceBundlePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"InputViewBundle.bundle"];
     NSBundle *resourceBundle = [NSBundle bundleWithPath:resouceBundlePath];
@@ -601,11 +589,7 @@
 - (void)application:(UIApplication *)app
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    // 注册APNS成功, 注册deviceToken
-    //[MiPushSDK bindDeviceToken:deviceToken];
-   // AppD.devToken = deviceToken;
-    
-    /// Required - 注册 DeviceToken
+    // Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
     // 获取regid
     AppD.regId = [JPUSHService registrationID];
@@ -751,7 +735,7 @@ didSignInForUser:(GIDGoogleUser *)user
     
     if (error != nil) {
         if (error.code == kGIDSignInErrorCodeHasNoAuthInKeychain) {
-            [AppD.window showHint:@"The user has not signed in before or they have since signed out."];
+            [AppD.window showHint:@"The user has not signed in or their accounts do not exist."];
         } else {
             [AppD.window showHint:([NSString stringWithFormat:@"%@", error.localizedDescription])];
         }
@@ -760,7 +744,7 @@ didSignInForUser:(GIDGoogleUser *)user
     }
     
     if (![[user.profile.email lowercaseString] containsString:@"@gmail"]) {
-        [AppD.window showHint:@"gmail.com email only."];
+        [AppD.window showHint:@"Only Gmail.com is supported."];
         return;
     }
     

@@ -19,7 +19,10 @@
 @property (nonatomic, assign) int routerToxNumber;
 @property (nonatomic, copy) NSString *aliasName;
 @property (nonatomic) BOOL isConnected;
+@property (nonatomic, copy) NSString *routeIp;
+@property (nonatomic, copy) NSString *routePort;
 
++ (void)updateRouteIp:(NSString *)routeIP routePort:(NSString *)routePort routeid:(NSString *) routeId usersn:(NSString *)sn;
 + (BOOL)routerIsExitsWithToxid:(NSString *)toxid;
 + (NSArray *)getLocalRouters;
 + (void)addRouterWithToxid:(NSString *)toxid;

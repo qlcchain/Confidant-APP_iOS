@@ -100,7 +100,7 @@
                             
                             if ([[RouterConfig getRouterConfig].currentRouterToxid isEqualToString:toxid]) {
                                 // 是当前帐户
-                                [AppD.window showHint:@"Already in the same circle."];
+                                [AppD.window showHint:@"Already in the same circle"];
                             } else {
                                 [self showAlertVCWithValues:@[toxid,sn] isMac:NO];
                             }
@@ -115,7 +115,7 @@
                     } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_0"]) { // 是好友码
                         codeValue = codeValues[1];
                         if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
-                            [AppD.window showHint:@"You cannot add yourself as a friend."];
+                            [AppD.window showHint:@"You can not add yourself as a circle contact."];
                         } else if (codeValue.length != 76) {
                             [AppD.window showHint:@"QR code format is wrong."];
                             [self jumpCodeValueVC];
@@ -138,7 +138,7 @@
                                 //  && [codeArr[2] isEqualToString:toxid]
                                 if ([codeArr[1] isEqualToString:signPK]) {
                                     
-                                    [AppD.window showHint:@"You cannot add yourself as a friend."];
+                                    [AppD.window showHint:@"You can not add yourself as a circle contact."];
                                     
                                 } else {
                                     
@@ -167,7 +167,7 @@
                                 
                                 // 是当前帐户
                                 [SendRequestUtil sendAutoAddFriendWithFriendId:codeValues[1] email:@"" type:1 showHud:NO];
-                                [AppD.window showHint:@"Already in the same circle."];
+                                [AppD.window showHint:@"Already in the same circle"];
                                 
                             } else {
                                 [weakSelf showAlertVCWithValues:@[toxid,sn,codeValues[1]] isMac:NO];
@@ -188,7 +188,6 @@
                             [self jumpCodeValueVC];
                         }
                     }  else { // 是乱码
-                        //[weakSelf.view showHint:@"format error!"];
                         [self jumpCodeValueVC];
                     }
                 }

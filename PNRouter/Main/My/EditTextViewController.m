@@ -46,7 +46,7 @@
         case EditName:
         {
             if ([aliasName isEmptyString]) {
-                [AppD.window showHint:@"Nickname cannot be empty"];
+                [AppD.window showHint:@"Please fill in the name"];
             } else {
                 [SendRequestUtil sendUpdateWithNickName:aliasName];
                 
@@ -56,7 +56,7 @@
         case EditFriendAlis:
         {
             if ([aliasName isEmptyString]) {
-                [AppD.window showHint:@"Nickname cannot be empty"];
+                [AppD.window showHint:@"Please fill in the name"];
             } else {
                 [SendRequestUtil sendAddFriendNickName:aliasName friendId:self.friendModel.userId];
             }
@@ -65,7 +65,7 @@
         case EditCompany:
         {
             if ([aliasName isEmptyString]) {
-                [AppD.window showHint:@"Nickname cannot be empty"];
+                [AppD.window showHint:@"Please fill in the name"];
             } else {
                 UserModel *model = [UserModel getUserModel];
                 model.commpany = aliasName;
@@ -77,7 +77,7 @@
         case EditPosition:
         {
             if ([aliasName isEmptyString]) {
-                [AppD.window showHint:@"Nickname cannot be empty"];
+                [AppD.window showHint:@"Please fill in the name"];
             } else {
                 UserModel *model = [UserModel getUserModel];
                 model.position = aliasName;
@@ -89,7 +89,7 @@
         case EditLocation:
         {
             if ([aliasName isEmptyString]) {
-                [AppD.window showHint:@"Nickname cannot be empty"];
+                [AppD.window showHint:@"Please fill in the name"];
             } else {
                 UserModel *model = [UserModel getUserModel];
                 model.location = aliasName;
@@ -108,7 +108,7 @@
         case EditCircleName:
         {
             if ([aliasName isEmptyString]) {
-                [AppD.window showHint:@"Nickname cannot be empty"];
+                [AppD.window showHint:@"Please fill in the name"];
             } else {
                [SocketMessageUtil sendUpdateRourerNickName:aliasName showHud:YES];
             }
@@ -118,10 +118,10 @@
         {
             NSString *alias = [_groupInfoM.Remark base64DecodedString]?:@"";
             if ([aliasName isEmptyString]) {
-                [AppD.window showHint:@"Please enter alias."];
+                [AppD.window showHint:@"Please enter an alias"];
             } else {
                 if ([alias isEqualToString:aliasName]) {
-                    [AppD.window showHint:@"Please enter a different alias."];
+                    [AppD.window showHint:@"Please choose another alias"];
                 } else {
                     NSString *base64Name = [aliasName base64EncodedString];
                     [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@([NSString numberWithHexString:@"F1"]) ToId:nil Name:base64Name NeedVerify:nil showHud:YES];
@@ -133,10 +133,10 @@
         {
             NSString *name = [_groupInfoM.GName base64DecodedString]?:@"";
             if ([aliasName isEmptyString]) {
-                [AppD.window showHint:@"Please enter name."];
+                [AppD.window showHint:@"Please enter a group name"];
             } else {
                 if ([name isEqualToString:aliasName]) {
-                    [AppD.window showHint:@"Please enter a different name."];
+                    [AppD.window showHint:@"Please choose another group name"];
                 } else {
                     NSString *base64Name = [aliasName base64EncodedString];
                     [SendRequestUtil sendGroupConfigWithGId:_groupInfoM.GId Type:@(1) ToId:nil Name:base64Name NeedVerify:nil showHud:YES];

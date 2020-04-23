@@ -219,7 +219,7 @@
                     return;
                 }
                 
-                NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+                NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
                 NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
                 int msgid = [mill intValue];
                 
@@ -238,7 +238,7 @@
                 
                 model.publicKey = [model.publicKey stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
                 
-                NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+                NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
                 NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
                 int msgid = [mill intValue];
                 
@@ -268,7 +268,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (idx == modeArray.count-1) {
                     [weakSelf.view hideHud];
-                    [weakSelf.view showHint:@"Send success."];
+                    [weakSelf.view showHint:Send_Success_Str];
                 }
             });
             

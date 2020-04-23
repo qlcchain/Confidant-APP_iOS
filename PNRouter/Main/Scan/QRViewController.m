@@ -58,10 +58,10 @@
             // 请求解除独占访问硬件设备
             [device unlockForConfiguration];
         } else {
-            [self.view showHint:@"Device unsupported"];
+            [self.view showHint:Device_No];
         }
     } else {
-         [self.view showHint:@"Device unsupported"];
+         [self.view showHint:Device_No];
     }
 
 }
@@ -75,7 +75,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    //[UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [_scannerBorder startScannerAnimating];
     [self.scanner startScan];
 }
@@ -83,7 +83,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [UIApplication sharedApplication].statusBarStyle = barStyle;
+    //[UIApplication sharedApplication].statusBarStyle = barStyle;
     
     [_scannerBorder stopScannerAnimating];
     [_scanner stopScan];
@@ -100,9 +100,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = MAIN_PURPLE_COLOR;
-    self.navigationController.navigationBar.translucent = NO;
-    barStyle = [UIApplication sharedApplication].statusBarStyle;
+    self.view.backgroundColor = MAIN_GRAY_COLOR;
+   // barStyle = [UIApplication sharedApplication].statusBarStyle;
 }
 
 #pragma mark - Config View
@@ -117,7 +116,7 @@
     
     _scannerBorder = [[HMScannerBorder alloc] initWithFrame:CGRectMake(45,100, width, width)];
    // _scannerBorder.center = self.view.center;
-    _scannerBorder.tintColor = MAIN_PURPLE_COLOR;
+    _scannerBorder.tintColor = MAIN_ZS_COLOR;
     [_parentView addSubview:_scannerBorder];
     
     //_maskView = [HMScannerMaskView maskViewWithFrame:_parentView.bounds cropRect:_scannerBorder.frame];
@@ -138,19 +137,12 @@
 - (void) clickAlbumButton {
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        [AppD.window showHint:@"Device unsupported"];
+        [AppD.window showHint:Device_No];
         return;
     }
 
     //调用系统相册的类
     UIImagePickerController *pickerController = [[UIImagePickerController alloc]init];
-    //    更改titieview的字体颜色
-    NSMutableDictionary *attrs = [NSMutableDictionary dictionary];
-    attrs[NSForegroundColorAttributeName] = [UIColor whiteColor];
-    [pickerController.navigationBar setTitleTextAttributes:attrs];
-    pickerController.navigationBar.translucent = NO;
-    pickerController.navigationBar.barTintColor = MAIN_PURPLE_COLOR;
-    pickerController.navigationBar.tintColor = [UIColor whiteColor];
     //设置相册呈现的样式
     pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary; //UIImagePickerControllerSourceTypeSavedPhotosAlbum;//图片分组列表样式
     pickerController.delegate = self;
@@ -158,7 +150,7 @@
     //使用模态呈现相册
     pickerController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:pickerController animated:YES completion:^{
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+       // [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     }];
     
     
@@ -190,7 +182,7 @@
                         [weakSelf performSelector:@selector(getBackAndBlock:) withObject:values.firstObject afterDelay:1];
                     }
                 } else {
-                    [AppD.window showHint:@"Sweep code failure"];
+                    [AppD.window showHint:Scan_Failed];
                 }
             } else {
                 // 完成回调
@@ -198,7 +190,7 @@
                     [weakSelf.scanner startScan];
                     [weakSelf leftNavBarItemPressedWithPop:NO];
                 } else {
-                    [AppD.window showHint:@"Sweep code failure"];
+                    [AppD.window showHint:Scan_Failed];
                 }
             }
             

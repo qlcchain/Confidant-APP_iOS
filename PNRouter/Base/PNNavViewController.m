@@ -16,6 +16,14 @@
 
 @implementation PNNavViewController
 
++ (void)load
+{
+    [UINavigationBar appearance].translucent = NO;
+    [[UINavigationBar appearance] setBarTintColor:MAIN_GRAY_COLOR];
+    [[UINavigationBar appearance] setTintColor:MAIN_PURPLE_COLOR];
+    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:18.0],NSFontAttributeName,MAIN_GRAY_COLOR,NSForegroundColorAttributeName, nil]];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     /*
@@ -30,36 +38,29 @@
      */
    // self.interactivePopGestureRecognizer.delegate = self;
    // self.interactivePopGestureRecognizer.enabled = YES;
-    self.navigationBar.translucent = NO;
+   // self.navigationBar.translucent = NO;
     
-    [self.navigationBar setBackgroundImage:[UIImage imageWithColor:MAIN_PURPLE_COLOR]
-                            forBarPosition:UIBarPositionAny
-                                barMetrics:UIBarMetricsDefault];
+   // [self.navigationBar setBackgroundImage:[UIImage imageWithColor:MAIN_GRAY_COLOR]
+    //                        forBarPosition:UIBarPositionAny
+     //                           barMetrics:UIBarMetricsDefault];
     
-    [self.navigationBar setShadowImage:[UIImage new]];
+   // [self.navigationBar setShadowImage:[UIImage new]];
     // 去除返回按扭文字
     //    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
-    [[UINavigationBar appearance] setBarTintColor:MAIN_PURPLE_COLOR];
-    [[UINavigationBar appearance] setTintColor:MAIN_PURPLE_COLOR];
-    
-    [self.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:18.0],NSFontAttributeName,[UIColor whiteColor],NSForegroundColorAttributeName, nil]];
+   
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    //    if ([viewController isKindOfClass:[ProfileViewController class]] || [viewController isKindOfClass:[WalletDetailViewController class]]) {
-    //        [viewController setHidesBottomBarWhenPushed:YES];
-    //    }
     if (self.viewControllers.count > 0) {
-        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton buttonWithType:UIButtonTypeCustom]];
+        //viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton buttonWithType:UIButtonTypeCustom]];
         [viewController setHidesBottomBarWhenPushed:YES];
     }
    
     if (self.viewControllers.count >= 1) {
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
-    
     
     [super pushViewController:viewController animated:animated];
 }
@@ -106,11 +107,6 @@
     [self popViewControllerAnimated:YES];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 
 @end

@@ -98,7 +98,7 @@
 }
 // 页面加载失败时调用
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation{
-    [AppD.window showHint:@"Load failed"];
+    [AppD.window showHint:@"Failed to load"];
 }
 // 接收到服务器跳转请求之后调用
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation{

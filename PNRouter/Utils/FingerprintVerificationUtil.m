@@ -204,11 +204,7 @@
 }
 */
 + (void)show {
-    NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
-    if ([screenLock boolValue] == NO) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:TOUCH_MODIFY_SUCCESS_NOTI object:nil];
-        return;
-    }
+   
     dispatch_async(dispatch_get_main_queue(), ^{
         DDLogDebug(@"开始解锁");
         LAContext *myContext = [[LAContext alloc] init];
@@ -349,7 +345,7 @@
 }
 
 + (void)exitAPP {
-    [AppD.window showHint:@"Validation fails"];
+    [AppD.window showHint:@"Failed to verify"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
          exit(0);
     });

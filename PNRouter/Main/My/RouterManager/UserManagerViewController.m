@@ -257,7 +257,7 @@
     
     NSArray *playod = noti.object;
     if (!playod || playod.count == 0) {
-        [self.view showHint:@"The list of users is empty."];
+        [self.view showHint:@"Your users list is empty."];
     } else {
        // __block NSMutableArray *supperArray = [NSMutableArray array];
          __block NSMutableArray *ptArray = [NSMutableArray array];

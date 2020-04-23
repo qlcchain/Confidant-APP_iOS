@@ -166,7 +166,6 @@ static CGFloat itemMargin = 5;
     _collectionView.delegate = self;
     _collectionView.alwaysBounceHorizontal = NO;
     _collectionView.contentInset = UIEdgeInsetsMake(itemMargin, itemMargin, itemMargin, itemMargin);
-    
     if (_showTakePhotoBtn) {
         _collectionView.contentSize = CGSizeMake(self.view.tz_width, ((_model.count + self.columnNumber) / self.columnNumber) * self.view.tz_width);
     } else {

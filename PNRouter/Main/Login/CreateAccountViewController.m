@@ -34,7 +34,7 @@
     [self.view endEditing:YES];
      NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:_nameTF.text]];
     if ([aliasName isEmptyString]) {
-        [self.view showHint:@"Nickname cannot be empty."];
+        [self.view showHint:@"Please fill in the name"];
         return;
     }
     [self createUserName:aliasName];
@@ -44,7 +44,6 @@
     [super viewDidLoad];
     
     NSString *urlStr = @"I accept the Terms & Privacy Policy.";
-    
     NSMutableAttributedString *content = [[NSMutableAttributedString alloc]initWithString:urlStr];
     NSRange contentRange = [urlStr rangeOfString:@"Terms & Privacy Policy."];//{0,[content length]};
     [content addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:contentRange];

@@ -113,7 +113,7 @@
 
 - (IBAction)confirmAction:(id)sender {
     if (!_selectMode || _selectMode.length <= 0) {
-        [AppD.window showHint:@"This mode is not supported"];
+        [AppD.window showHint:@"This mode is not supported."];
         return;
     }
     [self jumpToReconfigDisk];

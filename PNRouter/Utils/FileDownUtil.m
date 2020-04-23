@@ -256,7 +256,7 @@
                     NSLog(@"download errorcode********* %ld",(long)error.code);
                    
                     if (error.code == -1011) { // url不存在
-                         [AppD.window showHint:@"File does not exist."];
+                         [AppD.window showHint:@"The file does not exist"];
                         [FileData bg_deleteAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"srcKey"),bg_sqlValue(fileModel.srcKey)] complete:^(BOOL isSuccess) {
                              [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
                         }];
@@ -404,7 +404,7 @@
 {
     if (fileModel.RetCode != 0) { // 下载失败 删除文件
         // 保存下载失败记录
-        [AppD.window showHint:@"File does not exist."];
+        [AppD.window showHint:@"The file does not exist"];
         [FileData bg_deleteAsync:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@=%@",bg_sqlKey(@"userId"),bg_sqlValue([UserConfig getShareObject].userId),bg_sqlKey(@"msgId"),bg_sqlValue(fileModel.MsgId)] complete:^(BOOL isSuccess) {
             
             [[NSNotificationCenter defaultCenter] postNotificationName:File_Upload_Finsh_Noti object:nil];
@@ -420,18 +420,18 @@
         [[FileDownUtil getShareObject] downFileWithFileModel:fileModel progressBlock:^(CGFloat progress) {
         } success:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSString * _Nonnull filePath) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [AppD.window showHint:@"Download Success"];
+                [AppD.window showHint:@"Download successfully"];
             });
         } failure:^(NSURLSessionDownloadTask * _Nonnull dataTask, NSError * _Nonnull error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSLog(@"%@     %@   %@",error.localizedDescription, error.domain,@(error.code));
                 if (error.code == -999) {
-                    [AppD.window showHint:@"Download Cancel"];
+                    [AppD.window showHint:@"Cancelled"];
                 } else if (error.code == -1011) { // url不存在
-                    [AppD.window showHint:@"File does not exist."];
+                    [AppD.window showHint:@"The file does not exist"];
                 } else {
-                    [AppD.window showHint:@"Download Fail"];
+                    [AppD.window showHint:@"Failed to Download"];
                 }
             });
             

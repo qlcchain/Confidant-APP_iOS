@@ -89,11 +89,10 @@
     lineView.backgroundColor = RGBP(235, 235, 235, 0.9);
     [self.tabBar addSubview:lineView];
     
-    [self addChildViewController:[[NewsViewController alloc] initWithManager:self.manager] text:@"" imageName:@"navibar_chats"];
-    [self addChildViewController:[[PNFileViewController alloc] initWithManager:self.manager] text:@"" imageName:@"navibar_encryption"];
-    [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"" imageName:@"navibar_contacts"];
-    [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"" imageName:@"navibar_me"];
-    
+    [self addChildViewController:[[NewsViewController alloc] initWithManager:self.manager] text:@"" imageName:@"tabbar_chats"];
+    [self addChildViewController:[[PNFileViewController alloc] initWithManager:self.manager] text:@"" imageName:@"tabbar_encryption"];
+    [self addChildViewController:[[ContactViewController alloc] initWithManager:self.manager] text:@"" imageName:@"tabbar_contacts"];
+    [self addChildViewController:[[MyViewController alloc] initWithManager:self.manager] text:@"" imageName:@"tabbar_me"];
     
      // socket 断开连接通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketDisconnectNoti:) name:SOCKET_DISCONNECT_NOTI object:nil];
@@ -166,7 +165,7 @@
  */
 - (void) addChildViewController:(UIViewController *) childController text:(NSString *) text imageName:(NSString *) imageName {
     // 设置item图片不渲染
-    childController.tabBarItem.image = [[UIImage imageNamed:[imageName stringByAppendingString:@"_unselecteds"]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    childController.tabBarItem.image = [[UIImage imageNamed:[imageName stringByAppendingString:@"_unselected"]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     childController.tabBarItem.selectedImage = [[UIImage imageNamed:[imageName stringByAppendingString:@"_selected"]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     // 设置标题的属性
@@ -191,21 +190,8 @@
  */
 - (void) logoutWithType:(int) type {
     
-//    if (type > 0) {
-//        NSString *alertMessage = @"Other devices logged into the account";
-//        if (type == 1) {
-//            alertMessage = @"System upgrade, forced exit";
-//        } else if (type == 3) {
-//            alertMessage = @"Users are deleted and forced to quit";
-//        }
-//        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-//        UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        }];
-//        [alert1 setValue:UIColorFromRGB(0x2C2C2C) forKey:@"_titleTextColor"];
-//        [alertC addAction:alert1];
-//        [self presentViewController:alertC animated:YES completion:nil];
-//    }
-    
+    // 保存登陆状态
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:Login_Statu_Key];
     [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
     [SendRequestUtil sendLogOut];
     AppD.inLogin = NO;
@@ -445,9 +431,5 @@
     });
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

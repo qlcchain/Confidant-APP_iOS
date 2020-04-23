@@ -123,7 +123,7 @@
                 [QLCDPKIManager process:QLC_TEST_URL params:signBlock successHandler:^(NSString * _Nullable responseObj) {
                      NSLog(@"responseObj = process%@",responseObj);
                      [weakSelf.view hideHud];
-                    [AppD.window showHint:@"Registered successfully."];
+                    [AppD.window showHint:@"Registered successfully!"];
                     
                     NSString *emailContent = [weakSelf enEmailContentMessage];
                     

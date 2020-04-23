@@ -77,7 +77,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [UIApplication sharedApplication].statusBarHidden = YES;
+    //[UIApplication sharedApplication].statusBarHidden = YES;
     if (_currentIndex) {
         [_collectionView setContentOffset:CGPointMake((self.view.tz_width + 20) * self.currentIndex, 0) animated:NO];
     }
@@ -354,6 +354,7 @@
 }
 
 - (void)backButtonClick {
+    
     if (self.navigationController.childViewControllers.count < 2) {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         if ([self.navigationController isKindOfClass: [TZImagePickerController class]]) {

@@ -30,7 +30,7 @@
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
-    [[UIColor colorWithRed:0 green:0 blue:0 alpha:.7] setFill];
+    [[UIColor colorWithRed:0 green:0 blue:0 alpha:.3] setFill];
     //[[UIColor colorWithWhite:RGB(231.0, 231.0, 231.0) alpha:0.9f] setFill];
     CGContextFillRect(ctx, rect);
     

@@ -632,13 +632,13 @@
     [AppD.window hideHud];
      NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 2) {
-        [AppD.window showHint:@"Router id error"];
+        [AppD.window showHint:Failed];
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
     }  else if (retCode == 4) {
-        [AppD.window showHint:@"Other error"];
+        [AppD.window showHint:Failed];
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
     }else if (retCode == 5){
-        [AppD.window showHint:@"The qr code has been occupied by others"];
+        [AppD.window showHint:@"The QR code has been taken."];
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_FIND_RECEVIE_NOTI object:nil];
     } else if (retCode == 6){
         [AppD.window showHint:@"This account is no longer valid"];
@@ -662,31 +662,46 @@
         // 重新取值  rid 和 usesn
         NSString *userSn = receiveDic[@"params"][@"UserSn"];
         NSString *routeId = receiveDic[@"params"][@"RouteId"];
+        NSString *userId = receiveDic[@"params"][@"UserId"];
+        NSString *hashId = receiveDic[@"params"][@"Index"];
+        NSString *routeName = receiveDic[@"params"][@"RouteName"];
+        
         
         [RouterConfig getRouterConfig].currentRouterToxid = routeId?:[RouterConfig getRouterConfig].currentRouterToxid;
         [RouterConfig getRouterConfig].currentRouterSn = userSn?:[RouterConfig getRouterConfig].currentRouterSn;
         
+        
+        
+        [UserModel updateHashid:hashId usersn:userSn userid:userId needasysn:0];
+        [RouterModel addRouterName:routeName routerid:routeId usersn:userSn userid:userId];
+        [RouterModel updateRouterConnectStatusWithSn:userSn];
+        
         [UserConfig getShareObject].adminId = adminId;
         [UserConfig getShareObject].adminKey = adminUserKey;
         [UserConfig getShareObject].adminName = adminName? [adminName base64DecodedString]:@"";
+        [UserConfig getShareObject].userId = userId;
+        [UserConfig getShareObject].usersn = userSn;
+        [UserConfig getShareObject].hashId = hashId;
+        [UserConfig getShareObject].userName = [UserModel getUserModel].username;
+
         
         // 开始心跳
         [HeartBeatUtil start];
         [[NSNotificationCenter defaultCenter] postNotificationName:REGISTER_PUSH_NOTI object:nil];
         // 发送未完成消息
-        [[SendCacheChatUtil getSendCacheChatUtilShare] start];
+        //[[SendCacheChatUtil getSendCacheChatUtilShare] start];
         AppD.isRegister = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_REGISTER_RECEVIE_NOTI object:receiveDic];
     } else {
         
         if (retCode == 1) {
-            [AppD.window showHint:@"Router id error"];
+            [AppD.window showHint:Registered_Failed];
         } else if (retCode == 2) {
-            [AppD.window showHint:@"The qr code has been activated by other users"];
+            [AppD.window showHint:@"The QR code has been taken."];
         } else if (retCode == 3) {
-            [AppD.window showHint:@"Error verification coder"];
+            [AppD.window showHint:@"Verification code error"];
         }else {
-            [AppD.window showHint:@"Other error"];
+            [AppD.window showHint:Registered_Failed];
         }
     }
     
@@ -701,7 +716,7 @@
         NSArray *payloadArr = [RouterUserModel mj_objectArrayWithKeyValuesArray:Payload.mj_JSONObject];
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_PULL_SUCCESS_NOTI object:payloadArr];
     } else {
-        [AppD.window showHint:@"User pull failed"];
+        [AppD.window showHint:@"Failed to load the contact list"];
     }
 }
 
@@ -714,11 +729,11 @@
         NSString *qrCode = receiveDic[@"params"][@"Qrcode"];
         [[NSNotificationCenter defaultCenter] postNotificationName:CREATE_USER_SUCCESS_NOTI object:qrCode];
     } else if (retCode == 1){
-        [AppD.window showHint:@"Rid error."];
+        [AppD.window showHint:Create_Failed];
     } else if (retCode == 2){
-        [AppD.window showHint:@"Have no legal power"];
+        [AppD.window showHint:@"Request denied"];
     } else if (retCode == 3){
-        [AppD.window showHint:@"The user limit has been reached"];
+        [AppD.window showHint:@"The number of contacts has met the upper limit."];
     }
 }
 #pragma mark - 已读消息回调
@@ -741,7 +756,7 @@
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:REVER_LOGOUT_SUCCESS_NOTI object:nil];
     } else {
-        [AppD.window showHint:@"LogOut Failure."];
+        [AppD.window showHint:@"Failed to log out"];
     }
 }
 #pragma mark - 修改昵称
@@ -751,7 +766,7 @@
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:REVER_UPDATE_NICKNAME_SUCCESS_NOTI object:nil];
     } else {
-        [AppD.window showHint:@"Update NickName Failure."];
+        [AppD.window showHint:@"Failed to modify the nickname"];
     }
 }
 #pragma mark - 修改好友昵称
@@ -761,7 +776,7 @@
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:REVER_UPDATE_FRIEND_NICKNAME_SUCCESS_NOTI object:nil];
     } else {
-        [AppD.window showHint:@"Update NickName Failure."];
+        [AppD.window showHint:@"Failed to modify the nickname"];
     }
 }
 #pragma mark -sendfile 回调
@@ -988,7 +1003,7 @@
     if (Result == 0) { // 同意添加
         [[UserHeadUtil getUserHeadUtilShare] sendUpdateAvatarWithFid:FriendId md5:@"0" showHud:NO];
     } else if (Result == 1) { // 拒绝好友添加
-        [AppD.window showHint:@"User refuse to add friend"];
+        [AppD.window showHint:@"Failed to add new contact"];
     }
     
     NSString *retcode = @"0"; // 0：消息接收到  1：其他错误
@@ -1185,10 +1200,8 @@
     NSString *MsgId = [NSString stringWithFormat:@"%@",receiveDic[@"params"][@"MsgId"]];
     if (retCode == 0) { // 0：消息删除成功
         [[NSNotificationCenter defaultCenter] postNotificationName:DELET_MESSAGE_SUCCESS_NOTI object:MsgId];
-    } else if (retCode == 1) { // 1：目标不可达
-        [AppD.window showHint:@"deletion failed"];
-    } else if (retCode == 2) { // 2：其他错误
-        [AppD.window showHint:@"deletion failed"];
+    } else {
+        [AppD.window showHint:Delete_Failed];
     }
 }
 
@@ -1269,7 +1282,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_LIST_NOTI object:msg];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:GET_FRIEND_LIST_FAILED_NOTI object:@(retCode)];
-        [AppD.window showHint:@"Friend pull failed"];
+        [AppD.window showHint:@"Failed to load the contact list"];
     }
 }
 
@@ -1342,13 +1355,13 @@
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:DEVICE_LOGIN_SUCCESS_NOTI object:receiveDic];
     } else if (retCode == 1) {
-        [AppD.window showHint:@"The device is temporarily unavailable"];
+        [AppD.window showHint:@"The device is not supported."];
     } else if (retCode == 2) {
         [AppD.window showHint:@"Device MAC error"];
     } else if (retCode == 3) {
         [AppD.window showHint:@"Password error"];
     } else {
-        [AppD.window showHint:@"Other error"];
+        [AppD.window showHint:Failed];
     }
 }
 
@@ -1359,11 +1372,11 @@
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:ResetRouterKey_SUCCESS_NOTI object:receiveDic];
     } else if (retCode == 1) {
-        [AppD.window showHint:@"The target device id is incorrect"];
+        [AppD.window showHint:@"Device ID error"];
     } else if (retCode == 2) {
         [AppD.window showHint:@"Password error"];
     } else {
-        [AppD.window showHint:@"Other error"];
+        [AppD.window showHint:Failed];
     }
 }
 
@@ -1375,9 +1388,9 @@
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:ResetUserIdcode_SUCCESS_NOTI object:receiveDic];
     } else if (retCode == 1) {
-        [AppD.window showHint:@"The target device id is incorrect"];
+        [AppD.window showHint:@"Device ID error"];
     }  else {
-        [AppD.window showHint:@"request failed"];
+        [AppD.window showHint:Failed];
     }
 }
 
@@ -1398,7 +1411,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:UploadFileReq_Success_Noti object:msgId];
     } else if (retCode == 2) {
         [AppD.window hideHud];
-        [AppD.window showHint:@"Not enough space"];
+        [AppD.window showHint:@"Not enough storage"];
     } else {
         [AppD.window hideHud];
     }
@@ -1472,7 +1485,7 @@
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:FormatDisk_Fail_Noti object:receiveDic];
         if (retCode == 1) {
-            [AppD.window showHint:@"Unsupported mode"];
+            [AppD.window showHint:@"This mode is not supported."];
         } else if (retCode == 2) {
             [AppD.window showHint:@"The system is busy, please check later"];
         }
@@ -1487,7 +1500,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:Reboot_Success_Noti object:receiveDic];
     } else {
         if (retCode == 1) {
-             [AppD.window showHint:@"No administrator rights"];
+             [AppD.window showHint:@"Access denied"];
         } else {
              [AppD.window showHint:@"The system is busy, please check later"];
         }
@@ -1503,12 +1516,12 @@
     
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:ResetRouterName_Success_Noti object:receiveDic];
-        [AppD.window showHint:@"Reset device nickname successfully"];
+        [AppD.window showHint:@"The device alias has been modified successfully"];
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@"User does not have permission"];
+            [AppD.window showHint:@"Denied or restricted"];
         } else if (retCode == 2) {
-            [AppD.window showHint:@"Other errors"];
+            [AppD.window showHint:Failed];
         }
     }
 }
@@ -1585,14 +1598,15 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:UploadAvatar_Success_Noti object:receiveDic];
     } else {
         if (retCode == 1) {
-           // [AppD.window showHint:@"User id error"];
+           
         } else if (retCode == 2) {
-            [AppD.window showHint:@"Target file error"];
+            
         } else if (retCode == 3) {
-//            [AppD.window showHint:@"The profile image has not changed"];
+
         } else if (retCode == 4) {
-            [AppD.window showHint:@"Other errors"];
+           
         }
+        [AppD.window showHint:Failed];
     }
 }
 
@@ -1604,15 +1618,16 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:UpdateAvatar_Success_Noti object:receiveDic];
     } else {
         if (retCode == 1) {
-           // [AppD.window showHint:@"User id error"];
+           
         } else if (retCode == 2) {
-//            [AppD.window showHint:@"Avatars are up to date"];
+
         } else if (retCode == 3) {
             [[NSNotificationCenter defaultCenter] postNotificationName:UpdateAvatar_FileNotExist_Noti object:receiveDic];
-//            [AppD.window showHint:@"The user profile does not exist"];
+
         } else if (retCode == 4) {
-            [AppD.window showHint:@"Other errors"];
+            
         }
+       
     }
 }
 
@@ -1620,7 +1635,7 @@
     [AppD.window hideHud];
     NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode != 0) {
-        [AppD.window showHint:@"Other errors"];
+        [AppD.window showHint:Failed];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:PullTmpAccount_Success_Noti object:receiveDic[@"params"]];
 }
@@ -1638,11 +1653,11 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:DEL_USER_SUCCESS_NOTI object:nil];
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@"No administrator rights"];
+            [AppD.window showHint:@"Access denied"];
         } else if (retCode == 2) {
             [AppD.window showHint:@"Wrong target user"];
         } else if (retCode == 3) {
-            [AppD.window showHint:@"Other errors"];
+            [AppD.window showHint:Failed];
         }
     }
     
@@ -1735,14 +1750,13 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:CREATE_GROUP_SUCCESS_NOTI object:receiveDic[@"params"]];
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@"User id error"];
+            [AppD.window showHint:Create_Failed];
         } else if (retCode == 2) {
-            [AppD.window showHint:@"Input parameter error"];
+            [AppD.window showHint:Create_Failed];
         } else if (retCode == 3) {
-           
-            [AppD.window showHint:@"The group has reached the upper limit"];
+            [AppD.window showHint:@"The number of group members has met the upper limit"];
         } else {
-            [AppD.window showHint:@"Other errors"];
+            [AppD.window showHint:Create_Failed];
         }
     }
 }
@@ -1758,7 +1772,7 @@
     } else {
        
         [[NSNotificationCenter defaultCenter] postNotificationName:PULL_GROUP_FAILED_NOTI object:@(retCode)];
-        [AppD.window showHint:@"Other errors"];
+        [AppD.window showHint:Failed];
         
     }
 }
@@ -1775,7 +1789,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:GroupUserPull_SUCCESS_NOTI object:payloadArr userInfo:@{@"Verify":Verify}];
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@"Other errors"];
+            [AppD.window showHint:Failed];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:GroupUserPull_FAILED_NOTI object:@(retCode)];
     }
@@ -1789,9 +1803,9 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:ADD_GROUP_SUCCESS_NOTI object:nil];
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@" The target group does not exist."];
+            [AppD.window showHint:@"This group does not exist"];
         } else {
-             [AppD.window showHint:@"Other errors."];
+             [AppD.window showHint:Failed];
         }
     }
 }
@@ -2005,7 +2019,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Name_SUCCESS_NOTI object:GId];
         } else {
             if (retCode == 1) {
-                [AppD.window showHint:@"Configuration Failed."];
+                [AppD.window showHint:Configured_Failed];
             }
         }
     } else if ([Type integerValue] == 2) { // 设置是否需要群管理审核入群，只有管理员有权限
@@ -2014,7 +2028,7 @@
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:Set_Approve_Invitations_FAIL_NOTI object:nil];
             if (retCode == 1) {
-                [AppD.window showHint:@"Configuration Failed."];
+                [AppD.window showHint:Configured_Failed];
             }
         }
     } else if ([Type integerValue] == 3) { // 踢出某个用户，只有管理员有权限
@@ -2022,7 +2036,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:Remove_Group_Member_SUCCESS_NOTI object:nil];
         } else {
             if (retCode == 1) {
-                [AppD.window showHint:@"Remove Failed."];
+                [AppD.window showHint:@"Failed to Remove"];
             }
         }
     } else if ([Type integerValue] == [NSString numberWithHexString:@"F1"]) { // 修改群别名
@@ -2030,7 +2044,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:Revise_Group_Alias_SUCCESS_NOTI object:GId];
         } else {
             if (retCode == 1) {
-                [AppD.window showHint:@"update Failed."];
+                [AppD.window showHint:Update_Failed];
             }
         }
     } else if ([Type integerValue] == [[NSString stringFromHexString:@"F2"] integerValue]) { // 修改群友别名
@@ -2109,9 +2123,9 @@
         
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@"No permission to withdraw"];
+            [AppD.window showHint:@"Failed to withdraw"];
         } else {
-            [AppD.window showHint:@"Other error"];
+            [AppD.window showHint:Delete_Failed];
         }
     }
 }
@@ -2173,7 +2187,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:GroupQuit_SUCCESS_NOTI object:GId];
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@"Refund group fail."];
+            [AppD.window showHint:Failed];
         }
     }
 }
@@ -2233,7 +2247,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:GroupVerify_SUCCESS_NOTI object:GId];
     } else {
         if (retCode == 1) {
-            [AppD.window showHint:@"The user does not have permission to audit."];
+            [AppD.window showHint:@"Access denied"];
         }
     }
 }
@@ -2266,7 +2280,7 @@
         } else if (retCode == 4) {
             [AppD.window showHint:@"Operation failed, target file or directory exceeded."];
         } else {
-            [AppD.window showHint:@"Request failed."];
+            [AppD.window showHint:Create_Failed];
         }
     }
 }
@@ -2284,7 +2298,7 @@
         } else if (retCode == 4) {
             [AppD.window showHint:@"Request failed, the space is insufficient."];
         } else {
-            [AppD.window showHint:@"Request failed."];
+            [AppD.window showHint:Failed];
         }
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:Photo_File_Upload_Success_Noti object:receiveDic[@"params"]];
@@ -2299,7 +2313,7 @@
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:Pull_Floder_File_List_Noti object:receiveDic[@"params"]];
     } else {
-        [AppD.window showHint:@"Request failed."];
+        [AppD.window showHint:Failed];
     }
 }
 
@@ -2311,64 +2325,64 @@
     if (retCode == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:Pull_BookInfo_Success_Noti object:receiveDic[@"params"]];
     } else {
-        [AppD.window showHint:@"Request failed."];
+        [AppD.window showHint:Failed];
     }
 }
 
 #pragma mark - Base
 + (NSDictionary *)getBaseParams {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 + (NSDictionary *)getBaseParams3 {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 + (NSDictionary *)getBaseParams4 {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 + (NSDictionary *)getBaseParams5 {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 + (NSDictionary *)getBaseParams6 {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getMutBaseParamsWithMore {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRegiserBaseParams {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)[ChatListDataUtil getShareObject].tempMsgId++],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams:(NSInteger) tempmsgid {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams5:(NSInteger) tempmsgid {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams3:(NSInteger) tempmsgid {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseParams4:(NSInteger) tempmsgid {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 
 + (NSDictionary *)getRecevieBaseVersion2Params:(NSInteger) tempmsgid {
-    NSString *timestamp = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *timestamp = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     return @{@"appid":@"MIFI",@"timestamp":timestamp,@"apiversion":APIVERSION,@"msgid":[NSString stringWithFormat:@"%ld",(long)tempmsgid],@"offset":@"0",@"more":@"0"};
 }
 

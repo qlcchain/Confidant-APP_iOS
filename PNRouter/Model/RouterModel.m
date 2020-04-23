@@ -213,6 +213,23 @@
     [KeyCUtil saveRouterTokeychainWithArr:resultArr key:ROUTER_ARR];
 }
 
++ (void)updateRouteIp:(NSString *)routeIP routePort:(NSString *)routePort routeid:(NSString *) routeId usersn:(NSString *)sn {
+    NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
+    NSMutableArray *resultArr = [NSMutableArray array];
+    [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
+        if ([model.userSn isEqualToString:sn]) {
+            model.routeIp = routeIP;
+            model.routePort = routePort;
+            model.toxid = routeId;
+        }
+        [resultArr addObject:model.mj_keyValues];
+    }];
+    
+    [KeyCUtil saveRouterTokeychainWithArr:resultArr key:ROUTER_ARR];
+}
+
+
 + (void)updateCircleName:(NSString *)name usersn:(NSString *)sn {
     NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
     NSMutableArray *resultArr = [NSMutableArray array];
@@ -243,7 +260,6 @@
 }
 + (void)updateRouterNumberWithSn:(NSString *)sn toxNumber:(int ) toxNumber
 {
-    NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
     NSMutableArray *resultArr = [NSMutableArray array];
     [resultArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         RouterModel *model = [RouterModel getObjectWithKeyValues:obj];

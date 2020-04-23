@@ -346,7 +346,7 @@
         NSArray *selectArr = [weakSelf getIsSelectRouter];
         if (selectArr.count > 1) {
             tempM.isSelect = !tempM.isSelect;
-            [AppD.window showHint:@"Delete only one User is supported for now"];
+            [AppD.window showHint:@"You can delete up to one user for now."];
             return;
         }
         
