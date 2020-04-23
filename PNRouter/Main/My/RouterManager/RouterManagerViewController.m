@@ -515,7 +515,7 @@ typedef enum : NSUInteger {
 }
 - (void) rebootSuccessNoti:(NSNotification *) noti
 {
-    [AppD.window showHint:@"Reboot Success."];
+    [AppD.window showHint:@"Reboot successful"];
 }
 - (void)enableQlcNodeSuccessNoti:(NSNotification *) noti
 {

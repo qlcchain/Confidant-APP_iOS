@@ -44,7 +44,7 @@
     [self.selectArray addObjectsFromArray:[self getIsSelectRouter]];
     
     if (self.selectArray.count <= 0) {
-        [AppD.window showHint:@"Please select group member"];
+        [AppD.window showHint:@"Please select the group members"];
         return;
     }
     

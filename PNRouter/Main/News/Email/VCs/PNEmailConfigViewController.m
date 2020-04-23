@@ -105,23 +105,23 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
 }
 - (IBAction)clickNextBtn:(id)sender {
     if (_accountM.User.length == 0) {
-        [self.view showHint:@"Please enter Email."];
+        [self.view showHint:@"Please enter an Email service"];
         return;
     }
     if (![_accountM.User isEmailAddress]) {
-        [self.view showHint:@"Email format error."];
+        [self.view showHint:@"Email format error"];
         return;
     }
     if (_accountM.hostname.length == 0 || _accountM.smtpHostname.length == 0) {
-        [self.view showHint:@"Please enter hostName."];
+        [self.view showHint:@"Please enter a hostName"];
         return;
     }
     if (_accountM.UserPass.length == 0) {
-        [self.view showHint:@"Please enter password."];
+        [self.view showHint:@"Please enter a password"];
         return;
     }
     if (_accountM.port == 0 || _accountM.smtpPort == 0) {
-        [self.view showHint:@"Please enter port."];
+        [self.view showHint:@"Please enter a port."];
         return;
     }
     
@@ -167,7 +167,7 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
                         [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
                         [weakSelf.view hideHud];
                         [weakSelf clickCloseBtn:nil];
-                        [AppD.window showHint:@"Verification successed."];
+                        [AppD.window showHint:@"Verification successfully!"];
                         
                     } else {
                         
@@ -479,13 +479,13 @@ static NSString *Encrypted = @"Type of Encrypted Connections";
         [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
         [self.view hideHud];
         [self clickCloseBtn:nil];
-        [AppD.window showHint:@"Verification successed."];
+        [AppD.window showHint:@"Verification successfully!"];
     } else {
         [self.view hideHud];
         if (retCode == 2) {
-            [self.view showHint:@"The mailbox has been configured"];
+            [self.view showHint:@"The Email service has been configured"];
         } else {
-            [self.view showHint:@"Configuration quantity exceeds limit."];
+            [self.view showHint:@"The number of your configured email services has met the upper limit."];
         }
     }
 }

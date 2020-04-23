@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,34 +18,68 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mYk-rK-Qeb">
-                    <rect key="frame" x="172" y="67" width="31" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="连接"/>
-                    <connections>
-                        <action selector="connectAction:" destination="-1" eventType="touchUpInside" id="xOa-hS-Und"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F72-5Z-lnv">
-                    <rect key="frame" x="172" y="116" width="31" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="发送"/>
-                    <connections>
-                        <action selector="sendMeassge:" destination="-1" eventType="touchUpInside" id="cdD-uP-Zln"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NB9-tt-Xjc">
-                    <rect key="frame" x="172" y="162" width="31" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="断开"/>
-                    <connections>
-                        <action selector="disconnectAction:" destination="-1" eventType="touchUpInside" id="psb-Oz-gVV"/>
-                    </connections>
-                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1cd-n2-WM3">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_start" translatesAutoresizingMaskIntoConstraints="NO" id="qmJ-6N-GCe">
+                            <rect key="frame" x="0.0" y="127.5" width="375" height="312"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="qmJ-6N-GCe" secondAttribute="height" multiplier="375:312" id="BTg-mk-n3C"/>
+                            </constraints>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabbar_start_logo" translatesAutoresizingMaskIntoConstraints="NO" id="BSd-zG-Qd2">
+                            <rect key="frame" x="157.5" y="464.5" width="60" height="68"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="9WG-KI-Equ"/>
+                                <constraint firstAttribute="height" constant="68" id="pcX-RC-thn"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stay in touch with the ones who matter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u0h-kO-MrE">
+                            <rect key="frame" x="61.5" y="567.5" width="252.5" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="startup_a" translatesAutoresizingMaskIntoConstraints="NO" id="ArX-36-QeY">
+                            <rect key="frame" x="53.5" y="567.5" width="8" height="8"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="startup_b" translatesAutoresizingMaskIntoConstraints="NO" id="QCS-ga-6pY">
+                            <rect key="frame" x="314" y="576.5" width="8" height="8"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="qmJ-6N-GCe" secondAttribute="trailing" id="6vH-uN-Blp"/>
+                        <constraint firstItem="qmJ-6N-GCe" firstAttribute="leading" secondItem="1cd-n2-WM3" secondAttribute="leading" id="7at-k5-JxK"/>
+                        <constraint firstItem="qmJ-6N-GCe" firstAttribute="centerY" secondItem="1cd-n2-WM3" secondAttribute="centerY" constant="-50" id="FeJ-LA-HAr"/>
+                        <constraint firstItem="u0h-kO-MrE" firstAttribute="top" secondItem="ArX-36-QeY" secondAttribute="top" id="H6E-OQ-jNf"/>
+                        <constraint firstItem="BSd-zG-Qd2" firstAttribute="centerX" secondItem="1cd-n2-WM3" secondAttribute="centerX" id="IE0-cj-y03"/>
+                        <constraint firstItem="QCS-ga-6pY" firstAttribute="leading" secondItem="u0h-kO-MrE" secondAttribute="trailing" id="KIZ-bP-144"/>
+                        <constraint firstItem="BSd-zG-Qd2" firstAttribute="top" secondItem="qmJ-6N-GCe" secondAttribute="bottom" constant="25" id="KfC-SB-Nve"/>
+                        <constraint firstItem="u0h-kO-MrE" firstAttribute="leading" secondItem="ArX-36-QeY" secondAttribute="trailing" id="QUT-dt-6cH"/>
+                        <constraint firstItem="u0h-kO-MrE" firstAttribute="top" secondItem="BSd-zG-Qd2" secondAttribute="bottom" constant="35" id="XaY-8y-89H"/>
+                        <constraint firstItem="QCS-ga-6pY" firstAttribute="bottom" secondItem="u0h-kO-MrE" secondAttribute="bottom" id="poZ-pz-TdA"/>
+                        <constraint firstItem="u0h-kO-MrE" firstAttribute="centerX" secondItem="1cd-n2-WM3" secondAttribute="centerX" id="qsv-ai-R1B"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="1cd-n2-WM3" firstAttribute="top" secondItem="r31-pQ-gGq" secondAttribute="top" id="C0n-qs-xpW"/>
+                <constraint firstItem="1cd-n2-WM3" firstAttribute="leading" secondItem="cBd-up-dsU" secondAttribute="leading" id="DMN-R7-Iik"/>
+                <constraint firstItem="cBd-up-dsU" firstAttribute="bottom" secondItem="1cd-n2-WM3" secondAttribute="bottom" id="plq-mV-IeC"/>
+                <constraint firstAttribute="trailing" secondItem="1cd-n2-WM3" secondAttribute="trailing" id="tBv-Ib-o6S"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
             <viewLayoutGuide key="safeArea" id="cBd-up-dsU"/>
             <point key="canvasLocation" x="55" y="185"/>
         </view>
     </objects>
+    <resources>
+        <image name="background_start" width="375" height="312"/>
+        <image name="startup_a" width="8" height="8"/>
+        <image name="startup_b" width="8" height="8"/>
+        <image name="tabbar_start_logo" width="60" height="68"/>
+    </resources>
 </document>

@@ -180,89 +180,93 @@
 }
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (AppD.isEmailPage || 1) {
-        if (indexPath.section == 2) {
-            EmailFloderCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailFloderCellResue];
-            FloderModel *floderM = self.emailFolders[indexPath.row];
-            //解决中文folder乱码问题
-            cell.lblContent.text = floderM.name;
-            
-            if (floderM.path.length == 0) {
-                cell.lblCount.text = @"";
-                if ([floderM.name isEqualToString:Starred]) {
-                    NSInteger startCount = 0;
-                    if (AppD.isGoogleSign) {
-                        startCount = floderM.count;
-                    } else {
-                        startCount = [EmailDataBaseUtil getStartCount];
-                    }
-                    
-                    if (startCount > 0) {
-                        cell.lblCount.text = [NSString stringWithFormat:@"%ld",(long)startCount];
-                    }
-                } else if ([floderM.name isEqualToString:Node_backed_up]){
-                    if (floderM.count == 0) {
-                        cell.lblCount.text = @"";
-                    } else {
-                        cell.lblCount.text = [NSString stringWithFormat:@"%d",floderM.count];
-                    }
-                }
-            } else {
-                cell.lblCount.text = [NSString stringWithFormat:@"%@",floderM.count==0? @"":[NSString stringWithFormat:@"%d",floderM.count]];
-            }
-           
-            
-            if (_selectRow == indexPath.row) {
-                cell.contentView.backgroundColor = MAIN_ZS_COLOR;
-                cell.lblContent.textColor = MAIN_WHITE_COLOR;
-                cell.lblCount.textColor = MAIN_WHITE_COLOR;
-                cell.headImgView.image = [UIImage imageNamed:[floderM.name stringByAppendingString:@"_h"]];
-            } else {
-                cell.contentView.backgroundColor = MAIN_WHITE_COLOR;
-                cell.lblContent.textColor = MAIN_PURPLE_COLOR;
-                cell.lblCount.textColor = MAIN_PURPLE_COLOR ;
-                cell.headImgView.image = [UIImage imageNamed:floderM.name];
-            }
-            return cell;
-        } else {
-            EmailNameCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailNameCellResue];
-            if (indexPath.section == 0) {
-                EmailAccountModel *emailInfo = self.emails[indexPath.row];
-                cell.lblName.text = emailInfo.User;
-                if (emailInfo.isConnect) {
-                    cell.connectImgView.hidden = NO;
+    
+    if (indexPath.section == 2) {
+        EmailFloderCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailFloderCellResue];
+        FloderModel *floderM = self.emailFolders[indexPath.row];
+        //解决中文folder乱码问题
+        cell.lblContent.text = floderM.name;
+        
+        if (floderM.path.length == 0) {
+            cell.lblCount.text = @"";
+            if ([floderM.name isEqualToString:Starred]) {
+                NSInteger startCount = 0;
+                if (AppD.isGoogleSign) {
+                    startCount = floderM.count;
                 } else {
-                    cell.connectImgView.hidden = YES;
+                    startCount = [EmailDataBaseUtil getStartCount];
                 }
-                if (emailInfo.unReadCount == 0) {
-                    cell.countContraintW.constant = 0;
-                } else if (emailInfo.unReadCount > 99) {
-                    cell.countContraintW.constant = 25;
-                } else {
-                    cell.countContraintW.constant = 16;
-                }
-                cell.lblCount.text = [NSString stringWithFormat:@"%d",emailInfo.unReadCount];
-                cell.lblFirstName.text = [StringUtil getUserNameFirstWithName:emailInfo.User];
                 
+                if (startCount > 0) {
+                    cell.lblCount.text = [NSString stringWithFormat:@"%ld",(long)startCount];
+                }
+            } else if ([floderM.name isEqualToString:Node_backed_up]){
+                if (floderM.count == 0) {
+                    cell.lblCount.text = @"";
+                } else {
+                    cell.lblCount.text = [NSString stringWithFormat:@"%d",floderM.count];
+                }
+            }
+        } else {
+            cell.lblCount.text = [NSString stringWithFormat:@"%@",floderM.count==0? @"":[NSString stringWithFormat:@"%d",floderM.count]];
+        }
+       
+        
+        if (_selectRow == indexPath.row) {
+            cell.contentView.backgroundColor = MAIN_ZS_COLOR;
+            cell.lblContent.textColor = MAIN_WHITE_COLOR;
+            cell.lblCount.textColor = MAIN_WHITE_COLOR;
+            cell.headImgView.image = [UIImage imageNamed:[floderM.name stringByAppendingString:@"_h"]];
+        } else {
+            cell.contentView.backgroundColor = MAIN_WHITE_COLOR;
+            cell.lblContent.textColor = MAIN_PURPLE_COLOR;
+            cell.lblCount.textColor = MAIN_PURPLE_COLOR ;
+            cell.headImgView.image = [UIImage imageNamed:floderM.name];
+        }
+        return cell;
+    } else {
+        EmailNameCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailNameCellResue];
+        if (indexPath.section == 0) {
+            EmailAccountModel *emailInfo = self.emails[indexPath.row];
+            cell.lblName.text = emailInfo.User;
+            if (emailInfo.isConnect) {
+                cell.connectImgView.hidden = NO;
             } else {
-                cell.lblName.text = @"New Account";
                 cell.connectImgView.hidden = YES;
             }
-            if (indexPath.section == 1) {
-                cell.topLineView.hidden = NO;
-                cell.lblCount.hidden = YES;
-                cell.lblFirstName.hidden = YES;
-                cell.headImgView.image = AppD.isEmailPage? [UIImage imageNamed:@"email_icon_addemail"]:[UIImage imageNamed:@"email_icon_addemail"];
+            if (emailInfo.unReadCount == 0) {
+                cell.countContraintW.constant = 0;
+            } else if (emailInfo.unReadCount > 99) {
+                cell.countContraintW.constant = 25;
             } else {
-                cell.topLineView.hidden = YES;
-                cell.lblCount.hidden = NO;
-                cell.lblFirstName.hidden = NO;
-                cell.headImgView.image = AppD.isEmailPage? [UIImage imageNamed:@"email_icon_selected"]:[UIImage imageNamed:@"email_icon_selected"];
+                cell.countContraintW.constant = 16;
             }
-            return cell;
+            cell.lblCount.text = [NSString stringWithFormat:@"%d",emailInfo.unReadCount];
+            cell.lblFirstName.text = [StringUtil getUserNameFirstWithName:emailInfo.User];
+            
+        } else {
+            cell.lblName.text = @"New Account";
+            cell.connectImgView.hidden = YES;
         }
+        if (indexPath.section == 1) {
+            cell.topLineView.hidden = NO;
+            cell.lblCount.hidden = YES;
+            cell.lblFirstName.hidden = YES;
+            cell.headImgView.image = AppD.isEmailPage? [UIImage imageNamed:@"email_icon_addemail"]:[UIImage imageNamed:@"email_icon_addemail"];
+        } else {
+            cell.topLineView.hidden = YES;
+            cell.lblCount.hidden = NO;
+            cell.lblFirstName.hidden = NO;
+            cell.headImgView.image = AppD.isEmailPage? [UIImage imageNamed:@"email_icon_selected"]:[UIImage imageNamed:@"email_icon_selected"];
+        }
+        return cell;
     }
     
+//    if (AppD.isEmailPage || /* DISABLES CODE */ (1)) {
+//
+//    }
+    
+    /*
     // message
     EmailNameCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailNameCellResue];
     cell.connectImgView.hidden = YES;
@@ -291,6 +295,7 @@
         cell.headImgView.image = AppD.isEmailPage? [UIImage imageNamed:@"email_icon_selected"]:[UIImage imageNamed:@"email_icon_selected"];
     }
     return cell;
+     */
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -607,13 +612,13 @@
             
             [self emailLoginSuccessNoti:nil];
             
-            [AppD.window showHint:@"login successed."];
+            [AppD.window showHint:@"Login successfully"];
         } else {
             [self.view hideHud];
             if (retCode == 2) {
-                [self.view showHint:@"The mailbox has been configured"];
+                [self.view showHint:@"The Email service has been configured."];
             } else {
-                [self.view showHint:@"Configuration quantity exceeds limit."];
+                [self.view showHint:@"The number of your configured email services has met the upper limit."];
             }
         }
         

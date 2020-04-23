@@ -66,7 +66,7 @@
     } else if (![self.nodeContactPath isEmptyString]) {
         [self jumpImportActionSheet];
     } else {
-        [self.view showHint:@"The contacts haven't been backuped to Node. You may sync to Node firstly."];
+        [self.view showHint:@"The contacts haven't been backed up to Node. You may sync to Node firstly"];
     }
     
 }
@@ -192,11 +192,11 @@
     }];
     
     if (!success) {
-        [self.view showHint:@"The operation failed. Please try again later."];
+        [self.view showHint:@"Failed. Please try again later"];
         return;
     }
     if (contacts.count == 0) {
-        [self.view showHint:@"There is no contacts has been backuped to Local. You may create new contacts and then sync to Node."];
+        [self.view showHint:@"There isn't any contacts backed up locally. Please create new contacts and then sync to Node"];
         return;
     }
     
@@ -222,7 +222,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [SystemUtil removeDocmentFilePath:downloadFilePath];
                     [weakSelf.view hideHud];
-                    [weakSelf.view showHint:@"File download failed."];
+                    [weakSelf.view showHint:@"Failed to download"];
                 });
                 
             }];
@@ -353,7 +353,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [SystemUtil removeDocmentFilePath:downloadFilePath];
                     [weakSelf.view hideHud];
-                    [weakSelf.view showHint:@"File download failed."];
+                    [weakSelf.view showHint:@"Failed to download"];
                 });
                 
             }];
@@ -565,7 +565,7 @@
                            @weakify_self
                            dispatch_async(dispatch_get_main_queue(), ^{
                                [weakSelf.view hideHud];
-                               [weakSelf.view showHint:@"Recover success."];
+                               [weakSelf.view showHint:Recover_Success];
                                [[NSNotificationCenter defaultCenter] postNotificationName:Update_Loacl_Contact_Count_Noti object:nil];
                            });
                        } else {
@@ -574,9 +574,9 @@
                            dispatch_async(dispatch_get_main_queue(), ^{
                                [weakSelf.view hideHud];
                                if (tag == 1) {
-                                   [weakSelf.view showHint:@"Recover success."];
+                                   [weakSelf.view showHint:Recover_Success];
                                } else {
-                                   [weakSelf.view showHint:@"Recover failure."];
+                                   [weakSelf.view showHint:Recover_Success];
                                }
                            });
                        }
@@ -585,7 +585,7 @@
                     @weakify_self
                    dispatch_async(dispatch_get_main_queue(), ^{
                        [weakSelf.view hideHud];
-                       [weakSelf.view showHint:@"Decryption failure."];
+                       [weakSelf.view showHint:Decrypt_Failed];
                    });
                }
            }
@@ -593,7 +593,7 @@
            @weakify_self
            dispatch_async(dispatch_get_main_queue(), ^{
                [weakSelf.view hideHud];
-               [weakSelf.view showHint:@"Decryption failure."];
+               [weakSelf.view showHint:Decrypt_Failed];
            });
        }
 }
@@ -632,7 +632,7 @@
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [weakSelf.view hideHud];
                             weakSelf.lblNodeCount.text = [NSString stringWithFormat:@"%ld",count];
-                            [weakSelf.view showHint:@"Sync success."];
+                            [weakSelf.view showHint:@"Sync successfully!"];
                         });
                        
                     } else {
@@ -648,7 +648,7 @@
             
         } else {
             [self.view hideHud];
-            [self.view showHint:@"Sync failure."];
+            [self.view showHint:@"Failed to sync"];
         }
     }
     
@@ -658,7 +658,7 @@
     PNFileUploadModel *fileM = noti.object;
     if (fileM.retCode !=0) { // 文件上传成功后，告知节点
         [self.view hideHud];
-        [self.view showHint:@"Sync failure."];
+        [self.view showHint:@"Failed to sync"];
     }
 }
 /*

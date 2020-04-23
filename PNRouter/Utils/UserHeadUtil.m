@@ -156,14 +156,11 @@
         if (_showUpload) {
             [AppD.window showFaieldHudInView:AppD.window hint:@"Failed to Upload"];
         }
-        //[AppD.window showHint:@"Failed to upload avatar."];
     }
 }
 
 #pragma mark - 上传用户头像成功
 - (void)uploadAvatarSuccessNoti:(NSNotification *)noti {
-    NSDictionary *receiveDic = noti.object;
-    NSDictionary *params = receiveDic[@"params"];
     
     UserHeaderModel *model = [UserHeaderModel new];
     model.UserKey = [EntryModel getShareObject].signPublicKey;

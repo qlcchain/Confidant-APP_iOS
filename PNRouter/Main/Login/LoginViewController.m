@@ -107,13 +107,6 @@
  */
 - (IBAction)loginAction:(id)sender {
     
-//    NSURL *pathUrl = [[NSBundle mainBundle] URLForResource:@"GoogleService-Info" withExtension:@".plist"];
-//       _documentIntertactionController = [UIDocumentInteractionController interactionControllerWithURL:pathUrl];
-//          // _documentIntertactionController.delegate = self;
-//           [self presentOptionsMenu];
-//
-//    return;
-    
     if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterToxid] isEmptyString]) {
         [self.view showHint:@"Please select the circle."];
         return;
@@ -154,7 +147,6 @@
                  kFIRParameterContentType:FIR_LOGIN
                  }];
     
-    logId = [SendRequestUtil sendLogRequestWtihAction:LOGIN logid:0 type:0 result:0 info:@"start_login"];
 }
 
 /**
@@ -446,7 +438,7 @@
     [AppD.window hideHud];
     if (isConnectSocket) {
         isConnectSocket = NO;
-        [AppD.window showHint:@"The connection fails"];
+        [AppD.window showHint:Connect_Failed];
     }
 }
 - (void) loadHudView
@@ -523,8 +515,8 @@
     [self addObserve];
     [self appOptionWithLoginType:_loginType];
     
-    if (AppD.showTouch && !AppD.isLogOut) {
-         AppD.showTouch = NO;
+     NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
+    if ([screenLock boolValue] == YES && !AppD.isLogOut) {
         [FingerprintVerificationUtil show];
     } else {
         if (self.selectRouther.isOpen && !AppD.isLogOut) {
@@ -702,7 +694,7 @@
     if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterMAC] isEmptyString]) {
         if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
             isClickLogin = NO;
-            [self.view showHint:@"Unable to connect to server."];
+            [self.view showHint:@"Failed to connect to the server."];
         } else {
             isClickLogin = NO;
             [self jumpToLoginDevice];
@@ -734,7 +726,6 @@
         NSString *routherid = receiveDic[@"params"][@"RouteId"];
         NSString *usesn = receiveDic[@"params"][@"UserSn"];
         NSString *userid = receiveDic[@"params"][@"UserId"];
-        NSString *userName = receiveDic[@"params"][@"NickName"];
     
         if (![[NSString getNotNullValue:routherid] isEmptyString]) {
             [RouterConfig getRouterConfig].currentRouterToxid = routherid;
@@ -745,11 +736,14 @@
         
         if (retCode == 0) { //已激活
             sendCount = 0;
+            
             [self sendLoginRequestWithUserid:userid usersn:usesn];
+            logId = [SendRequestUtil sendLogRequestWtihAction:LOGIN logid:0 type:0 result:0 info:@"start_login"];
 
         } else { // 未激活 或者日临时帐户
-
+            
             [self sendRegisterRequestWithShowHud:YES];
+            logId = [SendRequestUtil sendLogRequestWtihAction:REGISTER logid:0 type:0 result:0 info:@"start_register"];
         }
     } else {
         isClickLogin = NO;
@@ -766,27 +760,29 @@
     if (retCode == 0) {
        // 上传日志
         [SendRequestUtil sendLogRequestWtihAction:LOGIN logid:logId type:100 result:retCode info:@"login_success"];
-        
+        // 保存登陆状态
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:Login_Statu_Key];
         [self updateUserHead];
         [AppD setRootTabbarWithManager:nil];
         
     } else {
         isClickLogin = NO;
         if (retCode == 2) { // routeid不对
-            [AppD.window showHint:@"Routeid wrong."];
+            [AppD.window showHint:@"Wrong Routeid!"];
         } else if (retCode == 1) { //需要验证
             [AppD.window showHint:@"Need to verify"];
         } else if (retCode == 3) { //uid错误
             [AppD.window showHint:@"uid wrong."];
         } else if (retCode == 4) { //登陆密码错误
-            [AppD.window showHint:@"Login failed, verification failed."];
+            [AppD.window showHint:@"Wrong log-in password!"];
         } else if (retCode == 5) { //验证码错误
-            [AppD.window showHint:@"Verification code error."];
+            [AppD.window showHint:@"Verification code error"];
         } else { // 其它错误
-            [AppD.window showHint:@"Login failed Other error."];
+            [AppD.window showHint:@"Failed to log in"];
         }
         
-        
+        // 保存登陆状态
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:Login_Statu_Key];
         // 上传日志
         [SendRequestUtil sendLogRequestWtihAction:LOGIN logid:logId type:0xFF result:retCode info:@"login_failed"];
         
@@ -800,7 +796,7 @@
         return;
     }
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
-    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    int retCode = [receiveDic[@"params"][@"RetCode"] intValue];
     if (retCode == 0) {
         
         NSString *userid = receiveDic[@"params"][@"UserId"];
@@ -824,38 +820,19 @@
         [UserConfig getShareObject].dataFileVersion = dataFileVersion;
         
         // 上传日志
-        long millTime = [NSDate getMillisecondTimestampFromDate:[NSDate date]];
-        NSDictionary *params = @{@"app":@(1),@"action":@(1),@"id":@(logId),@"level":@(1),@"version":APP_Version,@"timestamp":@(millTime),@"type":@(100),@"result":@(0),@"user":[UserModel getUserModel].userId,@"node":self.selectRouther.toxid,@"info":@"register_success"};
-        
-        [AFHTTPClientV2 requestWithBaseURLStr:LOG_TEST_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
-            
-            int ret = [responseObject[@"ret"] intValue];
-            NSLog(@"----successBlock-----%d",ret);
-           
-        } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
-        
-            NSLog(@"-----failedBlock----");
-        }];
-        
+        [SendRequestUtil sendLogRequestWtihAction:REGISTER logid:logId type:100 result:retCode info:@"register_success"];
+        // 保存登陆状态
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:Login_Statu_Key];
         [self updateUserHead];
         [AppD setRootTabbarWithManager:nil];
     } else {
         
         isClickLogin = NO;
-        
+        // 保存登陆状态
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:Login_Statu_Key];
         // 上传日志
-        long millTime = [NSDate getMillisecondTimestampFromDate:[NSDate date]];
-        NSDictionary *params = @{@"app":@(1),@"action":@(1),@"id":@(logId),@"level":@(1),@"version":APP_Version,@"timestamp":@(millTime),@"type":@(0xFF),@"result":@(retCode),@"user":[UserModel getUserModel].userId,@"node":self.selectRouther.toxid,@"info":@"register_failed"};
-        
-        [AFHTTPClientV2 requestWithBaseURLStr:LOG_TEST_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
-            
-            int ret = [responseObject[@"ret"] intValue];
-            NSLog(@"----successBlock-----%d",ret);
-           
-        } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
-        
-            NSLog(@"-----failedBlock----");
-        }];
+        [SendRequestUtil sendLogRequestWtihAction:REGISTER logid:logId type:0xFF result:retCode info:@"register_failed"];
+       
     }
 
 }
@@ -875,6 +852,15 @@
 //    [alertC addAction:alert1];
 //   
 //    [self presentViewController:alertC animated:YES completion:nil];
+    
+    
+//    NSDictionary *params = @{@"jsonrpc":@"2.0",@"method":@"eth_protocolVersion",@"params":@[],@"id":@(67)};
+//
+//    [AFHTTPClientV2 requestWithBaseURLStr:@"https://mainnet.infura.io/v3/c269406c3534426daf363e29cd3cab75" params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+//
+//    } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+//
+//    }];
     
 }
 

@@ -85,7 +85,7 @@
     [self endEditing:YES];
     // 判断文件名是否存在
     if ([_txtFileName.text.trim isEmptyString]) {
-        [AppD.window showHint:@"fileName isNull"];
+        [AppD.window showHint:@"The file name cannot be empty"];
         return;
     }
 //    NSString *vpnFileName = [_txtFileName.text.trim stringByAppendingString:@".ovpn"];
@@ -96,7 +96,7 @@
             // 写入沙盒 并且存入keychain
             [VPNFileUtil saveVPNDataToLibrayPath:data withFileName:vpnFileName];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [AppD.window showHint:@"save success"];
+                [AppD.window showHint:Save_Success_Str];
             });
         }
     });

@@ -325,7 +325,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }];
         if (isDown) {
-            [self.view showHint:@"Attached is the download, please try again later"];
+            [self.view showHint:@"Downloading the attachment, please try again later."];
             return;
         }
     }
@@ -979,7 +979,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }];
         if (isDown) {
-            [self.view showHint:@"Attached is the download, please try again later"];
+            [self.view showHint:@"Downloading the attachment, please try again later."];
             return;
         }
     }
@@ -1056,7 +1056,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 if (!isLoading) {
                     [self.view hideHud];
                 }
-                [self.view showHint:@"The body cannot be empty."];
+                [self.view showHint:@"The email body part can not be empty."];
                 return;
             }
         }
@@ -2769,7 +2769,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [AppD.window showHint:@"Video cannot be larger than 100MB"];
+                [AppD.window showHint:@"he video file size should not be larger than 100MB."];
             });
         }
     }
@@ -2805,7 +2805,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.view endEditing:YES];
-                [AppD.window showHint:@"Denied or Restricted"];
+                [AppD.window showHint:@"Denied or restricted"];
             });
             
         }
@@ -2836,7 +2836,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.view endEditing:YES];
-                [AppD.window showHint:@"Denied or Restricted"];
+                [AppD.window showHint:@"Denied or restricted"];
             });
             
         }
@@ -2878,6 +2878,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
     }];
     
+    [imagePickerVc setNaviBgColor:MAIN_GRAY_COLOR];
+    [imagePickerVc setNaviTitleColor:MAIN_PURPLE_COLOR];
+    [imagePickerVc setBarItemTextColor:MAIN_PURPLE_COLOR];
+    imagePickerVc.needShowStatusBar = YES;
    
     imagePickerVc.iconThemeColor = [UIColor colorWithRed:31 / 255.0 green:185 / 255.0 blue:34 / 255.0 alpha:1.0];
     imagePickerVc.showPhotoCannotSelectLayer = YES;
@@ -2934,7 +2938,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     UIImage *img = obj;
                     NSData *imgData = UIImageJPEGRepresentation(img,1.0);
                     if (imgData.length/(1024*1024) > 100) {
-                        [AppD.window showHint:@"Image cannot be larger than 100MB"];
+                        [AppD.window showHint:@"The image file size should not be larger than 100MB."];
                         *stop = YES;
                     }
                     [weakSelf sendImgageWithImage:img imgData:imgData];
@@ -2965,7 +2969,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 {
     EmailAttchModel *attchM = [[EmailAttchModel alloc] init];
     attchM.attData = imgData;
-    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     attchM.attName = [mills stringByAppendingString:@".jpg"];
     
     [self addAttchReloadCollectionWithAttch:attchM];
@@ -3012,7 +3016,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [AppD.window showHint:@"Video cannot be larger than 100MB"];
+                    [AppD.window showHint:@"The video file size should not be larger than 100MB."];
                 });
             }
         }}];
@@ -3062,7 +3066,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         NSURL *fileUrl = urls[0];
         NSData *txtData = [NSData dataWithContentsOfURL:fileUrl];
         if (txtData.length/(1024*1024) > 100) {
-            [AppD.window showHint:@"File cannot be larger than 100MB"];
+            [AppD.window showHint:@"The File should not be larger than 100MB."];
             return;
         }
         

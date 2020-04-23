@@ -74,19 +74,19 @@
     [self.view endEditing:YES];
     
     if ([[NSString getNotNullValue:_pwOldTF.text.trim] isEmptyString] || _pwOldTF.text.trim.length !=8) {
-        [self.view showHint:@"Your password must include 8 charactors."];
+        [self.view showHint:@"Your password must contain 8 characters"];
         return;
     }
     if (![_pwOldTF.text isEqualToString:_RouterPW]) {
-        [AppD.window showHint:@"Old password is wrong."];
+        [AppD.window showHint:@"Wrong old password!"];
         return;
     }
     if ([[NSString getNotNullValue:_pwNewTF.text.trim] isEmptyString] || _pwNewTF.text.trim.length !=8) {
-        [self.view showHint:@"Your password must include 8 charactors."];
+        [self.view showHint:@"Your password must contain 8 characters"];
         return;
     }
     if (![_pwNewTF.text.trim isEqualToString:_pwConfirmTF.text.trim]) {
-        [self.view showHint:@"The new password entered twice is different."];
+        [self.view showHint:@"Passwords don't match."];
         return;
     }
     NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
@@ -103,7 +103,7 @@
 }
 #pragma mark - Noti
 - (void)resetRouterKeySuccessNoti:(NSNotification *)noti {
-    [self.view showHint:@"Modify Successful"];
+    [self.view showHint:Update_Success_Str];
     [self performSelector:@selector(backPage) withObject:self afterDelay:1.5];
 }
 #pragma mark -连接socket
@@ -132,7 +132,7 @@
         return;
     }
     [AppD.window hideHud];
-    [AppD.window showHint:@"The connection fails"];
+    [AppD.window showHint:Connect_Failed];
 }
 
 #pragma mark -codeTF 改变回调

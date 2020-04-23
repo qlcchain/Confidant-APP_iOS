@@ -180,7 +180,7 @@
             } else {
                 [weakSelf toxLoginSuccessWithManager:nil];
             }
-            [AppD.window showHint:@"Connect faield"];
+            [AppD.window showHint:Connect_Failed];
         });
         
     }];
@@ -200,7 +200,7 @@
         if (!result) { // 添加好友失败
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideConnectServerLoad];
-                [self switchCircleFaieldWithHintString:@"Circle connection failed."];
+                [self switchCircleFaieldWithHintString:Connect_Failed];
                 
                // [self loginToxWithShowHud:NO];
             });
@@ -343,7 +343,7 @@
             isSwitchCircle = NO;
             [AppD.window hideHud];
             if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterIp] isEmptyString]) {
-                [AppD.window showHint:@"Unable to connect to server."];
+                [AppD.window showHint:@"Failed to connect to the server."];
             } else {
                 [AppD setRootTabbarLonginDev];
             }

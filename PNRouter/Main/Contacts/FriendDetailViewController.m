@@ -258,7 +258,7 @@
     [self.view hideHud];
     int retcode = [noti.object intValue];
     if (retcode == 1) {
-        [AppD.window showHint:@"Friend deletion failed."];
+        [AppD.window showHint:Delete_Failed];
         // 上传日习
         [SendRequestUtil sendLogRequestWtihAction:DELFRIENDCMD logid:_logId type:0xFF result:retcode info:@"del_friend_failed"];
         return;

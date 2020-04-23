@@ -96,6 +96,7 @@
 #define EN_NONCE @"QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB"
 #define File_Download_GroupId @"File_Download_GroupId" // 文件下载groupid
 #define File_Download_Task_List @"File_Download_Task_List" // 文件下载目录
+#define Login_Statu_Key @"Login_Statu_Key"
 
 #pragma mark -日志打点 Action
 static int LOGIN = 0x01;
@@ -134,6 +135,25 @@ static NSString *Trash = @"Trash";
 #define Switching_Str @"Switching..."
 #define Deleting_Str @"Deleting..."
 #define Updateing_Str @"Updateing..."
+
+#define Update_Success_Str @"Modified successfully!"
+#define Save_Success_Str @"Saved successfully!"
+#define Delete_Success_Str @"Delete successfully!"
+#define Send_Success_Str @"Saved successfully!"
+#define Recover_Success @"Backed up successfully!"
+
+#define Registered_Failed @"Failed to registered"
+#define Update_Failed @"Failed to modify"
+#define Configured_Failed @"Failed to Configured"
+#define Connect_Failed @"Failed to connect"
+#define Delete_Failed  @"Failed to delete"
+#define Create_Failed @"Failed to create"
+#define Send_Faield @"Failed to send"
+#define Failed @"Failed"
+#define Decrypt_Failed @"Failed to decrypt"
+
+#define Device_No @"The device is not supported."
+#define Scan_Failed @"Failed to scan"
 
 #define User_Header_Size 500*1024      // 500KB
 #define Screen_Lock_Local @"Screen_Lock_Local"

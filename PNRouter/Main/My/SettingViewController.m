@@ -87,10 +87,11 @@
 
 - (void)logoutAction {
     
-   
     RouterModel *connectRouter = [RouterModel getConnectRouter];
     if (connectRouter.isConnected) {
         [SendRequestUtil sendLogOut];
+        // 保存登陆状态
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:Login_Statu_Key];
         [AppD performSelector:@selector(logOutApp) withObject:nil afterDelay:0.5f];
     }
 }

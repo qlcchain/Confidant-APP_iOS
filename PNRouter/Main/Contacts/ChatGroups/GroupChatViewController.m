@@ -34,7 +34,7 @@
 #import "ChatListModel.h"
 #import "NSString+Base64.h"
 #import "NSData+Base64.h"
-#import "YWFilePreviewView.h"
+#import "FilePreviewViewController.h"
 #import "TZImagePickerController.h"
 #import "NSString+UrlEncode.h"
 #import "AESCipher.h"
@@ -335,7 +335,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 }
 
 - (void)clickFileCellWithMsgMode:(CDChatMessage)msgModel withFilePath:(NSString *)filePath {
-    [YWFilePreviewView previewFileWithPaths:filePath fileName:msgModel.fileName fileType:msgModel.msgType];
+    FilePreviewViewController *vc = [[FilePreviewViewController alloc] init];
+    vc.fileType = ChatFile;
+    vc.fileName = msgModel.fileName;
+    vc.filePath = filePath;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)clickHeadWithMessage:(CDChatMessage)clickMessage
 {
@@ -441,7 +445,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:@[img] applicationActivities:nil];
                [self.navigationController presentViewController:activityController animated:YES completion:nil];
            } else {
-               [self.view showHint:@"Please download the picture first."];
+               [self.view showHint:@"Please download the picture first"];
            }
        }
 }
@@ -485,7 +489,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                         NSString *userID = codeValues[1];
                                         if (userID.length == 76) {
                                             if ([userID isEqualToString:[UserModel getUserModel].userId]) {
-                                                [AppD.window showHint:@"You cannot add yourself as a friend."];
+                                                [AppD.window showHint:@"You can not add yourself as a circle contact."];
                                             } else {
                                                 NSString *nickName = @"";
                                                 if (codeValues.count>2) {
@@ -508,7 +512,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                 // && [codeArr[2] isEqualToString:toxid]
                                                 if ([codeArr[1] isEqualToString:signPK] ) {
                                                     
-                                                    [AppD.window showHint:@"You cannot add yourself as a friend."];
+                                                    [AppD.window showHint:@"You can not add yourself as a circle contact."];
                                                     
                                                 } else {
                                                     
@@ -547,7 +551,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                             
                                             if ([[RouterConfig getRouterConfig].currentRouterToxid isEqualToString:toxid]) {
                                                 // 是当前帐户
-                                                [AppD.window showHint:@"Already in the same circle."];
+                                                [AppD.window showHint:@"Already in the same circle"];
                                             } else {
                                                 [weakSelf showAlertVCWithValues:@[toxid,sn] isMac:NO];
                                             }
@@ -577,7 +581,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                                 
                                                 // 是当前帐户
                                                 [SendRequestUtil sendAutoAddFriendWithFriendId:codeValues[1] email:@"" type:1 showHud:NO];
-                                                [AppD.window showHint:@"Already in the same circle."];
+                                                [AppD.window showHint:@"Already in the same circle"];
                                                 
                                             } else {
                                                 [weakSelf showAlertVCWithValues:@[toxid,sn,codeValues[1]] isMac:NO];
@@ -716,7 +720,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
     [string insertString:insertString atIndex:insertIndex];
     if ([string charactorNumber] >= fontMax) {
-        [self.view showHint:@"The length of the sent content is out of range."];
+        [self.view showHint:@"The size of the content to send is too large."];
         return;
     }
     [self.msginputView setTextViewString:string delayTime:0];
@@ -748,7 +752,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)inputViewPopAudioath:(NSURL *)path {
     
     // 此处会存到内存和本地， 内存地址不会加密，本地地址会加密
-    NSString *mill = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *mill = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     mill = [mill substringWithRange:NSMakeRange(mill.length-9, 9)];
     int msgid = [mill intValue];
     
@@ -821,7 +825,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.view endEditing:YES];
-                [AppD.window showHint:@"Denied or Restricted"];
+                [AppD.window showHint:@"Denied or restricted"];
             });
             
         }
@@ -900,7 +904,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [AppD.window showHint:@"Video cannot be larger than 100MB"];
+                [AppD.window showHint:@"The video file size should not be larger than 100MB."];
             });
         }
     }
@@ -961,7 +965,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }else{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.view endEditing:YES];
-                    [AppD.window showHint:@"Denied or Restricted"];
+                    [AppD.window showHint:@"Denied or restricted"];
                 });
                 
             }
@@ -1267,14 +1271,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
     }];
     
-    // imagePickerVc.photoWidth = 1000;
+    [imagePickerVc setNaviBgColor:MAIN_GRAY_COLOR];
+    [imagePickerVc setNaviTitleColor:MAIN_PURPLE_COLOR];
+    [imagePickerVc setBarItemTextColor:MAIN_PURPLE_COLOR];
+    imagePickerVc.needShowStatusBar = YES;
     
-    // 2. Set the appearance
-    // 2. 在这里设置imagePickerVc的外观
-    // imagePickerVc.navigationBar.barTintColor = [UIColor greenColor];
-    // imagePickerVc.oKButtonTitleColorDisabled = [UIColor lightGrayColor];
-    // imagePickerVc.oKButtonTitleColorNormal = [UIColor greenColor];
-    // imagePickerVc.navigationBar.translucent = NO;
     imagePickerVc.iconThemeColor = [UIColor colorWithRed:31 / 255.0 green:185 / 255.0 blue:34 / 255.0 alpha:1.0];
     imagePickerVc.showPhotoCannotSelectLayer = YES;
     imagePickerVc.cannotSelectLayerColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
@@ -1378,7 +1379,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     UIImage *img = obj;
                     NSData *imgData = UIImageJPEGRepresentation(img,1.0);
                     if (imgData.length/(1024*1024) > 100) {
-                        [AppD.window showHint:@"Image cannot be larger than 100MB"];
+                        [AppD.window showHint:@"The image file size should not be larger than 100MB."];
                         *stop = YES;
                     }
                     [weakSelf sendImgageWithImage:img imgData:imgData];
@@ -1417,7 +1418,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [AppD.window showHint:@"Video cannot be larger than 100MB"];
+                    [AppD.window showHint:@"The video file size should not be larger than 100MB."];
                 });
             }
         }}];
@@ -1425,7 +1426,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 
 - (void) sendImgageWithImage:(UIImage *) img imgData:(NSData *) imgData
 {
-    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
     int msgid = [mill intValue];
     CDMessageModel *model = [[CDMessageModel alloc] init];
@@ -1476,7 +1477,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 - (void)extractedVideWithAsset:(AVURLAsset *)asset evImage:(UIImage *) evImage
 {
     // [AppD.window showHudInView:AppD.window hint:@"File encrypting"];
-    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
     int msgid = [mill intValue];
     
@@ -1532,7 +1533,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         });
     } else {
         //  [AppD.window hideHud];
-        [self.view showHint:@"The current video format is not supported"];
+        [self.view showHint:@"This video format is not supported."];
     }
 }
 
@@ -1561,10 +1562,10 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         NSURL *fileUrl = urls[0];
         NSData *txtData = [NSData dataWithContentsOfURL:fileUrl];
         if (txtData.length/(1024*1024) > 100) {
-            [AppD.window showHint:@"File cannot be larger than 100MB"];
+            [AppD.window showHint:@"The File should not be larger than 100MB."];
             return;
         }
-        NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+        NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
         NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
         int msgid = [mill intValue];
         CDMessageModel *model = [[CDMessageModel alloc] init];
@@ -2222,7 +2223,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
     else {
         NSLog(@"保存图片成功");
-        [AppD.window showHint:@"Save success."];
+        [AppD.window showHint:Save_Success_Str];
     }
 }
 
@@ -2258,7 +2259,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
             [string insertString:insertString atIndex:insertIndex];
             if ([string charactorNumber] >= fontMax) {
-                [self.view showHint:@"The length of the sent content is out of range."];
+                [self.view showHint:@"The size of the content to send is too large."];
                 return;
             }
             [self.msginputView setTextViewString:string delayTime:0];
@@ -2293,7 +2294,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         NSMutableString *string = [NSMutableString stringWithString:[self.msginputView getTextViewString]];
         [string insertString:insertString atIndex:insertIndex];
         if ([string charactorNumber] >= fontMax) {
-            [self.view showHint:@"The length of the sent content is out of range."];
+            [self.view showHint:@"The size of the content to send is too large."];
             return;
         }
         [self.msginputView setTextViewString:string delayTime:0];
@@ -2378,7 +2379,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     if (!fileDatas) {
                         fileDatas = [NSData dataWithContentsOfFile:filePath];
                     }
-                    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+                    NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
                     NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
                     int msgid = [mill intValue];
                     
@@ -2475,7 +2476,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     if (!fileDatas) {
                         fileDatas = [NSData dataWithContentsOfFile:filePath];
                     }
-                    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+                    NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
                     NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
                     int msgid = [mill intValue];
                     

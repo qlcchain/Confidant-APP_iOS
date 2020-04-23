@@ -454,7 +454,6 @@ struct ResultFile {
     self.toid = toid;
     self.fileid = [NSString stringWithFormat:@"%ld",(long)fileid];
     currentSegseq = 1;
-    //int millSecond = [[NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])] intValue];
     uint32_t action = fileType;
     uint32_t segseq = 1;
     uint32_t offset = 0;

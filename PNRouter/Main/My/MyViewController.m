@@ -56,7 +56,7 @@ static NSString *Settings_Str = @"Settings";
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+   // [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     self.myHeadView.lblName.text = [UserModel getUserModel].username;
     NSString *userKey = [EntryModel getShareObject].signPublicKey;
     [self.myHeadView setUserNameFirstWithName:[StringUtil getUserNameFirstWithName:[UserModel getUserModel].username] userKey:userKey];
@@ -115,7 +115,7 @@ static NSString *Settings_Str = @"Settings";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.view.backgroundColor = MAIN_PURPLE_COLOR;
+     self.view.backgroundColor = MAIN_GRAY_COLOR;
     [self observe];
     
 //    _lblVersion.hidden = YES;

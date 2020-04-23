@@ -383,7 +383,7 @@
     NSString *statu = (NSString *)noti.object;
     FriendModel *friendModel = (FriendModel *)self.addContactsSource[self.currentAddContactsRow];
     if ([statu isEqualToString:@"0"]) { // 服务器处理失败
-        [AppD.window showHint:@"To deal with fail."];
+        [AppD.window showHint:Failed];
         // 上传日志
         [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDDEAL logid:_logId type:0xFF result:1 info:@"send_add_friend_deal_failed"];
     } else {

@@ -101,7 +101,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
                                 //[weakSelf.mainTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.selRow inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                                 [weakSelf.mainTabView reloadData];
                             } else {
-                                [weakSelf.view showHint:@"Delete failed."];
+                                [weakSelf.view showHint:Delete_Failed];
                             }
                         });
                         
@@ -513,6 +513,10 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
         imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
     }];
     
+    [imagePickerVc setNaviBgColor:MAIN_GRAY_COLOR];
+    [imagePickerVc setNaviTitleColor:MAIN_PURPLE_COLOR];
+    [imagePickerVc setBarItemTextColor:MAIN_PURPLE_COLOR];
+    imagePickerVc.needShowStatusBar = YES;
     
     imagePickerVc.iconThemeColor = [UIColor colorWithRed:31 / 255.0 green:185 / 255.0 blue:34 / 255.0 alpha:1.0];
     imagePickerVc.showPhotoCannotSelectLayer = YES;
@@ -640,7 +644,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
                 if (weakSelf.finshFileCount == weakSelf.selFileCount) {
                     [weakSelf.view hideHud];
                     if (!weakSelf.floderM.isLocal) {
-                         [weakSelf.view showHint:@"Added to the task list."];
+                         [weakSelf.view showHint:@"Added to the task list"];
                     }
                 }
                 
@@ -740,7 +744,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
                 if (weakSelf.finshFileCount == weakSelf.selFileCount) {
                     [weakSelf.view hideHud];
                     if (!weakSelf.floderM.isLocal) {
-                         [weakSelf.view showHint:@"Added to the task list."];
+                         [weakSelf.view showHint:@"Added to the task list"];
                     }
                 }
                 if (weakSelf.floderM.isLocal) {

@@ -146,9 +146,9 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_DEL_CONFIG_SUCCESS_NOTI object:nil];
         [self leftNavBarItemPressedWithPop:NO];
         
-        [AppD.window showHint:@"Delete Success."];
+        [AppD.window showHint:Delete_Success_Str];
     } else {
-        [self.view showFaieldHudInView:self.view hint:@"Delete failed."];
+        [self.view showFaieldHudInView:self.view hint:Delete_Failed];
     }
 }
 /*

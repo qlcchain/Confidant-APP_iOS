@@ -129,7 +129,7 @@
                 _clickSetPassB(YES);
             }
         } else {
-            [self showHint:@"Inconsistent password"];
+            [self showHint:@"Passwords don't match."];
         }
     } else {
         [self showHint:@"The password cannot be empty."];

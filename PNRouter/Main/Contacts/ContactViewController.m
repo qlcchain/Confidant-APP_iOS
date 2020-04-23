@@ -47,7 +47,7 @@
 @implementation ContactViewController
 
 - (void)viewDidAppear:(BOOL)animated {
-     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    // [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
      [self sendGetFriendNoti];
     [super viewWillAppear:animated];
 }
@@ -110,7 +110,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.view.backgroundColor = MAIN_PURPLE_COLOR;
+     self.view.backgroundColor = MAIN_GRAY_COLOR;
     [self observe];
     
     _hdBackView.layer.cornerRadius = 6.0f;

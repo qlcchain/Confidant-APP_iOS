@@ -160,7 +160,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecketFaieldNoti:) name:RELOAD_SOCKET_FAILD_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupQuitSuccessNoti:) name:GroupQuit_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageListUpdateNoti:) name:MessageList_Update_Noti object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cricleChangeChangeNoti:) name:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cricleChangeChangeNoti) name:SWITCH_CIRCLE_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherFileOpenNoti:) name:OTHER_FILE_OPEN_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailAccountChangeNoti:) name:EMIAL_ACCOUNT_CHANGE_NOTI object:nil];
     // 邮件flags 改变通知
@@ -342,7 +342,7 @@
         [folderInfoOperation start:^(NSError *error, MCOIMAPFolderInfo * info) {
             if (error) {
                 [weakSelf.view hideHud];
-                [weakSelf.view showHint:@"Failed to pull mail."];
+                [weakSelf.view showHint:@"Failed to load emails."];
             } else {
                 if (weakSelf.emailDataArray.count == 0) {
                     weakSelf.isRequestFloderCount = YES;
@@ -436,7 +436,7 @@
     }
     
     NSLog(@"userid = %@",[UserModel getUserModel].userId);
-    [self cricleChangeChangeNoti:nil];
+    [self cricleChangeChangeNoti];
     [self addNoti];
     
     
@@ -1393,7 +1393,7 @@
 {
      [self updateData];
 }
-- (void) cricleChangeChangeNoti:(NSNotification *) noti
+- (void) cricleChangeChangeNoti
 {
     [self updateData];
     // 更新节点名字
@@ -1576,7 +1576,7 @@
             self.emailTabView.mj_footer.hidden = YES;
         }
     } else {
-        [self.view showHint:@"pull faield."];
+        [self.view showHint:@"Failed to load emails."];
         if (startId > 0) {
             [_emailTabView.mj_footer endRefreshing];
         }
@@ -1830,7 +1830,7 @@
                     weakSelf.isRefresh = NO;
                     [weakSelf.view hideHud];
                     [weakSelf.emailTabView.mj_header endRefreshing];
-                    [weakSelf.view showHint:@"Failed to pull mail."];
+                    [weakSelf.view showHint:@"Failed to load emails."];
                 } else {
                     if (weakSelf.emailDataArray.count == 0) {
                         weakSelf.isRequestFloderCount = YES;
@@ -1879,9 +1879,9 @@
     
     uint64_t locationf = 1;
     uint64_t lengthf = 20;
-    
+
     // 第一次拉取
-    if (_page == 1 && _maxUid >0 && [_floderModel.name isEqualToString:Inbox]) {
+    if (_page == -1 && _maxUid >0 && [_floderModel.name isEqualToString:Inbox]) {
         
         MCOIndexSet *firstNumbers = [MCOIndexSet indexSetWithRange:MCORangeMake(_floderModel.count, 1)];
         imapMessagesFetchOp = [EmailManage.sharedEmailManage.imapSeeion fetchMessagesByNumberOperationWithFolder:self.floderModel.path
@@ -1901,7 +1901,7 @@
                         [weakSelf.view hideHud];
                         [weakSelf.emailTabView.mj_footer endRefreshing];
                     }
-                    [weakSelf.view showHint:@"No mail available."];
+                    [weakSelf.view showHint:@"No new emails"];
                 } else {
                     
                     MCOIMAPMessage *message = messages[0];
@@ -2077,7 +2077,7 @@
     }
     
     if (error.code == 1) {
-        [self.view showHint:@"Unable to connect to email server."];
+        [self.view showHint:@"Failed to connect to the email service server"];
     } else {
         EmailAccountModel *accoutM = [EmailAccountModel getConnectEmailAccount];
         NSString *errorStr = [NSString stringWithFormat:@"%@ Unsuccessful verification. Please check the password, or the IMAP service is not available.",accoutM.User];
@@ -2475,7 +2475,7 @@
         if (callbackError) { // 获取邮件失败
             if (isShowHud) {
                 [weakSelf.view hideHud];
-                [weakSelf.view showHint:@"Failed to pull mail."];
+                [weakSelf.view showHint:@"Failed to load emails."];
             }
             weakSelf.isRefresh = NO;
         } else {
@@ -2811,7 +2811,7 @@
                     [weakSelf.emailTabView reloadData];
                     
                 } else {
-                    [weakSelf.view showHint:@"Failed to pull mail."];
+                    [weakSelf.view showHint:@"Failed to load emails."];
                 }
                 
                 if (weakSelf.isRefresh) {
@@ -3011,7 +3011,7 @@
 {
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     if (!accountM) {
-        [self.view showHint:@"You do not currently have a mailbox bound."];
+        [self.view showHint:@"You do not have any email service configured."];
         return;
     }
     if (!AppD.isGoogleSign && accountM.userId.length > 0) {
@@ -3030,7 +3030,7 @@
 {
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     if (!accountM) {
-        [self.view showHint:@"You do not currently have a mailbox bound."];
+        [self.view showHint:@"You do not have any email service configured."];
         return;
     }
     if (!AppD.isGoogleSign && accountM.userId.length > 0) {
@@ -3074,7 +3074,7 @@
                         
                         if ([[RouterConfig getRouterConfig].currentRouterToxid isEqualToString:toxid]) {
                             // 是当前帐户
-                            [AppD.window showHint:@"Already in the same circle."];
+                            [AppD.window showHint:@"Already in the same circle"];
                         } else {
                             [weakSelf showAlertVCWithValues:@[toxid,sn] isMac:NO];
                         }
@@ -3089,7 +3089,7 @@
                 } else if ([[NSString getNotNullValue:codeType] isEqualToString:@"type_0"]) { // 是好友码
                     codeValue = codeValues[1];
                     if ([codeValue isEqualToString:[UserModel getUserModel].userId]) {
-                        [AppD.window showHint:@"You cannot add yourself as a friend."];
+                        [AppD.window showHint:@"You can not add yourself as a circle contact."];
                     } else if (codeValue.length != 76) {
                         [AppD.window showHint:@"QR code format is wrong."];
                         [weakSelf jumpCodeValueVC];
@@ -3112,7 +3112,7 @@
                             // && [codeArr[2] isEqualToString:toxid]
                             if ([codeArr[1] isEqualToString:signPK]) {
                                 
-                                [AppD.window showHint:@"You cannot add yourself as a friend."];
+                                [AppD.window showHint:@"You can not add yourself as a circle contact."];
                                 
                             } else {
                                 
@@ -3164,7 +3164,7 @@
                         [weakSelf jumpCodeValueVC];
                     }
                 }  else { // 是乱码
-                    //[weakSelf.view showHint:@"format error!"];
+                    //[weakSelf.view showHint:@"Format error"];
                     [weakSelf jumpCodeValueVC];
                 }
             }

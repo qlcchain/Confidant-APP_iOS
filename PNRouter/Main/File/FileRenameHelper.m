@@ -35,7 +35,7 @@
         NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:textField.text]];
         
         if ([aliasName isEmptyString]) {
-            [AppD.window showHint:@"Please enter file name"];
+            [AppD.window showHint:@"Please enter a file name"];
             return;
         }
         NSString *rename = fileName.pathExtension?[aliasName stringByAppendingPathExtension:fileName.pathExtension]:aliasName;

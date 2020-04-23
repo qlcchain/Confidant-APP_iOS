@@ -29,7 +29,6 @@
 @property (nonatomic ,copy) NSString *regId;
 @property (nonatomic ,assign) BOOL isLoginMac;
 @property (nonatomic ,assign) BOOL isSwitch;
-@property (nonatomic ,assign) BOOL showTouch;
 // google signin
 @property (nonatomic ,assign) BOOL isGoogleSign;
 // 外部文件打开的url
@@ -39,7 +38,8 @@
 @property (nonatomic ,strong) YJSideMenu *sideMenuViewController;
 // 当前是不是emailpage
 @property (nonatomic ,assign) BOOL isEmailPage;
-
+// 当前是不是自动登陆
+@property (nonatomic ,assign) BOOL isAutoLogin;
 /**
  app是否正在进行登录操作
  */

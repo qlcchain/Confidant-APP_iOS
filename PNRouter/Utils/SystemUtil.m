@@ -571,16 +571,7 @@
 
 // app 打开时
 + (void) appFirstOpen
-{
-//   UserModel *model = [UserModel getUserModel];
-//    NSArray *uploadTasks = [FileData bg_find:FILE_STATUS_TABNAME where:[NSString stringWithFormat:@"where %@=%@ and %@!=%@",bg_sqlKey(@"userId"),bg_sqlValue(model.userId),bg_sqlKey(@"status"),bg_sqlValue(@(1))]];
-//    [uploadTasks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            FileData *model = obj;
-//            model.progess = 0.0f;
-//            model.status = 3;
-//            [model bg_saveOrUpdateAsync:nil];
-//    }];
-    
+{    
     NSArray *uploadTasks = [PNFileModel bg_find:EN_FILE_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"uploadStatus"),bg_sqlValue(@(1))]];
     [uploadTasks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             PNFileModel *model = obj;
@@ -717,9 +708,9 @@
         fileHz = [fileHz uppercaseString];
         NSArray *mvs = @[@"AVI",@"WMV",@"RM",@"RMVB",@"MPEG1",@"MPEG2",@"MPEG4",@"MP4",@"3GP",@"ASF",@"SWF",@"VOB",@"DAT",@"MOV",@"M4V",@"FLV",@"F4V",@"MKV",@"MTS",@"TS",@"MP3"];
         if ([mvs containsObject:fileHz]) {
-            return 5;
+            return 4;
         } else {
-            return 6;
+            return 5;
         }
     }
 }

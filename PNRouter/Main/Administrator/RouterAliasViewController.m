@@ -104,7 +104,7 @@
         return;
     }
     [AppD.window hideHud];
-    [AppD.window showHint:@"The connection fails"];
+    [AppD.window showHint:Connect_Failed];
 }
 
 #pragma mark - Action
@@ -115,7 +115,7 @@
 - (IBAction)nextAction:(id)sender {
     NSString *aliasName = [NSString trimWhitespaceAndNewline:[NSString getNotNullValue:_aliasTF.text]];
     if (!aliasName || aliasName.length == 0) {
-        [AppD.window showHint:@"Please input circle alias"];
+        [AppD.window showHint:@"Please enter the Circle Alias"];
         return;
     }
     

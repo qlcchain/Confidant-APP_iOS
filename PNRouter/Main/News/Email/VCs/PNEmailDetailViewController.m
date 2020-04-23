@@ -219,14 +219,14 @@
     } completionHandler:^(NSString * _Nonnull path, BOOL succeeded, NSError * _Nullable error) {
         if (error) {
             // 异常
-            [AppD.window showHint:@"Faield."];
+            [AppD.window showHint:Failed];
         } else {
             // 读取文件夹内容
             NSError *error = nil;
             NSMutableArray*items = [[[NSFileManager defaultManager] contentsOfDirectoryAtPath:unzipPath
                                                                                         error:&error] mutableCopy];
             if (error) {
-                [AppD.window showHint:@"Faield."];
+                [AppD.window showHint:Failed];
                 return;
             }
             [items enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -353,7 +353,7 @@
              //   [weakSelf.mainTabV reloadData];
                 
             } else {
-                [AppD.window showHint:@"You entered the wrong password."];
+                [AppD.window showHint:@"You entered a wrong password"];
             }
         }];
     }
@@ -402,7 +402,7 @@
                 }
             }];
             if (isDown) {
-                [self.view showHint:@"Attached is the download, please try again later"];
+                [self.view showHint:@"Downloading the attachment, please try again later."];
                 return;
             }
         }
@@ -1146,7 +1146,7 @@
 - (void) saveEmailToNode
 {
     if (_isBakNode) {
-        [AppD.window showHint:@"This email is backed up."];
+        [AppD.window showHint:@"This email has been backed up"];
         return;
     }
     
@@ -1160,7 +1160,7 @@
             }
         }];
         if (isDown) {
-            [self.view showHint:@"Attached is the download, please try again later"];
+            [self.view showHint:@"Downloading the attachment, please try again later."];
             return;
         }
     }
@@ -1169,7 +1169,7 @@
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
-        NSString *fileid = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+        NSString *fileid = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
         // 生成32位对称密钥
         self.msgKey = [SystemUtil get32AESKey];
         

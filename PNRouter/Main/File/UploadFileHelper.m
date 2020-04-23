@@ -83,7 +83,7 @@
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.currentVC.view endEditing:YES];
-                [AppD.window showHint:@"Denied or Restricted"];
+                [AppD.window showHint:@"Denied or restricted"];
             });
         }
     }];
@@ -110,7 +110,7 @@
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.currentVC.view endEditing:YES];
-                [AppD.window showHint:@"Denied or Restricted"];
+                [AppD.window showHint:@"Denied or restricted"];
             });
             
         }
@@ -130,6 +130,11 @@
     [imagePickerVc setUiImagePickerControllerSettingBlock:^(UIImagePickerController *imagePickerController) {
         imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
     }];
+    
+    [imagePickerVc setNaviBgColor:MAIN_GRAY_COLOR];
+    [imagePickerVc setNaviTitleColor:MAIN_PURPLE_COLOR];
+    [imagePickerVc setBarItemTextColor:MAIN_PURPLE_COLOR];
+    imagePickerVc.needShowStatusBar = YES;
     
     imagePickerVc.iconThemeColor = [UIColor colorWithRed:31 / 255.0 green:185 / 255.0 blue:34 / 255.0 alpha:1.0];
     imagePickerVc.showPhotoCannotSelectLayer = YES;
@@ -171,11 +176,11 @@
             NSData *imgData = UIImageJPEGRepresentation(img,1.0);
             
             if (imgData.length/(1024*1024) > 100) {
-                [AppD.window showHint:@"Image cannot be larger than 100MB"];
+                [AppD.window showHint:@"The image file size should not be larger than 100MB."];
                 return;
             }
             NSString *fileInfo = [NSString stringWithFormat:@"%f*%f",img.size.width,img.size.height];
-            NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+            NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
             NSString *outputPath = [NSString stringWithFormat:@"%@.jpg",mills];
             outputPath =  [[SystemUtil getTempUploadPhotoBaseFilePath] stringByAppendingPathComponent:outputPath];
             NSURL *url = [NSURL fileURLWithPath:outputPath];
@@ -202,7 +207,7 @@
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [AppD.window showHint:@"Video cannot be larger than 100MB"];
+                        [AppD.window showHint:@"The video file size should not be larger than 100MB."];
                     });
                 }
                
@@ -217,7 +222,7 @@
 #pragma mark -视频导出到本地
 - (void)extractedVideWithAsset:(AVURLAsset *)asset evImage:(UIImage *) evImage
 {
-    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+    NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
     NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
     outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
     NSURL *url = [NSURL fileURLWithPath:outputPath];
@@ -228,37 +233,10 @@
         [self jumpToUploadFiles:@[url] fileInfo:fileInfo isDoc:NO];
     } else {
       //  [AppD.window hideHud];
-        [self.currentVC.view showHint:@"The current video format is not supported"];
+        [self.currentVC.view showHint:@"This video format is not supported."];
     }
 }
 
-//- (void)extracted:(PHAsset *)asset evImage:(UIImage *) evImage {
-//
-//    [AppD.window showHudInView:AppD.window hint:@"File encrypting"];
-//
-//    NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
-//    NSString *outputPath = [NSString stringWithFormat:@"%@.mp4",mills];
-//    outputPath =  [[SystemUtil getTempUploadVideoBaseFilePath] stringByAppendingPathComponent:outputPath];
-//
-//
-//
-//    @weakify_self
-//    [TZImageManager manager].outputPath = outputPath;
-//    [[TZImageManager manager] getVideoOutputPathWithAsset:asset presetName:AVAssetExportPresetMediumQuality success:^(NSString *outputPath) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [AppD.window hideHud];
-//            NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
-//            //        __block NSData *mediaData = [NSData dataWithContentsOfFile:outputPath];
-//            NSURL *url = [NSURL fileURLWithPath:outputPath];
-//            [weakSelf jumpToUploadFiles:@[url] isDoc:NO];
-//        });
-//    } failure:^(NSString *errorMessage, NSError *error) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [AppD.window hideHud];
-//            [weakSelf.currentVC.view showHint:@"The current video format is not supported"];
-//        });
-//    }];
-//}
 
 #pragma mark - UIDocumentPickerDelegate
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls NS_AVAILABLE_IOS(11_0) {
@@ -279,7 +257,7 @@
 
     NSData *txtData = [NSData dataWithContentsOfURL:url];
     if (txtData.length/(1024*1024) > 100) {
-        [AppD.window showHint:@"File cannot be larger than 100MB"];
+        [AppD.window showHint:@"The File should not be larger than 100MB."];
         return;
     }
     [self jumpToUploadFiles:@[url] fileInfo:@"" isDoc:YES];

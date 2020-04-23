@@ -120,7 +120,7 @@
 - (IBAction)createGroupChatAction:(id)sender {
     [self.view endEditing:YES];
     if (_nameTF.text.trim.length == 0) {
-        [self.view showHint:@"Please enter group name."];
+        [self.view showHint:@"Please enter a group name"];
         return;
     }
     // 生成32位对称密钥

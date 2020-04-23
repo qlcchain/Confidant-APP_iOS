@@ -179,7 +179,7 @@
             NSURL *newUrl = [NSURL fileURLWithPath:newPath];
             NSFileManager *fm = [NSFileManager defaultManager];
             if ([fm fileExistsAtPath:newUrl.path]) { // 去重
-                [AppD.window showHint:@"Name is Exist"];
+                [AppD.window showHint:@"The file name already exists"];
                 return;
             }
             BOOL isMove = [fm moveItemAtURL:url toURL:newUrl error:nil];

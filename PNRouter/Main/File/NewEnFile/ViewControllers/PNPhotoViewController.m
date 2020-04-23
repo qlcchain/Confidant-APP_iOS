@@ -328,7 +328,7 @@
                             [weakSelf.dataArray removeObjectAtIndex:cell.tag];
                             [weakSelf.localTabView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cell.tag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                         } else {
-                            [weakSelf.view showHint:@"Delete failed."];
+                            [weakSelf.view showHint:Delete_Failed];
                         }
                     });
                     
@@ -412,7 +412,7 @@
                             [weakSelf.dataArray addObject:floderM];
                             [weakSelf.localTabView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                        } else {
-                           [weakSelf.view showHint:@"Create a failure."];
+                           [weakSelf.view showHint:Create_Failed];
                        }
                    });
                }];

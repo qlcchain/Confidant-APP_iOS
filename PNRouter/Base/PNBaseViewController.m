@@ -42,10 +42,8 @@
     [super viewWillDisappear:animated];
     if (@available(iOS 13.0, *)) {
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
-       // AppD.window.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
     } else {
-        // Fallback on earlier versions
-         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
 }
 
@@ -63,7 +61,8 @@
     
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+
+   // self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = MAIN_WHITE_COLOR;
     self.navigationController.navigationBarHidden = !showRightNavBarItem;
     // 设置右边按钮
@@ -315,7 +314,7 @@
                     
                     [weakSelf scanSuccessfulWithIsMacd:NO];
                 } else {
-                    [weakSelf.view showHint:@"format error!"];
+                    [weakSelf.view showHint:@"Format error"];
                 }
             } else if ([[NSString getNotNullValue:type] isEqualToString:@"type_2"]) {
                     // mac 码
@@ -347,11 +346,11 @@
                     
                     
                 } else {
-                     [weakSelf.view showHint:@"format error!"];
+                     [weakSelf.view showHint:@"Format error"];
                 }
                
             } else {
-                [weakSelf.view showHint:@"format error!"];
+                [weakSelf.view showHint:@"Format error"];
             }
         }
     }];
@@ -401,10 +400,10 @@
                     
                     [weakSelf scanSuccessfulWithIsMacd:NO];
                 } else {
-                    [weakSelf.view showHint:@"format error!"];
+                    [weakSelf.view showHint:@"Format error"];
                 }
             } else {
-                [weakSelf.view showHint:@"format error!"];
+                [weakSelf.view showHint:@"Format error"];
             }
         }
     }];
@@ -455,7 +454,7 @@
             } else {
                  [weakSelf toxLoginSuccessWithManager:nil];
             }
-            [AppD.window showHint:@"Connect faield"];
+            [AppD.window showHint:@"Failed to connect"];
         });
         
     }];

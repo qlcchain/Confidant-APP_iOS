@@ -64,7 +64,7 @@
 - (IBAction)nextAction:(id)sender {
     [self.view endEditing:YES];
     if ([_nameTF.text.trim isEmptyString]) {
-        [self.view showHint:@"The Contact Name Cannot Be Empty"];
+        [self.view showHint:@"Please fill in the name a contact name"];
         return;
     }
     
@@ -119,7 +119,7 @@
 - (void) createUserSuccess:(NSNotification *) noti {
     NSString *qrCode = noti.object;
     
-    [AppD.window showHint:@"Add a New Member Successful."];
+    [AppD.window showHint:@"Added successfully!"];
     
     RouterUserModel *model = [[RouterUserModel alloc] init];
     model.UserType = 2;

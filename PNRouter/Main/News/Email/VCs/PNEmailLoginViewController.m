@@ -178,15 +178,15 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
     NSString *emailName = [NSString trimWhitespace:_emailNameTF.text];
     NSString *emailPass = [NSString trimWhitespace:_passwordTF.text];
     if (emailName.length == 0) {
-        [self.view showHint:@"Please enter Email."];
+        [self.view showHint:@"Please enter an Email service"];
         return;
     }
     if (![emailName isEmailAddress]) {
-        [self.view showHint:@"Email format error."];
+        [self.view showHint:@"Email format error"];
         return;
     }
     if (emailPass.length == 0) {
-        [self.view showHint:@"Please enter password."];
+        [self.view showHint:@"Please enter a password"];
         return;
     }
     [self loginImapEmailName:emailName pass:emailPass];
@@ -297,7 +297,7 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
                 [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
                 [weakSelf.view hideHud];
                 [weakSelf clickCloseAction:nil];
-                [AppD.window showHint:@"Configure successed."];
+                [AppD.window showHint:@"Configured successfully!"];
                 
             } else {
                 [SendRequestUtil sendEmailConfigWithEmailAddress:name type:@(weakSelf.emailType) caller:@(0) configJson:@"" ShowHud:NO];
@@ -371,13 +371,13 @@ static NSString *strgmail = @"Step A: Check that IMAP is turned on\n1. On your c
         [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_LOGIN_SUCCESS_NOTI object:nil];
         [self.view hideHud];
         [self clickCloseAction:nil];
-        [AppD.window showHint:@"login successed."];
+        [AppD.window showHint:@"Login successfully"];
     } else {
         [self.view hideHud];
         if (retCode == 2) {
-            [self.view showHint:@"The mailbox has been configured"];
+            [self.view showHint:@"The Email service has been configured."];
         } else {
-            [self.view showHint:@"Configuration quantity exceeds limit."];
+            [self.view showHint:@"The number of your configured email services has met the upper limit."];
         }
     }
 }

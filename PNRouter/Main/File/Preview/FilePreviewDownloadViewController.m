@@ -224,11 +224,11 @@ typedef enum : NSUInteger {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSLog(@"%@     %@   %@",error.localizedDescription, error.domain,@(error.code));
                 if (error.code == -999) {
-                    [AppD.window showHint:@"Download Canceled"];
+                    [AppD.window showHint:@"Cancelled"];
                 } else if (error.code == -1011) { // url不存在
-                    [AppD.window showHint:@"File does not exist."];
+                    [AppD.window showHint:@"The file does not exist"];
                 } else {
-                    [AppD.window showHint:@"Download Failed"];
+                    [AppD.window showHint:@"Failed to Download"];
                 }
                 weakSelf.progressV.hidden = YES;
                 weakSelf.sizeLab.hidden = NO;
@@ -327,7 +327,7 @@ typedef enum : NSUInteger {
     if (msgid == [self.fileListM.MsgId intValue]) {
         @weakify_self
         dispatch_async(dispatch_get_main_queue(), ^{
-            [AppD.window showHint:@"Download Fail"];
+            [AppD.window showHint:@"Failed to Download"];
             weakSelf.progressV.hidden = YES;
             weakSelf.sizeLab.hidden = NO;
             weakSelf.fileExistType = FileExistTypeNone;
@@ -381,7 +381,7 @@ typedef enum : NSUInteger {
         if (fileDataModel.msgId == [self.fileListM.MsgId intValue]) {
             @weakify_self
             dispatch_async(dispatch_get_main_queue(), ^{
-                [AppD.window showHint:@"Download Fail"];
+                [AppD.window showHint:@"Failed to Download"];
                 weakSelf.progressV.hidden = YES;
                 weakSelf.sizeLab.hidden = NO;
                 weakSelf.fileExistType = FileExistTypeNone;

@@ -325,7 +325,11 @@
     if (![[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterMAC] isEmptyString]) {
         [self sendMacFrpRequestWithMac:[RouterConfig getRouterConfig].currentRouterMAC];
     } else {
-         [self sendRequestWithRid:[RouterConfig getRouterConfig].currentRouterToxid];
+        if (![RouterConfig getRouterConfig].currentRouterIp || [RouterConfig getRouterConfig].currentRouterIp.length == 0) {
+             [self sendRequestWithRid:[RouterConfig getRouterConfig].currentRouterToxid];
+        } else {
+             [self sendGBFinsh];
+        }
     }
 }
 
@@ -337,9 +341,10 @@
 
 - (void) sendGBWithRouterId:(NSString *) routerid
 {
-     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
+    [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     [[RouterConfig getRouterConfig].routherArray removeAllObjects];
-    [NSThread detachNewThreadSelector:@selector(sendRadionMessageWithRouterid:) toTarget:self withObject:routerid];
+   // [NSThread detachNewThreadSelector:@selector(sendRadionMessageWithRouterid:) toTarget:self withObject:routerid];
+    [self sendRadionMessageWithRouterid:routerid];
 }
 
 - (void) sendMacFrpRequestWithMac:(NSString *) mac
@@ -356,7 +361,7 @@
             NSString *routerPort = [NSString stringWithFormat:@"%@",responseObject[@"ServerPort"]];
             NSString *routerId = [NSString stringWithFormat:@"%@",responseObject[@"Rid"]];
             [RouterConfig getRouterConfig].currentRouterPort = routerPort;
-            [[RouterConfig getRouterConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
+           // [[RouterConfig getRouterConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
             [RouterConfig getRouterConfig].currentRouterIp = routerIp;
             [RouterConfig getRouterConfig].currentRouterToxid = routerId;
             NSLog(@"---%@---%@",routerIp,routerId);
@@ -383,9 +388,12 @@
             NSString *routerPort = [NSString stringWithFormat:@"%@",responseObject[@"ServerPort"]];
             NSString *routerId = [NSString stringWithFormat:@"%@",responseObject[@"Rid"]];
             [RouterConfig getRouterConfig].currentRouterPort = routerPort;
-            [[RouterConfig getRouterConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
+           // [[RouterConfig getRouterConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
             [RouterConfig getRouterConfig].currentRouterIp = routerIp;
             [RouterConfig getRouterConfig].currentRouterToxid = routerId;
+            
+            // 保存节点ip和port
+            [RouterModel updateRouteIp:routerIp?:@"" routePort:routerPort?:@"" routeid:routerId  usersn:[RouterConfig getRouterConfig].currentRouterSn];
             NSLog(@"---%@---%@",routerIp,routerId);
         }
         NSLog(@"----successBlock-----");

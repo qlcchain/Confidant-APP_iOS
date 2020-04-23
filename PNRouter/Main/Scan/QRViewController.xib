@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dS2-MD-h4D">
-                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C1x-yh-Ixw">
                             <rect key="frame" x="8" y="0.0" width="44" height="44"/>
@@ -31,7 +29,7 @@
                                 <constraint firstAttribute="height" constant="44" id="Rt2-si-KsI"/>
                                 <constraint firstAttribute="width" constant="44" id="dvC-uE-U0M"/>
                             </constraints>
-                            <state key="normal" image="icon_back"/>
+                            <state key="normal" image="arrow-exit-h"/>
                             <connections>
                                 <action selector="clickBack:" destination="-1" eventType="touchUpInside" id="PmT-vo-JUH"/>
                             </connections>
@@ -39,40 +37,50 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBE-Lc-MhV">
                             <rect key="frame" x="167.5" y="11.5" width="40.5" height="21.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HrR-YQ-rIg">
                             <rect key="frame" x="311" y="0.0" width="46" height="44"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                             <state key="normal" title="Album">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="titleColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
                                 <action selector="clickHead:" destination="-1" eventType="touchUpInside" id="KTK-gV-xyE"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eEm-9z-Z7L">
+                            <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.45882352939999999" green="0.45098039220000002" blue="0.50196078430000002" alpha="0.099582619859999999" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="vfR-Y6-791"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="0aM-4b-y4D"/>
                         <constraint firstItem="C1x-yh-Ixw" firstAttribute="leading" secondItem="dS2-MD-h4D" secondAttribute="leading" constant="8" id="4Oe-vl-ukr"/>
                         <constraint firstItem="tBE-Lc-MhV" firstAttribute="centerY" secondItem="dS2-MD-h4D" secondAttribute="centerY" id="4Ol-UH-TIu"/>
+                        <constraint firstItem="eEm-9z-Z7L" firstAttribute="leading" secondItem="dS2-MD-h4D" secondAttribute="leading" id="ABb-mG-e3D"/>
+                        <constraint firstAttribute="bottom" secondItem="eEm-9z-Z7L" secondAttribute="bottom" id="AS6-b8-rWs"/>
                         <constraint firstAttribute="trailing" secondItem="HrR-YQ-rIg" secondAttribute="trailing" constant="18" id="B2e-np-GaT"/>
                         <constraint firstAttribute="bottom" secondItem="HrR-YQ-rIg" secondAttribute="bottom" id="EpD-HH-XrO"/>
                         <constraint firstItem="HrR-YQ-rIg" firstAttribute="top" secondItem="dS2-MD-h4D" secondAttribute="top" id="Mn9-nD-mOS"/>
                         <constraint firstItem="tBE-Lc-MhV" firstAttribute="centerX" secondItem="dS2-MD-h4D" secondAttribute="centerX" id="fyP-Ms-YaP"/>
+                        <constraint firstAttribute="trailing" secondItem="eEm-9z-Z7L" secondAttribute="trailing" id="kdc-fL-mo8"/>
                         <constraint firstItem="C1x-yh-Ixw" firstAttribute="centerY" secondItem="dS2-MD-h4D" secondAttribute="centerY" id="yjc-Ma-I01"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EUF-0u-h4h">
-                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                    <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wCk-N8-i7s">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xCx-kn-9T4">
-                                    <rect key="frame" x="162.5" y="513" width="50" height="50"/>
+                                    <rect key="frame" x="162.5" y="533" width="50" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="cyl-p8-E2r"/>
                                         <constraint firstAttribute="width" constant="50" id="v3h-tQ-ZFq"/>
@@ -84,7 +92,7 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstItem="xCx-kn-9T4" firstAttribute="centerX" secondItem="wCk-N8-i7s" secondAttribute="centerX" id="MQV-yt-Saa"/>
                                 <constraint firstAttribute="bottom" secondItem="xCx-kn-9T4" secondAttribute="bottom" constant="40" id="e8t-Up-74R"/>
@@ -100,7 +108,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Scan the QR Code of Confidant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JwW-CY-sB9">
-                    <rect key="frame" x="65.5" y="134" width="244.5" height="16.5"/>
+                    <rect key="frame" x="65.5" y="114" width="244.5" height="16.5"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -119,12 +127,12 @@
                 <constraint firstItem="EUF-0u-h4h" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="zav-aN-WOo"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-585" y="-60"/>
+            <point key="canvasLocation" x="-618.39999999999998" y="-121.88905547226388"/>
         </view>
     </objects>
     <resources>
+        <image name="arrow-exit-h" width="24" height="24"/>
         <image name="flashlight_off" width="44" height="44"/>
         <image name="flashlight_open" width="44" height="44"/>
-        <image name="icon_back" width="11" height="20"/>
     </resources>
 </document>

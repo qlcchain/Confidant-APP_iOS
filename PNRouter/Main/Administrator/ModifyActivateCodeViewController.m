@@ -68,7 +68,7 @@
 - (IBAction)updateAction:(id)sender {
     [self.view endEditing:YES];
     if (_activationCodeTF.text == nil || _activationCodeTF.text.length != 8) {
-        [AppD.window showHint:@"Your activation code must include 8 charactors."];
+        [AppD.window showHint:@"Your password must contain 8 characters"];
         return;
     }
     NSInteger connectStatu = [SocketUtil.shareInstance getSocketConnectStatus];
@@ -85,7 +85,7 @@
 }
 #pragma mark - Noti
 - (void)resetUserIdcodeSuccessNoti:(NSNotification *)noti {
-    [self.view showHint:@"Modify Successful"];
+    [self.view showHint:Update_Success_Str];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UserIdcodeSuccessNoti" object:_activationCodeTF.text.trim];
     [self performSelector:@selector(backPage) withObject:self afterDelay:1.5];
 }
@@ -116,7 +116,7 @@
         return;
     }
     [AppD.window hideHud];
-    [AppD.window showHint:@"The connection fails"];
+    [AppD.window showHint:Connect_Failed];
 }
 #pragma mark -codeTF 改变回调
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

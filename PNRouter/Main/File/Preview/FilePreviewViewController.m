@@ -69,7 +69,7 @@
         [self previewFilePath:self.filePath];
     } else if (self.fileType == EmailFile) {
         if (!self.localFileData || self.localFileData.length == 0) {
-            [self.view showHint:@"Decryption failure."];
+            [self.view showHint:Decrypt_Failed];
             return;
         }
         [self.view showHudInView:self.view hint:@""];
@@ -85,7 +85,7 @@
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.view hideHud];
-                    [weakSelf.view showHint:@"open failed."];
+                    [weakSelf.view showHint:@"Failed to open"];
                 });
             }
         });
@@ -101,7 +101,7 @@
                 if (!fileData || fileData.length == 0 ) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [weakSelf.view hideHud];
-                        [weakSelf.view showHint:@"Decryption failure."];
+                        [weakSelf.view showHint:Decrypt_Failed];
                     });
                 } else {
                     [weakSelf deFileWithFileData:fileData];
@@ -150,7 +150,7 @@
             } failure:^(NSURLSessionDownloadTask *dataTask, NSError *error) {
                 [SystemUtil removeDocmentFilePath:downloadFilePath];
                 [weakSelf.view hideHud];
-                [weakSelf.view showHint:@"File download failed."];
+                [weakSelf.view showHint:Failed];
             }];
         }
     }
@@ -173,6 +173,7 @@
         return;
     }
     NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:self.userKey];
+    @weakify_self
     if (datakey && datakey.length>0) {
         datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
         if (datakey && ![datakey isEmptyString]) {
@@ -182,22 +183,22 @@
                 BOOL isWriteFinsh = [deFileData writeToFile:deFilePath atomically:YES];
                 if (isWriteFinsh) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.view hideHud];
-                        [self previewFilePath:deFilePath];
+                        [weakSelf.view hideHud];
+                        [weakSelf previewFilePath:deFilePath];
                     });
                 }
                 
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.view hideHud];
-                    [self.view showHint:@"Decryption failure."];
+                    [weakSelf.view hideHud];
+                    [weakSelf.view showHint:Decrypt_Failed];
                 });
             }
         }
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.view hideHud];
-            [self.view showHint:@"Decryption failure."];
+            [weakSelf.view hideHud];
+            [weakSelf.view showHint:Decrypt_Failed];
         });
     }
 }
@@ -249,12 +250,12 @@
         @weakify_self
         UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         
-         UIAlertAction *alert = [UIAlertAction actionWithTitle:@"发送给好友" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+         UIAlertAction *alert = [UIAlertAction actionWithTitle:@"Send" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
              [weakSelf sendFileToFriend];
         }];
         [alertC addAction:alert];
         
-        UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"其它应用打开" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *alert1 = [UIAlertAction actionWithTitle:@"Open in other apps" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakSelf presentOptionsMenu];
         }];
         [alertC addAction:alert1];
@@ -317,11 +318,9 @@
                     }
                     datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
                     
-                        
-                  
                         dispatch_async(dispatch_get_global_queue(0, 0), ^{
                             
-                            NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+                            NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
                             NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
                             int msgid = [mill intValue];
                             
@@ -355,7 +354,7 @@
                     dispatch_async(dispatch_get_global_queue(0, 0), ^{
                             
                            
-                            NSString *mills = [NSString stringWithFormat:@"%@",@([NSDate getMillisecondTimestampFromDate:[NSDate date]])];
+                            NSString *mills = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
                             NSString *mill = [mills substringWithRange:NSMakeRange(mills.length-9, 9)];
                             int msgid = [mill intValue];
                             
@@ -389,8 +388,11 @@
                             [weakSelf sendFileWithToid:model.userId fileName:weakSelf.fileName fileData:enData fileId:msgid fileType:(int)fileT messageId:[NSString stringWithFormat:@"%d",msgid] srcKey:srcKey dsKey:dsKey publicKey:model.publicKey msgKey:msgKey fileInfo:fileInfo];
                             
                         });
-                    
                 }
+        
+        if (idx == modeArray.count-1) {
+            [AppD.window showHint:@"Has been sent"];
+        }
     }];
 }
 

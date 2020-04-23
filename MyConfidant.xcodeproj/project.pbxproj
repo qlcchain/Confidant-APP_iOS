@@ -2495,6 +2495,7 @@
 				580CFE0E2224DD5B00460B41 /* View */,
 				73121A71219C26E900510B48 /* LoginViewController.h */,
 				73121A72219C26E900510B48 /* LoginViewController.m */,
+				73121A73219C26E900510B48 /* LoginViewController.xib */,
 				7351730F23FD03270049BD70 /* PNEntryViewController.h */,
 				7362E49F2404E3BD00D6BFF8 /* PNSendQLCViewController.h */,
 				7362E4A02404E3BD00D6BFF8 /* PNSendQLCViewController.m */,
@@ -2504,7 +2505,6 @@
 				7362E49B23FD5C3800D6BFF8 /* PNRegisterAccountViewController.m */,
 				7362E49C23FD5C3800D6BFF8 /* PNRegisterAccountViewController.xib */,
 				7351731123FD03270049BD70 /* PNEntryViewController.xib */,
-				73121A73219C26E900510B48 /* LoginViewController.xib */,
 				582BFE44221D264200D8C2C8 /* CreateAccountViewController.h */,
 				582BFE45221D264200D8C2C8 /* CreateAccountViewController.m */,
 				582BFE46221D264200D8C2C8 /* CreateAccountViewController.xib */,
@@ -5770,7 +5770,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -5822,7 +5822,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -5838,7 +5838,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 103;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5865,7 +5865,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.5.3;
 				MiSDKRun = debug;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5887,7 +5887,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 103;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5914,7 +5914,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.5.3;
 				MiSDKRun = online;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5931,7 +5931,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 103;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
@@ -5941,7 +5941,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.5.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
@@ -5957,7 +5957,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 103;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
@@ -5967,7 +5967,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.5.3;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";

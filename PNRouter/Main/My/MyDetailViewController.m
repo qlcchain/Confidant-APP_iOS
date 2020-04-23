@@ -170,7 +170,7 @@
     BOOL isImage = YES;
     
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 columnNumber:3 delegate:nil pushPhotoPickerVc:YES];
-    // imagePickerVc.navigationBar.translucent = NO;
+    imagePickerVc.navigationBar.translucent = NO;
     
 #pragma mark - 五类个性化设置，这些参数都可以不传，此时会走默认设置
     imagePickerVc.isSelectOriginalPhoto = NO;
@@ -184,9 +184,10 @@
     imagePickerVc.iconThemeColor = [UIColor colorWithRed:31 / 255.0 green:185 / 255.0 blue:34 / 255.0 alpha:1.0];
     imagePickerVc.showPhotoCannotSelectLayer = YES;
     imagePickerVc.cannotSelectLayerColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
-    [imagePickerVc setPhotoPickerPageUIConfigBlock:^(UICollectionView *collectionView, UIView *bottomToolBar, UIButton *previewButton, UIButton *originalPhotoButton, UILabel *originalPhotoLabel, UIButton *doneButton, UIImageView *numberImageView, UILabel *numberLabel, UIView *divideLine) {
-        [doneButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    }];
+    [imagePickerVc setNaviBgColor:MAIN_GRAY_COLOR];
+    [imagePickerVc setNaviTitleColor:MAIN_PURPLE_COLOR];
+    [imagePickerVc setBarItemTextColor:MAIN_PURPLE_COLOR];
+    imagePickerVc.needShowStatusBar = YES;
     
     // 3. Set allow picking video & photo & originalPhoto or not
     // 3. 设置是否可以选择视频/图片/原图
@@ -211,7 +212,6 @@
     imagePickerVc.allowCrop = YES;
     imagePickerVc.cropRect = CGRectMake(0, (SCREEN_HEIGHT-SCREEN_WIDTH)/2.0, SCREEN_WIDTH, SCREEN_WIDTH);
     imagePickerVc.needCircleCrop = NO;
-    imagePickerVc.statusBarStyle = UIStatusBarStyleLightContent;
     // 设置是否显示图片序号
     imagePickerVc.showSelectedIndex = NO;
     // 自定义gif播放方案

@@ -97,7 +97,7 @@
 - (IBAction)loginAction:(id)sender {
     [self.view endEditing:YES];
     if ([[NSString getNotNullValue:_devicePWTF.text.trim] isEmptyString] || _devicePWTF.text.trim.length !=8) {
-        [self.view showHint:@"Your password must include 8 charactors."];
+        [self.view showHint:@"Your password must contain 8 characters"];
         return;
     }
     isClickConnect = YES;
@@ -201,7 +201,7 @@
     }
     isClickConnect = NO;
     [AppD.window hideHud];
-    [AppD.window showHint:@"The connection fails"];
+    [AppD.window showHint:Connect_Failed];
 }
 
 @end
