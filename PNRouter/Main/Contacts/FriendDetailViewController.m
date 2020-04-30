@@ -305,12 +305,6 @@
         [UserHeaderModel bg_delete:UserHeader_Table where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"UserKey"),bg_sqlValue(_friendModel.signPublicKey)]];
     }
     
-    [FIRAnalytics logEventWithName:kFIREventSelectContent
-    parameters:@{
-                 kFIRParameterItemID:FIR_CONTACT_DEL_SUCCESS,
-                 kFIRParameterItemName:FIR_CONTACT_DEL_SUCCESS,
-                 kFIRParameterContentType:FIR_CONTACT_DEL_SUCCESS
-                 }];
     
     // 删除本地聊天记录
     //[ChatListModel bg_delete:FRIEND_CHAT_TABNAME where:[NSString stringWithFormat:@"where %@=%@",bg_sqlKey(@"friendID"),bg_sqlValue(_friendModel.userId?:@"")]];

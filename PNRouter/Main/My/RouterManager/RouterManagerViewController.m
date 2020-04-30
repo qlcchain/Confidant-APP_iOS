@@ -74,7 +74,7 @@ typedef enum : NSUInteger {
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    //[UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [super viewDidAppear:animated];
 }
 

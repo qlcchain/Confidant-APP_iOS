@@ -21,9 +21,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    
 }
 - (IBAction)scannerAction:(id)sender {
     [self scannerOldCoder];
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_IMPORT_ACCOUNT,
+                 kFIRParameterItemName:FIR_IMPORT_ACCOUNT,
+                 kFIRParameterContentType:FIR_IMPORT_ACCOUNT
+                 }];
 }
 - (IBAction)backAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
@@ -37,7 +45,6 @@
             NSArray *codeValues = [codeValue componentsSeparatedByString:@","];
             NSString *type = codeValues[0];
             if ([[NSString getNotNullValue:type] isEqualToString:@"type_3"]) {
-                
                 [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:codeValues[1]];
                 NSString *name = [codeValues[3] base64DecodedString];
                 [UserModel createUserLocalWithName:name];

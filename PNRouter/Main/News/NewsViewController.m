@@ -79,9 +79,11 @@
 #import "CreateGroupChatViewController.h"
 #import "NSString+RegexCategory.h"
 
+#import "UIScrollView+EmptyDataSet.h"
+#import "PNSendSelectViewController.h"
 
 
-@interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate,GIDSignInUIDelegate> {
+@interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate,GIDSignInUIDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate> {
     BOOL isSearch;
     int startId;
     NSInteger selEmailRow;
@@ -404,12 +406,16 @@
     
     _tableV.delegate = self;
     _tableV.dataSource = self;
+    _tableV.emptyDataSetSource = self;
+    _tableV.emptyDataSetDelegate = self;
     _tableV.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableV registerNib:[UINib nibWithNibName:NewsCellResue bundle:nil] forCellReuseIdentifier:NewsCellResue];
     
     _emailTabView.delegate = self;
     _emailTabView.dataSource = self;
+    _emailTabView.emptyDataSetSource = self;
+    _emailTabView.emptyDataSetDelegate = self;
     _emailTabView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _emailTabView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_emailTabView registerNib:[UINib nibWithNibName:EmailListCellResue bundle:nil] forCellReuseIdentifier:EmailListCellResue];
@@ -440,11 +446,10 @@
     [self addNoti];
     
     
-    if (AppD.fileURL) {
-        [self performSelector:@selector(jumpOtherFileVC) withObject:self afterDelay:1.0];
+    if (AppD.fileUrl) {
+        [self performSelector:@selector(jumpSelectContactsVC) withObject:self afterDelay:0.5];
     }
 
-    
 }
 // 拉取新邮件
 - (void) sendPullNewEmailList
@@ -483,14 +488,13 @@
 /**
  外部文件导入跳转
  */
-- (void) jumpOtherFileVC
+- (void) jumpSelectContactsVC
 {
-    OtherFileOpenViewController *vc = [[OtherFileOpenViewController alloc] initWithFileUrl:AppD.fileURL];
-    vc.backVC = self;
-    AppD.fileURL = nil;
+    PNSendSelectViewController *vc = [[PNSendSelectViewController alloc] init];
+    vc.fileURL = AppD.fileUrl;
+    AppD.fileUrl = nil;
     [self presentModalVC:vc animated:YES];
 }
-
 
 /**
  查询最后一条消息
@@ -1371,18 +1375,29 @@
     menuView.separatorAlpha = 0;
     @weakify_self
     menuView.didSelectBlock = ^(NSInteger index) {
-        
+        NSString *firName = @"";
         if (index == 0) { // 创建群组
             [weakSelf jumpCreateGroup];
+            firName = FIR_ADD_NEW_CHAT;
         } else if (index == 1) { // new email
             [weakSelf jumpNewEmail];
+            firName = FIR_ADD_NEW_EMAIL;
         } else if (index == 2) { // add contacts
             [weakSelf jumpScanCoder];
+            firName = FIR_ADD_CONTACTS;
         } else if (index == 3) { // Invite Friends
             [weakSelf jumpFriendNewEmail];
+            firName = FIR_ADD_INVITE_FRIENDS;
         }  else if (index == 4) { // add members
             [weakSelf jumpAddMembers];
+            firName = FIR_ADD_MEMBERS;
         }
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:firName,
+                     kFIRParameterItemName:firName,
+                     kFIRParameterContentType:firName
+                     }];
        
     };
     [menuView showMenuEnterAnimation:MLEnterAnimationStyleRight];
@@ -2035,28 +2050,14 @@
             if (!weakSelf.isRefresh) {
                  weakSelf.page ++;
             }
-            //NSArray *messageArray = [[messages reverseObjectEnumerator] allObjects];
-            // [weakSelf tranEmailListInfoWithArr:messageArray];
-            
+
             // 根据uid 排序
             NSMutableArray *messageArray = [NSMutableArray arrayWithArray:messages];
             NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"uid" ascending:NO];
             [messageArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
             // 转换mode
             [weakSelf tranEmailListInfoWithArr:messageArray];
-           // [weakSelf.emailDataArray addObjectsFromArray:messageArray];
-            
-            
-            
-//            [weakSelf.emailTabView reloadData];
-//
-//            if (weakSelf.isRefresh) {
-//                weakSelf.isRefresh = NO;
-//                [weakSelf.emailTabView.mj_header endRefreshing];
-//            } else {
-//                [weakSelf.view hideHud];
-//                [weakSelf.emailTabView.mj_footer endRefreshing];
-//            }
+
         }
     }];
 }
@@ -2372,14 +2373,6 @@
     if (!html || html.length == 0) {
         return @"";
     }
-    
-//    NSDictionary *dic = @{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType};
-//    NSData *data = [html dataUsingEncoding:NSUnicodeStringEncoding];
-//    NSAttributedString *attriStr = [[NSAttributedString alloc] initWithData:data options:dic documentAttributes:nil error:nil];
-//    NSString *str = attriStr.string;
-//    str = [NSString trimWhitespace:str];
-//    str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-//    return str;
     return [html getHtmlText];
     
 }
@@ -3273,6 +3266,41 @@
     [self moveAllNavgationViewController];
 }
 
+
+
+#pragma mark--------emptyDataSetSource---emptyDataDelegate
+-(UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+{
+    if (scrollView == _tableV) {
+        return [UIImage imageNamed:@"message_list_empty"];
+    } else {
+        return [UIImage imageNamed:@"email_list_empty"];
+    }
+    
+}
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
+{
+     NSString *text = @"No messages";
+    if (scrollView != _tableV) {
+        text = @"No Emails";
+    }
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0f],
+                                 NSForegroundColorAttributeName:RGB(150, 150, 150)};
+    
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (BOOL)emptyDataSetShouldDisplay:(UIScrollView *)scrollView
+{
+    return YES;
+}
+
+
+
+
+
+
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     
@@ -3398,5 +3426,6 @@
 //    NSString *enMessage = [LibsodiumUtil encryMsgPairWithSymmetry:symmetryString enMsg:messageStr nonce:EN_NONCE];
 //    return [ENMessageUtil enMessageStr:enMessage enType:@"00" qlcAccount:@"" tokenNum:@"" tokenType:@"" enNonce:EN_NONCE];
 //}
+
 
 @end

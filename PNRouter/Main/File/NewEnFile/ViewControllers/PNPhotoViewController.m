@@ -17,6 +17,8 @@
 #import "NSDate+Category.h"
 #import "MyConfidant-Swift.h"
 #import "PNUploadListViewController.h"
+#import "FingerprintVerificationUtil.h"
+#import "UserConfig.h"
 
 @interface PNPhotoViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,SWTableViewCellDelegate,UIScrollViewDelegate>
 
@@ -31,13 +33,18 @@
 
 @property (nonatomic, assign) NSInteger react; // 文件夹操作类型
 @property (nonatomic, assign) NSInteger cellTag; // 当前操作celltag
-
 @property (nonatomic, strong) KeyBordHeadView *keyHeadView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *nodeDataArray;
 @end
 
 @implementation PNPhotoViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
 - (IBAction)clickTaskAction:(id)sender {
     PNUploadListViewController *vc = [[PNUploadListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
@@ -85,6 +92,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_GRAY_COLOR;
+    
+    if (![UserConfig getShareObject].showFileLock) {
+        // 开启手势
+        [FingerprintVerificationUtil checkFloderShow];
+        [UserConfig getShareObject].showFileLock = YES;
+    }
+    
     
     _localBtn.selected = YES;
     _contentContraintW.constant = SCREEN_WIDTH*2;

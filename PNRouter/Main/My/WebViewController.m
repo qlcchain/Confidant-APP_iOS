@@ -35,31 +35,63 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _myWebView.navigationDelegate = self;
+   
     NSString *urlString = HELP_URL;
-     _lblTitle.text = @"Help Center";
+    _myWebView.navigationDelegate = self;
+    
+    
+    [_progressView setTrackTintColor:[UIColor colorWithRed:240.0/255
+                                                        green:240.0/255
+                                                         blue:240.0/255
+                                                        alpha:1.0]];
+       _progressView.progressTintColor = [UIColor greenColor];
+       // 添加进度观察者
+       [_myWebView addObserver:self
+                    forKeyPath:NSStringFromSelector(@selector(estimatedProgress))
+                       options:0
+                       context:nil];
+       //在web页面直接添加观察者
+       [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(windowDidBecomeHidden:) name:UIWindowDidBecomeHiddenNotification object:nil];
+    
     if (_fromType == WebFromTypeShareFriend) {
         urlString = SHARE_FRIEND_URL;
         _lblTitle.text = @"Share with Friends";
-    }
-    
-    urlString = @"https://accounts.google.com/o/oauth2/auth?client_id=873428561545-aui4v5nvn6b1dtodnthmmg5q1ci0vski.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fmail.google.com%2F%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email";
-    
-    [_progressView setTrackTintColor:[UIColor colorWithRed:240.0/255
-                                                     green:240.0/255
-                                                      blue:240.0/255
-                                                     alpha:1.0]];
-    _progressView.progressTintColor = [UIColor greenColor];
-    // 添加进度观察者
-    [_myWebView addObserver:self
-                 forKeyPath:NSStringFromSelector(@selector(estimatedProgress))
-                    options:0
-                    context:nil];
-    //在web页面直接添加观察者
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(windowDidBecomeHidden:) name:UIWindowDidBecomeHiddenNotification object:nil];
+         [_myWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+         
+    } else if (_fromType == WebFromTypeHelpCenter) {
+        urlString = @"https://accounts.google.com/o/oauth2/auth?client_id=873428561545-aui4v5nvn6b1dtodnthmmg5q1ci0vski.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fmail.google.com%2F%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email";
+        _lblTitle.text = @"Help Center";
+        [_myWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+        
+    } else if (_fromType == WebFromTypeCreateCircle) {
+        
+        _lblTitle.text = @"Instructions";
+        
+        NSString *fileName= @"createCircle.webarchive";
+        NSString *htmlPath=[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:fileName];
+        NSURL *url=[NSURL URLWithString:[htmlPath lastPathComponent] relativeToURL:[NSURL fileURLWithPath:[htmlPath stringByDeletingLastPathComponent] isDirectory:YES]];
 
-    [_myWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
- 
+               [self.myWebView loadRequest:[NSURLRequest requestWithURL:url]];
+       
+    } else if (_fromType == WebFromTypeJoinCircle) {
+
+        _lblTitle.text = @"Instructions";
+        NSString *fileName= @"joinCircle.webarchive";
+        NSString *htmlPath=[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:fileName];
+
+        NSURL *url=[NSURL URLWithString:[htmlPath lastPathComponent] relativeToURL:[NSURL fileURLWithPath:[htmlPath stringByDeletingLastPathComponent] isDirectory:YES]];
+
+        [self.myWebView loadRequest:[NSURLRequest requestWithURL:url]];
+        
+    } else if (_fromType == WebFromTypeImportCircle){
+        _lblTitle.text = @"Instructions";
+        NSString *fileName= @"importCircle.webarchive";
+        NSString *htmlPath=[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:fileName];
+
+        NSURL *url=[NSURL URLWithString:[htmlPath lastPathComponent] relativeToURL:[NSURL fileURLWithPath:[htmlPath stringByDeletingLastPathComponent] isDirectory:YES]];
+
+        [self.myWebView loadRequest:[NSURLRequest requestWithURL:url]];
+    }
     
 }
 

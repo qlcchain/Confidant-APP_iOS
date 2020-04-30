@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
@@ -11,36 +11,36 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="Kdc-He-dId" customClass="PNBackgroundView">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4rB-zO-vBp">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_start" translatesAutoresizingMaskIntoConstraints="NO" id="v6L-O2-Chn">
-                            <rect key="frame" x="0.0" y="209" width="414" height="344"/>
+                            <rect key="frame" x="0.0" y="127.5" width="375" height="312"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="v6L-O2-Chn" secondAttribute="height" multiplier="375:312" id="R6M-Tp-bxJ"/>
                             </constraints>
                         </imageView>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabbar_start_logo" translatesAutoresizingMaskIntoConstraints="NO" id="6z0-Ym-Kd2">
-                            <rect key="frame" x="177" y="578" width="60" height="68"/>
+                            <rect key="frame" x="157.5" y="464.5" width="60" height="68"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="Ank-DD-c8x"/>
                                 <constraint firstAttribute="height" constant="68" id="UQP-Wo-pTK"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stay in touch with the ones who matter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="akE-gL-VL4">
-                            <rect key="frame" x="81" y="686" width="252.5" height="17"/>
+                            <rect key="frame" x="61.5" y="572.5" width="252.5" height="17"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                             <color key="textColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="startup_a" translatesAutoresizingMaskIntoConstraints="NO" id="7cx-l5-WS9">
-                            <rect key="frame" x="73" y="686" width="8" height="8"/>
+                            <rect key="frame" x="53.5" y="572.5" width="8" height="8"/>
                         </imageView>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="startup_b" translatesAutoresizingMaskIntoConstraints="NO" id="htA-32-giR">
-                            <rect key="frame" x="333.5" y="695" width="8" height="8"/>
+                            <rect key="frame" x="314" y="581.5" width="8" height="8"/>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

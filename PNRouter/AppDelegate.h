@@ -26,13 +26,12 @@
 @property (nonatomic ,assign) BOOL isScaner;
 @property (nonatomic ,assign) BOOL isRegister;
 @property (nonatomic ,assign) BOOL isDisConnectLogin;
-@property (nonatomic ,copy) NSString *regId;
 @property (nonatomic ,assign) BOOL isLoginMac;
 @property (nonatomic ,assign) BOOL isSwitch;
 // google signin
 @property (nonatomic ,assign) BOOL isGoogleSign;
 // 外部文件打开的url
-@property (nonatomic ,strong) NSURL *fileURL;
+@property (nonatomic ,strong) NSURL *fileUrl;
 //@property (nonatomic ,strong) NSData *devToken;
 // 左侧左栏
 @property (nonatomic ,strong) YJSideMenu *sideMenuViewController;

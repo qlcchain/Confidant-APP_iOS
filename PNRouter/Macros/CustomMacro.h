@@ -42,27 +42,28 @@
 
 
 // 埋点事件名
-#define FIR_LOGIN  @"login"
-#define FIR_EMAIL_CONFIG @"emailConfig"
-#define FIR_EMAIL_SEND   @"emailSend"
-#define FIR_CHAT_SEND_TEXT    @"chatSendText"
-#define FIR_CHAT_DEL  @"chatDelete"
-#define FIR_CHAT_SEND_SUCCESS  @"chatSendSuccess"
-#define FIR_CHAT_SEND_FILE_SUCCESS @"chatSendFileSuccess"
-#define FIR_CHAT_SEND_FILE    @"chatSendFile"
-#define FIR_CHAT_ADD_FRIEND   @"chatAddFriend"
-#define FIR_CHAT_ADD_GROUP   @"chatAddGroup"
-#define FIR_CHAT_SEND_GROUP_TEXT    @"chatSendGroupText"
-#define FIR_CHAT_SEND_GROUP_FILE    @"chatSendGroupFile"
-#define FIR_CHAT_GROUP_SEND_SUCCESS  @"chatGroupSendSuccess"
-#define FIR_CHAT_GROUP_SEND_FILE_SUCCESS @"chatGroupSendFileSuccess"
-#define FIR_FLODER_CREATE    @"floderCreate"
-#define FIR_FLODER_UPLOAD_FILE    @"floderUploadFile"
-#define FIR_CONTACTS_SYNC    @"contactsSync"
-#define FIR_CONTACTS_RECOVER    @"contactsRecover"
-
-#define FIR_CONTACT_DEL  @"contactDelete"
-#define FIR_CONTACT_DEL_SUCCESS  @"contactDeleteSuccess"
+#define FIR_ADD_NEW_CHAT @"main_Add_newchat"
+#define FIR_ADD_NEW_EMAIL @"main_Add_newchat"
+#define FIR_ADD_CONTACTS @"main_Add_addcontacts"
+#define FIR_ADD_INVITE_FRIENDS @"main_Add_invite_friends"
+#define FIR_ADD_MEMBERS @"main_Add_members"
+#define FIR_IMPORT_ACCOUNT @"import_account"
+#define FIR_LOGIN  @"start_login"
+#define FIR_REGISTER @"start_register"
+#define FIR_EMAIL_CONFIG @"start_email_config"
+#define FIR_EMAIL_SEND   @"start_emailSend"
+#define FIR_CHAT_SEND_TEXT    @"start_chat_send_text"
+#define FIR_CHAT_DEL  @"start_chat_delete"
+#define FIR_CHAT_SEND_FILE    @"start_chat_sendFile"
+#define FIR_CHAT_ADD_FRIEND   @"start_chat_AddFriend"
+#define FIR_CHAT_ADD_GROUP   @"start_chat_AddGroup"
+#define FIR_CHAT_SEND_GROUP_TEXT    @"start_chat_SendGroupText"
+#define FIR_CHAT_SEND_GROUP_FILE    @"start_chat_SendGroupFile"
+#define FIR_FLODER_CREATE    @"start_floderCreate"
+#define FIR_FLODER_UPLOAD_FILE    @"start_floderUploadFile"
+#define FIR_CONTACTS_SYNC    @"start_contactsSync"
+#define FIR_CONTACTS_RECOVER    @"start_contactsRecover"
+#define FIR_CONTACT_DEL  @"start_contactDelete"
 
 
 
@@ -269,10 +270,9 @@ align-items: center;\
 <p>Encrypted email client and beyond - your comprehensive privacy&nbsp;protection tool</p>\
 </div>\
 <div class='rowDiv' style='border: 0;'>\
-<p style='font-size: 14px;'>You have received a secure message from</p>\
+<p style='font-size: 14px;'>You just received a secure message from</p>\
 <h3 style='color:#6646F7'>xxx</h3>\
-<p>I’m using Confidant to send and receive secure emails.&nbsp;Click the&nbsp;link below to decrypt and view my\
-&nbsp;message. </p>\
+<p style='font-size: 14px;'>I’m using Confidant to send and receive secure emails. Download and install Confidant to decrypt and read the email content via the link below.</p>\
 </div>\
 <div class='rowDiv jusCenter' style='text-align: center;padding: 0;'>\
 <div style='padding:15px;'>\
@@ -397,9 +397,9 @@ align-items: center;\
 <p>Encrypted email client and beyond - your comprehensive privacy&nbsp;protection tool</p>\
 </div>\
 <div class='rowDiv' style='border: 0;'>\
-<p style='font-size: 14px;'>You have received a secure message from</p>\
+<p style='font-size: 14px;'>You just received a secure message from</p>\
 <h3 style='color:#6646F7'>xxx</h3>\
-<p>I’m using Confidant to send and receive secure emails.&nbsp;Click the link below to install the Confident APP.</p>\
+<p style='font-size: 14px;'>I’m using Confidant to send and receive secure emails. Download and install Confidant to decrypt and read the email content via the link below.</p>\
 </div>\
 <div class='rowDiv jusCenter' style='text-align: center;padding: 0;'>\
 <div style='padding:15px;'>\

@@ -1542,13 +1542,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [weakSelf.listView addMessagesToBottom:@[messageModel]];
         }
     }
-    
-    [FIRAnalytics logEventWithName:kFIREventSelectContent
-    parameters:@{
-                 kFIRParameterItemID:FIR_CHAT_SEND_FILE_SUCCESS,
-                 kFIRParameterItemName:FIR_CHAT_SEND_FILE_SUCCESS,
-                 kFIRParameterContentType:FIR_CHAT_SEND_FILE_SUCCESS
-                 }];
 }
 #pragma mark -----收到文件消息通知------
 - (void) receiveFileMessage:(NSNotification *) noti
@@ -1650,13 +1643,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }];
     }
-    // 埋点
-    [FIRAnalytics logEventWithName:kFIREventSelectContent
-    parameters:@{
-                 kFIRParameterItemID:FIR_CHAT_SEND_SUCCESS,
-                 kFIRParameterItemName:FIR_CHAT_SEND_SUCCESS,
-                 kFIRParameterContentType:FIR_CHAT_SEND_SUCCESS
-                 }];
     
 }
 #pragma mark ------收到文本消息通知--------

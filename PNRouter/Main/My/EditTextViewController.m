@@ -101,7 +101,7 @@
         case EditAlis:
         {
             _routerM.aliasName = aliasName?:@"";
-            [RouterModel updateRouterName:aliasName usersn:_routerM.userSn];
+            [RouterModel updateRouterName:aliasName usersn:_routerM.userSn ownerName:@""];
             [self leftNavBarItemPressedWithPop:YES];
         }
             break;

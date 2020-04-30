@@ -10,7 +10,10 @@
 
 typedef enum : NSUInteger {
     WebFromTypeHelpCenter,
-    WebFromTypeShareFriend
+    WebFromTypeShareFriend,
+    WebFromTypeCreateCircle,
+    WebFromTypeJoinCircle,
+    WebFromTypeImportCircle
 } WebFromType;
 
 @interface WebViewController : PNBaseViewController

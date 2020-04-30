@@ -42,6 +42,12 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [super viewWillAppear:animated];
 }
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    // 发送组播
+    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:self.selectRouther.toxid];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -52,8 +58,7 @@
     [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
     [RouterConfig getRouterConfig].currentRouterIp = self.selectRouther.routeIp;
     [RouterConfig getRouterConfig].currentRouterPort = self.selectRouther.routePort;
-    // 发送组播
-    [[ReviceRadio getReviceRadio] startListenAndNewThreadWithRouterid:self.selectRouther.toxid];
+    
 }
 
 /**

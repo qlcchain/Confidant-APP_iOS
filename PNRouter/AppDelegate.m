@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
-//#import "LoginViewController.h"
 #import "PNNavViewController.h"
 #import "CDChatList.h"
 #import <objc/runtime.h>
@@ -18,12 +17,10 @@
 #import "MyConfidant-Swift.h"
 #import "GuidePageViewController.h"
 #import "ViewController.h"
-#import "VPNFileInputView.h"
 #import "ReviceRadio.h"
 #import "RouterModel.h"
 #import "RouterConfig.h"
 #import <Bugly/Bugly.h>
-//#import "MiPushSDK.h"
 #import "RunInBackground.h"
 #import "RSAModel.h"
 #import "OperationRecordModel.h"
@@ -47,6 +44,7 @@
 #import "ChatListModel.h"
 #import "LeftViewController.h"
 #import "UserPrivateKeyUtil.h"
+#import "PNSendSelectViewController.h"
 
 // 引入 JPush 功能所需头文件
 #import "JPUSHService.h"
@@ -86,8 +84,8 @@
 //    }
     
 
-   // [KeyCUtil deleteWithKey:ROUTER_ARR];
-   //  [KeyCUtil deleteAllKey];
+   // [KeyCUtil deleteWithKey:@"emailKey_arr"];
+  //   [KeyCUtil deleteAllKey];
     
     // 配置google认证
     [GIDSignIn sharedInstance].clientID = CLIENT_ID;
@@ -100,7 +98,9 @@
     // 配置推送
     [self configMiPush:launchOptions];
     // 配置DDLog
-    [self configDDLog];
+   // [self configDDLog];
+    // 配置IQKeyboardManager
+    [self keyboardManagerConfig];
     
     // 异步执行耗时操作
     @weakify_self
@@ -110,9 +110,6 @@
         NSString *modelJson = [KeyCUtil getKeyValueWithKey:libkey];
         EntryModel *model = [LibsodiumUtil getPrivatekeyAndPublickeyWithModelJson:modelJson];
         [UserPrivateKeyUtil changeUserPrivateKeyWithPrivateKey:model.signPrivateKey];
-        
-        // 配置IQKeyboardManager
-        [weakSelf keyboardManagerConfig];
         // 配置聊天
         [weakSelf configChat];
         // 打开时改变文件上传下载状态
@@ -555,10 +552,13 @@
 {
     // 判断传过来的url是否为文件类型
     if ([url.scheme isEqualToString:@"file"]) {
-        if ([_window.rootViewController isKindOfClass:[PNTabbarViewController class]]) {
-            [self performSelector:@selector(showVPNFileView:) withObject:url afterDelay:1.0f];
+        if ([_window.rootViewController isKindOfClass:[YJSideMenu class]]) {
+            PNSendSelectViewController *vc = [[PNSendSelectViewController alloc] init];
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            vc.fileURL = url;
+            [[SystemUtil getCurrentVC] presentViewController:vc animated:YES completion:nil];
         } else {
-            self.fileURL = url;
+            self.fileUrl = url;
         }
     } else {
         [[GIDSignIn sharedInstance] handleURL:url sourceApplication:@"" annotation:nil];
@@ -567,23 +567,6 @@
     return YES;
 }
 
-- (void) showVPNFileView:(NSURL *) url {
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:OTHER_FILE_OPEN_NOTI object:url];
-//    NSString *fileURL = url.absoluteString;
-//    NSArray *array = [fileURL componentsSeparatedByString:@"."];
-//    NSString *fileSuffix = [array lastObject];
-//
-//    array = [fileURL componentsSeparatedByString:@"/"];
-//    NSString *fileName = [[array lastObject] stringByReplacingOccurrencesOfString:@"-" withString:@""];
-//    VPNFileInputView *fileView = [VPNFileInputView loadVPNFileInputView];
-//    fileView.fileSuffix = fileSuffix;
-//    fileView.txtFileName.text = fileName;
-//    fileView.vpnURL = url;
-//    UIWindow *win = [UIApplication sharedApplication].keyWindow;
-//    [fileView showVPNFileInputView:win];
-    
-}
 
 #pragma mark UIApplicationDelegate
 - (void)application:(UIApplication *)app
@@ -591,8 +574,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     // Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
-    // 获取regid
-    AppD.regId = [JPUSHService registrationID];
+
 }
 
 - (void)application:(UIApplication *)app

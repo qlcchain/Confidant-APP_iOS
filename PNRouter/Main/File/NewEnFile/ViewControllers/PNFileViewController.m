@@ -12,7 +12,6 @@
 #import "PNPhotoViewController.h"
 #import "PNMessageViewController.h"
 #import "UploadFileManager.h"
-#import "FingerprintVerificationUtil.h"
 #import "PNContactViewController.h"
 #import "SystemUtil.h"
 #import <Contacts/Contacts.h>
@@ -43,8 +42,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = MAIN_GRAY_COLOR;
     self.nodeContactCount = @"0";
-    // 开启手势
-    [FingerprintVerificationUtil checkFloderShow];
     
     // 开启上传文件监听单例
     [UploadFileManager getShareObject];

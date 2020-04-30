@@ -1206,7 +1206,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                     return ;
                 }
                 ChatListModel *chatModel = [[ChatListModel alloc] init];
-                chatModel.myID = [UserModel getUserModel].userId;
+                chatModel.myID = [UserModel getUserModel].userSn;
                 chatModel.groupID = self.groupModel.GId;
                 chatModel.friendID = [UserModel getUserModel].userId;
                 chatModel.isGroup = YES;
@@ -1641,12 +1641,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }];
         }
     }
-    [FIRAnalytics logEventWithName:kFIREventSelectContent
-    parameters:@{
-                 kFIRParameterItemID:FIR_CHAT_GROUP_SEND_SUCCESS,
-                 kFIRParameterItemName:FIR_CHAT_GROUP_SEND_SUCCESS,
-                 kFIRParameterContentType:FIR_CHAT_GROUP_SEND_SUCCESS
-                 }];
 }
 - (void) pullMessageListSuccessNoti:(NSNotification *) noti
 {
@@ -2106,13 +2100,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.messageId = msgID;
         [weakSelf.listView updateMessage:model];
         
-        
-        [FIRAnalytics logEventWithName:kFIREventSelectContent
-        parameters:@{
-                     kFIRParameterItemID:FIR_CHAT_GROUP_SEND_FILE_SUCCESS,
-                     kFIRParameterItemName:FIR_CHAT_GROUP_SEND_FILE_SUCCESS,
-                     kFIRParameterContentType:FIR_CHAT_GROUP_SEND_FILE_SUCCESS
-                     }];
     }
 }
 
