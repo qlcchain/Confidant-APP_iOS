@@ -30,6 +30,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import "AFHTTPClientV2.h"
 #import "NSDate+Category.h"
+#import "PNInstructionsViewController.h"
 
 
 @interface LoginViewController ()<OCTSubmanagerUserDelegate,UIDocumentInteractionControllerDelegate> {
@@ -41,15 +42,17 @@
     BOOL isClickLogin;
     int logId;
 }
-@property (weak, nonatomic) IBOutlet UIButton *arrowImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *arrowImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblDesc;
 @property (weak, nonatomic) IBOutlet UIView *loginBackView;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
-@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblNickName;
 @property (weak, nonatomic) IBOutlet UILabel *lblRoutherName;
 @property (weak, nonatomic) IBOutlet UIView *circleBack;
 @property (weak, nonatomic) IBOutlet UIImageView *circleDefaultImgV;
 @property (weak, nonatomic) IBOutlet UILabel *circleDefaultLab;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *navContraintH;
+@property (weak, nonatomic) IBOutlet UIButton *selectRouterBtn;
 
 @property (nonatomic , strong) NSMutableArray *showRouterArr;
 @property (nonatomic ,strong) ConnectView *connectView;
@@ -57,6 +60,8 @@
 @property (nonatomic, strong) NSArray *inviteArr;
 
 @property (nonatomic, strong) UIDocumentInteractionController *documentIntertactionController;
+
+
 @end
 
 @implementation LoginViewController
@@ -65,7 +70,11 @@
 //    CSLOG_TEST_DDLOG(@"Login View Controller dealloc***************************************************");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [super viewWillAppear:animated];
+}
 /**
  添加通知
  */
@@ -76,7 +85,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:SOCKET_LOGIN_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCurrentSelectRouter) name:CANCEL_LOGINMAC_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(touchModifySuccess:) name:TOUCH_MODIFY_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userRegisterSuccess:) name:USER_REGISTER_RECEVIE_NOTI object:nil];
@@ -108,7 +116,8 @@
 - (IBAction)loginAction:(id)sender {
     
     if ([[NSString getNotNullValue:[RouterConfig getRouterConfig].currentRouterToxid] isEmptyString]) {
-        [self.view showHint:@"Please select the circle."];
+        //[self.view showHint:@"Please select the circle."];
+        [self rightAction:nil];
         return;
     }
     sendCount = 0;
@@ -134,19 +143,13 @@
         if (self.selectRouther) {
             [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
             [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
-            isLogin = YES;
+            if (self.selectRouther.userid && self.selectRouther.userid.length >0) {
+                isLogin = YES;
+            }
         }
         [RouterConfig getRouterConfig].currentRouterMAC = @"";
         [self sendGB];
     }
-    
-    [FIRAnalytics logEventWithName:kFIREventSelectContent
-    parameters:@{
-                 kFIRParameterItemID:FIR_LOGIN,
-                 kFIRParameterItemName:FIR_LOGIN,
-                 kFIRParameterContentType:FIR_LOGIN
-                 }];
-    
 }
 
 /**
@@ -158,6 +161,10 @@
     isLogin = NO;
     isFind = NO;
     [self jumpToQR];
+}
+- (IBAction)clickInstrumentAction:(id)sender {
+    PNInstructionsViewController *vc = [[PNInstructionsViewController alloc] init];
+    [self presentModalVC:vc animated:YES];
 }
 
 /**
@@ -234,14 +241,11 @@
 
 - (void) parsePowTempCodeBlock
 {
-    _lblRoutherName.text = @"Default node";
-    _loginBtn.enabled = YES;
-    _lblRoutherName.textColor = [UIColor whiteColor];
-    _loginBtn.backgroundColor = [UIColor whiteColor];
-    _lblDesc.text = @"*Select to re-join a circle or scan to join a new one.";
-    [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_down_gray"] forState:UIControlStateNormal];
-    _circleDefaultLab.hidden = NO;
-    _circleDefaultImgV.hidden = YES;
+    _selectRouther = [[RouterModel alloc] init];
+    _selectRouther.name = @"Default node";
+    _selectRouther.userSn =  [RouterConfig getRouterConfig].currentRouterSn;
+    _selectRouther.toxid =  [RouterConfig getRouterConfig].currentRouterToxid;
+    _selectRouther.ownerName = @"Default Node admin";
 }
 
 /**
@@ -460,60 +464,38 @@
  */
 - (void) getCurrentSelectRouter
 {
-//    if (AppD.showTouch) {
-//        self.selectRouther = [RouterModel getLoginOpenRouter];
-//        if (!self.selectRouther) {
-//            self.selectRouther = [RouterModel getConnectRouter];
-//        }
-//    } else {
-//        self.selectRouther = [RouterModel getConnectRouter];
-//    }
     self.selectRouther = [RouterModel getConnectRouter];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    CSLOG_TEST_DDLOG(@"Login View Controller alloc***************************************************");
     AppD.inLogin = NO;
-    self.view.backgroundColor = MAIN_PURPLE_COLOR;
-    _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back!",[UserModel getUserModel].username];
-    _circleBack.layer.cornerRadius = _circleBack.width/2.0;
-    _circleBack.layer.masksToBounds = YES;
-    _circleBack.layer.magnificationFilter = kCAFilterNearest;
-    _circleBack.layer.contentsScale = [[UIScreen mainScreen] scale];
-    _circleDefaultImgV.layer.cornerRadius = _circleDefaultImgV.width/2.0;
-    _circleDefaultImgV.layer.masksToBounds = YES;
-    _circleDefaultImgV.layer.magnificationFilter = kCAFilterNearest;
-    _circleDefaultImgV.layer.contentsScale = [[UIScreen mainScreen] scale];
-    _circleDefaultLab.layer.cornerRadius = _circleDefaultLab.width/2.0;
-    _circleDefaultLab.layer.masksToBounds = YES;
-    _circleDefaultLab.layer.magnificationFilter = kCAFilterNearest;
-    _circleDefaultLab.layer.contentsScale = [[UIScreen mainScreen] scale];
+    _lblNickName.text = [UserModel getUserModel].username;
+ 
+    _loginBtn.layer.cornerRadius = 8;
+    _loginBtn.layer.masksToBounds = YES;
     
+    if (SCREEN_HEIGHT >667) {
+        _navContraintH.constant = 88;
+    }
     
-    [self getCurrentSelectRouter];
-
-    _loginBtn.layer.cornerRadius = 5;
-  
-    [self changeLogintStatu];
-
     _showRouterArr = [NSMutableArray array];
     NSArray *routeArr = [RouterModel getLocalRouters];
     [_showRouterArr addObjectsFromArray:routeArr];
     
     // 默认设置为pow node
-//    if (routeArr.count == 0) {
-//        [self parsePowTempCode];
-//    }
-    
+    if (routeArr.count == 0) {
+        [self parsePowTempCode];
+    } else {
+        [self getCurrentSelectRouter];
+    }
+    [self changeLogintStatu];
+
     [self addObserve];
     [self appOptionWithLoginType:_loginType];
+    
     
      NSNumber *screenLock = [HWUserdefault getObjectWithKey:Screen_Lock_Local]?:@(NO);
     if ([screenLock boolValue] == YES && !AppD.isLogOut) {
@@ -555,33 +537,36 @@
  */
 - (void) changeLogintStatu
 {
-    
-    _lblTitle.text = [NSString stringWithFormat:@"Hello\n%@\nWelcome back!",[UserModel getUserModel].username]?:@"";
+    _lblNickName.text = [UserModel getUserModel].username?:@"";
     if (self.selectRouther) {
         [RouterConfig getRouterConfig].currentRouterSn = self.selectRouther.userSn;
         [RouterConfig getRouterConfig].currentRouterToxid = self.selectRouther.toxid;
-        _lblRoutherName.text = self.selectRouther.name;
     } else {
         [RouterConfig getRouterConfig].currentRouterSn = @"";
         [RouterConfig getRouterConfig].currentRouterToxid = @"";
     }
     if (self.selectRouther) {
-        _loginBtn.enabled = YES;
-        _lblRoutherName.textColor = [UIColor whiteColor];
-        _loginBtn.backgroundColor = [UIColor whiteColor];
-        _lblDesc.text = @"*Select to re-join a circle or scan to join a new one.";
-        [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_down_gray"] forState:UIControlStateNormal];
+        
+         _arrowImgView.hidden = NO;
         _circleDefaultLab.hidden = NO;
-        _circleDefaultImgV.hidden = YES;
+        _selectRouterBtn.hidden = NO;
+        _lblDesc.text = [NSString stringWithFormat:@"Circle Owner: %@",self.selectRouther.ownerName?:@""];
+        _lblDesc.textAlignment = NSTextAlignmentCenter;
+        [_arrowImgView setImage:[UIImage imageNamed:@"tabbar_arrow_lower"]];
+        [_circleDefaultImgV setImage:[UIImage imageNamed:@"login_icon_circles_a"]];
+        _lblRoutherName.text = self.selectRouther.name;
+        [_loginBtn setTitle:@"Login" forState:UIControlStateNormal];
+
     } else {
+        
+         _arrowImgView.hidden = YES;
         _circleDefaultLab.hidden = YES;
-        _circleDefaultImgV.hidden = NO;
-        _loginBtn.enabled = NO;
-        _lblRoutherName.textColor = RGB(178, 178, 178);
-        _loginBtn.backgroundColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1];
-         _lblRoutherName.text = @"You haven't joined any circle";
-        _lblDesc.text = @"*Scan the invitation QR code to join a Confidant Circle.\n*Scan the QR Code on your Confidant node to launch your Circle.";
-        [_arrowImgView setImage:[UIImage imageNamed:@"icon_arrow_gray"] forState:UIControlStateNormal];
+        _selectRouterBtn.hidden = YES;
+        _lblDesc.text = @"*Scan the invitation QR code to join a circle.\n*Scan the MAC barcode on the bottom of your\nConfidant Station to activate it.";
+        _lblDesc.textAlignment = NSTextAlignmentLeft;
+        [_circleDefaultImgV setImage:[UIImage imageNamed:@"login_scan_a"]];
+       _lblRoutherName.text = @"You haven't joined any circle";
+        [_loginBtn setTitle:@"Scan QR Code" forState:UIControlStateNormal];
     }
 }
 
@@ -609,16 +594,21 @@
  显示所有circle
  */
 - (void)showRouter {
+    
+    [_arrowImgView setImage:[UIImage imageNamed:@"tabbar_arrow_upper"]];
+    
     @weakify_self
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     [_showRouterArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         RouterModel *model = obj;
         UIAlertAction *alert = [UIAlertAction actionWithTitle:model.name style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakSelf.arrowImgView setImage:[UIImage imageNamed:@"tabbar_arrow_lower"]];
             [weakSelf refreshSelectRouter:model];
         }];
         [alertC addAction:alert];
     }];
     UIAlertAction *alertCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf.arrowImgView setImage:[UIImage imageNamed:@"tabbar_arrow_lower"]];
     }];
     [alertC addAction:alertCancel];
     [self presentViewController:alertC animated:YES completion:nil];
@@ -665,14 +655,7 @@
         [self loginAction:nil];
     }
 }
-#pragma mark -注册推送
-- (void) registerPushNoti:(NSNotification *) noti
-{
-    if (isClickLogin) {
-        [SendRequestUtil sendRegidReqeust];
-    }
-    
-}
+
 #pragma mark --tox加圈子为好友成功通知
 - (void) toxAddRoterSuccess:(NSNotification *) noti
 {
@@ -798,26 +781,6 @@
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
     int retCode = [receiveDic[@"params"][@"RetCode"] intValue];
     if (retCode == 0) {
-        
-        NSString *userid = receiveDic[@"params"][@"UserId"];
-        NSString *userSn = receiveDic[@"params"][@"UserSn"];
-        NSString *hashid = receiveDic[@"params"][@"Index"];
-        NSString *routeId = receiveDic[@"params"][@"RouteId"];
-        NSString *routerName = receiveDic[@"params"][@"RouterName"];
-        NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
-        NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
-        
-        // 保存用户
-        [UserModel updateHashid:hashid usersn:userSn userid:userid needasysn:0];
-        // 保存路由
-        [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userid];
-        [RouterModel updateRouterConnectStatusWithSn:userSn];
-        
-        [UserConfig getShareObject].userId = userid;
-        [UserConfig getShareObject].userName = [UserModel getUserModel].username;
-        [UserConfig getShareObject].usersn = userSn;
-        [UserConfig getShareObject].dataFilePay = dataFilePay;
-        [UserConfig getShareObject].dataFileVersion = dataFileVersion;
         
         // 上传日志
         [SendRequestUtil sendLogRequestWtihAction:REGISTER logid:logId type:100 result:retCode info:@"register_success"];

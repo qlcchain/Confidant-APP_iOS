@@ -22,6 +22,7 @@
 - (void)leftNavBarItemPressedWithPop:(BOOL) isPop;
 - (void)rightNavBarItemPressed;
 - (void)presentModalVC:(UIViewController *)VC animated:(BOOL)animated;
+- (void)presentModalVC:(UIViewController *)VC animated:(BOOL)animated completion:(void(^)(void)) completion;
 - (void) moveNavgationViewController:(UIViewController *) vs;
 - (void)refreshContent;
 // 移除上二个vs

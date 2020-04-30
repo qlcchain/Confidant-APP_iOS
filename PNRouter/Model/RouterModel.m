@@ -132,7 +132,7 @@
     }
 }
 
-+ (void) addRouterName:(NSString *) routerName routerid:(NSString *) rid usersn:(NSString *) usersn userid:(NSString *)userid
++ (void) addRouterName:(NSString *) routerName routerid:(NSString *) rid usersn:(NSString *) usersn userid:(NSString *)userid owner:(NSString *)ownerName
 {
     if (!usersn) {
         return;
@@ -144,6 +144,7 @@
     routerM.userid = userid;
     routerM.userSn = usersn;
     routerM.name = routerName? [routerName base64DecodedString]:@"";
+    routerM.ownerName = ownerName;
     // 去重
     __block BOOL isExist = NO;
     [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -157,7 +158,7 @@
         DDLogDebug(@"新添加一个本地Router");
         [KeyCUtil saveRouterTokeychainWithValue:routerM.mj_keyValues key:ROUTER_ARR];
     } else { // 修改routername
-        [RouterModel updateCircleName:routerM.name usersn:usersn];
+        [RouterModel updateCircleName:routerM.name usersn:usersn ownerName:ownerName];
     }
 }
 
@@ -230,13 +231,16 @@
 }
 
 
-+ (void)updateCircleName:(NSString *)name usersn:(NSString *)sn {
++ (void)updateCircleName:(NSString *)name usersn:(NSString *)sn ownerName:(NSString *) ownerName{
     NSArray *routerArr = [KeyCUtil getRouterWithKey:ROUTER_ARR]?:@[];
     NSMutableArray *resultArr = [NSMutableArray array];
     [routerArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         RouterModel *model = [RouterModel getObjectWithKeyValues:obj];
         if ([model.userSn isEqualToString:sn]) {
             model.name = name;
+            if (ownerName && ownerName.length>0) {
+                model.ownerName = ownerName;
+            }
         }
         [resultArr addObject:model.mj_keyValues];
     }];

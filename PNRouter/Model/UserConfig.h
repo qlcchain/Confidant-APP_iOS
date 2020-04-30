@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSString *adminKey;
 @property (nonatomic ,strong) NSString *adminName;
 @property (nonatomic ,strong) NSString *adminId;
-
+@property (nonatomic ,assign) BOOL showFileLock;
 + (instancetype) getShareObject;
 @end
 

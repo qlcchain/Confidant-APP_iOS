@@ -16,7 +16,7 @@
 #import "AFHTTPClientV2.h"
 #import "UserConfig.h"
 #import "NSDate+Category.h"
-
+#import "JPUSHService.h"
 #import "MyConfidant-Swift.h"
 #import "EmailAccountModel.h"
 
@@ -44,6 +44,13 @@
    
     NSDictionary *params = @{@"Action":@"Register",@"RouteId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserSn":[RouterConfig getRouterConfig].currentRouterSn?:@"",@"Sign":@"",@"Pubkey":[EntryModel getShareObject].signPublicKey,@"NickName":userName,@"Termial":@(2)};
     [SocketMessageUtil sendVersion4WithParams:params];
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_REGISTER,
+                 kFIRParameterItemName:FIR_REGISTER,
+                 kFIRParameterContentType:FIR_REGISTER
+                 }];
 }
 #pragma mark - 用户登陆
 + (void) sendUserLoginWithPass:(NSString *) usersn userid:(NSString *) userid showHud:(BOOL) showHud {
@@ -51,12 +58,20 @@
     if (showHud) {
        [AppD.window showHudInView:AppD.window hint:@"Login..." userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
+    
     NSString *loginUsersn = [RouterConfig getRouterConfig].currentRouterSn;
     if (![[NSString getNotNullValue:usersn] isEmptyString]) {
         loginUsersn = usersn;
     }
     NSDictionary *params = @{@"Action":@"Login",@"RouteId":[RouterConfig getRouterConfig].currentRouterToxid?:@"",@"UserId":userid?:@"",@"UserSn":loginUsersn?:@"",@"Sign":@"",@"DataFileVersion":[NSString stringWithFormat:@"%zd",[UserModel getUserModel].dataFileVersion],@"NickName":[[UserModel getUserModel].username base64EncodedString],@"Termial":@(2)};
     [SocketMessageUtil sendVersion4WithParams:params];
+    
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_LOGIN,
+                 kFIRParameterItemName:FIR_LOGIN,
+                 kFIRParameterContentType:FIR_LOGIN
+                 }];
     
 }
 #pragma mark -派生类拉取用户
@@ -168,9 +183,18 @@
 #pragma mark -注册小米推送 邦定regid
 + (void) sendRegidReqeust
 {
-    if (AppD.regId && ![AppD.regId isEmptyString]) {
+    
+    NSString *regid = [JPUSHService registrationID];
+    NSLog(@"------------%@",regid);
+    if (regid && ![regid isEmptyString]) {
         
-        NSDictionary *params = @{@"os":pushType,@"regtype":@(2),@"appversion":APP_Version,@"regid":AppD.regId,@"routerid":[RouterConfig getRouterConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
+        NSString *localRegid = [KeychainUtil getKeyValueWithKeyName:[NSString stringWithFormat:@"reg%@",[UserConfig getShareObject].userId]]?:@"";
+        
+        if ([regid isEqualToString:localRegid]) {
+            return;
+        }
+        
+        NSDictionary *params = @{@"os":pushType,@"regtype":@(2),@"appversion":APP_Version,@"regid":regid,@"routerid":[RouterConfig getRouterConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
         
         NSLog(@"parames = %@",params);
        
@@ -178,6 +202,7 @@
             int retCode = [responseObject[@"Ret"] intValue];
             if (retCode == 0) {
                 NSLog(@"注册推送成功!");
+                [KeychainUtil saveValueToKeyWithKeyName:[NSString stringWithFormat:@"reg%@",[UserConfig getShareObject].userId] keyValue:regid];
             } else {
                 NSLog(@"注册推送失败!");
             }

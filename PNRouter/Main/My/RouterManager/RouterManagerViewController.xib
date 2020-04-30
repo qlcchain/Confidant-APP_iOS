@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,7 +27,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-2k-7Dy">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_background_top_short" translatesAutoresizingMaskIntoConstraints="NO" id="kcn-xk-Hg5">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_me" translatesAutoresizingMaskIntoConstraints="NO" id="kcn-xk-Hg5">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="kcn-xk-Hg5" secondAttribute="height" multiplier="375:128" id="2pg-nS-EOD"/>
@@ -39,12 +37,12 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qVS-GI-dvc">
-                                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                    <rect key="frame" x="3" y="0.0" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="NXL-y0-ifj"/>
                                         <constraint firstAttribute="height" constant="44" id="O97-TM-cWY"/>
                                     </constraints>
-                                    <state key="normal" image="icon_back"/>
+                                    <state key="normal" image="arrow-exit-h"/>
                                     <connections>
                                         <action selector="backAction:" destination="-1" eventType="touchUpInside" id="kaY-qZ-cV8"/>
                                     </connections>
@@ -66,7 +64,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="5Lh-aw-RR1"/>
                                 <constraint firstItem="toN-Tl-1fz" firstAttribute="centerY" secondItem="pVb-7P-YWp" secondAttribute="centerY" id="GpN-ip-FlN"/>
-                                <constraint firstItem="qVS-GI-dvc" firstAttribute="leading" secondItem="pVb-7P-YWp" secondAttribute="leading" id="bgA-3P-2aZ"/>
+                                <constraint firstItem="qVS-GI-dvc" firstAttribute="leading" secondItem="pVb-7P-YWp" secondAttribute="leading" constant="3" id="bgA-3P-2aZ"/>
                                 <constraint firstItem="qVS-GI-dvc" firstAttribute="centerY" secondItem="pVb-7P-YWp" secondAttribute="centerY" id="exp-lp-BoP"/>
                                 <constraint firstAttribute="trailing" secondItem="toN-Tl-1fz" secondAttribute="trailing" constant="8" id="v65-yf-EdR"/>
                             </constraints>
@@ -180,9 +178,9 @@
         </view>
     </objects>
     <resources>
+        <image name="arrow-exit-h" width="24" height="24"/>
+        <image name="background_me" width="375" height="129"/>
         <image name="icon_arrow_down_gray" width="12" height="6"/>
-        <image name="icon_back" width="11" height="20"/>
-        <image name="icon_background_top_short" width="375" height="128"/>
         <image name="icon_little_scan" width="22" height="20"/>
     </resources>
 </document>

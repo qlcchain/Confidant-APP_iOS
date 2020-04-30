@@ -657,6 +657,7 @@
         
         NSString *adminId = receiveDic[@"params"][@"AdminId"];
         NSString *adminName = receiveDic[@"params"][@"AdminName"];
+        adminName = adminName? [adminName base64DecodedString]:@"";
         NSString *adminUserKey = receiveDic[@"params"][@"AdminKey"];
         
         // 重新取值  rid 和 usesn
@@ -665,6 +666,8 @@
         NSString *userId = receiveDic[@"params"][@"UserId"];
         NSString *hashId = receiveDic[@"params"][@"Index"];
         NSString *routeName = receiveDic[@"params"][@"RouteName"];
+        NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
+        NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
         
         
         [RouterConfig getRouterConfig].currentRouterToxid = routeId?:[RouterConfig getRouterConfig].currentRouterToxid;
@@ -673,23 +676,25 @@
         
         
         [UserModel updateHashid:hashId usersn:userSn userid:userId needasysn:0];
-        [RouterModel addRouterName:routeName routerid:routeId usersn:userSn userid:userId];
+        [RouterModel addRouterName:routeName routerid:routeId usersn:userSn userid:userId owner:adminName?:@""];
         [RouterModel updateRouterConnectStatusWithSn:userSn];
         
         [UserConfig getShareObject].adminId = adminId;
         [UserConfig getShareObject].adminKey = adminUserKey;
-        [UserConfig getShareObject].adminName = adminName? [adminName base64DecodedString]:@"";
+        [UserConfig getShareObject].adminName = adminName;
         [UserConfig getShareObject].userId = userId;
         [UserConfig getShareObject].usersn = userSn;
         [UserConfig getShareObject].hashId = hashId;
         [UserConfig getShareObject].userName = [UserModel getUserModel].username;
+        [UserConfig getShareObject].dataFilePay = dataFilePay;
+        [UserConfig getShareObject].dataFileVersion = dataFileVersion;
 
         
         // 开始心跳
         [HeartBeatUtil start];
         [[NSNotificationCenter defaultCenter] postNotificationName:REGISTER_PUSH_NOTI object:nil];
-        // 发送未完成消息
-        //[[SendCacheChatUtil getSendCacheChatUtilShare] start];
+        // 发送推送邦定请求
+        [SendRequestUtil sendRegidReqeust];
         AppD.isRegister = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_REGISTER_RECEVIE_NOTI object:receiveDic];
     } else {
@@ -1310,8 +1315,8 @@
    
     [UserConfig getShareObject].adminId = adminId;
     [UserConfig getShareObject].adminKey = adminUserKey;
-    [UserConfig getShareObject].adminName = adminName? [adminName base64DecodedString]:@"";
-    
+    adminName = adminName? [adminName base64DecodedString]:@"";
+    [UserConfig getShareObject].adminName = adminName;
     [UserConfig getShareObject].userId = userId;
     [UserConfig getShareObject].usersn = userSn;
     [UserConfig getShareObject].hashId = hashid;
@@ -1321,7 +1326,7 @@
     if (retCode == 0) { // 成功
         if (userId.length > 0) {
             [UserModel updateHashid:hashid usersn:userSn userid:userId needasysn:needSynch];
-            [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userId];
+            [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userId owner:adminName];
             [RouterModel updateRouterConnectStatusWithSn:userSn];
             // 开启未发送成功消息发送
             [[SendCacheChatUtil getSendCacheChatUtilShare] start];
@@ -1340,6 +1345,8 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:REGISTER_PUSH_NOTI object:nil];
        // 开始心跳
         [HeartBeatUtil start];
+        // 发送推送邦定请求
+        [SendRequestUtil sendRegidReqeust];
     } 
     [[NSNotificationCenter defaultCenter] postNotificationName:SOCKET_LOGIN_SUCCESS_NOTI object:@(retCode)];
 }

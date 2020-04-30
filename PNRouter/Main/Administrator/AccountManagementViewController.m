@@ -44,7 +44,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userIdcodeSuccessNoti:) name:@"UserIdcodeSuccessNoti" object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:SOCKET_LOGIN_SUCCESS_NOTI object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userRegisterSuccess:) name:USER_REGISTER_RECEVIE_NOTI object:nil];
     
 }
@@ -298,26 +297,6 @@
     NSDictionary *receiveDic = (NSDictionary *)noti.object;
      NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
     if (retCode == 0) {
-        NSString *userid = receiveDic[@"params"][@"UserId"];
-        NSString *userSn = receiveDic[@"params"][@"UserSn"];
-        NSString *hashid = receiveDic[@"params"][@"Index"];
-        NSString *routeId = receiveDic[@"params"][@"RouteId"];
-        NSString *routerName = receiveDic[@"params"][@"RouterName"];
-        NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
-        NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
-        
-        // 保存用户
-        [UserModel updateHashid:hashid usersn:userSn userid:userid needasysn:0];
-        // 保存路由
-        [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userid];
-        [RouterModel updateRouterConnectStatusWithSn:userSn];
-        
-        [UserConfig getShareObject].userId = userid;
-        [UserConfig getShareObject].userName = [UserModel getUserModel].username;
-        [UserConfig getShareObject].usersn = userSn;
-        [UserConfig getShareObject].dataFilePay = dataFilePay;
-        [UserConfig getShareObject].dataFileVersion = dataFileVersion;
-        
         [self updateUserHead];
         [AppD setRootTabbarWithManager:nil];
     } else {
@@ -325,11 +304,6 @@
     }
 }
 
-// 注册推送
-- (void) registerPushNoti:(NSNotification *) noti
-{
-    [SendRequestUtil sendRegidReqeust];
-}
 
 - (void)updateUserHead {
     //    if (_loginType == ImportType) {

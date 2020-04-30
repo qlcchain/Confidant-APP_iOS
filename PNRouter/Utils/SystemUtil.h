@@ -69,4 +69,5 @@
 + (NSData *)HexStrToData:(NSString *)str;
 + (NSString *) genterEnUtilNonce;
 + (NSInteger) getAttNameType:(NSString *) attName;
++ (UIViewController *)getCurrentVC;
 @end

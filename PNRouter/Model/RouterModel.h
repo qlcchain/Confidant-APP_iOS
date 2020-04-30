@@ -11,6 +11,7 @@
 
 @property (nonatomic, copy) NSString *toxid;
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *ownerName;
 @property (nonatomic, copy) NSString *userSn;
 @property (nonatomic, assign) BOOL isOpen;
 @property (nonatomic, assign) BOOL isOwerClose;
@@ -27,7 +28,7 @@
 + (NSArray *)getLocalRouters;
 + (void)addRouterWithToxid:(NSString *)toxid;
 + (void)addRouterWithToxid:(NSString *)toxid usesn:(NSString *) usesn userid:(NSString *) uesrid;
-+ (void)updateRouterName:(NSString *)name usersn:(NSString *)sn;
++ (void)updateRouterName:(NSString *)name usersn:(NSString *)sn ownerName:(NSString *) ownerName;
 + (void)updateRouterConnectStatusWithSn:(NSString *)sn;
 + (void)updateRouterLoginSwitchWithSn:(NSString *)sn isOpen:(BOOL) isOpen;
 + (void)updateRouterPassWithSn:(NSString *)sn pass:(NSString *) pass;
@@ -41,6 +42,6 @@
 + (BOOL)routerIsExitsWithSn:(NSString *)sn;
 + (NSMutableArray *) checkRoutherArrayWithToxid:(NSString *)toxid;
 + (void) delegateAllRouter;
-+ (void) addRouterName:(NSString *) routerName routerid:(NSString *) rid usersn:(NSString *) usersn userid:(NSString *) userid;
++ (void) addRouterName:(NSString *) routerName routerid:(NSString *) rid usersn:(NSString *) usersn userid:(NSString *) userid owner:(NSString *) ownerName;
 + (void)updateCircleName:(NSString *)name usersn:(NSString *)sn;
 @end

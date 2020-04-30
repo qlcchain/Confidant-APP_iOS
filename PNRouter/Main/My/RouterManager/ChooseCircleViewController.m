@@ -71,7 +71,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recivceUserFind:) name:USER_FIND_RECEVIE_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:SOCKET_LOGIN_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
 }
 #pragma mark - Operation
 - (void)dataInit {
@@ -499,11 +498,7 @@
         [self switchCircleFaieldWithHintString:@"Login failed Other error."];
     }
 }
-#pragma mark --- 注册推送
-- (void) registerPushNoti:(NSNotification *) noti
-{
-    [SendRequestUtil sendRegidReqeust];
-}
+
 
  #pragma mark -加router好友成功
 - (void) toxAddRoterSuccess:(NSNotification *) noti

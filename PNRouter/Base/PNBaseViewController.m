@@ -63,7 +63,7 @@
     [super viewDidLoad];
 
    // self.automaticallyAdjustsScrollViewInsets = NO;
-    self.view.backgroundColor = MAIN_WHITE_COLOR;
+   // self.view.backgroundColor = MAIN_WHITE_COLOR;
     self.navigationController.navigationBarHidden = !showRightNavBarItem;
     // 设置右边按钮
     if (showRightNavBarItem) {
@@ -123,6 +123,15 @@
 }
 - (void) toxLoginSuccessWithManager:(id<OCTManager>) manager
 {
+}
+
+- (void)presentModalVC:(UIViewController *)VC animated:(BOOL)animated completion:(void(^)(void)) completion
+{
+    PNNavViewController *navController = [[PNNavViewController alloc] initWithRootViewController:VC] ;
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    if([self respondsToSelector:@selector(presentViewController:animated:completion:)]){
+        [self presentViewController:navController animated:animated completion:completion];
+    }
 }
 
 - (void)presentModalVC:(UIViewController *)VC animated:(BOOL)animated

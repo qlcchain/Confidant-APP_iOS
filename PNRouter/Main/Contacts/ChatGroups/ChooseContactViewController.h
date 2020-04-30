@@ -10,7 +10,7 @@
 
 @interface ChooseContactViewController : PNBaseViewController
 
-// 1:doc 2:创建群组 3:消息文件转发 4:文件转发,5:chats界面创建群组 6:email文件发送给好友
+// 1:doc 2:创建群组 3:消息文件转发 4:文件转发,5:chats界面创建群组 6:email文件发送给好友 7:外部文件发送给好友
 @property (nonatomic,assign) NSInteger docOPenTag;
-
+@property (nonatomic,copy) NSURL *fileURL;
 @end

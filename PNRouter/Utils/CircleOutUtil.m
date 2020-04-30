@@ -69,7 +69,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:SOCKET_LOGIN_SUCCESS_NOTI object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toxAddRoterSuccess:) name:TOX_ADD_ROUTER_SUCCESS_NOTI object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userRegisterSuccess:) name:USER_REGISTER_RECEVIE_NOTI object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerPushNoti:) name:REGISTER_PUSH_NOTI object:nil];
 }
 
 #pragma mark ---更新头像
@@ -428,27 +427,6 @@
         
         NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
         if (retCode == 0) {
-            NSString *userid = receiveDic[@"params"][@"UserId"];
-            NSString *userSn = receiveDic[@"params"][@"UserSn"];
-            NSString *hashid = receiveDic[@"params"][@"Index"];
-            NSString *routeId = receiveDic[@"params"][@"RouteId"];
-            NSString *routerName = receiveDic[@"params"][@"RouterName"];
-            NSInteger dataFileVersion = [receiveDic[@"params"][@"DataFileVersion"] integerValue];
-            NSString *dataFilePay = receiveDic[@"params"][@"DataFilePay"];
-            
-            
-            // 保存用户
-            [UserModel updateHashid:hashid usersn:userSn userid:userid needasysn:0];
-            // 保存路由
-            [RouterModel addRouterName:routerName routerid:routeId usersn:userSn userid:userid];
-            [RouterModel updateRouterConnectStatusWithSn:userSn];
-            
-            [UserConfig getShareObject].userId = userid;
-            [UserConfig getShareObject].userName = [UserModel getUserModel].username;
-            [UserConfig getShareObject].usersn = userSn;
-            [UserConfig getShareObject].dataFilePay = dataFilePay;
-            [UserConfig getShareObject].dataFileVersion = dataFileVersion;
-            
             [self switchCircleSuccess];
         } else {
             if (retCode == 1) {
@@ -493,13 +471,7 @@
     
 }
 
-#pragma mark --- 注册推送
-- (void) registerPushNoti:(NSNotification *) noti
-{
-    if (isSwitchCircle) {
-         [SendRequestUtil sendRegidReqeust];
-    }
-}
+
 
 #pragma mark -加router好友成功
 - (void) toxAddRoterSuccess:(NSNotification *) noti

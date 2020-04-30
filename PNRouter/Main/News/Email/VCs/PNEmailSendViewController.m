@@ -1681,6 +1681,22 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             // 更新高度
             [self textDidChange:_toTF];
         }
+        
+        // 附件------外部文件
+        if (_fileURL) {
+            EmailAttchModel *attchNew = [[EmailAttchModel alloc] init];
+            attchNew.attName = [_fileURL lastPathComponent];
+            
+            @weakify_self
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                NSData *localFileData = [NSData dataWithContentsOfURL:weakSelf.fileURL];
+                attchNew.attData = localFileData;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                     [weakSelf addAttchReloadCollectionWithAttch:attchNew];
+                });
+            });
+        }
+        
         [self performSelector:@selector(textViewBecomeFirstResponder:) withObject:_toTF afterDelay:0.5];
     } else if (_sendType == FriendEmail) { // 邀请模板
         

@@ -61,8 +61,9 @@
 }
 - (IBAction)clickMenuAction:(UIButton *)sender {
     
+    NSString *firName = @"";
     if (sender.tag == 10) { // create a group
-        
+        firName = FIR_ADD_NEW_CHAT;
         NSArray *tempArr = [ChatListDataUtil getShareObject].friendArray;
         // 过滤非当前路由的好友
         NSString *currentToxid = [RouterConfig getRouterConfig].currentRouterToxid;
@@ -77,7 +78,7 @@
         [self presentModalVC:vc animated:YES];
         
     } else if (sender.tag == 30) { // scan to add contacts
-        
+        firName = FIR_ADD_CONTACTS;
         @weakify_self
         QRViewController *vc = [[QRViewController alloc] initWithCodeQRCompleteBlock:^(NSString *codeValue) {
             if (codeValue != nil && codeValue.length > 0) {
@@ -201,22 +202,32 @@
         [self.navigationController pushViewController:vc animated:YES];
         
     } else if (sender.tag == 60) { // add a new member
-        
+        firName = FIR_ADD_MEMBERS;
         NSString *rid = [RouterConfig getRouterConfig].currentRouterToxid;
         AddNewMemberViewController *vc = [[AddNewMemberViewController alloc] initWithRid:rid];
         [self presentModalVC:vc animated:YES];
        // [self jumpToCircleCode];
     } else if (sender.tag == 20) { // new email
-        
+        firName = FIR_ADD_NEW_EMAIL;
         PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:nil sendType:NewEmail];
         [self presentModalVC:vc animated:YES];
         
     }  else if (sender.tag == 50) { // new email friends
-        
+        firName = FIR_ADD_INVITE_FRIENDS;
         PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:nil sendType:FriendEmail];
         [self presentModalVC:vc animated:YES];
         
     }
+    
+    if (firName.length > 0) {
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:firName,
+                     kFIRParameterItemName:firName,
+                     kFIRParameterContentType:firName
+                     }];
+    }
+    
 }
 
 

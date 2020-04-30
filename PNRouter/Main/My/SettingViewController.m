@@ -144,10 +144,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    if (indexPath.row == 0) {
-//        AccountCodeViewController *vc = [[AccountCodeViewController alloc] init];
-//        [self.navigationController pushViewController:vc animated:YES];
-//    }
     NSString *title = self.dataArray[indexPath.row];
     if ([title isEqualToString:Terms_Policy]) {
         TermsViewController *vc = [[TermsViewController alloc] init];

@@ -20,6 +20,14 @@
 @end
 
 @implementation CreateAccountViewController
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [super viewWillAppear:animated];
+}
+
 - (IBAction)bottomAction:(id)sender {
     TermsViewController *vc = [[TermsViewController alloc] init];
     [self presentModalVC:vc animated:YES];

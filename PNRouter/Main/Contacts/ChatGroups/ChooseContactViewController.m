@@ -18,6 +18,7 @@
 #import "ChooseContactHeaderView.h"
 #import "FriendModel.h"
 #import "GroupInfoModel.h"
+#import "PNMessageSendManage.h"
 
 @interface ChooseContactViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
     BOOL isMutable;
@@ -43,6 +44,7 @@
 
 
 - (IBAction)backAction:(id)sender {
+    
     if (isMutable) {
         isMutable = NO;
         
@@ -71,6 +73,7 @@
 }
 - (void) backVCWithSendNoti:(BOOL) isSend
 {
+  
     [self.selectArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FriendModel *model = obj;
         model.isSelect = NO;
@@ -92,6 +95,8 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_CHOOSE_FRIEND_CREATE_GROUOP_NOTI object:weakSelf.selectArray];
                 }  else if (weakSelf.docOPenTag == 6) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:EMAIL_CHOOSE_FRIEND_SEND_NOTI object:weakSelf.selectArray];
+                } else if (weakSelf.docOPenTag == 7) {
+                    [PNMessageSendManage sendMessageWithContacts:weakSelf.selectArray fileUrl:weakSelf.fileURL];
                 }
                 
             }

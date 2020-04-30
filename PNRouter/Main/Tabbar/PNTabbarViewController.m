@@ -333,32 +333,6 @@
     [self connectSocket];
 }
 
-//- (void) sendRequestWithRid:(NSString *) rid
-//{
-//    NSString *url = [NSString stringWithFormat:@"https://pprouter.online:9001/v1/pprmap/Check?rid=%@",rid];
-//    @weakify_self
-//    [AFHTTPClientV2 requestWithBaseURLStr:url params:@{} httpMethod:HttpMethodGet successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
-//
-//        NSInteger retCode = [responseObject[@"RetCode"] integerValue];
-//        NSInteger connStatus = [responseObject[@"ConnStatus"] integerValue];
-//        if (retCode == 0 && connStatus == 1) {
-//            NSString *routerIp = responseObject[@"ServerHost"];
-//            NSString *routerPort = [NSString stringWithFormat:@"%@",responseObject[@"ServerPort"]];
-//            NSString *routerId = [NSString stringWithFormat:@"%@",responseObject[@"Rid"]];
-//            [RoutherConfig getRouterConfig].currentRouterPort = routerPort;
-//            [[RoutherConfig getRouterConfig] addRoutherWithArray:@[routerIp?:@"",routerId?:@""]];
-//            [RoutherConfig getRouterConfig].currentRouterIp = routerIp;
-//            [RoutherConfig getRouterConfig].currentRouterToxid = routerId;
-//
-//            [weakSelf connectSocket];
-//        }
-//
-//    } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
-//        [weakSelf connectSocket];
-//    }];
-//
-//}
-
 #pragma mark - 获取好友列表通知
 - (void) sendGetFriendNoti
 {
