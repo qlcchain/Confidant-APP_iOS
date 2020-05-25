@@ -48,7 +48,8 @@
     } else {
         if (model.toUserArray && model.toUserArray.count > 0) {
            EmailUserModel *userModel = model.toUserArray[0];
-             _lblToName.text = [NSString stringWithFormat:@"To %@",userModel.userName];
+            userModel.userName = [userModel.userName stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+            _lblToName.text = [NSString stringWithFormat:@"To %@",userModel.userName?:@""];
         } else {
              _lblToName.text = @"";
         }

@@ -96,8 +96,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendUploadFileWithFloderType:(NSInteger) floderType fileType:(NSInteger) fileType fileId:(NSInteger) fileId fileSize:(NSInteger) fileSize fileMD5:(NSString *) fileMd5 fileName:(NSString *) fileName fkey:(NSString *) fkey finfo:(NSString *) finfo floderId:(NSInteger) floderId showHud:(BOOL)showHud;
 // 拉取通讯录
 + (void) sendPullBookInfoWithFileId:(NSInteger) fileId  showHud:(BOOL)showHud;
-
-
+// 推广活动
++ (void) sendBakWalletAccountWithWalletType:(NSString *) walletType walletAddress:(NSString *) walletAddress showHud:(BOOL)showHud;
++ (void) sendGetWalletAccountWithWalletType:(NSInteger) walletType showHud:(BOOL)showHud;
+//+ (void) sendGetMyPushsListWithType:(NSInteger) type targetNum:(NSInteger) targetNum startId:(NSString *) startId showHud:(BOOL)showHud;
+//+ (void) sendSetMyPushReadWithMsgid:(NSInteger) msgId interest:(NSInteger) interest showHud:(BOOL)showHud;
 
 
 

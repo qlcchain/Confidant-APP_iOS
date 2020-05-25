@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PNNewsViewController">
+            <connections>
+                <outlet property="tabView" destination="XcH-7h-GDc" id="vpf-v2-rgZ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aRX-Bn-P2N">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="STJ-uA-xfS">
+                            <rect key="frame" x="3" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="dIG-mM-Qgf"/>
+                                <constraint firstAttribute="height" constant="44" id="u4O-GC-vZ3"/>
+                            </constraints>
+                            <state key="normal" image="tabbar_close"/>
+                            <connections>
+                                <action selector="backAction:" destination="-1" eventType="touchUpInside" id="vS3-zF-xgm"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Campaign Updates" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIN-U7-f5i">
+                            <rect key="frame" x="109.5" y="11.5" width="156.5" height="21"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                            <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lad-wT-wJx">
+                            <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.58039215690000001" green="0.58823529409999997" blue="0.63137254899999995" alpha="0.21599422090000001" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="OxV-rR-Ltn"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="STJ-uA-xfS" firstAttribute="centerY" secondItem="aRX-Bn-P2N" secondAttribute="centerY" id="2hV-C1-3bV"/>
+                        <constraint firstAttribute="height" constant="44" id="CtX-63-MuO"/>
+                        <constraint firstItem="Lad-wT-wJx" firstAttribute="leading" secondItem="aRX-Bn-P2N" secondAttribute="leading" id="LXK-fs-T5C"/>
+                        <constraint firstAttribute="bottom" secondItem="Lad-wT-wJx" secondAttribute="bottom" id="awp-Fv-haX"/>
+                        <constraint firstAttribute="trailing" secondItem="Lad-wT-wJx" secondAttribute="trailing" id="fYc-u7-orG"/>
+                        <constraint firstItem="STJ-uA-xfS" firstAttribute="leading" secondItem="aRX-Bn-P2N" secondAttribute="leading" constant="3" id="uqT-GW-S3s"/>
+                        <constraint firstItem="QIN-U7-f5i" firstAttribute="centerY" secondItem="aRX-Bn-P2N" secondAttribute="centerY" id="yiM-mH-IZO"/>
+                        <constraint firstItem="QIN-U7-f5i" firstAttribute="centerX" secondItem="aRX-Bn-P2N" secondAttribute="centerX" id="zDy-Bq-t9d"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XcH-7h-GDc">
+                    <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="aRX-Bn-P2N" secondAttribute="trailing" id="0du-up-a8Y"/>
+                <constraint firstItem="XcH-7h-GDc" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="0jX-F2-mXZ"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="XcH-7h-GDc" secondAttribute="trailing" id="18j-rg-q95"/>
+                <constraint firstItem="XcH-7h-GDc" firstAttribute="top" secondItem="aRX-Bn-P2N" secondAttribute="bottom" id="LQB-Eq-KV5"/>
+                <constraint firstItem="aRX-Bn-P2N" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="MfM-aF-3GW"/>
+                <constraint firstItem="aRX-Bn-P2N" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="fyd-fw-hwd"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="XcH-7h-GDc" secondAttribute="bottom" id="gcV-YP-Rvl"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="-1028" y="-203"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="tabbar_close" width="16" height="16"/>
+    </resources>
+</document>

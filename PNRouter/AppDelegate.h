@@ -32,6 +32,10 @@
 @property (nonatomic ,assign) BOOL isGoogleSign;
 // 外部文件打开的url
 @property (nonatomic ,strong) NSURL *fileUrl;
+// 推广活动字典
+@property (nonatomic, strong) NSDictionary *campaignDic;
+// 推广活动未读
+@property (nonatomic, assign) NSInteger campaignUnReadCount;
 //@property (nonatomic ,strong) NSData *devToken;
 // 左侧左栏
 @property (nonatomic ,strong) YJSideMenu *sideMenuViewController;

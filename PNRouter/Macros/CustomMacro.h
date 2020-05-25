@@ -43,7 +43,7 @@
 
 // 埋点事件名
 #define FIR_ADD_NEW_CHAT @"main_Add_newchat"
-#define FIR_ADD_NEW_EMAIL @"main_Add_newchat"
+#define FIR_ADD_NEW_EMAIL @"main_Add_email"
 #define FIR_ADD_CONTACTS @"main_Add_addcontacts"
 #define FIR_ADD_INVITE_FRIENDS @"main_Add_invite_friends"
 #define FIR_ADD_MEMBERS @"main_Add_members"
@@ -64,7 +64,9 @@
 #define FIR_CONTACTS_SYNC    @"start_contactsSync"
 #define FIR_CONTACTS_RECOVER    @"start_contactsRecover"
 #define FIR_CONTACT_DEL  @"start_contactDelete"
-
+// 推广活动埋点
+#define FIR_ADD_WALLET_ADDRESS  @"add_wallet_address"
+#define FIR_CHECK_CAMPAIGN  @"check_campaign"
 
 
 // 请求超时时间
@@ -98,6 +100,7 @@
 #define File_Download_GroupId @"File_Download_GroupId" // 文件下载groupid
 #define File_Download_Task_List @"File_Download_Task_List" // 文件下载目录
 #define Login_Statu_Key @"Login_Statu_Key"
+#define Campaing_ids_key @"Campaing_ids_key" // 活动消息key
 
 #pragma mark -日志打点 Action
 static int LOGIN = 0x01;
@@ -131,7 +134,7 @@ static NSString *Spam = @"Spam";
 static NSString *Trash = @"Trash";
 
 #pragma mark - HUD Text
-#define Loading_Str @"Loding..."
+#define Loading_Str @"Loading..."
 #define Uploading_Str @"Uploading..."
 #define Switching_Str @"Switching..."
 #define Deleting_Str @"Deleting..."

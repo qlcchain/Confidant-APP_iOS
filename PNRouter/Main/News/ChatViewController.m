@@ -274,11 +274,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     }
 
     [self sendUpdateAvatar];
-//    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"1539912662170117"ofType:@"mp4"]];
-//    UIImage *img = [SystemUtil thumbnailImageForVideo:url];
-//    UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
-//    imgV.center = CGPointMake(ScreenW/2, ScreenH/2);
-//    [AppD.window addSubview:imgV];
+    
+    // 埋点
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_SEND_TEXT,
+                 kFIRParameterItemName:FIR_CHAT_SEND_TEXT,
+                 kFIRParameterContentType:FIR_CHAT_SEND_TEXT
+                 }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -1026,12 +1029,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
     
-    [FIRAnalytics logEventWithName:kFIREventSelectContent
-    parameters:@{
-                 kFIRParameterItemID:FIR_CHAT_SEND_FILE,
-                 kFIRParameterItemName:FIR_CHAT_SEND_FILE,
-                 kFIRParameterContentType:FIR_CHAT_SEND_FILE
-                 }];
 }
 
 #pragma makr ------点击发送按钮回调--------
@@ -1095,6 +1092,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             chatModel.toPublicKey = model.publicKey;
             chatModel.msgType = 0;
             chatModel.msgid = tempMsgid;
+            
             chatModel.messageMsg = string;
             chatModel.sendTime = [NSDate getTimestampFromDate:[NSDate date]];
             chatModel.bg_tableName = CHAT_CACHE_TABNAME;
@@ -1103,20 +1101,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:model.messageId];
         
-        if (![SystemUtil isSocketConnect]) {
+        if ([SystemUtil isSocketConnect]) {
             [SendRequestUtil sendQueryFriendWithFriendId:self.friendModel.userId];
         }
         
         self.repMessageModel = nil;
         
-        
-        // 埋点
-        [FIRAnalytics logEventWithName:kFIREventSelectContent
-        parameters:@{
-                     kFIRParameterItemID:FIR_CHAT_SEND_TEXT,
-                     kFIRParameterItemName:FIR_CHAT_SEND_TEXT,
-                     kFIRParameterContentType:FIR_CHAT_SEND_TEXT
-                     }];
         // 上传日志
         _logId = [SendRequestUtil sendLogRequestWtihAction:SENDMSG logid:0 type:0 result:0 info:@"send_msg"];
     }
@@ -1724,7 +1714,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             return;
         }
     }
-    
+    NSLog(@"----------%d",0x11);
     if ([resultArr[1] intValue] == 1 && [resultArr[2] integerValue] > 0) { // 拉取回复消息的消息
         PayloadModel *payloadM = messageArr[0];
         @weakify_self
@@ -1739,7 +1729,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                             NSString *symmetKey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:payloadM.PriKey];
                             payloadM.Msg = [LibsodiumUtil decryMsgPairWithSymmetry:symmetKey enMsg:payloadM.Msg nonce:payloadM.Nonce];
                              payloadM.UserName = [UserModel getUserModel].username;
-                        } else {
+                        }  else {
                             
                             // 判断是否是 新用户注册欢迎消息
                             if ([payloadM.Sign hasPrefix:@"======"]) {
@@ -1774,7 +1764,21 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                             [weakSelf.listView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:weakSelf.listView.msgArr.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
                         }
                         
-                    } else if (payloadM.MsgType == CDMessageTypeFile) {
+                    } else if (payloadM.MsgType == CDMessageTypeEmailRead) {
+                        
+                        
+                        NSString *deMsg = [payloadM.Msg base64DecodedString]?:@"";
+                        if (![deMsg isEmptyString]) {
+                            payloadM.Msg = deMsg;
+                        }
+                        
+                        messageM.repModel = payloadM;
+                        [weakSelf.listView updateMessage:messageM];
+                        
+                        if (weakSelf.listView.msgArr.count <= 10) {
+                            [weakSelf.listView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:weakSelf.listView.msgArr.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                        }
+                    }else if (payloadM.MsgType == CDMessageTypeFile) {
                         
                         if (payloadM.FileName && payloadM.FileName.length>0) {
                             payloadM.FileName = [Base58Util Base58DecodeWithCodeName:payloadM.FileName];
@@ -1805,6 +1809,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
     [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         PayloadModel *payloadModel = obj;
         CDMessageModel *model = [[CDMessageModel alloc] init];
+        // 是email回执
+        if (payloadModel.MsgType == 0x11) {
+            payloadModel.MsgType = CDMessageTypeText;
+            model.isEmailRead = YES;
+        }
          NSString *userId = [UserConfig getShareObject].userId;
         if (payloadModel.Sender == 0) {
             model.FromId = userId?:@"";
@@ -1844,6 +1853,9 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         model.signKey = payloadModel.Sign;
         model.nonceKey = payloadModel.Nonce;
         model.symmetKey = payloadModel.PriKey;
+        
+        
+        
         if (model.msgType != CDMessageTypeText) {
             
             if (payloadModel.Sender == 0) {
@@ -1865,6 +1877,12 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                         model.msg = deMsg;
                     }
                     
+                } else if (model.isEmailRead) {
+                    
+                    NSString *deMsg = [payloadModel.Msg base64DecodedString]?:@"";
+                    if (![deMsg isEmptyString]) {
+                        model.msg = deMsg;
+                    }
                 } else {
                     
                     // 解签名
@@ -1987,13 +2005,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             [SystemUtil removeDocmentFileName:self.selectMessageModel.fileName friendid:self.friendModel.userId];
         }
     }
-    
-    [FIRAnalytics logEventWithName:kFIREventSelectContent
-    parameters:@{
-                 kFIRParameterItemID:FIR_CHAT_DEL,
-                 kFIRParameterItemName:FIR_CHAT_DEL,
-                 kFIRParameterContentType:FIR_CHAT_DEL
-                 }];
 }
 #pragma mark ---收到删除消息通知----
 - (void)receiveDeleteMessage:(NSNotification *)noti {

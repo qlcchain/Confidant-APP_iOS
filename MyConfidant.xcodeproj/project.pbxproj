@@ -628,6 +628,15 @@
 		73AC8F51223F9E64000E60D5 /* GroupListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73AC8F4F223F9E64000E60D5 /* GroupListCell.xib */; };
 		73B0895D23B1F25F0008D368 /* PNUploadListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0895B23B1F25F0008D368 /* PNUploadListViewController.m */; };
 		73B0895E23B1F25F0008D368 /* PNUploadListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B0895C23B1F25F0008D368 /* PNUploadListViewController.xib */; };
+		73B0B0FA246A4D150063D188 /* PNLocalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0B0F9246A4D150063D188 /* PNLocalManager.m */; };
+		73B0B103246D1A030063D188 /* PNNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0B101246D1A020063D188 /* PNNewsViewController.m */; };
+		73B0B104246D1A030063D188 /* PNNewsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B0B102246D1A020063D188 /* PNNewsViewController.xib */; };
+		73B0B107246D1E9D0063D188 /* PNBindQLCAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0B106246D1E9D0063D188 /* PNBindQLCAddressView.m */; };
+		73B0B109246D1EAD0063D188 /* PNBindQLCAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B0B108246D1EAD0063D188 /* PNBindQLCAddressView.xib */; };
+		73B0B10D246D2D0E0063D188 /* PNNewsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0B10B246D2D0D0063D188 /* PNNewsCell.m */; };
+		73B0B10E246D2D0E0063D188 /* PNNewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B0B10C246D2D0E0063D188 /* PNNewsCell.xib */; };
+		73B0B111246D35450063D188 /* PNPushNewsHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0B110246D35450063D188 /* PNPushNewsHeadView.m */; };
+		73B0B113246D35500063D188 /* PNPushNewsHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B0B112246D35500063D188 /* PNPushNewsHeadView.xib */; };
 		73B18D0822E5B017000D52A9 /* PNEmailContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B18D0622E5B017000D52A9 /* PNEmailContactViewController.m */; };
 		73B18D0922E5B017000D52A9 /* PNEmailContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B18D0722E5B017000D52A9 /* PNEmailContactViewController.xib */; };
 		73B6432322E5C6C2003A4EA5 /* EmailContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B6432122E5C6C2003A4EA5 /* EmailContactCell.m */; };
@@ -724,6 +733,22 @@
 		73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CBD2154E5330048866B /* ChooseContactViewController.xib */; };
 		73EE8CC52159CD980048866B /* ChooseContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73EE8CC32159CD980048866B /* ChooseContactCell.m */; };
 		73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73EE8CC42159CD980048866B /* ChooseContactCell.xib */; };
+		73F083D024723891003F9AB9 /* PNRecevieQLCAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F083CF24723891003F9AB9 /* PNRecevieQLCAddressView.m */; };
+		73F083D22472389C003F9AB9 /* PNRecevieQLCAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F083D12472389C003F9AB9 /* PNRecevieQLCAddressView.xib */; };
+		73F083DF24737FD2003F9AB9 /* AgentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F083DE24737FD2003F9AB9 /* AgentModel.m */; };
+		73F083E22473A6EB003F9AB9 /* PNCampaignModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F083E12473A6EB003F9AB9 /* PNCampaignModel.m */; };
+		73F083EB24752314003F9AB9 /* PNFeedbackListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F083E924752314003F9AB9 /* PNFeedbackListViewController.m */; };
+		73F083EC24752314003F9AB9 /* PNFeedbackListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F083EA24752314003F9AB9 /* PNFeedbackListViewController.xib */; };
+		73F083F024752472003F9AB9 /* PNFeedCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F083EE24752472003F9AB9 /* PNFeedCreateViewController.m */; };
+		73F083F124752472003F9AB9 /* PNFeedCreateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F083EF24752472003F9AB9 /* PNFeedCreateViewController.xib */; };
+		73F083F524752494003F9AB9 /* PNFeedbackDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F083F324752494003F9AB9 /* PNFeedbackDetailViewController.m */; };
+		73F083F624752494003F9AB9 /* PNFeedbackDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F083F424752494003F9AB9 /* PNFeedbackDetailViewController.xib */; };
+		73F083FA247524D1003F9AB9 /* PNFeedbackSendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F083F8247524D1003F9AB9 /* PNFeedbackSendViewController.m */; };
+		73F083FB247524D1003F9AB9 /* PNFeedbackSendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F083F9247524D1003F9AB9 /* PNFeedbackSendViewController.xib */; };
+		73F083FF24752503003F9AB9 /* PNFeedbackSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F083FD24752503003F9AB9 /* PNFeedbackSheetViewController.m */; };
+		73F0840024752503003F9AB9 /* PNFeedbackSheetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F083FE24752503003F9AB9 /* PNFeedbackSheetViewController.xib */; };
+		73F0840424752A72003F9AB9 /* PNFeedbackListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F0840224752A72003F9AB9 /* PNFeedbackListCell.m */; };
+		73F0840524752A72003F9AB9 /* PNFeedbackListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F0840324752A72003F9AB9 /* PNFeedbackListCell.xib */; };
 		73F102CF22DF646800E7D257 /* PNEmailTypeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F102CD22DF646800E7D257 /* PNEmailTypeSelectView.m */; };
 		73F102D022DF646800E7D257 /* PNEmailTypeSelectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F102CE22DF646800E7D257 /* PNEmailTypeSelectView.xib */; };
 		73F55A082238D398003155D2 /* InvitationQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F55A062238D398003155D2 /* InvitationQRCodeViewController.m */; };
@@ -1955,6 +1980,20 @@
 		73B0895A23B1F25F0008D368 /* PNUploadListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNUploadListViewController.h; sourceTree = "<group>"; };
 		73B0895B23B1F25F0008D368 /* PNUploadListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNUploadListViewController.m; sourceTree = "<group>"; };
 		73B0895C23B1F25F0008D368 /* PNUploadListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNUploadListViewController.xib; sourceTree = "<group>"; };
+		73B0B0F8246A4D150063D188 /* PNLocalManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNLocalManager.h; sourceTree = "<group>"; };
+		73B0B0F9246A4D150063D188 /* PNLocalManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNLocalManager.m; sourceTree = "<group>"; };
+		73B0B100246D1A020063D188 /* PNNewsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNNewsViewController.h; sourceTree = "<group>"; };
+		73B0B101246D1A020063D188 /* PNNewsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNNewsViewController.m; sourceTree = "<group>"; };
+		73B0B102246D1A020063D188 /* PNNewsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNNewsViewController.xib; sourceTree = "<group>"; };
+		73B0B105246D1E9D0063D188 /* PNBindQLCAddressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNBindQLCAddressView.h; sourceTree = "<group>"; };
+		73B0B106246D1E9D0063D188 /* PNBindQLCAddressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNBindQLCAddressView.m; sourceTree = "<group>"; };
+		73B0B108246D1EAD0063D188 /* PNBindQLCAddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNBindQLCAddressView.xib; sourceTree = "<group>"; };
+		73B0B10A246D2D0D0063D188 /* PNNewsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNNewsCell.h; sourceTree = "<group>"; };
+		73B0B10B246D2D0D0063D188 /* PNNewsCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNNewsCell.m; sourceTree = "<group>"; };
+		73B0B10C246D2D0E0063D188 /* PNNewsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNNewsCell.xib; sourceTree = "<group>"; };
+		73B0B10F246D35450063D188 /* PNPushNewsHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNPushNewsHeadView.h; sourceTree = "<group>"; };
+		73B0B110246D35450063D188 /* PNPushNewsHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNPushNewsHeadView.m; sourceTree = "<group>"; };
+		73B0B112246D35500063D188 /* PNPushNewsHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNPushNewsHeadView.xib; sourceTree = "<group>"; };
 		73B18D0522E5B017000D52A9 /* PNEmailContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailContactViewController.h; sourceTree = "<group>"; };
 		73B18D0622E5B017000D52A9 /* PNEmailContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailContactViewController.m; sourceTree = "<group>"; };
 		73B18D0722E5B017000D52A9 /* PNEmailContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailContactViewController.xib; sourceTree = "<group>"; };
@@ -2109,6 +2148,31 @@
 		73EE8CC22159CD980048866B /* ChooseContactCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseContactCell.h; sourceTree = "<group>"; };
 		73EE8CC32159CD980048866B /* ChooseContactCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseContactCell.m; sourceTree = "<group>"; };
 		73EE8CC42159CD980048866B /* ChooseContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseContactCell.xib; sourceTree = "<group>"; };
+		73F083CE24723891003F9AB9 /* PNRecevieQLCAddressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNRecevieQLCAddressView.h; sourceTree = "<group>"; };
+		73F083CF24723891003F9AB9 /* PNRecevieQLCAddressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNRecevieQLCAddressView.m; sourceTree = "<group>"; };
+		73F083D12472389C003F9AB9 /* PNRecevieQLCAddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNRecevieQLCAddressView.xib; sourceTree = "<group>"; };
+		73F083DD24737FD2003F9AB9 /* AgentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgentModel.h; sourceTree = "<group>"; };
+		73F083DE24737FD2003F9AB9 /* AgentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgentModel.m; sourceTree = "<group>"; };
+		73F083E02473A6EB003F9AB9 /* PNCampaignModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNCampaignModel.h; sourceTree = "<group>"; };
+		73F083E12473A6EB003F9AB9 /* PNCampaignModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNCampaignModel.m; sourceTree = "<group>"; };
+		73F083E824752314003F9AB9 /* PNFeedbackListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackListViewController.h; sourceTree = "<group>"; };
+		73F083E924752314003F9AB9 /* PNFeedbackListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackListViewController.m; sourceTree = "<group>"; };
+		73F083EA24752314003F9AB9 /* PNFeedbackListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedbackListViewController.xib; sourceTree = "<group>"; };
+		73F083ED24752472003F9AB9 /* PNFeedCreateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedCreateViewController.h; sourceTree = "<group>"; };
+		73F083EE24752472003F9AB9 /* PNFeedCreateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedCreateViewController.m; sourceTree = "<group>"; };
+		73F083EF24752472003F9AB9 /* PNFeedCreateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedCreateViewController.xib; sourceTree = "<group>"; };
+		73F083F224752494003F9AB9 /* PNFeedbackDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackDetailViewController.h; sourceTree = "<group>"; };
+		73F083F324752494003F9AB9 /* PNFeedbackDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackDetailViewController.m; sourceTree = "<group>"; };
+		73F083F424752494003F9AB9 /* PNFeedbackDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedbackDetailViewController.xib; sourceTree = "<group>"; };
+		73F083F7247524D1003F9AB9 /* PNFeedbackSendViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackSendViewController.h; sourceTree = "<group>"; };
+		73F083F8247524D1003F9AB9 /* PNFeedbackSendViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackSendViewController.m; sourceTree = "<group>"; };
+		73F083F9247524D1003F9AB9 /* PNFeedbackSendViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedbackSendViewController.xib; sourceTree = "<group>"; };
+		73F083FC24752503003F9AB9 /* PNFeedbackSheetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackSheetViewController.h; sourceTree = "<group>"; };
+		73F083FD24752503003F9AB9 /* PNFeedbackSheetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackSheetViewController.m; sourceTree = "<group>"; };
+		73F083FE24752503003F9AB9 /* PNFeedbackSheetViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedbackSheetViewController.xib; sourceTree = "<group>"; };
+		73F0840124752A72003F9AB9 /* PNFeedbackListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackListCell.h; sourceTree = "<group>"; };
+		73F0840224752A72003F9AB9 /* PNFeedbackListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackListCell.m; sourceTree = "<group>"; };
+		73F0840324752A72003F9AB9 /* PNFeedbackListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedbackListCell.xib; sourceTree = "<group>"; };
 		73F102CC22DF646800E7D257 /* PNEmailTypeSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNEmailTypeSelectView.h; sourceTree = "<group>"; };
 		73F102CD22DF646800E7D257 /* PNEmailTypeSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNEmailTypeSelectView.m; sourceTree = "<group>"; };
 		73F102CE22DF646800E7D257 /* PNEmailTypeSelectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNEmailTypeSelectView.xib; sourceTree = "<group>"; };
@@ -2625,6 +2689,7 @@
 		584A447521460A0100608122 /* My */ = {
 			isa = PBXGroup;
 			children = (
+				73F083E3247521EE003F9AB9 /* Feedback */,
 				7341A87C22FD5282001AF7C2 /* New Group */,
 				7392790D21F721CF003AAD58 /* DisManager */,
 				587C52B3215C6F4A006787FB /* RouterManager */,
@@ -2739,6 +2804,7 @@
 		585AEE11213F6EB20098A070 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				73B0B0FB246D18B90063D188 /* PushNews */,
 				581FDF5921F16D010068C120 /* Administrator */,
 				587C52D3215CBA6D006787FB /* Scan */,
 				73899CB52152011000962B14 /* GuidePage */,
@@ -2824,6 +2890,8 @@
 				73F6B97F22A002760053AAB4 /* EmojModel.m */,
 				730E3BFC2338639F009AF1EE /* PNSysPushModel.h */,
 				730E3BFD2338639F009AF1EE /* PNSysPushModel.m */,
+				73F083DD24737FD2003F9AB9 /* AgentModel.h */,
+				73F083DE24737FD2003F9AB9 /* AgentModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4026,6 +4094,8 @@
 				7368CF1823F6753B00FB0FF0 /* ENMessageUtil.m */,
 				732D3AA524556E3600FC4FBE /* PNMessageSendManage.h */,
 				732D3AA624556E3600FC4FBE /* PNMessageSendManage.m */,
+				73B0B0F8246A4D150063D188 /* PNLocalManager.h */,
+				73B0B0F9246A4D150063D188 /* PNLocalManager.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -4574,6 +4644,62 @@
 			path = PushServiceExtension;
 			sourceTree = "<group>";
 		};
+		73B0B0FB246D18B90063D188 /* PushNews */ = {
+			isa = PBXGroup;
+			children = (
+				73B0B0FF246D19BB0063D188 /* Models */,
+				73B0B0FE246D19B10063D188 /* Views */,
+				73B0B0FD246D19850063D188 /* Cells */,
+				73B0B0FC246D19780063D188 /* VCS */,
+			);
+			path = PushNews;
+			sourceTree = "<group>";
+		};
+		73B0B0FC246D19780063D188 /* VCS */ = {
+			isa = PBXGroup;
+			children = (
+				73B0B100246D1A020063D188 /* PNNewsViewController.h */,
+				73B0B101246D1A020063D188 /* PNNewsViewController.m */,
+				73B0B102246D1A020063D188 /* PNNewsViewController.xib */,
+			);
+			path = VCS;
+			sourceTree = "<group>";
+		};
+		73B0B0FD246D19850063D188 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				73B0B10A246D2D0D0063D188 /* PNNewsCell.h */,
+				73B0B10B246D2D0D0063D188 /* PNNewsCell.m */,
+				73B0B10C246D2D0E0063D188 /* PNNewsCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		73B0B0FE246D19B10063D188 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				73B0B105246D1E9D0063D188 /* PNBindQLCAddressView.h */,
+				73B0B106246D1E9D0063D188 /* PNBindQLCAddressView.m */,
+				73B0B108246D1EAD0063D188 /* PNBindQLCAddressView.xib */,
+				73B0B10F246D35450063D188 /* PNPushNewsHeadView.h */,
+				73B0B110246D35450063D188 /* PNPushNewsHeadView.m */,
+				73B0B112246D35500063D188 /* PNPushNewsHeadView.xib */,
+				73F083CE24723891003F9AB9 /* PNRecevieQLCAddressView.h */,
+				73F083CF24723891003F9AB9 /* PNRecevieQLCAddressView.m */,
+				73F083D12472389C003F9AB9 /* PNRecevieQLCAddressView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		73B0B0FF246D19BB0063D188 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				73F083E02473A6EB003F9AB9 /* PNCampaignModel.h */,
+				73F083E12473A6EB003F9AB9 /* PNCampaignModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		73D00E902159DABF0013E20D /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -4756,6 +4882,63 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		73F083E3247521EE003F9AB9 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				73F083E724752232003F9AB9 /* Models */,
+				73F083E62475222C003F9AB9 /* Views */,
+				73F083E524752224003F9AB9 /* Cells */,
+				73F083E42475221B003F9AB9 /* VCS */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		73F083E42475221B003F9AB9 /* VCS */ = {
+			isa = PBXGroup;
+			children = (
+				73F083E824752314003F9AB9 /* PNFeedbackListViewController.h */,
+				73F083E924752314003F9AB9 /* PNFeedbackListViewController.m */,
+				73F083EA24752314003F9AB9 /* PNFeedbackListViewController.xib */,
+				73F083ED24752472003F9AB9 /* PNFeedCreateViewController.h */,
+				73F083EE24752472003F9AB9 /* PNFeedCreateViewController.m */,
+				73F083EF24752472003F9AB9 /* PNFeedCreateViewController.xib */,
+				73F083F224752494003F9AB9 /* PNFeedbackDetailViewController.h */,
+				73F083F324752494003F9AB9 /* PNFeedbackDetailViewController.m */,
+				73F083F424752494003F9AB9 /* PNFeedbackDetailViewController.xib */,
+				73F083F7247524D1003F9AB9 /* PNFeedbackSendViewController.h */,
+				73F083F8247524D1003F9AB9 /* PNFeedbackSendViewController.m */,
+				73F083F9247524D1003F9AB9 /* PNFeedbackSendViewController.xib */,
+				73F083FC24752503003F9AB9 /* PNFeedbackSheetViewController.h */,
+				73F083FD24752503003F9AB9 /* PNFeedbackSheetViewController.m */,
+				73F083FE24752503003F9AB9 /* PNFeedbackSheetViewController.xib */,
+			);
+			path = VCS;
+			sourceTree = "<group>";
+		};
+		73F083E524752224003F9AB9 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				73F0840124752A72003F9AB9 /* PNFeedbackListCell.h */,
+				73F0840224752A72003F9AB9 /* PNFeedbackListCell.m */,
+				73F0840324752A72003F9AB9 /* PNFeedbackListCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		73F083E62475222C003F9AB9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		73F083E724752232003F9AB9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		73F7C7CC236FF5C600EFD30F /* MLMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -4906,6 +5089,7 @@
 				73ED4B29230A803700AF4B51 /* EmailEncrypedCell.xib in Resources */,
 				586837FF224092B600B8ACB8 /* ChooseRemindMemberViewController.xib in Resources */,
 				73899CC32152011000962B14 /* GuidePageView3.xib in Resources */,
+				73B0B113246D35500063D188 /* PNPushNewsHeadView.xib in Resources */,
 				73ED4B39230FDCFF00AF4B51 /* guidance_notes_6.html in Resources */,
 				581FDF6D21F19FEA0068C120 /* AccountManagementViewController.xib in Resources */,
 				585AEE542140D2280098A070 /* HMScanner.bundle in Resources */,
@@ -4914,6 +5098,7 @@
 				73D00EA4215A24730013E20D /* ChooseCollectionCell.xib in Resources */,
 				7308AB09224B5BBF0003E689 /* UsedSpaceTableViewCell.xib in Resources */,
 				7330F3BF214769DF00FF4EEC /* FriendDetailViewController.xib in Resources */,
+				73F0840024752503003F9AB9 /* PNFeedbackSheetViewController.xib in Resources */,
 				587C52C7215C798E006787FB /* RouterCodeViewController.xib in Resources */,
 				583BF92021F6B5D00078A2A8 /* SharedSettingsViewController.xib in Resources */,
 				580CFE132224DD8E00460B41 /* PNUnlockView.xib in Resources */,
@@ -4975,6 +5160,7 @@
 				7341A87B22FC1603001AF7C2 /* PNSearchViewController.xib in Resources */,
 				7330F526214BF4C000FF4EEC /* SocketAlertView.xib in Resources */,
 				735D7B352368112800564A28 /* EmailPassCell.xib in Resources */,
+				73F083F124752472003F9AB9 /* PNFeedCreateViewController.xib in Resources */,
 				582BFE38221688C200D8C2C8 /* DiskAlertView.xib in Resources */,
 				582BFE3A221688C200D8C2C8 /* DiskToastView.xib in Resources */,
 				583BF93121F6EDB80078A2A8 /* MyFilesCell.xib in Resources */,
@@ -4993,9 +5179,11 @@
 				7309002623C5AC7D0051E2DB /* EnContactCell.xib in Resources */,
 				730AE09A22EED72500E0BC67 /* EmailAttchView.xib in Resources */,
 				7330F3B421475A3E00FF4EEC /* ContactsCell.xib in Resources */,
+				73F083D22472389C003F9AB9 /* PNRecevieQLCAddressView.xib in Resources */,
 				73E773FC22D58F2C001C652E /* EmailFloderCell.xib in Resources */,
 				584A448421460B0800608122 /* NewsViewController.xib in Resources */,
 				735D3FCC237EA5A10099E6C6 /* CircleUserCodeView.xib in Resources */,
+				73B0B10E246D2D0E0063D188 /* PNNewsCell.xib in Resources */,
 				734B793A21A7EAAF0068AA2C /* UserManagerViewController.xib in Resources */,
 				732761A12432FB710085B4AB /* GoogleService-Info.plist in Resources */,
 				7330F3AF21475A0600FF4EEC /* GroupCell.xib in Resources */,
@@ -5027,6 +5215,7 @@
 				73ED4B34230FDCFF00AF4B51 /* guidance_notes_5.html in Resources */,
 				73F55A092238D398003155D2 /* InvitationQRCodeViewController.xib in Resources */,
 				582BFE4D221D26DF00D8C2C8 /* ImportAccountViewController.xib in Resources */,
+				73B0B104246D1A030063D188 /* PNNewsViewController.xib in Resources */,
 				73E3C6E822D2F47000D7C9C6 /* LeftViewController.xib in Resources */,
 				582BFE48221D264200D8C2C8 /* CreateAccountViewController.xib in Resources */,
 				73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */,
@@ -5052,6 +5241,7 @@
 				7330F50E214A74FA00FF4EEC /* AddFriendCellTableViewCell.xib in Resources */,
 				732DCEE2223788A300B2A2CA /* AddGroupMenuViewController.xib in Resources */,
 				73E7742122D8302F001C652E /* EmailTopDetailCell.xib in Resources */,
+				73F083EC24752314003F9AB9 /* PNFeedbackListViewController.xib in Resources */,
 				73F8806921DF874A0047C3DA /* DebugLogViewController.xib in Resources */,
 				584B439F21FEFF1A00D1F21A /* ConfigDiskViewController.xib in Resources */,
 				7351731323FD03270049BD70 /* PNEntryViewController.xib in Resources */,
@@ -5063,6 +5253,7 @@
 				7386CCCF2385188900004E0C /* PNFileViewController.xib in Resources */,
 				738C1BE82366C15100E558DB /* PNSetEmailPassView.xib in Resources */,
 				73E7744722DD63AD001C652E /* PNEmailOptionEnumView.xib in Resources */,
+				73F0840524752A72003F9AB9 /* PNFeedbackListCell.xib in Resources */,
 				588B3F24215F81D0008601E0 /* ViewController.xib in Resources */,
 				73EAC67A23150CD4002C1637 /* guidance_notes_1.html in Resources */,
 				583B2B2F223109A900E6238D /* PNDefaultHeaderView.xib in Resources */,
@@ -5080,6 +5271,8 @@
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
 				73F102D022DF646800E7D257 /* PNEmailTypeSelectView.xib in Resources */,
 				735D7B3A2368113D00564A28 /* EmailPassFromCell.xib in Resources */,
+				73F083F624752494003F9AB9 /* PNFeedbackDetailViewController.xib in Resources */,
+				73B0B109246D1EAD0063D188 /* PNBindQLCAddressView.xib in Resources */,
 				7330F3C421476E9300FF4EEC /* UserInfoCell.xib in Resources */,
 				584B43AF21FFEE0600D1F21A /* ReconfigDiskViewController.xib in Resources */,
 				7330F39F214666E400FF4EEC /* PersonCodeViewController.xib in Resources */,
@@ -5102,6 +5295,7 @@
 				73780F08221EA9A400D2DDCF /* AccountCodeViewController.xib in Resources */,
 				733EE48A22E54F410042457C /* PNEmailSendViewController.xib in Resources */,
 				5825A24021FAC03700E6194B /* ChooseShareContactViewController.xib in Resources */,
+				73F083FB247524D1003F9AB9 /* PNFeedbackSendViewController.xib in Resources */,
 				5868380922409A1400B8ACB8 /* GroupMembersHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5190,10 +5384,12 @@
 				735320E022F7CCA9007B4A70 /* EmailNodeModel.m in Sources */,
 				737882A821ACF05E0033A189 /* SSLSecurity.swift in Sources */,
 				7364318523A788AF007FCF8D /* PNFileUploadModel.m in Sources */,
+				73B0B10D246D2D0E0063D188 /* PNNewsCell.m in Sources */,
 				583BF94421F70FAC0078A2A8 /* TaskOngoingCell.m in Sources */,
 				7393918B22E068280033C203 /* EmailAttchModel.m in Sources */,
 				73121A6C219BB59B00510B48 /* RouterConfig.m in Sources */,
 				73FD63D4235454B00064F881 /* GTLRGmailService.m in Sources */,
+				73B0B0FA246A4D150063D188 /* PNLocalManager.m in Sources */,
 				737883FF21ACF2970033A189 /* OCTCall.m in Sources */,
 				7378840821ACF2970033A189 /* OCTObject.m in Sources */,
 				73B6432722E83CEC003A4EA5 /* PNEmailAttchSelView.m in Sources */,
@@ -5305,6 +5501,7 @@
 				73121A6F219BF4E900510B48 /* NSString+SHA256.m in Sources */,
 				580CFE402227B7FD00460B41 /* PTBBasePerformanceMonitor.m in Sources */,
 				581FDF4C21F024170068C120 /* ping.m in Sources */,
+				73F083D024723891003F9AB9 /* PNRecevieQLCAddressView.m in Sources */,
 				587C52D2215CB6B6006787FB /* SkyRadiusView.m in Sources */,
 				7378840F21ACF2970033A189 /* OCTFileTools.m in Sources */,
 				7330F39321464DCD00FF4EEC /* MyCell.m in Sources */,
@@ -5341,7 +5538,9 @@
 				580CFE472227B7FD00460B41 /* MLeakedObjectProxy.m in Sources */,
 				58245C532215470E009A6DB4 /* GetDiskTotalInfoModel.m in Sources */,
 				581FDF4121F024170068C120 /* mono_time.m in Sources */,
+				73B0B107246D1E9D0063D188 /* PNBindQLCAddressView.m in Sources */,
 				7330F3C321476E9300FF4EEC /* UserInfoCell.m in Sources */,
+				73F083FA247524D1003F9AB9 /* PNFeedbackSendViewController.m in Sources */,
 				7330F3752146118800FF4EEC /* UIImage+BetterFace.m in Sources */,
 				73B18D0822E5B017000D52A9 /* PNEmailContactViewController.m in Sources */,
 				7341A86722F81146001AF7C2 /* sha1.c in Sources */,
@@ -5453,7 +5652,9 @@
 				736257B22142149300D7FD6B /* UIView+Toast.m in Sources */,
 				7378840621ACF2970033A189 /* OCTCall+Utilities.m in Sources */,
 				7378841D21ACF2970033A189 /* OCTSubmanagerChatsImpl.m in Sources */,
+				73B0B111246D35450063D188 /* PNPushNewsHeadView.m in Sources */,
 				7308AB08224B5BBF0003E689 /* UsedSpaceTableViewCell.m in Sources */,
+				73F083FF24752503003F9AB9 /* PNFeedbackSheetViewController.m in Sources */,
 				736257B12142149300D7FD6B /* UIView+Screenshot.m in Sources */,
 				580CFE502227B7FD00460B41 /* NSObject+MemoryLeak.m in Sources */,
 				73741800221E9B8F008EE243 /* SettingViewController.m in Sources */,
@@ -5483,6 +5684,7 @@
 				73F55A10223F78C4003155D2 /* GroupChatViewController.m in Sources */,
 				73E7740022D5C2F1001C652E /* EmailManage.m in Sources */,
 				730E3BFE2338639F009AF1EE /* PNSysPushModel.m in Sources */,
+				73F083EB24752314003F9AB9 /* PNFeedbackListViewController.m in Sources */,
 				732D3A9B24528A7100FC4FBE /* UITableView+WFEmpty.m in Sources */,
 				580CFE482227B7FD00460B41 /* UIView+MemoryLeak.m in Sources */,
 				73869111214CEAA3003CF6A3 /* ChatListDataUtil.m in Sources */,
@@ -5525,6 +5727,7 @@
 				73D00EAF215F13700013E20D /* SocketFileUtil.swift in Sources */,
 				7362E49D23FD5C3800D6BFF8 /* PNRegisterAccountViewController.m in Sources */,
 				7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */,
+				73F0840424752A72003F9AB9 /* PNFeedbackListCell.m in Sources */,
 				7378840121ACF2970033A189 /* OCTNode.m in Sources */,
 				737883F021ACF2970033A189 /* OCTTox.m in Sources */,
 				7330F4E32149147200FF4EEC /* CDLabel.m in Sources */,
@@ -5574,6 +5777,7 @@
 				580CFE422227B7FD00460B41 /* PTBFPSMonitor.m in Sources */,
 				58C62704214BA7170051AFD0 /* MessageListUtil.m in Sources */,
 				584B439421FEEF8C00D1F21A /* DiskDetailViewController.m in Sources */,
+				73F083F024752472003F9AB9 /* PNFeedCreateViewController.m in Sources */,
 				734BE0EF238F997100BAF758 /* PNFileModel.m in Sources */,
 				587C52CC215CAF14006787FB /* RouterManagementCell.m in Sources */,
 				580CFE432227B7FD00460B41 /* PTBPerformanceCenter.m in Sources */,
@@ -5603,6 +5807,7 @@
 				7396A41123571AD800B62605 /* GoogleServerManage.m in Sources */,
 				73056A2B23866BE600486744 /* PNFloderModel.m in Sources */,
 				737883F821ACF2970033A189 /* OCTPixelBufferPool.m in Sources */,
+				73B0B103246D1A030063D188 /* PNNewsViewController.m in Sources */,
 				732DCEE6223796B800B2A2CA /* AddNewMemberViewController.m in Sources */,
 				583B2B4022389F6600E6238D /* NewRequestsGroupChatsCell2.m in Sources */,
 				73E3C6F222D3456300D7C9C6 /* WebViewController.m in Sources */,
@@ -5630,6 +5835,7 @@
 				58326918224B75A50058CDB8 /* LogOutCell.m in Sources */,
 				585AEE5921421DD70098A070 /* SocketMessageUtil.m in Sources */,
 				73060529216F3572005A0E13 /* AFHTTPClientV2.m in Sources */,
+				73F083DF24737FD2003F9AB9 /* AgentModel.m in Sources */,
 				580CFE4D2227B7FD00460B41 /* MLeaksMessenger.m in Sources */,
 				582BFE42221AAA1100D8C2C8 /* DiskManagementMMCCell.m in Sources */,
 				586837FE224092B600B8ACB8 /* ChooseRemindMemberViewController.m in Sources */,
@@ -5676,6 +5882,8 @@
 				73E48CF522E59FC300AB0732 /* UITextViewWithPlaceHolder.m in Sources */,
 				581FDF6721F173AC0068C120 /* ModifyRouterPWViewController.m in Sources */,
 				581FDF5121F024170068C120 /* onion_client.m in Sources */,
+				73F083F524752494003F9AB9 /* PNFeedbackDetailViewController.m in Sources */,
+				73F083E22473A6EB003F9AB9 /* PNCampaignModel.m in Sources */,
 				7353944E2266CF140004CE85 /* CircleMemberDetailViewController.m in Sources */,
 				580CFE3F2227B7FD00460B41 /* PTBMemoryMonitor.m in Sources */,
 				7392791121F72203003AAD58 /* DiskManagerViewController.m in Sources */,
@@ -5878,7 +6086,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 104;
+				CURRENT_PROJECT_VERSION = 106;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5902,10 +6110,9 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
-					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.5.4;
+				MARKETING_VERSION = 0.5.7;
 				MiSDKRun = debug;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5927,7 +6134,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 104;
+				CURRENT_PROJECT_VERSION = 106;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5951,10 +6158,9 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
-					"$(PROJECT_DIR)/PNRouter/Vender/MIPUSH",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.5.4;
+				MARKETING_VERSION = 0.5.7;
 				MiSDKRun = online;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5971,7 +6177,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 104;
+				CURRENT_PROJECT_VERSION = 106;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
@@ -5981,7 +6187,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.5.4;
+				MARKETING_VERSION = 0.5.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
@@ -5997,7 +6203,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 104;
+				CURRENT_PROJECT_VERSION = 106;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
@@ -6007,7 +6213,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.5.4;
+				MARKETING_VERSION = 0.5.7;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";

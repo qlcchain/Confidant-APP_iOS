@@ -269,6 +269,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }
     }
+    
+    // 埋点
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_CHAT_SEND_GROUP_TEXT,
+                 kFIRParameterItemName:FIR_CHAT_SEND_GROUP_TEXT,
+                 kFIRParameterContentType:FIR_CHAT_SEND_GROUP_TEXT
+                 }];
 }
 
 #pragma mark ----添加通知
@@ -1116,13 +1124,6 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         
         self.repMessageModel = nil;
         
-        // 埋点
-        [FIRAnalytics logEventWithName:kFIREventSelectContent
-        parameters:@{
-                     kFIRParameterItemID:FIR_CHAT_SEND_GROUP_TEXT,
-                     kFIRParameterItemName:FIR_CHAT_SEND_GROUP_TEXT,
-                     kFIRParameterContentType:FIR_CHAT_SEND_GROUP_TEXT
-                     }];
         // 日志
         _logId = [SendRequestUtil sendLogRequestWtihAction:GROUPSENDMSG logid:0 type:0 result:0 info:@"send_group_msg"];
     }
@@ -2540,29 +2541,11 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
             }
         }
     }
-    
-    
-    [FIRAnalytics logEventWithName:kFIREventSelectContent
-    parameters:@{
-                 kFIRParameterItemID:FIR_CHAT_SEND_GROUP_FILE,
-                 kFIRParameterItemName:FIR_CHAT_SEND_GROUP_FILE,
-                 kFIRParameterContentType:FIR_CHAT_SEND_GROUP_FILE
-                 }];
 }
-
-
-
-
-
-
-
-
-
 
 
 - (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageIndexChanged:(NSUInteger)index data:(id<YBImageBrowserCellDataProtocol>)data
 {
-    NSLog(@"------------------------------------");
     YBImageBrowserSheetView *sheetView = imageBrowser.sheetView;
     NSMutableArray *mutArr = [self.actionArr mutableCopy];
     YBImageBrowseCellData *data1 = (YBImageBrowseCellData *)data;

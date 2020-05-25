@@ -174,6 +174,22 @@
     return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
 }
 
++ (NSString *) getCampaignFilePath
+{
+   NSFileManager *manage = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    NSString *filePath = [NSString stringWithFormat:@"%@/campaign/%@/campaign",@"Documents",[UserConfig getShareObject].userId];
+    NSString *docPath = [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    BOOL isexit = [manage fileExistsAtPath:docPath isDirectory:&isDir];
+    if (!isexit || !isDir) {
+        if (isexit && !isDir) {
+            [SystemUtil removeDocmentFilePath:docPath];
+        }
+       [manage createDirectoryAtPath:[NSHomeDirectory() stringByAppendingPathComponent:filePath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+}
+
 + (NSString *) getBaseFileTimePathWithToid:(NSString *) toId
 {
     NSFileManager *manage = [NSFileManager defaultManager];
@@ -736,5 +752,13 @@
         result = window.rootViewController;
     }
     return result;
+}
+
+/**
+ @method 获取指定宽度情况ixa，字符串value的高度
+ */
++ (float) heightForString:(NSString *)value font:(UIFont *)font andWidth:(float)width
+{
+    return  [value boundingRectWithSize:CGSizeMake(width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName :font} context:nil].size.height;
 }
 @end

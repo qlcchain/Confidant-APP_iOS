@@ -36,7 +36,6 @@
 #import "EmailListCell.h"
 #import "EmailManage.h"
 #import "FloderModel.h"
-
 #import "NSDate+Category.h"
 #import "PNDefaultHeaderView.h"
 #import "EmailListInfo.h"
@@ -81,7 +80,10 @@
 
 #import "UIScrollView+EmptyDataSet.h"
 #import "PNSendSelectViewController.h"
-
+#import "PNMessageSendManage.h"
+#import "PNNewsViewController.h"
+#import "AFHTTPClientV2.h"
+#import "PNNewsViewController.h"
 
 @interface NewsViewController ()<UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate,UITextFieldDelegate,YJSideMenuDelegate,UIScrollViewDelegate,UISearchControllerDelegate,UISearchBarDelegate,GIDSignInUIDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate> {
     BOOL isSearch;
@@ -108,6 +110,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *emailTabView;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblSubTitle;
+@property (weak, nonatomic) IBOutlet UIButton *emailBtn;
+@property (weak, nonatomic) IBOutlet UIButton *messageBtn;
+@property (weak, nonatomic) IBOutlet UIView *hdView;
 
 @property (nonatomic ,assign) int page;
 @property (nonatomic ,assign) int pageCount;
@@ -125,6 +130,12 @@
 @property (nonatomic, assign) BOOL isSend;
 @property (nonatomic, assign) BOOL isFriendSend;
 @property (nonatomic, strong) NSString *codeResultValue;
+
+// 是否显示活动
+@property (nonatomic, assign) BOOL isCampaign;
+@property (nonatomic, assign) NSInteger unReadCampaignCount;
+@property (nonatomic, strong) NSString *lastCampaignSubject;
+
 @end
 
 @implementation NewsViewController
@@ -141,6 +152,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     
     AppD.sideMenuViewController.panGestureEnabled = YES;
+    [self sendCampaignTimeRequest];
     [super viewWillAppear:animated];
 }
 - (void)viewWillDisappear:(BOOL)animated
@@ -240,21 +252,18 @@
         sender.selected = YES;
         CGFloat lineLeft = SCREEN_WIDTH/2;
         CGFloat scrollW = SCREEN_WIDTH;
-        if (sender.tag == 10) {
-            lineLeft = 0;
-            scrollW = 0;
+        if (sender.tag == 20) {
             AppD.isEmailPage = NO;
         } else {
+            lineLeft = 0;
+            scrollW = 0;
             AppD.isEmailPage = YES;
              EmailAccountModel *accountModel = [EmailAccountModel getConnectEmailAccount];
             
             // 如果是google 邮箱 sgin in
             if (accountModel && accountModel.userId && accountModel.userId.length > 0) {
                 if (!AppD.isGoogleSign) {
-                    [self.view showHudInView:self.view hint:@""];
-                    NSArray *currentScopes = @[@"https://mail.google.com/"];
-                    [GIDSignIn sharedInstance].scopes = currentScopes;
-                    [[GIDSignIn sharedInstance] signIn];
+                    [self googleSignIn];
                 } else {
                     if (self.emailDataArray.count == 0){
                         [self firstPullEmailList];
@@ -315,10 +324,7 @@
         
         if (!AppD.isGoogleSign) {
             
-            [self.view showHudInView:self.view hint:@""];
-            NSArray *currentScopes = @[@"https://mail.google.com/"];
-            [GIDSignIn sharedInstance].scopes = currentScopes;
-            [[GIDSignIn sharedInstance] signIn];
+            [self googleSignIn];
             
         } else {
             
@@ -363,17 +369,15 @@
 }
 
 - (void)viewDidLoad {
-    
+   
     [super viewDidLoad];
     
-
     [GIDSignIn sharedInstance].uiDelegate = self;
-    
     _page = 1;
     _pageCount = 20;
     
     AppD.sideMenuViewController.delegate = self;
-    AppD.isEmailPage = NO;
+    AppD.isEmailPage = YES;
     
     [UploadFileManager getShareObject];
     [FileDownUtil getShareObject];
@@ -382,14 +386,20 @@
     _mianScrollerView.delegate = self;
     _mianScrollerView.bounces = NO;
     
+    _hdView.layer.cornerRadius = 3.5f;
+    _hdView.backgroundColor = TABBAR_RED_COLOR;
+    _hdView.hidden = YES;
+    
     self.view.backgroundColor = MAIN_GRAY_COLOR;
     _menuBackView.backgroundColor = MAIN_GRAY_COLOR;
     _topBackView.backgroundColor = MAIN_GRAY_COLOR;
     
     self.selectBtn = [_menuBackView viewWithTag:10];
-    self.selectBtn.selected = YES;
+    //self.selectBtn.selected = YES;
     
-    [self updateTopTitle];
+    [self clickMenuAction:_selectBtn];
+    // 查询聊天最后一条记录，更新红点
+    [self updateData];
     
     _searchBackView.layer.cornerRadius = 3.0f;
     _searchBackView.layer.masksToBounds = YES;
@@ -442,12 +452,16 @@
     }
     
     NSLog(@"userid = %@",[UserModel getUserModel].userId);
-    [self cricleChangeChangeNoti];
+    [self uploadEmailConfigNode];
     [self addNoti];
     
     
     if (AppD.fileUrl) {
         [self performSelector:@selector(jumpSelectContactsVC) withObject:self afterDelay:0.5];
+    }
+    
+    if (AppD.campaignDic) {
+        [self performSelector:@selector(jumpNewActivitesVC) withObject:self afterDelay:0.5];
     }
 
 }
@@ -495,6 +509,12 @@
     AppD.fileUrl = nil;
     [self presentModalVC:vc animated:YES];
 }
+- (void) jumpNewActivitesVC
+{
+    PNNewsViewController *vc = [[PNNewsViewController alloc] init];
+    AppD.campaignDic = nil;
+    [self presentModalVC:vc animated:YES];
+}
 
 /**
  查询最后一条消息
@@ -512,8 +532,33 @@
     }
     [self.dataArray  addObjectsFromArray:tempArr];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CHATS_HD_NOTI object:self.dataArray];
+    [self checkUnReadMessage];
     [_tableV reloadData];
+}
+
+- (void) checkUnReadMessage
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        __block BOOL isShow = NO;
+        
+        @weakify_self
+        if (weakSelf.unReadCampaignCount > 0) {
+            isShow = YES;
+            weakSelf.hdView.hidden = !isShow;
+        } else {
+            [weakSelf.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                ChatListModel *model = (ChatListModel *)obj;
+                if (model.isHD) {
+                    isShow = YES;
+                    *stop = YES;
+                }
+            }];
+            weakSelf.hdView.hidden = !isShow;
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CHATS_HD_NOTI object:@(isShow)];
+    });
 }
 
 /**
@@ -575,9 +620,19 @@
 }
 
 #pragma mark - tableviewDataSourceDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (tableView == _tableV) {
+        return 2;
+    }
+    return 1;
+}
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (tableView == _tableV) {
+        if (section == 0) {
+            return _isCampaign;
+        }
         return isSearch?self.searchDataArray.count : self.dataArray.count;
     } else {
         return self.emailDataArray.count;
@@ -595,11 +650,18 @@
     
     if (tableView == _tableV) {
         NewsCell *cell = [tableView dequeueReusableCellWithIdentifier:NewsCellResue];
-        ChatListModel *model = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
-        [cell setModeWithChatListModel:model];
-        [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
-        cell.delegate = self;
-        cell.tag = indexPath.row;
+        if (indexPath.section == 0) {
+            [cell setSubjectWith:self.lastCampaignSubject unReadCount:self.unReadCampaignCount];
+            [cell setRightUtilityButtons:nil];
+            cell.delegate = nil;
+            cell.tag = indexPath.row;
+        } else {
+            ChatListModel *model = isSearch? self.searchDataArray[indexPath.row] : self.dataArray[indexPath.row];
+            [cell setModeWithChatListModel:model];
+            [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:65.f];
+            cell.delegate = self;
+            cell.tag = indexPath.row;
+        }
         return cell;
     } else {
         EmailListCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailListCellResue];
@@ -701,6 +763,13 @@
             
             listInfo.currentRow = indexPath.row;
             cell.lblTtile.text = listInfo.fromName?:@"";
+            if ([_floderModel.name isEqualToString:Sent] || [_floderModel.name isEqualToString:Drafts]) {
+                if (listInfo.toUserArray && listInfo.toUserArray.count > 0) {
+                    EmailUserModel *userModel = listInfo.toUserArray[0];
+                    userModel.userName = [userModel.userName stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+                    cell.lblTtile.text = userModel.userName?:@"";
+                }
+            }
             cell.lblSubTitle.text = listInfo.Subject?:@"";
             cell.lblTime.text = [listInfo.revDate minuteDescription];
             UIImage *defaultImg = [PNDefaultHeaderView getImageWithUserkey:@"" Name:[StringUtil getUserNameFirstWithName:cell.lblTtile.text]];
@@ -1114,13 +1183,17 @@
 {
     if (tableView == _tableV) {
         if (!tableView.isEditing) {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            [self jumpChatDetailOrEmailDetailWithObject:self.dataArray[indexPath.row] row:indexPath.row];
+             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            if (indexPath.section == 0) {
+                PNNewsViewController *vc = [[PNNewsViewController alloc] init];
+                [self presentModalVC:vc animated:YES];
+            } else {
+                 [self jumpChatDetailOrEmailDetailWithObject:self.dataArray[indexPath.row] row:indexPath.row];
+            }
         }
     } else {
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
         [self jumpChatDetailOrEmailDetailWithObject:self.emailDataArray[indexPath.row] row:indexPath.row];
         
     }
@@ -1129,14 +1202,15 @@
 
 - (void) jumpChatDetailOrEmailDetailWithObject:(id) object row:(NSInteger) row
 {
+    
     if ([object isKindOfClass:[ChatListModel class]]) {
         ChatListModel *chatModel = object;
         if (chatModel.isHD) {
             chatModel.isHD = NO;
             chatModel.unReadNum = @(0);
             [chatModel bg_saveOrUpdate];
-            [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-            [[NSNotificationCenter defaultCenter] postNotificationName:TABBAR_CHATS_HD_NOTI object:nil];
+            [_tableV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+            [self checkUnReadMessage];
         }
         if (chatModel.isGroup) {
             GroupInfoModel *model = [[GroupInfoModel alloc] init];
@@ -1180,7 +1254,14 @@
                 [EmailOptionUtil setEmailReaded:YES uid:model.uid messageId:@"" folderPath:model.floderPath complete:^(BOOL success) {
                     
                 }];
+                // 发送已读回执
+                if ([self.floderModel.name isEqualToString:Inbox]) {
+                    [self getFriendModeWithUserid:model.friendId withEmailTitle:model.Subject];
+                }
             }
+            
+            
+            
         }
     } else if ([object isKindOfClass:[GoogleMessageModel class]]) {
         
@@ -1204,6 +1285,10 @@
                 [_emailTabView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                 // 设为已读
                 [self sendGoogleLableRequestWithMessageModel:model];
+                 // 发送已读回执
+                if ([self.floderModel.name isEqualToString:Inbox]) {
+                    [self getFriendModeWithUserid:model.friendId withEmailTitle:model.Subject];
+                }
             }
         }
         
@@ -1211,6 +1296,19 @@
     
 }
 
+// 发送给好友已读回执
+- (void) getFriendModeWithUserid:(NSString *) userId withEmailTitle:(NSString *) emailTitle
+{
+    if (userId && userId.length > 0) {
+        if (![userId isEqualToString:[UserConfig getShareObject].userId]) {
+           FriendModel *fModel = [[ChatListDataUtil getShareObject] getFriendWithUserid:userId];
+            if (fModel) {
+                NSString *messageContent = [NSString stringWithFormat:@"I have read the email. \n《%@》",emailTitle?:@""];
+                [PNMessageSendManage sendMessageWithContacts:@[fModel] messageStr:messageContent];
+            }
+        }
+    }
+}
 
 #pragma mark - SWTableViewDelegate
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
@@ -1257,7 +1355,7 @@
                         [[ChatListDataUtil getShareObject] removeChatModelWithFriendID:chatModel.friendID?:@""];
                     }
                     
-                     [weakSelf.tableV deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cell.tag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                     [weakSelf.tableV deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cell.tag inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
                     
                 }completion:^(BOOL finished){
                     [weakSelf.tableV reloadData];
@@ -1402,6 +1500,15 @@
     };
     [menuView showMenuEnterAnimation:MLEnterAnimationStyleRight];
 }
+#pragma mark --- 上传邮箱配置到节点
+- (void) uploadEmailConfigNode
+{
+    NSArray *emails = [EmailAccountModel getLocalAllEmailAccounts];
+    [emails enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        EmailAccountModel *accountM = obj;
+        [SendRequestUtil sendEmailConfigWithEmailAddress:[accountM.User lowercaseString] type:@(accountM.Type) caller:@(0) configJson:@"" ShowHud:NO];
+    }];
+}
 
 #pragma mark - 消息发生改变通知
 - (void) chatMessageChangeNoti:(NSNotification *) noti
@@ -1415,12 +1522,7 @@
     if (!AppD.isEmailPage) {
         _lblSubTitle.text = [RouterModel getConnectRouter].name;
     }
-    // 上传邮箱配置到节点
-    NSArray *emails = [EmailAccountModel getLocalAllEmailAccounts];
-    [emails enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        EmailAccountModel *accountM = obj;
-        [SendRequestUtil sendEmailConfigWithEmailAddress:[accountM.User lowercaseString] type:@(accountM.Type) caller:@(0) configJson:@"" ShowHud:NO];
-    }];
+    [self uploadEmailConfigNode];
 }
 - (void) addOwnerToChatNoti:(NSNotification *) noti
 {
@@ -1816,14 +1918,14 @@
                 _isRefresh = NO;
                 [self.emailTabView.mj_header endRefreshing];
             }
-            [self.view showHudInView:self.view hint:@""];
-            NSArray *currentScopes = @[@"https://mail.google.com/"];
-            [GIDSignIn sharedInstance].scopes = currentScopes;
-            [[GIDSignIn sharedInstance] signIn];
+            [self googleSignIn];
             
         } else {
             
             BOOL isShow = [self.nextPageToken isEmptyString] && !_isRefresh;
+            if (isShow) {
+                [self.emailTabView.mj_header endRefreshing];
+            }
             [self sendGoogleRequestWithShow:isShow];
             
         }
@@ -1867,6 +1969,7 @@
     } else {
         if (_page == 1) {
             self.emailTabView.mj_footer.hidden = YES;
+            [self.emailTabView.mj_header endRefreshing];
         }
         
         if (self.emailDataArray.count > 0 && _page == 1) {
@@ -2460,7 +2563,7 @@
     GTLRGmailQuery_UsersMessagesList *messageList =  [GTLRGmailQuery_UsersMessagesList queryWithUserId:accountModel.userId num:num nextPage:nextToken labelIds:labelId];
     if (isShowHud) {
         [self.view hideHud];
-        [self.view showHudInView:self.view hint:@""];
+        [self.view showHudInView:self.view hint:Loading_Str userInteractionEnabled:YES hideTime:15];
     }
      
     @weakify_self
@@ -3009,10 +3112,7 @@
     }
     if (!AppD.isGoogleSign && accountM.userId.length > 0) {
         self.isSend = YES;
-        [self.view showHudInView:self.view hint:@""];
-        NSArray *currentScopes = @[@"https://mail.google.com/"];
-        [GIDSignIn sharedInstance].scopes = currentScopes;
-        [[GIDSignIn sharedInstance] signIn];
+        [self googleSignIn];
     } else {
         PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:nil sendType:NewEmail];
         [self presentModalVC:vc animated:YES];
@@ -3028,15 +3128,29 @@
     }
     if (!AppD.isGoogleSign && accountM.userId.length > 0) {
         self.isFriendSend = YES;
-        [self.view showHudInView:self.view hint:@""];
-        NSArray *currentScopes = @[@"https://mail.google.com/"];
-        [GIDSignIn sharedInstance].scopes = currentScopes;
-        [[GIDSignIn sharedInstance] signIn];
+        [self googleSignIn];
     } else {
         PNEmailSendViewController *vc = [[PNEmailSendViewController alloc] initWithEmailListInfo:nil sendType:FriendEmail];
         [self presentModalVC:vc animated:YES];
     }
 }
+
+- (void) googleSignIn
+{
+    [self.view showHudInView:self.view hint:@"" userInteractionEnabled:YES hideTime:6];
+    [self performSelector:@selector(googleSignOut) withObject:self afterDelay:6];
+    NSArray *currentScopes = @[@"https://mail.google.com/"];
+    [GIDSignIn sharedInstance].scopes = currentScopes;
+    [[GIDSignIn sharedInstance] signIn];
+}
+- (void) googleSignOut
+{
+    if (!AppD.isGoogleSign) {
+        [[GIDSignIn sharedInstance] disconnect];
+    }
+     
+}
+
 - (void) jumpAddMembers
 {
     NSString *rid = [RouterConfig getRouterConfig].currentRouterToxid;
@@ -3167,6 +3281,85 @@
     [self presentModalVC:vc animated:YES];
 }
 
+#pragma mark--------发送活动时间请求方法
+- (void) sendCampaignTimeRequest
+{
+     NSDictionary *parames = @{@"dictType":@"app_dict"};
+     @weakify_self
+     [AFHTTPClientV2 requestConfidantWithBaseURLStr:Campaign_Time_Url params:parames httpMethod:HttpMethodPost userInfo:nil successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+         
+         [weakSelf getCampaignTimIsNowWithDic:responseObject];
+         
+     } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+         
+     }];
+}
+- (void) getCampaignTimIsNowWithDic:(NSDictionary *) responseObject
+{
+    NSInteger currentMills = [responseObject[@"currentTimeMillis"] integerValue];
+    NSString *startTimeStr = responseObject[@"data"][@"toPromoteStartDate"]?:@"";
+    NSString *endTimeStr = responseObject[@"data"][@"toProMoteEndDate"]?:@"";
+    NSLog(@"start = %@,end = %@",startTimeStr,endTimeStr);
+    if (startTimeStr.length > 0 && endTimeStr.length > 0) {
+       NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+       [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+       NSDate *startDate = [dateFormatter dateFromString:startTimeStr];
+       NSDate *endDate = [dateFormatter dateFromString:endTimeStr];
+        
+       NSInteger startMills = [NSDate getMillisecondTimestampFromDate:startDate];
+       NSInteger endMills = [NSDate getMillisecondTimestampFromDate:endDate];
+        
+        if (currentMills >= startMills && currentMills <= endMills) {
+            [self sendCampaignListRequest];
+        } else {
+             [self updateCampaignIsShow:NO];
+        }
+        
+    } else {
+         [self updateCampaignIsShow:NO];
+    }
+    //[_tableV reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+  
+}
+
+#pragma mark--------发送活动列表请求方法
+- (void) sendCampaignListRequest
+{
+     NSDictionary *parames = @{@"orType":@"",@"page":@"0",@"size":@"50"};
+     @weakify_self
+     [AFHTTPClientV2 requestConfidantWithBaseURLStr:Campaign_List_Url params:parames httpMethod:HttpMethodPost userInfo:nil successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+         NSArray *resultArray = responseObject[@"messageList"]?:@[];
+         if (resultArray.count > 0) {
+             
+             NSDictionary *topDic = resultArray[0];
+             weakSelf.lastCampaignSubject = topDic[@"title"]?:@"";
+             
+             NSString *readIds = [HWUserdefault getObjectWithKey:Campaing_ids_key]?:@"";
+             weakSelf.unReadCampaignCount = 0;
+             [resultArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                 NSString *campaignId = obj[@"id"];
+                 if (![readIds containsString:campaignId]) {
+                     weakSelf.unReadCampaignCount++;
+                 }
+             }];
+             AppD.campaignUnReadCount = weakSelf.unReadCampaignCount;
+             [weakSelf checkUnReadMessage];
+            [weakSelf updateCampaignIsShow:YES];
+         } else {
+              [weakSelf updateCampaignIsShow:NO];
+         }
+         
+     } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+         [weakSelf updateCampaignIsShow:NO];
+     }];
+}
+
+- (void) updateCampaignIsShow:(BOOL) isShow
+{
+    self.isCampaign = isShow;
+    [self.tableV reloadData];
+}
+
 #pragma mark - Transition
 - (void)addFriendRequest:(NSString *)friendId nickName:(NSString *) nickName signpk:(NSString *) signpk toxid:(NSString *) toxid type:(NSString *) type{
     
@@ -3293,6 +3486,9 @@
 
 - (BOOL)emptyDataSetShouldDisplay:(UIScrollView *)scrollView
 {
+    if (scrollView == _tableV && _isCampaign) {
+        return NO;
+    }
     return YES;
 }
 

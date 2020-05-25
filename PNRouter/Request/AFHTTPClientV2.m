@@ -12,6 +12,7 @@
 #import "NSString+UrlEncode.h"
 #import "NSString+Base64.h"
 #import "MyConfidant-Swift.h"
+#import "AgentModel.h"
 
 @interface AFHTTPClientV2 ()
 
@@ -43,6 +44,30 @@
 }
 
 + (AFHTTPSessionManager *)getHTTPManager {
+    
+    if (![AFHTTPClientV2 shareInstance].httpManager) {
+            [AFHTTPClientV2 shareInstance].httpManager = [AFHTTPSessionManager manager];
+            [AFHTTPClientV2 shareInstance].httpManager.requestSerializer = [AFHTTPRequestSerializer serializer];//[AFHTTPRequestSerializer serializer];
+            [AFHTTPClientV2 shareInstance].httpManager.responseSerializer = [AFHTTPResponseSerializer serializer];//[AFHTTPResponseSerializer serializer];
+            [AFHTTPClientV2 shareInstance].httpManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", @"text/xml", @"text/plain", nil];
+            [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setTimeoutInterval:TimeOut_Request];
+            //    manager.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithArray:@[@"POST", @"GET", @"HEAD"]];
+            //    [manager.requestSerializer setQueryStringSerializationWithStyle:AFHTTPRequestQueryStringDefaultStyle];
+            //    manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];//不设置会报-1016或者会有编码问题
+            
+            //    [manager.requestSerializer setValue:@"iOS" forHTTPHeaderField:@"platform"];
+            //    [manager.requestSerializer setValue: @"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+            [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    //        [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue:@"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0" forHTTPHeaderField:@"User-Agent"];
+            
+            NSString *userAgent = [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer  valueForHTTPHeaderField:@"User-Agent"];
+            userAgent = [AFHTTPClientV2 getAgent:userAgent].mj_JSONString;
+            [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+        }
+        
+        return [AFHTTPClientV2 shareInstance].httpManager;
+    
+    /*
     if (![AFHTTPClientV2 shareInstance].httpManager) {
         [AFHTTPClientV2 shareInstance].httpManager = [AFHTTPSessionManager manager];
         [AFHTTPClientV2 shareInstance].httpManager.requestSerializer = [AFHTTPRequestSerializer serializer];//[AFHTTPRequestSerializer serializer];
@@ -69,6 +94,7 @@
     }
     
     return [AFHTTPClientV2 shareInstance].httpManager;
+     */
 }
 
 + (AFHTTPSessionManager *)getRouterIpHTTPManager {
@@ -100,7 +126,51 @@
     
     return [AFHTTPClientV2 shareInstance].httpManager;
 }
++ (AFHTTPSessionManager *) getJSONManager {
+    if (![AFHTTPClientV2 shareInstance].jsonManager) {
+        [AFHTTPClientV2 shareInstance].jsonManager = [AFHTTPSessionManager manager];
+        
+        [AFHTTPClientV2 shareInstance].jsonManager.requestSerializer = [AFJSONRequestSerializer serializer];//[AFHTTPRequestSerializer serializer];
+        [AFHTTPClientV2 shareInstance].jsonManager.responseSerializer = [AFJSONResponseSerializer serializer];//[AFHTTPResponseSerializer serializer];
+    //    manager.requestSerializer.stringEncoding = NSUTF8StringEncoding;
+        [[AFHTTPClientV2 shareInstance].jsonManager.requestSerializer setTimeoutInterval:TimeOut_Request];
+//        [[AFHTTPClientV2 shareInstance].httpManager.requestSerializer setValue:@"ios"forHTTPHeaderField:@"User-Agent"];
+    //    [manager.requestSerializer setValue:@"iOS" forHTTPHeaderField:@"platform"];
+//        [[AFHTTPClientV2 shareInstance].jsonManager.requestSerializer setValue: @"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+        [[AFHTTPClientV2 shareInstance].jsonManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [AFHTTPClientV2 shareInstance].jsonManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", @"text/xml", @"text/plain", nil];
+    
+    /**** SSL Pinning ****/
+//    if ([[RequestHelper getInstance].prefix_Url containsString:@"https"]) { //
+//        [manager setSecurityPolicy:[self customSecurityPolicy]];
+//    }
+    
+//    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy defaultPolicy];
+//    //是否允许CA不信任的证书通过
+//    [securityPolicy setAllowInvalidCertificates:YES];
+//    //是否验证主机名
+//    securityPolicy.validatesDomainName = NO;
+//    /**** SSL Pinning ****/
+//    [manager setSecurityPolicy:securityPolicy];
+        
+        NSString *userAgent = [[AFHTTPClientV2 shareInstance].jsonManager.requestSerializer  valueForHTTPHeaderField:@"User-Agent"];
+        userAgent = [AFHTTPClientV2 getAgent:userAgent].mj_JSONString;
+        [[AFHTTPClientV2 shareInstance].jsonManager.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+    }
+    return [AFHTTPClientV2 shareInstance].jsonManager;
+}
 
++ (AgentModel *)getAgent:(NSString *)userAgent {
+    AgentModel *model = [AgentModel new];
+    model.agent = userAgent;
+    model.uuid = @"";
+    model.platform = @"iOS";
+    model.appVersion = APP_Version;
+    model.appBuild = APP_Build;
+    return model;
+}
+
+/*
 + (AFHTTPSessionManager *) getJSONManager {
     if (![AFHTTPClientV2 shareInstance].jsonManager) {
         [AFHTTPClientV2 shareInstance].jsonManager = [AFHTTPSessionManager manager];
@@ -114,22 +184,23 @@
         [[AFHTTPClientV2 shareInstance].jsonManager.requestSerializer setValue: @"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     //    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
-    /**** SSL Pinning ****/
+ //   /**** SSL Pinning ****/
 //    if ([[RequestHelper getInstance].prefix_Url containsString:@"https"]) { //
 //        [manager setSecurityPolicy:[self customSecurityPolicy]];
 //    }
-    
+    /*
     AFSecurityPolicy *securityPolicy = [AFSecurityPolicy defaultPolicy];
     //是否允许CA不信任的证书通过
     [securityPolicy setAllowInvalidCertificates:YES];
     //是否验证主机名
     securityPolicy.validatesDomainName = NO;
     /**** SSL Pinning ****/
+/*
     [[AFHTTPClientV2 shareInstance].jsonManager setSecurityPolicy:securityPolicy];
     }
     return [AFHTTPClientV2 shareInstance].jsonManager;
 }
-
+*/
 + (AFSecurityPolicy*)customSecurityPolicy {
     // /先导入证书
     NSString *cerPath = [[NSBundle mainBundle] pathForResource:@"Autotoll-Gps" ofType:@"cer"];//证书的路径
@@ -277,6 +348,72 @@
                 }
             }];
         //}
+    }else if (httpMethod == HttpMethodDelete){
+        
+        dataTask = [[self getHTTPManager] DELETE:URLString  parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            id result = [self printJSONLogWithMethod:URLString Response:responseObject Error:nil];
+            
+            if (successReqBlock) {
+                successReqBlock(dataTask, result);
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            [self printJSONLogWithMethod:URLString Response:nil Error:error];
+            
+            if (failedReqBlock) {
+                failedReqBlock(dataTask, error);
+            }
+        }];
+    }
+
+    return dataTask;
+}
+
++ (NSURLSessionDataTask *)requestConfidantWithBaseURLStr:(NSString *)URLString
+                                   params:(id)params
+                               httpMethod:(HttpMethod)httpMethod
+                                 userInfo:(NSDictionary*)userInfo
+                             successBlock:(HTTPRequestV2SuccessBlock)successReqBlock
+                              failedBlock:(HTTPRequestV2FailedBlock)failedReqBlock
+{
+    NSURLSessionDataTask *dataTask;
+    NSMutableDictionary *jsonParam = [NSMutableDictionary dictionary];
+    [jsonParam setObject:params forKey:@"params"];
+
+    if (httpMethod == HttpMethodGet) {
+        
+         DDLogDebug(@"url = %@ param = %@",URLString,params);
+        
+        dataTask = [[self getRouterIpHTTPManager] GET:URLString  parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            id result = [self printHTTPLogWithMethod:URLString Response:responseObject Error:nil];
+            if (successReqBlock) {
+                successReqBlock(dataTask, result);
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            [self printHTTPLogWithMethod:URLString Response:nil Error:error];
+            
+            if (failedReqBlock) {
+                failedReqBlock(dataTask, error);
+            }
+        }];
+        
+    }else if (httpMethod == HttpMethodPost){
+        DDLogDebug(@"url = %@ param = %@",URLString,jsonParam);
+            
+            dataTask = [[self getJSONManager] POST:URLString parameters:jsonParam progress:^(NSProgress * _Nonnull uploadProgress) {
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+               id result = [self printJSONLogWithMethod:URLString Response:responseObject Error:nil];
+                if (successReqBlock) {
+                    successReqBlock(dataTask, result);
+                }
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+              //  [self printHTTPLogWithMethod:URLString Response:nil Error:error];
+
+                if (failedReqBlock) {
+                    failedReqBlock(dataTask, error);
+                }
+            }];
+        
     }else if (httpMethod == HttpMethodDelete){
         
         dataTask = [[self getHTTPManager] DELETE:URLString  parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

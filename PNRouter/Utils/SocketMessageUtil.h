@@ -103,6 +103,11 @@ static NSString *Action_FileAction = @"FileAction";
 // 加密通讯录
 static NSString *Action_BakAddrBookInfo = @"BakAddrBookInfo";
 
+// 推广活动
+static NSString *Action_BakWalletAccount = @"SetWalletAccount";
+static NSString *Action_GetWalletAccount = @"GetWalletAccount";
+//static NSString *Action_GetMyPushsList = @"GetMyPushsList";
+//static NSString *Action_SetMyPushRead = @"SetMyPushRead";
 
 @class FriendModel;
 

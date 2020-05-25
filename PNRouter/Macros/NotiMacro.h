@@ -259,6 +259,11 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 #define Pull_BookInfo_Success_Noti @"Pull_BookInfo_Success_Noti"
 #define Update_Loacl_Contact_Count_Noti @"Update_Loacl_Contact_Count_Noti"
 
+#pragma mark----------推广活动
+#define BakWalletAccount_Noti @"BakWalletAccount_Noti"
+#define GetWalletAccount_Noti @"GetWalletAccount_Noti"
+//#define SetMyPushRead_Noti    @"SetMyPushRead_Noti"
+//#define GetMyPushsList_Noti   @"GetMyPushsList_Noti"
 
 // 删除文件成功通知
 #define Delete_File_Noti @"Delete_File_Noti"

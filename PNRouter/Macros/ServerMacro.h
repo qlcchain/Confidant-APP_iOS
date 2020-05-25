@@ -16,8 +16,13 @@
 // google api
 #define Google_Get_Message_List @"https://www.googleapis.com/gmail/v1/users/%@/messages"
 
-#define PUSH_DEBUG_URL @"http://47.96.76.184:9000/v1/pareg/"
-#define PUSH_ONLINE_URL @"https://pprouter.online:9001/v1/pareg/"
+
+#if DEBUG
+static NSString *PUSH_URL = @"https://47.244.138.61:9001/v1/pareg/appPushInfoReg/";
+#else
+static NSString *PUSH_URL = @"https://pprouter.online:9001/v1/pareg/appPushInfoReg/";
+#endif
+
 static NSString *QLC_TEST_URL = @"http://47.103.54.171:29735";
 
 #if DEBUG
@@ -25,6 +30,10 @@ static NSString *LOG_TEST_URL = @"https://47.244.138.61:9001/v1/pprmap/ulogstr";
 #else
 static NSString *LOG_TEST_URL = @"https://pprouter.online:9001/v1/pprmap/ulogstr";
 #endif
+
+// 活动推广
+static NSString *Campaign_List_Url = @"http://confidantop.qlink.mobi/capi/msg/list.json";
+static NSString *Campaign_Time_Url =  @"http://confidantop.qlink.mobi/capi/sys/dict.json";
 
 
 

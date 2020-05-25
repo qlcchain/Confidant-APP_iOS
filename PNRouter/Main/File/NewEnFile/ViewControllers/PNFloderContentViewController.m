@@ -838,7 +838,6 @@ UIImagePickerControllerDelegate,UITextFieldDelegate>
 
 
 #pragma mark - 创建悬浮的按钮
-
 - (void)createButton{
 
     _addBtn = [UIButton buttonWithType:UIButtonTypeCustom];

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PNPushNewsHeadView">
+            <rect key="frame" x="0.0" y="0.0" width="386" height="185"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_push" translatesAutoresizingMaskIntoConstraints="NO" id="cvx-FH-l4a">
+                    <rect key="frame" x="48" y="0.0" width="290" height="185"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="cvx-FH-l4a" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ddZ-tM-b6H"/>
+                <constraint firstItem="cvx-FH-l4a" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="kYP-aF-9bi"/>
+                <constraint firstAttribute="bottom" secondItem="cvx-FH-l4a" secondAttribute="bottom" id="o1x-AW-xQW"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="headImgView" destination="cvx-FH-l4a" id="FHt-wT-vfy"/>
+            </connections>
+            <point key="canvasLocation" x="96" y="-119.1904047976012"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="background_push" width="290" height="185"/>
+    </resources>
+</document>

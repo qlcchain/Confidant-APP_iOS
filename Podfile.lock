@@ -179,7 +179,6 @@ DEPENDENCIES:
   - OpenSSL (from `https://github.com/isee15/OpenSSL.git`)
   - PromiseKit
   - Realm (= 3.1.0)
-  - Result
   - SDWebImage/GIF
   - SWTableViewCell
   - TPCircularBuffer (~> 0.0.1)
@@ -289,6 +288,6 @@ SPEC CHECKSUMS:
   YBImageBrowser: b378a73a92ec4dcdebf2b7c18903cb62479b9cfa
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
 
-PODFILE CHECKSUM: 086cbb3bf69274bd9adbd4f7d768977da0235a56
+PODFILE CHECKSUM: 4fc08ff473f478d543c01f902b16c7a625295126
 
 COCOAPODS: 1.5.3

@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewsViewController">
             <connections>
-                <outlet property="emailTabView" destination="jMO-L5-t0l" id="V6v-CS-RVJ"/>
+                <outlet property="emailBtn" destination="Oci-B6-Jh2" id="sZ7-DS-fGc"/>
+                <outlet property="emailTabView" destination="xu8-ax-pyl" id="kff-jR-UBO"/>
+                <outlet property="hdView" destination="IeZ-m4-yyo" id="xuk-g5-bGS"/>
                 <outlet property="lblSubTitle" destination="W1W-j5-znJ" id="UU6-bn-kp5"/>
                 <outlet property="lblTitle" destination="jew-dq-W2G" id="VeN-9l-pbT"/>
                 <outlet property="lineContrintLeft" destination="25G-rJ-z4X" id="lzd-mc-nnR"/>
                 <outlet property="lineView" destination="QH0-fi-iRg" id="An3-VB-Idb"/>
                 <outlet property="menuBackView" destination="LVx-QV-Cnd" id="aYc-Ol-m8p"/>
+                <outlet property="messageBtn" destination="u98-25-VOM" id="0RR-wB-Itt"/>
                 <outlet property="mianScrollerView" destination="vne-pk-OzS" id="4Di-Zq-b3M"/>
                 <outlet property="scrollContraintW" destination="6XR-17-18A" id="opa-qL-vfa"/>
-                <outlet property="tableV" destination="xu8-ax-pyl" id="d7b-9a-ANP"/>
+                <outlet property="tableV" destination="jMO-L5-t0l" id="BbA-CS-PJZ"/>
                 <outlet property="topBackView" destination="pvw-3y-TpM" id="fDa-cB-Bpp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -31,7 +32,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pvw-3y-TpM">
-                    <rect key="frame" x="0.0" y="20" width="750" height="44"/>
+                    <rect key="frame" x="0.0" y="0.0" width="750" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nz8-xU-gDh">
                             <rect key="frame" x="707" y="0.0" width="38" height="44"/>
@@ -93,16 +94,16 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LVx-QV-Cnd">
-                    <rect key="frame" x="0.0" y="64" width="750" height="54"/>
+                    <rect key="frame" x="0.0" y="44" width="750" height="54"/>
                     <subviews>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oci-B6-Jh2">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <state key="normal" title="  Message" image="tabbar_circle_unselected">
+                            <state key="normal" title=" Email" image="tabbar_email_unselected">
                                 <color key="titleColor" red="0.58039215686274503" green="0.58823529411764708" blue="0.63137254901960782" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
-                            <state key="selected" image="tabbar_circle_selected">
+                            <state key="selected" image="tabbar_email_selected">
                                 <color key="titleColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -113,10 +114,10 @@
                             <rect key="frame" x="375" y="0.0" width="375" height="54"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <state key="normal" title="  Email" image="tabbar_email_unselected">
+                            <state key="normal" title=" Message" image="tabbar_circle_unselected">
                                 <color key="titleColor" red="0.58039215686274503" green="0.58823529411764708" blue="0.63137254901960782" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
-                            <state key="selected" image="tabbar_email_selected">
+                            <state key="selected" image="tabbar_circle_selected">
                                 <color key="titleColor" red="0.1176470588" green="0.1176470588" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -137,6 +138,24 @@
                                 <constraint firstAttribute="height" constant="1.5" id="jjX-N1-dk9"/>
                             </constraints>
                         </view>
+                        <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TSL-0K-lXG">
+                            <rect key="frame" x="375.5" y="0.0" width="374.5" height="54"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IeZ-m4-yyo">
+                                    <rect key="frame" x="238" y="15.5" width="7" height="7"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="7" id="6au-RC-Dva"/>
+                                        <constraint firstAttribute="height" constant="7" id="VFp-G7-KM1"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="IeZ-m4-yyo" firstAttribute="centerX" secondItem="TSL-0K-lXG" secondAttribute="centerX" constant="54" id="dRL-x2-U97"/>
+                                <constraint firstItem="IeZ-m4-yyo" firstAttribute="centerY" secondItem="TSL-0K-lXG" secondAttribute="centerY" constant="-8" id="iBU-jA-u2H"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -147,28 +166,32 @@
                         <constraint firstAttribute="trailing" secondItem="u98-25-VOM" secondAttribute="trailing" id="D1G-dN-EcD"/>
                         <constraint firstItem="u98-25-VOM" firstAttribute="width" secondItem="Oci-B6-Jh2" secondAttribute="width" id="Kf1-h1-EHr"/>
                         <constraint firstItem="8JR-iO-WRX" firstAttribute="centerX" secondItem="LVx-QV-Cnd" secondAttribute="centerX" id="Mi1-vj-8xh"/>
+                        <constraint firstAttribute="bottom" secondItem="TSL-0K-lXG" secondAttribute="bottom" id="MpU-ai-zGW"/>
+                        <constraint firstItem="TSL-0K-lXG" firstAttribute="leading" secondItem="8JR-iO-WRX" secondAttribute="trailing" id="NPf-Xa-pyR"/>
                         <constraint firstItem="u98-25-VOM" firstAttribute="top" secondItem="LVx-QV-Cnd" secondAttribute="top" id="O7F-Fx-6MH"/>
                         <constraint firstItem="QH0-fi-iRg" firstAttribute="width" secondItem="Oci-B6-Jh2" secondAttribute="width" id="QPK-Yt-nnS"/>
                         <constraint firstAttribute="bottom" secondItem="QH0-fi-iRg" secondAttribute="bottom" id="QUY-97-cld"/>
+                        <constraint firstAttribute="trailing" secondItem="TSL-0K-lXG" secondAttribute="trailing" id="WMy-1x-X3X"/>
                         <constraint firstAttribute="height" constant="54" id="XBn-BS-whr"/>
                         <constraint firstAttribute="bottom" secondItem="Oci-B6-Jh2" secondAttribute="bottom" id="YoE-bt-7Xc"/>
                         <constraint firstItem="Oci-B6-Jh2" firstAttribute="top" secondItem="LVx-QV-Cnd" secondAttribute="top" id="bie-F1-rR0"/>
                         <constraint firstItem="Oci-B6-Jh2" firstAttribute="leading" secondItem="LVx-QV-Cnd" secondAttribute="leading" id="n75-f7-pKP"/>
+                        <constraint firstItem="TSL-0K-lXG" firstAttribute="top" secondItem="LVx-QV-Cnd" secondAttribute="top" id="qgK-qv-WoB"/>
                         <constraint firstItem="8JR-iO-WRX" firstAttribute="top" secondItem="LVx-QV-Cnd" secondAttribute="top" constant="17" id="z1u-hT-Z3j"/>
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vne-pk-OzS">
-                    <rect key="frame" x="0.0" y="118" width="750" height="549"/>
+                    <rect key="frame" x="0.0" y="98" width="750" height="569"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uhx-v9-lpy">
-                            <rect key="frame" x="0.0" y="0.0" width="750" height="549"/>
+                            <rect key="frame" x="0.0" y="0.0" width="750" height="569"/>
                             <subviews>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xu8-ax-pyl">
-                                    <rect key="frame" x="0.0" y="1" width="375" height="548"/>
+                                    <rect key="frame" x="0.0" y="1" width="375" height="568"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </tableView>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jMO-L5-t0l">
-                                    <rect key="frame" x="375" y="1" width="375" height="548"/>
+                                    <rect key="frame" x="375" y="1" width="375" height="568"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </tableView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hv2-ak-8zJ">
@@ -223,7 +246,7 @@
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-531.20000000000005" y="-1242.7286356821589"/>
+            <point key="canvasLocation" x="-720" y="-1617.8410794602701"/>
         </view>
     </objects>
     <resources>

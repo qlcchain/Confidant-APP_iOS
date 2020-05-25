@@ -20,6 +20,7 @@
 #import "SystemUtil.h"
 #import "AESCipher.h"
 #import "MyConfidant-Swift.h"
+#import "SocketMessageUtil.h"
 
 @implementation PNMessageSendManage
 
@@ -237,4 +238,16 @@
                  }];
 }
 
++(void) sendMessageWithContacts:(NSArray *) contactArray messageStr:(NSString *) messageStr
+{
+
+    FriendModel *friendModel = contactArray[0];
+    NSDictionary *params = @{@"Action":@"SendMsg",@"To":friendModel.userId?:@"",@"From":[UserConfig getShareObject].userId?:@"",@"Msg":[messageStr base64EncodedString]?:@"",@"Sign":@"",@"Nonce":@"",@"PriKey":@"",@"AssocId":@(0),@"MsgType":@(0x11)};
+    
+    long tempMsgid = (long)[ChatListDataUtil getShareObject].tempMsgId++;
+    tempMsgid = [NSDate getTimestampFromDate:[NSDate date]]+tempMsgid;
+    NSString *messageId = [NSString stringWithFormat:@"%ld",(long)tempMsgid];
+    
+    [SocketMessageUtil sendChatTextWithParams:params withSendMsgId:messageId];
+}
 @end

@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PNMessageSendManage : NSObject
 
 +(void) sendMessageWithContacts:(NSMutableArray *) contactArray fileUrl:(NSURL *) fileURL;
++(void) sendMessageWithContacts:(NSArray *) contactArray messageStr:(NSString *) messageStr;
 
 @end
 

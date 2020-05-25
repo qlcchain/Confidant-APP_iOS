@@ -76,6 +76,7 @@
 @synthesize isAdmin;
 @synthesize AssocId;
 @synthesize repModel;
+@synthesize isEmailRead;
 
 -(instancetype)init:(NSDictionary *)dic{
     self = [super init];

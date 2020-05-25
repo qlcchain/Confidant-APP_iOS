@@ -63,7 +63,7 @@
     [super viewDidLoad];
 
    // self.automaticallyAdjustsScrollViewInsets = NO;
-   // self.view.backgroundColor = MAIN_WHITE_COLOR;
+    self.view.backgroundColor = MAIN_GRAY_COLOR;
     self.navigationController.navigationBarHidden = !showRightNavBarItem;
     // 设置右边按钮
     if (showRightNavBarItem) {

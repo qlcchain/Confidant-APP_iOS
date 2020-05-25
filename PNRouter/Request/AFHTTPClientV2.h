@@ -74,5 +74,11 @@ typedef void (^HTTPRequestV2FailedBlock)(NSURLSessionDataTask *dataTask, NSError
                  progressBlock:(void(^)(CGFloat progress)) progressBlock
                        success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
                        failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
++ (NSURLSessionDataTask *)requestConfidantWithBaseURLStr:(NSString *)URLString
+      params:(id)params
+  httpMethod:(HttpMethod)httpMethod
+    userInfo:(NSDictionary*)userInfo
+successBlock:(HTTPRequestV2SuccessBlock)successReqBlock
+                                             failedBlock:(HTTPRequestV2FailedBlock)failedReqBlock;
 
 @end

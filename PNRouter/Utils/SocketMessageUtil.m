@@ -615,8 +615,12 @@
     } else if ([action isEqualToString:Action_FilesListPull]) { // 拉取文件夹文件
          [SocketMessageUtil handleFilesListPull:receiveDic];
     } else if ([action isEqualToString:Action_BakAddrBookInfo]) { // 拉取文件夹文件
-            [SocketMessageUtil handleBakAddrBookInfo:receiveDic];
-    }
+        [SocketMessageUtil handleBakAddrBookInfo:receiveDic];
+    } else if ([action isEqualToString:Action_BakWalletAccount]) { // 绑定钱包
+        [SocketMessageUtil handleBakWalletAccount:receiveDic];
+    } else if ([action isEqualToString:Action_GetWalletAccount]) { // 得到绑定钱包
+        [SocketMessageUtil handleGetWalletAccount:receiveDic];
+    } 
 }
 
 #pragma mark -APP新用户预注册
@@ -1070,14 +1074,14 @@
     NSString *Msg = receiveDic[@"params"][@"Msg"];
     NSString *FromId = receiveDic[@"params"][@"From"];
     NSString *ToId = receiveDic[@"params"][@"To"];
-    NSString *PriKey = receiveDic[@"params"][@"PriKey"];
+    NSString *PriKey = receiveDic[@"params"][@"PriKey"]?:@"";
     NSString *Nonce = receiveDic[@"params"][@"Nonce"];
     NSString *sendMsgID = [NSString stringWithFormat:@"%@",receiveDic[@"msgid"]];
     NSString *NodeName = receiveDic[@"params"][@"NodeName"]?:@"";
     if (NodeName.length > 0) {
         NodeName = [NodeName base64DecodedString];
     }
-    if (retCode == 0) { // 0：消息发送成功
+    if (retCode == 0 && PriKey.length>0) { // 0：消息发送成功
         // 添加到chatlist
         ChatListModel *chatListModel = [[ChatListModel alloc] init];
         chatListModel.myID = [UserModel getUserModel].userSn;
@@ -1116,6 +1120,7 @@
     NSString *nonceKey = receiveDic[@"params"][@"Nonce"];
     NSString *symmetkey = receiveDic[@"params"][@"PriKey"];
     NSString *NodeName = receiveDic[@"params"][@"NodeName"]?:@"";
+    NSInteger msgType = [receiveDic[@"params"][@"MsgType"] integerValue];
     if (NodeName.length > 0) {
         NodeName = [NodeName base64DecodedString];
     }
@@ -1138,6 +1143,7 @@
     model.signKey = signKey?:@"";
     model.nonceKey = nonceKey;
     model.symmetKey = symmetkey;
+    model.msgType = [receiveDic[@"MsgType"] integerValue];
     
     // 判断是否是 新用户注册欢迎消息
     if ([signKey hasPrefix:@"======"]) {
@@ -1147,6 +1153,11 @@
             model.msg = deMsg;
         }
         
+    } else if (msgType == CDMessageTypeEmailRead) {
+        NSString *deMsg = [Msg base64DecodedString];
+        if (![deMsg isEmptyString]) {
+            model.msg = deMsg;
+        }
     } else {
         
         NSString *signPublickey = [[ChatListDataUtil getShareObject] getFriendSignPublickeyWithFriendid:FromId];
@@ -1164,7 +1175,6 @@
         if (![deMsg isEmptyString]) {
             model.msg = deMsg;
         }
-        
     }
    
     // 添加到chatlist
@@ -2335,6 +2345,50 @@
         [AppD.window showHint:Failed];
     }
 }
+
+#pragma mark---------------推广活动
++ (void)handleBakWalletAccount:(NSDictionary *) receiveDic
+{
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:BakWalletAccount_Noti object:receiveDic[@"params"]];
+    } else {
+        [AppD.window showHint:Failed];
+    }
+}
++ (void)handleGetWalletAccount:(NSDictionary *) receiveDic
+{
+    [AppD.window hideHud];
+    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+    if (retCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GetWalletAccount_Noti object:receiveDic[@"params"]];
+    } else {
+        [AppD.window showHint:Failed];
+    }
+}
+//+ (void)handleGetMyPushsList:(NSDictionary *) receiveDic
+//{
+//    [AppD.window hideHud];
+//    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+//    if (retCode == 0) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:GetMyPushsList_Noti object:receiveDic[@"params"]];
+//    } else {
+//        [AppD.window showHint:Failed];
+//    }
+//}
+//+ (void)handleSetMyPushRead:(NSDictionary *) receiveDic
+//{
+//    [AppD.window hideHud];
+//    NSInteger retCode = [receiveDic[@"params"][@"RetCode"] integerValue];
+//    if (retCode == 0) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:SetMyPushRead_Noti object:receiveDic[@"params"]];
+//    } else {
+//        [AppD.window showHint:Failed];
+//    }
+//}
+
+
 
 #pragma mark - Base
 + (NSDictionary *)getBaseParams {

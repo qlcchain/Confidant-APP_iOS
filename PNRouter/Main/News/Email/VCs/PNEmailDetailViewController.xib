@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -38,7 +36,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bcJ-VT-LR9">
-                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bfh-nC-HXV">
                             <rect key="frame" x="5" y="0.0" width="64" height="44"/>
@@ -131,7 +129,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HEb-cn-O3x">
-                    <rect key="frame" x="0.0" y="64" width="375" height="521"/>
+                    <rect key="frame" x="0.0" y="44" width="375" height="541"/>
                     <subviews>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ERP-u4-Sv2">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
@@ -140,12 +138,12 @@
                             </constraints>
                         </progressView>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Ti-d0-Znk">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="521"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="541"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RYk-xA-N4X">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="328"/>
                                     <subviews>
-                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bcl-LL-J7l">
+                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bcl-LL-J7l">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -156,7 +154,7 @@
                                             <rect key="frame" x="0.0" y="100" width="375" height="128"/>
                                             <subviews>
                                                 <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NDs-wq-Goe">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
+                                                    <rect key="frame" x="5" y="0.0" width="365" height="128"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="128" id="FqZ-Cw-5Ya"/>
@@ -165,10 +163,10 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="NDs-wq-Goe" secondAttribute="trailing" id="KyQ-uA-EzE"/>
+                                                <constraint firstAttribute="trailing" secondItem="NDs-wq-Goe" secondAttribute="trailing" constant="5" id="KyQ-uA-EzE"/>
                                                 <constraint firstItem="NDs-wq-Goe" firstAttribute="top" secondItem="k7G-19-CnK" secondAttribute="top" id="MfH-f4-zNW"/>
                                                 <constraint firstAttribute="bottom" secondItem="NDs-wq-Goe" secondAttribute="bottom" id="x7R-yO-RkR"/>
-                                                <constraint firstItem="NDs-wq-Goe" firstAttribute="leading" secondItem="k7G-19-CnK" secondAttribute="leading" id="yzZ-HN-Wye"/>
+                                                <constraint firstItem="NDs-wq-Goe" firstAttribute="leading" secondItem="k7G-19-CnK" secondAttribute="leading" constant="5" id="yzZ-HN-Wye"/>
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K49-lK-kID">
