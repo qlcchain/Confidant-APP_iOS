@@ -574,7 +574,7 @@
     if (self.msgModal.isLeft && !self.msgModal.isGroup) {
         friendid = self.msgModal.FromId;
     }
-   NSString *jFileName = [[self.msgModal.fileName componentsSeparatedByString:@"."] firstObject];
+    NSString *jFileName = [[self.msgModal.fileName?:@"" componentsSeparatedByString:@"."] firstObject]?:@"";
     
     NSString *amrPath =[[SystemUtil getBaseFilePath:friendid] stringByAppendingPathComponent:self.msgModal.fileName];
     

@@ -191,9 +191,14 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
 //    FriendDetailViewController *vc = [[FriendDetailViewController alloc] init];
 //    vc.friendModel = _friendModel;
 //    [self.navigationController pushViewController:vc animated:YES];
+   #if DEBUG
     DebugLogViewController *vc = [[DebugLogViewController alloc] init];
     vc.inputType = DebugLogTypeSystem;
     [self.navigationController pushViewController:vc animated:YES];
+    #else
+    
+    #endif
+    
 }
 
 - (IBAction)leftAction:(id)sender {
@@ -525,7 +530,7 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
                                         NSString *macAdress = @"";
                                         for (int i = 0; i<12; i+=2) {
                                             NSString *macIndex = [codeVlaue substringWithRange:NSMakeRange(i, 2)];
-                                            macAdress = [macAdress stringByAppendingString:macIndex];
+                                            macAdress = [macAdress stringByAppendingString:macIndex?:@""];
                                             if (i < 10) {
                                                 macAdress = [macAdress stringByAppendingString:@":"];
                                             }

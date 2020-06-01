@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PNFeedbackSheetViewController : PNBaseViewController
-
+- (instancetype) initWithSheetType:(NSInteger) sheetType dataArray:(NSMutableArray *) array selectStr:(NSString *) selStr;
 @end
 
 NS_ASSUME_NONNULL_END

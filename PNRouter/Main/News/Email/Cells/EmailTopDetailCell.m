@@ -28,7 +28,7 @@
 }
 - (IBAction)clickHiddenBtn:(UIButton *)sender {
     if (_hiddenBlock) {
-        _hiddenBlock();
+        _hiddenBlock(sender.tag);
     }
 }
 
@@ -37,6 +37,12 @@
     _lblFromName.text = model.Subject;
     _lblFromAlisa.text = model.fromName;
     _lblMonthTime.text =  [model.revDate minuteDescription];
+    
+    if (model.attachCount == 0) {
+        _attBtn.hidden = YES;
+    } else {
+        _attBtn.hidden = NO;
+    }
     
     // 获取read 二进制的第三位，1为加星  0 为没有
    

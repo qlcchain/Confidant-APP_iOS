@@ -265,6 +265,11 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 //#define SetMyPushRead_Noti    @"SetMyPushRead_Noti"
 //#define GetMyPushsList_Noti   @"GetMyPushsList_Noti"
 
+#pragma mark----------意见返馈
+#define Feedback_Type_Select_Noti @"Feedback_Type_Select_Noti"
+
+
+
 // 删除文件成功通知
 #define Delete_File_Noti @"Delete_File_Noti"
 // 文件上传进度通知

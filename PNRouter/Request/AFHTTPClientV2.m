@@ -381,7 +381,7 @@
 
     if (httpMethod == HttpMethodGet) {
         
-         DDLogDebug(@"url = %@ param = %@",URLString,params);
+         DDLogDebug(@"url = %@ param = %@",URLString,jsonParam);
         
         dataTask = [[self getRouterIpHTTPManager] GET:URLString  parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -503,6 +503,42 @@
     }];
     [downloadTask resume];
     return downloadTask;
+}
+
++ (NSURLSessionDataTask *)requestWithConfidantCSURLStr:(NSString *)URLString
+                               parameters:(id)parameters
+                                 userInfo:(NSDictionary*)userInfo
+                constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
+                                  success:(void (^)(NSURLSessionDataTask *dataTask, id responseObject))success
+                                  failure:(void (^)(NSURLSessionDataTask *dataTask, NSError *error))failure
+{
+    NSURLSessionDataTask *dataTask;
+    
+   // NSMutableDictionary *jsonParam = [NSMutableDictionary dictionary];
+   // [jsonParam setObject:parameters forKey:@"params"];
+
+    DDLogDebug(@"url = %@ param = %@",URLString,parameters);
+    
+        
+    dataTask = [[self getHTTPManager] POST:URLString
+                                            parameters:(id)parameters
+                                constructingBodyWithBlock:block
+                    progress:^(NSProgress * _Nonnull uploadProgress) {
+                       }
+                    success:^(NSURLSessionDataTask *task, id responseObject) {
+                            id result = [self printHTTPLogWithMethod:URLString Response:responseObject Error:nil];
+                                    if (success) {
+                                        success(dataTask, result);
+                                    }
+                    }
+                    failure:^(NSURLSessionDataTask *task, NSError *error) {
+                        [self printHTTPLogWithMethod:URLString Response:nil Error:nil];
+                            if (failure) {
+                                failure(dataTask, error);
+                            }
+                    }];
+        
+        return dataTask;
 }
 
 + (NSURLSessionDataTask *)requestWithBaseURLStr:(NSString *)URLString

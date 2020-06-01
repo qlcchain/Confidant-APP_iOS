@@ -10,6 +10,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PNFeedbackSheetViewController">
             <connections>
+                <outlet property="lblTitle" destination="9Tt-QT-CCP" id="F9Q-si-wzo"/>
+                <outlet property="mainTabV" destination="xpw-li-fAb" id="x9J-EM-9aq"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -17,9 +19,67 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dDb-dB-8jO">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lm7-H6-yWz">
+                            <rect key="frame" x="3" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="Hxa-5y-eon"/>
+                                <constraint firstAttribute="height" constant="44" id="ODl-A1-RwJ"/>
+                            </constraints>
+                            <state key="normal" image="arrow-exit-h"/>
+                            <connections>
+                                <action selector="clickBackAction:" destination="-1" eventType="touchUpInside" id="3a9-O5-xxg"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Tt-QT-CCP">
+                            <rect key="frame" x="127.5" y="11.5" width="120.5" height="21"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                            <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xbp-r7-awn">
+                            <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.58039215690000001" green="0.58823529409999997" blue="0.63137254899999995" alpha="0.21599422090000001" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="POe-qT-RNF"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Xbp-r7-awn" firstAttribute="leading" secondItem="dDb-dB-8jO" secondAttribute="leading" id="26x-F4-lyi"/>
+                        <constraint firstItem="Lm7-H6-yWz" firstAttribute="centerY" secondItem="dDb-dB-8jO" secondAttribute="centerY" id="4Ie-Dv-87n"/>
+                        <constraint firstItem="9Tt-QT-CCP" firstAttribute="centerY" secondItem="dDb-dB-8jO" secondAttribute="centerY" id="E2N-7J-yQK"/>
+                        <constraint firstItem="9Tt-QT-CCP" firstAttribute="centerX" secondItem="dDb-dB-8jO" secondAttribute="centerX" id="RMS-sG-wJK"/>
+                        <constraint firstAttribute="bottom" secondItem="Xbp-r7-awn" secondAttribute="bottom" id="WJ9-Ga-4yD"/>
+                        <constraint firstAttribute="height" constant="44" id="XA0-c2-EJl"/>
+                        <constraint firstItem="Lm7-H6-yWz" firstAttribute="leading" secondItem="dDb-dB-8jO" secondAttribute="leading" constant="3" id="XAU-Jp-9W7"/>
+                        <constraint firstAttribute="trailing" secondItem="Xbp-r7-awn" secondAttribute="trailing" id="foD-7f-D1W"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xpw-li-fAb">
+                    <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+            </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="dDb-dB-8jO" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="42T-fr-UN6"/>
+                <constraint firstItem="xpw-li-fAb" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="DR7-Ce-0IR"/>
+                <constraint firstAttribute="trailing" secondItem="dDb-dB-8jO" secondAttribute="trailing" id="LYv-WR-uye"/>
+                <constraint firstItem="dDb-dB-8jO" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="n3T-ya-FEK"/>
+                <constraint firstItem="xpw-li-fAb" firstAttribute="top" secondItem="dDb-dB-8jO" secondAttribute="bottom" id="pos-QZ-yOe"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="xpw-li-fAb" secondAttribute="bottom" id="t2Z-6f-pWX"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="xpw-li-fAb" secondAttribute="trailing" id="xkj-SR-nk9"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="132" y="92"/>
         </view>
     </objects>
+    <resources>
+        <image name="arrow-exit-h" width="24" height="24"/>
+    </resources>
 </document>

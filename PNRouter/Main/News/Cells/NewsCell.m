@@ -168,7 +168,7 @@
         NSString *friendName = model.friendName;
         NSString *joinStr = @" - ";
         NSString *routerName = model.routerName?:@"";
-        NSString *str = [[friendName stringByAppendingString:joinStr] stringByAppendingString:routerName];
+        NSString *str = [[friendName stringByAppendingString:joinStr?:@""] stringByAppendingString:routerName?:@""];
         if (routerName.length <= 0) {
             str = friendName;
         }

@@ -20,7 +20,7 @@ def common_pods
 end
 
 def demo_pods
-
+    
     pod 'IQKeyboardManager'
     pod 'MJExtension'
     pod 'MBProgressHUD'

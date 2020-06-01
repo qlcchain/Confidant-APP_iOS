@@ -192,11 +192,11 @@
     NSLog(@"------------%@",regid);
     if (regid && ![regid isEmptyString]) {
         
-        NSString *localRegid = [KeychainUtil getKeyValueWithKeyName:[NSString stringWithFormat:@"regs%@",[UserConfig getShareObject].userId]]?:@"";
-        
-        if ([regid isEqualToString:localRegid]) {
-            return;
-        }
+//        NSString *localRegid = [KeychainUtil getKeyValueWithKeyName:[RouterConfig getRouterConfig].currentRouterToxid?:@""]?:@"";
+//
+//        if ([regid isEqualToString:localRegid]) {
+//            return;
+//        }
         
         [[TZLocationManager manager] startLocationWithSuccessBlock:^(NSArray<CLLocation *> *locations) {
             
@@ -239,7 +239,7 @@
         int retCode = [responseObject[@"Ret"] intValue];
         if (retCode == 0) {
             NSLog(@"注册推送成功!");
-            [KeychainUtil saveValueToKeyWithKeyName:[NSString stringWithFormat:@"regs%@",[UserConfig getShareObject].userId] keyValue:regid];
+          //  [KeychainUtil saveValueToKeyWithKeyName:[RouterConfig getRouterConfig].currentRouterToxid?:@"" keyValue:regid];
         } else {
             NSLog(@"注册推送失败!");
         }

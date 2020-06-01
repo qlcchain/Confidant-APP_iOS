@@ -10,6 +10,8 @@
 #import <MJRefresh.h>
 #import "PNFeedbackListCell.h"
 #import "UIScrollView+EmptyDataSet.h"
+#import "PNFeedCreateViewController.h"
+#import "PNFeedbackDetailViewController.h"
 
 @interface PNFeedbackListViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *mainTab;
@@ -29,6 +31,10 @@
 
 - (IBAction)clickBackAction:(id)sender {
     [self leftNavBarItemPressedWithPop:YES];
+}
+- (IBAction)clickAddAction:(id)sender {
+    PNFeedCreateViewController *vc = [[PNFeedCreateViewController alloc] init];
+    [self presentModalVC:vc animated:YES];
 }
 
 - (void)viewDidLoad {
@@ -51,7 +57,7 @@
 /// 拉取意见反馈列表
 - (void) pullFeedbackList
 {
-    
+    [_mainTab.mj_header endRefreshing];
 }
 
 
@@ -60,7 +66,7 @@
 
 - (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
 {
-    NSString *text = @"当前您还没有提交意见反馈。真诚的邀请您提交意见反馈，以便给您跟好的体验.";
+    NSString *text = @"No feedback yet.";
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:16.0],
                                  NSForegroundColorAttributeName:RGB(150, 150, 150)};
     
@@ -74,7 +80,7 @@
 #pragma mark ---------tableview 代理方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataArray.count;
+    return 5;//self.dataArray.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -88,6 +94,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    PNFeedbackDetailViewController *vc = [[PNFeedbackDetailViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

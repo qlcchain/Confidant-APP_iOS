@@ -13,10 +13,11 @@ static NSString *EmailTopDetailCellResue = @"EmailTopDetailCell";
 #define EmailTopDetailCellDefaultHeight 128
 
 
-typedef void(^ClickHiddenBlock)(void);
+typedef void(^ClickHiddenBlock)(NSInteger tag);
 @class EmailListInfo;
 @interface EmailTopDetailCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIButton *attBtn;
 @property (weak, nonatomic) IBOutlet UILabel *lblFromName;
 @property (weak, nonatomic) IBOutlet UIImageView *lableImgView;
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;

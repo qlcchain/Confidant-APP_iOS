@@ -68,43 +68,18 @@
 {
     [_mainTabView reloadData];
 }
+
 - (void) getContactsPermissions
 {
     CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
-    if (status == CNAuthorizationStatusNotDetermined) {
-        CNContactStore *store = [[CNContactStore alloc] init];
-        @weakify_self
-        [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError*  _Nullable error) {
-            if (error) {
-                NSLog(@"授权失败");
-            }else {
-                NSLog(@"成功授权");
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!weakSelf.isPermissionContacts) {
-                        weakSelf.isPermissionContacts = YES;
-                        [weakSelf.mainTabView reloadData];
-                    }
-                });
-            }
-        }];
-    }
-    else if(status == CNAuthorizationStatusRestricted)
-    {
-        NSLog(@"用户拒绝");
-       
-    }
-    else if (status == CNAuthorizationStatusDenied)
-    {
-        NSLog(@"用户拒绝");
-       
-    }
-    else if (status == CNAuthorizationStatusAuthorized)//已经授权
+    if (status == CNAuthorizationStatusAuthorized)//已经授权
     {
         //有通讯录权限-- 进行下一步操作
         self.isPermissionContacts = YES;
         [self.mainTabView reloadData];
     }
 }
+
 #pragma mark -----------------tableview deleate ---------------------
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

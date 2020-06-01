@@ -65,7 +65,7 @@ NSString * aesEncryptString(NSString *content, NSString *key) {
 
 NSString * aesDecryptString(NSString *content, NSString *key) {
     
-    if (!content || [content isEmptyString] || key.length !=16) {
+    if (!content || [content isEmptyString] || !key || key.length !=16) {
         return @"";
     }
     NSCParameterAssert(content);

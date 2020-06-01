@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,11 +14,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="128"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="127.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="128"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NsK-9n-5J0">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="127"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="127.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="信用管家消费提醒" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kUF-mr-Wk0">
                                 <rect key="frame" x="16" y="12" width="160" height="28"/>
@@ -68,7 +66,7 @@
                                         <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67450980390000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SNY-JK-4LL">
+                                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SNY-JK-4LL">
                                         <rect key="frame" x="244" y="12.5" width="44" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="3kp-WR-ACX"/>
@@ -100,13 +98,28 @@
                                     <constraint firstItem="wEo-vv-dXd" firstAttribute="leading" secondItem="v4f-ms-oHv" secondAttribute="leading" id="q4a-LO-dNI"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D8I-5g-fsT">
+                                <rect key="frame" x="260" y="43" width="44" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="WaW-mn-JAJ"/>
+                                    <constraint firstAttribute="width" constant="44" id="mHa-Oe-t2n"/>
+                                </constraints>
+                                <state key="normal" image="email_attach_unselected">
+                                    <color key="titleColor" red="0.40000000000000002" green="0.27450980390000002" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickHiddenBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Tsa-GE-IPb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="D8I-5g-fsT" secondAttribute="trailing" constant="16" id="0dy-DC-her"/>
                             <constraint firstAttribute="trailing" secondItem="j68-QE-e7g" secondAttribute="trailing" constant="16" id="7ex-aj-emv"/>
                             <constraint firstItem="j68-QE-e7g" firstAttribute="leading" secondItem="NsK-9n-5J0" secondAttribute="leading" constant="16" id="AmY-cb-NeI"/>
                             <constraint firstItem="Nqf-1x-jtz" firstAttribute="centerY" secondItem="kUF-mr-Wk0" secondAttribute="centerY" id="HkD-h2-uX8"/>
                             <constraint firstAttribute="trailing" secondItem="Nqf-1x-jtz" secondAttribute="trailing" constant="19" id="ISN-zV-vNU"/>
+                            <constraint firstItem="D8I-5g-fsT" firstAttribute="top" secondItem="Nqf-1x-jtz" secondAttribute="bottom" constant="5" id="P22-Xx-oul"/>
                             <constraint firstItem="j68-QE-e7g" firstAttribute="top" secondItem="kUF-mr-Wk0" secondAttribute="bottom" constant="26" id="UYL-Fk-Bk5"/>
                             <constraint firstItem="Nqf-1x-jtz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kUF-mr-Wk0" secondAttribute="trailing" constant="10" id="cs9-YX-fgx"/>
                             <constraint firstItem="kUF-mr-Wk0" firstAttribute="top" secondItem="NsK-9n-5J0" secondAttribute="top" constant="12" id="qYy-F6-L21"/>
@@ -114,7 +127,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gFt-0f-756">
-                        <rect key="frame" x="16" y="127" width="288" height="0.5"/>
+                        <rect key="frame" x="16" y="127.5" width="288" height="0.5"/>
                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="PEv-50-B1t"/>
@@ -133,6 +146,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="attBtn" destination="D8I-5g-fsT" id="e8w-Ha-qSG"/>
                 <outlet property="headImgView" destination="bhN-Qq-u8R" id="lDa-yc-ckC"/>
                 <outlet property="hiddenBtn" destination="SNY-JK-4LL" id="IDp-cy-AMD"/>
                 <outlet property="lableImgView" destination="Nqf-1x-jtz" id="BUu-gb-R2b"/>
@@ -146,6 +160,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="email_attach_unselected" width="24" height="24"/>
         <image name="tabbar_stars_selected" width="24" height="24"/>
     </resources>
 </document>

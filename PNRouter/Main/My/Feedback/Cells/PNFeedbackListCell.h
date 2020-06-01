@@ -10,10 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define PNFeedbackListCellHeight 140
+#define PNFeedbackListCellHeight 132
 static NSString *PNFeedbackListCellResue = @"PNFeedbackListCell";
 
 @interface PNFeedbackListCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *lblSuject;
+@property (weak, nonatomic) IBOutlet UILabel *lblType;
+@property (weak, nonatomic) IBOutlet UILabel *lblNo;
+@property (weak, nonatomic) IBOutlet UILabel *lblStatus;
+@property (weak, nonatomic) IBOutlet UILabel *lblTime;
+@property (weak, nonatomic) IBOutlet UIView *backV;
 
 @end
 

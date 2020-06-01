@@ -239,7 +239,6 @@
 		73001A20219048AF003D07CC /* DDRSAWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A1E219048AE003D07CC /* DDRSAWrapper.m */; };
 		73001A2321912890003D07CC /* RSAUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A2221912890003D07CC /* RSAUtil.m */; };
 		73001A262191328C003D07CC /* RSAModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73001A252191328C003D07CC /* RSAModel.m */; };
-		7301A896226EB876006225FA /* Privacy Policy.html in Resources */ = {isa = PBXBuildFile; fileRef = 7301A894226EB875006225FA /* Privacy Policy.html */; };
 		7301A897226EB876006225FA /* Terms of Service.html in Resources */ = {isa = PBXBuildFile; fileRef = 7301A895226EB876006225FA /* Terms of Service.html */; };
 		730330E121C76E2F007C4063 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E021C76E2F007C4063 /* UserNotifications.framework */; };
 		730330E321C76E3A007C4063 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 730330E221C76E3A007C4063 /* libresolv.tbd */; };
@@ -456,6 +455,9 @@
 		73582B15245A8BB60052C828 /* importCircle.webarchive in Resources */ = {isa = PBXBuildFile; fileRef = 73582B12245A8BB50052C828 /* importCircle.webarchive */; };
 		73582B16245A8BB60052C828 /* joinCircle.webarchive in Resources */ = {isa = PBXBuildFile; fileRef = 73582B13245A8BB50052C828 /* joinCircle.webarchive */; };
 		73582B17245A8BB60052C828 /* createCircle.webarchive in Resources */ = {isa = PBXBuildFile; fileRef = 73582B14245A8BB50052C828 /* createCircle.webarchive */; };
+		735852502480AA8A0032A707 /* PNContactPermissionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7358524E2480AA8A0032A707 /* PNContactPermissionsViewController.m */; };
+		735852512480AA8A0032A707 /* PNContactPermissionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7358524F2480AA8A0032A707 /* PNContactPermissionsViewController.xib */; };
+		73585255248114410032A707 /* Privacy Policy.html in Resources */ = {isa = PBXBuildFile; fileRef = 73585254248114410032A707 /* Privacy Policy.html */; };
 		735D3FCC237EA5A10099E6C6 /* CircleUserCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735D3FCB237EA5A10099E6C6 /* CircleUserCodeView.xib */; };
 		735D3FCF237EA6890099E6C6 /* CircleUserCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D3FCE237EA6890099E6C6 /* CircleUserCodeView.m */; };
 		735D7B2E2367EDE300564A28 /* PNEmailPassDefaultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 735D7B2D2367EDE300564A28 /* PNEmailPassDefaultView.m */; };
@@ -606,6 +608,18 @@
 		738C1BE62366C14600E558DB /* PNSetEmailPassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738C1BE52366C14600E558DB /* PNSetEmailPassView.m */; };
 		738C1BE82366C15100E558DB /* PNSetEmailPassView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738C1BE72366C15100E558DB /* PNSetEmailPassView.xib */; };
 		738C1BEB2366CBCB00E558DB /* EmailPassModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 738C1BEA2366CBCB00E558DB /* EmailPassModel.m */; };
+		738F0AC9247CAE8700B5DB07 /* PNFeedbackTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738F0AC7247CAE8700B5DB07 /* PNFeedbackTypeCell.m */; };
+		738F0ACA247CAE8700B5DB07 /* PNFeedbackTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738F0AC8247CAE8700B5DB07 /* PNFeedbackTypeCell.xib */; };
+		738F0ACD247CB3E800B5DB07 /* PNFeedbackTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 738F0ACC247CB3E800B5DB07 /* PNFeedbackTypeModel.m */; };
+		738F0AD6247D0DD000B5DB07 /* PNFeedbackDeatilCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738F0AD4247D0DD000B5DB07 /* PNFeedbackDeatilCell.m */; };
+		738F0AD7247D0DD000B5DB07 /* PNFeedbackDeatilCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738F0AD5247D0DD000B5DB07 /* PNFeedbackDeatilCell.xib */; };
+		738F0ADA247D0FFA00B5DB07 /* PNFeedbackDeatilHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738F0AD9247D0FFA00B5DB07 /* PNFeedbackDeatilHeadView.m */; };
+		738F0ADC247D100D00B5DB07 /* PNFeedbackDeatilHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738F0ADB247D100D00B5DB07 /* PNFeedbackDeatilHeadView.xib */; };
+		738F0AE0247D181200B5DB07 /* PNImgCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738F0ADE247D181200B5DB07 /* PNImgCollectionCell.m */; };
+		738F0AE1247D181200B5DB07 /* PNImgCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738F0ADF247D181200B5DB07 /* PNImgCollectionCell.xib */; };
+		738F0AE4247E096E00B5DB07 /* PNFeedbackImgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 738F0AE3247E096E00B5DB07 /* PNFeedbackImgModel.m */; };
+		738F0AF0247E3DD500B5DB07 /* PNFeedbackImgAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738F0AEF247E3DD500B5DB07 /* PNFeedbackImgAlertView.m */; };
+		738F0AF2247E3DE400B5DB07 /* PNFeedbackImgAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738F0AF1247E3DE400B5DB07 /* PNFeedbackImgAlertView.xib */; };
 		7392791121F72203003AAD58 /* DiskManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392790F21F72203003AAD58 /* DiskManagerViewController.m */; };
 		7392791221F72203003AAD58 /* DiskManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7392791021F72203003AAD58 /* DiskManagerViewController.xib */; };
 		7392791521FAF356003AAD58 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392791421FAF356003AAD58 /* UploadFileManager.m */; };
@@ -1257,7 +1271,6 @@
 		73001A2221912890003D07CC /* RSAUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAUtil.m; sourceTree = "<group>"; };
 		73001A242191328C003D07CC /* RSAModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSAModel.h; sourceTree = "<group>"; };
 		73001A252191328C003D07CC /* RSAModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAModel.m; sourceTree = "<group>"; };
-		7301A894226EB875006225FA /* Privacy Policy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Privacy Policy.html"; sourceTree = "<group>"; };
 		7301A895226EB876006225FA /* Terms of Service.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Terms of Service.html"; sourceTree = "<group>"; };
 		730330E021C76E2F007C4063 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		730330E221C76E3A007C4063 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -1643,6 +1656,10 @@
 		73582B12245A8BB50052C828 /* importCircle.webarchive */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = importCircle.webarchive; sourceTree = "<group>"; };
 		73582B13245A8BB50052C828 /* joinCircle.webarchive */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = joinCircle.webarchive; sourceTree = "<group>"; };
 		73582B14245A8BB50052C828 /* createCircle.webarchive */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = createCircle.webarchive; sourceTree = "<group>"; };
+		7358524D2480AA8A0032A707 /* PNContactPermissionsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNContactPermissionsViewController.h; sourceTree = "<group>"; };
+		7358524E2480AA8A0032A707 /* PNContactPermissionsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNContactPermissionsViewController.m; sourceTree = "<group>"; };
+		7358524F2480AA8A0032A707 /* PNContactPermissionsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNContactPermissionsViewController.xib; sourceTree = "<group>"; };
+		73585254248114410032A707 /* Privacy Policy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Privacy Policy.html"; sourceTree = "<group>"; };
 		735D3FCB237EA5A10099E6C6 /* CircleUserCodeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CircleUserCodeView.xib; sourceTree = "<group>"; };
 		735D3FCD237EA6890099E6C6 /* CircleUserCodeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleUserCodeView.h; sourceTree = "<group>"; };
 		735D3FCE237EA6890099E6C6 /* CircleUserCodeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleUserCodeView.m; sourceTree = "<group>"; };
@@ -1940,6 +1957,25 @@
 		738C1BE72366C15100E558DB /* PNSetEmailPassView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNSetEmailPassView.xib; sourceTree = "<group>"; };
 		738C1BE92366CBCB00E558DB /* EmailPassModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailPassModel.h; sourceTree = "<group>"; };
 		738C1BEA2366CBCB00E558DB /* EmailPassModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailPassModel.m; sourceTree = "<group>"; };
+		738F0AC6247CAE8700B5DB07 /* PNFeedbackTypeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackTypeCell.h; sourceTree = "<group>"; };
+		738F0AC7247CAE8700B5DB07 /* PNFeedbackTypeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackTypeCell.m; sourceTree = "<group>"; };
+		738F0AC8247CAE8700B5DB07 /* PNFeedbackTypeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedbackTypeCell.xib; sourceTree = "<group>"; };
+		738F0ACB247CB3E800B5DB07 /* PNFeedbackTypeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackTypeModel.h; sourceTree = "<group>"; };
+		738F0ACC247CB3E800B5DB07 /* PNFeedbackTypeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackTypeModel.m; sourceTree = "<group>"; };
+		738F0AD3247D0DD000B5DB07 /* PNFeedbackDeatilCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackDeatilCell.h; sourceTree = "<group>"; };
+		738F0AD4247D0DD000B5DB07 /* PNFeedbackDeatilCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackDeatilCell.m; sourceTree = "<group>"; };
+		738F0AD5247D0DD000B5DB07 /* PNFeedbackDeatilCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedbackDeatilCell.xib; sourceTree = "<group>"; };
+		738F0AD8247D0FFA00B5DB07 /* PNFeedbackDeatilHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackDeatilHeadView.h; sourceTree = "<group>"; };
+		738F0AD9247D0FFA00B5DB07 /* PNFeedbackDeatilHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackDeatilHeadView.m; sourceTree = "<group>"; };
+		738F0ADB247D100D00B5DB07 /* PNFeedbackDeatilHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedbackDeatilHeadView.xib; sourceTree = "<group>"; };
+		738F0ADD247D181200B5DB07 /* PNImgCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNImgCollectionCell.h; sourceTree = "<group>"; };
+		738F0ADE247D181200B5DB07 /* PNImgCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNImgCollectionCell.m; sourceTree = "<group>"; };
+		738F0ADF247D181200B5DB07 /* PNImgCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNImgCollectionCell.xib; sourceTree = "<group>"; };
+		738F0AE2247E096E00B5DB07 /* PNFeedbackImgModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackImgModel.h; sourceTree = "<group>"; };
+		738F0AE3247E096E00B5DB07 /* PNFeedbackImgModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackImgModel.m; sourceTree = "<group>"; };
+		738F0AEE247E3DD500B5DB07 /* PNFeedbackImgAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNFeedbackImgAlertView.h; sourceTree = "<group>"; };
+		738F0AEF247E3DD500B5DB07 /* PNFeedbackImgAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PNFeedbackImgAlertView.m; sourceTree = "<group>"; };
+		738F0AF1247E3DE400B5DB07 /* PNFeedbackImgAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PNFeedbackImgAlertView.xib; sourceTree = "<group>"; };
 		7392790E21F72203003AAD58 /* DiskManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiskManagerViewController.h; sourceTree = "<group>"; };
 		7392790F21F72203003AAD58 /* DiskManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiskManagerViewController.m; sourceTree = "<group>"; };
 		7392791021F72203003AAD58 /* DiskManagerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiskManagerViewController.xib; sourceTree = "<group>"; };
@@ -2832,8 +2868,8 @@
 				73ED4B2E230FDCFE00AF4B51 /* guidance_notes_5.html */,
 				73ED4B33230FDCFF00AF4B51 /* guidance_notes_6.html */,
 				73FE5B2322DF561E004D0655 /* EmailConfigure.plist */,
-				7301A894226EB875006225FA /* Privacy Policy.html */,
 				7301A895226EB876006225FA /* Terms of Service.html */,
+				73585254248114410032A707 /* Privacy Policy.html */,
 				7330F46B2147AD2B00FF4EEC /* Expression.bundle */,
 				7330F46A2147AD2A00FF4EEC /* InputViewBundle.bundle */,
 				7362573B213E8B3200D7FD6B /* AppDelegate.h */,
@@ -4554,6 +4590,9 @@
 				73B0895A23B1F25F0008D368 /* PNUploadListViewController.h */,
 				73B0895B23B1F25F0008D368 /* PNUploadListViewController.m */,
 				73B0895C23B1F25F0008D368 /* PNUploadListViewController.xib */,
+				7358524D2480AA8A0032A707 /* PNContactPermissionsViewController.h */,
+				7358524E2480AA8A0032A707 /* PNContactPermissionsViewController.m */,
+				7358524F2480AA8A0032A707 /* PNContactPermissionsViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -4921,6 +4960,15 @@
 				73F0840124752A72003F9AB9 /* PNFeedbackListCell.h */,
 				73F0840224752A72003F9AB9 /* PNFeedbackListCell.m */,
 				73F0840324752A72003F9AB9 /* PNFeedbackListCell.xib */,
+				738F0AC6247CAE8700B5DB07 /* PNFeedbackTypeCell.h */,
+				738F0AC7247CAE8700B5DB07 /* PNFeedbackTypeCell.m */,
+				738F0AC8247CAE8700B5DB07 /* PNFeedbackTypeCell.xib */,
+				738F0AD3247D0DD000B5DB07 /* PNFeedbackDeatilCell.h */,
+				738F0AD4247D0DD000B5DB07 /* PNFeedbackDeatilCell.m */,
+				738F0AD5247D0DD000B5DB07 /* PNFeedbackDeatilCell.xib */,
+				738F0ADD247D181200B5DB07 /* PNImgCollectionCell.h */,
+				738F0ADE247D181200B5DB07 /* PNImgCollectionCell.m */,
+				738F0ADF247D181200B5DB07 /* PNImgCollectionCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4928,6 +4976,12 @@
 		73F083E62475222C003F9AB9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				738F0AD8247D0FFA00B5DB07 /* PNFeedbackDeatilHeadView.h */,
+				738F0AD9247D0FFA00B5DB07 /* PNFeedbackDeatilHeadView.m */,
+				738F0ADB247D100D00B5DB07 /* PNFeedbackDeatilHeadView.xib */,
+				738F0AEE247E3DD500B5DB07 /* PNFeedbackImgAlertView.h */,
+				738F0AEF247E3DD500B5DB07 /* PNFeedbackImgAlertView.m */,
+				738F0AF1247E3DE400B5DB07 /* PNFeedbackImgAlertView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4935,6 +4989,10 @@
 		73F083E724752232003F9AB9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				738F0ACB247CB3E800B5DB07 /* PNFeedbackTypeModel.h */,
+				738F0ACC247CB3E800B5DB07 /* PNFeedbackTypeModel.m */,
+				738F0AE2247E096E00B5DB07 /* PNFeedbackImgModel.h */,
+				738F0AE3247E096E00B5DB07 /* PNFeedbackImgModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5114,7 +5172,6 @@
 				73E3C71622D5793700D7C9C6 /* PNEmailLoginViewController.xib in Resources */,
 				73A75E2F23867E1500BA8FB3 /* UploadFileCell.xib in Resources */,
 				7330F387214612E800FF4EEC /* ContactViewController.xib in Resources */,
-				7301A896226EB876006225FA /* Privacy Policy.html in Resources */,
 				73194E96225598C30047F50C /* SendFileListViewController.xib in Resources */,
 				732D3AA32455372B00FC4FBE /* PNInstructionsViewController.xib in Resources */,
 				584B43A421FF0AE700D1F21A /* ConfigDiskHeaderView.xib in Resources */,
@@ -5196,14 +5253,17 @@
 				73ED4B24230A78F400AF4B51 /* PNEmailEncrypedViewController.xib in Resources */,
 				73B0895E23B1F25F0008D368 /* PNUploadListViewController.xib in Resources */,
 				58F1789F221FF333001CD0AF /* ChooseContactHeaderView.xib in Resources */,
+				738F0ADC247D100D00B5DB07 /* PNFeedbackDeatilHeadView.xib in Resources */,
 				737883EE21ACF2970033A189 /* nodes.json in Resources */,
 				73EE8CBF2154E5330048866B /* ChooseContactViewController.xib in Resources */,
+				735852512480AA8A0032A707 /* PNContactPermissionsViewController.xib in Resources */,
 				587C52CD215CAF14006787FB /* RouterManagementCell.xib in Resources */,
 				583BF91B21F6B5AB0078A2A8 /* DetailInformationViewController.xib in Resources */,
 				738C1BE3236697AF00E558DB /* PNEmailEncodeDetailViewController.xib in Resources */,
 				73FD079A21D74979001B89CB /* FriendRequestViewController.xib in Resources */,
 				73582B17245A8BB60052C828 /* createCircle.webarchive in Resources */,
 				5833F9C6221E57F400F7B63D /* ContactHeaderView.xib in Resources */,
+				738F0ACA247CAE8700B5DB07 /* PNFeedbackTypeCell.xib in Resources */,
 				58F178A4221FF376001CD0AF /* ChooseContactTableCell.xib in Resources */,
 				73194E9B2255D1320047F50C /* SendFileHeadView.xib in Resources */,
 				583B2B3C22389F5A00E6238D /* NewRequestsGroupChatsCell1.xib in Resources */,
@@ -5221,6 +5281,7 @@
 				73EE8CC62159CD980048866B /* ChooseContactCell.xib in Resources */,
 				73E39B3B2216BEED003CD33B /* RouterDetailViewController.xib in Resources */,
 				7321A3F82303B25F00D9B97A /* PNEmailConfigViewController.xib in Resources */,
+				73585255248114410032A707 /* Privacy Policy.html in Resources */,
 				5825A23921F9CA9F00E6194B /* FilePreviewDownloadViewController.xib in Resources */,
 				7330F3CF21479AED00FF4EEC /* NewsCell.xib in Resources */,
 				58326919224B75A50058CDB8 /* LogOutCell.xib in Resources */,
@@ -5246,6 +5307,7 @@
 				584B439F21FEFF1A00D1F21A /* ConfigDiskViewController.xib in Resources */,
 				7351731323FD03270049BD70 /* PNEntryViewController.xib in Resources */,
 				73741801221E9B8F008EE243 /* SettingViewController.xib in Resources */,
+				738F0AF2247E3DE400B5DB07 /* PNFeedbackImgAlertView.xib in Resources */,
 				734BE0EC238CCF6200BAF758 /* PNFileOptionView.xib in Resources */,
 				73D00E97215A058A0013E20D /* ChooseRecipientAlertView.xib in Resources */,
 				73976A4A225C990B0001E276 /* OtherFileOpenViewController.xib in Resources */,
@@ -5260,6 +5322,7 @@
 				73121A75219C26E900510B48 /* LoginViewController.xib in Resources */,
 				73E03B4C21DDF88A005DF993 /* DHTnodes.json in Resources */,
 				73E7743D22DC6171001C652E /* AttchCollectionCell.xib in Resources */,
+				738F0AE1247D181200B5DB07 /* PNImgCollectionCell.xib in Resources */,
 				585AEE1F213F71E00098A070 /* ChatViewController.xib in Resources */,
 				586838032240959500B8ACB8 /* GroupMembersViewController.xib in Resources */,
 				583BF94A21F70FBC0078A2A8 /* TaskCompletedCell.xib in Resources */,
@@ -5267,6 +5330,7 @@
 				581FDF5E21F16D350068C120 /* LoginDeviceViewController.xib in Resources */,
 				73B6432422E5C6C2003A4EA5 /* EmailContactCell.xib in Resources */,
 				730AE08522EADA6100E0BC67 /* EmailErrorAlertView.xib in Resources */,
+				738F0AD7247D0DD000B5DB07 /* PNFeedbackDeatilCell.xib in Resources */,
 				581FDF6821F173AC0068C120 /* ModifyRouterPWViewController.xib in Resources */,
 				5875E4C5216C8B7000B1A9A6 /* YWFilePreviewView.xib in Resources */,
 				73F102D022DF646800E7D257 /* PNEmailTypeSelectView.xib in Resources */,
@@ -5455,6 +5519,7 @@
 				582BFE39221688C200D8C2C8 /* DiskToastView.m in Sources */,
 				58664CC72176EA8900EDC696 /* AESCipher.m in Sources */,
 				736257C12142247F00D7FD6B /* SystemUtil.m in Sources */,
+				735852502480AA8A0032A707 /* PNContactPermissionsViewController.m in Sources */,
 				581FDF4A21F024170068C120 /* onion_announce.m in Sources */,
 				7306054721748BD5005A0E13 /* amrFileCodec.mm in Sources */,
 				7378841B21ACF2970033A189 /* OCTSubmanagerCallsImpl.m in Sources */,
@@ -5525,6 +5590,7 @@
 				735642A02226752A00DC0BCB /* SendCacheChatUtil.m in Sources */,
 				732D3AAB24557B2700FC4FBE /* PNSendSelectViewController.m in Sources */,
 				73E773FB22D58F2C001C652E /* EmailFloderCell.m in Sources */,
+				738F0AF0247E3DD500B5DB07 /* PNFeedbackImgAlertView.m in Sources */,
 				7378841021ACF2970033A189 /* OCTFileDataInput.m in Sources */,
 				7378840E21ACF2970033A189 /* OCTFilePathInput.m in Sources */,
 				7341A87622F81158001AF7C2 /* unzip.c in Sources */,
@@ -5750,6 +5816,7 @@
 				581FDF4D21F024170068C120 /* crypto_core_mem.m in Sources */,
 				7386CCD3238518CA00004E0C /* PNPhotoViewController.m in Sources */,
 				7368CF1923F6753B00FB0FF0 /* ENMessageUtil.m in Sources */,
+				738F0AE4247E096E00B5DB07 /* PNFeedbackImgModel.m in Sources */,
 				736257822142143F00D7FD6B /* NSString+EmptyUtil.m in Sources */,
 				737883F721ACF2970033A189 /* OCTManagerConfiguration.m in Sources */,
 				581FDF4421F024170068C120 /* crypto_core.m in Sources */,
@@ -5766,6 +5833,7 @@
 				7378841521ACF2970033A189 /* NSError+OCTFile.m in Sources */,
 				73A133BD238673070051C13A /* AddFloderCell.m in Sources */,
 				7330F3772146118800FF4EEC /* UIImage+Rotate.m in Sources */,
+				738F0ADA247D0FFA00B5DB07 /* PNFeedbackDeatilHeadView.m in Sources */,
 				58BD2E722148E3170091A77D /* ToastUtil.m in Sources */,
 				7330F3AE21475A0600FF4EEC /* GroupCell.m in Sources */,
 				581FDF5021F024170068C120 /* tox.m in Sources */,
@@ -5861,6 +5929,7 @@
 				7378841321ACF2970033A189 /* OCTFileBaseOperation.m in Sources */,
 				587C52BC215C7050006787FB /* RouterDetailViewController.m in Sources */,
 				581FDF4F21F024170068C120 /* TCP_connection.m in Sources */,
+				738F0AE0247D181200B5DB07 /* PNImgCollectionCell.m in Sources */,
 				73B6432322E5C6C2003A4EA5 /* EmailContactCell.m in Sources */,
 				583B2B3622378E6600E6238D /* NewRequestsViewController.m in Sources */,
 				7378840B21ACF2970033A189 /* OCTMessageText.m in Sources */,
@@ -5891,8 +5960,10 @@
 				583BF91A21F6B5AB0078A2A8 /* DetailInformationViewController.m in Sources */,
 				736257A82142149300D7FD6B /* UIView+BlockGesture.m in Sources */,
 				73194E992255D11B0047F50C /* SendFileHeadView.m in Sources */,
+				738F0AC9247CAE8700B5DB07 /* PNFeedbackTypeCell.m in Sources */,
 				7378840021ACF2970033A189 /* OCTMessageAbstract.m in Sources */,
 				736257C5214225FD00D7FD6B /* getgateway.c in Sources */,
+				738F0ACD247CB3E800B5DB07 /* PNFeedbackTypeModel.m in Sources */,
 				582BFE4C221D26DF00D8C2C8 /* ImportAccountViewController.m in Sources */,
 				584A447E21460AFE00608122 /* FileViewController.m in Sources */,
 				73F6B98322A00E8A0053AAB4 /* EmoticonCell.m in Sources */,
@@ -5904,6 +5975,7 @@
 				7341A86122F81146001AF7C2 /* hmac.c in Sources */,
 				581FDF3B21F024160068C120 /* ring_buffer.m in Sources */,
 				73D00E932159DADF0013E20D /* ChooseDownView.m in Sources */,
+				738F0AD6247D0DD000B5DB07 /* PNFeedbackDeatilCell.m in Sources */,
 				733B6AB7230548E7003660F8 /* PNEmailContactView.m in Sources */,
 				73ED4B28230A803700AF4B51 /* EmailEncrypedCell.m in Sources */,
 				73F8806C21DF87AF0047C3DA /* DDLogUtil.m in Sources */,
@@ -6086,7 +6158,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 110;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6112,7 +6184,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.5.7;
+				MARKETING_VERSION = 0.6.0;
 				MiSDKRun = debug;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6134,7 +6206,7 @@
 				CODE_SIGN_ENTITLEMENTS = PNRouter/PNRouter.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 110;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6160,7 +6232,7 @@
 					"$(PROJECT_DIR)/PNRouter/Vender/VoiceConvert/lib",
 					"$(PROJECT_DIR)/PNRouter",
 				);
-				MARKETING_VERSION = 0.5.7;
+				MARKETING_VERSION = 0.6.0;
 				MiSDKRun = online;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6177,7 +6249,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 110;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
@@ -6187,7 +6259,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.5.7;
+				MARKETING_VERSION = 0.6.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
@@ -6203,7 +6275,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 110;
 				DEVELOPMENT_TEAM = 2JK8V69373;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushServiceExtension/Info.plist;
@@ -6213,7 +6285,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.5.7;
+				MARKETING_VERSION = 0.6.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winq.routerchat.PushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";

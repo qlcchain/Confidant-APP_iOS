@@ -73,6 +73,19 @@
     return dataTask;
 }
 
++ (NSURLSessionDataTask *)postImage7:(NSString *)url
+                   parameters:(id)parameters
+    constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))bodyBlock
+                      success:(HTTPRequestV2SuccessBlock)successReqBlock
+                      failure:(HTTPRequestV2FailedBlock)failedReqBlock {
+    
+    NSString *requestUrl = url;//[NSString stringWithFormat:@"%@%@",Feedback_Url,url];
+    
+    NSURLSessionDataTask *dataTask = [AFHTTPClientV2 requestWithConfidantCSURLStr:requestUrl parameters:parameters userInfo:nil constructingBodyWithBlock:bodyBlock success:successReqBlock failure:failedReqBlock];
+    
+    return dataTask;
+}
+
 + (NSURLSessionDataTask *)requestWithJsonUrl:(NSString *)url params:(id)params httpMethod:(HttpMethod)httpMethod successBlock:(HTTPRequestV2SuccessBlock)successReqBlock failedBlock:(HTTPRequestV2FailedBlock)failedReqBlock
 {
     NSURLSessionDataTask *dataTask = [AFHTTPClientV2 requestWithBaseURLStr:url params:params httpMethod:httpMethod successBlock:successReqBlock failedBlock:failedReqBlock];

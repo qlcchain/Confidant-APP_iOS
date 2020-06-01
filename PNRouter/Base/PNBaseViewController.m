@@ -291,7 +291,7 @@
                 NSString *macAdress = @"";
                 for (int i = 0; i<12; i+=2) {
                    NSString *macIndex = [codeValue substringWithRange:NSMakeRange(i, 2)];
-                    macAdress = [macAdress stringByAppendingString:macIndex];
+                    macAdress = [macAdress stringByAppendingString:macIndex?:@""];
                     if (i < 10) {
                         macAdress = [macAdress stringByAppendingString:@":"];
                     }
@@ -377,7 +377,7 @@
                 NSString *macAdress = @"";
                 for (int i = 0; i<12; i+=2) {
                     NSString *macIndex = [codeValue substringWithRange:NSMakeRange(i, 2)];
-                    macAdress = [macAdress stringByAppendingString:macIndex];
+                    macAdress = [macAdress stringByAppendingString:macIndex?:@""];
                     if (i < 10) {
                         macAdress = [macAdress stringByAppendingString:@":"];
                     }

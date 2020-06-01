@@ -68,6 +68,12 @@ typedef void (^HTTPRequestV2FailedBlock)(NSURLSessionDataTask *dataTask, NSError
                   progressBlock:(void(^)(CGFloat progress)) progressBlock
                         success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
                         failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
++ (NSURLSessionDataTask *)requestWithConfidantCSURLStr:(NSString *)URLString
+               parameters:(id)parameters
+                 userInfo:(NSDictionary*)userInfo
+constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
+                  success:(void (^)(NSURLSessionDataTask *dataTask, id responseObject))success
+                                               failure:(void (^)(NSURLSessionDataTask *dataTask, NSError *error))failure;
 
 + (NSURLSessionDownloadTask *)downFileWithBaseURLStr:(NSString *)ULRString
                       filePath:(NSString *)filePath

@@ -18,7 +18,7 @@
 
 
 #if DEBUG
-static NSString *PUSH_URL = @"https://47.244.138.61:9001/v1/pareg/appPushInfoReg/";
+static NSString *PUSH_URL = @"https://pprouter.online:9001/v1/pareg/appPushInfoReg/";
 #else
 static NSString *PUSH_URL = @"https://pprouter.online:9001/v1/pareg/appPushInfoReg/";
 #endif
@@ -34,8 +34,11 @@ static NSString *LOG_TEST_URL = @"https://pprouter.online:9001/v1/pprmap/ulogstr
 // 活动推广
 static NSString *Campaign_List_Url = @"http://confidantop.qlink.mobi/capi/msg/list.json";
 static NSString *Campaign_Time_Url =  @"http://confidantop.qlink.mobi/capi/sys/dict.json";
+// 意见反馈
+//static NSString *Feedback_Url = @"http://confidantop.qlink.mobi/capi/feedback/submit.json";
 
-
+static NSString *Feedback_Url = @"http://192.168.0.190:8080/capi/feedback/submit.json";
+static NSString *Feedback_Type_Url = @"http://192.168.0.190:8080/capi/sys/dict.json";
 
 #define APIVERSION @"6"
 //#define APIVERSION2 @"2"

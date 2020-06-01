@@ -106,10 +106,10 @@
     if (self = [super init]) {
         self.emailInfo = listInfo;
         
-        self.emailInfo.htmlContent = [self.emailInfo.htmlContent stringByReplacingOccurrencesOfString:@"/*<![CDATA[*/" withString:@""];
-        self.emailInfo.htmlContent = [self.emailInfo.htmlContent stringByReplacingOccurrencesOfString:@"/*]]>*/" withString:@""];
-        self.emailInfo.htmlContent = [self.emailInfo.htmlContent stringByReplacingOccurrencesOfString:@"width=" withString:@"sss="];
-        self.emailInfo.htmlContent = [self.emailInfo.htmlContent stringByReplacingOccurrencesOfString:@"width:" withString:@"sss="];
+        self.emailInfo.htmlContent = [self.emailInfo.htmlContent?:@"" stringByReplacingOccurrencesOfString:@"/*<![CDATA[*/" withString:@""];
+        self.emailInfo.htmlContent = [self.emailInfo.htmlContent?:@"" stringByReplacingOccurrencesOfString:@"/*]]>*/" withString:@""];
+        self.emailInfo.htmlContent = [self.emailInfo.htmlContent?:@"" stringByReplacingOccurrencesOfString:@"width=" withString:@"sss="];
+        self.emailInfo.htmlContent = [self.emailInfo.htmlContent?:@"" stringByReplacingOccurrencesOfString:@"width:" withString:@"sss="];
         
         if ([self.emailInfo.floderName isEqualToString:Node_backed_up]) {
             
@@ -231,7 +231,7 @@
     /// 以下为新代码---start
     bodyHtml = [bodyHtml stringByAppendingString:@"<div id=\"height\">"];
    
-    bodyHtml = [bodyHtml stringByAppendingString:htmlStr];
+    bodyHtml = [bodyHtml stringByAppendingString:htmlStr?:@""];
     bodyHtml = [bodyHtml stringByAppendingString:@"</div>"];
     bodyHtml = [bodyHtml stringByAppendingString:@"</body>"];
     bodyHtml = [bodyHtml stringByAppendingString:@"</html>"];
@@ -271,7 +271,7 @@
                     NSMutableString * html = [NSMutableString string];
                     [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
                      @"<body>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
-                     @"</iframe></html>", mainJavascript, mainStyle, weakSelf.emailInfo.htmlContent];
+                     @"</iframe></html>", mainJavascript, mainStyle, weakSelf.emailInfo.htmlContent?:@""];
                     weakSelf.htmlContent = html;
                     [weakSelf.myWebView loadHTMLString:weakSelf.htmlContent baseURL:nil];
                 } else { // 附件
@@ -348,7 +348,7 @@
                 return ;
                 
             }
-            NSString *htmlContent = aesDecryptString(weakSelf.emailInfo.htmlContent, pass)?:@"";
+            NSString *htmlContent = aesDecryptString(weakSelf.emailInfo.htmlContent?:@"", pass)?:@"";
             if (htmlContent.length > 0) {
                 
                 weakSelf.moreW.constant = 38;
@@ -505,7 +505,7 @@
                         if (!success) {
                             [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"Failure."];
                         } else {
-                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Success."];
+                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Successed"];
                             weakSelf.emailInfo.Read -=1;
                             
                             [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_FLAGS_CHANGE_NOTI object:@(0)];
@@ -522,7 +522,7 @@
                             [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"Failure."];
                         } else {
                             
-                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Success."];
+                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Successed"];
                             weakSelf.emailInfo.Read = isStar?weakSelf.emailInfo.Read-4:weakSelf.emailInfo.Read+4;
                             [weakSelf.mainTabV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                             
@@ -565,7 +565,7 @@
                     }
                     PNEmailMoveViewController *vc = [[PNEmailMoveViewController alloc] initWithFloderPath:weakSelf.emailInfo.floderPath uid:messageId isGoole:weakSelf.emailInfo.isGoogleAPI];
                     [vc setMoveBlock:^{
-                         [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Success."];
+                         [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Successed"];
                         weakSelf.isMove = YES;
                     }];
                     [weakSelf presentModalVC:vc animated:YES];
@@ -845,9 +845,13 @@
             }
             [cell setEmialInfoModel:self.emailInfo];
             @weakify_self
-            [cell setHiddenBlock:^{
-                weakSelf.isHidden = !weakSelf.isHidden;
-                [weakSelf.mainTabV reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+            [cell setHiddenBlock:^(NSInteger tag){
+                if (tag == 10) {
+                    weakSelf.isHidden = !weakSelf.isHidden;
+                    [weakSelf.mainTabV reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+                } else {
+                    [weakSelf.mainScrollView setContentOffset:CGPointMake(0, weakSelf.mainScrollView.contentSize.height- weakSelf.mainScrollView.bounds.size.height) animated:YES];
+                }
             }];
             return cell;
         } else if (indexPath.row <= self.userArray.count) {
@@ -945,7 +949,9 @@
         newHeight = webView.scrollView.contentSize.height;
         NSLog(@"--%f---%f",newHeight,webView.scrollView.contentSize.height);
         
-        if (newHeight > _webH.constant) {
+        if (newHeight > (SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT-82-100)) {
+            _webH.constant = SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT-82-100;
+        } else if (newHeight > _webH.constant) {
             _webH.constant = newHeight;
         }
         return;
@@ -958,9 +964,9 @@
     
     //获取实际要显示的html
     NSString *html = [self htmlAdjustWithPageWidth:widthOfBody
-                                              html:self.emailInfo.htmlContent
+                                              html:self.emailInfo.htmlContent?:@""
                                            webView:webView];
-    self.emailInfo.htmlContent = html;
+    self.emailInfo.htmlContent = html?:@"";
     //设置为已经加载完成
     isLoadingFinished = YES;
     
@@ -1369,7 +1375,7 @@
     if (retCode == 0) {
         _isBakNode = YES;
         [_nodeBtn setImage:[UIImage imageNamed:@"statusbar_download_node_backups"] forState:UIControlStateNormal];
-        [AppD.window showSuccessHudInView:AppD.window hint:@"Success."];
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Successed"];
     } else if (retCode == 1) {
         [AppD.window showFaieldHudInView:AppD.window hint:@"This email is backed up."];
     } else {

@@ -33,9 +33,9 @@
                                 <action selector="clickBackAction:" destination="-1" eventType="touchUpInside" id="abp-B4-Jnb"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Campaign Updates" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uC8-ki-xBl">
-                            <rect key="frame" x="109.5" y="11.5" width="156.5" height="21"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feedback" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uC8-ki-xBl">
+                            <rect key="frame" x="146.5" y="11.5" width="82.5" height="21"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
                             <color key="textColor" red="0.16078431369999999" green="0.15686274510000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -46,22 +46,35 @@
                                 <constraint firstAttribute="height" constant="1" id="7gw-Bd-xaI"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z3s-fj-Duh">
+                            <rect key="frame" x="329" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="Mzf-dg-51M"/>
+                                <constraint firstAttribute="width" constant="44" id="qDx-4K-S6L"/>
+                            </constraints>
+                            <state key="normal" image="statusbar_plus"/>
+                            <connections>
+                                <action selector="clickAddAction:" destination="-1" eventType="touchUpInside" id="Isj-rn-g1s"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="2AA-X3-CLv" firstAttribute="leading" secondItem="7n0-kG-txo" secondAttribute="leading" id="8oS-YT-FOK"/>
                         <constraint firstAttribute="bottom" secondItem="2AA-X3-CLv" secondAttribute="bottom" id="Hrv-Xz-19u"/>
+                        <constraint firstAttribute="trailing" secondItem="Z3s-fj-Duh" secondAttribute="trailing" constant="2" id="IGw-ON-dPo"/>
                         <constraint firstItem="uC8-ki-xBl" firstAttribute="centerY" secondItem="7n0-kG-txo" secondAttribute="centerY" id="Ked-mb-kzF"/>
                         <constraint firstItem="ARb-DQ-s1j" firstAttribute="centerY" secondItem="7n0-kG-txo" secondAttribute="centerY" id="R1h-Ln-ICR"/>
                         <constraint firstItem="uC8-ki-xBl" firstAttribute="centerX" secondItem="7n0-kG-txo" secondAttribute="centerX" id="aJS-BI-yRf"/>
                         <constraint firstAttribute="height" constant="44" id="g3J-d5-ru6"/>
+                        <constraint firstItem="Z3s-fj-Duh" firstAttribute="top" secondItem="7n0-kG-txo" secondAttribute="top" id="qRt-ea-Dl4"/>
                         <constraint firstItem="ARb-DQ-s1j" firstAttribute="leading" secondItem="7n0-kG-txo" secondAttribute="leading" constant="3" id="th8-o5-NWk"/>
                         <constraint firstAttribute="trailing" secondItem="2AA-X3-CLv" secondAttribute="trailing" id="vNz-Dt-7uq"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="d4d-kz-mBI">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="d4d-kz-mBI">
                     <rect key="frame" x="0.0" y="44" width="375" height="623"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -80,5 +93,6 @@
     </objects>
     <resources>
         <image name="arrow-exit-h" width="24" height="24"/>
+        <image name="statusbar_plus" width="24" height="24"/>
     </resources>
 </document>

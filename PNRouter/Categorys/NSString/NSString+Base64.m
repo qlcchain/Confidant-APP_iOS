@@ -38,6 +38,9 @@ static char base64EncodingTable[64] = {
 }
 - (NSString *)base64DecodedString
 {
+    if (self.length == 0) {
+        return @"";
+    }
     return [NSString stringWithBase64EncodedString:self];
 }
 - (NSData *)base64DecodedData

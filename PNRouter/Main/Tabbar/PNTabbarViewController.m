@@ -241,6 +241,9 @@
     if (AppD.isSwitch || AppD.isLogOut) {
         return;
     }
+    if (![AppD.window.rootViewController isKindOfClass:[YJSideMenu class]]) {
+        return;
+    }
     // 重新登录
     AppD.isDisConnectLogin = YES;
     UserConfig *userM = [UserConfig getShareObject];
@@ -252,6 +255,7 @@
     if (AppD.isSwitch || AppD.isLogOut) {
         return;
     }
+    
     [HeartBeatUtil stop];
     AppD.isDisConnectLogin = YES;
     UserConfig *userM = [UserConfig getShareObject];
@@ -262,6 +266,9 @@
 - (void) socketDisconnectNoti:(NSNotification *) noti
 {
     if (AppD.isSwitch || AppD.isLogOut) {
+        return;
+    }
+    if (![AppD.window.rootViewController isKindOfClass:[YJSideMenu class]]) {
         return;
     }
      [[SendCacheChatUtil getSendCacheChatUtilShare] stop];

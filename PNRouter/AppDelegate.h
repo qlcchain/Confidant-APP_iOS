@@ -47,6 +47,8 @@
  app是否正在进行登录操作
  */
 @property (nonatomic ,assign) BOOL inLogin;
+// 通讯录授权状态
+@property (nonatomic ,assign) NSInteger contactStatus; // 0:没有授权 1: 成功 2:失败 3:没有选择授权直接返回
 
 - (void)setRootTabbarWithManager:(id<OCTManager>) manager;
 - (void)setRootLoginWithType:(LoginType) type;

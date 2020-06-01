@@ -75,6 +75,8 @@
 #define RADIUS 3.0f
 #define BACK_TIME @"BACK_TIME"
 #define Bugly_AppID @"d22a5845f9"
+#define Upload_Image_Size 10*1024*1024  // 10M
+
 
 #define MAIN_GRAY_COLOR RGB(245, 245, 245)
 #define MAIN_ZS_COLOR RGB(102, 70, 247)
@@ -116,6 +118,9 @@ static int GROUPUSERPULL = 57;
 static int GROUPMSGPULL = 58;
 static int GROUPSENDMSG = 59;
 
+#pragma mark-------最大输入字符
+static const NSInteger LimitMaxWord = 200;
+
 
 #pragma mark - socket connect status
 static NSInteger socketConnectStatusNone = 0;
@@ -143,7 +148,7 @@ static NSString *Trash = @"Trash";
 #define Update_Success_Str @"Modified successfully!"
 #define Save_Success_Str @"Saved successfully!"
 #define Delete_Success_Str @"Delete successfully!"
-#define Send_Success_Str @"Saved successfully!"
+#define Send_Success_Str @"Send successfully!"
 #define Recover_Success @"Backed up successfully!"
 
 #define Registered_Failed @"Failed to registered"
@@ -161,6 +166,7 @@ static NSString *Trash = @"Trash";
 
 #define User_Header_Size 500*1024      // 500KB
 #define Screen_Lock_Local @"Screen_Lock_Local"
+
 
 
 static NSString *encoderShowContent = @"<div id='box'>\

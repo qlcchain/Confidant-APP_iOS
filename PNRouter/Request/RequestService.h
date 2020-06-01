@@ -37,5 +37,10 @@
                  progressBlock:(void(^)(CGFloat progress)) progressBlock
                        success:(void (^)(NSURLSessionDownloadTask *dataTask, NSString *filePath)) success
                        failure:(void (^)(NSURLSessionDownloadTask *dataTask, NSError *error))failure;
++ (NSURLSessionDataTask *)postImage7:(NSString *)url
+               parameters:(id)parameters
+constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))bodyBlock
+                  success:(HTTPRequestV2SuccessBlock)successReqBlock
+                             failure:(HTTPRequestV2FailedBlock)failedReqBlock;
 
 @end
