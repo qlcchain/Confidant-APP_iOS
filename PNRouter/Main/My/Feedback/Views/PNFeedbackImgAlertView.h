@@ -10,13 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^ClickImgShowBlock)(NSArray *imgs,NSInteger selRow);
+
 @interface PNFeedbackImgAlertView : UIView
 @property (weak, nonatomic) IBOutlet UICollectionView *imgCollectionView;
 @property (weak, nonatomic) IBOutlet UIView *backView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomV;
+@property (nonatomic, copy) ClickImgShowBlock clickImgBlock;
 
 + (instancetype) loadPNFeedbackImgAlertView;
-- (void) showPNFeedbackImgAlertView;
+- (void) showPNFeedbackImgAlertViewWithArray:(NSArray *) imgs;
 - (void) hidePNFeedbackImgAlertView;
 
 @end

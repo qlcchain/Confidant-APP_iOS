@@ -8,6 +8,7 @@
 
 #import "PNFeedbackImgAlertView.h"
 #import "PNImgCollectionCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface PNFeedbackImgAlertView()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic, strong) NSMutableArray *imgArray;
@@ -47,8 +48,15 @@
     [view layoutIfNeeded];
     return view;
 }
-- (void) showPNFeedbackImgAlertView
+- (void) showPNFeedbackImgAlertViewWithArray:(NSArray *)imgs
 {
+    if (self.imgArray.count > 0) {
+        [self.imgArray removeAllObjects];
+    }
+    [self.imgArray addObjectsFromArray:imgs];
+    
+    [_imgCollectionView reloadData];
+    
     [AppD.window addSubview:self];
     _bottomV.constant = 0;
        @weakify_self
@@ -89,13 +97,23 @@
     PNImgCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:PNImgCollectionCellResue forIndexPath:indexPath];
     cell.tag = indexPath.item;
     cell.closeBtn.hidden = YES;
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",Feedback_Img_BaseUrl,self.imgArray[indexPath.item]]];
+    [cell.imgV sd_setImageWithURL:url placeholderImage:User_DefaultImage completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        
+        NSLog(@"imgerror = %@",error);
+        
+    }];
+    
     return cell;
 }
 /**
  点击某个cell
  */
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-
+    if (_clickImgBlock) {
+        _clickImgBlock(_imgArray,indexPath.item);
+    }
 }
 /**
  cell的大小

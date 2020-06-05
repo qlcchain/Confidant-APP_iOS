@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PNFeedbackDetailViewController">
             <connections>
+                <outlet property="bottomViewH" destination="yqU-Bs-Zzq" id="uG7-Qr-vyC"/>
                 <outlet property="fineBtn" destination="1o1-RA-XWB" id="RUJ-Vp-3Uw"/>
                 <outlet property="lblMessage" destination="M4v-zM-Jg5" id="dAp-0F-Yes"/>
                 <outlet property="lblTypeName" destination="Yqk-jh-nIb" id="ePF-2r-7Bt"/>
@@ -88,7 +89,11 @@
                         <constraint firstItem="Yqk-jh-nIb" firstAttribute="centerY" secondItem="3yT-ct-7rX" secondAttribute="centerY" id="qOu-oz-mR2"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H7F-tn-i5w">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hSi-lP-Rr1">
+                    <rect key="frame" x="0.0" y="104" width="375" height="481"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H7F-tn-i5w">
                     <rect key="frame" x="0.0" y="585" width="375" height="82"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XFB-Sb-8fL">
@@ -141,10 +146,6 @@
                         <constraint firstAttribute="height" constant="82" id="yqU-Bs-Zzq"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hSi-lP-Rr1">
-                    <rect key="frame" x="0.0" y="104" width="375" height="481"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </tableView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>

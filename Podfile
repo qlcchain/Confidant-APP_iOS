@@ -17,6 +17,8 @@ def common_pods
     pod 'Realm', '3.1.0'
     pod 'TPCircularBuffer', '~> 0.0.1'
     pod 'Firebase/Analytics'
+    pod 'GoogleAnalytics'
+
 end
 
 def demo_pods

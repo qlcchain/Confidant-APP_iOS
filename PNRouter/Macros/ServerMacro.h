@@ -36,9 +36,13 @@ static NSString *Campaign_List_Url = @"http://confidantop.qlink.mobi/capi/msg/li
 static NSString *Campaign_Time_Url =  @"http://confidantop.qlink.mobi/capi/sys/dict.json";
 // 意见反馈
 //static NSString *Feedback_Url = @"http://confidantop.qlink.mobi/capi/feedback/submit.json";
-
-static NSString *Feedback_Url = @"http://192.168.0.190:8080/capi/feedback/submit.json";
-static NSString *Feedback_Type_Url = @"http://192.168.0.190:8080/capi/sys/dict.json";
+//static NSString *Feedback_Local_Url = @"http://192.168.0.190:8080";
+static NSString *Feedback_Url = @"http://confidantop.qlink.mobi/capi/feedback/submit.json";
+static NSString *Feedback_Reply_Url = @"http://confidantop.qlink.mobi/capi/feedback/add.json";
+static NSString *Feedback_Type_Url = @"http://confidantop.qlink.mobi/capi/sys/dict.json";
+static NSString *Feedback_List_Url = @"http://confidantop.qlink.mobi/capi/feedback/list.json";
+static NSString *Feedback_Marked_Url = @"http://confidantop.qlink.mobi/capi/feedback/resolved.json";
+static NSString *Feedback_Img_BaseUrl = @"http://confidantop.qlink.mobi";
 
 #define APIVERSION @"6"
 //#define APIVERSION2 @"2"

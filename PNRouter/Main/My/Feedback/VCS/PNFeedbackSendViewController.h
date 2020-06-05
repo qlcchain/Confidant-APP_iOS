@@ -7,10 +7,13 @@
 //
 
 #import "PNBaseViewController.h"
+@class PNFeedbackMoel;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PNFeedbackSendViewController : PNBaseViewController
+
+- (instancetype) initWithFeedbackModel:(PNFeedbackMoel *) model;
 
 @end
 

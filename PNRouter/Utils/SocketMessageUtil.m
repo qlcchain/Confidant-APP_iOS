@@ -506,6 +506,8 @@
         [SocketMessageUtil handleLogOut:receiveDic];
     } else if ([action isEqualToString:Action_UserInfoUpdate]) { // 修改昵称
         [SocketMessageUtil handleUserInfoUpdate:receiveDic];
+    } else if ([action isEqualToString:Action_UserInfoPush]) { // 修改昵称
+        [SocketMessageUtil handleUserInfoPush:receiveDic];
     } else if ([action isEqualToString:Action_SendFile]) { // tox sendfile 回调
         [SocketMessageUtil handleSendFile:receiveDic];
     } else if ([action isEqualToString:Action_PullFile]) { // tox拉取文件回调
@@ -726,6 +728,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:USER_PULL_SUCCESS_NOTI object:payloadArr];
     } else {
         [AppD.window showHint:@"Failed to load the contact list"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:USER_PULL_SUCCESS_NOTI object:nil];
     }
 }
 
@@ -777,6 +780,14 @@
     } else {
         [AppD.window showHint:@"Failed to modify the nickname"];
     }
+}
+#pragma mark --好友修改昵称push
++ (void)handleUserInfoPush:(NSDictionary *) receiveDic {
+
+    NSInteger tempmsgid = [receiveDic objectForKey:@"msgid"]?[[receiveDic objectForKey:@"msgid"] integerValue]:0;
+    NSString *retcode = @"0"; // 0：请求接收到   1：其他错误
+    NSDictionary *params = @{@"Action":Action_UserInfoPush,@"Retcode":retcode,@"ToId":[UserConfig getShareObject].userId?:@"",@"Msg":@""};
+    [SocketMessageUtil sendRecevieMessageWithParams5:params tempmsgid:tempmsgid];
 }
 #pragma mark - 修改好友昵称
 + (void) handleChangeRemarks:(NSDictionary *)receiveDic {

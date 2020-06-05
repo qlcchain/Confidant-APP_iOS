@@ -78,11 +78,11 @@
     
 }
 #pragma mark -派生类拉取用户
-+ (void) sendPullUserListWithShowLoad:(BOOL)show {
++ (void) sendPullUserListWithUid:(NSInteger)startUid showLoad:(BOOL)show{
     if (show) {
         [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_PullUserList,@"UserType":@(0),@"UserNum":@(0),@"UserStartSN":@"0"};
+    NSDictionary *params = @{@"Action":Action_PullUserList,@"UserType":@(0),@"UserNum":@(50),@"StartUid":@(startUid)};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 #pragma mark -创建帐户

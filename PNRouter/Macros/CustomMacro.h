@@ -138,6 +138,12 @@ static NSString *Sent = @"Sent";
 static NSString *Spam = @"Spam";
 static NSString *Trash = @"Trash";
 
+#pragma mark-----意见反馈状态
+static NSString *NOT_SOLVED = @"SUBMIT";
+static NSString *ANSWERED = @"SERVICE_REPLY";
+static NSString *RESOLVED = @"RESOLVED";
+static NSString *USER_ADD = @"USER_ADD";
+
 #pragma mark - HUD Text
 #define Loading_Str @"Loading..."
 #define Uploading_Str @"Uploading..."
@@ -167,6 +173,8 @@ static NSString *Trash = @"Trash";
 #define User_Header_Size 500*1024      // 500KB
 #define Screen_Lock_Local @"Screen_Lock_Local"
 
+// 默认图片
+#define User_DefaultImage [UIImage imageNamed:@"default_picture"]
 
 
 static NSString *encoderShowContent = @"<div id='box'>\

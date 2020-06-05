@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef void(^ClickImgBlock)(NSArray *imgs);
+
 #define PNFeedbackDeatilCellHeight 132
 static NSString *PNFeedbackDeatilCellResue = @"PNFeedbackDeatilCell";
 @interface PNFeedbackDeatilCell : UITableViewCell
@@ -19,6 +22,10 @@ static NSString *PNFeedbackDeatilCellResue = @"PNFeedbackDeatilCell";
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
 @property (weak, nonatomic) IBOutlet UIView *leftBackV;
 @property (weak, nonatomic) IBOutlet UIView *backV;
+@property (weak, nonatomic) IBOutlet UIButton *imgBtn;
+@property (nonatomic, copy) ClickImgBlock clickImgBlock;
+
+- (void) setFeedReplyModel:(id) model;
 @end
 
 NS_ASSUME_NONNULL_END

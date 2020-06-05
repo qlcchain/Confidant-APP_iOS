@@ -84,7 +84,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (![self.dataArray[indexPath.row] isEqualToString:self.selectStr]) {
         self.selectStr = self.dataArray[indexPath.row];
-        [_mainTabV reloadData];
+        [self clickBackAction:nil];
     }
     
 }

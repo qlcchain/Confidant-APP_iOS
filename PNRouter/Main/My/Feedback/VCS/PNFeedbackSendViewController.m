@@ -12,6 +12,13 @@
 #import "TZImagePickerController.h"
 #import "PNFeedbackImgModel.h"
 #import "FilePreviewViewController.h"
+#import "PNFeedbackMoel.h"
+#import "NSString+RegexCategory.h"
+#import "UserModel.h"
+#import "RequestService.h"
+#import "NSDate+Category.h"
+#import "UIImage+Resize.h"
+#import "PNFeedbackReplayModel.h"
 
 
 @interface PNFeedbackSendViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate,
@@ -29,6 +36,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *emailBackV;
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (nonatomic, strong) NSMutableArray *imgArray;
+@property (nonatomic, strong) PNFeedbackMoel *feedbackM;
 @end
 
 @implementation PNFeedbackSendViewController
@@ -36,7 +44,18 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
     [self leftNavBarItemPressedWithPop:NO];
 }
 - (IBAction)clickSendAction:(id)sender {
+    
+    [self sendFeedbackReplyQuest];
 }
+
+- (instancetype) initWithFeedbackModel:(PNFeedbackMoel *) model
+{
+    if (self = [super init]) {
+        self.feedbackM = model;
+    }
+    return self;
+}
+
 #pragma mark----------layz
 - (NSMutableArray *)imgArray
 {
@@ -55,12 +74,75 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
     _sendBtn.layer.cornerRadius = 8.0f;
     _emailBackV.layer.cornerRadius = 8.0f;
     
+    _lblMessage.text = self.feedbackM.scenario;
+    _lblTypeName.text = self.feedbackM.type;
+    
     _emailTF.delegate = self;
     _contentTF.delegate = self;
     
     _imgCollectionV.delegate = self;
     _imgCollectionV.dataSource = self;
     [_imgCollectionV registerNib:[UINib nibWithNibName:PNImgCollectionCellResue bundle:nil] forCellWithReuseIdentifier:PNImgCollectionCellResue];
+}
+
+
+// 回复
+- (void) sendFeedbackReplyQuest
+{
+    NSString *emailAddress = _emailTF.text.trim;
+    NSString *contentStr = _contentTF.text.trim;
+
+    if (contentStr.length == 0) {
+        [self.view showHint:@"The description cannot be empty"];
+        return;
+    }
+   
+    if (emailAddress && emailAddress.length > 0) {
+        if (![emailAddress isEmailAddress] ) {
+            [self.view showHint:@"Email format error"];
+            return;
+        }
+    }
+       
+       UserModel *userM = [UserModel getUserModel];
+       
+    NSDictionary *params = @{@"feedbackId":self.feedbackM.feedbackId,@"userId":userM.userId,@"userName":userM.username,@"email":emailAddress?:@"",@"content":contentStr};
+       
+       [self.view showHudInView:self.view hint:Uploading_Str];
+       @weakify_self
+       [RequestService postImage7:Feedback_Reply_Url parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+           
+           [weakSelf.imgArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                PNFeedbackImgModel *model = obj;
+               if (![model.imgName isEqualToString:@"tabbar_feedback_add.png"]) {
+                   NSLog(@"-------------%ld-----------",idx);
+                  
+                   NSString *fileName1 = [NSString stringWithFormat:@"%llu",[NSDate getMillisecondTimestampFromDate:[NSDate date]]];
+                   NSData *data1 = [model.img compressJPGImage:model.img toMaxFileSize:Upload_Image_Size];
+                   NSString *name1 = [NSString stringWithFormat:@"%@.jpg", fileName1];
+                   [formData appendPartWithFileData:data1 name:@"feedbackImages" fileName:name1 mimeType:@"image/jpeg/jpg/png"];
+               }
+           }];
+       } success:^(NSURLSessionDataTask *dataTask, id responseObject) {
+           [weakSelf.view hideHud];
+           if ([responseObject[@"code"] intValue] == 0) {
+               NSDictionary *replyDic = responseObject[@"reply"]?:@{};
+               PNFeedbackReplayModel *replyM = [PNFeedbackReplayModel mj_objectWithKeyValues:replyDic];
+               if (replyM) {
+                   if (weakSelf.feedbackM.replayList == nil) {
+                       weakSelf.feedbackM.replayList = [NSMutableArray array];
+                   }
+                   [weakSelf.feedbackM.replayList addObject:replyM];
+               }
+               [weakSelf leftNavBarItemPressedWithPop:NO];
+               [AppD.window showHint:Send_Success_Str];
+           } else {
+               [weakSelf.view showFaieldHudInView:weakSelf.view hint:Failed];
+           }
+       } failure:^(NSURLSessionDataTask *dataTask, NSError *error) {
+           [weakSelf.view hideHud];
+           [weakSelf.view showFaieldHudInView:weakSelf.view hint:Failed];
+       }];
 }
 
 

@@ -267,7 +267,7 @@ static NSString *TOUCH_MODIFY_SUCCESS_NOTI = @"TOUCH_MODIFY_SUCCESS_NOTI";
 
 #pragma mark----------意见返馈
 #define Feedback_Type_Select_Noti @"Feedback_Type_Select_Noti"
-
+#define Feedback_Add_Success_Noti @"Feedback_Add_Success_Noti"
 
 
 // 删除文件成功通知

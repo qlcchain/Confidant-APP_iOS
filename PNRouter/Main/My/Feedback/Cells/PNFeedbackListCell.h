@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class PNFeedbackMoel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,6 +21,8 @@ static NSString *PNFeedbackListCellResue = @"PNFeedbackListCell";
 @property (weak, nonatomic) IBOutlet UILabel *lblStatus;
 @property (weak, nonatomic) IBOutlet UILabel *lblTime;
 @property (weak, nonatomic) IBOutlet UIView *backV;
+
+- (void) setFeedbackModel:(PNFeedbackMoel *) model;
 
 @end
 

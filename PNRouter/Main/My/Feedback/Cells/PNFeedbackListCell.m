@@ -7,6 +7,8 @@
 //
 
 #import "PNFeedbackListCell.h"
+#import "PNFeedbackMoel.h"
+#import "NSDate+Category.h"
 
 @implementation PNFeedbackListCell
 
@@ -16,10 +18,21 @@
     _backV.layer.cornerRadius = 8.0;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void) setFeedbackModel:(PNFeedbackMoel *) model
+{
+    _lblNo.text = model.number;
+    _lblType.text = model.type;
+    _lblTime.text = @"";
+    _lblStatus.text = model.status;
+    _lblSuject.text = model.scenario;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+    if (model.createDate.length > 0) {
+        NSDate *startDate = [dateFormatter dateFromString:model.createDate?:@""];
+        _lblTime.text = [startDate minuteDescription];
+    }
+    
 }
 
 @end

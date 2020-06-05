@@ -12,14 +12,22 @@
 #import "UIScrollView+EmptyDataSet.h"
 #import "PNFeedCreateViewController.h"
 #import "PNFeedbackDetailViewController.h"
+#import "AFHTTPClientV2.h"
+#import "PNFeedbackMoel.h"
+#import "UserConfig.h"
 
 @interface PNFeedbackListViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *mainTab;
 @property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, assign) NSInteger page;
+@property (nonatomic, assign) NSInteger size;
 @end
 
 @implementation PNFeedbackListViewController
-
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 #pragma mark--------layz
 - (NSMutableArray *)dataArray
 {
@@ -39,6 +47,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _page = 0;
+    _size = 10;
     _mainTab.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _mainTab.delegate = self;
     _mainTab.dataSource = self;
@@ -51,13 +61,72 @@
     // Hide the status
     ((MJRefreshStateHeader *)_mainTab.mj_header).stateLabel.hidden = YES;
     [_mainTab.mj_header beginRefreshing];
+    
+    
+    // 设置回调（一旦进入刷新状态就会调用这个refreshingBlock）
+       @weakify_self
+       _mainTab.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+           [weakSelf sendFeedbackListWithIsRefreshing:NO];
+       }];
+       MJRefreshAutoNormalFooter *footerView = (MJRefreshAutoNormalFooter *)_mainTab.mj_footer;
+       [footerView setRefreshingTitleHidden:YES];
+       [footerView setTitle:@"" forState:MJRefreshStateIdle];
+        self.mainTab.mj_footer.hidden = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pullFeedbackList) name:Feedback_Add_Success_Noti object:nil];
 }
 
-
-/// 拉取意见反馈列表
 - (void) pullFeedbackList
 {
-    [_mainTab.mj_header endRefreshing];
+    [self sendFeedbackListWithIsRefreshing:YES];
+}
+
+/// 拉取意见反馈列表
+- (void) sendFeedbackListWithIsRefreshing:(BOOL) isRefreshing
+{
+    if (isRefreshing) {
+        _page = 0;
+        _size = 10;
+    }
+    NSDictionary *params = @{@"userId":[UserConfig getShareObject].userId?:@"",@"page":@(_page),@"size":@(_size)};
+    @weakify_self
+    [AFHTTPClientV2 requestConfidantWithBaseURLStr:Feedback_List_Url params:params httpMethod:HttpMethodPost userInfo:nil successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+        
+        if ([responseObject[@"code"] intValue] == 0) {
+            NSArray *resultArry = responseObject[@"feedbackList"]?:@[];
+               weakSelf.page++;
+              if (isRefreshing) {
+                  [weakSelf.mainTab.mj_header endRefreshing];
+                  if (weakSelf.dataArray.count > 0) {
+                      [weakSelf.dataArray removeAllObjects];
+                  }
+                  if (resultArry.count < weakSelf.size) {
+                      weakSelf.mainTab.mj_footer.hidden = YES;
+                  } else {
+                       weakSelf.mainTab.mj_footer.hidden = NO;
+                  }
+              } else {
+                  [weakSelf.mainTab.mj_footer endRefreshing];
+                  if (resultArry.count < weakSelf.size) {
+                      weakSelf.mainTab.mj_footer.hidden = YES;
+                  }
+              }
+            
+              [weakSelf.dataArray addObjectsFromArray:[PNFeedbackMoel mj_objectArrayWithKeyValuesArray:resultArry]];
+              [weakSelf.mainTab reloadData];
+        } else {
+             [weakSelf.view showHint:Failed];
+        }
+        
+    } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+        if (isRefreshing) {
+            [weakSelf.mainTab.mj_header endRefreshing];
+        } else {
+            [weakSelf.mainTab.mj_footer endRefreshing];
+        }
+        [weakSelf.view showHint:Failed];
+    }];
+   
 }
 
 
@@ -80,7 +149,7 @@
 #pragma mark ---------tableview 代理方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;//self.dataArray.count;
+    return self.dataArray.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -89,12 +158,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PNFeedbackListCell *cell = [tableView dequeueReusableCellWithIdentifier:PNFeedbackListCellResue];
+    [cell setFeedbackModel:self.dataArray[indexPath.row]];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    PNFeedbackDetailViewController *vc = [[PNFeedbackDetailViewController alloc] init];
+    PNFeedbackDetailViewController *vc = [[PNFeedbackDetailViewController alloc] initWithPNFeedbackModel:self.dataArray[indexPath.row]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

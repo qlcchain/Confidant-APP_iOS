@@ -35,6 +35,8 @@
 @property (nonatomic ,strong) NSMutableArray *dataArray;
 @property (nonatomic ,strong) NSMutableArray *searchDataArray;
 @property (nonatomic ,strong) NSString *rid;
+@property (nonatomic, assign) BOOL isRefrehing;
+@property (nonatomic, assign) NSInteger startUid;
 
 @end
 
@@ -98,10 +100,18 @@
     // Hide the status
     ((MJRefreshStateHeader *)_tableV.mj_header).stateLabel.hidden = YES;
     
-   // [_tableV registerNib:[UINib nibWithNibName:GroupCellReuse bundle:nil] forCellReuseIdentifier:GroupCellReuse];
+    // 设置回调（一旦进入刷新状态就会调用这个refreshingBlock）
+    @weakify_self
+    _tableV.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf sendPullUserListQuestWithIsRefrehing:NO];
+    }];
+    MJRefreshAutoNormalFooter *footerView = (MJRefreshAutoNormalFooter *)_tableV.mj_footer;
+    [footerView setRefreshingTitleHidden:YES];
+    [footerView setTitle:@"" forState:MJRefreshStateIdle];
+    _tableV.mj_footer.hidden = YES;
+    
     [_tableV registerNib:[UINib nibWithNibName:ContactsCellReuse bundle:nil] forCellReuseIdentifier:ContactsCellReuse];
-    //[self.dataArray addObject:@[@"Create user accounts",@"Create temporary accounts"]];
-   // [self.dataArray addObject:@[@"Create User Accounts"]];
+
     [self addObserver];
     
 }
@@ -110,11 +120,20 @@
     [super viewWillAppear:animated];
     
     // 拉取用户
-    [SendRequestUtil sendPullUserListWithShowLoad:NO];
+    [self sendPullUserListQuestWithIsRefrehing:YES];
 }
 
 - (void) refreshHeaderAction {
-    [SendRequestUtil sendPullUserListWithShowLoad:YES];
+    [self sendPullUserListQuestWithIsRefrehing:YES];
+}
+
+- (void) sendPullUserListQuestWithIsRefrehing:(BOOL) isRefrehing
+{
+    _isRefrehing = isRefrehing;
+    if (isRefrehing) {
+        _startUid = 0;
+    }
+    [SendRequestUtil sendPullUserListWithUid:_startUid showLoad:NO];
 }
 
 #pragma mark - 直接添加监听方法
@@ -247,21 +266,34 @@
 #pragma mark - noti
 - (void) reverPullUserList:(NSNotification *) noti
 {
-    [_tableV.mj_header endRefreshing];
-    
-    if (self.dataArray.count > 0) {
-        [self.dataArray removeAllObjects];
-        userCount = 0;
-        tempCount = 0;
+    if (_isRefrehing) {
+        [_tableV.mj_header endRefreshing];
+    } else {
+        [_tableV.mj_footer endRefreshing];
     }
-    
+
     NSArray *playod = noti.object;
     if (!playod || playod.count == 0) {
         [self.view showHint:@"Your users list is empty."];
     } else {
-       // __block NSMutableArray *supperArray = [NSMutableArray array];
+        // 如果是上拉就删除所有数据
+        if (_isRefrehing) {
+            if (self.dataArray.count > 0) {
+                [self.dataArray removeAllObjects];
+                userCount = 0;
+                tempCount = 0;
+            }
+        }
+        
+        if (playod.count == 50) {
+            self.tableV.mj_footer.hidden = NO;
+        } else {
+            self.tableV.mj_footer.hidden = YES;
+        }
+       
          __block NSMutableArray *ptArray = [NSMutableArray array];
          __block NSMutableArray *tempArray = [NSMutableArray array];
+        @weakify_self
         [playod enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             RouterUserModel *model = obj;
             model.NickName = [model.NickName base64DecodedString]?:[model.Mnemonic base64DecodedString];
@@ -281,15 +313,35 @@
                 }
                 [tempArray addObject:model];
             }
+            if (idx == playod.count-1) {
+                weakSelf.startUid = model.Uid;
+            }
         }];
-        if (ptArray.count > 0) {
-             ptArray = [self sortWith:ptArray];
+        
+        if (self.dataArray.count > 0) {
+            NSMutableArray *ptA = self.dataArray[0];
+            NSMutableArray *tempA = self.dataArray[1];
+            [ptA addObjectsFromArray:ptArray];
+            [tempA addObjectsFromArray:tempArray];
+            
+            if (ptA.count > 0) {
+                 ptArray = [self sortWith:ptA];
+            }
+            if (tempA.count >0) {
+                tempArray = [self sortWith:tempA];
+            }
+            
+        } else {
+            
+            if (ptArray.count > 0) {
+                 ptArray = [self sortWith:ptArray];
+            }
+            if (tempArray.count >0) {
+                tempArray = [self sortWith:tempArray];
+            }
+            [self.dataArray addObject:ptArray];
+            [self.dataArray addObject:tempArray];
         }
-        if (tempArray.count >0) {
-            tempArray = [self sortWith:tempArray];
-        }
-        [self.dataArray addObject:ptArray];
-        [self.dataArray addObject:tempArray];
         
         [_tableV reloadData];
     }

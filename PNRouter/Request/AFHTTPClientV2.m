@@ -378,7 +378,7 @@
     NSURLSessionDataTask *dataTask;
     NSMutableDictionary *jsonParam = [NSMutableDictionary dictionary];
     [jsonParam setObject:params forKey:@"params"];
-
+    
     if (httpMethod == HttpMethodGet) {
         
          DDLogDebug(@"url = %@ param = %@",URLString,jsonParam);

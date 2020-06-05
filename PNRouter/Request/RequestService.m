@@ -78,8 +78,10 @@
     constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))bodyBlock
                       success:(HTTPRequestV2SuccessBlock)successReqBlock
                       failure:(HTTPRequestV2FailedBlock)failedReqBlock {
-    
+
+
     NSString *requestUrl = url;//[NSString stringWithFormat:@"%@%@",Feedback_Url,url];
+    
     
     NSURLSessionDataTask *dataTask = [AFHTTPClientV2 requestWithConfidantCSURLStr:requestUrl parameters:parameters userInfo:nil constructingBodyWithBlock:bodyBlock success:successReqBlock failure:failedReqBlock];
     

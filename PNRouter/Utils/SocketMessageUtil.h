@@ -55,6 +55,7 @@ static NSString *Action_FormatDisk = @"FormatDisk";
 static NSString *Action_Reboot = @"Reboot";
 static NSString *Action_EnableQlcNode = @"EnableQlcNode";
 static NSString *Action_CheckQlcNode = @"CheckQlcNode";
+static NSString *Action_UserInfoPush = @"UserInfoPush";
 
 static NSString *Action_ResetRouterName = @"ResetRouterName";
 static NSString *Action_UploadAvatar = @"UploadAvatar";

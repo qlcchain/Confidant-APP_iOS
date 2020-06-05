@@ -20,6 +20,7 @@
 #import "RouterModel.h"
 #import "AESCipher.h"
 #import "NSString+Base64.h"
+#import "NSString+RegexCategory.h"
 
 @interface PNFeedCreateViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TZImagePickerControllerDelegate,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
@@ -40,6 +41,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
 @property (nonatomic, strong) NSMutableArray *imgArray;
 @property (nonatomic, strong) NSMutableArray *typeArray;
 @property (nonatomic, strong) NSMutableArray *scenarioArray;
+@property (nonatomic ,assign) NSInteger selFeedbackType;
 @end
 
 @implementation PNFeedCreateViewController
@@ -108,17 +110,31 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
     // 查询类型
     [self sendChekcTypeQuest];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectFeedbackTypeNoti:) name:Feedback_Type_Select_Noti object:nil];
 }
 
 // 创建
 - (void) sendFeedbackWQuest
 {
     NSString *emailAddress = _emailTF.text.trim;
-       NSString *contentStr = _contentTF.text.trim;
-       if (contentStr.length == 0) {
-           [self.view showHint:@"The description cannot be empty"];
-           return;
-       }
+    NSString *contentStr = _contentTF.text.trim;
+    NSString *scenarioStr = _lblMessage.text?:@"";
+    NSString *typeStr = _lblType.text?:@"";
+    
+    if (contentStr.length == 0) {
+        [self.view showHint:@"The description cannot be empty"];
+        return;
+    }
+    if (!(scenarioStr.length > 0 && typeStr.length > 0)) {
+        [self.view showHint:@"Please select type"];
+        return;
+    }
+    if (emailAddress && emailAddress.length > 0) {
+        if (![emailAddress isEmailAddress] ) {
+            [self.view showHint:@"Email format error"];
+            return;
+        }
+    }
        
        UserModel *userM = [UserModel getUserModel];
        RouterModel *routerM = [RouterModel getConnectRouter];
@@ -127,7 +143,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
        coderValue = aesEncryptString(coderValue, AES_KEY);
        coderValue = [NSString stringWithFormat:@"type_5,%@",coderValue];
        
-       NSDictionary *params = @{@"scenario":@"CHAT",@"type":@"CRASH",@"userId":userM.userId,@"userName":userM.username,@"publicKey":[EntryModel getShareObject].signPublicKey,@"qrCode":coderValue,@"email":emailAddress?:@"",@"question":contentStr};
+       NSDictionary *params = @{@"scenario":scenarioStr,@"type":typeStr,@"userId":userM.userId,@"userName":userM.username,@"publicKey":[EntryModel getShareObject].signPublicKey,@"qrCode":coderValue,@"email":emailAddress?:@"",@"question":contentStr};
        
        [self.view showHudInView:self.view hint:Uploading_Str];
        @weakify_self
@@ -147,7 +163,9 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
        } success:^(NSURLSessionDataTask *dataTask, id responseObject) {
            [weakSelf.view hideHud];
            if ([responseObject[@"code"] intValue] == 0) {
-               [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Successed"];
+               [[NSNotificationCenter defaultCenter] postNotificationName:Feedback_Add_Success_Noti object:nil];
+               [weakSelf leftNavBarItemPressedWithPop:NO];
+               [AppD.window showHint:Send_Success_Str];
            } else {
                [weakSelf.view showFaieldHudInView:weakSelf.view hint:Failed];
            }
@@ -186,11 +204,26 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
     }];
 }
 
+#pragma mark------------通知回调
+- (void) selectFeedbackTypeNoti:(NSNotification *) noti
+{
+    NSString *selTypeStr = noti.object;
+    if (selTypeStr.length > 0) {
+        if (_selFeedbackType == 1) {
+            _lblMessage.text = selTypeStr;
+        } else {
+            _lblType.text = selTypeStr;
+        }
+    }
+    
+}
+
 - (void) jumpToSheetVCWithType:(NSInteger) type
 {
     if (self.typeArray.count == 0) {
         return;
     }
+    _selFeedbackType = type;
     PNFeedbackSheetViewController *vc = [[PNFeedbackSheetViewController alloc] initWithSheetType:type dataArray:type ==1 ? self.scenarioArray : self.typeArray selectStr:type==1 ? _lblMessage.text : _lblType.text];
     [self presentModalVC:vc animated:YES];
 }
