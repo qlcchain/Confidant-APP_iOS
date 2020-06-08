@@ -19,6 +19,9 @@
 #import "JPUSHService.h"
 #import "MyConfidant-Swift.h"
 #import "EmailAccountModel.h"
+#import <TZLocationManager.h>
+#import "NSString+hash.h"
+#import "NSDate+Category.h"
 
 @implementation SendRequestUtil
 
@@ -75,11 +78,11 @@
     
 }
 #pragma mark -派生类拉取用户
-+ (void) sendPullUserListWithShowLoad:(BOOL)show {
++ (void) sendPullUserListWithUid:(NSInteger)startUid showLoad:(BOOL)show{
     if (show) {
         [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-    NSDictionary *params = @{@"Action":Action_PullUserList,@"UserType":@(0),@"UserNum":@(0),@"UserStartSN":@"0"};
+    NSDictionary *params = @{@"Action":Action_PullUserList,@"UserType":@(0),@"UserNum":@(50),@"StartUid":@(startUid)};
     [SocketMessageUtil sendVersion2WithParams:params];
 }
 #pragma mark -创建帐户
@@ -185,32 +188,66 @@
 {
     
     NSString *regid = [JPUSHService registrationID];
+    __block BOOL isRequest = NO;
     NSLog(@"------------%@",regid);
     if (regid && ![regid isEmptyString]) {
         
-        NSString *localRegid = [KeychainUtil getKeyValueWithKeyName:[NSString stringWithFormat:@"reg%@",[UserConfig getShareObject].userId]]?:@"";
+//        NSString *localRegid = [KeychainUtil getKeyValueWithKeyName:[RouterConfig getRouterConfig].currentRouterToxid?:@""]?:@"";
+//
+//        if ([regid isEqualToString:localRegid]) {
+//            return;
+//        }
         
-        if ([regid isEqualToString:localRegid]) {
-            return;
-        }
-        
-        NSDictionary *params = @{@"os":pushType,@"regtype":@(2),@"appversion":APP_Version,@"regid":regid,@"routerid":[RouterConfig getRouterConfig].currentRouterToxid,@"userid":[UserConfig getShareObject].userId?:@"",@"usersn":[UserConfig getShareObject].usersn?:@""};
-        
-        NSLog(@"parames = %@",params);
-       
-        [AFHTTPClientV2 requestWithBaseURLStr:PUSH_ONLINE_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
-            int retCode = [responseObject[@"Ret"] intValue];
-            if (retCode == 0) {
-                NSLog(@"注册推送成功!");
-                [KeychainUtil saveValueToKeyWithKeyName:[NSString stringWithFormat:@"reg%@",[UserConfig getShareObject].userId] keyValue:regid];
-            } else {
-                NSLog(@"注册推送失败!");
+        [[TZLocationManager manager] startLocationWithSuccessBlock:^(NSArray<CLLocation *> *locations) {
+            
+        } failureBlock:^(NSError *error) {
+            if (!isRequest) {
+                isRequest = YES;
+                [SendRequestUtil sendRegPushRequestWithRegid:regid countryCode:@"" countryName:@""];
             }
-        } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
-            NSLog(@"注册推送失败!!!!!!!!");
+            
+        } geocoderBlock:^(NSArray *geocoderArray) {
+            NSString *countryCode = @"";
+            NSString *countryName = @"";
+            for (CLPlacemark * placemark in geocoderArray) {
+                countryCode = placemark.ISOcountryCode;
+                countryName = placemark.country;
+                if (countryCode.length > 0 && countryName.length>0) {
+                    if (!isRequest) {
+                        isRequest = YES;
+                        [SendRequestUtil sendRegPushRequestWithRegid:regid countryCode:countryCode countryName:countryName];
+                    }
+                    break;
+                }
+            }
+            
         }];
+       
     }
 }
+
++ (void) sendRegPushRequestWithRegid:(NSString *) regid countryCode:(NSString *) countryCode countryName:(NSString *) countryName
+{
+   
+    
+    NSString *tempTime = [NSString stringWithFormat:@"%ld",[NSDate getTimestampFromDate:[NSDate date]]];
+    NSDictionary *params = @{@"Os":pushType,@"RegionCode":countryCode,@"RegionName":countryName,@"AppId":@(1),@"AppVersion":APP_Version,@"JpushToken":regid,@"RouterId":[RouterConfig getRouterConfig].currentRouterToxid,@"UserId":[UserConfig getShareObject].userId?:@"",@"TimeStamp":tempTime,@"RegHash":[regid sha256String]};
+    
+    NSLog(@"parames = %@",params);
+    
+    [AFHTTPClientV2 requestWithBaseURLStr:PUSH_URL params:params httpMethod:HttpMethodPost successBlock:^(NSURLSessionDataTask *dataTask, id responseObject) {
+        int retCode = [responseObject[@"Ret"] intValue];
+        if (retCode == 0) {
+            NSLog(@"注册推送成功!");
+          //  [KeychainUtil saveValueToKeyWithKeyName:[RouterConfig getRouterConfig].currentRouterToxid?:@"" keyValue:regid];
+        } else {
+            NSLog(@"注册推送失败!");
+        }
+    } failedBlock:^(NSURLSessionDataTask *dataTask, NSError *error) {
+        NSLog(@"注册推送失败!!!!!!!!");
+    }];
+}
+
 #pragma mark -添加好友备注
 + (void) sendAddFriendNickName:(NSString *) nickName friendId:(NSString *) friendId
 {
@@ -561,7 +598,7 @@
     if (showHud) {
         [AppD.window showHudInView:AppD.window hint:Loading_Str userInteractionEnabled:NO hideTime:REQEUST_TIME];
     }
-     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
+    EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     NSDictionary *params = @{@"Action":Action_BakMailsNum,@"User":[accountM.User base64EncodedString]};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
@@ -671,6 +708,53 @@
     NSDictionary *params = @{@"Action":Action_BakAddrBookInfo,@"User":userM.userId,@"FileId":@(fileId)};
     [SocketMessageUtil sendVersion6WithParams:params];
 }
+
+#pragma mark ---------- 推广活动
++ (void) sendBakWalletAccountWithWalletType:(NSString *) walletType walletAddress:(NSString *) walletAddress showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_BakWalletAccount,@"UserId":userM.userId,@"WalletType":walletType,@"Address":walletAddress};
+    [SocketMessageUtil sendVersion6WithParams:params];
+    
+    // 埋点
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+    parameters:@{
+                 kFIRParameterItemID:FIR_ADD_WALLET_ADDRESS,
+                 kFIRParameterItemName:FIR_ADD_WALLET_ADDRESS,
+                 kFIRParameterContentType:FIR_ADD_WALLET_ADDRESS
+                 }];
+}
++ (void) sendGetWalletAccountWithWalletType:(NSInteger) walletType showHud:(BOOL)showHud
+{
+    if (showHud) {
+        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+    }
+    UserModel *userM = [UserModel getUserModel];
+    NSDictionary *params = @{@"Action":Action_GetWalletAccount,@"UserId":userM.userId,@"WalletType":[NSString stringWithFormat:@"%ld",walletType]};
+    [SocketMessageUtil sendVersion6WithParams:params];
+}
+//+ (void) sendGetMyPushsListWithType:(NSInteger) type targetNum:(NSInteger) targetNum startId:(NSString *) startId showHud:(BOOL)showHud
+//{
+//    if (showHud) {
+//        [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+//    }
+//    UserModel *userM = [UserModel getUserModel];
+//    NSDictionary *params = @{@"Action":Action_GetMyPushsList,@"UserId":userM.userId,@"Type":@(type),@"TargetNum":@(targetNum),@"StartId":startId?:@""};
+//    [SocketMessageUtil sendVersion6WithParams:params];
+//}
+//+ (void) sendSetMyPushReadWithMsgid:(NSInteger) msgId interest:(NSInteger) interest showHud:(BOOL)showHud
+//{
+//    if (showHud) {
+//            [AppD.window showHudInView:AppD.window hint:@"" userInteractionEnabled:NO hideTime:REQEUST_TIME];
+//        }
+//    UserModel *userM = [UserModel getUserModel];
+//    NSDictionary *params = @{@"Action":Action_SetMyPushRead,@"UserId":userM.userId,@"MsgId":@(msgId),@"Interest":@(interest)};
+//    [SocketMessageUtil sendVersion6WithParams:params];
+//}
+
 
 
 

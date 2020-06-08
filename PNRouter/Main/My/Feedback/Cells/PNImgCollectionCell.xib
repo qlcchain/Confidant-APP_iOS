@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PNImgCollectionCell">
+            <rect key="frame" x="0.0" y="0.0" width="132" height="102"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="132" height="102"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabbar_feedback_add" translatesAutoresizingMaskIntoConstraints="NO" id="7y3-Si-eKL">
+                        <rect key="frame" x="0.0" y="0.0" width="132" height="102"/>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="af8-4T-LTQ">
+                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="jmD-GJ-Luy"/>
+                            <constraint firstAttribute="width" constant="40" id="v1X-lV-tFM"/>
+                        </constraints>
+                        <state key="normal" image="tabbar_delete"/>
+                        <connections>
+                            <action selector="clickCloseAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="G1A-g9-kRX"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="af8-4T-LTQ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="4hO-JK-fWc"/>
+                <constraint firstAttribute="bottom" secondItem="7y3-Si-eKL" secondAttribute="bottom" id="6Jl-ha-9aP"/>
+                <constraint firstItem="7y3-Si-eKL" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="6Rx-LO-Pgp"/>
+                <constraint firstAttribute="trailing" secondItem="7y3-Si-eKL" secondAttribute="trailing" id="ejn-oz-HAm"/>
+                <constraint firstItem="7y3-Si-eKL" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="j9w-N5-Vki"/>
+                <constraint firstItem="af8-4T-LTQ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="sBS-FY-Zbv"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <size key="customSize" width="132" height="102"/>
+            <connections>
+                <outlet property="closeBtn" destination="af8-4T-LTQ" id="Dbo-yH-lyg"/>
+                <outlet property="imgV" destination="7y3-Si-eKL" id="0K5-tJ-CZe"/>
+            </connections>
+            <point key="canvasLocation" x="47.826086956521742" y="28.794642857142854"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="tabbar_delete" width="16" height="16"/>
+        <image name="tabbar_feedback_add" width="150" height="112"/>
+    </resources>
+</document>

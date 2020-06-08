@@ -241,6 +241,9 @@
     if (AppD.isSwitch || AppD.isLogOut) {
         return;
     }
+    if (![AppD.window.rootViewController isKindOfClass:[YJSideMenu class]]) {
+        return;
+    }
     // 重新登录
     AppD.isDisConnectLogin = YES;
     UserConfig *userM = [UserConfig getShareObject];
@@ -252,6 +255,7 @@
     if (AppD.isSwitch || AppD.isLogOut) {
         return;
     }
+    
     [HeartBeatUtil stop];
     AppD.isDisConnectLogin = YES;
     UserConfig *userM = [UserConfig getShareObject];
@@ -262,6 +266,9 @@
 - (void) socketDisconnectNoti:(NSNotification *) noti
 {
     if (AppD.isSwitch || AppD.isLogOut) {
+        return;
+    }
+    if (![AppD.window.rootViewController isKindOfClass:[YJSideMenu class]]) {
         return;
     }
      [[SendCacheChatUtil getSendCacheChatUtilShare] stop];
@@ -383,26 +390,16 @@
 #pragma mark -chats页面tabar红点显示通知
 - (void) chatsHDShow:(NSNotification *) noti
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        NSMutableArray *chats = noti.object;
-        __block BOOL isShow = NO;
-        [chats enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ChatListModel *model = (ChatListModel *)obj;
-            if (model.isHD) {
-                isShow = YES;
-                *stop = YES;
-            }
-        }];
-        
-        UITabBarItem *item1 = [self.tabBar.items firstObject];
-        if (isShow) {
-            item1.badgeBgColor = TABBAR_RED_COLOR;
-            [item1 showBadge];
-        } else {
-            [item1 clearBadge];
-        }
-    });
+    
+    BOOL isShow = [noti.object boolValue];
+    UITabBarItem *item1 = [self.tabBar.items firstObject];
+    if (isShow) {
+        item1.badgeBgColor = TABBAR_RED_COLOR;
+        [item1 showBadge];
+    } else {
+        [item1 clearBadge];
+    }
+   
 }
 
 

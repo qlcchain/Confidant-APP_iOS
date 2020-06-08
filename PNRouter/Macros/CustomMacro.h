@@ -43,7 +43,7 @@
 
 // 埋点事件名
 #define FIR_ADD_NEW_CHAT @"main_Add_newchat"
-#define FIR_ADD_NEW_EMAIL @"main_Add_newchat"
+#define FIR_ADD_NEW_EMAIL @"main_Add_email"
 #define FIR_ADD_CONTACTS @"main_Add_addcontacts"
 #define FIR_ADD_INVITE_FRIENDS @"main_Add_invite_friends"
 #define FIR_ADD_MEMBERS @"main_Add_members"
@@ -64,7 +64,9 @@
 #define FIR_CONTACTS_SYNC    @"start_contactsSync"
 #define FIR_CONTACTS_RECOVER    @"start_contactsRecover"
 #define FIR_CONTACT_DEL  @"start_contactDelete"
-
+// 推广活动埋点
+#define FIR_ADD_WALLET_ADDRESS  @"add_wallet_address"
+#define FIR_CHECK_CAMPAIGN  @"check_campaign"
 
 
 // 请求超时时间
@@ -73,6 +75,8 @@
 #define RADIUS 3.0f
 #define BACK_TIME @"BACK_TIME"
 #define Bugly_AppID @"d22a5845f9"
+#define Upload_Image_Size 10*1024*1024  // 10M
+
 
 #define MAIN_GRAY_COLOR RGB(245, 245, 245)
 #define MAIN_ZS_COLOR RGB(102, 70, 247)
@@ -98,6 +102,7 @@
 #define File_Download_GroupId @"File_Download_GroupId" // 文件下载groupid
 #define File_Download_Task_List @"File_Download_Task_List" // 文件下载目录
 #define Login_Statu_Key @"Login_Statu_Key"
+#define Campaing_ids_key @"Campaing_ids_key" // 活动消息key
 
 #pragma mark -日志打点 Action
 static int LOGIN = 0x01;
@@ -112,6 +117,9 @@ static int GROUPLISTPULL = 56;
 static int GROUPUSERPULL = 57;
 static int GROUPMSGPULL = 58;
 static int GROUPSENDMSG = 59;
+
+#pragma mark-------最大输入字符
+static const NSInteger LimitMaxWord = 200;
 
 
 #pragma mark - socket connect status
@@ -130,8 +138,14 @@ static NSString *Sent = @"Sent";
 static NSString *Spam = @"Spam";
 static NSString *Trash = @"Trash";
 
+#pragma mark-----意见反馈状态
+static NSString *NOT_SOLVED = @"SUBMIT";
+static NSString *ANSWERED = @"SERVICE_REPLY";
+static NSString *RESOLVED = @"RESOLVED";
+static NSString *USER_ADD = @"USER_ADD";
+
 #pragma mark - HUD Text
-#define Loading_Str @"Loding..."
+#define Loading_Str @"Loading..."
 #define Uploading_Str @"Uploading..."
 #define Switching_Str @"Switching..."
 #define Deleting_Str @"Deleting..."
@@ -140,7 +154,7 @@ static NSString *Trash = @"Trash";
 #define Update_Success_Str @"Modified successfully!"
 #define Save_Success_Str @"Saved successfully!"
 #define Delete_Success_Str @"Delete successfully!"
-#define Send_Success_Str @"Saved successfully!"
+#define Send_Success_Str @"Send successfully!"
 #define Recover_Success @"Backed up successfully!"
 
 #define Registered_Failed @"Failed to registered"
@@ -158,6 +172,9 @@ static NSString *Trash = @"Trash";
 
 #define User_Header_Size 500*1024      // 500KB
 #define Screen_Lock_Local @"Screen_Lock_Local"
+
+// 默认图片
+#define User_DefaultImage [UIImage imageNamed:@"default_picture"]
 
 
 static NSString *encoderShowContent = @"<div id='box'>\

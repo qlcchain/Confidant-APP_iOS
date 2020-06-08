@@ -26,6 +26,7 @@ typedef enum : NSUInteger {
     CDMessageTypeMedia,     // 视频类型
     CDMessageTypeFile,     // 文件类型
     CDMessageTypeCustome,     // 自定义类型
+    CDMessageTypeEmailRead = 0x11 // email已读
 } CDMessageType; // 消息类型
 
 typedef enum : NSUInteger {
@@ -176,6 +177,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString *publicKey;
 @property (nonatomic , assign) NSInteger messageStatu;
 @property(nonatomic, assign) BOOL isDown;
+@property(nonatomic, assign) BOOL isEmailRead;
 @property(nonatomic, assign) BOOL isGroup;
 @property(nonatomic, assign) int isAdmin;
 @property (nonatomic, copy) NSString *nonceKey;

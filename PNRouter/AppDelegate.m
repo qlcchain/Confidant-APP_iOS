@@ -45,6 +45,7 @@
 #import "LeftViewController.h"
 #import "UserPrivateKeyUtil.h"
 #import "PNSendSelectViewController.h"
+#import "PNNewsViewController.h"
 
 // 引入 JPush 功能所需头文件
 #import "JPUSHService.h"
@@ -56,9 +57,13 @@
 #import <GoogleSignIn/GoogleSignIn.h>
 #import "GoogleUserModel.h"
 #import "EmailAccountModel.h"
+#import <GoogleAnalytics/GAI.h>
+#import <GoogleAnalytics/GAIDictionaryBuilder.h>
+#import <GoogleAnalytics/GAIFields.h>
+
 #endif
 
-@interface AppDelegate () <BuglyDelegate,JPUSHRegisterDelegate,GIDSignInDelegate> //MiPushSDKDelegate,UNUserNotificationCenterDelegate
+@interface AppDelegate () <BuglyDelegate,JPUSHRegisterDelegate,GIDSignInDelegate> 
 {
     BOOL isBackendRun;
     BOOL isFingerprintOn;
@@ -73,10 +78,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+    // apn 内容获取：
+   // NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+    
     AppD.currentRouterNumber = -1;
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
     // 去除icon 角标
 //    if ([UIApplication sharedApplication].applicationIconBadgeNumber > 0) {
 //         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
@@ -84,7 +93,7 @@
 //    }
     
 
-   // [KeyCUtil deleteWithKey:@"emailKey_arr"];
+   //  [KeyCUtil deleteWithKey:@"emailKey_arr"];
   //   [KeyCUtil deleteAllKey];
     
     // 配置google认证
@@ -164,7 +173,7 @@
     // 更新app通知count
     NSInteger appCount = [self getUnReadMessageCount];
     // 重新设置 icon 角标
-    [UIApplication sharedApplication].applicationIconBadgeNumber = appCount;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = appCount+self.campaignUnReadCount;
     [JPUSHService setBadge:appCount];
     
     NSInteger seconds =  [NSDate getTimestampFromDate:[NSDate date]] ;
@@ -561,7 +570,40 @@
             self.fileUrl = url;
         }
     } else {
+        // google 登陆回调
         [[GIDSignIn sharedInstance] handleURL:url sourceApplication:@"" annotation:nil];
+        
+        // Analytics 分析
+        NSString *urlString = [url absoluteString];
+
+        id<GAITracker> tracker = [[GAI sharedInstance] trackerWithName:@"confident-d6fd8"
+                                                             trackingId:@"227420399"];
+        // setCampaignParametersFromUrl: parses Google Analytics campaign ("UTM")
+        // parameters from a string url into a Map that can be set on a Tracker.
+        GAIDictionaryBuilder *hitParams = [[GAIDictionaryBuilder alloc] init];
+
+        // Set campaign data on the map, not the tracker directly because it only
+        // needs to be sent once.
+        [hitParams setCampaignParametersFromUrl:urlString];
+
+        // Campaign source is the only required campaign field. If previous call
+        // did not set a campaign source, use the hostname as a referrer instead.
+        if(![hitParams get:kGAICampaignSource] && [url host].length !=0) {
+          // Set campaign data on the map, not the tracker.
+          [hitParams set:@"referrer" forKey:kGAICampaignMedium];
+          [hitParams set:[url host] forKey:kGAICampaignSource];
+        }
+
+        NSDictionary *hitParamsDict = [hitParams build];
+
+        // A screen name is required for a screen view.
+        [tracker set:kGAIScreenName value:@"screen name"];
+
+        // Previous V3 SDK versions.
+        // [tracker send:[[[GAIDictionaryBuilder createAppView] setAll:hitParamsDict] build]];
+
+        // SDK Version 3.08 and up.
+        [tracker send:[[[GAIDictionaryBuilder createScreenView] setAll:hitParamsDict] build]];
     }
     
     return YES;
@@ -586,54 +628,6 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     NSLog(@"did Fail To Register For Remote Notifications With Error: %@", err);
 }
 
-/*
- 
-// 小米的
-- ( void )application:( UIApplication *)application didReceiveRemoteNotification:( NSDictionary *)userInfo
-{
-    [ MiPushSDK handleReceiveRemoteNotification :userInfo];
-    // 使用此方法后，所有消息会进行去重，然后通过miPushReceiveNotification:回调返回给App
-}
-
-
-
-#pragma mark MiPushSDKDelegate
-- (void)miPushRequestSuccWithSelector:(NSString *)selector data:(NSDictionary *)data
-{
-    // 请求成功
-    // 可在此获取regId
-    if ([selector isEqualToString:@"bindDeviceToken:"]) {
-        NSLog(@"regid == %@", data[@"regid"]);
-        self.regId = data[@"regid"];
-      //  printf([self.regId UTF8String]);
-    }
-}
-
-- (void)miPushRequestErrWithSelector:(NSString *)selector error:(int)error data:(NSDictionary *)data
-{
-    // 请求失败
-}
-
-// iOS10新加入的回调方法
-// 应用在前台收到通知
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-    NSDictionary * userInfo = notification.request.content.userInfo;
-    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
-        [MiPushSDK handleReceiveRemoteNotification:userInfo];
-    }
-    //completionHandler(UNNotificationPresentationOptionAlert);
-}
-
-// 点击通知进入应用
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
-    NSDictionary * userInfo = response.notification.request.content.userInfo;
-    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
-        [MiPushSDK handleReceiveRemoteNotification:userInfo];
-    }
-    completionHandler();
-}
-*/
-
 
 #pragma mark- JPUSHRegisterDelegate
 
@@ -644,26 +638,50 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
     }else{
         //从通知设置界面进入应用
     }
+    
 }
 
 // iOS 10 Support
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
     // Required
+    NSLog(@"-----------收到推送1");
     NSDictionary * userInfo = notification.request.content.userInfo;
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         [JPUSHService handleRemoteNotification:userInfo];
     }
     completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有 Badge、Sound、Alert 三种类型可以选择设置
+    
+    // app在前台时收到推送时走的方法
+   
 }
 
 // iOS 10 Support
-- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
     // Required
+    NSLog(@"-----------收到推送2");
     NSDictionary * userInfo = response.notification.request.content.userInfo;
+    NSString *activities = [userInfo valueForKey:@"attachinfo"]?:@"";
     if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         [JPUSHService handleRemoteNotification:userInfo];
+        
+        // 通过推送打开app逻辑写这里
+        if (activities.length >0) {
+            if ([_window.rootViewController isKindOfClass:[YJSideMenu class]]) {
+                UIViewController *baseVC = [SystemUtil getCurrentVC];
+                if (![baseVC isKindOfClass:[PNNewsViewController class]]) {
+                    PNNewsViewController *vc = [[PNNewsViewController alloc] init];
+                    vc.modalPresentationStyle = UIModalPresentationFullScreen;
+                    [baseVC presentViewController:vc animated:YES completion:nil];
+                }
+                
+            } else {
+               AppD.campaignDic = [activities mj_JSONObject];
+            }
+        }
     }
     completionHandler();  // 系统要求执行这个方法
+    
+    
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {

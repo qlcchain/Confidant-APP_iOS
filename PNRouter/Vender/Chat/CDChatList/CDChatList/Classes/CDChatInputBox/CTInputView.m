@@ -594,7 +594,7 @@ static UIColor *InputHexColor(int hexColor){
 - (NSArray*) rangeOfSubString:(NSString*)subStr inString:(NSString*)string {
     
     NSMutableArray *rangeArray = [NSMutableArray array];
-    NSString*string1 = [string stringByAppendingString:subStr];
+    NSString*string1 = [string stringByAppendingString:subStr?:@""];
     NSString *temp;
     for(int i =0; i < string.length; i++) {
         temp = [string1 substringWithRange:NSMakeRange(i, subStr.length)];

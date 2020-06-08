@@ -19,6 +19,8 @@
 #import "RequestService.h"
 #import <LibsodiumSDK/LibsodiumUtil.h>
 #import "PNFileUploadModel.h"
+#import <Contacts/Contacts.h>
+#import "PNContactPermissionsViewController.h"
 
 @interface PNContactViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *lblLocalCount;
@@ -46,22 +48,38 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self requestContactAuthorAfterSystemVersion9];
+    if (AppD.contactStatus == 0) {
+        [self requestContactAuthorAfterSystemVersion9];
+    } else if (AppD.contactStatus == 1) {
+        _isPermissionContacts = YES;
+        _localContactCount = [SystemUtil getLoacContactCount];
+        _lblLocalCount.text = [NSString stringWithFormat:@"%ld",_localContactCount];
+    }
 }
 
 - (IBAction)clickBackAction:(id)sender {
+    if (AppD.contactStatus == 3) {
+        AppD.contactStatus = 0;
+    }
     [self leftNavBarItemPressedWithPop:YES];
+    
 }
 - (IBAction)clickUploadNodeAction:(id)sender {
-    if (!self.isPermissionContacts) {
+    if (AppD.contactStatus == 3) {
+        PNContactPermissionsViewController *vc = [[PNContactPermissionsViewController alloc] init];
+        [self presentModalVC:vc animated:YES];
+    }else if (!self.isPermissionContacts) {
         [self showAlertViewAboutNotAuthorAccessContact];
     } else {
-         [self jumpUploadNodeActionSheet];
+        [self jumpUploadNodeActionSheet];
     }
    
 }
 - (IBAction)clickImportPhoneAction:(id)sender {
-    if (!self.isPermissionContacts) {
+    if (AppD.contactStatus == 3) {
+        PNContactPermissionsViewController *vc = [[PNContactPermissionsViewController alloc] init];
+        [self presentModalVC:vc animated:YES];
+    } else if (!self.isPermissionContacts) {
         [self showAlertViewAboutNotAuthorAccessContact];
     } else if (![self.nodeContactPath isEmptyString]) {
         [self jumpImportActionSheet];
@@ -73,7 +91,6 @@
 - (instancetype)initWithNodePath:(NSString *)contactPath nodeKey:(NSString *)contactKey nodeCount:(NSString *)contactCount isPermission:(BOOL)isPerssion loaclContactCount:(NSInteger)localContactCount
 {
     if (self = [super init]) {
-        self.isPermissionContacts = isPerssion;
         self.nodeContactKey = contactKey?:@"";
         self.nodeContactPath = contactPath?:@"";
         self.nodeContactCount = contactCount?:@"0";
@@ -271,17 +288,11 @@
     if (!_isPermissionContacts) {
         CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
         if (status == CNAuthorizationStatusNotDetermined) {
-            CNContactStore *store = [[CNContactStore alloc] init];
             @weakify_self
-            [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError*  _Nullable error) {
-                if (error) {
-                    NSLog(@"授权失败");
-                    [weakSelf showAlertViewAboutNotAuthorAccessContact];
-                }else {
-                    NSLog(@"成功授权");
-                    weakSelf.isPermissionContacts = YES;
-                }
-            }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                PNContactPermissionsViewController *vc = [[PNContactPermissionsViewController alloc] init];
+                [weakSelf presentModalVC:vc animated:YES];
+            });
         }
         else if(status == CNAuthorizationStatusRestricted)
         {
@@ -295,8 +306,9 @@
         }
         else if (status == CNAuthorizationStatusAuthorized)//已经授权
         {
-            //有通讯录权限-- 进行下一步操作
-            //[self exportContactVCF];
+            self.isPermissionContacts = YES;
+            _localContactCount = [SystemUtil getLoacContactCount];
+            _lblLocalCount.text = [NSString stringWithFormat:@"%ld",_localContactCount];
         }
     }
 }

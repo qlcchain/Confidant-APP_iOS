@@ -256,6 +256,9 @@
 	<string>Confidant need to access to your contacts for Node backup.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>APP need your permission to access the Touch ID/Face ID to unlock the app.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Confidant uses your location for push nortifications of your new emails, messages, promotion campaigns and more. 
+</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>APP need your permission to access the microphone to send sound messages.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

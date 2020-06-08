@@ -28,7 +28,7 @@
 }
 - (IBAction)clickHiddenBtn:(UIButton *)sender {
     if (_hiddenBlock) {
-        _hiddenBlock();
+        _hiddenBlock(sender.tag);
     }
 }
 
@@ -37,6 +37,12 @@
     _lblFromName.text = model.Subject;
     _lblFromAlisa.text = model.fromName;
     _lblMonthTime.text =  [model.revDate minuteDescription];
+    
+    if (model.attachCount == 0) {
+        _attBtn.hidden = YES;
+    } else {
+        _attBtn.hidden = NO;
+    }
     
     // 获取read 二进制的第三位，1为加星  0 为没有
    
@@ -48,7 +54,8 @@
     } else {
         if (model.toUserArray && model.toUserArray.count > 0) {
            EmailUserModel *userModel = model.toUserArray[0];
-             _lblToName.text = [NSString stringWithFormat:@"To %@",userModel.userName];
+            userModel.userName = [userModel.userName stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+            _lblToName.text = [NSString stringWithFormat:@"To %@",userModel.userName?:@""];
         } else {
              _lblToName.text = @"";
         }

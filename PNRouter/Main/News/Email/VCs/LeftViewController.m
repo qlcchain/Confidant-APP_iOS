@@ -565,6 +565,8 @@
                     }];
                 }];
                 
+            } else {
+                [_mainTabView reloadData];
             }
             
         }

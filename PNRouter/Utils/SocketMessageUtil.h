@@ -55,6 +55,7 @@ static NSString *Action_FormatDisk = @"FormatDisk";
 static NSString *Action_Reboot = @"Reboot";
 static NSString *Action_EnableQlcNode = @"EnableQlcNode";
 static NSString *Action_CheckQlcNode = @"CheckQlcNode";
+static NSString *Action_UserInfoPush = @"UserInfoPush";
 
 static NSString *Action_ResetRouterName = @"ResetRouterName";
 static NSString *Action_UploadAvatar = @"UploadAvatar";
@@ -103,6 +104,11 @@ static NSString *Action_FileAction = @"FileAction";
 // 加密通讯录
 static NSString *Action_BakAddrBookInfo = @"BakAddrBookInfo";
 
+// 推广活动
+static NSString *Action_BakWalletAccount = @"SetWalletAccount";
+static NSString *Action_GetWalletAccount = @"GetWalletAccount";
+//static NSString *Action_GetMyPushsList = @"GetMyPushsList";
+//static NSString *Action_SetMyPushRead = @"SetMyPushRead";
 
 @class FriendModel;
 

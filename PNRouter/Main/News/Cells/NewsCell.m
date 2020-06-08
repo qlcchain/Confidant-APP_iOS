@@ -42,12 +42,46 @@
     // Configure the view for the selected state
 }
 
+- (void) setSubjectWith:(NSString *) subject unReadCount:(NSInteger) unReadCount
+{
+    if (unReadCount > 0) {
+         CGFloat offset = SCREEN_WIDTH - _backView.width;
+        _backView.badgeCenterOffset = CGPointMake(-30+offset, 45);
+        [_backView showBadgeWithStyle:WBadgeStyleNumber value:unReadCount animationType:WBadgeAnimTypeNone];
+        _backView.badgeBgColor = MAIN_ZS_COLOR;
+    } else {
+        [_backView clearBadge];
+    }
+   
+    _headImgView.image = [UIImage imageNamed:@"message_push"];
+    _lblContent.text = subject?:@"";
+    _lblTime.text = @"Official";
+    _lblName.text = @"Campaign Updates";
+    _lblName.textColor = MAIN_ZS_COLOR;
+}
+
 - (void)setModeWithChatListModel:(ChatListModel *)model {
-    _chatListM = model;
     
+    if (!model) {
+        
+        CGFloat offset = SCREEN_WIDTH - _backView.width;
+        _backView.badgeCenterOffset = CGPointMake(-30+offset, 45);
+        [_backView showBadgeWithStyle:WBadgeStyleNumber value:3 animationType:WBadgeAnimTypeNone];
+        _backView.badgeBgColor = MAIN_ZS_COLOR;
+        _headImgView.image = [UIImage imageNamed:@"message_push"];
+        _lblContent.text = @"只要好友数量达到5位即可获得奖励，越多…";
+        _lblTime.text = @"Official";
+        _lblName.text = @"Campaign Updates";
+        _lblName.textColor = MAIN_ZS_COLOR;
+        return;
+    }
+    
+    _lblName.textColor = RGB(43, 43, 43);
+    _chatListM = model;
     if (model.isHD) {
         CGFloat offset = SCREEN_WIDTH - _backView.width;
         _backView.badgeCenterOffset = CGPointMake(-30+offset, 45);
+        _backView.badgeBgColor = [UIColor redColor];
         [_backView showBadgeWithStyle:WBadgeStyleNumber value:[model.unReadNum integerValue] animationType:WBadgeAnimTypeNone];
         if (!model.unReadNum || [model.unReadNum integerValue] == 0) {
             [_backView clearBadge];
@@ -134,7 +168,7 @@
         NSString *friendName = model.friendName;
         NSString *joinStr = @" - ";
         NSString *routerName = model.routerName?:@"";
-        NSString *str = [[friendName stringByAppendingString:joinStr] stringByAppendingString:routerName];
+        NSString *str = [[friendName stringByAppendingString:joinStr?:@""] stringByAppendingString:routerName?:@""];
         if (routerName.length <= 0) {
             str = friendName;
         }

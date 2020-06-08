@@ -10,7 +10,7 @@
 @class ChatListModel;
 
 static NSString *NewsCellResue = @"NewsCell";
-#define NewsCellHeight 64
+#define NewsCellHeight 68
 
 @interface NewsCell : SWTableViewCell
 //@property (weak, nonatomic) IBOutlet UILabel *lblNameJX;
@@ -20,4 +20,5 @@ static NSString *NewsCellResue = @"NewsCell";
 @property (weak, nonatomic) IBOutlet UILabel *lblContent;
 @property (weak, nonatomic) IBOutlet UILabel *lblTime;
 - (void) setModeWithChatListModel:(ChatListModel *) model;
+- (void) setSubjectWith:(NSString *) subject unReadCount:(NSInteger) unReadCount;
 @end

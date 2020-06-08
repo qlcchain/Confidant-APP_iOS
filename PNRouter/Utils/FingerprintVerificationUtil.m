@@ -265,7 +265,9 @@
         case LAErrorAuthenticationFailed:
         {
             NSLog(@"授权失败"); // -1 连续三次指纹识别错误
-            [FingerprintVerificationUtil exitAPP];
+            if (isExit) {
+                 [FingerprintVerificationUtil exitAPP];
+            }
         }
             break;
         case LAErrorUserCancel: // Authentication was canceled by user (e.g. tapped Cancel button)
@@ -286,7 +288,9 @@
         case LAErrorSystemCancel: // Authentication was canceled by system (e.g. another application went to foreground)
         {
             NSLog(@"取消授权，如其他应用切入"); // -4 TouchID对话框被系统取消，例如按下Home或者电源键
-            [FingerprintVerificationUtil exitAPP];
+           if (isExit) {
+                 [FingerprintVerificationUtil exitAPP];
+            }
         }
             break;
         case LAErrorPasscodeNotSet: // Authentication could not start, because passcode is not set on the device.
@@ -316,18 +320,24 @@
         case LAErrorAppCancel: // Authentication was canceled by application (e.g. invalidate was called while authentication was in progress) 如突然来了电话，电话应用进入前台，APP被挂起啦");
         {
             NSLog(@"用户不能控制情况下APP被挂起"); // -9
-            [FingerprintVerificationUtil exitAPP];
+            if (isExit) {
+                 [FingerprintVerificationUtil exitAPP];
+            }
         }
             break;
         case LAErrorInvalidContext: // LAContext passed to this call has been previously invalidated.
         {
             NSLog(@"LAContext传递给这个调用之前已经失效"); // -10
-            [FingerprintVerificationUtil exitAPP];
+            if (isExit) {
+                 [FingerprintVerificationUtil exitAPP];
+            }
         }
             break;
         case LAErrorNotInteractive: {
             NSLog(@"///////////");
-            [FingerprintVerificationUtil exitAPP];
+            if (isExit) {
+                 [FingerprintVerificationUtil exitAPP];
+            }
             break;
         }
     }

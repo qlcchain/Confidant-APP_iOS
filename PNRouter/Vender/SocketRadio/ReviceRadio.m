@@ -207,9 +207,9 @@
     char buff[BUFF_SIZE];
     NSString *sendMessage = @"";
     if (routerid.length == 17) {
-       sendMessage = [@"MAC" stringByAppendingString:aesEncryptString(routerid, ROUTER_IP_KEY)];
+        sendMessage = [@"MAC" stringByAppendingString:aesEncryptString(routerid, ROUTER_IP_KEY)?:@""];
     } else {
-        sendMessage =  [@"QLC" stringByAppendingString:aesEncryptString(routerid, ROUTER_IP_KEY)];
+        sendMessage =  [@"QLC" stringByAppendingString:aesEncryptString(routerid, ROUTER_IP_KEY)?:@""];
     }
     memcpy(buff, [sendMessage cStringUsingEncoding:NSASCIIStringEncoding],[sendMessage length]);
     if((sendBytes = sendto(brdcFd, buff, strlen(buff), 0,

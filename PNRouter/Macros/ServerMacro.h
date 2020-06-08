@@ -16,8 +16,13 @@
 // google api
 #define Google_Get_Message_List @"https://www.googleapis.com/gmail/v1/users/%@/messages"
 
-#define PUSH_DEBUG_URL @"http://47.96.76.184:9000/v1/pareg/"
-#define PUSH_ONLINE_URL @"https://pprouter.online:9001/v1/pareg/"
+
+#if DEBUG
+static NSString *PUSH_URL = @"https://pprouter.online:9001/v1/pareg/appPushInfoReg/";
+#else
+static NSString *PUSH_URL = @"https://pprouter.online:9001/v1/pareg/appPushInfoReg/";
+#endif
+
 static NSString *QLC_TEST_URL = @"http://47.103.54.171:29735";
 
 #if DEBUG
@@ -26,7 +31,18 @@ static NSString *LOG_TEST_URL = @"https://47.244.138.61:9001/v1/pprmap/ulogstr";
 static NSString *LOG_TEST_URL = @"https://pprouter.online:9001/v1/pprmap/ulogstr";
 #endif
 
-
+// 活动推广
+static NSString *Campaign_List_Url = @"http://confidantop.qlink.mobi/capi/msg/list.json";
+static NSString *Campaign_Time_Url =  @"http://confidantop.qlink.mobi/capi/sys/dict.json";
+// 意见反馈
+//static NSString *Feedback_Url = @"http://confidantop.qlink.mobi/capi/feedback/submit.json";
+//static NSString *Feedback_Local_Url = @"http://192.168.0.190:8080";
+static NSString *Feedback_Url = @"http://confidantop.qlink.mobi/capi/feedback/submit.json";
+static NSString *Feedback_Reply_Url = @"http://confidantop.qlink.mobi/capi/feedback/add.json";
+static NSString *Feedback_Type_Url = @"http://confidantop.qlink.mobi/capi/sys/dict.json";
+static NSString *Feedback_List_Url = @"http://confidantop.qlink.mobi/capi/feedback/list.json";
+static NSString *Feedback_Marked_Url = @"http://confidantop.qlink.mobi/capi/feedback/resolved.json";
+static NSString *Feedback_Img_BaseUrl = @"http://confidantop.qlink.mobi";
 
 #define APIVERSION @"6"
 //#define APIVERSION2 @"2"

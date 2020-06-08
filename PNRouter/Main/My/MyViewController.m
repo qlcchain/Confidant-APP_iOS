@@ -29,11 +29,13 @@
 #import "SettingViewController.h"
 #import "PTBPerformanceCenter.h"
 #import "WebViewController.h"
+#import "PNFeedbackListViewController.h"
 
 static NSString *Management_Circle_Str = @"Manage Circles";
 //static NSString *My_QRCode_Str = @"Share with Friends";
 static NSString *Help_Center = @"Help Center";
 static NSString *Settings_Str = @"Settings";
+static NSString *Feed_back = @"Feedback";
 
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource> {
 }
@@ -81,7 +83,8 @@ static NSString *Settings_Str = @"Settings";
 #pragma mark - Lazy
 - (NSMutableArray *)dataArray {
     if (!_dataArray) {
-        _dataArray = [NSMutableArray arrayWithObjects:@[Management_Circle_Str],@[Help_Center],@[Settings_Str], nil];
+        _dataArray = [NSMutableArray arrayWithObjects:@[Management_Circle_Str],@[Help_Center,Feed_back],@[Settings_Str], nil];
+        //_dataArray = [NSMutableArray arrayWithObjects:@[Management_Circle_Str],@[Help_Center],@[Settings_Str], nil];
     }
     return _dataArray;
 }
@@ -197,6 +200,8 @@ static NSString *Settings_Str = @"Settings";
         iconStr = @"Settings";
     } else if ([titleStr isEqualToString:Help_Center]) {
         iconStr = @"ic_verified";
+    } else if ([titleStr isEqualToString:Feed_back]) {
+           iconStr = @"me_feedback";
     }
     cell.iconImageView.image = [UIImage imageNamed:iconStr];
     cell.lblSubContent.hidden = YES;
@@ -233,13 +238,12 @@ static NSString *Settings_Str = @"Settings";
     }
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
-          
-//            PersonCodeViewController *vc = [[PersonCodeViewController alloc] init];
-//            [self.navigationController pushViewController:vc animated:YES];
-            
             WebViewController *vc = [[WebViewController alloc] init];
             vc.fromType = WebFromTypeHelpCenter;
             [self.navigationController pushViewController:vc animated:YES];
+        } else {
+             PNFeedbackListViewController *vc = [[PNFeedbackListViewController alloc] init];
+             [self.navigationController pushViewController:vc animated:YES];
         }
     }
     

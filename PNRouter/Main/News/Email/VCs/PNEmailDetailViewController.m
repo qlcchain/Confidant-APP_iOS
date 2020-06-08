@@ -106,44 +106,10 @@
     if (self = [super init]) {
         self.emailInfo = listInfo;
         
-       self.emailInfo.htmlContent = [self.emailInfo.htmlContent stringByReplacingOccurrencesOfString:@"/*<![CDATA[*/" withString:@""];
-        self.emailInfo.htmlContent = [self.emailInfo.htmlContent stringByReplacingOccurrencesOfString:@"/*]]>*/" withString:@""];
-        
-//        __block NSString *dsKey = @"";
-//        if (listInfo.htmlContent && listInfo.htmlContent.length > 0 && (!self.emailInfo.clearEnHtmlContent || self.emailInfo.clearEnHtmlContent.length == 0)) {
-//           NSArray *arrs = [self.emailInfo.htmlContent componentsSeparatedByString:@"confidantkey=\n'"];
-//            if (arrs && arrs.count == 2) {
-//                self.emailInfo.clearEnHtmlContent = [self.emailInfo.htmlContent stringByReplacingOccurrencesOfString:@"confidantkey=" withString:@"key"];
-//                 EmailAccountModel *accountM =[EmailAccountModel getConnectEmailAccount];
-//
-//                NSString *enStr = [[arrs lastObject] componentsSeparatedByString:@"'></span>"][0];
-//               NSArray *emailUserkeys = [enStr componentsSeparatedByString:@"##"];
-//                if (emailUserkeys && emailUserkeys.count > 0) {
-//                    [emailUserkeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//                        NSString *uks = obj;
-//                        NSArray *userkeys = [uks componentsSeparatedByString:@"&amp;&amp;"];
-//                        if ([accountM.User isEqualToString:[userkeys[0] base64DecodedString]]) {
-//                            dsKey = userkeys[1];
-//                        }
-//                    }];
-//                }
-//            }
-//        }
-//        if (!self.emailInfo.clearEnHtmlContent || self.emailInfo.clearEnHtmlContent.length == 0) {
-//            self.emailInfo.clearEnHtmlContent = self.emailInfo.htmlContent;
-//        }
-//
-//        if (dsKey.length > 0) {
-//            NSString *datakey = [LibsodiumUtil asymmetricDecryptionWithSymmetry:dsKey];
-//            datakey  = [[[NSString alloc] initWithData:[datakey base64DecodedData] encoding:NSUTF8StringEncoding] substringToIndex:16];
-//            NSString *bodyStr = [self.emailInfo.clearEnHtmlContent componentsSeparatedByString:@"</body>"][0];
-//            NSString *enStr = [[bodyStr componentsSeparatedByString:@"<body>"] lastObject];
-//            NSString *spanStr = [enStr componentsSeparatedByString:@"<span style='display:none'"][0];
-//            NSString *deStr = aesDecryptString(spanStr, datakey)?:@"";
-//            self.emailInfo.clearEnHtmlContent = [self.emailInfo.clearEnHtmlContent stringByReplacingOccurrencesOfString:enStr withString:deStr];
-//            self.emailInfo.deKey = datakey;
-//            //fileData = aesDecryptData(fileData, [datakey dataUsingEncoding:NSUTF8StringEncoding]);
-//        }
+        self.emailInfo.htmlContent = [self.emailInfo.htmlContent?:@"" stringByReplacingOccurrencesOfString:@"/*<![CDATA[*/" withString:@""];
+        self.emailInfo.htmlContent = [self.emailInfo.htmlContent?:@"" stringByReplacingOccurrencesOfString:@"/*]]>*/" withString:@""];
+        self.emailInfo.htmlContent = [self.emailInfo.htmlContent?:@"" stringByReplacingOccurrencesOfString:@"width=" withString:@"sss="];
+        self.emailInfo.htmlContent = [self.emailInfo.htmlContent?:@"" stringByReplacingOccurrencesOfString:@"width:" withString:@"sss="];
         
         if ([self.emailInfo.floderName isEqualToString:Node_backed_up]) {
             
@@ -194,12 +160,13 @@
 //             @"<body>%@%@%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
 //             @"</iframe></html>", mainJavascript,mainStyle,@"<div id=\"height\">", self.emailInfo.htmlContent,@"</div>"];
             
-            [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
-             @"<body>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
-             @"</iframe></html>", mainJavascript, mainStyle,self.emailInfo.htmlContent];
+//            [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
+//             @"<body>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
+//             @"</iframe></html>", mainJavascript, mainStyle,self.emailInfo.htmlContent];
             
-            self.htmlContent = html;
+            self.htmlContent = [self adaptWebViewForHtml:self.emailInfo.htmlContent];
             
+           // self.htmlContent = [NSString stringWithFormat:@"<html><body>%@</body></html>",self.emailInfo.htmlContent];
             
         
             if (self.emailInfo.parserData) {
@@ -209,6 +176,69 @@
     }
     return self;
 }
+
+//HTML适配图片文字
+- (NSString *)adaptWebViewForHtml:(NSString *) htmlStr
+{
+    NSMutableString *headHtml = [[NSMutableString alloc] initWithCapacity:0];
+     
+    [headHtml appendString : @"<!DOCTYPE html>" ];
+    [headHtml appendString : @"<html xmlns=\"http://www.w3.org/1999/xhtml\"xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">" ];
+    
+    [headHtml appendString : @"<head>" ];
+    
+    [headHtml appendString : @"<meta charset=\"utf-8\">" ];
+   
+    [headHtml appendString : @"<meta id=\"viewport\" name=\"viewport\" content=\"width=device-width,initial-scale=0.8,maximum-scale=1.5,user-scalable=yes\" />" ];
+    
+    [headHtml appendString : @"<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />" ];
+    
+    [headHtml appendString : @"<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black\" />" ];
+    
+    [headHtml appendString : @"<meta name=\"black\" name=\"apple-mobile-web-app-status-bar-style\" />" ];
+
+    //适配图片宽度，让图片宽度等于屏幕宽度
+    //[headHtml appendString : @"<style>img{width:100%;}</style>" ];
+    //[headHtml appendString : @"<style>img{height:auto;}</style>" ];
+    
+     //适配图片宽度，让图片宽度最大等于屏幕宽度
+//    [headHtml appendString : @"<style>img{max-width:100%;width:auto;height:auto;}</style>"];
+
+    
+   //适配图片宽度，如果图片宽度超过手机屏幕宽度，就让图片宽度等于手机屏幕宽度，高度自适应，如果图片宽度小于屏幕宽度，就显示图片大小
+    [headHtml appendString : @"<script type='text/javascript'>"
+     "window.onload = function(){\n"
+     "var maxwidth=document.body.clientWidth;\n" //屏幕宽度
+     "for(i=0;i <document.images.length;i++){\n"
+     "var myimg = document.images[i];\n"
+     "if(myimg.width > maxwidth){\n"
+     "myimg.style.width = '100%';\n"
+     "myimg.style.height = 'auto'\n;"
+     "}\n"
+     "}\n"
+     "}\n"
+     "</script>\n"];
+    
+    [headHtml appendString : @"<style>table{width:100%;}</style>" ];
+    [headHtml appendString : @"<style>p{max-width:100%;height:auto}</style>" ];
+    [headHtml appendString : @"<style>div{max-width:100%}</style>" ];
+   // [headHtml appendString:@"<style>body {font-family: Helvetica;font-size: 50px;word-wrap: break-word;-webkit-text-size-adjust:none;-webkit-nbsp-mode: space;}pre {white-space: pre-wrap;}</style>" ];
+    [headHtml appendString : @"<title>webview</title>" ];
+    NSString *bodyHtml;
+    bodyHtml = [NSString stringWithString:headHtml];
+   
+    bodyHtml = [bodyHtml stringByAppendingString:@"<body>"];
+    /// 以下为新代码---start
+    bodyHtml = [bodyHtml stringByAppendingString:@"<div id=\"height\">"];
+   
+    bodyHtml = [bodyHtml stringByAppendingString:htmlStr?:@""];
+    bodyHtml = [bodyHtml stringByAppendingString:@"</div>"];
+    bodyHtml = [bodyHtml stringByAppendingString:@"</body>"];
+    bodyHtml = [bodyHtml stringByAppendingString:@"</html>"];
+    return bodyHtml;
+    
+}
+
     // 解析zip
 - (void) parserZipWithPath:(NSString *) path data:(NSData *) data
 {
@@ -241,7 +271,7 @@
                     NSMutableString * html = [NSMutableString string];
                     [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
                      @"<body>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
-                     @"</iframe></html>", mainJavascript, mainStyle, weakSelf.emailInfo.htmlContent];
+                     @"</iframe></html>", mainJavascript, mainStyle, weakSelf.emailInfo.htmlContent?:@""];
                     weakSelf.htmlContent = html;
                     [weakSelf.myWebView loadHTMLString:weakSelf.htmlContent baseURL:nil];
                 } else { // 附件
@@ -318,7 +348,7 @@
                 return ;
                 
             }
-            NSString *htmlContent = aesDecryptString(weakSelf.emailInfo.htmlContent, pass)?:@"";
+            NSString *htmlContent = aesDecryptString(weakSelf.emailInfo.htmlContent?:@"", pass)?:@"";
             if (htmlContent.length > 0) {
                 
                 weakSelf.moreW.constant = 38;
@@ -475,7 +505,7 @@
                         if (!success) {
                             [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"Failure."];
                         } else {
-                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Success."];
+                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Successed"];
                             weakSelf.emailInfo.Read -=1;
                             
                             [[NSNotificationCenter defaultCenter] postNotificationName:EMIAL_FLAGS_CHANGE_NOTI object:@(0)];
@@ -492,7 +522,7 @@
                             [weakSelf.view showFaieldHudInView:weakSelf.view hint:@"Failure."];
                         } else {
                             
-                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Success."];
+                            [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Successed"];
                             weakSelf.emailInfo.Read = isStar?weakSelf.emailInfo.Read-4:weakSelf.emailInfo.Read+4;
                             [weakSelf.mainTabV reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                             
@@ -535,7 +565,7 @@
                     }
                     PNEmailMoveViewController *vc = [[PNEmailMoveViewController alloc] initWithFloderPath:weakSelf.emailInfo.floderPath uid:messageId isGoole:weakSelf.emailInfo.isGoogleAPI];
                     [vc setMoveBlock:^{
-                         [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Success."];
+                         [weakSelf.view showSuccessHudInView:weakSelf.view hint:@"Successed"];
                         weakSelf.isMove = YES;
                     }];
                     [weakSelf presentModalVC:vc animated:YES];
@@ -661,7 +691,7 @@
     self.wbScrollView.bounces = NO;
     //           self.wbScrollView.scrollEnabled = NO;
     //            self.myWebView.delegate = self;
-    self.myWebView.scalesPageToFit = NO;
+    self.myWebView.scalesPageToFit = YES;
     [self.myWebView setAutoresizingMask:(UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth)];
     self.myWebView.opaque = NO; //去掉底部黑色
     [self.myWebView setDelegate:self];
@@ -815,9 +845,13 @@
             }
             [cell setEmialInfoModel:self.emailInfo];
             @weakify_self
-            [cell setHiddenBlock:^{
-                weakSelf.isHidden = !weakSelf.isHidden;
-                [weakSelf.mainTabV reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+            [cell setHiddenBlock:^(NSInteger tag){
+                if (tag == 10) {
+                    weakSelf.isHidden = !weakSelf.isHidden;
+                    [weakSelf.mainTabV reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+                } else {
+                    [weakSelf.mainScrollView setContentOffset:CGPointMake(0, weakSelf.mainScrollView.contentSize.height- weakSelf.mainScrollView.bounds.size.height) animated:YES];
+                }
             }];
             return cell;
         } else if (indexPath.row <= self.userArray.count) {
@@ -882,6 +916,19 @@
     if(!isLoadingFinished)
     {
         
+//        CGSize contentSize = webView.scrollView.contentSize; //设置内容板块的尺寸
+//        CGSize viewSize = self.view.bounds.size;//自适应边界值
+//        viewSize.width-=32;
+//        float sfactor = viewSize.width / contentSize.width;//调整因子计算
+//        webView.scrollView.minimumZoomScale = sfactor;//最大调整参数设置为调整因子
+//        webView.scrollView.maximumZoomScale = sfactor;//最小调整参数设置为调整因子
+//        webView.scrollView.zoomScale = 1.5; //设置本身无缩放，自适应
+//
+//        webView.scrollView.contentSize = CGSizeMake(webView.scrollView.contentSize.width*sfactor, webView.scrollView.contentSize.height*sfactor);
+        
+        
+       // [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '150%'"];
+        
         NSString *jsStr = @"function reSetImgFrame() { \
         var imgs = document.getElementsByTagName('img'); \
         for (var i = 0; i < imgs.length; i++) {\
@@ -901,7 +948,10 @@
         
         newHeight = webView.scrollView.contentSize.height;
         NSLog(@"--%f---%f",newHeight,webView.scrollView.contentSize.height);
-        if (newHeight > _webH.constant) {
+        
+        if (newHeight > (SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT-82-100)) {
+            _webH.constant = SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT-82-100;
+        } else if (newHeight > _webH.constant) {
             _webH.constant = newHeight;
         }
         return;
@@ -914,9 +964,9 @@
     
     //获取实际要显示的html
     NSString *html = [self htmlAdjustWithPageWidth:widthOfBody
-                                              html:self.emailInfo.htmlContent
+                                              html:self.emailInfo.htmlContent?:@""
                                            webView:webView];
-    self.emailInfo.htmlContent = html;
+    self.emailInfo.htmlContent = html?:@"";
     //设置为已经加载完成
     isLoadingFinished = YES;
     
@@ -1325,7 +1375,7 @@
     if (retCode == 0) {
         _isBakNode = YES;
         [_nodeBtn setImage:[UIImage imageNamed:@"statusbar_download_node_backups"] forState:UIControlStateNormal];
-        [AppD.window showSuccessHudInView:AppD.window hint:@"Success."];
+        [AppD.window showSuccessHudInView:AppD.window hint:@"Successed"];
     } else if (retCode == 1) {
         [AppD.window showFaieldHudInView:AppD.window hint:@"This email is backed up."];
     } else {

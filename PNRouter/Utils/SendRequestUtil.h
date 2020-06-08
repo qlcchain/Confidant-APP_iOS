@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendUserFindWithToxid:(NSString *) toxid usesn:(NSString *) sn showHud:(BOOL) isShow;
 + (void) sendUserRegisterWithUserPass:(NSString *) pass username:(NSString *) userName code:(NSString *) code showHUD:(BOOL) isShow;
 + (void) sendUserLoginWithPass:(NSString *) usersn userid:(NSString *) userid showHud:(BOOL) showHud;
-+ (void) sendPullUserListWithShowLoad:(BOOL)show;
++ (void) sendPullUserListWithUid:(NSInteger)startUid showLoad:(BOOL)show;
 + (void) sendAddFriendWithFriendId:(NSString *) friendId msg:(NSString *) msg showHud:(BOOL) showHud;
 + (void) sendToxPullFileWithFromId:(NSString *) fromId toid:(NSString *) toid filePath:(NSString *) filePath msgid:(NSString *) msgId;
 + (void) createRouterUserWithRouterId:(NSString *) routerId mnemonic:(NSString *) mnemonic;
@@ -96,8 +96,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendUploadFileWithFloderType:(NSInteger) floderType fileType:(NSInteger) fileType fileId:(NSInteger) fileId fileSize:(NSInteger) fileSize fileMD5:(NSString *) fileMd5 fileName:(NSString *) fileName fkey:(NSString *) fkey finfo:(NSString *) finfo floderId:(NSInteger) floderId showHud:(BOOL)showHud;
 // 拉取通讯录
 + (void) sendPullBookInfoWithFileId:(NSInteger) fileId  showHud:(BOOL)showHud;
-
-
+// 推广活动
++ (void) sendBakWalletAccountWithWalletType:(NSString *) walletType walletAddress:(NSString *) walletAddress showHud:(BOOL)showHud;
++ (void) sendGetWalletAccountWithWalletType:(NSInteger) walletType showHud:(BOOL)showHud;
+//+ (void) sendGetMyPushsListWithType:(NSInteger) type targetNum:(NSInteger) targetNum startId:(NSString *) startId showHud:(BOOL)showHud;
+//+ (void) sendSetMyPushReadWithMsgid:(NSInteger) msgId interest:(NSInteger) interest showHud:(BOOL)showHud;
 
 
 

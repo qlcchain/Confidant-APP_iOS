@@ -55,7 +55,7 @@
 + (NSString *) getCurrentUserBaseFilePath;
 + (void) saveImageForTtimeWithToid:(NSString *) toid fileName:(NSString *) fileName fileTime:(NSInteger) fileTime;
 + (NSArray<NSTextCheckingResult *> *)findAllAtWithString:(NSString *) textString;
-    
++ (NSString *) getCampaignFilePath;
 + (NSString *)getTempEmailAttchFilePath;
 + (NSString *)getDocEmailAttchFilePathWithUid:(NSString *) uid user:(NSString *) user;
 + (NSString *)getDocEmailBasePath;
@@ -70,4 +70,5 @@
 + (NSString *) genterEnUtilNonce;
 + (NSInteger) getAttNameType:(NSString *) attName;
 + (UIViewController *)getCurrentVC;
++ (float) heightForString:(NSString *)value font:(UIFont *)font andWidth:(float)width;
 @end
