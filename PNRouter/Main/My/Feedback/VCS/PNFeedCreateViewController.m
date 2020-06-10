@@ -21,6 +21,7 @@
 #import "AESCipher.h"
 #import "NSString+Base64.h"
 #import "NSString+RegexCategory.h"
+#import "EmailAccountModel.h"
 
 @interface PNFeedCreateViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TZImagePickerControllerDelegate,UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
@@ -100,6 +101,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
     
     _lblMessage.text = @"";
     _lblType.text = @"";
+    _emailTF.text = [EmailAccountModel getConnectEmailAccount].User;
     _emailTF.delegate = self;
     _contentTF.delegate = self;
     

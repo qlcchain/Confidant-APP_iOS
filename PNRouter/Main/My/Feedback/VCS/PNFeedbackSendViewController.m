@@ -19,6 +19,7 @@
 #import "NSDate+Category.h"
 #import "UIImage+Resize.h"
 #import "PNFeedbackReplayModel.h"
+#import "EmailAccountModel.h"
 
 
 @interface PNFeedbackSendViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate,
@@ -77,6 +78,7 @@ UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate>
     _lblMessage.text = self.feedbackM.scenario;
     _lblTypeName.text = self.feedbackM.type;
     
+    _emailTF.text = [EmailAccountModel getConnectEmailAccount].User;
     _emailTF.delegate = self;
     _contentTF.delegate = self;
     
