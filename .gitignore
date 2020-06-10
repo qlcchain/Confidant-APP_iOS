@@ -6,17 +6,9 @@
 build/
 DerivedData/
 
-## 不上传的MIFI
-/Qlink/Config/
-
 ## 不上传宏文件
-/Qlink/Macros/
+/PNRouter/Macros/
 
-## 不上传ovpn文件
-*.ovpn
-
-## 不上传.gitignore文件
-##/.gitignore
 
 ## Various settings
 *.pbxuser

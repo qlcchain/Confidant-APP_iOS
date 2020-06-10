@@ -1685,6 +1685,7 @@
 		7360B85121FC3269008FB181 /* FileData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileData.m; sourceTree = "<group>"; };
 		7360B85321FC632A008FB181 /* FileDownUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileDownUtil.h; sourceTree = "<group>"; };
 		7360B85421FC632A008FB181 /* FileDownUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileDownUtil.m; sourceTree = "<group>"; };
+		7361F2B02490829C00A4B0FF /* PrivateConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrivateConfig.h; sourceTree = "<group>"; };
 		73625738213E8B3200D7FD6B /* MyConfidant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyConfidant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7362573B213E8B3200D7FD6B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7362573C213E8B3200D7FD6B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -2966,6 +2967,7 @@
 				73A4866E21B94B220062C34F /* ConnectView.h */,
 				73A4866F21B94B220062C34F /* ConnectView.m */,
 				73A4867121B94B3A0062C34F /* ConnectView.xib */,
+				7361F2B02490829C00A4B0FF /* PrivateConfig.h */,
 			);
 			path = Macros;
 			sourceTree = "<group>";

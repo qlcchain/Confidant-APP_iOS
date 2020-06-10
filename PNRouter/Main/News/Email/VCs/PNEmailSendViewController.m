@@ -1062,12 +1062,22 @@ UIImagePickerControllerDelegate,TZImagePickerControllerDelegate,UIDocumentPicker
         }
     }
     
-    [FIRAnalytics logEventWithName:kFIREventSelectContent
-    parameters:@{
-                 kFIRParameterItemID:FIR_EMAIL_SEND,
-                 kFIRParameterItemName:FIR_EMAIL_SEND,
-                 kFIRParameterContentType:FIR_EMAIL_SEND
-                 }];
+    if (_sendType == FriendEmail) {
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:FIR_INVATE_FRIEND,
+                     kFIRParameterItemName:FIR_INVATE_FRIEND,
+                     kFIRParameterContentType:FIR_INVATE_FRIEND
+                     }];
+    } else {
+        [FIRAnalytics logEventWithName:kFIREventSelectContent
+        parameters:@{
+                     kFIRParameterItemID:FIR_EMAIL_SEND,
+                     kFIRParameterItemName:FIR_EMAIL_SEND,
+                     kFIRParameterContentType:FIR_EMAIL_SEND
+                     }];
+    }
+    
     
     EmailAccountModel *accountM = [EmailAccountModel getConnectEmailAccount];
     if (accountM.userId && accountM.userId.length > 0) {

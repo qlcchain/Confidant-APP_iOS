@@ -367,9 +367,14 @@
     self.currentAddContactsRow = row;
     FriendModel *models = self.addContactsSource[row];
     [SocketMessageUtil sendAgreedOrRefusedWithFriendMode:models withType:[NSString stringWithFormat:@"%d",0]];
-    
     // 上传日已志
     _logId = [SendRequestUtil sendLogRequestWtihAction:ADDFRIENDDEAL logid:0 type:0 result:0 info:@"send_add_friend_deal"];
+    [FIRAnalytics logEventWithName:kFIREventSelectContent
+       parameters:@{
+                    kFIRParameterItemID:FIR_AGREE_ADD,
+                    kFIRParameterItemName:FIR_AGREE_ADD,
+                    kFIRParameterContentType:FIR_AGREE_ADD
+                    }];
 }
 
 - (void)groupAcceptAction:(GroupVerifyModel *)model {
